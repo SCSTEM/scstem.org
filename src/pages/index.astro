@@ -3,5 +3,18 @@ import Page from "../layouts/Page.astro";
 ---
 
 <Page title="Home">
-  <h1>Welcome to SC2!</h1>
+  <div class="fixed -z-1 w-full h-full">
+    <img
+      src="/image/landing.webp"
+      class="absolute object-cover top-0 bottom-0 m-auto w-full h-full"
+    />
+  </div>
+  <div class="fixed w-full h-full backdrop-blur-sm">
+    <div class="max-w-4xl mx-auto flex flex-col">
+      <div class="w-[512px] mx-auto bg-slate-200 rounded-3xl drop-shadow-2xl">
+        <img src="/image/logo-full-width.svg" />
+      </div>
+      <div class="w-full mx-auto bg-slate-400 rounded-3xl">Test</div>
+    </div>
+  </div>
 </Page>
