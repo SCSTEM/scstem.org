@@ -1,11 +1,12 @@
 /** @type {import('eslint').ESLint.ConfigData} */
 module.exports = {
-  // ...
+  plugins: ["@typescript-eslint"],
+
   extends: [
-    // ...
     "plugin:astro/recommended",
+    "prettier",
+    "plugin:@typescript-eslint/recommended",
   ],
-  // ...
   overrides: [
     {
       // Define the configuration for `.astro` file.
@@ -23,6 +24,5 @@ module.exports = {
         // "astro/no-set-html-directive": "error"
       },
     },
-    // ...
   ],
 };
