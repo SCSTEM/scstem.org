@@ -1,19 +1,20 @@
 import React from "react";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import Layout from "@theme/Layout";
+import Button from "../components/Button";
+import LandingLayout from "../layouts/Landing";
 
 export default function Home(): JSX.Element {
-  const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout title={siteConfig.title} description={siteConfig.tagline}>
-      <header>
-        <div>
-          <h1>{siteConfig.title}</h1>
-          <p>{siteConfig.tagline}</p>
-          <div></div>
-        </div>
-      </header>
-      <main></main>
-    </Layout>
+    <LandingLayout>
+      <img className="mb-10" src="/img/logo-color-full.svg" />
+      <div className="flex mx-auto mb-2 gap-2">
+        <Button url="/about">About</Button>
+        <Button url="/sponsors">Sponsors</Button>
+        <Button url="/wiki">Wiki</Button>
+        <Button url="/blog">Blog</Button>
+      </div>
+      <Button url="/get-involved" primary>
+        Get Involved
+      </Button>
+    </LandingLayout>
   );
 }

@@ -1,10 +1,15 @@
+import LandingLayout from "../layouts/Landing";
 import React from "react";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import Layout from "@theme/Layout";
 
 export default function GetInvolved(): JSX.Element {
-  const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout title={siteConfig.title} description={siteConfig.tagline}></Layout>
+    <LandingLayout>
+      <iframe
+        className="h-[1000px]"
+        src="https://docs.google.com/forms/d/e/1FAIpQLScTjT3LHFAq1mOfKFztgMOpUT8hFWz81dYlaaDa4B8lG6yr2Q/viewform?embedded=true"
+      >
+        Loading…
+      </iframe>
+    </LandingLayout>
   );
 }
