@@ -8,6 +8,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #4b5563;
@@ -17,6 +19,7 @@
   --ifm-color-primary-light: #525e6d;
   --ifm-color-primary-lighter: #566272;
   --ifm-color-primary-lightest: #626f81;
+  --ifm-font-family-base: "Roboto";
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
