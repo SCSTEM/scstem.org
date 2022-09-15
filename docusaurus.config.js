@@ -6,13 +6,13 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "SCSTEM",
-  tagline: "South Central STEM Collective",
+  title: "South Central STEM Collective",
+  tagline: "South Central Pennsylvania's 'STEM Central'",
   url: "https://scstem.org",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "img/logo-color.svg",
+  favicon: "svg/logo-color.svg",
 
   i18n: {
     defaultLocale: "en",
@@ -29,7 +29,7 @@ const config = {
         title: "South Central STEM Collective",
         logo: {
           alt: "My Site Logo",
-          src: "img/logo-color.svg",
+          src: "svg/logo-color.svg",
         },
         items: [
           {
@@ -83,6 +83,10 @@ const config = {
           {
             title: "Members area",
             items: [
+              {
+                label: "Web Admin",
+                to: "/admin",
+              },
               {
                 label: "Slack",
                 href: "https://go.scstem.tech/slack",
