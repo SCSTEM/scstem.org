@@ -1,31 +1,52 @@
 import React from "react";
-import Layout from "@theme/Layout";
+import ErrorBoundary from "@docusaurus/ErrorBoundary";
+import { PageMetadata } from "@docusaurus/theme-common";
+import SkipToContent from "@theme/SkipToContent";
+import AnnouncementBar from "@theme/AnnouncementBar";
+import Navbar from "@theme/Navbar";
+import LayoutProvider from "@theme/Layout/Provider";
+import ErrorPageContent from "@theme/ErrorPageContent";
 import Head from "@docusaurus/Head";
 
 interface Props {
-  children?: React.ReactNode;
   title?: string;
   description?: string;
-  noFooter?: boolean;
+  children?: React.ReactNode;
 }
 
-export default function DefaultLayout({
+export default function Layout({
   children,
   title,
   description,
-  noFooter,
 }: Props): JSX.Element {
+  const pageTitle = title ? `Admin: ${title}` : "Admin";
+
   return (
     <>
       <Head>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
-      <Layout title={title} description={description} noFooter={noFooter}>
-        <div className="flex">
-          <div className="flex-none w-12 bg-neutral"></div>
-          <div className="flex-grow p-10">{children}</div>
+      <LayoutProvider>
+        <PageMetadata title={pageTitle} description={description} />
+
+        <SkipToContent />
+
+        <AnnouncementBar />
+
+        <Navbar />
+
+        <div className="flex-grow flex">
+          <div className="flex-none">
+            {/* TODO: Making room for potential sidebar */}
+          </div>
+
+          <ErrorBoundary
+            fallback={(params) => <ErrorPageContent {...params} />}
+          >
+            {children}
+          </ErrorBoundary>
         </div>
-      </Layout>
+      </LayoutProvider>
     </>
   );
 }

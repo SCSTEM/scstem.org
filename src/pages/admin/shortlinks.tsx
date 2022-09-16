@@ -16,7 +16,7 @@ export default function Shortlinks(): JSX.Element {
 
   return (
     <AdminLayout>
-      <main className="grid lg:grid-cols-4 lg:gap-10">
+      <main className="grid lg:grid-cols-4 lg:gap-10 h-full">
         <div className="flex flex-col">
           <div className="rounded-3xl drop-shadow-2xl prose bg-base-100 border-primary border-solid border-2 border-opacity-20 p-6">
             <img src="/img/logo-color-full.svg" className="mb-2 mt-0" />
