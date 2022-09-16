@@ -113,7 +113,8 @@ const config = {
       ({
         docs: {
           routeBasePath: "wiki",
-          sidebarPath: require.resolve("./sidebarDocs.js"),
+          sidebarPath: require.resolve("./sidebars.js"),
+          path: "./wiki",
         },
         blog: {
           showReadingTime: true,
@@ -132,7 +133,16 @@ const config = {
         id: "sponsors",
         path: "./sponsors",
         routeBasePath: "sponsors",
-        sidebarPath: require.resolve("./sidebarSponsors.js"),
+        sidebarPath: require.resolve("./sidebars.js"),
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "resources",
+        path: "./resources",
+        routeBasePath: "resources",
+        sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
     async function tailwind(context, options) {
