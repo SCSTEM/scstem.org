@@ -84,10 +84,6 @@ const config = {
             title: "Members area",
             items: [
               {
-                label: "Web Admin",
-                to: "/admin",
-              },
-              {
                 label: "Slack",
                 href: "https://go.scstem.tech/slack",
               },
