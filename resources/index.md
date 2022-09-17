@@ -2,6 +2,4 @@
 title: Resources
 ---
 
-# TODO
-
-Hello
+# Coming Soon!
