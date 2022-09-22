@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../components/Button";
 import HeroHeader from "../components/home/hero/Header";
 import HeroType from "../components/home/hero/Typer";
 import HomeSection from "../components/home/Section";
@@ -9,9 +10,13 @@ export default function Home(): JSX.Element {
     <DefaultLayout>
       <HeroHeader>
         <HeroType className="text-5xl mx-auto drop-shadow-md" />
-        <div className="mt-16 mx-auto flex">TODO</div>
+        <div className="mt-16 mx-auto flex space-x-2">
+          <Button href="/about" value="About Us" />
+          <Button href="/sponsors" value="Our Sponsors" />
+          <Button href="/blog" value="Our Blog" />
+        </div>
       </HeroHeader>
-      <main className="prose border-solid border-0 border-t-2 border-opacity-20 border-[#171717] dark:border-[#facc15] dark:border-opacity-20 p-48 space-y-32">
+      <main className="prose border-solid border-0 border-t-2 border-opacity-20 border-dark dark:border-primary dark:border-opacity-10 p-48 space-y-32">
         {/* Section 1 */}
         <HomeSection
           title={`What is the "South Central STEM Collective"?`}
@@ -47,6 +52,9 @@ export default function Home(): JSX.Element {
               </li>
             </ul>
           </p>
+          <div className="flex justify-center">
+            <Button href="/about" value="Learn More" />
+          </div>
         </HomeSection>
 
         {/* Section 2 */}
@@ -85,6 +93,9 @@ export default function Home(): JSX.Element {
               </li>
             </ul>
           </p>
+          <div className="flex justify-center">
+            <Button href="/about" value="Learn More" />
+          </div>
         </HomeSection>
 
         {/* Section 3 */}
@@ -122,6 +133,9 @@ export default function Home(): JSX.Element {
               </li>
             </ul>
           </p>
+          <div className="flex justify-center">
+            <Button href="/about" value="Learn More" />
+          </div>
         </HomeSection>
       </main>
     </DefaultLayout>
