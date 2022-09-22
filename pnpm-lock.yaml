@@ -8,6 +8,7 @@ specifiers:
   '@docusaurus/eslint-plugin': ^2.1.0
   '@docusaurus/module-type-aliases': 2.1.0
   '@docusaurus/preset-classic': 2.1.0
+  '@docusaurus/theme-common': ^2.1.0
   '@mdx-js/react': ^1.6.22
   '@tailwindcss/typography': ^0.5.7
   '@tsconfig/docusaurus': ^1.0.6
@@ -31,6 +32,7 @@ dependencies:
   '@cloudflare/pages-plugin-static-forms': 1.0.0
   '@docusaurus/core': 2.1.0_kwpg33kv3zx3s7hsdw3xxp74l4
   '@docusaurus/preset-classic': 2.1.0_kwpg33kv3zx3s7hsdw3xxp74l4
+  '@docusaurus/theme-common': 2.1.0_kwpg33kv3zx3s7hsdw3xxp74l4
   '@mdx-js/react': 1.6.22_react@17.0.2
   '@tailwindcss/typography': 0.5.7_tailwindcss@3.1.8
   '@types/typed.js': 2.0.9
@@ -632,7 +634,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/helper-plugin-utils': 7.10.4
+      '@babel/helper-plugin-utils': 7.19.0
       '@babel/plugin-syntax-object-rest-spread': 7.8.3_@babel+core@7.12.9
       '@babel/plugin-transform-parameters': 7.18.8_@babel+core@7.12.9
     dev: false
@@ -2236,6 +2238,47 @@ packages:
       tslib: 2.4.0
       utility-types: 3.10.0
     transitivePeerDependencies:
+      - '@parcel/css'
+      - '@swc/core'
+      - bufferutil
+      - csso
+      - debug
+      - esbuild
+      - eslint
+      - lightningcss
+      - supports-color
+      - typescript
+      - uglify-js
+      - utf-8-validate
+      - vue-template-compiler
+      - webpack-cli
+    dev: false
+
+  /@docusaurus/theme-common/2.1.0_kwpg33kv3zx3s7hsdw3xxp74l4:
+    resolution: {integrity: sha512-vT1otpVPbKux90YpZUnvknsn5zvpLf+AW1W0EDcpE9up4cDrPqfsh0QoxGHFJnobE2/qftsBFC19BneN4BH8Ag==}
+    engines: {node: '>=16.14'}
+    peerDependencies:
+      react: ^16.8.4 || ^17.0.0
+      react-dom: ^16.8.4 || ^17.0.0
+    dependencies:
+      '@docusaurus/mdx-loader': 2.1.0_sfoxds7t5ydpegc3knd667wn6m
+      '@docusaurus/module-type-aliases': 2.1.0_sfoxds7t5ydpegc3knd667wn6m
+      '@docusaurus/plugin-content-blog': 2.1.0_kwpg33kv3zx3s7hsdw3xxp74l4
+      '@docusaurus/plugin-content-docs': 2.1.0_kwpg33kv3zx3s7hsdw3xxp74l4
+      '@docusaurus/plugin-content-pages': 2.1.0_kwpg33kv3zx3s7hsdw3xxp74l4
+      '@docusaurus/utils': 2.1.0
+      '@types/history': 4.7.11
+      '@types/react': 18.0.20
+      '@types/react-router-config': 5.0.6
+      clsx: 1.2.1
+      parse-numeric-range: 1.3.0
+      prism-react-renderer: 1.3.5_react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      tslib: 2.4.0
+      utility-types: 3.10.0
+    transitivePeerDependencies:
+      - '@docusaurus/types'
       - '@parcel/css'
       - '@swc/core'
       - bufferutil

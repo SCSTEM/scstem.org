@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "dev": "npm run start",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
@@ -19,6 +20,7 @@
     "@cloudflare/pages-plugin-static-forms": "^1.0.0",
     "@docusaurus/core": "2.1.0",
     "@docusaurus/preset-classic": "2.1.0",
+    "@docusaurus/theme-common": "^2.1.0",
     "@mdx-js/react": "^1.6.22",
     "@tailwindcss/typography": "^0.5.7",
     "@types/typed.js": "^2.0.9",
