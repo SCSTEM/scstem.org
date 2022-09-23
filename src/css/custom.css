@@ -4,7 +4,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
 
-/* You can override the default Infima variables here. */
 :root {
   --primary: #facc15;
   --gray: #4b5563;
@@ -14,7 +13,7 @@
   --blue: #3b82f6;
   --white: #fafafa;
 
-  --ifm-color-primary: #4b5563;
+  --ifm-color-primary: var(--gray);
   --ifm-color-primary-dark: #434c59;
   --ifm-color-primary-darker: #404854;
   --ifm-color-primary-darkest: #353c45;
@@ -26,7 +25,6 @@
   --ifm-background-color: var(--white);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme="dark"] {
   --ifm-color-primary: var(--primary);
   --ifm-color-primary-dark: #efc005;
