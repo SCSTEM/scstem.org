@@ -9,14 +9,14 @@ export default function Home(): JSX.Element {
   return (
     <DefaultLayout>
       <HeroHeader>
-        <HeroType className="text-5xl mx-auto drop-shadow-md" />
+        <HeroType className="text-3xl md:text-5xl mx-auto drop-shadow-md" />
         <div className="mt-16 mx-auto flex space-x-2">
           <Button href="/about" value="About Us" />
           <Button href="/sponsors" value="Our Sponsors" />
           <Button href="/blog" value="Our Blog" />
         </div>
       </HeroHeader>
-      <main className="prose border-solid border-0 border-t-2 border-opacity-20 border-dark dark:border-primary dark:border-opacity-10 p-48 space-y-32">
+      <main className="border-solid border-0 border-t-2 border-opacity-20 border-dark dark:border-primary dark:border-opacity-10 p-4 md:p-48 space-y-32">
         {/* Section 1 */}
         <HomeSection
           title={`What is the "South Central STEM Collective"?`}
@@ -33,25 +33,25 @@ export default function Home(): JSX.Element {
             resources, space, and industry expertise in addition to the
             following:
           </p>
-          <p>
-            <ul>
-              <li>
-                Acquire and maintain a collaborative workspace for communal use
-                by all groups and members.
-              </li>
-              <li>
-                Foster a creative and collaborative environment for
-                experimentation and development in technology.
-              </li>
-              <li>
-                Provide STEM education and mentorship to youth in grades K-12 as
-                it pertains to robotics, drones, and maker labs.
-              </li>
-              <li>
-                Share technology developments and ideas with the world at large.
-              </li>
-            </ul>
-          </p>
+
+          <ul>
+            <li>
+              Acquire and maintain a collaborative workspace for communal use by
+              all groups and members.
+            </li>
+            <li>
+              Foster a creative and collaborative environment for
+              experimentation and development in technology.
+            </li>
+            <li>
+              Provide STEM education and mentorship to youth in grades K-12 as
+              it pertains to robotics, drones, and maker labs.
+            </li>
+            <li>
+              Share technology developments and ideas with the world at large.
+            </li>
+          </ul>
+
           <div className="flex justify-center">
             <Button href="/about" value="Learn More" />
           </div>
@@ -74,25 +74,25 @@ export default function Home(): JSX.Element {
             resources, space, and industry expertise in addition to the
             following:
           </p>
-          <p>
-            <ul>
-              <li>
-                Acquire and maintain a collaborative workspace for communal use
-                by all groups and members.
-              </li>
-              <li>
-                Foster a creative and collaborative environment for
-                experimentation and development in technology.
-              </li>
-              <li>
-                Provide STEM education and mentorship to youth in grades K-12 as
-                it pertains to robotics, drones, and maker labs.
-              </li>
-              <li>
-                Share technology developments and ideas with the world at large.
-              </li>
-            </ul>
-          </p>
+
+          <ul>
+            <li>
+              Acquire and maintain a collaborative workspace for communal use by
+              all groups and members.
+            </li>
+            <li>
+              Foster a creative and collaborative environment for
+              experimentation and development in technology.
+            </li>
+            <li>
+              Provide STEM education and mentorship to youth in grades K-12 as
+              it pertains to robotics, drones, and maker labs.
+            </li>
+            <li>
+              Share technology developments and ideas with the world at large.
+            </li>
+          </ul>
+
           <div className="flex justify-center">
             <Button href="/about" value="Learn More" />
           </div>
@@ -114,25 +114,25 @@ export default function Home(): JSX.Element {
             known as SC2) plans to offer a range of activities, resources,
             space, and industry expertise in addition to the following:
           </p>
-          <p>
-            <ul>
-              <li>
-                Acquire and maintain a collaborative workspace for communal use
-                by all groups and members.
-              </li>
-              <li>
-                Foster a creative and collaborative environment for
-                experimentation and development in technology.
-              </li>
-              <li>
-                Provide STEM education and mentorship to youth in grades K-12 as
-                it pertains to robotics, drones, and maker labs.
-              </li>
-              <li>
-                Share technology developments and ideas with the world at large.
-              </li>
-            </ul>
-          </p>
+
+          <ul>
+            <li>
+              Acquire and maintain a collaborative workspace for communal use by
+              all groups and members.
+            </li>
+            <li>
+              Foster a creative and collaborative environment for
+              experimentation and development in technology.
+            </li>
+            <li>
+              Provide STEM education and mentorship to youth in grades K-12 as
+              it pertains to robotics, drones, and maker labs.
+            </li>
+            <li>
+              Share technology developments and ideas with the world at large.
+            </li>
+          </ul>
+
           <div className="flex justify-center">
             <Button href="/about" value="Learn More" />
           </div>

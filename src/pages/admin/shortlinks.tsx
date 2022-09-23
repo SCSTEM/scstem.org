@@ -16,10 +16,10 @@ export default function Shortlinks(): JSX.Element {
 
   return (
     <AdminLayout>
-      <main className="grid lg:grid-cols-4 lg:gap-10 h-full">
+      <main className="grid lg:grid-cols-4 lg:gap-10 p-6">
         <div className="flex flex-col">
           <div className="rounded-3xl drop-shadow-2xl prose bg-base-100 border-primary border-solid border-2 border-opacity-20 p-6">
-            <img src="/img/logo-color-full.svg" className="mb-2 mt-0" />
+            <img src="/svg/logo-color-full.svg" className="mb-2 mt-0" />
             <h2 className="mt-0">
               Welcome{name ? `, ${name}` : ""}! Ready to shorten some links?
             </h2>
@@ -36,7 +36,7 @@ export default function Shortlinks(): JSX.Element {
                   placeholder="Shortcode"
                   className="input input-bordered flex-grow focus:border-primary focus:outline-none"
                 />
-                <button className="btn btn-outline border-white border-opacity-20 focus:border-opacity-75 focus:outline-none">
+                <button className="btn btn-outline border-1 border-stone-600 focus:border-opacity-75 focus:outline-none">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

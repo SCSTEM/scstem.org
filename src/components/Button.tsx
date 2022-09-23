@@ -13,13 +13,15 @@ export default function Button({
   href,
   target,
 }: Props): JSX.Element {
-  // TODO: Outline mode
+  const button = outline ? (
+    <button className="btn btn-outline btn-primary">{value}</button>
+  ) : (
+    <button className="btn btn-primary">{value}</button>
+  );
 
   return (
     <a href={href} target={target}>
-      <button className="inline-block px-6 py-2 border-none bg-primary text-dark text-lg leading-tight rounded-xl shadow-md hover:filter hover:brightness-75 hover:shadow-lg focus:filter focus:brightness-75 focus:shadow-lg focus:outline-none focus:ring-0 active:filter active:brightness-125 active:shadow-lg transition duration-200 ease-in-out cursor-pointer">
-        {value}
-      </button>
+      {button}
     </a>
   );
 }
