@@ -63,7 +63,7 @@ const config = {
             items: [
               {
                 label: "Biohazard",
-                href: "https://frc.scstem.org",
+                href: "https://biohazard4050.org",
               },
             ],
           },
@@ -75,8 +75,8 @@ const config = {
                 href: "https://go.scstem.tech/facebook",
               },
               {
-                label: "Twitter",
-                href: "https://go.scstem.tech/twitter",
+                label: "LinkedIn",
+                href: "https://go.scstem.tech/linkedin",
               },
             ],
           },
