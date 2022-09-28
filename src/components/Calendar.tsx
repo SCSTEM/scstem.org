@@ -97,6 +97,8 @@ export default function Calendar({
         noTimeZone ? "&showTz=0" : ""
       }`}
       scrolling="no"
-    ></iframe>
+    >
+      Loading...
+    </iframe>
   );
 }
