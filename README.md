@@ -70,11 +70,11 @@ Our site is hosted on Cloudflare using their [Pages](https://pages.cloudflare.co
 
 Feel free to poke around and read up on [Workers](https://developers.cloudflare.com/workers/) and [Pages Functions](https://developers.cloudflare.com/pages/platform/functions/), but like React Components, this is an area that is somewhat out of scope for this readme.
 
-### Development
+## Development
 
 This readme assumes _some_ familiarity with VSCode, NodeJS, and Git.
 
-#### Requirements
+### Requirements
 
 - VSCode
 - Git (If you prefer a GUI, [GitKraken](https://www.gitkraken.com/) is great)
@@ -84,7 +84,7 @@ This readme assumes _some_ familiarity with VSCode, NodeJS, and Git.
   - VSCode will likely ask if you want to use these
   - Although optional, it does help to ensure a consistent dev experience
 
-#### Getting Started
+### Getting Started
 
 1. Install dependencies: `pnpm install`
 2. Start dev server: `pnpm run dev`
