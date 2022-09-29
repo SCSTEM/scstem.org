@@ -2,4 +2,6 @@
 title: Sponsors
 ---
 
-# Coming Soon!
+# Sponsors
+
+Coming Soon!

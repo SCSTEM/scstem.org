@@ -2,4 +2,6 @@
 title: Resources
 ---
 
-# Coming Soon!
+# Resources
+
+Coming soon!
