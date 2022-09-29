@@ -88,7 +88,7 @@ export default function Calendar({
 
   return (
     <iframe
-      className="border-none h-full w-full"
+      className="border-none h-[500px] md:h-full w-full"
       src={`https://calendar.google.com/calendar/embed?${src}&bgcolor=${bg}&ctz=America%2FNew_York${
         noTitle ? "&showTitle=0" : ""
       }${noNav ? "&showNav=0" : ""}${noDate ? "&showDate=0" : ""}${
