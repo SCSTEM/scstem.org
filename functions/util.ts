@@ -1,4 +1,4 @@
-import type { APIResponse } from "../../types";
+import type { APIResponse } from "./types";
 
 /**
  * Helper function to generate response message to return to the client. Helps standardize

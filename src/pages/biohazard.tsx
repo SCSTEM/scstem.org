@@ -5,18 +5,22 @@ import HeroType from "../components/home/hero/Typer";
 import HomeSection from "../components/home/Section";
 import DefaultLayout from "../layouts/Default";
 
-export default function Home(): JSX.Element {
+export default function Biohazard(): JSX.Element {
   return (
     <DefaultLayout>
-      <HeroHeader>
-        <HeroType className="text-3xl md:text-5xl mx-auto drop-shadow-md" />
-        <div className="mt-16 mx-auto flex space-x-2">
-          <Button href="/about" value="About Us" />
-          <Button href="/sponsors" value="Our Sponsors" />
-          <Button href="/blog" value="Our Blog" />
+      <header className="h-[40vh] bg-[url('/img/people-cheering.webp')] bg-cover bg-bottom">
+        <div className="flex flex-col md:pt-36 md:px-48">
+          <h1 className="text-xl md:text-5xl mx-auto drop-shadow-md text-white">
+            Biohazard
+          </h1>
+          <div className="mt-16 mx-auto flex space-x-2">
+            <Button href="/about" value="About Us" />
+            <Button href="/sponsors" value="Our Sponsors" />
+            <Button href="/blog" value="Our Blog" />
+          </div>
         </div>
-      </HeroHeader>
-      <main className="border-solid border-0 border-t-2 border-opacity-20 border-dark dark:border-primary dark:border-opacity-10 p-4 md:p-48 space-y-32">
+      </header>
+      <main className="prose border-solid border-0 border-t-2 border-opacity-20 border-green dark:border-opacity-10 p-48 space-y-32">
         {/* Section 1 */}
         <HomeSection
           title={`What is the "South Central STEM Collective"?`}
@@ -33,25 +37,25 @@ export default function Home(): JSX.Element {
             resources, space, and industry expertise in addition to the
             following:
           </p>
-
-          <ul>
-            <li>
-              Acquire and maintain a collaborative workspace for communal use by
-              all groups and members.
-            </li>
-            <li>
-              Foster a creative and collaborative environment for
-              experimentation and development in technology.
-            </li>
-            <li>
-              Provide STEM education and mentorship to youth in grades K-12 as
-              it pertains to robotics, drones, and maker labs.
-            </li>
-            <li>
-              Share technology developments and ideas with the world at large.
-            </li>
-          </ul>
-
+          <p>
+            <ul>
+              <li>
+                Acquire and maintain a collaborative workspace for communal use
+                by all groups and members.
+              </li>
+              <li>
+                Foster a creative and collaborative environment for
+                experimentation and development in technology.
+              </li>
+              <li>
+                Provide STEM education and mentorship to youth in grades K-12 as
+                it pertains to robotics, drones, and maker labs.
+              </li>
+              <li>
+                Share technology developments and ideas with the world at large.
+              </li>
+            </ul>
+          </p>
           <div className="flex justify-center">
             <Button href="/about" value="Learn More" />
           </div>
@@ -74,25 +78,25 @@ export default function Home(): JSX.Element {
             resources, space, and industry expertise in addition to the
             following:
           </p>
-
-          <ul>
-            <li>
-              Acquire and maintain a collaborative workspace for communal use by
-              all groups and members.
-            </li>
-            <li>
-              Foster a creative and collaborative environment for
-              experimentation and development in technology.
-            </li>
-            <li>
-              Provide STEM education and mentorship to youth in grades K-12 as
-              it pertains to robotics, drones, and maker labs.
-            </li>
-            <li>
-              Share technology developments and ideas with the world at large.
-            </li>
-          </ul>
-
+          <p>
+            <ul>
+              <li>
+                Acquire and maintain a collaborative workspace for communal use
+                by all groups and members.
+              </li>
+              <li>
+                Foster a creative and collaborative environment for
+                experimentation and development in technology.
+              </li>
+              <li>
+                Provide STEM education and mentorship to youth in grades K-12 as
+                it pertains to robotics, drones, and maker labs.
+              </li>
+              <li>
+                Share technology developments and ideas with the world at large.
+              </li>
+            </ul>
+          </p>
           <div className="flex justify-center">
             <Button href="/about" value="Learn More" />
           </div>
@@ -114,25 +118,25 @@ export default function Home(): JSX.Element {
             known as SC2) plans to offer a range of activities, resources,
             space, and industry expertise in addition to the following:
           </p>
-
-          <ul>
-            <li>
-              Acquire and maintain a collaborative workspace for communal use by
-              all groups and members.
-            </li>
-            <li>
-              Foster a creative and collaborative environment for
-              experimentation and development in technology.
-            </li>
-            <li>
-              Provide STEM education and mentorship to youth in grades K-12 as
-              it pertains to robotics, drones, and maker labs.
-            </li>
-            <li>
-              Share technology developments and ideas with the world at large.
-            </li>
-          </ul>
-
+          <p>
+            <ul>
+              <li>
+                Acquire and maintain a collaborative workspace for communal use
+                by all groups and members.
+              </li>
+              <li>
+                Foster a creative and collaborative environment for
+                experimentation and development in technology.
+              </li>
+              <li>
+                Provide STEM education and mentorship to youth in grades K-12 as
+                it pertains to robotics, drones, and maker labs.
+              </li>
+              <li>
+                Share technology developments and ideas with the world at large.
+              </li>
+            </ul>
+          </p>
           <div className="flex justify-center">
             <Button href="/about" value="Learn More" />
           </div>
