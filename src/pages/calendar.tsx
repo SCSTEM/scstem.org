@@ -2,14 +2,15 @@ import React from "react";
 import DefaultLayout from "@site/src/layouts/Default";
 import CalendarFrame, { CalColor } from "@site/src/components/Calendar";
 
-export default function BiohazardCalendar(): JSX.Element {
+export default function Calendar(): JSX.Element {
   return (
     <DefaultLayout>
       <CalendarFrame
+        noTitle
         calendars={[
           {
-            src: "Y19hYjljNWJlYTEwODgyYzAxYTAxOGNiZDUxYWIyMzcwYmY4NDk5NDZiZTRlMjUzNTAwZmZmMWQxMGZkY2M4NjFhQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20",
-            color: CalColor.Green,
+            src: "Y19wcDlkOXRrbGRrbThmdXZtcjMyZTBwZTgxc0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
+            color: CalColor.Gold,
           },
         ]}
       />
