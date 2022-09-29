@@ -62,7 +62,7 @@ export enum CalColor {
   Graphite = "%23616161",
 }
 
-export default function Calendar({
+export default function CalendarFrame({
   calendars,
   bgColor,
   noTitle,
