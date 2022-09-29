@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import AdminLayout from "@site/src/layouts/Admin";
 
+import "@glideapps/glide-data-grid/dist/index.css";
+import DataEditor from "@glideapps/glide-data-grid";
+
 export default function Shortlinks(): JSX.Element {
   const [name, setName] = useState<string>();
 
@@ -62,16 +65,7 @@ export default function Shortlinks(): JSX.Element {
           </div>
         </div>
         <div className="col-span-3 p-6 rounded-3xl drop-shadow-2xl overflow-auto bg-base-100 border-primary border-solid border-2 border-opacity-20">
-          <table className="table table-compact w-full">
-            <thead>
-              <tr>
-                <th className="w-[15%]">Code</th>
-                <th className="w-[60%]">URL</th>
-                <th className="w-[15%]">Date Created</th>
-                <th className="w-[10%]">Options</th>
-              </tr>
-            </thead>
-          </table>
+          TODO: Table
         </div>
       </main>
     </AdminLayout>
