@@ -25,6 +25,14 @@ const config = {
       colorMode: {
         defaultMode: "dark",
       },
+      announcementBar: {
+        id: "under_construction",
+        content:
+          "Our site is currently under construction, with a targeted launch date of Jan. 1st, 2023. See you then!",
+        backgroundColor: "#b38200",
+        textColor: "#FFFFFF",
+        isCloseable: false,
+      },
       navbar: {
         title: "South Central STEM Collective",
         logo: {
