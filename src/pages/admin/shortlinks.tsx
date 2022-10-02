@@ -23,7 +23,7 @@ export default function Shortlinks(): JSX.Element {
         <div className="flex flex-col">
           <div className="rounded-3xl drop-shadow-2xl prose bg-base-100 border-primary border-solid border-2 border-opacity-20 p-6">
             <img src="/svg/logo-color-full.svg" className="mb-2 mt-0" />
-            <h2 className="mt-0">
+            <h2 className="mt-0 dark:text-white">
               Welcome{name ? `, ${name}` : ""}! Ready to shorten some links?
             </h2>
             <form className="form-control space-y-2">

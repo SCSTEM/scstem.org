@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../components/Button";
+import { Button } from "flowbite-react";
 import HeroHeader from "../../components/home/hero/Header";
 import HeroType from "../../components/home/hero/Typer";
 import HomeSection from "../../components/home/Section";

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;400;600;800&display=swap");
 
 :root {
   --primary: #facc15;
@@ -20,7 +20,7 @@
   --ifm-color-primary-light: #525e6d;
   --ifm-color-primary-lighter: #566272;
   --ifm-color-primary-lightest: #626f81;
-  --ifm-font-family-base: "Roboto";
+  --ifm-font-family-base: "Inter";
 
   --ifm-background-color: var(--white);
 }

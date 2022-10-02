@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../components/Button";
+import { Button } from "flowbite-react";
 import HeroHeader from "../components/home/hero/Header";
 import HeroType from "../components/home/hero/Typer";
 import HomeSection from "../components/home/Section";
@@ -11,9 +11,11 @@ export default function Home(): JSX.Element {
       <HeroHeader>
         <HeroType className="text-3xl md:text-5xl mx-auto drop-shadow-md" />
         <div className="mt-16 mx-auto flex space-x-2">
-          <Button href="/about" value="About Us" />
-          <Button href="/sponsors" value="Our Sponsors" />
-          <Button href="/blog" value="Our Blog" />
+          <Button href="/about" color="primary">
+            About Us
+          </Button>
+          <Button href="/sponsors">Our Sponsors</Button>
+          <Button href="/blog">Our Blog</Button>
         </div>
       </HeroHeader>
       <main className="border-solid border-0 border-t-2 border-opacity-20 border-dark dark:border-primary dark:border-opacity-10 p-4 md:p-48 space-y-32">
