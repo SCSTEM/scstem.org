@@ -29,8 +29,6 @@
     "@tailwindcss/typography": "^0.5.7",
     "autoprefixer": "^10.4.12",
     "clsx": "^1.2.1",
-    "flowbite": "^1.5.3",
-    "flowbite-react": "^0.1.11",
     "lodash": "^4.17.21",
     "marked": "^4.1.1",
     "postcss": "^8.4.17",
