@@ -18,6 +18,8 @@ module.exports = {
     },
   },
   daisyui: {
+    logs: false,
+    base: false,
     themes: [
       {
         light: {
@@ -52,6 +54,5 @@ module.exports = {
         },
       },
     ],
-    darkTheme: "dark",
   },
 };
