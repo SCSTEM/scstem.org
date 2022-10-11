@@ -1,23 +1,24 @@
 import React from "react";
 
 interface Props {
-  value: string;
-  href: string;
+  children: React.ReactNode;
   outline?: boolean;
+  href: string;
   target?: React.HTMLAttributeAnchorTarget;
 }
 
 export default function Button({
-  value,
+  children,
   outline,
   href,
   target,
 }: Props): JSX.Element {
-  const button = outline ? (
-    <button className="btn btn-outline btn-primary">{value}</button>
-  ) : (
-    <button className="btn btn-primary">{value}</button>
-  );
+  let button = <button className="btn btn-primary">{children}</button>;
+
+  if (outline)
+    button = (
+      <button className="btn btn-outline btn-primary">{children}</button>
+    );
 
   return (
     <a href={href} target={target}>

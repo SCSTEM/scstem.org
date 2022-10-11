@@ -1,22 +1,22 @@
 import React from "react";
-import Button from "../components/Button";
 import HeroHeader from "../components/home/hero/Header";
 import HeroType from "../components/home/hero/Typer";
 import HomeSection from "../components/home/Section";
 import DefaultLayout from "../layouts/Default";
+import Button from "../components/Button";
 
 export default function Home(): JSX.Element {
   return (
     <DefaultLayout>
       <HeroHeader>
-        <HeroType className="text-3xl md:text-5xl mx-auto drop-shadow-md" />
-        <div className="mt-16 mx-auto flex space-x-2">
-          <Button href="/about" value="About Us" />
-          <Button href="/sponsors" value="Our Sponsors" />
-          <Button href="/blog" value="Our Blog" />
+        <HeroType className="mx-auto text-3xl drop-shadow-md md:text-5xl" />
+        <div className="mx-auto mt-16 flex space-x-2">
+          <Button href="/about">About Us</Button>
+          <Button href="/sponsors">Our Sponsors</Button>
+          <Button href="/blog">Our Blog</Button>
         </div>
       </HeroHeader>
-      <main className="border-solid border-0 border-t-2 border-opacity-20 border-dark dark:border-primary dark:border-opacity-10 p-4 md:p-48 space-y-32">
+      <main className="space-y-32 border-0 border-t-2 border-solid border-dark border-opacity-20 p-4 dark:border-primary dark:border-opacity-10 md:p-48">
         {/* Section 1 */}
         <HomeSection
           title={`What is the "South Central STEM Collective"?`}
@@ -52,9 +52,7 @@ export default function Home(): JSX.Element {
             </li>
           </ul>
 
-          <div className="flex justify-center">
-            <Button href="/about" value="Learn More" />
-          </div>
+          <div className="flex justify-center"></div>
         </HomeSection>
       </main>
     </DefaultLayout>

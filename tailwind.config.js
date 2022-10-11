@@ -6,6 +6,9 @@ module.exports = {
   plugins: [require("daisyui"), require("@tailwindcss/typography")],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter var", "sans-serif"],
+      },
       colors: {
         primary: "var(--primary)",
         gray: "var(--gray)",
