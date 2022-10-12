@@ -8,15 +8,17 @@ import Button from "../components/Button";
 export default function Home(): JSX.Element {
   return (
     <DefaultLayout>
-      <HeroHeader>
-        <HeroType className="mx-auto text-3xl drop-shadow-md md:text-5xl" />
-        <div className="mx-auto mt-16 flex space-x-2">
+      <HeroHeader className="bg-[url('/svg/circuit-board-light.svg')] dark:bg-[url('/svg/circuit-board-dark.svg')] dark:text-primary">
+        <div className="mx-auto h-28 w-4/5 text-center text-4xl text-white drop-shadow-md md:w-1/2 md:text-5xl">
+          <HeroType />
+        </div>
+        <div className="mt-10 flex justify-center space-x-2">
           <Button href="/about">About Us</Button>
           <Button href="/sponsors">Our Sponsors</Button>
           <Button href="/blog">Our Blog</Button>
         </div>
       </HeroHeader>
-      <main className="space-y-32 border-0 border-t-2 border-solid border-dark border-opacity-20 p-4 dark:border-primary dark:border-opacity-10 md:p-48">
+      <main className="space-y-32 border-0 border-t-2 border-solid border-dark border-opacity-20 p-8 dark:border-primary dark:border-opacity-10 md:p-32 xl:p-48">
         {/* Section 1 */}
         <HomeSection
           title={`What is the "South Central STEM Collective"?`}

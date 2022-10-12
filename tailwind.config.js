@@ -3,7 +3,11 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   darkMode: ["class", "[data-theme='dark']"],
   corePlugins: { preflight: false },
-  plugins: [require("daisyui"), require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
+    require("daisyui"),
+  ],
   theme: {
     extend: {
       fontFamily: {
