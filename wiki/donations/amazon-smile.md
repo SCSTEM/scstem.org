@@ -17,7 +17,7 @@ tags:
 
 1. Go to [smile.amazon.com](https://smile.amazon.com) in your favorite internet browser.
 
-:::tip
+:::note
 If you already have Amazon Smile set up for anothe r charity and you want to switch your charity to us, simply open the Amazon Smile dropdown and press **Change**.
 
 ![Image highlighting buttons to change Amazon Smile Charities](./assets/switch-charity.png)
