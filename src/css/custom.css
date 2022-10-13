@@ -13,15 +13,15 @@
   --blue: #3b82f6;
   --white: #fafafa;
 
-  --ifm-color-primary: var(--gray);
-  --ifm-color-primary-dark: #434c59;
-  --ifm-color-primary-darker: #404854;
-  --ifm-color-primary-darkest: #353c45;
-  --ifm-color-primary-light: #525e6d;
-  --ifm-color-primary-lighter: #566272;
-  --ifm-color-primary-lightest: #626f81;
   --ifm-font-family-base: "Inter";
 
+  --ifm-color-primary: #ca8a04;
+  --ifm-color-primary-dark: #dd8e09;
+  --ifm-color-primary-darker: #d18709;
+  --ifm-color-primary-darkest: #ac6f07;
+  --ifm-color-primary-light: #f6a824;
+  --ifm-color-primary-lighter: #f7ad30;
+  --ifm-color-primary-lightest: #f8bb55;
   --ifm-background-color: var(--white);
 }
 
