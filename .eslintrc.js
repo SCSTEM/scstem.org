@@ -1,9 +1,16 @@
 /** @type {import('eslint').ESLint.ConfigData} */
-const config = {
+module.exports = {
   root: true,
-  plugins: ["@docusaurus", "@typescript-eslint"],
-  extends: ["plugin:@docusaurus/recommended"],
+  plugins: ["@docusaurus", "@typescript-eslint", "prettier"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@docusaurus/recommended",
+    "prettier",
+  ],
   parser: "@typescript-eslint/parser",
+  env: {
+    node: true,
+  },
 };
-
-module.exports = config;

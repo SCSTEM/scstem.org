@@ -25,7 +25,7 @@ export const onRequest: PagesFunction<{ KV_LINKS: KVNamespace }> = async ({
 
   // Process request based on method
   switch (request.method) {
-    case "POST":
+    case "POST": {
       // Make sure code does not already exist
       if (shortlink)
         return Res(
@@ -51,8 +51,8 @@ export const onRequest: PagesFunction<{ KV_LINKS: KVNamespace }> = async ({
             500
           )
         );
-
-    case "DELETE":
+    }
+    case "DELETE": {
       // Make sure code exists
       if (!shortlink)
         return Res(
@@ -90,8 +90,8 @@ export const onRequest: PagesFunction<{ KV_LINKS: KVNamespace }> = async ({
             500
           )
         );
-
-    case "PATCH":
+    }
+    case "PATCH": {
       // Make sure code exists
       if (!shortlink)
         return Res(
@@ -112,6 +112,8 @@ export const onRequest: PagesFunction<{ KV_LINKS: KVNamespace }> = async ({
             500
           )
         );
+      break;
+    }
     case "GET":
     default:
       Res({ success: true, result: shortlink }, 200);
