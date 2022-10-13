@@ -14,14 +14,14 @@ export default function Shortlinks(): JSX.Element {
         throw res;
       })
       .then((data: string) => setName(data))
-      .catch((error) => console.error(`Error fetching name: ${error}`));
+      .catch(() => console.error("Error fetching name"));
   }, []);
 
   return (
     <AdminLayout>
-      <main className="grid lg:grid-cols-4 lg:gap-10 p-6">
+      <main className="grid p-6 lg:grid-cols-4 lg:gap-10">
         <div className="flex flex-col">
-          <div className="rounded-3xl drop-shadow-2xl prose bg-base-100 border-primary border-solid border-2 border-opacity-20 p-6">
+          <div className="rounded-3xl border-2 border-solid border-primary border-opacity-20 bg-base-100 p-6 drop-shadow-xl">
             <img src="/svg/logo-color-full.svg" className="mb-2 mt-0" />
             <h2 className="mt-0 dark:text-white">
               Welcome{name ? `, ${name}` : ""}! Ready to shorten some links?
@@ -30,23 +30,26 @@ export default function Shortlinks(): JSX.Element {
               <input
                 type="text"
                 placeholder="URL to shorten"
-                className="input input-bordered focus:border-primary focus:outline-none"
+                className="input input-bordered input-primary focus:outline-none"
                 required
               />
               <div className="input-group">
                 <input
                   type="text"
                   placeholder="Shortcode"
-                  className="input input-bordered flex-grow focus:border-primary focus:outline-none"
+                  className="input input-bordered input-primary flex-grow focus:outline-none"
                 />
-                <button className="btn btn-outline border-1 border-stone-600 focus:border-opacity-75 focus:outline-none">
+                <button
+                  className="btn btn-primary border-stone-600 focus:border-opacity-75 focus:outline-none"
+                  type="button"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    className="w-6 h-6"
+                    className="h-6 w-6"
                   >
                     <path
                       strokeLinecap="round"
@@ -56,15 +59,11 @@ export default function Shortlinks(): JSX.Element {
                   </svg>
                 </button>
               </div>
-              <input
-                type="submit"
-                value="Submit"
-                className="btn btn-outline btn-primary"
-              />
+              <input type="submit" value="Submit" className="btn btn-primary" />
             </form>
           </div>
         </div>
-        <div className="col-span-3 p-6 rounded-3xl drop-shadow-2xl overflow-auto bg-base-100 border-primary border-solid border-2 border-opacity-20">
+        <div className="col-span-3 overflow-auto rounded-3xl border-2 border-solid border-primary border-opacity-20 bg-base-100 p-6 drop-shadow-xl">
           TODO: Table
         </div>
       </main>
