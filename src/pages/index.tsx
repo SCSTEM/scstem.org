@@ -9,7 +9,7 @@ export default function Home(): JSX.Element {
   return (
     <DefaultLayout>
       <HeroHeader className="bg-[url('/svg/circuit-board-light.svg')] dark:bg-[url('/svg/circuit-board-dark.svg')] dark:text-primary">
-        <div className="mx-auto h-28 w-4/5 text-center text-4xl text-white drop-shadow-md md:w-1/2 md:text-5xl">
+        <div className="mx-auto h-28 w-4/5 text-center text-4xl drop-shadow-md dark:text-white md:w-1/2 md:text-5xl ">
           <HeroType />
         </div>
         <div className="mt-10 flex justify-center space-x-2">
