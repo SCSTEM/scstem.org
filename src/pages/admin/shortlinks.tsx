@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import AdminLayout from "@site/src/layouts/Admin";
 
 import "@glideapps/glide-data-grid/dist/index.css";
-import DataEditor from "@glideapps/glide-data-grid";
+import DataEditor, {
+  GridCell,
+  GridCellKind,
+  GridColumn,
+  Item,
+} from "@glideapps/glide-data-grid";
 
 export default function Shortlinks(): JSX.Element {
   const [name, setName] = useState<string>();
@@ -16,6 +21,37 @@ export default function Shortlinks(): JSX.Element {
       .then((data: string) => setName(data))
       .catch(() => console.error("Error fetching name"));
   }, []);
+
+  const gridColumns: GridColumn[] = [
+    { title: "Code", width: 100 },
+    { title: "URL", width: 300 },
+    { title: "Clicks", width: 50 },
+  ];
+
+  const getData = ([col, row]: Item): GridCell => {
+    switch (col) {
+      case 0:
+        return {
+          kind: GridCellKind.Text,
+          data: "abc123",
+          allowOverlay: false,
+          displayData: "abc123",
+        };
+      case 1:
+        return {
+          kind: GridCellKind.Uri,
+          data: "https://example.com",
+          allowOverlay: false,
+        };
+      case 2:
+        return {
+          kind: GridCellKind.Number,
+          data: 3,
+          allowOverlay: false,
+          displayData: "Three",
+        };
+    }
+  };
 
   return (
     <AdminLayout>
@@ -64,7 +100,7 @@ export default function Shortlinks(): JSX.Element {
           </div>
         </div>
         <div className="col-span-3 overflow-auto rounded-3xl border-2 border-solid border-primary border-opacity-20 bg-base-100 p-6 drop-shadow-xl">
-          TODO: Table
+          <DataEditor getCellContent={getData} columns={gridColumns} rows={1} />
         </div>
       </main>
     </AdminLayout>
