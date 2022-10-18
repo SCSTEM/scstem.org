@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AdminLayout from "@site/src/layouts/Admin";
 
 import "@glideapps/glide-data-grid/dist/index.css";
-import DataEditor, {
+import {
   GridCell,
   GridCellKind,
   GridColumn,
@@ -100,7 +100,7 @@ export default function Shortlinks(): JSX.Element {
           </div>
         </div>
         <div className="col-span-3 overflow-auto rounded-3xl border-2 border-solid border-primary border-opacity-20 bg-base-100 p-6 drop-shadow-xl">
-          <DataEditor getCellContent={getData} columns={gridColumns} rows={1} />
+          Will add the grid ...eventually.
         </div>
       </main>
     </AdminLayout>
