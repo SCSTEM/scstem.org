@@ -16,6 +16,7 @@ export default function Home(): JSX.Element {
           <Button href="/about">About Us</Button>
           <Button href="/sponsors">Our Sponsors</Button>
           <Button href="/blog">Our Blog</Button>
+          <Button href="/get-involved">Get Involved</Button>
         </div>
       </HeroHeader>
       <main className="space-y-32 border-0 border-t-2 border-solid border-dark border-opacity-20 p-8 dark:border-primary dark:border-opacity-10 md:p-32 xl:p-48">
@@ -59,79 +60,38 @@ export default function Home(): JSX.Element {
 
         {/* Section 2 */}
         <HomeSection
-          title="Who are we?"
-          image="/svg/undraw/maker-launch.svg"
+          title="The only thing missing is you!"
+          image="/svg/undraw/high-five.svg"
           flipped
         >
           <p>
-            The South Central STEM Collective (otherwise known as SC2) was
-            created to serve South Central Pennsylvania as "STEM Central" to
-            inspire youth aged K-12 through hands-on education, competitive
-            robotics and drone teams, maker spaces, and community outreach.
+            Are you a student who wants to grow your skills in Science,
+            Technology, Engineering, or Math? Do you have an interest in
+            marketing, business, or leadership? Do you like photography or
+            design?
           </p>
           <p>
-            To achieve this goal, the SC2 plans to offer a range of activities,
-            resources, space, and industry expertise in addition to the
-            following:
-          </p>
-
-          <ul>
-            <li>
-              Acquire and maintain a collaborative workspace for communal use by
-              all groups and members.
-            </li>
-            <li>
-              Foster a creative and collaborative environment for
-              experimentation and development in technology.
-            </li>
-            <li>
-              Provide STEM education and mentorship to youth in grades K-12 as
-              it pertains to robotics, drones, and maker labs.
-            </li>
-            <li>
-              Share technology developments and ideas with the world at large.
-            </li>
-          </ul>
-
-          <div className="flex justify-center"></div>
-        </HomeSection>
-
-        {/* Section 3 */}
-        <HomeSection
-          title="How can you get involved?"
-          image="/svg/undraw/high-five.svg"
-        >
-          <p>
-            South Central STEM Collective was created to serve South Central
-            Pennsylvania as "STEM Central" to inspire youth aged K-12 through
-            hands-on education, competitive robotics and drone teams, maker
-            spaces, and community outreach.
+            Are you an industry pro, educator, business person, or engineer? Do
+            you have a special skill-set, enjoy working with students, or have a
+            passion for non-profit management? Are you looking for an outlet
+            where you can give back to the community or share your skills and
+            experience?
           </p>
           <p>
-            To achieve this goal, the South Central STEM Collective (otherwise
-            known as SC2) plans to offer a range of activities, resources,
-            space, and industry expertise in addition to the following:
+            Do you own a business, have available funds you are looking to
+            invest back into the community, or are looking for a local
+            non-profit to support? Are you looking for a place to donate tools,
+            equipment, computers, or other materials?
           </p>
-
-          <ul>
-            <li>
-              Acquire and maintain a collaborative workspace for communal use by
-              all groups and members.
-            </li>
-            <li>
-              Foster a creative and collaborative environment for
-              experimentation and development in technology.
-            </li>
-            <li>
-              Provide STEM education and mentorship to youth in grades K-12 as
-              it pertains to robotics, drones, and maker labs.
-            </li>
-            <li>
-              Share technology developments and ideas with the world at large.
-            </li>
-          </ul>
-
-          <div className="flex justify-center"></div>
+          <p>
+            If you answered <strong>yes</strong> to any of these questions, we
+            definitely have a place for you. Click the button below to get
+            plugged in, or feel free to{" "}
+            <a href="/contact">reach out directly</a>.
+          </p>
+          <div className="flex justify-center">
+            <Button href="/get-involved">Get Involved</Button>
+          </div>
         </HomeSection>
       </main>
     </DefaultLayout>
