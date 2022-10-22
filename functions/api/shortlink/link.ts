@@ -1,5 +1,5 @@
-import type { Shortlink } from "../types";
-import { Res } from "../util";
+import type { Shortlink } from "../../types";
+import { Res } from "../../util";
 
 export const onRequest: PagesFunction<{ KV_LINKS: KVNamespace }> = async ({
   env,
