@@ -1,7 +1,7 @@
 import staticFormsPlugin, {
   PluginArgs,
 } from "@cloudflare/pages-plugin-static-forms";
-import { ValidateTurnstile } from "@site/functions/util";
+import { ValidateTurnstile } from "./util";
 
 /* eslint-disable */
 export const onRequest: PagesFunction<
@@ -18,12 +18,14 @@ export const onRequest: PagesFunction<
       );
 
       if (!valid)
-        return new Response("Challenge verification failed", { status: 401 });
+        return new Response("Challenge verification failed", { status: 418 });
 
       switch (name) {
         case "contact":
+          return new Response(formData);
           break;
         case "webmaster":
+          return new Response(formData);
           break;
         default:
           return new Response("Invalid form name", { status: 403 });
