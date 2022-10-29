@@ -2,29 +2,43 @@
 keywords:
   - Donate
   - Support
-  - Amazon Smile
+  - AmazonSmile
   - Non-profit
 
 tags:
   - Donations
 ---
 
-# Amazon Smile
+# AmazonSmile
 
-[Amazon Smile](https://smile.amazon.com/charity/smile/about) is a free and easy way to support your favorite charities and non-profits at no cost to you! By simply selecting _South Central STEM Collective_ as your charity, Amazon will donate 0.5% of every purchase you make to us. Although this sounds small, it is by no means insignificant and every little bit helps! Below are instructions for getting started with both the Amazon website and the mobile app:
+[AmazonSmile](https://smile.amazon.com/charity/smile/about) is a free and easy way to support your favorite charities and non-profits at no cost to you! By simply selecting _South Central STEM Collective_ as your charity, Amazon will donate 0.5% of every purchase you make to us. Although this sounds small, it is by no means insignificant and every little bit helps!
 
-## Website
+## FAQ
+
+**Q: How much does SC2 get from each purchase?**
+
+**A:** Amazon will donate 0.5% of every purchase directly to SC2.
+
+**Q: What does SC2 do with the money received from AmazonSmile?**
+
+**A:** This money helps cover utility expenses such as internet and electricity, which support all of our clubs!
+
+## Setup
+
+Below are instructions for setting up AmazonSmile on your computer and your mobile device. Be sure to follow both sets of steps (Website _and_ Mobile) if you use both for shopping, as turning one on does not turn on the other.
+
+### Website
 
 1. Go to [smile.amazon.com](https://smile.amazon.com) in your favorite internet browser.
 
 :::note
-If you already have Amazon Smile set up for anothe r charity and you want to switch your charity to us, simply open the Amazon Smile dropdown and press **Change**.
+If you already have AmazonSmile set up for another charity and you want to switch your charity to us, simply open the AmazonSmile dropdown and press **Change**.
 
-![Image highlighting buttons to change Amazon Smile Charities](./assets/switch-charity.png)
+![Image highlighting buttons to change AmazonSmile Charities](./assets/switch-charity.png)
 
 :::
 
-2. If you do not have Amazon Smile already set up, it will ask you to search for a charity. Just type in `South Central STEM Collective` and press **Search**.
+2. If you do not have AmazonSmile already set up, it will ask you to search for a charity. Just type in `South Central STEM Collective` and press **Search**.
 
 3. Select _South Central STEM Collective_ from the list.
    ![Image showing the search results after choosing to switch charities](./assets/charity-search.png)
@@ -32,7 +46,7 @@ If you already have Amazon Smile set up for anothe r charity and you want to swi
 4. And that's it! Just make sure anytime you make a purchase through Amazon, you are going to [smile.amazon.com](https://smile.amazon.com) and not amazon.com.
 
 :::tip
-If you use Google Chrome, Mozilla Firefox, or Microsoft Edge, there is a great Extension/Add-on called _Amazon Smile Redirect_ which will automatically redirect your browser to Amazon Smile whenever you visit.
+If you use Google Chrome, Mozilla Firefox, or Microsoft Edge, there is a great Extension/Add-on called _AmazonSmile Redirect_ which will automatically redirect your browser to AmazonSmile whenever you visit.
 
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/amazon-smile-redirect/ejglonclnjogoiegggjjcpapffbnangg?hl=en)
 - [Firefox Add-on Store](https://addons.mozilla.org/en-US/firefox/addon/amazon_smile_redirect/)
@@ -42,7 +56,7 @@ _Disclaimer: This is a 3rd-party add-on and is not supported by SC2. Please repo
 
 :::
 
-## Mobile App
+### Mobile App
 
 1. Install the Amazon Shopping app on your phone
 
@@ -55,7 +69,7 @@ _Disclaimer: This is a 3rd-party add-on and is not supported by SC2. Please repo
    | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
    | ![Screenshot of the Amazon Shopping app settings page](./assets/mobile-hamburger.png) | ![Screenshot of the bottom of the Amazon Shopping app settings page](./assets/mobile-settings.png) |
 
-3. Tap **AmazonSmile** and then tap the button to turn on Amazon Smile.
+3. Tap **AmazonSmile** and then tap the button to turn on AmazonSmile.
 
    - There are a few steps the app will walk you through
    - During this process, you will want to search for _South Central STEM Collective_ as your charity
