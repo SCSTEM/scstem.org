@@ -109,6 +109,13 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      scripts: [
+        {
+          src: "https://challenges.cloudflare.com/turnstile/v0/api.js",
+          async: true,
+          defer: true,
+        },
+      ],
     }),
 
   presets: [
@@ -126,6 +133,15 @@ const config = {
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
+        },
+        gtag: {
+          trackingID: "G-3TPD3DLYBR",
+        },
+        sitemap: {
+          changefreq: "monthly",
+          priority: 0.5,
+          ignorePatterns: ["/tags/**", "/admin/**"],
+          filename: "sitemap.xml",
         },
       }),
     ],

@@ -1,4 +1,4 @@
-import { Res } from "../util";
+import { Res } from "../../util";
 
 export const onRequestGet: PagesFunction<{ KV_LINKS: KVNamespace }> = async ({
   request,

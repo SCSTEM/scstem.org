@@ -1,4 +1,4 @@
-import type { APIResponse } from "./types";
+import { APIResponse, TurnstileResponse } from "./types";
 
 /**
  * Helper function to generate response message to return to the client. Helps standardize
@@ -16,4 +16,28 @@ export const Res = (apiResponse: APIResponse, status: number): Response => {
       "Content-Type": "application/json",
     },
   });
+};
+
+/**
+ * Helper function to verify CF Turnstile challenges
+ * @param secretKey Turnstile secret key (generated from the Cloudflare Dashboard)
+ * @param response Response provided by the Turnstile client
+ * @param ip IP Provided by the Turnstile client
+ * @returns A boolean indicating whether or not the turnstile verification passed
+ */
+export const ValidateTurnstile = async (
+  secretKey: string,
+  response: string,
+  ip: string
+): Promise<boolean> => {
+  const formData = new FormData();
+  formData.append("secret", secretKey);
+  formData.append("response", response);
+  formData.append("remoteip", ip);
+
+  const url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+  const result = await fetch(url, { body: formData, method: "POST" });
+
+  const outcome = await result.json<TurnstileResponse>();
+  return outcome.success;
 };
