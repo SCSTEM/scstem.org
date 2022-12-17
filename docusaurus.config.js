@@ -153,15 +153,15 @@ const config = {
         sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "resources",
-        path: "./resources",
-        routeBasePath: "resources",
-        sidebarPath: require.resolve("./sidebars.js"),
-      },
-    ],
+    // [
+    //   "@docusaurus/plugin-content-docs",
+    //   {
+    //     id: "resources",
+    //     path: "./resources",
+    //     routeBasePath: "resources",
+    //     sidebarPath: require.resolve("./sidebars.js"),
+    //   },
+    // ],
     async function tailwind(context, options) {
       return {
         name: "docusaurus-tailwindcss",
