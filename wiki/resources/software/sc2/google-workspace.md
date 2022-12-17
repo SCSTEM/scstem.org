@@ -28,6 +28,12 @@ Individual mailboxes for all BoD members and specific volunteers and students wh
 
 Everyone who has an account is encouraged to use (and check) their SC2 account for all SC2 communications. This helps keep what we are doing organized and on-topic.
 
+:::tip
+
+Quickly go straight to your SC2 email account by going to [mail.scstem.org](https://mail.scstem.org).
+
+:::
+
 ## Calendar
 
 SC2 calendars are shared to specific users/groups, so head to [calendar.google.com](https://calendar.google.com) with your SC2 account to see what calendars you are a part of. The public SC2 calendar is available [here](/calendar).
@@ -74,6 +80,12 @@ Shared drives are shared to specific users/groups. These shared drives can be ac
 - Access managed by the BoD
 
 </details>
+
+:::tip
+
+Quickly go straight to your SC2 Google Drive by going to [drive.scstem.org](https://drive.scstem.org).
+
+:::
 
 ## Meet
 

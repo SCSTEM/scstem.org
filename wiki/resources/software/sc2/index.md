@@ -31,6 +31,10 @@ Tenant clubs and groups who use a limited subset of SC2 resources (such as a por
 
 :::
 
+## 🔐 Google Workspace
+
+SC2 has a Google Non-profits powered Google Workspace account. This allows volunteers, mentors, and some students to have access to @scstem.org, @scstem.tech, and/or @biohazard4050.org email addresses, Google Drive space, and more. See [🔐 Google Workspace](./google-workspace) for more information.
+
 ## 🔐 Canva
 
 > Canva is a powerful social media, marketing, stock photos/art, and graphic design platform. These tools make it easy to create banners, posters, digital marketing material, and more.
