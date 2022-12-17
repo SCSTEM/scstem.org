@@ -6,11 +6,13 @@ keywords:
   - Hardware
   - Software
   - Free
+  - Tools
 
 tags:
   - Resources
   - Hardware
   - Software
+  - Tools
 ---
 
 # Resources
