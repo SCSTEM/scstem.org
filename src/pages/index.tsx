@@ -1,9 +1,10 @@
+import Link from "@docusaurus/Link";
+import Button from "../components/Button";
 import React from "react";
 import HeroHeader from "../components/home/hero/Header";
 import HeroType from "../components/home/hero/Typer";
 import HomeSection from "../components/home/Section";
 import DefaultLayout from "../layouts/Default";
-import Button from "../components/Button";
 
 export default function Home(): JSX.Element {
   return (
@@ -13,10 +14,18 @@ export default function Home(): JSX.Element {
           <HeroType />
         </div>
         <div className="mt-10 flex justify-center space-x-2">
-          <Button href="/about">About Us</Button>
-          <Button href="/sponsors">Our Sponsors</Button>
-          <Button href="/blog">Our Blog</Button>
-          <Button href="/get-involved">Get Involved</Button>
+          <Button to="/about" className="text-dark">
+            About Us
+          </Button>
+          <Button to="/sponsors" className="text-dark">
+            Our Sponsors
+          </Button>
+          <Button to="/blog" className="text-dark">
+            Our Blog
+          </Button>
+          <Button to="/get-involved" className="text-dark">
+            Get Involved
+          </Button>
         </div>
       </HeroHeader>
       <main className="space-y-32 border-0 border-t-2 border-solid border-dark border-opacity-20 p-8 dark:border-primary dark:border-opacity-10 md:p-32 xl:p-48">
@@ -90,7 +99,14 @@ export default function Home(): JSX.Element {
             <a href="/contact">reach out directly</a>.
           </p>
           <div className="flex justify-center">
-            <Button href="/get-involved">Get Involved</Button>
+            <Button
+              to="/get-involved"
+              className="text-dark"
+              variant="gradient"
+              gradient={{ from: "brand-yellow", to: "brand-orange" }}
+            >
+              Get Involved
+            </Button>
           </div>
         </HomeSection>
       </main>

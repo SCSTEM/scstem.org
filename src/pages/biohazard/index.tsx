@@ -1,6 +1,5 @@
 import React from "react";
 import HeroHeader from "../../components/home/hero/Header";
-import HeroType from "../../components/home/hero/Typer";
 import HomeSection from "../../components/home/Section";
 import DefaultLayout from "../../layouts/Default";
 
