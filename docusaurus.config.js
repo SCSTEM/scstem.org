@@ -29,7 +29,6 @@ const config = {
       navbar: {
         title: "South Central STEM Collective",
         logo: {
-          alt: "My Site Logo",
           src: "svg/logo-color.svg",
         },
         items: [
@@ -57,48 +56,6 @@ const config = {
         ],
       },
       footer: {
-        style: "dark",
-        links: [
-          {
-            title: "Our clubs",
-            items: [
-              {
-                label: "Biohazard",
-                href: "https://biohazard4050.org",
-              },
-            ],
-          },
-          {
-            title: "Find us online",
-            items: [
-              {
-                label: "Facebook",
-                href: "https://go.scstem.tech/facebook",
-              },
-              {
-                label: "LinkedIn",
-                href: "https://go.scstem.tech/linkedin",
-              },
-            ],
-          },
-          {
-            title: "Members area",
-            items: [
-              {
-                label: "Web Admin",
-                to: "/admin",
-              },
-              {
-                label: "Slack",
-                href: "https://go.scstem.tech/slack",
-              },
-              {
-                label: "GitHub",
-                href: "https://go.scstem.tech/github",
-              },
-            ],
-          },
-        ],
         copyright: `Copyright © ${new Date().getFullYear()} South Central STEM Collective.`,
       },
       prism: {
