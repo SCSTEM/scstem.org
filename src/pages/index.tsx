@@ -13,17 +13,17 @@ export default function Home(): JSX.Element {
         <div className="mx-auto h-28 w-4/5 text-center text-4xl drop-shadow-md dark:text-white md:w-1/2 md:text-5xl ">
           <HeroType />
         </div>
-        <div className="mt-10 flex justify-center space-x-2">
-          <Button to="/about" className="text-dark">
+        <div className="mx-auto mt-10 flex flex-col items-center justify-center space-y-4 md:flex-row md:space-x-2 md:space-y-0">
+          <Button to="/about" className="w-36 text-dark">
             About Us
           </Button>
-          <Button to="/sponsors" className="text-dark">
+          <Button to="/sponsors" className="w-36 text-dark ">
             Our Sponsors
           </Button>
-          <Button to="/blog" className="text-dark">
+          <Button to="/blog" className="w-36  text-dark ">
             Our Blog
           </Button>
-          <Button to="/get-involved" className="text-dark">
+          <Button to="/get-involved" className="w-36 text-dark">
             Get Involved
           </Button>
         </div>

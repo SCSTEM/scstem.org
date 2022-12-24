@@ -5,11 +5,12 @@ import { Button as MButton, ButtonProps } from "@mantine/core";
 interface Props extends ButtonProps {
   children: React.ReactNode;
   to: string;
+  className?: string;
 }
 
 export default function Button(props: Props): JSX.Element {
   return (
-    <Link to={props.to}>
+    <Link to={props.to} className={props.className}>
       <MButton {...props}>{props.children}</MButton>
     </Link>
   );
