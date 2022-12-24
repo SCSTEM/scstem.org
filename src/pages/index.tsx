@@ -14,16 +14,16 @@ export default function Home(): JSX.Element {
           <HeroType />
         </div>
         <div className="mx-auto mt-10 flex flex-col items-center justify-center space-y-4 md:flex-row md:space-x-2 md:space-y-0">
-          <Button to="/about" className="w-36 text-dark">
+          <Button to="/about" className="w-36">
             About Us
           </Button>
-          <Button to="/sponsors" className="w-36 text-dark ">
+          <Button to="/sponsors" className="w-36">
             Our Sponsors
           </Button>
-          <Button to="/blog" className="w-36  text-dark ">
+          <Button to="/blog" className="w-36">
             Our Blog
           </Button>
-          <Button to="/get-involved" className="w-36 text-dark">
+          <Button to="/get-involved" className="w-36">
             Get Involved
           </Button>
         </div>
