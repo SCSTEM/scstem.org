@@ -139,7 +139,7 @@ export default function Root({ children }) {
                 root: {
                   color:
                     params.variant === "filled"
-                      ? theme.colors["brand-gray"][6]
+                      ? theme.colors["brand-gray"][8]
                       : theme.white,
                 },
               }),
