@@ -37,7 +37,7 @@ export const ValidateTurnstile = async (
 
   const url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
   const result = await fetch(url, { body: formData, method: "POST" });
-
   const outcome = await result.json<TurnstileResponse>();
+
   return outcome.success;
 };

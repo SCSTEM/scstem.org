@@ -81,13 +81,13 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-      scripts: [
+      /* scripts: [
         {
           src: "https://challenges.cloudflare.com/turnstile/v0/api.js",
           async: true,
           defer: true,
         },
-      ],
+      ], */
     }),
 
   presets: [
