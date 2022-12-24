@@ -1,9 +1,10 @@
+import Link from "@docusaurus/Link";
+import Button from "../components/Button";
 import React from "react";
 import HeroHeader from "../components/home/hero/Header";
 import HeroType from "../components/home/hero/Typer";
 import HomeSection from "../components/home/Section";
 import DefaultLayout from "../layouts/Default";
-import Button from "../components/Button";
 
 export default function Home(): JSX.Element {
   return (
@@ -12,11 +13,19 @@ export default function Home(): JSX.Element {
         <div className="mx-auto h-28 w-4/5 text-center text-4xl drop-shadow-md dark:text-white md:w-1/2 md:text-5xl ">
           <HeroType />
         </div>
-        <div className="mt-10 flex justify-center space-x-2">
-          <Button href="/about">About Us</Button>
-          <Button href="/sponsors">Our Sponsors</Button>
-          <Button href="/blog">Our Blog</Button>
-          <Button href="/get-involved">Get Involved</Button>
+        <div className="mx-auto mt-10 flex flex-col items-center justify-center space-y-4 md:flex-row md:space-x-2 md:space-y-0">
+          <Button to="/about" className="w-36 text-dark">
+            About Us
+          </Button>
+          <Button to="/sponsors" className="w-36 text-dark ">
+            Our Sponsors
+          </Button>
+          <Button to="/blog" className="w-36  text-dark ">
+            Our Blog
+          </Button>
+          <Button to="/get-involved" className="w-36 text-dark">
+            Get Involved
+          </Button>
         </div>
       </HeroHeader>
       <main className="space-y-32 border-0 border-t-2 border-solid border-dark border-opacity-20 p-8 dark:border-primary dark:border-opacity-10 md:p-32 xl:p-48">
@@ -90,7 +99,14 @@ export default function Home(): JSX.Element {
             <a href="/contact">reach out directly</a>.
           </p>
           <div className="flex justify-center">
-            <Button href="/get-involved">Get Involved</Button>
+            <Button
+              to="/get-involved"
+              className="text-dark"
+              variant="gradient"
+              gradient={{ from: "brand-yellow", to: "brand-orange" }}
+            >
+              Get Involved
+            </Button>
           </div>
         </HomeSection>
       </main>

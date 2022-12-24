@@ -4,9 +4,11 @@ import { PageMetadata } from "@docusaurus/theme-common";
 import SkipToContent from "@theme/SkipToContent";
 import AnnouncementBar from "@theme/AnnouncementBar";
 import Navbar from "@theme/Navbar";
+import Footer from "@theme/Footer";
 import LayoutProvider from "@theme/Layout/Provider";
 import ErrorPageContent from "@theme/ErrorPageContent";
 import Head from "@docusaurus/Head";
+import { MantineProvider } from "@mantine/core";
 
 interface Props {
   title?: string;
@@ -14,15 +16,20 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export default function AdminLayout({
+export default function BiohazardLayout({
   children,
   title,
   description,
 }: Props): JSX.Element {
-  const pageTitle = title ? `Admin: ${title}` : "Admin";
+  const pageTitle = title ? `Biohazard: ${title}` : "Biohazard";
 
   return (
-    <>
+    <MantineProvider
+      theme={{
+        primaryColor: "brand-green",
+      }}
+      inherit
+    >
       <Head>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
@@ -33,20 +40,19 @@ export default function AdminLayout({
 
         <AnnouncementBar />
 
+        {/* TODO: Add custom navbar for Biohazard sub-stie */}
         <Navbar />
 
-        <div className="flex flex-grow">
-          <div className="flex-none">
-            {/* TODO: Making room for potential sidebar */}
-          </div>
-
+        <div className="flex flex-col">
           <ErrorBoundary
             fallback={(params) => <ErrorPageContent {...params} />}
           >
             {children}
           </ErrorBoundary>
+
+          <Footer />
         </div>
       </LayoutProvider>
-    </>
+    </MantineProvider>
   );
 }
