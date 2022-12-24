@@ -26,10 +26,16 @@ export default function FooterLayout({ copyright }) {
           <div className="hidden justify-between md:flex">
             <div className="flex w-40 flex-col">
               <Text size="lg" weight={700} className="dark:text-zinc-400">
-                Our clubs
+                Support us
               </Text>
-              <Link to="/biohazard" className="text-gray">
-                Biohazard
+              <Link to="/wiki/donations" className="text-gray">
+                Donate
+              </Link>
+              <Link to="/wiki/donations/amazon-smile" className="text-gray">
+                AmazonSmile
+              </Link>
+              <Link to="/sponsors" className="text-gray">
+                Sponsors
               </Link>
             </div>
             <div className="flex w-40 flex-col">
