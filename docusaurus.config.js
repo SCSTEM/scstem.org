@@ -45,8 +45,27 @@ const config = {
             to: "/wiki",
           },
           {
-            label: "Blog",
-            to: "/blog",
+            type: "dropdown",
+            label: "FRC",
+            to: "/biohazard",
+            items: [
+              {
+                label: "About",
+                to: "/biohazard/about",
+              },
+              {
+                label: "Robots",
+                to: "/biohazard/robots",
+              },
+              {
+                label: "Meet the Team",
+                to: "/biohazard/team",
+              },
+              {
+                label: "Stats",
+                to: "/biohazard/stats",
+              },
+            ],
           },
           {
             label: "Get Involved",
