@@ -1,10 +1,10 @@
 import React from "react";
 import CalendarFrame, { CalColor } from "@site/src/components/Calendar";
-import BiohazardLayout from "@site/src/layouts/Biohazard";
+import DefaultLayout from "@site/src/layouts/Default";
 
 export default function BiohazardCalendar(): JSX.Element {
   return (
-    <BiohazardLayout>
+    <DefaultLayout>
       <CalendarFrame
         calendars={[
           {
@@ -13,6 +13,6 @@ export default function BiohazardCalendar(): JSX.Element {
           },
         ]}
       />
-    </BiohazardLayout>
+    </DefaultLayout>
   );
 }

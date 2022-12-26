@@ -1,11 +1,11 @@
-import BiohazardLayout from "@site/src/layouts/Biohazard";
+import DefaultLayout from "@site/src/layouts/Default";
 import React from "react";
 import HeroHeader from "../../components/home/hero/Header";
 import HomeSection from "../../components/home/Section";
 
 export default function Biohazard(): JSX.Element {
   return (
-    <BiohazardLayout>
+    <DefaultLayout>
       <HeroHeader className="bg-[url('/img/people-cheering.webp')] bg-cover bg-bottom text-white">
         <h1 className="mx-auto h-28 w-4/5 text-center text-4xl drop-shadow-md md:w-1/2 md:text-5xl">
           Biohazard
@@ -57,6 +57,6 @@ export default function Biohazard(): JSX.Element {
           <div className="flex justify-center"></div>
         </HomeSection>
       </main>
-    </BiohazardLayout>
+    </DefaultLayout>
   );
 }

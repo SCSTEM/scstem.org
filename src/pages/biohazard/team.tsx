@@ -1,10 +1,10 @@
 import React from "react";
-import BiohazardLayout from "@site/src/layouts/Biohazard";
+import DefaultLayout from "@site/src/layouts/Default";
 
 export default function BiohazardTeam(): JSX.Element {
   return (
-    <BiohazardLayout>
+    <DefaultLayout>
       <h1>Meet the team</h1>
-    </BiohazardLayout>
+    </DefaultLayout>
   );
 }
