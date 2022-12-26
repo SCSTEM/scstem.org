@@ -25,12 +25,9 @@ export default function Shortlinks(): JSX.Element {
 
   useEffect(() => {
     fetch("/api/team/me")
-      .then((res) => {
-        if (res.ok) return res.json();
-        throw res;
-      })
+      .then((res) => res.json())
       .then((data: string) => setName(data))
-      .catch(() => console.error("Error fetching name"));
+      .catch((error) => console.error("Error fetching name", error));
   }, []);
 
   /* Submission and form handlers */
