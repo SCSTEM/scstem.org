@@ -56,8 +56,8 @@ export default function FooterLayout({ copyright }) {
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Member area
               </Text>
-              <Link to="/admin" className="text-gray">
-                Web Admin
+              <Link to="/team" className="text-gray">
+                Team Login
               </Link>
               <Link to="https://go.scstem.tech/slack" className="text-gray">
                 Slack
