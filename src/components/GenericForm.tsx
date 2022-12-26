@@ -48,7 +48,44 @@ export default function GenericForm({
   const form = useForm({
     initialValues,
     validate,
+    validateInputOnBlur: true,
   });
+
+  const handleSubmit = (values: typeof form.values) => {
+    setSubmitting(true);
+    const data = new FormData();
+
+    data.append("formName", heading);
+    data.append("cf-turnstile-response", token);
+    if (name) data.append("name", values.name);
+    if (email) data.append("email", values.email);
+    if (message) data.append("message", values.message);
+
+    fetch("/api/form/submit", {
+      method: "POST",
+      body: data,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    })
+      .then((res) => res.json())
+      .then(async (res: any) => {
+        if (!res.success) {
+          setError(res.message);
+        } else {
+          setSubmitted(true);
+        }
+      })
+      .catch((err) => {
+        setError("Error submitting request");
+        console.log(err);
+      })
+      .finally(() => {
+        setSubmitting(false);
+        form.reset();
+      });
+  };
+  const handleError = (values: typeof form.errors) => {
+    return;
+  };
 
   return (
     <>
@@ -64,34 +101,7 @@ export default function GenericForm({
       {heading && <h1 className="text-3xl font-bold">{heading}</h1>}
       <form
         className="flex grid-cols-2 flex-col space-y-4 md:grid md:gap-x-8 md:gap-y-4 md:space-y-0"
-        onSubmit={form.onSubmit((values) => {
-          setSubmitting(true);
-          const data = new FormData();
-
-          data.append("formName", heading);
-          data.append("cf-turnstile-response", token);
-          if (name) data.append("name", values.name);
-          if (email) data.append("email", values.email);
-          if (message) data.append("message", values.message);
-
-          fetch("/api/form/submit", { method: "POST", body: data })
-            .then((res) => res.json())
-            .then(async (res: any) => {
-              if (!res.success) {
-                setError(res.message);
-              } else {
-                setSubmitted(true);
-              }
-            })
-            .catch((err) => {
-              setError("Error submitting request");
-              console.log(err);
-            })
-            .finally(() => {
-              setSubmitting(false);
-              form.reset();
-            });
-        })}
+        onSubmit={form.onSubmit(handleSubmit, handleError)}
       >
         {/* First Row */}
         {name && (
