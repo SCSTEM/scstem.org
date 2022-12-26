@@ -1,6 +1,6 @@
 export interface Shortlink {
   code?: string;
-  url?: URL;
+  url?: string;
   date?: Date;
 }
 

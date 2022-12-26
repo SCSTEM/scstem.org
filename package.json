@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "wrangler pages dev -- npm run start",
+    "dev": "wrangler pages dev --kv=KV_LINKS --live-reload -- npm run start",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
