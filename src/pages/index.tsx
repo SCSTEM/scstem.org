@@ -1,4 +1,3 @@
-import Link from "@docusaurus/Link";
 import Button from "../components/Button";
 import React from "react";
 import HeroHeader from "../components/home/hero/Header";
