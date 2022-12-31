@@ -11,7 +11,9 @@ interface Props extends ButtonProps {
 export default function Button(props: Props): JSX.Element {
   return (
     <Link to={props.to} className={props.className}>
-      <MButton {...props}>{props.children}</MButton>
+      <MButton radius="lg" {...props}>
+        {props.children}
+      </MButton>
     </Link>
   );
 }
