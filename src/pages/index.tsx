@@ -29,7 +29,7 @@ export default function Home(): JSX.Element {
           </Button>
         </div>
       </HeroHeader>
-      <main className="space-y-32 border-0 border-t-2 border-solid border-dark border-opacity-20 p-8 dark:border-primary dark:border-opacity-10 md:p-32 xl:p-48">
+      <main className="space-y-32 border-0 border-t-2 border-solid border-dark border-opacity-20 p-8 dark:border-primary dark:border-opacity-10 md:p-24 xl:p-32">
         {/* Section 1 */}
         <HomeSection
           title={`What is the "South Central STEM Collective"?`}

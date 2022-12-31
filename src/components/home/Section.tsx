@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@mantine/hooks";
 import React from "react";
 
 interface Props {
@@ -13,19 +14,20 @@ export default function HomeSection({
   flipped,
   title,
 }: Props): JSX.Element {
+  const matches = useMediaQuery("(min-width: 768px)");
+
   if (typeof image === "string")
-    image = (
-      <img className="my-auto mt-4 hidden h-72 md:mt-0 md:block" src={image} />
-    );
+    image = <img className="my-auto mt-4 h-52 md:mt-0 md:h-72" src={image} />;
 
   return (
-    <div className="grid-cols-3 gap-x-24 md:grid">
-      {flipped && image}
-      <div className={`col-span-2 ${!flipped && "md:pr-8"} text-lg`}>
+    <div className="flex flex-col space-x-0 md:flex-row md:space-x-48">
+      {flipped && matches && image}
+      <div className="text-lg">
         <h2 className="dark:text-primary">{title}</h2>
         {children}
       </div>
-      {!flipped && image}
+      {!flipped && matches && image}
+      {!matches && image}
     </div>
   );
 }
