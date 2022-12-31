@@ -15,6 +15,15 @@ export default function FooterLayout({ copyright }) {
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Sponsors */}
         <div>
+          <Text
+            size="lg"
+            weight={700}
+            className="mx-auto mb-4 w-5/6 text-center dark:text-zinc-400 md:w-full"
+          >
+            Special thanks to our Ultimate and Platinum sponsors for powering
+            our mission
+          </Text>
+
           <div className="flex w-full flex-col items-center justify-evenly space-y-8 py-2 align-middle md:flex-row md:space-y-0">
             <Link to="https://www.jlg.com/">
               <img src="/sponsors/jlg.svg" alt="JLG" className="w-40" />
@@ -31,7 +40,7 @@ export default function FooterLayout({ copyright }) {
                 className="hidden w-40 dark:block"
               />
             </Link>
-            <Link to="https://www.vfw1599.org/">
+            <Link to="https://www.vfw1599.org/" className="!no-underline">
               <div className="flex flex-col items-center space-y-1">
                 <img
                   src="/sponsors/vfw.png"
@@ -44,15 +53,6 @@ export default function FooterLayout({ copyright }) {
               </div>
             </Link>
           </div>
-
-          <Text
-            size="lg"
-            weight={700}
-            className="mx-auto mt-4 w-5/6 text-center dark:text-zinc-400 md:w-full"
-          >
-            Special thanks to our Ultimate and Platinum sponsors for powering
-            our mission
-          </Text>
         </div>
 
         {/* Main Footer */}
