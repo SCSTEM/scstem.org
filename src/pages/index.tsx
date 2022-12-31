@@ -5,6 +5,7 @@ import HeroHeader from "../components/home/hero/Header";
 import HeroType from "../components/home/hero/Typer";
 import HomeSection from "../components/home/Section";
 import DefaultLayout from "../layouts/Default";
+import Highlight from "../components/Highlight";
 
 export default function Home(): JSX.Element {
   return (
@@ -36,9 +37,10 @@ export default function Home(): JSX.Element {
         >
           <p>
             The South Central STEM Collective (otherwise known as SC2) was
-            created to serve South Central Pennsylvania as "STEM Central" to
-            inspire youth aged K-12 through hands-on education, competitive
-            robotics and drone teams, maker spaces, and community outreach.
+            created to serve South Central Pennsylvania as "
+            <Highlight>STEM Central</Highlight>" to inspire youth aged K-12
+            through hands-on education, competitive robotics and drone teams,
+            maker spaces, and community outreach.
           </p>
           <p>
             To achieve this goal, the SC2 plans to offer a range of activities,
@@ -74,29 +76,31 @@ export default function Home(): JSX.Element {
           flipped
         >
           <p>
-            Are you a student who wants to grow your skills in Science,
-            Technology, Engineering, or Math? Do you have an interest in
-            marketing, business, or leadership? Do you like photography or
-            design?
+            Are you a <Highlight>student</Highlight> who wants to grow your
+            skills in Science, Technology, Engineering, or Math? Do you have an
+            interest in marketing, business, or leadership? Do you like
+            photography or design?
           </p>
           <p>
             Are you an industry pro, educator, business person, or engineer? Do
-            you have a special skill-set, enjoy working with students, or have a
+            you have a special skill-set,{" "}
+            <Highlight>enjoy working with students</Highlight>, or have a
             passion for non-profit management? Are you looking for an outlet
-            where you can give back to the community or share your skills and
-            experience?
+            where you can give back to the community or{" "}
+            <Highlight>share your skills</Highlight> and experience?
           </p>
           <p>
-            Do you own a business, have available funds you are looking to
-            invest back into the community, or are looking for a local
-            non-profit to support? Are you looking for a place to donate tools,
-            equipment, computers, or other materials?
+            Do you <Highlight>own a business</Highlight>, have available funds
+            you are looking to invest back into the community, or are looking
+            for a local non-profit to support? Are you looking for a place to
+            donate tools, equipment, computers, or other materials?
           </p>
           <p>
             If you answered <strong>yes</strong> to any of these questions, we
             definitely have a place for you. Click the button below to get
             plugged in, or feel free to{" "}
-            <a href="/contact">reach out directly</a>.
+            <a href="/contact">reach out directly</a> if you have any specific
+            questions.
           </p>
           <div className="flex justify-center">
             <Button
