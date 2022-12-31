@@ -12,10 +12,57 @@ import {
 export default function FooterLayout({ copyright }) {
   return (
     <footer className="border-slate-400 bg-zinc-100 py-12 shadow-inner dark:border-zinc-700 dark:bg-zinc-900">
-      <div className="mx-auto max-w-4xl">
-        <div className="mb-6 flex min-h-[160px] justify-between leading-9">
+      <div className="mx-auto max-w-4xl space-y-6">
+        {/* Sponsors */}
+        <div>
+          <div className="flex w-full flex-col items-center justify-evenly space-y-8 py-2 align-middle md:flex-row md:space-y-0">
+            <Link to="https://www.jlg.com/">
+              <img src="/sponsors/jlg.svg" alt="JLG" className="w-40" />
+            </Link>
+            <Link to="https://www.wellspan.org/">
+              <img
+                src="/sponsors/wellspan.png"
+                alt="WellSpan Health"
+                className="w-40 dark:hidden"
+              />
+              <img
+                src="/sponsors/wellspan-reverse.png"
+                alt="WellSpan Health"
+                className="hidden w-40 dark:block"
+              />
+            </Link>
+            <Link to="https://www.vfw1599.org/">
+              <div className="flex flex-col items-center space-y-1">
+                <img
+                  src="/sponsors/vfw.png"
+                  alt="Chambersburg VFW Post 1599"
+                  className="w-40"
+                />
+                <Text color="dimmed" size="sm">
+                  Chambersburg VFW Post 1599
+                </Text>
+              </div>
+            </Link>
+          </div>
+
+          <Text
+            size="lg"
+            weight={700}
+            className="mx-auto mt-4 w-5/6 text-center dark:text-zinc-400 md:w-full"
+          >
+            Special thanks to our Ultimate and Platinum sponsors for powering
+            our mission
+          </Text>
+        </div>
+
+        {/* Main Footer */}
+        <div className="flex min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
           <div className="mx-auto w-72 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start">
-            <img src="/svg/logo-color-full.svg" className="w-full" />
+            <img
+              src="/svg/logo-color-full.svg"
+              className="w-full"
+              alt="South Central STEM Collective logo"
+            />
             <Text color="dimmed" size="sm">
               SC2 is 501(c)(3) non-profit focused on providing STEM
               opportunities for students in Franklin County PA.
@@ -73,7 +120,7 @@ export default function FooterLayout({ copyright }) {
         </div>
 
         {/* Copyright */}
-        <div className="mx-auto flex w-80 flex-col items-center justify-between border-0 border-t border-solid border-slate-400 pt-6 md:w-full md:flex-row">
+        <div className="mx-auto flex w-80 flex-col items-center justify-between md:w-full md:flex-row">
           <Text color="dimmed" size="sm" className="text-center md:text-left">
             {copyright}
           </Text>
