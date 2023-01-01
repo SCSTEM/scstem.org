@@ -13,7 +13,7 @@ const config = {
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "svg/logo-color.svg",
+  favicon: "img/svg/logo-color.svg",
 
   i18n: {
     defaultLocale: "en",
@@ -29,7 +29,7 @@ const config = {
       navbar: {
         title: "South Central STEM Collective",
         logo: {
-          src: "svg/logo-color.svg",
+          src: "img/svg/logo-color.svg",
         },
         items: [
           {

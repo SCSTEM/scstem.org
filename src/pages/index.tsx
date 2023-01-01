@@ -9,7 +9,7 @@ import Highlight from "../components/Highlight";
 export default function Home(): JSX.Element {
   return (
     <DefaultLayout>
-      <HeroHeader className="bg-[url('/svg/circuit-board-light.svg')] dark:bg-[url('/svg/circuit-board-dark.svg')] dark:text-primary">
+      <HeroHeader className="bg-[url('/img/svg/circuit-board-light.svg')] dark:bg-[url('/img/svg/circuit-board-dark.svg')] dark:text-primary">
         <div className="mx-auto h-28 w-4/5 text-center text-4xl drop-shadow-md dark:text-white md:w-1/2 md:text-5xl ">
           <HeroType />
         </div>
@@ -32,7 +32,7 @@ export default function Home(): JSX.Element {
         {/* Section 1 */}
         <HomeSection
           title={`What is the "South Central STEM Collective"?`}
-          image="/svg/undraw/building.svg"
+          image="/img/svg/undraw/building.svg"
         >
           <p>
             The South Central STEM Collective (otherwise known as SC2) was
@@ -71,7 +71,7 @@ export default function Home(): JSX.Element {
         {/* Section 2 */}
         <HomeSection
           title="The only thing missing is you!"
-          image="/svg/undraw/high-five.svg"
+          image="/img/svg/undraw/high-five.svg"
           flipped
         >
           <p>

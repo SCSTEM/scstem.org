@@ -148,7 +148,7 @@ export default function Shortlinks(): JSX.Element {
       <main className="grid p-6 lg:grid-cols-4 lg:gap-10">
         <div className="flex flex-col">
           <div className="bg-base-100 rounded-3xl border-2 border-solid border-primary border-opacity-20 p-6 drop-shadow-xl">
-            <img src="/svg/logo-color-full.svg" className="mb-2 mt-0" />
+            <img src="/img/svg/logo-color-full.svg" className="mb-2 mt-0" />
             <h2 className="mt-0 dark:text-white">
               Welcome{name ? `, ${name}` : ""}! Ready to shorten some links?
             </h2>
