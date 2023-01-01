@@ -1,5 +1,4 @@
 import React from "react";
-import BrandGradient from "../../BrandGradient";
 
 interface Props {
   children?: React.ReactNode;
@@ -14,7 +13,6 @@ export default function HeroHeader({
     <header
       className={`${className} flex h-[calc(100vh-var(--ifm-navbar-height))] flex-col pt-52 md:h-96 md:pt-20`}
     >
-      <BrandGradient className="absolute -z-10 h-full w-full" />
       <div className="flex-grow">{children}</div>
       <button
         id="scrollButton"
