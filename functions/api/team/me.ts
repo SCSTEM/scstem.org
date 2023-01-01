@@ -6,6 +6,10 @@ export const onRequestGet: PagesFunction<
   any,
   PluginData
 > = async ({ data, env }) => {
+  if (env.AUTH_DISABLED) {
+    return new Response("");
+  }
+
   const identity = await data.cloudflareAccess.JWT.getIdentity();
-  return new Response(env.AUTH_DISABLED !== "true" ? identity.name : "");
+  return new Response(identity.name);
 };

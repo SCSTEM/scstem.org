@@ -14,7 +14,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export default function Layout({
+export default function AdminLayout({
   children,
   title,
   description,
@@ -35,7 +35,7 @@ export default function Layout({
 
         <Navbar />
 
-        <div className="flex-grow flex">
+        <div className="flex flex-grow">
           <div className="flex-none">
             {/* TODO: Making room for potential sidebar */}
           </div>

@@ -17,4 +17,6 @@ export const onRequestGet: PagesFunction<
       domain: "https://scstem.cloudflareaccess.com",
       aud: context.env.AUTH_AUD,
     })(context);
+
+  return context.next();
 };

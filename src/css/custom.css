@@ -1,33 +1,29 @@
 :root {
-  --primary: #facc15;
-  --gray: #4b5563;
-  --green: #22c55e;
-  --orange: #f97316;
-  --dark: #171717;
-  --blue: #3b82f6;
-  --white: #fafafa;
+  --ifm-font-family-base: var(--mantine-font-family);
 
-  --ifm-font-family-base: "Inter";
+  --ifm-color-primary-darkest: var(--mantine-color-brand-blue-9);
+  --ifm-color-primary-darker: var(--mantine-color-brand-blue-8);
+  --ifm-color-primary-dark: var(--mantine-color-brand-blue-7);
+  --ifm-color-primary: var(--mantine-color-brand-blue-6);
+  --ifm-color-primary-light: var(--mantine-color-brand-blue-5);
+  --ifm-color-primary-lighter: var(--mantine-color-brand-blue-4);
+  --ifm-color-primary-lightest: var(--mantine-color-brand-blue-3);
+  --ifm-background-color: var(--mantine-color-white);
+}
 
-  --ifm-color-primary: #ca8a04;
-  --ifm-color-primary-dark: #dd8e09;
-  --ifm-color-primary-darker: #d18709;
-  --ifm-color-primary-darkest: #ac6f07;
-  --ifm-color-primary-light: #f6a824;
-  --ifm-color-primary-lighter: #f7ad30;
-  --ifm-color-primary-lightest: #f8bb55;
-  --ifm-background-color: var(--white);
+[data-theme="light"] {
+  --ifm-link-color: var(--mantine-color-brand-blue-6);
 }
 
 [data-theme="dark"] {
-  --ifm-color-primary: var(--primary);
-  --ifm-color-primary-dark: #efc005;
-  --ifm-color-primary-darker: #e2b505;
-  --ifm-color-primary-darkest: #ba9504;
-  --ifm-color-primary-light: #fbd230;
-  --ifm-color-primary-lighter: #fbd53d;
-  --ifm-color-primary-lightest: #fcdd65;
-  --ifm-background-color: var(--dark);
+  --ifm-background-color: var(--mantine-color-black);
+  --ifm-color-primary-darkest: var(--mantine-color-brand-yellow-9);
+  --ifm-color-primary-darker: var(--mantine-color-brand-yellow-8);
+  --ifm-color-primary-dark: var(--mantine-color-brand-yellow-7);
+  --ifm-color-primary: var(--mantine-color-brand-yellow-6);
+  --ifm-color-primary-light: var(--mantine-color-brand-yellow-5);
+  --ifm-color-primary-lighter: var(--mantine-color-brand-yellow-4);
+  --ifm-color-primary-lightest: var(--mantine-color-brand-yellow-3);
 }
 
 /* inter-100 - latin */

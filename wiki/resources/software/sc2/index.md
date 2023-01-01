@@ -1,0 +1,48 @@
+---
+sidebar_position: 1
+
+keywords:
+  - Resources
+  - Software
+  - Google Workspace
+  - Slack
+  - Canva
+  - GitHub
+  - Internal
+
+tags:
+  - Resources
+  - Software
+---
+
+# SC2 Software
+
+The following page and sub-pages are a mostly up to date list of the internal pieces of software available to SC2 members and technical volunteers. Aside from Slack and Google Workspace, most of these resources are used by specific roles and access is granted on a case-by-case basis.
+
+For questions regarding SC2 internal software, the `#q-and-a` channel on Slack is the best place to start.
+
+## Slack
+
+SC2 maintains a Slack Pro workspace (up to 250 users), which is our primary mechanism for communicating between students, parents, volunteers, mentors, and other clubs. _Everyone_ directly associated with SC2 is required to have a Slack account and check regularly for updates about meeting times, schedules, etc., with accounts being assigned during the onboarding or team-joining process.
+
+:::info
+
+Tenant clubs and groups who use a limited subset of SC2 resources (such as a portion of our workspace) are given limited access to Slack through use of multi-channel guest accounts on a case-by-case basis to help facilitate inter-club activities and workspace management.
+
+:::
+
+## 🔐 Google Workspace
+
+SC2 has a Google Non-profits powered Google Workspace account. This allows volunteers, mentors, and some students to have access to @scstem.org, @scstem.tech, and/or @biohazard4050.org email addresses, Google Drive space, and more. See [🔐 Google Workspace](./google-workspace) for more information.
+
+## 🔐 Canva
+
+> Canva is a powerful social media, marketing, stock photos/art, and graphic design platform. These tools make it easy to create banners, posters, digital marketing material, and more.
+
+SC2 has a Canva Team account for up to 5 user accounts. Reach out on Slack for more information on how to get access to Canva.
+
+## 🔐 GitHub
+
+> GitHub is a code sharing service for software collaboration and development, and has tools for project management and learning pipelines.
+
+SC2 has a GitHub Org. account with unlimited users and unlimited private repositories. Reach out on Slack for more information on how to get access to GitHub.

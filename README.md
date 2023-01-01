@@ -79,15 +79,14 @@ This readme assumes _some_ familiarity with VSCode, NodeJS, and Git.
 - VSCode
 - Git (If you prefer a GUI, [GitKraken](https://www.gitkraken.com/) is great)
 - NodeJS v16.16.0 or greater
-- `pnpm` (Installed after NodeJS is installed; `npm install -g pnpm`)
 - Recommended extensions
   - VSCode will likely ask if you want to use these
   - Although optional, it does help to ensure a consistent dev experience
 
 ### Getting Started
 
-1. Install dependencies: `pnpm install`
-2. Start dev server: `pnpm run dev`
+1. Install dependencies: `npm install`
+2. Start dev server: `npm run dev`
 3. Start editing code
    - Your changes will be auto-applied and the site will update as you make changes
    - Sometimes manually refreshing the page can be helpful

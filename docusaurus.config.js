@@ -13,7 +13,7 @@ const config = {
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "svg/logo-color.svg",
+  favicon: "img/svg/logo-color.svg",
 
   i18n: {
     defaultLocale: "en",
@@ -37,8 +37,7 @@ const config = {
       navbar: {
         title: "South Central STEM Collective",
         logo: {
-          alt: "My Site Logo",
-          src: "svg/logo-color.svg",
+          src: "img/svg/logo-color.svg",
         },
         items: [
           {
@@ -54,8 +53,27 @@ const config = {
             to: "/wiki",
           },
           {
-            label: "Blog",
-            to: "/blog",
+            type: "dropdown",
+            label: "FRC",
+            to: "/biohazard",
+            items: [
+              {
+                label: "About",
+                to: "/biohazard/about",
+              },
+              {
+                label: "Robots",
+                to: "/biohazard/robots",
+              },
+              {
+                label: "Meet the Team",
+                to: "/biohazard/team",
+              },
+              {
+                label: "Stats",
+                to: "/biohazard/stats",
+              },
+            ],
           },
           {
             label: "Get Involved",
@@ -65,57 +83,19 @@ const config = {
         ],
       },
       footer: {
-        style: "dark",
-        links: [
-          {
-            title: "Our clubs",
-            items: [
-              {
-                label: "Biohazard",
-                href: "https://biohazard4050.org",
-              },
-            ],
-          },
-          {
-            title: "Find us online",
-            items: [
-              {
-                label: "Facebook",
-                href: "https://go.scstem.tech/facebook",
-              },
-              {
-                label: "LinkedIn",
-                href: "https://go.scstem.tech/linkedin",
-              },
-            ],
-          },
-          {
-            title: "Members area",
-            items: [
-              {
-                label: "Slack",
-                href: "https://go.scstem.tech/slack",
-              },
-              {
-                label: "GitHub",
-                href: "https://go.scstem.tech/github",
-              },
-            ],
-          },
-        ],
         copyright: `Copyright © ${new Date().getFullYear()} South Central STEM Collective.`,
       },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-      scripts: [
+      /* scripts: [
         {
           src: "https://challenges.cloudflare.com/turnstile/v0/api.js",
           async: true,
           defer: true,
         },
-      ],
+      ], */
     }),
 
   presets: [
@@ -157,15 +137,15 @@ const config = {
         sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "resources",
-        path: "./resources",
-        routeBasePath: "resources",
-        sidebarPath: require.resolve("./sidebars.js"),
-      },
-    ],
+    // [
+    //   "@docusaurus/plugin-content-docs",
+    //   {
+    //     id: "resources",
+    //     path: "./resources",
+    //     routeBasePath: "resources",
+    //     sidebarPath: require.resolve("./sidebars.js"),
+    //   },
+    // ],
     async function tailwind(context, options) {
       return {
         name: "docusaurus-tailwindcss",

@@ -1,28 +1,19 @@
+import Link from "@docusaurus/Link";
 import React from "react";
+import { Button as MButton, ButtonProps } from "@mantine/core";
 
-interface Props {
+interface Props extends ButtonProps {
   children: React.ReactNode;
-  outline?: boolean;
-  href: string;
-  target?: React.HTMLAttributeAnchorTarget;
+  to: string;
+  className?: string;
 }
 
-export default function Button({
-  children,
-  outline,
-  href,
-  target,
-}: Props): JSX.Element {
-  let button = <button className="btn btn-primary">{children}</button>;
-
-  if (outline)
-    button = (
-      <button className="btn btn-outline btn-primary">{children}</button>
-    );
-
+export default function Button(props: Props): JSX.Element {
   return (
-    <a href={href} target={target}>
-      {button}
-    </a>
+    <Link to={props.to} className={props.className}>
+      <MButton radius="lg" {...props}>
+        {props.children}
+      </MButton>
+    </Link>
   );
 }
