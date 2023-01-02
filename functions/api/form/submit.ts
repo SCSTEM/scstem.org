@@ -1,32 +1,54 @@
 import { Res, ValidateTurnstile } from "../../util";
+import { GenericFormRequest } from "@site/functions/types";
 
-export const onRequestPost: PagesFunction<{ TS_SECRET_KEY: string }> = async (
-  context
-) => {
-  const formData = await context.request.formData();
+export const onRequestPost: PagesFunction<{
+  TS_SECRET_KEY: string;
+  SLACK_FORM_POST_GENERIC: string;
+}> = async ({ request, env }) => {
+  const data = await request.json<GenericFormRequest>();
 
-  let key = context.env.TS_SECRET_KEY;
-  if (!key) key = "1x00000000000000000000AA";
+  let key = env.TS_SECRET_KEY;
+  if (!key) key = "1x0000000000000000000000000000000AA";
 
-  const valid = await ValidateTurnstile(
-    key,
-    (formData.get("cf-turnstile-response") as string) ?? "",
-    context.request.headers.get("CF-Connecting-IP")
-  );
-
-  if (!valid)
-    return Res(
-      { success: false, message: "Challenge verification failed" },
-      418
+  try {
+    const ts = await ValidateTurnstile(
+      key,
+      data["cf-turnstile-response"],
+      request.headers.get("CF-Connecting-IP")
     );
 
-  const res = {};
-  formData.forEach((value, key) => {
-    res[key] = value;
-  });
+    if (!ts.valid)
+      return Res(
+        {
+          success: false,
+          message: "Challenge verification failed",
+          result: ts.response,
+        },
+        418
+      );
 
-  return Res(
-    { success: true, message: "Submission received", result: res },
-    200
-  );
+    if (env.SLACK_FORM_POST_GENERIC)
+      await fetch(env.SLACK_FORM_POST_GENERIC, {
+        method: "POST",
+        body: JSON.stringify({
+          name: data.name ?? "",
+          email: data.email ?? "",
+          message: data.message ?? "",
+        }),
+      });
+
+    return Res(
+      { success: true, message: "Submission received", result: data },
+      200
+    );
+  } catch (error) {
+    return Res(
+      {
+        success: false,
+        message: "Error handling submission",
+        error: error,
+      },
+      500
+    );
+  }
 };

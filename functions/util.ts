@@ -1,4 +1,8 @@
-import { APIResponse, TurnstileResponse } from "./types";
+import {
+  APIResponse,
+  TurnstileResponse,
+  TurnstileVerificationResponse,
+} from "./types";
 
 /**
  * Helper function to generate response message to return to the client. Helps standardize
@@ -8,7 +12,8 @@ import { APIResponse, TurnstileResponse } from "./types";
  * @returns A standard HTTP Response object
  */
 export const Res = (apiResponse: APIResponse, status: number): Response => {
-  if (!apiResponse.success) console.error(apiResponse.error?.message);
+  if (!apiResponse.success && apiResponse.error)
+    console.error(apiResponse.error.message);
 
   return new Response(JSON.stringify(apiResponse), {
     status: status,
@@ -29,7 +34,7 @@ export const ValidateTurnstile = async (
   secretKey: string,
   response: string,
   ip: string
-): Promise<boolean> => {
+): Promise<TurnstileVerificationResponse> => {
   const formData = new FormData();
   formData.append("secret", secretKey);
   formData.append("response", response);
@@ -39,5 +44,5 @@ export const ValidateTurnstile = async (
   const result = await fetch(url, { body: formData, method: "POST" });
   const outcome = await result.json<TurnstileResponse>();
 
-  return outcome.success;
+  return Promise.resolve({ valid: outcome.success, response: outcome });
 };

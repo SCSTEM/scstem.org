@@ -3,6 +3,7 @@ import { useForm } from "@mantine/form";
 import { TextInput, Textarea, Button, Text } from "@mantine/core";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { IconSend, IconCheck } from "@tabler/icons";
+import { APIResponse, GenericFormRequest } from "@site/functions/types";
 
 interface Props {
   heading?: string;
@@ -55,21 +56,21 @@ export default function GenericForm({
 
   const handleSubmit = (values: typeof form.values) => {
     setSubmitting(true);
-    const data = new FormData();
-
-    data.append("formName", heading);
-    data.append("cf-turnstile-response", token);
-    if (name) data.append("name", values.name);
-    if (email) data.append("email", values.email);
-    if (message) data.append("message", values.message);
+    const data: GenericFormRequest = {
+      formName: heading,
+      "cf-turnstile-response": token,
+      name: values.name,
+      email: values.email,
+      message: values.message,
+    };
 
     fetch("/api/form/submit", {
       method: "POST",
-      body: data,
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
-      .then(async (res: any) => {
+      .then(async (res: APIResponse) => {
         if (!res.success) {
           setError(res.message);
         } else {
@@ -91,15 +92,6 @@ export default function GenericForm({
 
   return (
     <>
-      <Turnstile
-        siteKey="0x4AAAAAAAA9KCNYNr6Mbs3J"
-        // siteKey="1x00000000000000000000AA" // Site key for always passing
-        onSuccess={(token) => setToken(token)}
-        onError={() => setError("Turnstile verification failed")}
-        onExpire={() => setError("Turnstile challenge expired")}
-        className="hidden"
-      />
-
       {heading && <h1 className="text-3xl font-bold">{heading}</h1>}
       <form
         className="flex grid-cols-2 flex-col space-y-4 md:grid md:gap-x-8 md:gap-y-4 md:space-y-0"
@@ -145,21 +137,34 @@ export default function GenericForm({
         )}
 
         {/* Last Row */}
-        <div className="col-span-full row-start-3 flex">
+        <div className="col-span-full row-start-3 flex flex-col md:flex-row">
           <Button
             type="submit"
             loading={submitting}
             leftIcon={
               submitted ? <IconCheck size={18} /> : <IconSend size={18} />
             }
-            disabled={disabled}
+            disabled={disabled || !token}
           >
             Submit
           </Button>
-          <div className="ml-auto mr-0">
+          <div className="mt-4 md:mt-0 md:mr-0 md:ml-auto">
             {error ? <Text color="red">{error}</Text> : null}
             {!error && submitted ? (
               <Text color="green">Your response has been recorded</Text>
+            ) : null}
+            {!error && !submitted ? (
+              <Turnstile
+                siteKey="0x4AAAAAAAA9KCNYNr6Mbs3J"
+                // siteKey="1x00000000000000000000AA" // Site key for always passing
+                onSuccess={(token) => setToken(token)}
+                onError={() => setError("Turnstile verification failed")}
+                onExpire={() => setError("Turnstile challenge expired")}
+                options={{
+                  responseField: false,
+                }}
+                className="pl-4"
+              />
             ) : null}
           </div>
         </div>

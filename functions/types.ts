@@ -4,6 +4,14 @@ export interface Shortlink {
   date?: Date;
 }
 
+export interface GenericFormRequest {
+  formName: string;
+  "cf-turnstile-response": string;
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
 export interface APIResponse {
   success: boolean;
   result?: any;
@@ -11,7 +19,14 @@ export interface APIResponse {
   message?: string;
 }
 
+export interface TurnstileVerificationResponse {
+  valid: boolean;
+  response?: TurnstileResponse;
+}
+
 export interface TurnstileResponse {
   success: boolean;
-  // Note, Turnstile returns other values, but we don't need to care about them here
+  "error-codes": string[];
+  hostname: string;
+  challenge_ts: string;
 }
