@@ -81,13 +81,6 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-      /* scripts: [
-        {
-          src: "https://challenges.cloudflare.com/turnstile/v0/api.js",
-          async: true,
-          defer: true,
-        },
-      ], */
     }),
 
   presets: [
@@ -100,9 +93,6 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           path: "./wiki",
         },
-        // blog: {
-        //   showReadingTime: true,
-        // },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -129,15 +119,6 @@ const config = {
         sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
-    // [
-    //   "@docusaurus/plugin-content-docs",
-    //   {
-    //     id: "resources",
-    //     path: "./resources",
-    //     routeBasePath: "resources",
-    //     sidebarPath: require.resolve("./sidebars.js"),
-    //   },
-    // ],
     async function tailwind(context, options) {
       return {
         name: "docusaurus-tailwindcss",
