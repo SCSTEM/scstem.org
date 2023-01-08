@@ -112,7 +112,7 @@ const config = {
         sitemap: {
           changefreq: "monthly",
           priority: 0.5,
-          ignorePatterns: ["/tags/**", "/admin/**"],
+          ignorePatterns: ["/tags/**", "/team/**"],
           filename: "sitemap.xml",
         },
       }),
