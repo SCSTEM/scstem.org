@@ -20,9 +20,6 @@ export default function Home(): JSX.Element {
           <Button to="/sponsors" className="w-36">
             Our Sponsors
           </Button>
-          <Button to="/blog" className="w-36">
-            Our Blog
-          </Button>
           <Button to="/get-involved" className="w-36">
             Get Involved
           </Button>
