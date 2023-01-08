@@ -1,6 +1,6 @@
 {
   "name": "scstem.org",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "scripts": {
     "dev": "wrangler pages dev --kv=KV_LINKS --live-reload -- npm run start",
