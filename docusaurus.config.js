@@ -100,9 +100,9 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           path: "./wiki",
         },
-        blog: {
-          showReadingTime: true,
-        },
+        // blog: {
+        //   showReadingTime: true,
+        // },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
