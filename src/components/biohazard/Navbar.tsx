@@ -6,7 +6,7 @@ import {
   IconBrandFacebook,
   IconBrandInstagram,
   IconChartLine,
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 
 const links = [
   { label: "Home", link: "/" },

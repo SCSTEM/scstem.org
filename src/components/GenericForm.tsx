@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "@mantine/form";
 import { TextInput, Textarea, Button, Text } from "@mantine/core";
 import { Turnstile } from "@marsidev/react-turnstile";
-import { IconSend, IconCheck } from "@tabler/icons";
+import { IconSend, IconCheck } from "@tabler/icons-react";
 import { APIResponse, GenericFormRequest } from "@site/functions/types";
 
 interface Props {

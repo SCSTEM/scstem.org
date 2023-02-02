@@ -8,7 +8,7 @@ import {
   IconCheck,
   IconClipboard,
   IconSend,
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 
 import "@glideapps/glide-data-grid/dist/index.css";
 import {

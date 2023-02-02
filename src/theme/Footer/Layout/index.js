@@ -6,7 +6,7 @@ import {
   IconBrandFacebook,
   IconBrandLinkedin,
   IconMail,
-} from "@tabler/icons";
+} from "@tabler/icons-react";
 
 // TODO: Allow footer to support customization through docusaurus.config.js
 export default function FooterLayout({ copyright }) {
