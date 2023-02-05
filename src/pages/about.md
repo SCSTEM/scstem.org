@@ -1,3 +1,19 @@
+---
+keywords:
+  - About
+  - History
+  - Biohazard 4050
+  - FIRST Robotics
+  - 4-H
+  - Community
+  - Franklin County
+  - Pennsylvania
+  - Robots
+
+tags:
+  - History
+---
+
 # About Us
 
 The South Central STEM Collective (otherwise known as SC2) was created to serve South Central Pennsylvania as "STEM Central" to inspire youth aged K-12 through hands-on education, competitive robotics and drone teams, maker spaces, and community outreach.
