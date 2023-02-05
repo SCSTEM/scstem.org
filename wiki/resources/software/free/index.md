@@ -14,6 +14,7 @@ keywords:
 tags:
   - Resources
   - Software
+  - CAD
 
 hide_table_of_contents: true
 ---

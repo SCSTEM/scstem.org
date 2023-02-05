@@ -1,3 +1,21 @@
+---
+keywords:
+  - Software
+  - CAD
+  - 3D Printing
+  - Free
+  - Education
+  - FIRST Robotics
+  - FRC
+  - FTC
+  - Onshape
+
+tags:
+  - Resources
+  - Software
+  - CAD
+---
+
 # Onshape
 
 [Onshape](https://www.onshape.com/) is a software-as-a-service (SaaS) offering for computer-aided-design (CAD) which runs entirely in your web browser. This is a great solution for individuals who have limited access to computers or individuals who do not have very powerful computers. Onshape also allows for powerful team-collaboration features so multiple students or educators can work on the same project at a time. They have a great [blog post](https://www.onshape.com/en/blog/how-to-onboard-your-first-robotics-team) on how Onshape can be leveraged for FIRST Robotics teams.
