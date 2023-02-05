@@ -39,7 +39,7 @@ Unfortunately, this partnership left the team feeling like there was a lot of fu
 
 ### South Central STEM Collective
 
-<img src="/img/svg/logo-color-full.svg" alt="SC2 full logo"  />
+![SC2 full logo](/img/svg/logo-color-full.svg)
 
 On paper, our mission is very simple: Make STEM opportunities accessible to students of all ages and backgrounds. In practice, this has been a challenge, but we are excited about what the future holds.
 
