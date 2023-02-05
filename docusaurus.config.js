@@ -105,6 +105,7 @@ const config = {
   ],
 
   plugins: [
+    ["@docusaurus/plugin-ideal-image", { disableInDev: false }],
     [
       "@docusaurus/plugin-content-docs",
       {

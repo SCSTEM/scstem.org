@@ -7,6 +7,7 @@ import {
   IconBrandLinkedin,
   IconMail,
 } from "@tabler/icons-react";
+import Image from "@theme/IdealImage";
 
 // TODO: Allow footer to support customization through docusaurus.config.js
 export default function FooterLayout({ copyright }) {
@@ -26,25 +27,25 @@ export default function FooterLayout({ copyright }) {
 
           <div className="flex w-full flex-col items-center justify-evenly space-y-8 py-2 align-middle md:flex-row md:space-y-0">
             <Link to="https://www.jlg.com/">
-              <img src="/img/sponsors/jlg.svg" alt="JLG" className="w-40" />
+              <Image img="/img/sponsors/jlg.svg" alt="JLG" className="w-40" />
             </Link>
             <Link to="https://www.wellspan.org/">
-              <img
-                src="/img/sponsors/wellspan.png"
+              <Image
+                img="/img/sponsors/wellspan.png"
                 alt="WellSpan Health"
                 className="w-40 dark:hidden"
               />
-              <img
-                src="/img/sponsors/wellspan-reverse.png"
+              <Image
+                img="/img/sponsors/wellspan-reverse.png"
                 alt="WellSpan Health"
                 className="hidden w-40 dark:block"
               />
             </Link>
             <Link to="https://www.vfw1599.org/" className="!no-underline">
               <div className="flex flex-col items-center space-y-1">
-                <img
-                  src="/img/sponsors/vfw.png"
-                  alt="Chambersburg VFW Post 1599"
+                <Image
+                  img="/img/sponsors/vfw.png"
+                  alt="WellSpan Health"
                   className="w-40"
                 />
                 <Text color="dimmed" size="sm">
@@ -58,8 +59,8 @@ export default function FooterLayout({ copyright }) {
         {/* Main Footer */}
         <div className="flex min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
           <div className="mx-auto w-72 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start">
-            <img
-              src="/img/svg/logo-color-full.svg"
+            <Image
+              img="/img/svg/logo-color-full.svg"
               className="w-full"
               alt="South Central STEM Collective logo"
             />
