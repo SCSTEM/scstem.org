@@ -46,24 +46,19 @@ const config = {
           },
           {
             type: "dropdown",
-            label: "FRC",
-            to: "/biohazard",
+            label: "Clubs",
             items: [
               {
-                label: "About",
-                to: "/biohazard/about",
+                label: "FLL (Age 4-16)",
+                to: "/clubs/fll",
               },
               {
-                label: "Robots",
-                to: "/biohazard/robots",
+                label: "FTC (Age 12-18)",
+                to: "/clubs/ftc",
               },
               {
-                label: "Meet the Team",
-                to: "/biohazard/team",
-              },
-              {
-                label: "Stats",
-                to: "/biohazard/stats",
+                label: "FRC (Age 14-18)",
+                to: "https://biohazard4050.org",
               },
             ],
           },
