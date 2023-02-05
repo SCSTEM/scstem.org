@@ -6,19 +6,30 @@ Although still in the early stages, SC2 has big plans to help students excited a
 
 ## History
 
-<img align="right" style={{ marginLeft: "1rem" }} src="/img/biohazard/logo.svg" width="200" />
+<img align="right" style={{ marginLeft: "1rem" }} src="/img/svg/biohazard-logo.svg" width="200" />
 
 To understand where SC2 is going, it is equally important to understand where SC2 came from. For this reason, it is important to start at the beginning: Biohazard.
 
 ### Biohazard
 
-As a team, Biohazard has had a fairly extensive history. Starting in 2012 with a small group of students and passionate volunteers, the team continued to grow and change, making better and better robots. [Click here](/biohazard/history) to learn more about Biohazard's history before 2020.
+Biohazard is a FIRST Robotics Competition team, formed in 2012 by a small group of students and passionate volunteers as a club under the local 4-H program office. Check out [their website](https://biohazard4050.org/history) to learn more about Biohazard's complete history.
+
+Between Biohazard's founding in 2012 and the early beginnings of SC2 in 2020, the team continued to grow, learn, and improve.
+
+- 1 regional win
+- 3 workspaces
+- 9 competition robots
+  - +6 practice bots
+- 15 competitions
+- 8-30 students at various points
+
+This momentum pushed the team forward, but nobody could anticipate what was around the corner.
 
 ### 2020 and beyond
 
 2020 was an interesting year for everyone in many different ways. For Biohazard, the year started the same way it always had. An exciting kickoff event in early January, followed by several weeks of robot building. At the end of February, the team made it to their first competition at Myrtle Beach, SC. It was a tough challenge and the team realized that there were several improvements to the robot design that had to take place before their next event in Pittsburgh, PA. Unfortunately, those few weeks between events saw the world change completely. The team never got to compete later that year in 2020 and would not get to return to a regional event until 2022.
 
-With everyone stuck at home, still feeling the itch for competition and realizing the passion the students had, an idea started forming: "Why couldn't we break away from 4-H and start our own program?" At first glance, this question might seem counterproductive, as the Biohazard website said, we were proud of our partnership with 4-H:
+With everyone stuck at home, still feeling the itch for competition and realizing the passion the students had, an idea started forming: "Why couldn't we break away from 4-H and start our own program?" At first glance, this question might seem counterproductive, as the original Biohazard website said, we were proud of our partnership with 4-H:
 
 > The students of Biohazard 4050 are not only members of FIRST, but are also members of the Franklin County (PA) 4-H Program. Their dual membership gives them a unique perspective and opportunities for local service and outreach within their community. The student’s dedication to each other and their commitment to their community is a testimony to their character, service, and leadership skills. The volunteers and mentors of Biohazard 4050 are very proud of the students, and honored to be a part of their experiences!
 >
