@@ -105,15 +105,9 @@ const config = {
   ],
 
   plugins: [
-    ["@docusaurus/plugin-ideal-image", { disableInDev: false }],
     [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "sponsors",
-        path: "./sponsors",
-        routeBasePath: "sponsors",
-        sidebarPath: require.resolve("./sidebars.js"),
-      },
+      require.resolve("@docusaurus/plugin-ideal-image"),
+      { disableInDev: false },
     ],
     async function tailwind(context, options) {
       return {
