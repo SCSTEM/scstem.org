@@ -7,7 +7,7 @@ import IconDarkMode from "@theme/Icon/DarkMode";
 import styles from "./styles.module.css";
 import { useMantineColorScheme } from "@mantine/core";
 function ColorModeToggle({ className, value, onChange }) {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { toggleColorScheme } = useMantineColorScheme();
   const isBrowser = useIsBrowser();
   const title = translate(
     {

@@ -7,7 +7,36 @@ import {
   IconBrandLinkedin,
   IconMail,
 } from "@tabler/icons-react";
-import Image from "@theme/IdealImage";
+import Image from "@site/src/components/Image";
+
+import { Sponsors } from "@site/data.ts";
+import { SponsorLevel } from "@site/data";
+
+function Sponsor({ sponsor }) {
+  return (
+    <Link to={sponsor.url} className="hover:no-underline">
+      <div className="flex flex-col items-center space-y-1">
+        <Image
+          src={sponsor.logo ? sponsor.logo : null}
+          alt={sponsor.name + " logo"}
+          placeholder={
+            sponsor.logo ? null : (
+              <Text color="dimmed" size="md">
+                {sponsor.name}
+              </Text>
+            )
+          }
+          width={200}
+        />
+        {sponsor.sub ? (
+          <Text size="sm" className="text-gray dark:text-white">
+            {sponsor.sub}
+          </Text>
+        ) : null}
+      </div>
+    </Link>
+  );
+}
 
 // TODO: Allow footer to support customization through docusaurus.config.js
 export default function FooterLayout({ copyright }) {
@@ -25,34 +54,15 @@ export default function FooterLayout({ copyright }) {
             our mission
           </Text>
 
+          {/* TODO: Handle cases where there may be more than 3 sponsors */}
           <div className="flex w-full flex-col items-center justify-evenly space-y-8 py-2 align-middle md:flex-row md:space-y-0">
-            <Link to="https://www.jlg.com/">
-              <Image img="/img/sponsors/jlg.svg" alt="JLG" className="w-40" />
-            </Link>
-            <Link to="https://www.wellspan.org/">
-              <Image
-                img="/img/sponsors/wellspan.png"
-                alt="WellSpan Health"
-                className="w-40 dark:hidden"
-              />
-              <Image
-                img="/img/sponsors/wellspan-reverse.png"
-                alt="WellSpan Health"
-                className="hidden w-40 dark:block"
-              />
-            </Link>
-            <Link to="https://www.vfw1599.org/" className="!no-underline">
-              <div className="flex flex-col items-center space-y-1">
-                <Image
-                  img="/img/sponsors/vfw.png"
-                  alt="WellSpan Health"
-                  className="w-40"
-                />
-                <Text color="dimmed" size="sm">
-                  Chambersburg VFW Post 1599
-                </Text>
-              </div>
-            </Link>
+            {Sponsors.filter(
+              (sponsor) =>
+                sponsor.level === SponsorLevel.Ultimate ||
+                sponsor.level === SponsorLevel.Platinum
+            ).map((sponsor) => (
+              <Sponsor sponsor={sponsor} />
+            ))}
           </div>
         </div>
 
@@ -60,8 +70,7 @@ export default function FooterLayout({ copyright }) {
         <div className="flex min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
           <div className="mx-auto w-72 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start">
             <Image
-              img="/img/svg/logo-color-full.svg"
-              className="w-full"
+              src="/img/svg/logo-color-full.svg"
               alt="South Central STEM Collective logo"
             />
             <Text color="dimmed" size="sm">
@@ -131,6 +140,7 @@ export default function FooterLayout({ copyright }) {
               href="mailto:info@scstem.org"
               size="lg"
               opacity={50}
+              target="_blank"
             >
               <IconMail size={20} stroke={1.5} />
             </ActionIcon>
@@ -139,6 +149,7 @@ export default function FooterLayout({ copyright }) {
               href="https://go.scstem.tech/facebook"
               size="lg"
               opacity={50}
+              target="_blank"
             >
               <IconBrandFacebook size={20} stroke={1.5} />
             </ActionIcon>
@@ -147,6 +158,7 @@ export default function FooterLayout({ copyright }) {
               href="https://go.scstem.tech/linkedin"
               size="lg"
               opacity={50}
+              target="_blank"
             >
               <IconBrandLinkedin size={20} stroke={1.5} />
             </ActionIcon>
@@ -155,6 +167,7 @@ export default function FooterLayout({ copyright }) {
               href="https://go.scstem.tech/github"
               size="lg"
               opacity={50}
+              target="_blank"
             >
               <IconBrandGithub size={20} stroke={1.5} />
             </ActionIcon>
