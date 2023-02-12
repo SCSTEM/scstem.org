@@ -1,3 +1,4 @@
+import { clsx } from "@mantine/core";
 import React from "react";
 
 interface Props {
@@ -11,12 +12,15 @@ export default function HeroHeader({
 }: Props): JSX.Element {
   return (
     <header
-      className={`${className} flex h-[calc(100vh-var(--ifm-navbar-height))] flex-col pt-52 md:h-96 md:pt-20`}
+      className={clsx(
+        className,
+        "flex h-[calc(100vh-var(--ifm-navbar-height))] flex-col pt-28 md:h-96 md:pt-20"
+      )}
     >
       <div className="flex-grow">{children}</div>
       <button
         id="scrollButton"
-        className="mx-auto mb-6 flex cursor-pointer flex-col border-none bg-transparent p-0 text-lg font-medium outline-none md:hidden"
+        className="mx-auto mb-20 flex cursor-pointer flex-col border-none bg-transparent p-0 text-lg font-medium outline-none dark:text-primary md:hidden"
         onClick={() =>
           document
             .getElementById("scrollButton")
