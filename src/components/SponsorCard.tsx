@@ -45,14 +45,19 @@ export default function SponsorCard({
         {level ? <Badge className="my-auto">{level}</Badge> : null}
       </Card.Section>
 
-      <Card.Section className="flex-grow py-1 px-2">
+      <Card.Section className="flex-grow px-2 pt-1">
         {description ? <Text>{description}</Text> : null}
       </Card.Section>
 
-      <Card.Section className="flex flex-none px-2 py-2">
-        <Text size="sm" fs="italic" className="my-auto flex-grow">
-          Partnering with us since {supportSince}
-        </Text>
+      <Card.Section className="my-auto flex flex-none px-2 py-2">
+        <div className="flex-grow">
+          {supportSince ? (
+            <Text size="sm" fs="italic">
+              Partnering with us since {supportSince}
+            </Text>
+          ) : null}
+        </div>
+
         {url ? (
           <ActionIcon
             variant="outline"
