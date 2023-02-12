@@ -24,18 +24,12 @@ export const Sponsors: Sponsor[] = [
     level: SponsorLevel.Platinum,
     logo: "/img/sponsors/jlg.svg",
     url: "https://www.jlg.com/",
-    supportSince: 2022,
-    description:
-      "Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis.",
   },
   {
     name: "Wellspan",
     level: SponsorLevel.Platinum,
     logo: "/img/sponsors/wellspan.png",
     url: "https://www.wellspan.org/",
-    supportSince: 2022,
-    description:
-      "Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis.",
   },
   {
     name: "VFW",
@@ -43,39 +37,5 @@ export const Sponsors: Sponsor[] = [
     logo: "/img/sponsors/vfw.png",
     url: "https://www.vfw1599.org/",
     sub: "Chambersburg VFW Post 1599",
-    supportSince: 2022,
-  },
-  {
-    name: "VFW",
-    level: SponsorLevel.Gold,
-    logo: "",
-    url: "https://www.vfw1599.org/",
-    sub: "Chambersburg VFW Post 1599",
-    supportSince: 2022,
-  },
-  {
-    name: "Wellspan",
-    level: SponsorLevel.Supporter,
-    logo: "/img/sponsors/wellspan.png",
-    url: "https://www.wellspan.org/",
-    supportSince: 2022,
-    description:
-      "Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis.",
-  },
-  {
-    name: "VFW",
-    level: SponsorLevel.Silver,
-    logo: "/img/sponsors/vfw.png",
-    url: "https://www.vfw1599.org/",
-    sub: "Chambersburg VFW Post 1599",
-    supportSince: 2022,
-  },
-  {
-    name: "VFW",
-    level: SponsorLevel.Bronze,
-    logo: "",
-    url: "https://www.vfw1599.org/",
-    sub: "Chambersburg VFW Post 1599",
-    supportSince: 2022,
   },
 ];
