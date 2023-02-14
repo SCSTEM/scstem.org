@@ -1,8 +1,10 @@
 import React from "react";
-import DefaultLayout from "@site/src/layouts/Default";
-import SponsorCard from "@site/src/components/SponsorCard";
+
 import { Sponsors as data } from "@site/data";
-import HeroHeader2 from "../components/home/hero/Header2";
+import SponsorCard from "@site/src/components/SponsorCard";
+import DefaultLayout from "@site/src/layouts/Default";
+
+import HeroHeader2 from "../components/HeroHeader";
 
 export default function Test(): JSX.Element {
   return (
