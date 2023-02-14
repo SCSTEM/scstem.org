@@ -9,21 +9,19 @@ import DefaultLayout from "@site/src/layouts/Default";
 export default function Home(): JSX.Element {
   return (
     <DefaultLayout>
-      <HeroHeader2 img="/img/parts-notes.webp">
+      <HeroHeader img="/img/parts-notes.webp">
         <div className="flex flex-col space-y-6 text-white">
-          <div className="text-5xl font-bold">
-            <span className="bg-gradient-to-r from-m_yellow-5 to-m_yellow-9 bg-clip-text text-transparent dark:from-m_yellow-4 dark:to-m_yellow-7">
-              Robots
-            </span>{" "}
-            are in Franklin County.
+          <div className="text-4xl font-bold md:text-5xl">
+            <Highlight theme="dark">Robots</Highlight> are in Franklin County.{" "}
+            <div>So are we.</div>
           </div>
           <div className="text-2xl">
-            Cupidatat dolor adipisicing sunt aliquip quis do incididunt
-            excepteur amet. Cupidatat dolor adipisicing sunt aliquip quis do
-            incididunt excepteur amet.
+            The South Central STEM Collective is a non-profit organization
+            focused on building the future of STEM in South Central Pennsylvania
+            through hands-on education.
           </div>
         </div>
-      </HeroHeader2>
+      </HeroHeader>
 
       <main className="space-y-32 border-0 border-t-2 border-solid border-dark border-opacity-20 p-8 dark:border-primary dark:border-opacity-10 md:p-24 xl:p-32">
         {/* Section 1 */}

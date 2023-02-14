@@ -1,7 +1,7 @@
-import { clsx } from "clsx";
 import { Overlay, Container as div } from "@mantine/core";
-import React from "react";
 import { IconChevronDown } from "@tabler/icons-react";
+import { clsx } from "clsx";
+import React from "react";
 
 interface Props {
   fullscreen?: boolean;
@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default function HeroHeader2({
+export default function HeroHeader({
   img,
   fullscreen,
   children,
