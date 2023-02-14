@@ -1,30 +1,29 @@
 import Button from "../components/Button";
 import React from "react";
-import HeroHeader from "../components/home/hero/Header";
-import HeroType from "../components/home/hero/Typer";
 import HomeSection from "../components/home/Section";
 import DefaultLayout from "../layouts/Default";
 import Highlight from "../components/Highlight";
+import HeroHeader2 from "../components/home/hero/Header2";
 
 export default function Home(): JSX.Element {
   return (
     <DefaultLayout>
-      <HeroHeader className="bg-[url('/img/svg/circuit-board-light.svg')] dark:bg-[url('/img/svg/circuit-board-dark.svg')] dark:text-primary">
-        <div className="mx-auto h-28 w-4/5 text-center text-4xl drop-shadow-md dark:text-white md:w-1/2 md:text-5xl ">
-          <HeroType />
+      <HeroHeader2 img="/img/parts-notes.webp">
+        <div className="flex flex-col space-y-6 text-white">
+          <div className="text-5xl font-bold">
+            <span className="bg-gradient-to-r from-m_yellow-5 to-m_yellow-9 bg-clip-text text-transparent dark:from-m_yellow-4 dark:to-m_yellow-7">
+              Robots
+            </span>{" "}
+            are in Franklin County.
+          </div>
+          <div className="text-2xl">
+            Cupidatat dolor adipisicing sunt aliquip quis do incididunt
+            excepteur amet. Cupidatat dolor adipisicing sunt aliquip quis do
+            incididunt excepteur amet.
+          </div>
         </div>
-        <div className="mx-auto mt-10 flex flex-col items-center justify-center space-y-4 md:flex-row md:space-x-2 md:space-y-0">
-          <Button to="/about" className="w-36">
-            About Us
-          </Button>
-          <Button to="/sponsors" className="w-36">
-            Our Sponsors
-          </Button>
-          <Button to="/get-involved" className="w-36">
-            Get Involved
-          </Button>
-        </div>
-      </HeroHeader>
+      </HeroHeader2>
+
       <main className="space-y-32 border-0 border-t-2 border-solid border-dark border-opacity-20 p-8 dark:border-primary dark:border-opacity-10 md:p-24 xl:p-32">
         {/* Section 1 */}
         <HomeSection
