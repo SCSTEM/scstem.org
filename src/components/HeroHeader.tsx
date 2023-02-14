@@ -39,7 +39,7 @@ export default function HeroHeader({
           {children}
         </div>
         <button
-          className="mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none dark:text-primary md:hidden"
+          className="mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-primary md:hidden"
           onClick={() =>
             document
               .getElementById("scrollhere")
