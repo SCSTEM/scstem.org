@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Header, Burger, Group, ActionIcon } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import Link from "@docusaurus/Link";
+import { Burger, Group, ActionIcon } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconBrandFacebook,
   IconBrandInstagram,
   IconChartLine,
 } from "@tabler/icons-react";
+import React, { useState } from "react";
 
 const links = [
   { label: "Home", link: "/" },

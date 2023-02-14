@@ -1,7 +1,7 @@
 import { Carousel } from "@mantine/carousel";
+import { createStyles, Image } from "@mantine/core";
 import Autoplay from "embla-carousel-autoplay";
 import React, { useRef } from "react";
-import { createStyles, Image } from "@mantine/core";
 
 interface Props {
   className?: string;

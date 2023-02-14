@@ -1,11 +1,13 @@
-import React from "react";
-import clsx from "clsx";
-import useIsBrowser from "@docusaurus/useIsBrowser";
 import { translate } from "@docusaurus/Translate";
-import IconLightMode from "@theme/Icon/LightMode";
-import IconDarkMode from "@theme/Icon/DarkMode";
-import styles from "./styles.module.css";
+import useIsBrowser from "@docusaurus/useIsBrowser";
 import { useMantineColorScheme } from "@mantine/core";
+import { clsx } from "@mantine/core";
+import IconDarkMode from "@theme/Icon/DarkMode";
+import IconLightMode from "@theme/Icon/LightMode";
+import React from "react";
+
+import styles from "./styles.module.css";
+
 function ColorModeToggle({ className, value, onChange }) {
   const { toggleColorScheme } = useMantineColorScheme();
   const isBrowser = useIsBrowser();

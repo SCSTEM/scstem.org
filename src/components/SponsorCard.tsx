@@ -1,7 +1,8 @@
-import React from "react";
 import { ActionIcon, Badge, Card, Text } from "@mantine/core";
+import { clsx } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
-import clsx from "clsx";
+import React from "react";
+
 import { Sponsor } from "@site/data";
 import Image from "@site/src/components/Image";
 

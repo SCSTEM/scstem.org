@@ -1,9 +1,10 @@
-import Button from "../components/Button";
 import React from "react";
-import HomeSection from "../components/home/Section";
-import DefaultLayout from "../layouts/Default";
-import Highlight from "../components/Highlight";
-import HeroHeader2 from "../components/home/hero/Header2";
+
+import Button from "@site/src/components/Button";
+import HeroHeader from "@site/src/components/HeroHeader";
+import Highlight from "@site/src/components/Highlight";
+import HomeSection from "@site/src/components/home/Section";
+import DefaultLayout from "@site/src/layouts/Default";
 
 export default function Home(): JSX.Element {
   return (
