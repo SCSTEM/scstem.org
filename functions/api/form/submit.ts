@@ -1,5 +1,6 @@
-import { Res, ValidateTurnstile } from "../../util";
 import { GenericFormRequest } from "@site/functions/types";
+
+import { Res, ValidateTurnstile } from "../../util";
 
 export const onRequestPost: PagesFunction<{
   TS_SECRET_KEY: string;

@@ -1,6 +1,7 @@
 import React from "react";
-import DefaultLayout from "@site/src/layouts/Default";
+
 import CalendarFrame, { CalColor } from "@site/src/components/Calendar";
+import DefaultLayout from "@site/src/layouts/Default";
 
 export default function Calendar(): JSX.Element {
   return (

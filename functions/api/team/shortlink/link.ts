@@ -1,4 +1,5 @@
 import Shortlinks from "@site/src/pages/team/shortlinks";
+
 import type { Shortlink } from "../../../types";
 import { Res } from "../../../util";
 

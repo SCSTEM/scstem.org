@@ -1,16 +1,16 @@
-import React from "react";
-import { Text, ActionIcon } from "@mantine/core";
 import Link from "@docusaurus/Link";
+import { Text, ActionIcon } from "@mantine/core";
 import {
   IconBrandGithub,
   IconBrandFacebook,
   IconBrandLinkedin,
   IconMail,
 } from "@tabler/icons-react";
-import Image from "@site/src/components/Image";
+import React from "react";
 
-import { Sponsors } from "@site/data.ts";
 import { SponsorLevel } from "@site/data";
+import { Sponsors } from "@site/data.ts";
+import Image from "@site/src/components/Image";
 
 function Sponsor({ sponsor }) {
   return (

@@ -1,4 +1,5 @@
 import React from "react";
+
 import DefaultLayout from "@site/src/layouts/Default";
 
 export default function GetInvolved(): JSX.Element {

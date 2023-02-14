@@ -1,12 +1,12 @@
-import React from "react";
 import ErrorBoundary from "@docusaurus/ErrorBoundary";
-import { PageMetadata } from "@docusaurus/theme-common";
-import SkipToContent from "@theme/SkipToContent";
-import AnnouncementBar from "@theme/AnnouncementBar";
-import Navbar from "@theme/Navbar";
-import LayoutProvider from "@theme/Layout/Provider";
-import ErrorPageContent from "@theme/ErrorPageContent";
 import Head from "@docusaurus/Head";
+import { PageMetadata } from "@docusaurus/theme-common";
+import AnnouncementBar from "@theme/AnnouncementBar";
+import ErrorPageContent from "@theme/ErrorPageContent";
+import LayoutProvider from "@theme/Layout/Provider";
+import Navbar from "@theme/Navbar";
+import SkipToContent from "@theme/SkipToContent";
+import React from "react";
 
 interface Props {
   title?: string;

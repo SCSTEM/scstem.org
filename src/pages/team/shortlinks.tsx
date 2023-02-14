@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import AdminLayout from "@site/src/layouts/Admin";
-import { TextInput, ActionIcon, Button, Text, CopyButton } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { APIResponse, Shortlink } from "../../../functions/types";
-import {
-  IconArrowsShuffle,
-  IconCheck,
-  IconClipboard,
-  IconSend,
-} from "@tabler/icons-react";
-
-import "@glideapps/glide-data-grid/dist/index.css";
 import {
   GridCell,
   GridCellKind,
   GridColumn,
   Item,
 } from "@glideapps/glide-data-grid";
-import sidebars from "@site/sidebars";
+import "@glideapps/glide-data-grid/dist/index.css";
+import { TextInput, ActionIcon, Button, Text, CopyButton } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import {
+  IconArrowsShuffle,
+  IconCheck,
+  IconClipboard,
+  IconSend,
+} from "@tabler/icons-react";
+import React, { useState, useEffect } from "react";
+
+import AdminLayout from "@site/src/layouts/Admin";
+
+import { APIResponse, Shortlink } from "../../../functions/types";
 
 export default function Shortlinks(): JSX.Element {
   /* Load username */
