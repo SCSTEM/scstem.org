@@ -61,7 +61,7 @@ export default function FooterLayout({ copyright }) {
                 sponsor.level === SponsorLevel.Ultimate ||
                 sponsor.level === SponsorLevel.Platinum
             ).map((sponsor) => (
-              <Sponsor sponsor={sponsor} />
+              <Sponsor key={sponsor.name} sponsor={sponsor} />
             ))}
           </div>
         </div>
