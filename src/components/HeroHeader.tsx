@@ -17,14 +17,14 @@ export default function HeroHeader({
   return (
     <header
       className={clsx(
-        fullscreen ? null : "md:h-[600px]",
+        fullscreen ? null : "md:h-[500px]",
         "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-dark dark:border-primary"
       )}
     >
       <div className="absolute -z-0 h-full w-full">
         <Overlay
-          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.7) 40%)"
-          opacity={1}
+          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.7) 30%)"
+          opacity={0.75}
         />
 
         <img src={img} className={clsx("-z-10 h-full w-full object-cover")} />
