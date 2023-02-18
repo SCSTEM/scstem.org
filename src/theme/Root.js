@@ -101,6 +101,21 @@ const colors = {
     "#3F5475",
     "#3E4C64",
   ],
+  "brand-red": [
+    "#EAE0E0",
+    "#DBC5C5",
+    "#D0A9A9",
+    "#CB8D8D",
+    "#CA6E6E",
+    "#CF4D4D",
+    "#DC2626",
+    "#B73131",
+    "#993838",
+    "#813B3B",
+    "#6E3C3C",
+    "#5E3A3A",
+    "#523838",
+  ],
 };
 
 export default function Root({ children }) {

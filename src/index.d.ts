@@ -8,6 +8,7 @@ type ExtendedCustomColors =
   | "brand-dark"
   | "brand-blue"
   | "brand-light"
+  | "brand-red"
   | DefaultMantineColor;
 
 declare module "@mantine/core" {
