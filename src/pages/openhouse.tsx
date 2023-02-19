@@ -6,8 +6,17 @@ import {
   SimpleGrid,
   useMantineColorScheme,
   MantineColor,
+  Grid,
 } from "@mantine/core";
-import { IconDeviceGamepad2, IconLego, IconRobot } from "@tabler/icons-react";
+import {
+  IconDeviceGamepad2,
+  IconLego,
+  IconPresentation,
+  IconRobot,
+  IconTool,
+  IconBooks,
+  IconMoodSmile,
+} from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 
 import FeatureCard, { FCProps } from "@site/src/components/FeatureCard";
@@ -42,6 +51,52 @@ const programs: FCProps[] = [
   },
 ];
 
+const whyJoin: FCProps[] = [
+  {
+    title: "Hard skills",
+    description: "",
+    Icon: IconTool,
+  },
+  {
+    title: "Soft skills",
+    description: "",
+    Icon: IconPresentation,
+  },
+  {
+    title: "Education",
+    description: "",
+    Icon: IconBooks,
+  },
+  {
+    title: "Scholarships",
+    description: "",
+    Icon: IconBooks,
+  },
+  {
+    title: "Fun",
+    description: "",
+    Icon: IconMoodSmile,
+  },
+];
+
+const Section = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}): JSX.Element => (
+  <div className="py-3 mb-4 px-8">
+    <Title
+      order={3}
+      className="text-2xl font-black mb-6 text-center md:text-left"
+    >
+      {title}
+    </Title>
+    {children}
+  </div>
+);
+
 export default function Sponsors(): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
   const [badgeColor, setBadgeColor] = useState<MantineColor>("brand-dark");
@@ -71,56 +126,50 @@ export default function Sponsors(): JSX.Element {
           </div>
         </div>
       </HeroHeader>
-      <div className="m-10">
+      <div className="my-10 md:max-w-screen-xl mx-auto">
         <Group position="center">
-          <Badge size="xl" color={badgeColor} variant="outline">
+          <Badge size="lg" color={badgeColor} variant="outline">
             Open to all ages
           </Badge>
         </Group>
         <Title
           order={2}
           align="center"
-          className="md:text-3xl font-black text-xl mt-6"
+          className="md:text-3xl font-black text-xl mt-6 px-6"
         >
           Meet the teams, see the robots, and learn more about our programs.
         </Title>
 
-        <Text color="dimmed" className="max-w-xl m-auto mt-6" align="center">
-          Join us for the South Central STEM Collective open house! Et fugiat
-          quis non sunt cupidatat quis excepteur ex dolor veniam. Incididunt in
-          ipsum culpa. Ex tempor veniam velit sint elit magna esse aliqua ea
-          elit culpa deserunt.
+        <Text
+          color="dimmed"
+          size="lg"
+          className="max-w-4xl m-auto mt-6 px-6"
+          align="center"
+        >
+          Join us for the South Central STEM Collective open house. Get a chance
+          to speak with the students and mentors, get hands on with the robots,
+          and learn more about the programs we offer.
         </Text>
 
-        <Title order={3} className="md:text-2xl font-black text-lg mt-6">
-          Our Programs
-        </Title>
+        <Section title="Our Programs">
+          <Grid gutter="md" justify="center">
+            {programs.map((program) => (
+              <Grid.Col md={6} lg={4} key={program.title}>
+                <FeatureCard {...program} />
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Section>
 
-        <SimpleGrid
-          cols={3}
-          spacing="xl"
-          breakpoints={[{ maxWidth: "md", cols: 1 }]}
-          className="mt-6"
-        >
-          {programs.map((program) => (
-            <FeatureCard key={program.title} {...program} />
-          ))}
-        </SimpleGrid>
-
-        <Title order={3} className="md:text-2xl font-black text-lg mt-6">
-          Hands on
-        </Title>
-
-        {/*
-        <SimpleGrid
-          cols={3}
-          spacing="xl"
-          breakpoints={[{ maxWidth: "md", cols: 1 }]}
-          className="mt-6"
-        >
-          {cards}
-        </SimpleGrid>
-          */}
+        <Section title="Why join?">
+          <Grid gutter="md" justify="center">
+            {whyJoin.map((wj) => (
+              <Grid.Col lg={6} xl={4} key={wj.title}>
+                <FeatureCard key={wj.title} {...wj} />
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Section>
       </div>
     </DefaultLayout>
   );

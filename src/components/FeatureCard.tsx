@@ -8,7 +8,7 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { TablerIconsProps } from "@tabler/icons-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export interface FCProps {
   Icon: React.FC<TablerIconsProps>;
@@ -26,9 +26,11 @@ export default function FeatureCard({
   link,
 }: FCProps): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
+  const [highlightColor, setHighlightColor] = useState<MantineColor>(color);
 
   useEffect(() => {
-    if (!color) color = colorScheme === "dark" ? "brand-yellow" : "brand-blue";
+    if (!color)
+      setHighlightColor(colorScheme === "dark" ? "brand-yellow" : "brand-blue");
   }, [colorScheme]);
 
   return (
@@ -38,15 +40,20 @@ export default function FeatureCard({
       p="xl"
       radius="lg"
       withBorder
-      className="flex flex-col space-y-4"
+      className="flex flex-col space-y-4 h-full lg:w-[450px] mx-auto"
     >
-      <ThemeIcon color={color} className="w-12 h-12">
-        <Icon size={50} stroke={2} />
+      <ThemeIcon
+        color={highlightColor}
+        className="w-12 h-12 border-none"
+        variant="outline"
+        // border-none + variant="outline" is a hack to allow us to change the color of icon
+      >
+        <Icon size={50} stroke={1.5} />
       </ThemeIcon>
       <Text size="lg" weight={700}>
         {title}
       </Text>
-      <Divider size="sm" color={color} className="w-28" />
+      <Divider size="sm" color={highlightColor} className="w-28" />
       <Text size="md" color="dimmed" className="flex-grow">
         {description}
       </Text>
