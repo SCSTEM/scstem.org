@@ -24,9 +24,7 @@ export const Sponsors: Sponsor[] = [
     level: SponsorLevel.Platinum,
     logo: "/img/sponsors/jlg.svg",
     url: "https://www.jlg.com/",
-    supportSince: 2022,
-    description:
-      "Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis.",
+    supportSince: 2013,
   },
   {
     name: "Wellspan",
@@ -34,8 +32,6 @@ export const Sponsors: Sponsor[] = [
     logo: "/img/sponsors/wellspan.png",
     url: "https://www.wellspan.org/",
     supportSince: 2022,
-    description:
-      "Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis.",
   },
   {
     name: "VFW",
@@ -46,36 +42,25 @@ export const Sponsors: Sponsor[] = [
     supportSince: 2022,
   },
   {
-    name: "VFW",
+    name: "Fives",
+    level: SponsorLevel.Platinum,
+    logo: "/img/sponsors/fives.svg",
+    url: "https://www.fivesgroup.com/",
+    supportSince: 2022,
+  },
+  {
+    name: "The WorkShope",
     level: SponsorLevel.Gold,
-    logo: "",
-    url: "https://www.vfw1599.org/",
-    sub: "Chambersburg VFW Post 1599",
-    supportSince: 2022,
+    logo: "/img/sponsors/workshope.png",
+    url: "https://www.theworkshope.com/",
+    supportSince: 2021,
   },
   {
-    name: "Wellspan",
-    level: SponsorLevel.Supporter,
-    logo: "/img/sponsors/wellspan.png",
+    name: "Y.B. Welding",
+    level: SponsorLevel.Gold,
+    logo: "/img/sponsors/yb-light.png",
+    darkLogo: "/img/sponsors/yb-dark.png",
     url: "https://www.wellspan.org/",
-    supportSince: 2022,
-    description:
-      "Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis. Reprehenderit nulla eiusmod duis deserunt officia aute quis.",
+    supportSince: 2018,
   },
-  {
-    name: "VFW",
-    level: SponsorLevel.Silver,
-    logo: "/img/sponsors/vfw.png",
-    url: "https://www.vfw1599.org/",
-    sub: "Chambersburg VFW Post 1599",
-    supportSince: 2022,
-  },
-  {
-    name: "VFW",
-    level: SponsorLevel.Bronze,
-    logo: "",
-    url: "https://www.vfw1599.org/",
-    sub: "Chambersburg VFW Post 1599",
-    supportSince: 2022,
-  },
-];
+].sort((a, b) => (a.supportSince < b.supportSince ? -1 : 1));
