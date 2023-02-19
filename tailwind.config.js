@@ -180,7 +180,7 @@ module.exports = {
       xs: "576px",
       sm: "768px",
       md: "992px",
-      lg: "1200px",
+      lg: "1280",
       xl: "1400px",
     },
     extend: {

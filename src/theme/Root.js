@@ -127,6 +127,9 @@ export default function Root({ children }) {
           white: "#FAFAFA",
           black: "#171717",
           colors,
+          breakpoints: {
+            lg: 1280,
+          },
           components: {
             Button: {
               styles: (theme, params) => ({
