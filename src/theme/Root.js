@@ -4,7 +4,6 @@ import React from "react";
 
 const colors = {
   "brand-yellow": [
-    "#F4F2EC",
     "#E6E1CF",
     "#DDD4B0",
     "#D9CA90",
@@ -15,11 +14,8 @@ const colors = {
     "#B1962A",
     "#938032",
     "#7C6E36",
-    "#695F37",
-    "#5A5336",
   ],
   "brand-gray": [
-    "#969A9E",
     "#878B91",
     "#787E87",
     "#6C727C",
@@ -30,11 +26,8 @@ const colors = {
     "#40454D",
     "#3B3F44",
     "#36393C",
-    "#313336",
-    "#2D2E30",
   ],
   "brand-green": [
-    "#92B69F",
     "#7AAF8E",
     "#62AD7E",
     "#4BAB6F",
@@ -45,11 +38,8 @@ const colors = {
     "#266F41",
     "#295E3D",
     "#2A5038",
-    "#294433",
-    "#273B2F",
   ],
   "brand-orange": [
-    "#F4EFEC",
     "#E6D8CF",
     "#DCC2B0",
     "#D9AE90",
@@ -60,11 +50,8 @@ const colors = {
     "#B0622B",
     "#935A33",
     "#7B5336",
-    "#694C37",
-    "#5A4536",
   ],
   "brand-dark": [
-    "#292929",
     "#252525",
     "#222222",
     "#1F1F1F",
@@ -75,8 +62,6 @@ const colors = {
     "#131313",
     "#111111",
     "#0F0F0F",
-    "#0E0E0E",
-    "#0C0C0C",
   ],
   "brand-light": [
     "#FAFAFA",
@@ -88,7 +73,6 @@ const colors = {
     "#858585",
   ],
   "brand-blue": [
-    "#F3F5F8",
     "#D3DCEB",
     "#B3C5E3",
     "#8FAFE2",
@@ -98,11 +82,8 @@ const colors = {
     "#336AC4",
     "#3B63A3",
     "#3F5B89",
-    "#3F5475",
-    "#3E4C64",
   ],
   "brand-red": [
-    "#EAE0E0",
     "#DBC5C5",
     "#D0A9A9",
     "#CB8D8D",
@@ -113,8 +94,6 @@ const colors = {
     "#993838",
     "#813B3B",
     "#6E3C3C",
-    "#5E3A3A",
-    "#523838",
   ],
 };
 
@@ -142,8 +121,8 @@ export default function Root({ children }) {
           colorScheme: colorScheme,
           primaryColor: "brand-yellow",
           primaryShade: {
-            light: 6,
-            dark: 6,
+            light: 5,
+            dark: 5,
           },
           white: "#FAFAFA",
           black: "#171717",
