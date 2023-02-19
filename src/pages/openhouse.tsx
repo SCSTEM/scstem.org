@@ -3,7 +3,6 @@ import {
   Group,
   Title,
   Text,
-  SimpleGrid,
   useMantineColorScheme,
   MantineColor,
   Grid,
@@ -54,27 +53,30 @@ const programs: FCProps[] = [
 const whyJoin: FCProps[] = [
   {
     title: "Hard skills",
-    description: "",
+    description: "Enim elit consequat amet magna occaecat non laborum.",
     Icon: IconTool,
   },
   {
     title: "Soft skills",
-    description: "",
+    description:
+      "Dolore proident ut cupidatat in deserunt duis aute dolore exercitation dolor.",
     Icon: IconPresentation,
   },
   {
     title: "Education",
-    description: "",
+    description:
+      "Voluptate nulla veniam ullamco voluptate do aliquip consequat fugiat aliqua velit mollit.",
     Icon: IconBooks,
   },
   {
     title: "Scholarships",
-    description: "",
+    description: "Est commodo aliquip voluptate laborum eu anim ea.",
     Icon: IconBooks,
   },
   {
     title: "Fun",
-    description: "",
+    description:
+      "Reprehenderit reprehenderit esse quis reprehenderit irure in eiusmod sint est consectetur reprehenderit occaecat qui.",
     Icon: IconMoodSmile,
   },
 ];
@@ -146,9 +148,11 @@ export default function Sponsors(): JSX.Element {
           className="max-w-4xl m-auto mt-6 px-6"
           align="center"
         >
-          Join us for the South Central STEM Collective open house. Get a chance
-          to speak with the students and mentors, get hands on with the robots,
-          and learn more about the programs we offer.
+          Are you or is someone you know interested in legos, science,
+          technology, engineering, math, business, marketing, video production,
+          software development, web design, carpentry, or leadership? Find out
+          more and get a chance to speak with our students and mentors at our
+          upcoming open house.
         </Text>
 
         <Section title="Our Programs">
