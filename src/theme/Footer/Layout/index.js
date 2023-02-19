@@ -1,33 +1,41 @@
 import Link from "@docusaurus/Link";
-import { Text, ActionIcon } from "@mantine/core";
+import { Carousel } from "@mantine/carousel";
+import { Text, ActionIcon, useMantineColorScheme } from "@mantine/core";
 import {
   IconBrandGithub,
   IconBrandFacebook,
   IconBrandLinkedin,
   IconMail,
 } from "@tabler/icons-react";
-import React from "react";
+import Autoplay from "embla-carousel-autoplay";
+import React, { useRef } from "react";
 
 import { SponsorLevel } from "@site/data";
 import { Sponsors } from "@site/data.ts";
 import Image from "@site/src/components/Image";
 
 function Sponsor({ sponsor }) {
+  const { colorScheme } = useMantineColorScheme();
+
   return (
     <Link to={sponsor.url} className="hover:no-underline">
-      <div className="flex flex-col items-center space-y-1">
-        <Image
-          src={sponsor.logo ? sponsor.logo : null}
-          alt={sponsor.name + " logo"}
-          placeholder={
-            sponsor.logo ? null : (
-              <Text color="dimmed" size="md">
-                {sponsor.name}
-              </Text>
-            )
-          }
-          width={200}
-        />
+      <div className="flex flex-col items-center justify-center space-y-1 h-full">
+        {sponsor.logo ? (
+          <img
+            src={
+              sponsor.darkLogo && colorScheme === "dark"
+                ? sponsor.darkLogo
+                : sponsor.logo
+            }
+            alt={sponsor.name + " logo"}
+            className="w-52 my-auto object-contain"
+          />
+        ) : (
+          <span className="text-4xl font-semibold my-auto text-gray">
+            {sponsor.name}
+          </span>
+        )}
+
         {sponsor.sub ? (
           <Text size="sm" className="text-gray dark:text-white">
             {sponsor.sub}
@@ -40,6 +48,13 @@ function Sponsor({ sponsor }) {
 
 // TODO: Allow footer to support customization through docusaurus.config.js
 export default function FooterLayout({ copyright }) {
+  const autoplay = useRef(Autoplay({ delay: 4000 }));
+  const sponsors = Sponsors.filter(
+    (sponsor) =>
+      sponsor.level === SponsorLevel.Ultimate ||
+      sponsor.level === SponsorLevel.Platinum
+  );
+
   return (
     <footer className="border-slate-400 bg-zinc-100 py-12 shadow-inner dark:border-zinc-700 dark:bg-zinc-900">
       <div className="mx-auto max-w-4xl space-y-6">
@@ -54,21 +69,29 @@ export default function FooterLayout({ copyright }) {
             our mission
           </Text>
 
-          {/* TODO: Handle cases where there may be more than 3 sponsors */}
-          <div className="flex w-full flex-col items-center justify-evenly space-y-8 py-2 align-middle md:flex-row md:space-y-0">
-            {Sponsors.filter(
-              (sponsor) =>
-                sponsor.level === SponsorLevel.Ultimate ||
-                sponsor.level === SponsorLevel.Platinum
-            ).map((sponsor) => (
-              <Sponsor key={sponsor.name} sponsor={sponsor} />
+          <Carousel
+            plugins={sponsors.length > 1 ? [autoplay.current] : []}
+            loop
+            draggable={false}
+            withControls={sponsors.length > 1}
+            slideSize="33.333333%"
+            breakpoints={[
+              { maxWidth: "md", slideSize: "50%" },
+              { maxWidth: "sm", slideSize: "100%", slideGap: 0 },
+            ]}
+          >
+            {sponsors.map((sponsor) => (
+              <Carousel.Slide>
+                <Sponsor key={sponsor.name} sponsor={sponsor} />
+              </Carousel.Slide>
             ))}
-          </div>
+          </Carousel>
+          <div className="flex w-full flex-col items-center justify-evenly space-y-8 space-x-6 py-2 align-middle md:flex-row md:space-y-0"></div>
         </div>
 
         {/* Main Footer */}
-        <div className="flex min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
-          <div className="mx-auto w-72 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start">
+        <div className="flex md:flex-row flex-col min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
+          <div className="mx-auto w-72 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start mb-4 md:mb-0">
             <Image
               src="/img/svg/logo-color-full.svg"
               alt="South Central STEM Collective logo"
@@ -80,7 +103,7 @@ export default function FooterLayout({ copyright }) {
           </div>
 
           {/* Links */}
-          <div className="hidden justify-between md:flex">
+          <div className="justify-between md:flex grid grid-cols-2 gap-6 mx-auto md:mx-0">
             <div className="flex w-40 flex-col">
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Support us
@@ -109,7 +132,7 @@ export default function FooterLayout({ copyright }) {
                 GitHub
               </Link>
             </div>
-            <div className="flex w-40 flex-col">
+            <div className="flex w-40 flex-col col-span-2 mx-auto">
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Member area
               </Text>

@@ -18,7 +18,7 @@ export default function HeroHeader({
     <header
       className={clsx(
         fullscreen ? null : "md:h-[500px]",
-        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-dark dark:border-primary"
+        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-blue dark:border-primary w-full"
       )}
     >
       <div className="absolute -z-0 h-full w-full">
@@ -33,7 +33,7 @@ export default function HeroHeader({
         <div
           className={clsx(
             fullscreen ? "md:mt-60 md:h-screen" : "h-full md:mt-48",
-            "z-10 mx-8 mt-20 flex-grow md:m-0 md:ml-36 md:w-9/12 lg:ml-60 lg:w-1/2"
+            "mx-8 mt-20 flex-grow md:m-0 md:ml-36 lg:ml-60 w-[600px] md:w-[800px] lg:w-[1000px]"
           )}
         >
           {children}
