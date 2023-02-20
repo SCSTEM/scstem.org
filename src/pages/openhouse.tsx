@@ -1,3 +1,4 @@
+import Link from "@docusaurus/Link";
 import {
   Badge,
   Group,
@@ -16,41 +17,47 @@ import {
   IconBooks,
   IconMoodSmile,
 } from "@tabler/icons-react";
+import IdealImage from "@theme/IdealImage";
 import React, { useEffect, useState } from "react";
 
-import FeatureCard, { FCProps } from "@site/src/components/FeatureCard";
+import FeatureCard, {
+  FeatureCardProps,
+} from "@site/src/components/FeatureCard";
 import HeroHeader from "@site/src/components/HeroHeader";
 import Highlight from "@site/src/components/Highlight";
 import DefaultLayout from "@site/src/layouts/Default";
 
-const programs: FCProps[] = [
+const programs: FeatureCardProps[] = [
   {
     title: "FIRST Lego League",
     description:
-      "Ages 4-16. FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
+      "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     Icon: IconLego,
     color: "brand-red",
     link: "https://www.firstinspires.org/robotics/fll",
+    badge: "Ages 4 - 16",
   },
   {
     title: "FIRST Tech Challenge",
     description:
-      "Ages 12-18. FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
+      "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     Icon: IconDeviceGamepad2,
     color: "brand-orange",
     link: "https://www.firstinspires.org/robotics/ftc",
+    badge: "Ages 12 - 18",
   },
   {
     title: "FIRST Robotics Competition",
     description:
-      "Ages 14-18. Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
+      "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
     Icon: IconRobot,
     color: "brand-blue",
     link: "https://www.firstinspires.org/robotics/frc",
+    badge: "Ages 14 - 18",
   },
 ];
 
-const whyJoin: FCProps[] = [
+const whyJoin: FeatureCardProps[] = [
   {
     title: "Hard skills",
     description: "Enim elit consequat amet magna occaecat non laborum.",
@@ -88,7 +95,7 @@ const Section = ({
   title: string;
   children: React.ReactNode;
 }): JSX.Element => (
-  <div className="py-3 mb-4 px-8">
+  <div className="py-3 mb-4 px-8 md:max-w-screen-xl mx-auto">
     <Title
       order={3}
       className="text-2xl font-black mb-6 text-center md:text-left"
@@ -128,32 +135,32 @@ export default function Sponsors(): JSX.Element {
           </div>
         </div>
       </HeroHeader>
-      <div className="my-10 md:max-w-screen-xl mx-auto">
-        <Group position="center">
+
+      <div className="my-10">
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl">
           <Badge size="lg" color={badgeColor} variant="outline">
             Open to all ages
           </Badge>
-        </Group>
-        <Title
-          order={2}
-          align="center"
-          className="md:text-3xl font-black text-xl mt-6 px-6"
-        >
-          Meet the teams, see the robots, and learn more about our programs.
-        </Title>
-
-        <Text
-          color="dimmed"
-          size="lg"
-          className="max-w-4xl m-auto mt-6 px-6"
-          align="center"
-        >
-          Are you or is someone you know interested in legos, science,
-          technology, engineering, math, business, marketing, video production,
-          software development, web design, carpentry, or leadership? Find out
-          more and get a chance to speak with our students and mentors at our
-          upcoming open house.
-        </Text>
+          <Title
+            order={2}
+            align="center"
+            className="md:text-3xl font-black text-xl"
+          >
+            Meet the teams, see the robots, and learn more about our programs.
+          </Title>
+          <Text
+            color="dimmed"
+            size="lg"
+            className="max-w-4xl m-auto"
+            align="center"
+          >
+            Are you or is someone you know interested in legos, science,
+            technology, engineering, math, business, marketing, video
+            production, software development, web design, carpentry, or
+            leadership? Find out more and get a chance to speak with our
+            students and mentors at our upcoming open house.
+          </Text>
+        </div>
 
         <Section title="Our Programs">
           <Grid gutter="md" justify="center">
@@ -164,6 +171,79 @@ export default function Sponsors(): JSX.Element {
             ))}
           </Grid>
         </Section>
+
+        <div className="space-y-4 w-screen bg-zinc-200 dark:bg-dark shadow-inner my-8 py-12">
+          <div className="md:max-w-screen-xl mx-auto px-8 md:px-12">
+            <div className="md:w-[750px] mb-8 mx-auto">
+              <IdealImage
+                img={require("../../static/img/first/first-horizontal-acro-light.png")}
+                alt="FIRST logo and acronym"
+                className="dark:hidden"
+              />
+              <IdealImage
+                img={require("../../static/img/first/first-horizontal-acro-dark.png")}
+                alt="FIRST logo and acronym"
+                className="hidden dark:block"
+              />
+            </div>
+            <div className="flex flex-col md:flex-row">
+              <div className="flex-grow mr-8 flex flex-col space-y-4">
+                <div className="border-gray border-2 border-solid rounded-3xl p-4 flex flex-col space-y-4 items-center">
+                  <Title
+                    order={4}
+                    className="text-xl font-black text-center md:text-left"
+                  >
+                    Who is FIRST?
+                  </Title>
+                  <div>
+                    All of our programs are members of a global organization
+                    called FIRST. FIRST's mission is to inspire young people to
+                    become leaders in science and technology fields by teaching
+                    real-world skills through team work and competition. Each
+                    year, a new challenge is presented to teams who, with the
+                    help of experienced mentors, must apply their skills to
+                    build a functional robot. Once built, the robot is put to
+                    the test in a competition setting against teams from around
+                    the world.
+                  </div>
+                  <Link to="https://www.firstinspires.org/" className="ml-auto">
+                    Learn more about FIRST
+                  </Link>
+                </div>
+
+                <div className="border-gray border-2 border-solid rounded-3xl p-4 space-y-4 flex flex-col">
+                  <Title
+                    order={4}
+                    className="text-xl font-black text-center md:text-left"
+                  >
+                    More Than Robots
+                  </Title>
+                  <div>
+                    Although the goal is to build a robot, you do not have to be
+                    an engineer. Whether you are an future rocket scientist or
+                    an aspiring artist, there is a place here for you and
+                    mentors ready to use their real world experience to help you
+                    grow.
+                  </div>
+                  <Link
+                    to="https://info.firstinspires.org/morethanrobots"
+                    className="ml-auto"
+                  >
+                    Learn more about More Than Robots
+                  </Link>
+                </div>
+              </div>
+
+              <div className="rounded-xl my-auto">
+                <IdealImage
+                  img={require("../../static/img/morethanrobots.jpg")}
+                  alt="Collage of photos capturing some of the many ways students can get involved"
+                  className="md:w-[700px] rounded-3xl overflow-hidden shadow-xl"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
 
         <Section title="Why join?">
           <Grid gutter="md" justify="center">
