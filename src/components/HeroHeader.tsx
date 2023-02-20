@@ -29,17 +29,22 @@ export default function HeroHeader({
 
         <img src={img} className="-z-10 h-full w-full object-cover" />
       </div>
-      <div className="absolute flex h-full flex-col">
+      <div className="absolute flex h-full flex-col w-full">
         <div
           className={clsx(
-            fullscreen ? "md:mt-60 md:h-screen" : "h-full md:mt-48",
-            "sm:mx-8 ml-2 mt-20 flex-grow md:m-0 md:ml-36 lg:ml-60 w-full sm:w-[600px] md:w-[800px] lg:w-[1000px]"
+            fullscreen ? "md:mt-44 md:ml-36" : "",
+            "w-full md:w-[750px] lg:w-[1000px]",
+            "md:ml-28 mt-10 md:mt-28",
+            "px-8 md:px-0 "
           )}
         >
           {children}
         </div>
         <button
-          className="mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-primary md:hidden"
+          className={clsx(
+            fullscreen ? "" : "md:hidden",
+            "mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-primary mt-auto"
+          )}
           onClick={() =>
             document
               .getElementById("scrollhere")
