@@ -127,18 +127,6 @@ export default function Root({ children }) {
           white: "#FAFAFA",
           black: "#171717",
           colors,
-          components: {
-            Button: {
-              styles: (theme, params) => ({
-                root: {
-                  color:
-                    params.variant === "filled"
-                      ? theme.colors["brand-dark"][6]
-                      : theme.white,
-                },
-              }),
-            },
-          },
         }}
       >
         {children}

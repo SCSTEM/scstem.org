@@ -1,12 +1,12 @@
 import Link from "@docusaurus/Link";
 import {
   Badge,
-  Group,
   Title,
   Text,
   useMantineColorScheme,
   MantineColor,
   Grid,
+  Button,
 } from "@mantine/core";
 import {
   IconDeviceGamepad2,
@@ -16,6 +16,7 @@ import {
   IconTool,
   IconBooks,
   IconMoodSmile,
+  IconExternalLink,
 } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
 import React, { useEffect, useState } from "react";
@@ -108,12 +109,10 @@ const Section = ({
 
 export default function Sponsors(): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
-  const [badgeColor, setBadgeColor] = useState<MantineColor>("brand-dark");
+  const [color, setColor] = useState<MantineColor>("brand-dark");
 
   useEffect(() => {
-    colorScheme === "dark"
-      ? setBadgeColor("brand-yellow")
-      : setBadgeColor("brand-blue");
+    colorScheme === "dark" ? setColor("brand-yellow") : setColor("brand-blue");
   }, [colorScheme]);
 
   return (
@@ -138,7 +137,7 @@ export default function Sponsors(): JSX.Element {
 
       <div className="my-10">
         <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6">
-          <Badge size="lg" color={badgeColor} variant="outline">
+          <Badge size="lg" color={color} variant="outline">
             Open to all ages
           </Badge>
           <Title
@@ -186,7 +185,7 @@ export default function Sponsors(): JSX.Element {
                 className="hidden dark:block"
               />
             </div>
-            <div className="flex flex-col md:flex-row space-y-4">
+            <div className="flex flex-col md:flex-row space-y-4 items-center">
               <div className="flex-grow md:mr-8 flex flex-col space-y-4">
                 <div className="border-gray border-2 border-solid rounded-3xl p-4 flex flex-col space-y-4 items-center">
                   <Title
@@ -207,7 +206,16 @@ export default function Sponsors(): JSX.Element {
                     the world.
                   </div>
                   <Link to="https://www.firstinspires.org/" className="ml-auto">
-                    Learn more about FIRST
+                    <Button
+                      rightIcon={<IconExternalLink />}
+                      color={
+                        colorScheme === "dark" ? "brand-yellow" : "brand-blue"
+                      }
+                      variant="subtle"
+                      compact
+                    >
+                      FIRST
+                    </Button>
                   </Link>
                 </div>
 
@@ -229,12 +237,21 @@ export default function Sponsors(): JSX.Element {
                     to="https://info.firstinspires.org/morethanrobots"
                     className="ml-auto"
                   >
-                    Learn more about More Than Robots
+                    <Button
+                      rightIcon={<IconExternalLink />}
+                      color={
+                        colorScheme === "dark" ? "brand-yellow" : "brand-blue"
+                      }
+                      variant="subtle"
+                      compact
+                    >
+                      More Than Robots
+                    </Button>
                   </Link>
                 </div>
               </div>
 
-              <div className="rounded-xl my-auto">
+              <div className="rounded-xl">
                 <IdealImage
                   img={require("../../static/img/morethanrobots.jpg")}
                   alt="Collage of photos capturing some of the many ways students can get involved"
