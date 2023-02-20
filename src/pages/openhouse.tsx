@@ -137,7 +137,7 @@ export default function Sponsors(): JSX.Element {
       </HeroHeader>
 
       <div className="my-10">
-        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl">
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6">
           <Badge size="lg" color={badgeColor} variant="outline">
             Open to all ages
           </Badge>
@@ -172,8 +172,8 @@ export default function Sponsors(): JSX.Element {
           </Grid>
         </Section>
 
-        <div className="space-y-4 w-screen bg-zinc-200 dark:bg-dark shadow-inner my-8 py-12">
-          <div className="md:max-w-screen-xl mx-auto px-8 md:px-12">
+        <div className="space-y-4 w-screen bg-zinc-200 dark:bg-dark shadow-inner my-8 py-12 px-8">
+          <div className="md:max-w-screen-xl mx-auto md:px-12">
             <div className="md:w-[750px] mb-8 mx-auto">
               <IdealImage
                 img={require("../../static/img/first/first-horizontal-acro-light.png")}
@@ -186,8 +186,8 @@ export default function Sponsors(): JSX.Element {
                 className="hidden dark:block"
               />
             </div>
-            <div className="flex flex-col md:flex-row">
-              <div className="flex-grow mr-8 flex flex-col space-y-4">
+            <div className="flex flex-col md:flex-row space-y-4">
+              <div className="flex-grow md:mr-8 flex flex-col space-y-4">
                 <div className="border-gray border-2 border-solid rounded-3xl p-4 flex flex-col space-y-4 items-center">
                   <Title
                     order={4}
