@@ -33,7 +33,7 @@ export default function HeroHeader({
         <div
           className={clsx(
             fullscreen ? "md:mt-60 md:h-screen" : "h-full md:mt-48",
-            "mx-8 mt-20 flex-grow md:m-0 md:ml-36 lg:ml-60 w-[600px] md:w-[800px] lg:w-[1000px]"
+            "sm:mx-8 ml-2 mt-20 flex-grow md:m-0 md:ml-36 lg:ml-60 w-full sm:w-[600px] md:w-[800px] lg:w-[1000px]"
           )}
         >
           {children}
