@@ -91,7 +91,7 @@ export default function FooterLayout({ copyright }) {
 
         {/* Main Footer */}
         <div className="flex md:flex-row flex-col min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
-          <div className="mx-auto w-72 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start mb-4 md:mb-0">
+          <div className="mx-auto w-72 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start mb-8 md:mb-0">
             <Image
               src="/img/svg/logo-color-full.svg"
               alt="South Central STEM Collective logo"
@@ -104,7 +104,7 @@ export default function FooterLayout({ copyright }) {
 
           {/* Links */}
           <div className="justify-between md:flex grid grid-cols-2 gap-6 mx-auto md:mx-0">
-            <div className="flex w-40 flex-col">
+            <div className="flex md:w-40 flex-col items-center md:items-start">
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Support us
               </Text>
@@ -118,7 +118,7 @@ export default function FooterLayout({ copyright }) {
                 Sponsors
               </Link>
             </div>
-            <div className="flex w-40 flex-col">
+            <div className="flex md:w-40 flex-col items-center md:items-start">
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Find us online
               </Text>
@@ -132,7 +132,7 @@ export default function FooterLayout({ copyright }) {
                 GitHub
               </Link>
             </div>
-            <div className="flex w-40 flex-col col-span-2 mx-auto">
+            <div className="flex md:w-40 flex-col col-span-2 mx-auto items-center md:items-start">
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Member area
               </Text>
