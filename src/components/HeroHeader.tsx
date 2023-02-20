@@ -23,8 +23,8 @@ export default function HeroHeader({
     >
       <div className="absolute -z-0 h-full w-full">
         <Overlay
-          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.7) 30%)"
-          opacity={0.75}
+          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, .65) 40%)"
+          opacity={1}
         />
 
         <img src={img} className="-z-10 h-full w-full object-cover" />
