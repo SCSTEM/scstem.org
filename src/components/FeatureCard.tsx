@@ -1,5 +1,6 @@
 import Link from "@docusaurus/Link";
 import {
+  Badge,
   Card,
   Divider,
   MantineColor,
@@ -10,12 +11,13 @@ import {
 import { TablerIconsProps } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 
-export interface FCProps {
+export interface FeatureCardProps {
   Icon: React.FC<TablerIconsProps>;
   title: string;
   description: string;
   color?: MantineColor;
   link?: string;
+  badge?: string;
 }
 
 export default function FeatureCard({
@@ -24,7 +26,8 @@ export default function FeatureCard({
   description,
   color,
   link,
-}: FCProps): JSX.Element {
+  badge,
+}: FeatureCardProps): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
   const [highlightColor, setHighlightColor] = useState<MantineColor>(color);
 
@@ -40,7 +43,7 @@ export default function FeatureCard({
       p="xl"
       radius="lg"
       withBorder
-      className="flex flex-col space-y-4 h-full lg:w-[450px] mx-auto"
+      className="flex flex-col space-y-3 h-full lg:w-[450px] mx-auto"
     >
       <ThemeIcon
         color={highlightColor}
@@ -50,13 +53,24 @@ export default function FeatureCard({
       >
         <Icon size={50} stroke={1.5} />
       </ThemeIcon>
+
       <Text size="lg" weight={700}>
         {title}
       </Text>
-      <Divider size="sm" color={highlightColor} className="w-28" />
+
+      <div className="flex items-center">
+        <Divider size="sm" color={highlightColor} className="flex-grow" />
+        {badge ? (
+          <Badge className="ml-2" color={color} size="lg">
+            {badge}
+          </Badge>
+        ) : null}
+      </div>
+
       <Text size="md" color="dimmed" className="flex-grow">
         {description}
       </Text>
+
       {link ? (
         <div>
           <Text component={Link} to={link} color={color}>
