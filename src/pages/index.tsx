@@ -17,8 +17,8 @@ export default function Home(): JSX.Element {
           </div>
           <div className="text-2xl">
             The South Central STEM Collective is a non-profit organization
-            focused on building the future of STEM in South Central Pennsylvania
-            through hands-on education.
+            focused on building the future of STEM, right here in Franklin
+            County, Pennsylvania.
           </div>
         </div>
       </HeroHeader>

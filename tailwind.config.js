@@ -180,7 +180,7 @@ module.exports = {
       xs: "576px",
       sm: "768px",
       md: "992px",
-      lg: "1200px",
+      lg: "1200",
       xl: "1400px",
     },
     extend: {
@@ -189,6 +189,7 @@ module.exports = {
       },
       colors: {
         primary: "var(--mantine-color-brand-yellow-6)",
+        primaryLight: "var(--mantine-color-brand-blue-6)",
         green: "var(--mantine-color-brand-green-6)",
         orange: "var(--mantine-color-brand-orange-6)",
         blue: "var(--mantine-color-brand-blue-6)",

@@ -1,4 +1,4 @@
-import { Overlay, Container as div } from "@mantine/core";
+import { Overlay } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
 import { clsx } from "clsx";
 import React from "react";
@@ -17,23 +17,23 @@ export default function HeroHeader({
   return (
     <header
       className={clsx(
-        fullscreen ? null : "md:h-[600px]",
-        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-dark dark:border-primary"
+        fullscreen ? null : "md:h-[500px]",
+        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-blue dark:border-primary w-full"
       )}
     >
       <div className="absolute -z-0 h-full w-full">
         <Overlay
-          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.7) 40%)"
+          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, .65) 40%)"
           opacity={1}
         />
 
-        <img src={img} className={clsx("-z-10 h-full w-full object-cover")} />
+        <img src={img} className="-z-10 h-full w-full object-cover" />
       </div>
       <div className="absolute flex h-full flex-col">
         <div
           className={clsx(
             fullscreen ? "md:mt-60 md:h-screen" : "h-full md:mt-48",
-            "z-10 mx-8 mt-20 flex-grow md:m-0 md:ml-36 md:w-9/12 lg:ml-60 lg:w-1/2"
+            "sm:mx-8 ml-2 mt-20 flex-grow md:m-0 md:ml-36 lg:ml-60 w-full sm:w-[600px] md:w-[800px] lg:w-[1000px]"
           )}
         >
           {children}
