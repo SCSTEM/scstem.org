@@ -56,7 +56,7 @@ export default function FooterLayout({ copyright }) {
   );
 
   return (
-    <footer className="border-slate-400 bg-zinc-100 py-12 shadow-inner dark:border-zinc-700 dark:bg-zinc-900">
+    <footer className="border-slate-400 bg-zinc-200 py-12 shadow-inner dark:border-zinc-700 dark:bg-zinc-900">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Sponsors */}
         <div>
@@ -81,8 +81,8 @@ export default function FooterLayout({ copyright }) {
             ]}
           >
             {sponsors.map((sponsor) => (
-              <Carousel.Slide>
-                <Sponsor key={sponsor.name} sponsor={sponsor} />
+              <Carousel.Slide key={sponsor.name}>
+                <Sponsor sponsor={sponsor} />
               </Carousel.Slide>
             ))}
           </Carousel>
