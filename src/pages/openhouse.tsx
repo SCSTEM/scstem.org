@@ -7,6 +7,7 @@ import {
   MantineColor,
   Grid,
   Button,
+  Divider,
 } from "@mantine/core";
 import {
   IconDeviceGamepad2,
@@ -60,24 +61,24 @@ const programs: FeatureCardProps[] = [
 
 const whyJoin: FeatureCardProps[] = [
   {
-    title: "Hard skills",
+    title: "Learn real-world skills",
     description: "Enim elit consequat amet magna occaecat non laborum.",
     Icon: IconTool,
   },
   {
-    title: "Soft skills",
+    title: "Experience leadership and teamwork",
     description:
       "Dolore proident ut cupidatat in deserunt duis aute dolore exercitation dolor.",
     Icon: IconPresentation,
   },
   {
-    title: "Education",
+    title: "Education through competition",
     description:
       "Voluptate nulla veniam ullamco voluptate do aliquip consequat fugiat aliqua velit mollit.",
     Icon: IconBooks,
   },
   {
-    title: "Scholarships",
+    title: "Scholarships and career opportunities",
     description: "Est commodo aliquip voluptate laborum eu anim ea.",
     Icon: IconBooks,
   },
@@ -186,12 +187,9 @@ export default function Sponsors(): JSX.Element {
               />
             </div>
             <div className="flex flex-col md:flex-row space-y-4 items-center">
-              <div className="flex-grow md:mr-8 flex flex-col space-y-4">
-                <div className="border-gray border-2 border-solid rounded-3xl p-4 flex flex-col space-y-4 items-center">
-                  <Title
-                    order={4}
-                    className="text-xl font-black text-center md:text-left"
-                  >
+              <div className="flex-grow md:mr-12 flex flex-col space-y-4">
+                <div className="rounded-3xl flex flex-col space-y-4">
+                  <Title order={4} className="text-xl font-black md:text-left">
                     Who is FIRST?
                   </Title>
                   <div>
@@ -211,6 +209,7 @@ export default function Sponsors(): JSX.Element {
                       color={
                         colorScheme === "dark" ? "brand-yellow" : "brand-blue"
                       }
+                      className="dark:text-primary text-primaryLight"
                       variant="subtle"
                       compact
                     >
@@ -219,7 +218,9 @@ export default function Sponsors(): JSX.Element {
                   </Link>
                 </div>
 
-                <div className="border-gray border-2 border-solid rounded-3xl p-4 space-y-4 flex flex-col">
+                <Divider />
+
+                <div className="rounded-3xl space-y-4 flex flex-col">
                   <Title
                     order={4}
                     className="text-xl font-black text-center md:text-left"
@@ -242,6 +243,7 @@ export default function Sponsors(): JSX.Element {
                       color={
                         colorScheme === "dark" ? "brand-yellow" : "brand-blue"
                       }
+                      className="dark:text-primary text-primaryLight"
                       variant="subtle"
                       compact
                     >
