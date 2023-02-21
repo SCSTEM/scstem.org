@@ -1,14 +1,17 @@
 import Link from "@docusaurus/Link";
 import {
   Badge,
+  Button,
   Card,
+  clsx,
   Divider,
   MantineColor,
   Text,
   ThemeIcon,
   useMantineColorScheme,
+  useMantineTheme,
 } from "@mantine/core";
-import { TablerIconsProps } from "@tabler/icons-react";
+import { IconExternalLink, TablerIconsProps } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 
 export interface FeatureCardProps {
@@ -17,6 +20,7 @@ export interface FeatureCardProps {
   description: string;
   color?: MantineColor;
   link?: string;
+  linkText?: string;
   badge?: string;
 }
 
@@ -26,10 +30,12 @@ export default function FeatureCard({
   description,
   color,
   link,
+  linkText,
   badge,
 }: FeatureCardProps): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
   const [highlightColor, setHighlightColor] = useState<MantineColor>(color);
+  const theme = useMantineTheme();
 
   useEffect(() => {
     if (!color)
@@ -72,11 +78,16 @@ export default function FeatureCard({
       </Text>
 
       {link ? (
-        <div>
-          <Text component={Link} to={link} color={color}>
-            Learn more
-          </Text>
-        </div>
+        <Link to={link} className="ml-auto">
+          <Button
+            rightIcon={<IconExternalLink />}
+            className="dark:text-primary text-primaryLight"
+            variant="subtle"
+            compact
+          >
+            {linkText ? linkText : "Learn More"}
+          </Button>
+        </Link>
       ) : null}
     </Card>
   );
