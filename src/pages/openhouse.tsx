@@ -62,7 +62,8 @@ const programs: FeatureCardProps[] = [
 const whyJoin: FeatureCardProps[] = [
   {
     title: "Learn real-world skills",
-    description: "Enim elit consequat amet magna occaecat non laborum.",
+    description:
+      "Get hands on experience with tools and technology that you cannot get anywhere else.",
     Icon: IconTool,
   },
   {
@@ -138,7 +139,7 @@ export default function Sponsors(): JSX.Element {
 
       <div className="my-10">
         <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6">
-          <Badge size="lg" color={color} variant="outline">
+          <Badge size="lg" color={color}>
             Open to all ages
           </Badge>
           <Title
@@ -209,7 +210,6 @@ export default function Sponsors(): JSX.Element {
                       color={
                         colorScheme === "dark" ? "brand-yellow" : "brand-blue"
                       }
-                      className="dark:text-primary text-primaryLight"
                       variant="subtle"
                       compact
                     >
@@ -243,7 +243,6 @@ export default function Sponsors(): JSX.Element {
                       color={
                         colorScheme === "dark" ? "brand-yellow" : "brand-blue"
                       }
-                      className="dark:text-primary text-primaryLight"
                       variant="subtle"
                       compact
                     >

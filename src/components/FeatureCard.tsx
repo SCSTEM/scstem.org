@@ -35,7 +35,6 @@ export default function FeatureCard({
 }: FeatureCardProps): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
   const [highlightColor, setHighlightColor] = useState<MantineColor>(color);
-  const theme = useMantineTheme();
 
   useEffect(() => {
     if (!color)
@@ -81,7 +80,7 @@ export default function FeatureCard({
         <Link to={link} className="ml-auto">
           <Button
             rightIcon={<IconExternalLink />}
-            className="dark:text-primary text-primaryLight"
+            color={highlightColor}
             variant="subtle"
             compact
           >
