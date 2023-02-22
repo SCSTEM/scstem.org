@@ -32,8 +32,7 @@ import DefaultLayout from "@site/src/layouts/Default";
 const programs: FeatureCardProps[] = [
   {
     title: "FIRST Lego League",
-    description:
-      "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
+    body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     Icon: IconLego,
     color: "brand-red",
     link: "https://www.firstinspires.org/robotics/fll",
@@ -41,8 +40,7 @@ const programs: FeatureCardProps[] = [
   },
   {
     title: "FIRST Tech Challenge",
-    description:
-      "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
+    body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     Icon: IconDeviceGamepad2,
     color: "brand-orange",
     link: "https://www.firstinspires.org/robotics/ftc",
@@ -50,8 +48,7 @@ const programs: FeatureCardProps[] = [
   },
   {
     title: "FIRST Robotics Competition",
-    description:
-      "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
+    body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
     Icon: IconRobot,
     color: "brand-blue",
     link: "https://www.firstinspires.org/robotics/frc",
@@ -62,31 +59,52 @@ const programs: FeatureCardProps[] = [
 const whyJoin: FeatureCardProps[] = [
   {
     title: "Learn real-world skills",
-    description:
-      "Get hands on experience with tools and technology that you cannot get anywhere else.",
+    body: (
+      <div className="flex flex-col">
+        <div className="mb-3">
+          Get hands on with tools and technology under the supervision of
+          experts in their fields, an expierence that you cannot get anywhere
+          else.
+        </div>
+        <IdealImage
+          img={require("../idealimage/hands-on-1.jpg")}
+          alt="A student and mentor get hands-on with a robot"
+          className="overflow-hidden rounded-xl"
+        />
+      </div>
+    ),
     Icon: IconTool,
   },
   {
     title: "Experience leadership and teamwork",
-    description:
-      "Dolore proident ut cupidatat in deserunt duis aute dolore exercitation dolor.",
+    body: (
+      <div className="flex flex-col">
+        <div className="mb-3">
+          Learn how to work with others to achieve a common goal with the
+          support of mentors and your teammates.....
+        </div>
+        <IdealImage
+          img={require("../idealimage/leadership-1.jpg")}
+          alt="A student and mentor get hands-on with a robot"
+          className="overflow-hidden rounded-xl"
+        />
+      </div>
+    ),
     Icon: IconPresentation,
   },
   {
     title: "Education through competition",
-    description:
-      "Voluptate nulla veniam ullamco voluptate do aliquip consequat fugiat aliqua velit mollit.",
+    body: "Voluptate nulla veniam ullamco voluptate do aliquip consequat fugiat aliqua velit mollit.",
     Icon: IconBooks,
   },
   {
     title: "Scholarships and career opportunities",
-    description: "Est commodo aliquip voluptate laborum eu anim ea.",
+    body: "Est commodo aliquip voluptate laborum eu anim ea.",
     Icon: IconBooks,
   },
   {
     title: "Fun",
-    description:
-      "Reprehenderit reprehenderit esse quis reprehenderit irure in eiusmod sint est consectetur reprehenderit occaecat qui.",
+    body: "Reprehenderit reprehenderit esse quis reprehenderit irure in eiusmod sint est consectetur reprehenderit occaecat qui.",
     Icon: IconMoodSmile,
   },
 ];
@@ -177,12 +195,12 @@ export default function Sponsors(): JSX.Element {
           <div className="md:max-w-screen-xl mx-auto md:px-12">
             <div className="md:w-[750px] mb-8 mx-auto">
               <IdealImage
-                img={require("../../static/img/first/first-horizontal-acro-light.png")}
+                img={require("../idealimage/first/first-horizontal-acro-light.png")}
                 alt="FIRST logo and acronym"
                 className="dark:hidden"
               />
               <IdealImage
-                img={require("../../static/img/first/first-horizontal-acro-dark.png")}
+                img={require("../idealimage/first/first-horizontal-acro-dark.png")}
                 alt="FIRST logo and acronym"
                 className="hidden dark:block"
               />
@@ -253,7 +271,7 @@ export default function Sponsors(): JSX.Element {
               </div>
 
               <IdealImage
-                img={require("../../static/img/morethanrobots.jpg")}
+                img={require("../idealimage/morethanrobots.jpg")}
                 alt="Collage of photos capturing some of the many ways students can get involved"
                 className="overflow-hidden rounded-3xl"
               />
@@ -276,7 +294,7 @@ export default function Sponsors(): JSX.Element {
           <div className="md:max-w-screen-xl mx-auto px-10 md:px-12">
             <div className="md:w-[500px] mb-8 mx-auto">
               <IdealImage
-                img={require("../../static/img/open-house-banner.png")}
+                img={require("../idealimage/open-house-banner.png")}
                 alt="South Central STEM Collective open house banner"
               />
             </div>

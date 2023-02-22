@@ -3,13 +3,11 @@ import {
   Badge,
   Button,
   Card,
-  clsx,
   Divider,
   MantineColor,
   Text,
   ThemeIcon,
   useMantineColorScheme,
-  useMantineTheme,
 } from "@mantine/core";
 import { IconExternalLink, TablerIconsProps } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
@@ -17,7 +15,7 @@ import React, { useEffect, useState } from "react";
 export interface FeatureCardProps {
   Icon: React.FC<TablerIconsProps>;
   title: string;
-  description: string;
+  body: string | JSX.Element;
   color?: MantineColor;
   link?: string;
   linkText?: string;
@@ -27,7 +25,7 @@ export interface FeatureCardProps {
 export default function FeatureCard({
   Icon,
   title,
-  description,
+  body,
   color,
   link,
   linkText,
@@ -73,7 +71,7 @@ export default function FeatureCard({
       </div>
 
       <Text size="md" color="dimmed" className="flex-grow">
-        {description}
+        {body}
       </Text>
 
       {link ? (
