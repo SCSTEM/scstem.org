@@ -263,6 +263,7 @@ export default function Sponsors(): JSX.Element {
           </div>
         </div>
 
+        {/* Why join cards */}
         <Section title="Why join?">
           <Grid gutter="md" justify="center">
             {whyJoin.map((wj) => (
@@ -272,6 +273,96 @@ export default function Sponsors(): JSX.Element {
             ))}
           </Grid>
         </Section>
+
+        <div className="space-y-4 w-screen bg-zinc-200 dark:bg-dark shadow-inner my-8 py-8">
+          <div className="md:max-w-screen-xl mx-auto px-10 md:px-12">
+            <div className="md:w-[500px] mb-8 mx-auto">
+              <IdealImage
+                img={require("../../static/img/open-house-banner.png")}
+                alt="South Central STEM Collective open house banner"
+              />
+            </div>
+            <div className="flex flex-col md:flex-row md:space-x-6 md:space-y-0 space-x-0 space-y-6">
+              <div className="flex-1">
+                <Title
+                  order={3}
+                  className="text-2xl font-black text-center mb-6"
+                >
+                  Workspace and Directions
+                </Title>
+                <div>
+                  We are located in the Chambersburg Mall, off Black Gap Road.
+                  Getting to our unit from outside the mall can be slightly
+                  tricky, so please refer to the following directions and map.
+                </div>
+                <ol className="mb-6">
+                  <li>
+                    Access the mall property using the "secondary" mall entrance
+                    near the Dollar General{" "}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="white"
+                      style={{ width: "1.5rem" }}
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        fill="red"
+                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        fill="white"
+                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                  </li>
+                  <li>
+                    Drive straight into the parking lot, on the left side of the
+                    divider (Yellow area).
+                  </li>
+                  <li>
+                    Our entrance is right beside a glass door. Note the image
+                    attached to the SC2 Bulb marker.{" "}
+                    <img
+                      src="/img/svg/logo-color.svg"
+                      className="w-8 h-8 top-2 -mt-2 relative"
+                    />
+                  </li>
+                </ol>
+
+                <div className="italic text-center">
+                  Click on the map icons for details. Our door will have the SC2
+                  Bulb on the outside.
+                </div>
+
+                <iframe
+                  src="https://www.google.com/maps/d/u/3/embed?mid=13WVDjSSoL7v92mAoV62t397_pQCGncny&ehbc=2E312F"
+                  width="100%"
+                  height="750"
+                ></iframe>
+              </div>
+
+              <Divider
+                size="sm"
+                orientation="vertical"
+                className="hidden md:block"
+              />
+
+              <Divider size="sm" className="md:hidden block" />
+
+              <div className="flex-1">
+                <Title order={3} className="text-2xl font-black text-center">
+                  FAQ
+                </Title>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </DefaultLayout>
   );
