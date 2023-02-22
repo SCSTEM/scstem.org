@@ -48,7 +48,7 @@ export default function FeatureCard({
       p="xl"
       radius="lg"
       withBorder
-      className="flex flex-col space-y-3 h-full lg:w-[450px] mx-auto"
+      className="flex flex-col space-y-3 h-full mx-auto"
     >
       <ThemeIcon
         color={highlightColor}

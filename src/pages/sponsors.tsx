@@ -21,7 +21,7 @@ export default function Sponsors(): JSX.Element {
           </div>
         </div>
       </HeroHeader>
-      <div className="mx-auto grid grid-cols-1 gap-10 py-6 md:grid-cols-2 md:py-20 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="mx-auto grid grid-cols-1 gap-10 py-6 md:grid-cols-2 md:py-20 lg:grid-cols-3 xl:grid-cols-4 md:max-w-screen-xl">
         {data.map((sponsor) => (
           <SponsorCard key={sponsor.name} {...sponsor} />
         ))}

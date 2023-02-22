@@ -173,7 +173,7 @@ export default function Sponsors(): JSX.Element {
           </Grid>
         </Section>
 
-        <div className="space-y-4 w-screen bg-zinc-200 dark:bg-dark shadow-inner my-8 py-12 px-8">
+        <div className="space-y-4 bg-zinc-200 dark:bg-dark shadow-inner my-8 py-12 px-8">
           <div className="md:max-w-screen-xl mx-auto md:px-12">
             <div className="md:w-[750px] mb-8 mx-auto">
               <IdealImage
@@ -187,7 +187,7 @@ export default function Sponsors(): JSX.Element {
                 className="hidden dark:block"
               />
             </div>
-            <div className="flex flex-col md:flex-row space-y-4 items-center">
+            <div className="flex flex-col lg:flex-row space-y-4 items-center">
               <div className="flex-grow md:mr-12 flex flex-col space-y-4">
                 <div className="rounded-3xl flex flex-col space-y-4">
                   <Title order={4} className="text-xl font-black md:text-left">
@@ -252,13 +252,11 @@ export default function Sponsors(): JSX.Element {
                 </div>
               </div>
 
-              <div className="rounded-xl">
-                <IdealImage
-                  img={require("../../static/img/morethanrobots.jpg")}
-                  alt="Collage of photos capturing some of the many ways students can get involved"
-                  className="md:w-[700px] rounded-3xl overflow-hidden shadow-xl"
-                />
-              </div>
+              <IdealImage
+                img={require("../../static/img/morethanrobots.jpg")}
+                alt="Collage of photos capturing some of the many ways students can get involved"
+                className="overflow-hidden rounded-3xl"
+              />
             </div>
           </div>
         </div>
@@ -274,7 +272,7 @@ export default function Sponsors(): JSX.Element {
           </Grid>
         </Section>
 
-        <div className="space-y-4 w-screen bg-zinc-200 dark:bg-dark shadow-inner my-8 py-8">
+        <div className="space-y-4 bg-zinc-200 dark:bg-dark shadow-inner my-8 py-8">
           <div className="md:max-w-screen-xl mx-auto px-10 md:px-12">
             <div className="md:w-[500px] mb-8 mx-auto">
               <IdealImage
@@ -308,14 +306,14 @@ export default function Sponsors(): JSX.Element {
                       style={{ width: "1.5rem" }}
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         fill="red"
                         d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
                       />
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         fill="white"
                         d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
                       />
