@@ -60,16 +60,16 @@ const whyJoin: FeatureCardProps[] = [
   {
     title: "Learn real-world skills",
     body: (
-      <div className="flex flex-col">
+      <div className="flex flex-col h-full">
         <div className="mb-3">
           Get hands on with tools and technology under the supervision of
-          experts in their fields, an expierence that you cannot get anywhere
-          else.
+          experts in their fields in everything from engineering to marketing.
+          Learn not only how the tools work, but how to use them effectively.
         </div>
         <IdealImage
-          img={require("../idealimage/hands-on-1.jpg")}
+          img={require("../idealimage/hands-on-2.jpg")}
           alt="A student and mentor get hands-on with a robot"
-          className="overflow-hidden rounded-xl"
+          className="overflow-hidden rounded-xl shadow-xl aspect-video mt-auto"
         />
       </div>
     ),
@@ -78,15 +78,16 @@ const whyJoin: FeatureCardProps[] = [
   {
     title: "Experience leadership and teamwork",
     body: (
-      <div className="flex flex-col">
+      <div className="flex flex-col h-full">
         <div className="mb-3">
-          Learn how to work with others to achieve a common goal with the
-          support of mentors and your teammates.....
+          Build strong relationships with teammates and mentors as you work
+          together throughout the season. Learn how to make decisions as a team
+          and take leadership in your area of expertise.
         </div>
         <IdealImage
           img={require("../idealimage/leadership-1.jpg")}
-          alt="A student and mentor get hands-on with a robot"
-          className="overflow-hidden rounded-xl"
+          alt="Two students referencing a whiteboard during a planning meeting"
+          className="overflow-hidden rounded-xl shadow-xl mt-auto aspect-video"
         />
       </div>
     ),
@@ -94,7 +95,21 @@ const whyJoin: FeatureCardProps[] = [
   },
   {
     title: "Education through competition",
-    body: "Voluptate nulla veniam ullamco voluptate do aliquip consequat fugiat aliqua velit mollit.",
+    body: (
+      <div className="flex flex-col h-full">
+        <div className="mb-3">
+          Prepare to compete against teams from around the world with a limited
+          time-frame, tight budget, and a complex challenge. Learn how to work
+          under pressure and build reliable systems that can handle intense
+          competition.
+        </div>
+        <IdealImage
+          img={require("../idealimage/competition-1.jpg")}
+          alt="Team members cheering at competition"
+          className="overflow-hidden rounded-xl shadow-xl mt-auto aspect-video"
+        />
+      </div>
+    ),
     Icon: IconBooks,
   },
   {
@@ -236,7 +251,7 @@ export default function Sponsors(): JSX.Element {
                   </Link>
                 </div>
 
-                <Divider />
+                <Divider color="brand-dark" />
 
                 <div className="rounded-3xl space-y-4 flex flex-col">
                   <Title
@@ -363,14 +378,6 @@ export default function Sponsors(): JSX.Element {
                 ></iframe>
               </div>
 
-              <Divider
-                size="sm"
-                orientation="vertical"
-                className="hidden md:block"
-              />
-
-              <Divider size="sm" className="md:hidden block" />
-
               <div className="flex-1">
                 <Title order={3} className="text-2xl font-black text-center">
                   FAQ
@@ -379,6 +386,10 @@ export default function Sponsors(): JSX.Element {
             </div>
           </div>
         </div>
+
+        <Section title="Can't make it?">
+          <>Todo</>
+        </Section>
       </div>
     </DefaultLayout>
   );

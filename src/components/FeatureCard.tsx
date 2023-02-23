@@ -70,7 +70,11 @@ export default function FeatureCard({
         ) : null}
       </div>
 
-      <Text size="md" color="dimmed" className="flex-grow">
+      <Text
+        size="md"
+        color={colorScheme === "dark" ? "dimmed" : null}
+        className="flex-grow"
+      >
         {body}
       </Text>
 
