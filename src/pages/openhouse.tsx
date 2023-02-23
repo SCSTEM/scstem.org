@@ -9,6 +9,7 @@ import {
   Button,
   Divider,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import {
   IconDeviceGamepad2,
   IconLego,
@@ -114,13 +115,55 @@ const whyJoin: FeatureCardProps[] = [
   },
   {
     title: "Scholarships and career opportunities",
-    body: "Est commodo aliquip voluptate laborum eu anim ea.",
+    body: (
+      <div className="flex flex-col h-full">
+        <div className="mb-3">
+          Being a member of a FIRST team is more than just building robots and
+          learning about STEM. It opens doors to scholarship and career
+          opportunities that you cannot get anywhere else. Many of our alumni
+          used the skills developed while students to pursue careers in STEM
+          (and related) fields.
+        </div>
+        <IdealImage
+          img={require("../idealimage/award.jpg")}
+          alt="Team members receiving an award at competition"
+          className="overflow-hidden rounded-xl shadow-xl mt-auto aspect-video"
+        />
+      </div>
+    ),
     Icon: IconBooks,
   },
   {
     title: "Fun",
-    body: "Reprehenderit reprehenderit esse quis reprehenderit irure in eiusmod sint est consectetur reprehenderit occaecat qui.",
+    body: (
+      <div className="flex flex-col h-full">
+        <div className="mb-3">
+          Although we take our work seriously, we also have a lot of fun.
+          Whether it's dancing to the YMCA at competition, playing a game of
+          Kahoot during a meeting, or just hanging out with friends as we work
+          on our robots, we always manage to have a lot of fun.
+        </div>
+        <IdealImage
+          img={require("../idealimage/dean.jpg")}
+          alt="Team members sharing a moment with Dean Kamen, the founder of FIRST"
+          className="overflow-hidden rounded-xl shadow-xl mt-auto aspect-video"
+        />
+      </div>
+    ),
     Icon: IconMoodSmile,
+  },
+];
+
+const faq: { question: string; answer: string }[] = [
+  {
+    question: "When is the open house?",
+    answer:
+      "Thursday, March 23 from 7PM to 8:30 and Saturday, March 25 from 10AM to 11:30 or 1PM to 3",
+  },
+  {
+    question: "What age do I have to be to join?",
+    answer:
+      "We have 3 primary age groups, with ages 4 to 18. We are also always looking for adult mentors willing to share their skills with our students.",
   },
 ];
 
@@ -142,9 +185,23 @@ const Section = ({
   </div>
 );
 
+const QA = ({
+  question,
+  answer,
+}: {
+  question: string;
+  answer: string;
+}): JSX.Element => (
+  <div className="flex flex-col space-y-2 mb-4">
+    <div className="text-lg font-bold">{question}</div>
+    <div>{answer}</div>
+  </div>
+);
+
 export default function Sponsors(): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
   const [color, setColor] = useState<MantineColor>("brand-dark");
+  const mediaMd = useMediaQuery("(max-width: 992px)");
 
   useEffect(() => {
     colorScheme === "dark" ? setColor("brand-yellow") : setColor("brand-blue");
@@ -161,9 +218,9 @@ export default function Sponsors(): JSX.Element {
           <div className="text-2xl">
             Join us for our open house on{" "}
             <Highlight theme="dark">Thursday, March 23 (7PM - 8:30)</Highlight>{" "}
-            and Saturday,{" "}
+            and{" "}
             <Highlight theme="dark">
-              March 25 (10AM - 11:30 and 1PM - 3)
+              Saturday, March 25 (10AM - 11:30 and 1PM - 3)
             </Highlight>{" "}
             to see what we're all about.
           </div>
@@ -172,9 +229,6 @@ export default function Sponsors(): JSX.Element {
 
       <div className="my-10">
         <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6">
-          <Badge size="lg" color={color}>
-            Open to all ages
-          </Badge>
           <Title
             order={2}
             align="center"
@@ -298,7 +352,7 @@ export default function Sponsors(): JSX.Element {
         <Section title="Why join?">
           <Grid gutter="md" justify="center">
             {whyJoin.map((wj) => (
-              <Grid.Col lg={6} xl={4} key={wj.title}>
+              <Grid.Col md={6} lg={4} key={wj.title}>
                 <FeatureCard key={wj.title} {...wj} />
               </Grid.Col>
             ))}
@@ -307,13 +361,34 @@ export default function Sponsors(): JSX.Element {
 
         <div className="space-y-4 bg-zinc-200 dark:bg-dark shadow-inner my-8 py-8">
           <div className="md:max-w-screen-xl mx-auto px-10 md:px-12">
-            <div className="md:w-[500px] mb-8 mx-auto">
+            <div className="md:w-[700px] mb-8 mx-auto">
               <IdealImage
                 img={require("../idealimage/open-house-banner.png")}
                 alt="South Central STEM Collective open house banner"
               />
             </div>
             <div className="flex flex-col md:flex-row md:space-x-6 md:space-y-0 space-x-0 space-y-6">
+              <div className="flex-1">
+                <Title
+                  order={3}
+                  className="text-2xl font-black text-center mb-6"
+                >
+                  FAQ
+                </Title>
+                {faq.map((qa) => (
+                  <QA
+                    key={qa.question}
+                    question={qa.question}
+                    answer={qa.answer}
+                  />
+                ))}
+              </div>
+
+              <Divider
+                size="sm"
+                orientation={mediaMd ? "horizontal" : "vertical"}
+              />
+
               <div className="flex-1">
                 <Title
                   order={3}
@@ -376,12 +451,6 @@ export default function Sponsors(): JSX.Element {
                   width="100%"
                   height="750"
                 ></iframe>
-              </div>
-
-              <div className="flex-1">
-                <Title order={3} className="text-2xl font-black text-center">
-                  FAQ
-                </Title>
               </div>
             </div>
           </div>
