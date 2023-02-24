@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 
 export interface FeatureCardProps {
   Icon: React.FC<TablerIconsProps>;
-  title: string;
+  title: string | JSX.Element;
   body: string | JSX.Element;
   color?: MantineColor;
   link?: string;
@@ -57,9 +57,13 @@ export default function FeatureCard({
         <Icon size={50} stroke={1.5} />
       </ThemeIcon>
 
-      <Text size="lg" weight={700}>
-        {title}
-      </Text>
+      {typeof title === "string" ? (
+        <Text size="lg" weight={700}>
+          {title}
+        </Text>
+      ) : (
+        title
+      )}
 
       <div className="flex items-center">
         <Divider size="sm" color={highlightColor} className="flex-grow" />

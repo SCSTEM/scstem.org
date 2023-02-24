@@ -33,15 +33,23 @@ import DefaultLayout from "@site/src/layouts/Default";
 
 const programs: FeatureCardProps[] = [
   {
-    title: "FIRST Lego League",
+    title: (
+      <Text size="lg" weight={700}>
+        <span className="italic inline">FIRST®</span> LEGO® League
+      </Text>
+    ),
     body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     Icon: IconLego,
     color: "brand-red",
     link: "https://www.firstinspires.org/robotics/fll",
-    badge: "Ages 4 - 16",
+    badge: "Ages 9 - 16",
   },
   {
-    title: "FIRST Tech Challenge",
+    title: (
+      <Text size="lg" weight={700}>
+        <span className="italic">FIRST®</span> Tech Challenge
+      </Text>
+    ),
     body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     Icon: IconDeviceGamepad2,
     color: "brand-orange",
@@ -49,7 +57,11 @@ const programs: FeatureCardProps[] = [
     badge: "Ages 12 - 18",
   },
   {
-    title: "FIRST Robotics Competition",
+    title: (
+      <Text size="lg" weight={700}>
+        <span className="italic">FIRST®</span> Robotics Competition
+      </Text>
+    ),
     body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
     Icon: IconRobot,
     color: "brand-blue",
@@ -119,11 +131,11 @@ const whyJoin: FeatureCardProps[] = [
     body: (
       <div className="flex flex-col h-full">
         <div className="mb-3">
-          Being a member of a FIRST team is more than just building robots and
-          learning about STEM. It opens doors to scholarship and career
-          opportunities that you cannot get anywhere else. Many of our alumni
-          used the skills developed while students to pursue careers in STEM
-          (and related) fields.
+          Being a member of a <span className="italic">FIRST®</span> team is
+          more than just building robots and learning about STEM. It opens doors
+          to scholarship and career opportunities that you cannot get anywhere
+          else. Many of our alumni used the skills developed while students to
+          pursue careers in STEM (and related) fields.
         </div>
         <IdealImage
           img={require("../idealimage/award.jpg")}
@@ -146,7 +158,7 @@ const whyJoin: FeatureCardProps[] = [
         </div>
         <IdealImage
           img={require("../idealimage/dean.jpg")}
-          alt="Team members sharing a moment with Dean Kamen, the founder of FIRST"
+          alt="Team members sharing a moment with Dean Kamen, the founder of FIRST®"
           className="overflow-hidden rounded-xl shadow-xl mt-auto aspect-video"
         />
       </div>
@@ -164,7 +176,7 @@ const faq: { question: string; answer: string | JSX.Element }[] = [
   {
     question: "What age do I have to be to join?",
     answer:
-      "We have 3 primary age groups, with ages 4 to 18. We are also always looking for adult mentors willing to share their skills with our students.",
+      "We have 3 primary age groups, with ages 9 to 18. We are also always looking for adult mentors willing to share their skills with our students.",
   },
   {
     question: "What does it cost to participate?",
@@ -261,12 +273,12 @@ export default function Sponsors(): JSX.Element {
             Meet the teams, see the robots, and learn more about our programs.
           </Title>
           <Text
-            color="dimmed"
+            color={colorScheme === "dark" ? "dimmed" : null}
             size="lg"
             className="max-w-4xl m-auto"
             align="center"
           >
-            Are you or is someone you know interested in legos, science,
+            Are you or is someone you know interested in LEGO®, science,
             technology, engineering, math, business, marketing, video
             production, software development, web design, carpentry, or
             leadership? Find out more and get a chance to speak with our
@@ -289,12 +301,12 @@ export default function Sponsors(): JSX.Element {
             <div className="md:w-[750px] mb-8 mx-auto">
               <IdealImage
                 img={require("../idealimage/first/first-horizontal-acro-light.png")}
-                alt="FIRST logo and acronym"
+                alt="FIRST® logo and acronym"
                 className="dark:hidden"
               />
               <IdealImage
                 img={require("../idealimage/first/first-horizontal-acro-dark.png")}
-                alt="FIRST logo and acronym"
+                alt="FIRST® logo and acronym"
                 className="hidden dark:block"
               />
             </div>
@@ -302,18 +314,19 @@ export default function Sponsors(): JSX.Element {
               <div className="flex-grow md:mr-12 flex flex-col space-y-4">
                 <div className="rounded-3xl flex flex-col space-y-4">
                   <Title order={4} className="text-xl font-black md:text-left">
-                    Who is FIRST?
+                    Who is <span className="italic">FIRST®</span>?
                   </Title>
                   <div>
                     All of our programs are members of a global organization
-                    called FIRST. FIRST's mission is to inspire young people to
-                    become leaders in science and technology fields by teaching
-                    real-world skills through team work and competition. Each
-                    year, a new challenge is presented to teams who, with the
-                    help of experienced mentors, must apply their skills to
-                    build a functional robot. Once built, the robot is put to
-                    the test in a competition setting against teams from around
-                    the world.
+                    called <span className="italic">FIRST®</span>. The mission
+                    of <span className="italic">FIRST®</span> mission is to
+                    inspire young people to become leaders in science and
+                    technology fields by teaching real-world skills through team
+                    work and competition. Each year, a new challenge is
+                    presented to teams who, with the help of experienced
+                    mentors, must apply their skills to build a functional
+                    robot. Once built, the robot is put to the test in a
+                    competition setting against teams from around the world.
                   </div>
                   <Link to="https://www.firstinspires.org/" className="ml-auto">
                     <Button
@@ -324,7 +337,7 @@ export default function Sponsors(): JSX.Element {
                       variant="subtle"
                       compact
                     >
-                      FIRST
+                      <span className="italic">FIRST®</span>
                     </Button>
                   </Link>
                 </div>
