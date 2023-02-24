@@ -24,12 +24,14 @@ export const Sponsors: Sponsor[] = [
     level: SponsorLevel.Platinum,
     logo: "/img/sponsors/jlg.svg",
     url: "https://www.jlg.com/",
+    supportSince: 2013,
   },
   {
     name: "Wellspan",
     level: SponsorLevel.Platinum,
     logo: "/img/sponsors/wellspan.png",
     url: "https://www.wellspan.org/",
+    supportSince: 2022,
   },
   {
     name: "VFW",
@@ -37,5 +39,28 @@ export const Sponsors: Sponsor[] = [
     logo: "/img/sponsors/vfw.png",
     url: "https://www.vfw1599.org/",
     sub: "Chambersburg VFW Post 1599",
+    supportSince: 2022,
   },
-];
+  {
+    name: "Fives",
+    level: SponsorLevel.Platinum,
+    logo: "/img/sponsors/fives.svg",
+    url: "https://www.fivesgroup.com/",
+    supportSince: 2022,
+  },
+  {
+    name: "The WorkShope",
+    level: SponsorLevel.Gold,
+    logo: "/img/sponsors/workshope.png",
+    url: "https://www.theworkshope.com/",
+    supportSince: 2021,
+  },
+  {
+    name: "Y.B. Welding",
+    level: SponsorLevel.Gold,
+    logo: "/img/sponsors/yb-light.png",
+    darkLogo: "/img/sponsors/yb-dark.png",
+    url: "https://www.wellspan.org/",
+    supportSince: 2018,
+  },
+].sort((a, b) => (a.supportSince < b.supportSince ? -1 : 1));

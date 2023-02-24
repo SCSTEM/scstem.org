@@ -1,6 +1,6 @@
 import Link from "@docusaurus/Link";
-import React from "react";
 import { Button as MButton, ButtonProps } from "@mantine/core";
+import React from "react";
 
 interface Props extends ButtonProps {
   children: React.ReactNode;
