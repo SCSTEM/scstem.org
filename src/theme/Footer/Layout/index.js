@@ -111,9 +111,6 @@ export default function FooterLayout({ copyright }) {
               <Link to="/wiki/donations" className="text-gray">
                 Donate
               </Link>
-              <Link to="/wiki/donations/amazon-smile" className="text-gray">
-                AmazonSmile
-              </Link>
               <Link to="/sponsors" className="text-gray">
                 Sponsors
               </Link>
