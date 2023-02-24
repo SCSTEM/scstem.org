@@ -198,14 +198,14 @@ const Section = ({
   title: string;
   children: React.ReactNode;
 }): JSX.Element => (
-  <div className="py-2 px-8 md:max-w-screen-xl">
+  <div className="py-2 px-8 md:max-w-screen-xl mx-auto">
     <Title
       order={3}
       className="text-2xl font-black mb-6 text-center md:text-left"
     >
       {title}
     </Title>
-    <div className="mx-auto">{children}</div>
+    {children}
   </div>
 );
 
@@ -487,7 +487,7 @@ export default function Sponsors(): JSX.Element {
 
         {videoUrl ? (
           <Section title="Can't make it?">
-            <Card shadow="lg" p="xl" radius="lg" withBorder>
+            <Card shadow="lg" p="xl" radius="lg" withBorder className="w-full">
               <Title order={4} className="w-full text-center">
                 Check out this video to learn a little bit more about our FRC
                 team: Biohazard
