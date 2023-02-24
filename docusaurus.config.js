@@ -53,7 +53,7 @@ const config = {
             label: "Clubs",
             items: [
               {
-                label: "FLL (Age 4-16)",
+                label: "FLL (Age 9-16)",
                 to: "/clubs/fll",
               },
               {
@@ -62,7 +62,7 @@ const config = {
               },
               {
                 label: "FRC (Age 14-18)",
-                to: "https://biohazard4050.org",
+                to: "/clubs/frc",
               },
             ],
           },
