@@ -62,7 +62,7 @@ const config = {
               },
               {
                 label: "FRC (Age 14-18)",
-                to: "/clubs/frc",
+                to: "https://go.scstem.tech/biofacebook",
               },
             ],
           },
