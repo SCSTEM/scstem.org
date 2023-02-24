@@ -1,6 +1,5 @@
 import Link from "@docusaurus/Link";
 import {
-  Badge,
   Title,
   Text,
   useMantineColorScheme,
@@ -8,6 +7,7 @@ import {
   Grid,
   Button,
   Divider,
+  Card,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
@@ -23,6 +23,7 @@ import {
 import IdealImage from "@theme/IdealImage";
 import React, { useEffect, useState } from "react";
 
+import CustomButton from "@site/src/components/Button";
 import FeatureCard, {
   FeatureCardProps,
 } from "@site/src/components/FeatureCard";
@@ -154,7 +155,7 @@ const whyJoin: FeatureCardProps[] = [
   },
 ];
 
-const faq: { question: string; answer: string }[] = [
+const faq: { question: string; answer: string | JSX.Element }[] = [
   {
     question: "When is the open house?",
     answer:
@@ -165,7 +166,30 @@ const faq: { question: string; answer: string }[] = [
     answer:
       "We have 3 primary age groups, with ages 4 to 18. We are also always looking for adult mentors willing to share their skills with our students.",
   },
+  {
+    question: "What does it cost to participate?",
+    answer:
+      "Membership dues or registration fees are up to the individual teams depending on age group, but most are free or very inexpensive.",
+  },
+  {
+    question: "What if I don't know anything about robotics?",
+    answer:
+      "That's okay! We have a wide range of experience levels and are always looking for new members to join any of our teams. We will teach you everything you need to know.",
+  },
+  {
+    question:
+      "I can't make it to the open house, is there another time I can visit or learn about what you do?",
+    answer: (
+      <>
+        Yes! You can fill out our <Link to="/get-involved">Get Involved</Link>{" "}
+        form with your information and we will reach out. There's a good chance
+        we have a meeting coming up you're welcome to visit!
+      </>
+    ),
+  },
 ];
+
+const videoUrl = "";
 
 const Section = ({
   title,
@@ -174,14 +198,14 @@ const Section = ({
   title: string;
   children: React.ReactNode;
 }): JSX.Element => (
-  <div className="py-3 mb-4 px-8 md:max-w-screen-xl mx-auto">
+  <div className="py-2 px-8 md:max-w-screen-xl">
     <Title
       order={3}
       className="text-2xl font-black mb-6 text-center md:text-left"
     >
       {title}
     </Title>
-    {children}
+    <div className="mx-auto">{children}</div>
   </div>
 );
 
@@ -190,7 +214,7 @@ const QA = ({
   answer,
 }: {
   question: string;
-  answer: string;
+  answer: string | JSX.Element;
 }): JSX.Element => (
   <div className="flex flex-col space-y-2 mb-4">
     <div className="text-lg font-bold">{question}</div>
@@ -227,8 +251,8 @@ export default function Sponsors(): JSX.Element {
         </div>
       </HeroHeader>
 
-      <div className="my-10">
-        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6">
+      <div className="flex flex-col space-y-8">
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 mt-8">
           <Title
             order={2}
             align="center"
@@ -260,7 +284,7 @@ export default function Sponsors(): JSX.Element {
           </Grid>
         </Section>
 
-        <div className="space-y-4 bg-zinc-200 dark:bg-dark shadow-inner my-8 py-12 px-8">
+        <div className="space-y-4 bg-zinc-200 dark:bg-dark shadow-inner py-12 px-8">
           <div className="md:max-w-screen-xl mx-auto md:px-12">
             <div className="md:w-[750px] mb-8 mx-auto">
               <IdealImage
@@ -359,7 +383,7 @@ export default function Sponsors(): JSX.Element {
           </Grid>
         </Section>
 
-        <div className="space-y-4 bg-zinc-200 dark:bg-dark shadow-inner my-8 py-8">
+        <div className="space-y-4 bg-zinc-200 dark:bg-dark shadow-inner py-8">
           <div className="md:max-w-screen-xl mx-auto px-10 md:px-12">
             <div className="md:w-[700px] mb-8 mx-auto">
               <IdealImage
@@ -397,8 +421,11 @@ export default function Sponsors(): JSX.Element {
                   Workspace and Directions
                 </Title>
                 <div>
-                  We are located in the Chambersburg Mall, off Black Gap Road.
-                  Getting to our unit from outside the mall can be slightly
+                  We are located in the{" "}
+                  <Link to="https://goo.gl/maps/7JxxTsU5dRnvkfLx7">
+                    Chambersburg Mall, off Black Gap Road
+                  </Link>
+                  . Getting to our unit from outside the mall can be slightly
                   tricky, so please refer to the following directions and map.
                 </div>
                 <ol className="mb-6">
@@ -441,24 +468,54 @@ export default function Sponsors(): JSX.Element {
                   </li>
                 </ol>
 
-                <div className="italic text-center">
+                <div className="italic text-center mb-2">
                   Click on the map icons for details. Our door will have the SC2
                   Bulb on the outside.
                 </div>
 
-                <iframe
-                  src="https://www.google.com/maps/d/u/3/embed?mid=13WVDjSSoL7v92mAoV62t397_pQCGncny&ehbc=2E312F"
-                  width="100%"
-                  height="750"
-                ></iframe>
+                <div className="">
+                  <iframe
+                    src="https://www.google.com/maps/d/u/3/embed?mid=13WVDjSSoL7v92mAoV62t397_pQCGncny&ehbc=2E312F"
+                    width="100%"
+                    height="500"
+                  ></iframe>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <Section title="Can't make it?">
-          <>Todo</>
-        </Section>
+        {videoUrl ? (
+          <Section title="Can't make it?">
+            <Card shadow="lg" p="xl" radius="lg" withBorder>
+              <Title order={4} className="w-full text-center">
+                Check out this video to learn a little bit more about our FRC
+                team: Biohazard
+              </Title>
+              <div className="overflow-hidden rounded-2xl shadow-xl md:h-[500px] my-6">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                  title="YouTube video player"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+              <div className="text-center">
+                <CustomButton
+                  to="/get-involved"
+                  className="text-dark"
+                  variant="gradient"
+                  gradient={{ from: "brand-yellow", to: "brand-orange" }}
+                >
+                  Get Involved
+                </CustomButton>
+              </div>
+            </Card>
+          </Section>
+        ) : null}
       </div>
     </DefaultLayout>
   );
