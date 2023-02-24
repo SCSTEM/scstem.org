@@ -60,7 +60,7 @@ export const Sponsors: Sponsor[] = [
     level: SponsorLevel.Gold,
     logo: "/img/sponsors/yb-light.png",
     darkLogo: "/img/sponsors/yb-dark.png",
-    url: "https://www.wellspan.org/",
+    url: "https://www.ybwelding.com/",
     supportSince: 2018,
   },
 ].sort((a, b) => (a.supportSince < b.supportSince ? -1 : 1));
