@@ -244,7 +244,7 @@ export default function Sponsors(): JSX.Element {
   }, [colorScheme]);
 
   return (
-    <DefaultLayout>
+    <DefaultLayout title="Open House">
       <HeroHeader img="/img/students.webp">
         <div className="flex flex-col space-y-6 text-white">
           <div className="text-5xl font-bold">
