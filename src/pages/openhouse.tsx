@@ -258,7 +258,7 @@ export default function Sponsors(): JSX.Element {
             <Highlight theme="dark">
               Saturday, March 25 (10AM - 11:30 and 1PM - 3)
             </Highlight>{" "}
-            to see what we're all about.
+            at the Chambersburg Mall to see what we're all about.
           </div>
         </div>
       </HeroHeader>
@@ -353,7 +353,7 @@ export default function Sponsors(): JSX.Element {
                   </Title>
                   <div>
                     Although the goal is to build a robot, you do not have to be
-                    an engineer. Whether you are an future rocket scientist or
+                    an engineer. Whether you are a future rocket scientist or
                     an aspiring artist, there is a place here for you and
                     mentors ready to use their real world experience to help you
                     grow.
