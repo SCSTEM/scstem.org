@@ -33,6 +33,7 @@ import DefaultLayout from "@site/src/layouts/Default";
 
 const programs: FeatureCardProps[] = [
   {
+    key: "fll",
     title: (
       <Text size="lg" weight={700}>
         <span className="italic inline">FIRST®</span> LEGO® League
@@ -45,6 +46,7 @@ const programs: FeatureCardProps[] = [
     badge: "Ages 9 - 16",
   },
   {
+    key: "ftc",
     title: (
       <Text size="lg" weight={700}>
         <span className="italic">FIRST®</span> Tech Challenge
@@ -57,6 +59,7 @@ const programs: FeatureCardProps[] = [
     badge: "Ages 12 - 18",
   },
   {
+    key: "frc",
     title: (
       <Text size="lg" weight={700}>
         <span className="italic">FIRST®</span> Robotics Competition
@@ -72,6 +75,7 @@ const programs: FeatureCardProps[] = [
 
 const whyJoin: FeatureCardProps[] = [
   {
+    key: "skills",
     title: "Learn real-world skills",
     body: (
       <div className="flex flex-col h-full">
@@ -90,6 +94,7 @@ const whyJoin: FeatureCardProps[] = [
     Icon: IconTool,
   },
   {
+    key: "leadership",
     title: "Experience leadership and teamwork",
     body: (
       <div className="flex flex-col h-full">
@@ -108,6 +113,7 @@ const whyJoin: FeatureCardProps[] = [
     Icon: IconPresentation,
   },
   {
+    key: "competition",
     title: "Education through competition",
     body: (
       <div className="flex flex-col h-full">
@@ -127,6 +133,7 @@ const whyJoin: FeatureCardProps[] = [
     Icon: IconBooks,
   },
   {
+    key: "scholarships",
     title: "Scholarships and career opportunities",
     body: (
       <div className="flex flex-col h-full">
@@ -147,6 +154,7 @@ const whyJoin: FeatureCardProps[] = [
     Icon: IconBooks,
   },
   {
+    key: "fun",
     title: "Fun",
     body: (
       <div className="flex flex-col h-full">
@@ -234,7 +242,7 @@ const QA = ({
   </div>
 );
 
-export default function Sponsors(): JSX.Element {
+export default function OpenHouse(): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
   const [color, setColor] = useState<MantineColor>("brand-dark");
   const mediaMd = useMediaQuery("(max-width: 992px)");
@@ -289,8 +297,8 @@ export default function Sponsors(): JSX.Element {
         <Section title="Our Programs">
           <Grid gutter="md" justify="center">
             {programs.map((program) => (
-              <Grid.Col md={6} lg={4} key={program.title}>
-                <FeatureCard {...program} />
+              <Grid.Col md={6} lg={4} key={program.key}>
+                <FeatureCard key={program.key} {...program} />
               </Grid.Col>
             ))}
           </Grid>
@@ -353,10 +361,9 @@ export default function Sponsors(): JSX.Element {
                   </Title>
                   <div>
                     Although the goal is to build a robot, you do not have to be
-                    an engineer. Whether you are a future rocket scientist or
-                    an aspiring artist, there is a place here for you and
-                    mentors ready to use their real world experience to help you
-                    grow.
+                    an engineer. Whether you are a future rocket scientist or an
+                    aspiring artist, there is a place here for you and mentors
+                    ready to use their real world experience to help you grow.
                   </div>
                   <Link
                     to="https://info.firstinspires.org/morethanrobots"
@@ -389,8 +396,8 @@ export default function Sponsors(): JSX.Element {
         <Section title="Why join?">
           <Grid gutter="md" justify="center">
             {whyJoin.map((wj) => (
-              <Grid.Col md={6} lg={4} key={wj.title}>
-                <FeatureCard key={wj.title} {...wj} />
+              <Grid.Col md={6} lg={4} key={wj.key}>
+                <FeatureCard {...wj} />
               </Grid.Col>
             ))}
           </Grid>
@@ -486,13 +493,11 @@ export default function Sponsors(): JSX.Element {
                   Bulb on the outside.
                 </div>
 
-                <div className="">
-                  <iframe
-                    src="https://www.google.com/maps/d/u/3/embed?mid=13WVDjSSoL7v92mAoV62t397_pQCGncny&ehbc=2E312F"
-                    width="100%"
-                    height="500"
-                  ></iframe>
-                </div>
+                <iframe
+                  src="https://www.google.com/maps/d/u/3/embed?mid=13WVDjSSoL7v92mAoV62t397_pQCGncny&ehbc=2E312F"
+                  width="100%"
+                  height="500"
+                ></iframe>
               </div>
             </div>
           </div>
@@ -509,7 +514,7 @@ export default function Sponsors(): JSX.Element {
                 <iframe
                   width="100%"
                   height="100%"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                  src={videoUrl}
                   title="YouTube video player"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen

@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 
 export interface FeatureCardProps {
   Icon: React.FC<TablerIconsProps>;
+  key: string;
   title: string | JSX.Element;
   body: string | JSX.Element;
   color?: MantineColor;
