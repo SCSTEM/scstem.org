@@ -14,12 +14,6 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/svg/logo-color.svg",
-
-  i18n: {
-    defaultLocale: "en",
-    locales: ["en"],
-  },
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
