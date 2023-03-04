@@ -1,0 +1,11 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+CLASS:PUBLIC
+DESCRIPTION:South Central STEM Collective: Open House (Saturday Morning)\nDate and Time - Mar 25\, 2023 10:00 AM to 11:30 AM\nVenue - 3055 Black Gap Rd\, Chambersburg\, PA 17202\, USA\nGet hands on with robots at the South Central STEM Collective robotics open house.\n\nLearn more at https://go.scstem.tech/openhouse23\n
+DTSTART:20230325T150000Z
+DTEND:20230325T163000Z
+LOCATION:3055 Black Gap Rd, Chambersburg, PA 17202, USA
+SUMMARY;LANGUAGE=en-us:South Central STEM Collective: Open House (Saturday Morning)
+END:VEVENT
+END:VCALENDAR
