@@ -92,9 +92,6 @@ const config = {
         gtag: {
           trackingID: "G-3TPD3DLYBR",
         },
-        googleTagManager: {
-          containerId: "GTM-TBS6KW7",
-        },
         sitemap: {
           changefreq: "monthly",
           priority: 0.5,
