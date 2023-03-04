@@ -1,5 +1,4 @@
 import Link from "@docusaurus/Link";
-import { useLocation } from "@docusaurus/router";
 import {
   Title,
   Text,
@@ -422,13 +421,13 @@ export default function OpenHouse(): JSX.Element {
                 p="xl"
                 radius="lg"
                 withBorder
-                className="flex space-x-4 overflow-visible"
+                className="flex md:flex-row flex-col md:space-x-4 md:space-y-0 space-y-4 overflow-visible w-fit mx-auto"
               >
-                <div className="flex-1">
+                <div className="flex-1 mb-4">
                   <Title order={4} className="text-center mb-4">
                     Connect on Facebook
                   </Title>
-                  <div className="space-y-4 items-center justify-center flex flex-col h-40 my-auto">
+                  <div className="space-y-4 items-center justify-center flex flex-col md:h-40 my-auto">
                     <Link to="https://fb.me/e/2pbNhQ4Y7">
                       <Button
                         leftIcon={<IconCalendarEvent />}
@@ -476,9 +475,12 @@ export default function OpenHouse(): JSX.Element {
                   </div>
                 </div>
 
-                <Divider size="sm" orientation="vertical" />
+                <Divider
+                  size="sm"
+                  orientation={mediaMd ? "horizontal" : "vertical"}
+                />
 
-                <div className="flex-1 flex flex-col items-center">
+                <div className="flex-1 flex flex-col items-center mt-4 md:mt-0">
                   <Title order={4} className="text-center mb-2">
                     Add to your calendar
                   </Title>
