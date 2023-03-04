@@ -410,11 +410,11 @@ export default function OpenHouse(): JSX.Element {
 
         <div className="space-y-4 bg-zinc-200 dark:bg-dark shadow-inner py-8">
           <div className="md:max-w-screen-xl mx-auto px-10 md:px-12">
-            <div className="md:w-[700px] mb-8 mx-auto">
+            <div className="md:w-[700px] mb-10 mx-auto">
               <IdealImage
                 img={require("../idealimage/open-house-banner.png")}
                 alt="South Central STEM Collective open house banner"
-                className="mb-4"
+                className="mb-8"
               />
               <Card
                 shadow="lg"
@@ -428,7 +428,7 @@ export default function OpenHouse(): JSX.Element {
                   <Title order={4} className="text-center mb-4">
                     Connect on Facebook
                   </Title>
-                  <div className="space-y-4 items-center flex flex-col">
+                  <div className="space-y-4 items-center justify-center flex flex-col h-40 my-auto">
                     <Link to="https://fb.me/e/2pbNhQ4Y7">
                       <Button
                         leftIcon={<IconCalendarEvent />}
@@ -497,6 +497,7 @@ export default function OpenHouse(): JSX.Element {
                     iCalFileName="robotics-open-house-0323-1900"
                     listStyle="overlay"
                     label="Thursday, 23rd @ 7PM"
+                    trigger="click"
                     lightMode={colorScheme === "light" ? "light" : "dark"}
                     options={[
                       "Google",
@@ -523,6 +524,7 @@ export default function OpenHouse(): JSX.Element {
                     iCalFileName="robotics-open-house-0325-1000"
                     listStyle="overlay"
                     label="Saturday, 25th @ 10AM"
+                    trigger="click"
                     lightMode={colorScheme === "light" ? "light" : "dark"}
                     options={[
                       "Google",
@@ -549,6 +551,7 @@ export default function OpenHouse(): JSX.Element {
                     iCalFileName="robotics-open-house-0325-1300"
                     listStyle="overlay"
                     label="Saturday, 25th @ 1PM"
+                    trigger="click"
                     lightMode={colorScheme === "light" ? "light" : "dark"}
                     options={[
                       "Google",
