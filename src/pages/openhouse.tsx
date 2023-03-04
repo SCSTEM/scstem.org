@@ -1,4 +1,5 @@
 import Link from "@docusaurus/Link";
+import { useLocation } from "@docusaurus/router";
 import {
   Title,
   Text,
@@ -8,6 +9,7 @@ import {
   Button,
   Divider,
   Card,
+  rem,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import {
@@ -19,8 +21,11 @@ import {
   IconBooks,
   IconMoodSmile,
   IconExternalLink,
+  IconCalendarEvent,
+  IconBrandFacebook,
 } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
+import { AddToCalendarButton } from "add-to-calendar-button-react";
 import React, { useEffect, useState } from "react";
 
 import CustomButton from "@site/src/components/Button";
@@ -409,7 +414,154 @@ export default function OpenHouse(): JSX.Element {
               <IdealImage
                 img={require("../idealimage/open-house-banner.png")}
                 alt="South Central STEM Collective open house banner"
+                className="mb-4"
               />
+              <Card
+                shadow="lg"
+                radioGroup="md"
+                p="xl"
+                radius="lg"
+                withBorder
+                className="flex space-x-4 overflow-visible"
+              >
+                <div className="flex-1">
+                  <Title order={4} className="text-center mb-4">
+                    Connect on Facebook
+                  </Title>
+                  <div className="space-y-4 items-center flex flex-col">
+                    <Link to="https://fb.me/e/2pbNhQ4Y7">
+                      <Button
+                        leftIcon={<IconCalendarEvent />}
+                        styles={(theme) => ({
+                          root: {
+                            backgroundColor: "#F3425F",
+                            border: 0,
+                            height: rem(42),
+                            paddingLeft: rem(20),
+                            paddingRight: rem(20),
+                            "&:not([data-disabled])": theme.fn.hover({
+                              backgroundColor: theme.fn.darken("#F3425F", 0.05),
+                            }),
+                            leftIcon: {
+                              marginRight: theme.spacing.md,
+                            },
+                          },
+                        })}
+                      >
+                        Let us know you're coming
+                      </Button>
+                    </Link>
+                    <Link to="https://fb.me/e/2pbNhQ4Y7">
+                      <Button
+                        leftIcon={<IconBrandFacebook />}
+                        styles={(theme) => ({
+                          root: {
+                            backgroundColor: "#2374E1",
+                            border: 0,
+                            height: rem(42),
+                            paddingLeft: rem(20),
+                            paddingRight: rem(20),
+                            "&:not([data-disabled])": theme.fn.hover({
+                              backgroundColor: theme.fn.darken("#2374E1", 0.05),
+                            }),
+                            leftIcon: {
+                              marginRight: theme.spacing.md,
+                            },
+                          },
+                        })}
+                      >
+                        Like SC2 on Facebook
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                <Divider size="sm" orientation="vertical" />
+
+                <div className="flex-1 flex flex-col items-center">
+                  <Title order={4} className="text-center mb-2">
+                    Add to your calendar
+                  </Title>
+                  <AddToCalendarButton
+                    name="South Central STEM Collective: Open House (Thursday)"
+                    description="Get hands on with robots at the South Central STEM Collective robotics open house. Learn more at https://go.scstem.tech/openhouse23"
+                    startDate="2023-03-23"
+                    startTime="19:00"
+                    endTime="20:30"
+                    timeZone="America/New_York"
+                    location="3055 Black Gap Rd, Chambersburg, PA 17202"
+                    organizer="South Central STEM Collective|info@scstem.org"
+                    icsFile="https://scstem.org/ics/0323-1900.ics"
+                    subscribe
+                    hideBranding
+                    iCalFileName="robotics-open-house-0323-1900"
+                    listStyle="overlay"
+                    label="Thursday, 23rd @ 7PM"
+                    lightMode={colorScheme === "light" ? "light" : "dark"}
+                    options={[
+                      "Google",
+                      "Apple",
+                      "Outlook.com",
+                      "Yahoo",
+                      "iCal",
+                    ]}
+                    styleDark="--btn-border: none; --btn-shadow: none;"
+                    styleLight="--btn-shadow: none;"
+                  ></AddToCalendarButton>
+                  <AddToCalendarButton
+                    name="South Central STEM Collective: Open House (Saturday Morning)"
+                    description="Get hands on with robots at the South Central STEM Collective robotics open house. Learn more at https://go.scstem.tech/openhouse23"
+                    startDate="2023-03-25"
+                    startTime="10:00"
+                    endTime="11:30"
+                    timeZone="America/New_York"
+                    location="3055 Black Gap Rd, Chambersburg, PA 17202"
+                    organizer="South Central STEM Collective|info@scstem.org"
+                    icsFile="https://scstem.org/ics/0325-1000.ics"
+                    subscribe
+                    hideBranding
+                    iCalFileName="robotics-open-house-0325-1000"
+                    listStyle="overlay"
+                    label="Saturday, 25th @ 10AM"
+                    lightMode={colorScheme === "light" ? "light" : "dark"}
+                    options={[
+                      "Google",
+                      "Apple",
+                      "Outlook.com",
+                      "Yahoo",
+                      "iCal",
+                    ]}
+                    styleDark="--btn-border: none; --btn-shadow: none;"
+                    styleLight="--btn-shadow: none;"
+                  ></AddToCalendarButton>
+                  <AddToCalendarButton
+                    name="South Central STEM Collective: Open House (Saturday Afternoon)"
+                    description="Get hands on with robots at the South Central STEM Collective robotics open house. Learn more at https://go.scstem.tech/openhouse23"
+                    startDate="2023-03-25"
+                    startTime="13:00"
+                    endTime="15:00"
+                    timeZone="America/New_York"
+                    location="3055 Black Gap Rd, Chambersburg, PA 17202"
+                    organizer="South Central STEM Collective|info@scstem.org"
+                    icsFile="https://scstem.org/ics/0325-1300.ics"
+                    subscribe
+                    hideBranding
+                    iCalFileName="robotics-open-house-0325-1300"
+                    listStyle="overlay"
+                    label="Saturday, 25th @ 1PM"
+                    lightMode={colorScheme === "light" ? "light" : "dark"}
+                    options={[
+                      "Google",
+                      "Apple",
+                      "Outlook.com",
+                      "Yahoo",
+                      "iCal",
+                    ]}
+                    styleDark="--btn-border: none; --btn-shadow: none;"
+                    styleLight="--btn-shadow: none;"
+                  ></AddToCalendarButton>
+                </div>
+              </Card>
             </div>
             <div className="flex flex-col md:flex-row md:space-x-6 md:space-y-0 space-x-0 space-y-6">
               <div className="flex-1">
