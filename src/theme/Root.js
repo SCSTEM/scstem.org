@@ -1,4 +1,8 @@
-import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
+import {
+  ColorSchemeProvider,
+  createEmotionCache,
+  MantineProvider,
+} from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 
 const colors = {
@@ -62,15 +66,6 @@ const colors = {
     "#111111",
     "#0F0F0F",
   ],
-  "brand-light": [
-    "#FAFAFA",
-    "#E1E1E1",
-    "#CACACA",
-    "#B6B6B6",
-    "#A4A4A4",
-    "#949494",
-    "#858585",
-  ],
   "brand-blue": [
     "#D3DCEB",
     "#B3C5E3",
@@ -81,6 +76,7 @@ const colors = {
     "#336AC4",
     "#3B63A3",
     "#3F5B89",
+    "#3F5475",
   ],
   "brand-red": [
     "#DBC5C5",
@@ -106,6 +102,21 @@ export default function Root({ children }) {
   const toggleColorScheme = (value) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
+  const theme = {
+    fontFamily: "Inter var, sans-serif",
+    colorScheme: colorScheme,
+    primaryColor: "brand-yellow",
+    primaryShade: {
+      light: 5,
+      dark: 5,
+    },
+    white: "#FAFAFA",
+    black: "#171717",
+    colors: { ...colors },
+  };
+
+  const emotionCache = createEmotionCache({ key: "mantine", prepend: true });
+
   return (
     <ColorSchemeProvider
       colorScheme={colorScheme}
@@ -114,19 +125,8 @@ export default function Root({ children }) {
       <MantineProvider
         withGlobalStyles
         withCSSVariables
-        emotionOptions={{ key: "mantine", prepend: true }}
-        theme={{
-          fontFamily: "Inter var, sans-serif",
-          colorScheme: colorScheme,
-          primaryColor: "brand-yellow",
-          primaryShade: {
-            light: 5,
-            dark: 5,
-          },
-          white: "#FAFAFA",
-          black: "#171717",
-          colors,
-        }}
+        emotionCache={emotionCache}
+        theme={theme}
       >
         {children}
       </MantineProvider>
