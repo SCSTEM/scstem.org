@@ -1,24 +1,33 @@
-import { clsx } from "@mantine/core";
-import React from "react";
+import {
+  clsx,
+  MantineGradient,
+  Text,
+  useMantineColorScheme,
+  useMantineTheme,
+} from "@mantine/core";
+import { ReactNode } from "react";
 
 interface Props {
   theme?: "light" | "dark";
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function Highlight({ children, theme }: Props) {
+  const siteTheme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+
+  const from =
+    colorScheme === "dark" || theme === "dark"
+      ? siteTheme.colors["brand-yellow"][5]
+      : siteTheme.colors["brand-blue"][5];
+  const to =
+    colorScheme === "dark" || theme === "dark"
+      ? siteTheme.colors["brand-orange"][7]
+      : siteTheme.colors.cyan[7];
+
   return (
-    <span
-      className={clsx(
-        theme // If a theme was provided, update styles accordingly
-          ? theme === "light"
-            ? "from-m_blue-4 to-m_blue-8" // Light theme
-            : "from-m_yellow-5 to-m_yellow-8" // Dark theme
-          : "from-m_blue-4 to-m_blue-8  dark:from-m_yellow-5 dark:to-m_yellow-8", // No theme specified
-        "bg-gradient-to-r bg-clip-text text-transparent" // Common styles
-      )}
-    >
+    <Text variant="gradient" gradient={{ from, to, deg: 0 }} span>
       {children}
-    </span>
+    </Text>
   );
 }
