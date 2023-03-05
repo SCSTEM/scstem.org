@@ -1,5 +1,3 @@
-import React from "react";
-
 import GenericForm from "@site/src/components/GenericForm";
 import DefaultLayout from "@site/src/layouts/Default";
 

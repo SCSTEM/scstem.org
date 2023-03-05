@@ -1,5 +1,3 @@
-import React from "react";
-
 import CalendarFrame, { CalColor } from "@site/src/components/Calendar";
 import DefaultLayout from "@site/src/layouts/Default";
 

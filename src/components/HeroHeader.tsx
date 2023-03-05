@@ -1,12 +1,12 @@
 import { Overlay } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
 import { clsx } from "clsx";
-import React from "react";
+import { ReactNode } from "react";
 
 interface Props {
   fullscreen?: boolean;
   img: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function HeroHeader({

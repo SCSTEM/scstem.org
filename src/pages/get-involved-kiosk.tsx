@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function GetInvolvedKiosk(): JSX.Element {
   return (
     <iframe

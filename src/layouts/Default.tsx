@@ -1,5 +1,4 @@
 import Layout from "@theme/Layout";
-import React from "react";
 
 interface Props {
   children?: React.ReactNode;

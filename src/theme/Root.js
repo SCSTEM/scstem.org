@@ -1,6 +1,5 @@
 import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import React from "react";
 
 const colors = {
   "brand-yellow": [

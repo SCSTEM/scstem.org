@@ -9,7 +9,6 @@ import {
 } from "@mantine/core";
 import { clsx } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
-import React from "react";
 
 import { Sponsor, SponsorLevel } from "@site/data";
 

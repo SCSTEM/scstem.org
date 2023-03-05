@@ -8,7 +8,7 @@ import {
   IconMail,
 } from "@tabler/icons-react";
 import Autoplay from "embla-carousel-autoplay";
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 import { SponsorLevel } from "@site/data";
 import { Sponsors } from "@site/data.ts";

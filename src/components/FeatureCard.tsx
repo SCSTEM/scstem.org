@@ -10,10 +10,10 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { IconExternalLink, TablerIconsProps } from "@tabler/icons-react";
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 export interface FeatureCardProps {
-  Icon: React.FC<TablerIconsProps>;
+  Icon: FC<TablerIconsProps>;
   key: string;
   title: string | JSX.Element;
   body: string | JSX.Element;

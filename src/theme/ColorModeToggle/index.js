@@ -4,7 +4,7 @@ import { useMantineColorScheme } from "@mantine/core";
 import { clsx } from "@mantine/core";
 import IconDarkMode from "@theme/Icon/DarkMode";
 import IconLightMode from "@theme/Icon/LightMode";
-import React from "react";
+import { memo } from "react";
 
 import styles from "./styles.module.css";
 
@@ -62,4 +62,4 @@ function ColorModeToggle({ className, value, onChange }) {
     </div>
   );
 }
-export default React.memo(ColorModeToggle);
+export default memo(ColorModeToggle);

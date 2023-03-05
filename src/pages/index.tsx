@@ -1,5 +1,3 @@
-import React from "react";
-
 import Button from "@site/src/components/Button";
 import HeroHeader from "@site/src/components/HeroHeader";
 import Highlight from "@site/src/components/Highlight";

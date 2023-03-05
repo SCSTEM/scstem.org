@@ -6,7 +6,6 @@ import ErrorPageContent from "@theme/ErrorPageContent";
 import LayoutProvider from "@theme/Layout/Provider";
 import Navbar from "@theme/Navbar";
 import SkipToContent from "@theme/SkipToContent";
-import React from "react";
 
 interface Props {
   title?: string;

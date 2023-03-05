@@ -13,7 +13,7 @@ import {
   IconClipboard,
   IconSend,
 } from "@tabler/icons-react";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import AdminLayout from "@site/src/layouts/Admin";
 

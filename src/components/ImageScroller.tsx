@@ -1,7 +1,7 @@
 import { Carousel } from "@mantine/carousel";
-import { createStyles, Image } from "@mantine/core";
+import { createStyles, Image, getStylesRef } from "@mantine/core";
 import Autoplay from "embla-carousel-autoplay";
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 interface Props {
   className?: string;
@@ -10,16 +10,16 @@ interface Props {
   minHeight?: number;
 }
 
-const useStyles = createStyles((_theme, _params, getRef) => ({
+const useStyles = createStyles(() => ({
   controls: {
-    ref: getRef("controls"),
+    ref: getStylesRef("controls"),
     transition: "opacity 150ms ease",
     opacity: 0,
   },
 
   root: {
     "&:hover": {
-      [`& .${getRef("controls")}`]: {
+      [`& .${getStylesRef("controls")}`]: {
         opacity: 1,
       },
     },

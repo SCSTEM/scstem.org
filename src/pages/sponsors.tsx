@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Sponsors as data } from "@site/data";
 import HeroHeader from "@site/src/components/HeroHeader";
 import Highlight from "@site/src/components/Highlight";

@@ -25,7 +25,7 @@ import {
 } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
 import { AddToCalendarButton } from "add-to-calendar-button-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import CustomButton from "@site/src/components/Button";
 import FeatureCard, {
