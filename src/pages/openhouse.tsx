@@ -1,3 +1,4 @@
+import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
 import {
   Title,
@@ -256,7 +257,22 @@ export default function OpenHouse(): JSX.Element {
   }, [colorScheme]);
 
   return (
-    <DefaultLayout title="Open House">
+    <DefaultLayout
+      title="Open House"
+      description="Are you or is someone you know interested in LEGO®, science, technology, engineering, math, business, marketing, video production, software development, web design, carpentry, or leadership? Find out more and get a chance to speak with our students and mentors at our upcoming open house."
+    >
+      <Head>
+        <meta
+          name="keywords"
+          content="robots,open house,stem,first,competition,lego,education,hands on,chambersburg,pa,chambersburg mall,robotics team,non-profit,after school,drive robots"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://scstem.org/openhouse/" />
+        <meta property="og:image" content="/img/openhouse-header.webp" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://scstem.org/openhouse/" />
+        <meta property="twitter:image" content="/img/openhouse-header.webp" />
+      </Head>
       <HeroHeader img="/img/students.webp">
         <div className="flex flex-col space-y-6 text-white">
           <div className="text-5xl font-bold">
@@ -641,6 +657,7 @@ export default function OpenHouse(): JSX.Element {
                     <img
                       src="/img/svg/logo-color.svg"
                       className="w-8 h-8 top-2 -mt-2 relative"
+                      alt="SC2 logo"
                     />
                   </li>
                 </ol>
@@ -652,6 +669,7 @@ export default function OpenHouse(): JSX.Element {
 
                 <iframe
                   src="https://www.google.com/maps/d/u/3/embed?mid=13WVDjSSoL7v92mAoV62t397_pQCGncny&ehbc=2E312F"
+                  title="Google map of how to get to our workspace"
                   width="100%"
                   height="500"
                 ></iframe>

@@ -7,6 +7,7 @@ import {
   IconBrandLinkedin,
   IconMail,
 } from "@tabler/icons-react";
+import IdealImage from "@theme/IdealImage";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 
@@ -21,8 +22,8 @@ function Sponsor({ sponsor }) {
     <Link to={sponsor.url} className="hover:no-underline">
       <div className="flex flex-col items-center justify-center space-y-1 h-full">
         {sponsor.logo ? (
-          <img
-            src={
+          <IdealImage
+            img={
               sponsor.darkLogo && colorScheme === "dark"
                 ? sponsor.darkLogo
                 : sponsor.logo
@@ -91,12 +92,12 @@ export default function FooterLayout({ copyright }) {
 
         {/* Main Footer */}
         <div className="flex md:flex-row flex-col min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
-          <div className="mx-auto w-72 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start mb-8 md:mb-0">
-            <Image
+          <div className="mx-auto w-80 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start mb-8 md:mb-0">
+            <img
               src="/img/svg/logo-color-full.svg"
               alt="South Central STEM Collective logo"
             />
-            <Text color="dimmed" size="sm">
+            <Text color="dimmed" size="sm" className="text-center">
               SC2 is 501(c)(3) non-profit focused on providing STEM
               opportunities for students in Franklin County PA.
             </Text>

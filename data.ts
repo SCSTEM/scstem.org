@@ -10,10 +10,10 @@ export enum SponsorLevel {
 export interface Sponsor {
   name: string;
   level: SponsorLevel;
-  logo?: string;
+  logo?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   url?: string;
   description?: string;
-  darkLogo?: string;
+  darkLogo?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   sub?: string;
   supportSince?: number;
 }
@@ -29,7 +29,7 @@ export const Sponsors: Sponsor[] = [
   {
     name: "Wellspan",
     level: SponsorLevel.Platinum,
-    logo: "/img/sponsors/wellspan.png",
+    logo: require("./static/img/sponsors/wellspan.png"),
     url: "https://www.wellspan.org/",
     supportSince: 2022,
   },
@@ -51,15 +51,15 @@ export const Sponsors: Sponsor[] = [
   {
     name: "The WorkShope",
     level: SponsorLevel.Gold,
-    logo: "/img/sponsors/workshope.png",
+    logo: require("./static/img/sponsors/workshope.png"),
     url: "https://www.theworkshope.com/",
     supportSince: 2021,
   },
   {
     name: "Y.B. Welding",
     level: SponsorLevel.Gold,
-    logo: "/img/sponsors/yb-light.png",
-    darkLogo: "/img/sponsors/yb-dark.png",
+    logo: require("./static/img/sponsors/yb-light.png"),
+    darkLogo: require("./static/img/sponsors/yb-dark.png"),
     url: "https://www.ybwelding.com/",
     supportSince: 2018,
   },

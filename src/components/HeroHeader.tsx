@@ -27,7 +27,7 @@ export default function HeroHeader({
           opacity={1}
         />
 
-        <img src={img} className="-z-10 h-full w-full object-cover" />
+        <img src={img} alt="" className="-z-10 h-full w-full object-cover" />
       </div>
       <div className="absolute flex h-full flex-col w-full">
         <div
