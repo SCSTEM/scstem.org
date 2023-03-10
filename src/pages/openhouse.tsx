@@ -339,7 +339,7 @@ export default function OpenHouse(): JSX.Element {
               />
             </div>
             <div className="flex flex-col lg:flex-row space-y-4 items-center">
-              <div className="flex-grow md:mr-12 flex flex-col space-y-4">
+              <div className="flex-grow md:mr-12 mb-12 md:mb-0 flex flex-col space-y-4 md:max-w-2xl">
                 <div className="rounded-3xl flex flex-col space-y-4">
                   <Title order={4} className="text-xl font-black md:text-left">
                     Who is <span className="italic">FIRST®</span>?
@@ -406,7 +406,7 @@ export default function OpenHouse(): JSX.Element {
               <IdealImage
                 img={require("../idealimage/morethanrobots.jpg")}
                 alt="Collage of photos capturing some of the many ways students can get involved"
-                className="overflow-hidden rounded-3xl"
+                className="overflow-hidden rounded-3xl max-w-2xl"
               />
             </div>
           </div>
