@@ -106,7 +106,7 @@ const config = {
     [
       require.resolve("@docusaurus/plugin-ideal-image"),
       {
-        disableInDev: false,
+        disableInDev: true,
         sizes: [576, 768, 992, 1200, 1400, 2000],
         name: "ideal/[name].[hash:hex:7].[width].[ext]",
       },
