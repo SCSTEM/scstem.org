@@ -27,6 +27,7 @@ import {
 import IdealImage from "@theme/IdealImage";
 import { AddToCalendarButton } from "add-to-calendar-button-react";
 import { useEffect, useState } from "react";
+import ReactPlayer from "react-player/lazy";
 
 import CustomButton from "@site/src/components/Button";
 import FeatureCard, {
@@ -214,7 +215,7 @@ const faq: { question: string; answer: string | JSX.Element }[] = [
   },
 ];
 
-const videoUrl = "";
+const videoUrl = "https://youtu.be/147CgudTur8";
 
 const Section = ({
   title,
@@ -223,7 +224,7 @@ const Section = ({
   title: string;
   children: React.ReactNode;
 }): JSX.Element => (
-  <div className="py-2 px-8 md:max-w-screen-xl mx-auto">
+  <div className="p-8 md:max-w-screen-xl mx-auto">
     <Title
       order={3}
       className="text-2xl font-black mb-6 text-center md:text-left"
@@ -241,7 +242,7 @@ const QA = ({
   question: string;
   answer: string | JSX.Element;
 }): JSX.Element => (
-  <div className="flex flex-col space-y-2 mb-4">
+  <div className="flex flex-col space-y-2 py-4">
     <div className="text-lg font-bold">{question}</div>
     <div>{answer}</div>
   </div>
@@ -680,33 +681,35 @@ export default function OpenHouse(): JSX.Element {
 
         {videoUrl ? (
           <Section title="Can't make it?">
-            <Card shadow="lg" p="xl" radius="lg" withBorder className="w-full">
-              <Title order={4} className="w-full text-center">
-                Check out this video to learn a little bit more about our FRC
-                team: Biohazard
-              </Title>
-              <div className="overflow-hidden rounded-2xl shadow-xl md:h-[500px] my-6">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src={videoUrl}
-                  title="YouTube video player"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                ></iframe>
-              </div>
+            <div className="md:w-[800px] lg:w-[1000px]">
+              <Card shadow="lg" p="xl" radius="lg" withBorder>
+                <Title order={3} className="w-full text-center">
+                  Check out this video to learn a little bit more about our FRC
+                  team: Biohazard
+                </Title>
+                <div className="overflow-hidden rounded-2xl shadow-xl my-6 aspect-video w-full">
+                  <ReactPlayer
+                    url={videoUrl}
+                    controls
+                    volume={0.4}
+                    width="100%"
+                    height="100%"
+                  />
+                </div>
 
-              <div className="text-center">
-                <CustomButton
-                  to="/get-involved"
-                  className="text-dark"
-                  variant="gradient"
-                  gradient={{ from: "brand-yellow", to: "brand-orange" }}
-                >
-                  Get Involved
-                </CustomButton>
-              </div>
-            </Card>
+                <div className="text-center">
+                  <CustomButton
+                    to="/get-involved"
+                    className="text-dark"
+                    variant="gradient"
+                    size="lg"
+                    gradient={{ from: "brand-yellow", to: "brand-orange" }}
+                  >
+                    Get Involved
+                  </CustomButton>
+                </div>
+              </Card>
+            </div>
           </Section>
         ) : null}
       </div>
