@@ -13,7 +13,6 @@ import { useRef } from "react";
 
 import { SponsorLevel } from "@site/data";
 import { Sponsors } from "@site/data.ts";
-import Image from "@site/src/components/Image";
 
 function Sponsor({ sponsor }) {
   const { colorScheme } = useMantineColorScheme();

@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { clsx } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
+import IdealImage from "@theme/IdealImage";
 
 import { Sponsor, SponsorLevel } from "@site/data";
 
@@ -49,19 +50,19 @@ export default function SponsorCard({
 
   return (
     <Card withBorder radius="md" className="flex w-80 flex-col" shadow="lg">
-      <Card.Section className="my-auto flex h-48 flex-col items-center space-y-1 p-6">
+      <Card.Section className="my-auto flex h-48 flex-col items-center space-y-1 px-6 py-4">
         {logo ? (
-          <img
-            src={darkLogo && colorScheme === "dark" ? darkLogo : logo}
+          <IdealImage
+            img={darkLogo && colorScheme === "dark" ? darkLogo : logo}
             alt={name + " logo"}
-            className="w-full my-auto object-contain h-40"
+            className="h-full my-auto object-contain"
           />
         ) : (
           <span className="text-4xl font-semibold my-auto">{name}</span>
         )}
 
         {sub ? (
-          <Text size="sm" className="text-gray dark:text-white">
+          <Text size="md" className="text-gray dark:text-white">
             {sub}
           </Text>
         ) : null}
