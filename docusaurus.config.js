@@ -35,10 +35,6 @@ const config = {
             to: "/sponsors",
           },
           {
-            label: "Open House",
-            to: "/openhouse",
-          },
-          {
             label: "Wiki",
             to: "/wiki",
           },
