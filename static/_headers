@@ -6,3 +6,6 @@ https://*.scstem-org.pages.dev/*
 
 https://scstem.org/team/*
   X-Robots-Tag: noindex
+
+https://staging.scstem.org/*
+  X-Robots-Tag: noindex
