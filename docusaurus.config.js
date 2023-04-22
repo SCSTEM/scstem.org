@@ -17,9 +17,29 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      colorMode: {
-        defaultMode: "dark",
-      },
+      metadata: [
+        {
+          name: "keywords",
+          content: [
+            "robotics",
+            "makerspace",
+            "STEM",
+            "community",
+            "Chambersburg",
+            "Pennsylvania",
+            "FIRST Robotics",
+            "engineering",
+            "programming",
+            "computers",
+            "technology",
+            "hands on",
+            "education",
+            "workspace",
+            "tools",
+            "Lego",
+          ].join(", "),
+        },
+      ],
       navbar: {
         title: "South Central STEM Collective",
         logo: {
@@ -65,6 +85,9 @@ const config = {
       },
       footer: {
         copyright: `Copyright © ${new Date().getFullYear()} South Central STEM Collective.`,
+      },
+      colorMode: {
+        defaultMode: "dark",
       },
       prism: {
         theme: lightCodeTheme,

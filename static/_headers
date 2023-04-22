@@ -3,3 +3,6 @@ https://scstem-org.pages.dev/*
 
 https://*.scstem-org.pages.dev/*
   X-Robots-Tag: noindex
+
+https://scstem.org/team/*
+  X-Robots-Tag: noindex
