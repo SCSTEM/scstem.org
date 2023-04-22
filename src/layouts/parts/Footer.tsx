@@ -100,7 +100,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
             />
             <Text color="dimmed" size="sm" className="text-center">
               SC2 is 501(c)(3) non-profit focused on providing STEM
-              opportunities for students in Franklin County PA.
+              opportunities for students in and around Franklin County PA.
             </Text>
           </div>
 
