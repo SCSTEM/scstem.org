@@ -439,10 +439,10 @@ export default function OpenHouse(): JSX.Element {
                 p="xl"
                 radius="lg"
                 withBorder
-                className="flex md:flex-row flex-col md:space-x-4 md:space-y-0 space-y-4 overflow-visible w-fit mx-auto"
+                className="flex flex-col md:space-x-4 md:space-y-0 space-y-4 overflow-visible w-fit mx-auto"
               >
-                <div className="flex-1 mb-4">
-                  <Title order={4} className="text-center mb-4">
+                <div>
+                  <Title order={4} className="text-center">
                     Connect on Facebook
                   </Title>
                   <div className="space-y-4 items-center justify-center flex flex-col md:h-40 my-auto">
@@ -491,98 +491,6 @@ export default function OpenHouse(): JSX.Element {
                       </Button>
                     </Link>
                   </div>
-                </div>
-
-                <Divider
-                  size="sm"
-                  orientation={mediaMd ? "horizontal" : "vertical"}
-                />
-
-                <div className="flex-1 flex flex-col items-center mt-4 md:mt-0">
-                  <Title order={4} className="text-center mb-2">
-                    Add to your calendar
-                  </Title>
-                  <AddToCalendarButton
-                    name="South Central STEM Collective: Open House (Thursday)"
-                    description="Get hands on with robots at the South Central STEM Collective robotics open house. Learn more at https://go.scstem.tech/openhouse23"
-                    startDate="2023-03-23"
-                    startTime="19:00"
-                    endTime="20:30"
-                    timeZone="America/New_York"
-                    location="3055 Black Gap Rd, Chambersburg, PA 17202"
-                    organizer="South Central STEM Collective|info@scstem.org"
-                    icsFile="https://scstem.org/ics/0323-1900.ics"
-                    subscribe
-                    hideBranding
-                    iCalFileName="robotics-open-house-0323-1900"
-                    listStyle="overlay"
-                    label="Thursday, 23rd @ 7PM"
-                    trigger="click"
-                    lightMode={colorScheme === "light" ? "light" : "dark"}
-                    options={[
-                      "Google",
-                      "Apple",
-                      "Outlook.com",
-                      "Yahoo",
-                      "iCal",
-                    ]}
-                    styleDark="--btn-border: none; --btn-shadow: none;"
-                    styleLight="--btn-shadow: none;"
-                  ></AddToCalendarButton>
-                  <AddToCalendarButton
-                    name="South Central STEM Collective: Open House (Saturday Morning)"
-                    description="Get hands on with robots at the South Central STEM Collective robotics open house. Learn more at https://go.scstem.tech/openhouse23"
-                    startDate="2023-03-25"
-                    startTime="10:00"
-                    endTime="11:30"
-                    timeZone="America/New_York"
-                    location="3055 Black Gap Rd, Chambersburg, PA 17202"
-                    organizer="South Central STEM Collective|info@scstem.org"
-                    icsFile="https://scstem.org/ics/0325-1000.ics"
-                    subscribe
-                    hideBranding
-                    iCalFileName="robotics-open-house-0325-1000"
-                    listStyle="overlay"
-                    label="Saturday, 25th @ 10AM"
-                    trigger="click"
-                    lightMode={colorScheme === "light" ? "light" : "dark"}
-                    options={[
-                      "Google",
-                      "Apple",
-                      "Outlook.com",
-                      "Yahoo",
-                      "iCal",
-                    ]}
-                    styleDark="--btn-border: none; --btn-shadow: none;"
-                    styleLight="--btn-shadow: none;"
-                  ></AddToCalendarButton>
-                  <AddToCalendarButton
-                    name="South Central STEM Collective: Open House (Saturday Afternoon)"
-                    description="Get hands on with robots at the South Central STEM Collective robotics open house. Learn more at https://go.scstem.tech/openhouse23"
-                    startDate="2023-03-25"
-                    startTime="13:00"
-                    endTime="15:00"
-                    timeZone="America/New_York"
-                    location="3055 Black Gap Rd, Chambersburg, PA 17202"
-                    organizer="South Central STEM Collective|info@scstem.org"
-                    icsFile="https://scstem.org/ics/0325-1300.ics"
-                    subscribe
-                    hideBranding
-                    iCalFileName="robotics-open-house-0325-1300"
-                    listStyle="overlay"
-                    label="Saturday, 25th @ 1PM"
-                    trigger="click"
-                    lightMode={colorScheme === "light" ? "light" : "dark"}
-                    options={[
-                      "Google",
-                      "Apple",
-                      "Outlook.com",
-                      "Yahoo",
-                      "iCal",
-                    ]}
-                    styleDark="--btn-border: none; --btn-shadow: none;"
-                    styleLight="--btn-shadow: none;"
-                  ></AddToCalendarButton>
                 </div>
               </Card>
             </div>
