@@ -1,7 +1,7 @@
 import HeroHeader from "@site/src/components/HeroHeader";
 import Highlight from "@site/src/components/Highlight";
 import HomeSection from "@site/src/components/home/Section";
-import BrandButton from "@site/src/components/inputs/BrandButton";
+import { BrandButton } from "@site/src/components/inputs/Button";
 import DefaultLayout from "@site/src/layouts/Default";
 
 export default function Home(): JSX.Element {

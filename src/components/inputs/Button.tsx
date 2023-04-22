@@ -1,14 +1,37 @@
 import Link from "@docusaurus/Link";
-import { Button as MButton, ButtonProps } from "@mantine/core";
+import { Button as MButton, ButtonProps, useMantineTheme } from "@mantine/core";
 
-export type Props = {
+type Props = {
   to: string;
 } & ButtonProps;
 
-export default function Button(props: Props): JSX.Element {
+export function Button(props: Props): JSX.Element {
   return (
     <Link to={props.to}>
       <MButton {...props}>{props.children}</MButton>
     </Link>
+  );
+}
+
+export function BrandButton(props: Props): JSX.Element {
+  const theme = useMantineTheme();
+
+  const from =
+    theme.colorScheme === "dark"
+      ? theme.colors["brand-yellow"][4]
+      : "brand-blue";
+  const to = theme.colorScheme === "dark" ? "brand-orange" : "brand-green";
+
+  return (
+    <Button
+      {...props}
+      variant="gradient"
+      gradient={{ from, to }}
+      styles={{
+        label: {
+          color: theme.colorScheme === "dark" ? theme.black : theme.white,
+        },
+      }}
+    />
   );
 }
