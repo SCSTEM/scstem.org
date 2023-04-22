@@ -2,9 +2,6 @@
   "name": "scstem.org",
   "version": "1.1.3",
   "private": true,
-  "workspaces": [
-    "utils"
-  ],
   "scripts": {
     "dev:workers": "wrangler pages dev --kv=KV_LINKS --live-reload -- npm run start",
     "docusaurus": "docusaurus",
