@@ -29,13 +29,14 @@ import { AddToCalendarButton } from "add-to-calendar-button-react";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
 
-import CustomButton from "@site/src/components/Button";
 import FeatureCard, {
   FeatureCardProps,
 } from "@site/src/components/FeatureCard";
 import HeroHeader from "@site/src/components/HeroHeader";
 import Highlight from "@site/src/components/Highlight";
 import DefaultLayout from "@site/src/layouts/Default";
+
+import { BrandButton } from "../components/inputs/Button";
 
 const programs: FeatureCardProps[] = [
   {
@@ -698,15 +699,9 @@ export default function OpenHouse(): JSX.Element {
                 </div>
 
                 <div className="text-center">
-                  <CustomButton
-                    to="/get-involved"
-                    className="text-dark"
-                    variant="gradient"
-                    size="lg"
-                    gradient={{ from: "brand-yellow", to: "brand-orange" }}
-                  >
+                  <BrandButton to="/get-involved" className="text-dark">
                     Get Involved
-                  </CustomButton>
+                  </BrandButton>
                 </div>
               </Card>
             </div>
