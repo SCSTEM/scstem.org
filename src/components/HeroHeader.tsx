@@ -18,7 +18,7 @@ export default function HeroHeader({
     <header
       className={clsx(
         fullscreen ? null : "md:h-[500px]",
-        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-blue dark:border-primary w-full"
+        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-blue dark:border-yellow w-full"
       )}
     >
       <div className="absolute -z-0 h-full w-full">
@@ -43,7 +43,7 @@ export default function HeroHeader({
         <button
           className={clsx(
             fullscreen ? "" : "md:hidden",
-            "mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-primary mt-auto"
+            "mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-yellow mt-auto"
           )}
           onClick={() =>
             document

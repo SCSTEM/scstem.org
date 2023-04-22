@@ -1,7 +1,7 @@
 import {
-  clsx,
   MantineGradient,
   Text,
+  clsx,
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
@@ -9,10 +9,17 @@ import { ReactNode } from "react";
 
 interface Props {
   theme?: "light" | "dark";
+  gradient?: MantineGradient;
+  className?: string;
   children: ReactNode;
 }
 
-export default function Highlight({ children, theme }: Props) {
+export default function Highlight({
+  children,
+  theme,
+  gradient,
+  className,
+}: Props) {
   const siteTheme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
 
@@ -26,7 +33,12 @@ export default function Highlight({ children, theme }: Props) {
       : siteTheme.colors.cyan[7];
 
   return (
-    <Text variant="gradient" gradient={{ from, to, deg: 0 }} span>
+    <Text
+      variant="gradient"
+      gradient={gradient ? gradient : { from, to, deg: 0 }}
+      className={clsx("leading-none", className)}
+      span
+    >
       {children}
     </Text>
   );

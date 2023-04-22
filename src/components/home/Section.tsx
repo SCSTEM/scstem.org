@@ -23,7 +23,7 @@ export default function HomeSection({
     <div className="flex flex-col space-x-0 md:flex-row md:space-x-48">
       {flipped && matches && image}
       <div className="text-lg">
-        <h2 className="dark:text-primary">{title}</h2>
+        <h2 className="dark:text-yellow">{title}</h2>
         {children}
       </div>
       {!flipped && matches && image}

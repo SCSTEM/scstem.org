@@ -20,7 +20,7 @@ export default function HeroHeader({
       <div className="flex-grow">{children}</div>
       <button
         id="scrollButton"
-        className="mx-auto mb-20 flex cursor-pointer flex-col border-none bg-transparent p-0 text-lg font-medium outline-none dark:text-primary md:hidden"
+        className="mx-auto mb-20 flex cursor-pointer flex-col border-none bg-transparent p-0 text-lg font-medium outline-none dark:text-yellow md:hidden"
         onClick={() =>
           document
             .getElementById("scrollButton")

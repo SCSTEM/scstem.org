@@ -29,12 +29,11 @@ export default {
         white,
 
         ...colors,
-        primary: colors["brand-yellow"][6],
-        primaryLight: colors["brand-blue"][6],
-        green: colors["brand-green"][6],
-        orange: colors["brand-orange"][6],
-        blue: colors["brand-blue"][6],
-        gray: colors["brand-gray"][6],
+        yellow: colors["brand-yellow"][5],
+        blue: colors["brand-blue"][5],
+        green: colors["brand-green"][5],
+        orange: colors["brand-orange"][5],
+        gray: colors["brand-gray"][5],
 
         bio: {
           // TODO Biohazard brand colors
