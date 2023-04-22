@@ -11,8 +11,7 @@ import IdealImage from "@theme/IdealImage";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 
-import { SponsorLevel } from "@site/data";
-import { Sponsors } from "@site/data.ts";
+import { SponsorLevel, Sponsors } from "@site/data";
 
 function Sponsor({ sponsor }) {
   const { colorScheme } = useMantineColorScheme();

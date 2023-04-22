@@ -325,7 +325,7 @@ export default function OpenHouse(): JSX.Element {
           </Grid>
         </Section>
 
-        <div className="space-y-4 bg-zinc-200 dark:bg-dark shadow-inner py-12 px-8">
+        <div className="space-y-4 bg-zinc-200 dark:bg-black shadow-inner py-12 px-8">
           <div className="md:max-w-screen-xl mx-auto md:px-12">
             <div className="md:w-[750px] mb-8 mx-auto">
               <IdealImage
@@ -424,7 +424,7 @@ export default function OpenHouse(): JSX.Element {
           </Grid>
         </Section>
 
-        <div className="space-y-4 bg-zinc-200 dark:bg-dark shadow-inner py-8">
+        <div className="space-y-4 bg-zinc-200 dark:bg-black shadow-inner py-8">
           <div className="md:max-w-screen-xl mx-auto px-10 md:px-12">
             <div className="md:w-[700px] mb-10 mx-auto">
               <IdealImage

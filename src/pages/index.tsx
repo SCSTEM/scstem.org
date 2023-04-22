@@ -1,7 +1,7 @@
-import Button from "@site/src/components/Button";
 import HeroHeader from "@site/src/components/HeroHeader";
 import Highlight from "@site/src/components/Highlight";
 import HomeSection from "@site/src/components/home/Section";
+import BrandButton from "@site/src/components/inputs/BrandButton";
 import DefaultLayout from "@site/src/layouts/Default";
 
 export default function Home(): JSX.Element {
@@ -95,14 +95,9 @@ export default function Home(): JSX.Element {
             questions.
           </p>
           <div className="flex justify-center">
-            <Button
-              to="/get-involved"
-              className="text-dark"
-              variant="gradient"
-              gradient={{ from: "brand-yellow", to: "brand-orange" }}
-            >
+            <BrandButton to="/get-involved" className="text-dark">
               Get Involved
-            </Button>
+            </BrandButton>
           </div>
         </HomeSection>
       </main>
