@@ -4,7 +4,7 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import { IconSend, IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
 
-import { APIResponse, GenericFormRequest } from "@site/src/functions/types";
+import { APIResponse, GenericFormRequest } from "@site/functions/types";
 
 interface Props {
   heading?: string;
