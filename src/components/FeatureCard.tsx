@@ -10,6 +10,7 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { IconExternalLink, TablerIconsProps } from "@tabler/icons-react";
+import IdealImage from "@theme/IdealImage";
 import { FC, useEffect, useState } from "react";
 
 export interface FeatureCardProps {
@@ -21,6 +22,10 @@ export interface FeatureCardProps {
   link?: string;
   linkText?: string;
   badge?: string;
+  img?: {
+    src: any;
+    alt: string;
+  };
 }
 
 export default function FeatureCard({
@@ -31,6 +36,7 @@ export default function FeatureCard({
   link,
   linkText,
   badge,
+  img,
 }: FeatureCardProps): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
   const [highlightColor, setHighlightColor] = useState<MantineColor>(color);
@@ -65,6 +71,14 @@ export default function FeatureCard({
       ) : (
         title
       )}
+
+      {img ? (
+        <IdealImage
+          img={img.src}
+          alt={img.alt}
+          className="h-44 w-full rounded-xl shadow-lg object-cover"
+        />
+      ) : null}
 
       <div className="flex items-center">
         <Divider size="sm" color={highlightColor} className="flex-grow" />
