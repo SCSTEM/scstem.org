@@ -77,100 +77,90 @@ const whyJoin: FeatureCardProps[] = [
     key: "skills",
     title: "Learn real-world skills",
     body: (
-      <div className="flex flex-col h-full">
-        <div className="mb-3">
-          Get hands on with tools and technology under the supervision of
-          experts in their fields in everything from engineering to marketing.
-          Learn not only how the tools work, but how to use them effectively.
-        </div>
-        <IdealImage
-          img={require("../idealimage/hands-on-2.jpg")}
-          alt="A student and mentor get hands-on with a robot"
-          className="object-cover rounded-xl shadow-xl aspect-video mt-auto"
-        />
-      </div>
+      <>
+        Get hands on with tools and technology under the supervision of experts
+        in their fields in everything from engineering to marketing. Learn not
+        only how the tools work, but how to use them effectively.
+      </>
     ),
     Icon: IconTool,
+    img: {
+      src: require("../idealimage/hands-on-2.jpg"),
+      alt: "A student and mentor get hands-on with a robot",
+      placement: "bottom",
+    },
   },
   {
     key: "leadership",
     title: "Experience leadership and teamwork",
     body: (
-      <div className="flex flex-col h-full">
-        <div className="mb-3">
-          Build strong relationships with teammates and mentors as you work
-          together throughout the season. Learn how to make decisions as a team
-          and take leadership in your area of expertise.
-        </div>
-        <IdealImage
-          img={require("../idealimage/leadership-1.jpg")}
-          alt="Two students referencing a whiteboard during a planning meeting"
-          className="object-cover rounded-xl shadow-xl mt-auto aspect-video"
-        />
-      </div>
+      <>
+        Build strong relationships with teammates and mentors as you work
+        together throughout the season. Learn how to make decisions as a team
+        and take leadership in your area of expertise.
+      </>
     ),
     Icon: IconPresentation,
+    img: {
+      src: require("../idealimage/leadership-1.jpg"),
+      alt: "Two students referencing a whiteboard during a planning meeting",
+      placement: "bottom",
+    },
   },
   {
     key: "competition",
     title: "Education through competition",
     body: (
-      <div className="flex flex-col h-full">
-        <div className="mb-3">
-          Prepare to compete against teams from around the world with a limited
-          time-frame, tight budget, and a complex challenge. Learn how to work
-          under pressure and build reliable systems that can handle intense
-          competition.
-        </div>
-        <IdealImage
-          img={require("../idealimage/competition-1.jpg")}
-          alt="Team members cheering at competition"
-          className="object-cover rounded-xl shadow-xl mt-auto aspect-video"
-        />
-      </div>
+      <>
+        Prepare to compete against teams from around the world with a limited
+        time-frame, tight budget, and a complex challenge. Learn how to work
+        under pressure and build reliable systems that can handle intense
+        competition.
+      </>
     ),
     Icon: IconBooks,
+    img: {
+      src: require("../idealimage/competition-1.jpg"),
+      alt: "Team members cheering at competition",
+      placement: "bottom",
+    },
   },
   {
     key: "scholarships",
     title: "Scholarships and career opportunities",
     body: (
-      <div className="flex flex-col h-full">
-        <div className="mb-3">
-          Being a member of a <span className="italic">FIRST®</span> team is
-          more than just building robots and learning about STEM. It opens doors
-          to scholarship and career opportunities that you cannot get anywhere
-          else. Many of our alumni used the skills developed while students to
-          pursue careers in STEM (and related) fields.
-        </div>
-        <IdealImage
-          img={require("../idealimage/award.jpg")}
-          alt="Team members receiving an award at competition"
-          className="object-cover rounded-xl shadow-xl mt-auto aspect-video"
-        />
-      </div>
+      <>
+        Being a member of a <span className="italic">FIRST®</span> team is more
+        than just building robots and learning about STEM. It opens doors to
+        scholarship and career opportunities that you cannot get anywhere else.
+        Many of our alumni used the skills developed while students to pursue
+        careers in STEM (and related) fields.
+      </>
     ),
     Icon: IconBooks,
+    img: {
+      src: require("../idealimage/award.jpg"),
+      alt: "Team members receiving an award at competition",
+      placement: "bottom",
+    },
   },
   {
     key: "fun",
     title: "Fun",
     body: (
-      <div className="flex flex-col h-full">
-        <div className="mb-3">
-          Although we take our work seriously, we also have a lot of fun.
-          Whether it's dancing to the YMCA at competition, playing a game of
-          Kahoot during a meeting, or just hanging out with friends as we work
-          on our robots, we always manage to have a lot of fun.
-        </div>
-        <IdealImage
-          img={require("../idealimage/dean.jpg")}
-          alt="Team members sharing a moment with Dean Kamen, the founder of FIRST®"
-          className="overflow-hidden rounded-xl shadow-xl mt-auto aspect-video"
-        />
-      </div>
+      <>
+        Although we take our work seriously, we also have a lot of fun. Whether
+        it's dancing to the YMCA at competition, playing a game of Kahoot during
+        a meeting, or just hanging out with friends as we work on our robots, we
+        always manage to have a lot of fun.
+      </>
     ),
     Icon: IconMoodSmile,
+    img: {
+      src: require("../idealimage/dean.jpg"),
+      alt: "Team members sharing a moment with Dean Kamen, the founder of FIRST®",
+      placement: "bottom",
+    },
   },
 ];
 
