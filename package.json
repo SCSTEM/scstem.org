@@ -5,16 +5,15 @@
   "scripts": {
     "dev:workers": "wrangler pages dev --kv=KV_LINKS --live-reload -- npm run start",
     "docusaurus": "docusaurus",
-    "dev": "docusaurus start",
+    "dev": "BROWSER=none docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
-    "serve": "docusaurus serve",
+    "serve": "BROWSER=none docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "update": "pnpm update -iL",
     "lint": "eslint .",
     "format": "prettier --write ."
   },

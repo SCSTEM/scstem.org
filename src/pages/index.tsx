@@ -5,7 +5,6 @@ import {
   Text,
   useMantineTheme,
   Divider,
-  Card,
   clsx,
 } from "@mantine/core";
 import {
@@ -15,7 +14,6 @@ import {
   IconLego,
   IconMoodSmile,
   IconPlayerPlay,
-  IconPlayerPlayFilled,
   IconPresentation,
   IconRobot,
   IconTool,
@@ -28,7 +26,7 @@ import FeatureCard, {
   FeatureCardProps,
 } from "@site/src/components/FeatureCard";
 import HeroHeader from "@site/src/components/HeroHeader";
-import { BrandButton, Button } from "@site/src/components/inputs/Button";
+import { Button } from "@site/src/components/inputs/Button";
 import DefaultLayout from "@site/src/layouts/Default";
 
 const programs: FeatureCardProps[] = [
