@@ -25,8 +25,17 @@ export interface FeatureCardProps {
   img?: {
     src: any;
     alt: string;
+    placement?: "top" | "bottom";
   };
 }
+
+const Image = ({ src, alt }: { src: any; alt: string }) => (
+  <IdealImage
+    img={src}
+    alt={alt}
+    className="h-48 w-full rounded-xl shadow-lg object-cover"
+  />
+);
 
 export default function FeatureCard({
   Icon,
@@ -72,12 +81,8 @@ export default function FeatureCard({
         title
       )}
 
-      {img ? (
-        <IdealImage
-          img={img.src}
-          alt={img.alt}
-          className="h-44 w-full rounded-xl shadow-lg object-cover"
-        />
+      {img && (!img.placement || img.placement === "top") ? (
+        <Image src={img.src} alt={img.alt} />
       ) : null}
 
       <div className="flex items-center">
@@ -89,13 +94,21 @@ export default function FeatureCard({
         ) : null}
       </div>
 
-      <Text
-        size="md"
-        color={colorScheme === "dark" ? "dimmed" : null}
-        className="flex-grow"
-      >
-        {body}
-      </Text>
+      <div className="flex-grow flex flex-col">
+        <Text
+          size="md"
+          color={colorScheme === "dark" ? "dimmed" : null}
+          className="mb-3"
+        >
+          {body}
+        </Text>
+
+        {img && img.placement === "bottom" ? (
+          <div className="mt-auto">
+            <Image src={img.src} alt={img.alt} />
+          </div>
+        ) : null}
+      </div>
 
       {link ? (
         <Link to={link} className="ml-auto">
