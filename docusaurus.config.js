@@ -136,7 +136,7 @@ const config = {
         name: "ideal/[name].[hash:hex:7].[width].[ext]",
       },
     ],
-    async function tailwind(context, options) {
+    async function tailwind(_context, _options) {
       return {
         name: "docusaurus-tailwindcss",
         configurePostCss(postcssOptions) {
