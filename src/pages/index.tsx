@@ -1,21 +1,34 @@
-import { Grid, Title, Text, useMantineTheme, Divider } from "@mantine/core";
+import Link from "@docusaurus/Link";
+import {
+  Grid,
+  Title,
+  Text,
+  useMantineTheme,
+  Divider,
+  Card,
+  clsx,
+} from "@mantine/core";
 import {
   IconBooks,
   IconDeviceGamepad2,
   IconExternalLink,
   IconLego,
   IconMoodSmile,
+  IconPlayerPlay,
+  IconPlayerPlayFilled,
   IconPresentation,
   IconRobot,
   IconTool,
 } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
+import { useState } from "react";
+import ReactPlayer from "react-player/lazy";
 
 import FeatureCard, {
   FeatureCardProps,
 } from "@site/src/components/FeatureCard";
 import HeroHeader from "@site/src/components/HeroHeader";
-import { Button } from "@site/src/components/inputs/Button";
+import { BrandButton, Button } from "@site/src/components/inputs/Button";
 import DefaultLayout from "@site/src/layouts/Default";
 
 const programs: FeatureCardProps[] = [
@@ -165,7 +178,8 @@ const whyJoin: FeatureCardProps[] = [
 ];
 
 export default function Home(): JSX.Element {
-  const { colorScheme, colors } = useMantineTheme();
+  const { colorScheme } = useMantineTheme();
+  const [videoReady, setVideoReady] = useState(false);
 
   return (
     <DefaultLayout>
@@ -185,24 +199,26 @@ export default function Home(): JSX.Element {
         </div>
       </HeroHeader>
 
-      {/* Overview */}
       <div className="border-0 border-t-2 border-solid border-black border-opacity-20 dark:border-yellow dark:border-opacity-10">
+        {/* Overview */}
         <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 mt-8">
           <Title align="center" className="md:text-2xl font-black text-xl">
-            Get hands-on with Science, Technology, Engineering, Math, and so
-            much more
+            Science, Technology, Engineering, Math, Business, Art, and more
           </Title>
           <Text
             color={colorScheme === "dark" ? "dimmed" : null}
             size="lg"
-            className="max-w-4xl m-auto"
+            className="max-w-5xl m-auto"
             align="center"
           >
             <p>
               The South Central STEM Collective (otherwise known as SC2) was
               created to serve South Central Pennsylvania as "STEM Central";
               inspiring youth aged 9-18 with hands-on education, competitive
-              robotics teams, community outreach, and so much more.
+              robotics teams, and community outreach. With three rapidly growing
+              programs and a team of experienced volunteer mentors, SC2 is the
+              perfect place for students to learn real world skills in a fun and
+              competitive atmosphere.
             </p>
           </Text>
         </div>
@@ -300,7 +316,7 @@ export default function Home(): JSX.Element {
             <IdealImage
               img={require("../idealimage/morethanrobots.jpg")}
               alt="Collage of photos capturing some of the many ways students can get involved"
-              className="overflow-hidden rounded-3xl max-w-2xl"
+              className="overflow-hidden rounded-3xl md:max-w-2xl"
             />
           </div>
         </AltSection>
@@ -316,7 +332,51 @@ export default function Home(): JSX.Element {
           </Grid>
         </Section>
 
-        {/* TODO: <AltSection>How to join</AltSection> */}
+        {/* Video */}
+        <div className="my-10 bg-zinc-200 dark:bg-black">
+          <div className="aspect-video my-10 dark:border-yellow border-blue border-8 border-solid xl:max-w-6xl xl:mx-auto">
+            <div
+              className={clsx(
+                "absolute dark:bg-yellow bg-blue mx-auto w-full md:w-fit left-0 right-0 text-center text-white dark:text-black pb-2 md:pb-1 md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
+                videoReady ? "opacity-0" : "opacity-100"
+              )}
+            >
+              Meet our highschool team, learn about{" "}
+              <span className="italic">FIRST®</span>
+            </div>
+
+            <ReactPlayer
+              className="-z-10"
+              url="https://youtu.be/147CgudTur8"
+              controls
+              light="/img/doc-thumb.webp"
+              volume={0.4}
+              width="100%"
+              height="100%"
+              playIcon={
+                <IconPlayerPlay className="dark:text-yellow text-blue md:w-24 md:h-24 w-16 h-16" />
+              }
+              onReady={() => setVideoReady(true)}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 my-24">
+          <Title align="center" className="md:text-2xl font-black text-xl">
+            Ready to join or find out more? Contact us!
+          </Title>
+          <Text
+            color={colorScheme === "dark" ? "dimmed" : null}
+            size="lg"
+            className="max-w-5xl m-auto"
+            align="center"
+          >
+            We are always looking for new members, mentors, and sponsors! If you
+            want to find out how you can get plugged in or are looking for more
+            information, please reach out through our{" "}
+            <Link to="/get-involved">Get Involved form</Link>.
+          </Text>
+        </div>
 
         {/*
         <HomeSection
