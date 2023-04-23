@@ -32,10 +32,6 @@ export default function RootStyleRegistry({
     fontFamily: "Inter",
     fontFamilyMonospace: "SourceCodePro",
     cursorType: "pointer",
-    headings: {
-      fontFamily: "Orbitron",
-      fontWeight: 500,
-    },
     colorScheme,
     primaryColor: colorScheme === "dark" ? "brand-yellow" : "brand-blue",
     primaryShade: {
