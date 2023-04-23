@@ -33,7 +33,7 @@ const Image = ({ src, alt }: { src: any; alt: string }) => (
   <IdealImage
     img={src}
     alt={alt}
-    className="h-48 w-full rounded-xl shadow-lg object-cover"
+    className="h-48 w-full rounded-xl shadow-lg object-cover overflow-hidden"
   />
 );
 
