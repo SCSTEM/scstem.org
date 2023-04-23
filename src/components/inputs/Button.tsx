@@ -24,7 +24,6 @@ export function BrandButton(props: Props): JSX.Element {
 
   return (
     <Button
-      {...props}
       variant="gradient"
       gradient={{ from, to }}
       styles={{
@@ -32,6 +31,7 @@ export function BrandButton(props: Props): JSX.Element {
           color: theme.colorScheme === "dark" ? theme.black : theme.white,
         },
       }}
+      {...props}
     />
   );
 }
