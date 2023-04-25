@@ -100,7 +100,7 @@ const config = {
         darkTheme: darkCodeTheme,
       },
       zoom: {
-        selector: ".markdown img, img.zoomable",
+        selector: ".markdown img, .zoomable img",
       },
     }),
 
