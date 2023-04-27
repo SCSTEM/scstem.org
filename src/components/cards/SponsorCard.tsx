@@ -5,13 +5,14 @@ import {
   Text,
   MantineColor,
   useMantineTheme,
-  useMantineColorScheme,
 } from "@mantine/core";
 import { clsx } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
 
 import { Sponsor, SponsorLevel } from "@site/data";
+
+import "./SponsorCard.css";
 
 export default function SponsorCard({
   name,
@@ -23,8 +24,7 @@ export default function SponsorCard({
   sub,
   supportSince,
 }: Sponsor) {
-  const { colorScheme } = useMantineColorScheme();
-  const theme = useMantineTheme();
+  const { colors } = useMantineTheme();
   let accent: MantineColor = "brand-blue";
 
   switch (level) {
@@ -32,31 +32,48 @@ export default function SponsorCard({
       // Do nothing
       break;
     case SponsorLevel.Bronze:
-      accent = theme.colors.orange[6];
+      accent = colors.orange[6];
       break;
     case SponsorLevel.Silver:
-      accent = theme.colors.gray[6];
+      accent = colors.gray[6];
       break;
     case SponsorLevel.Gold:
-      accent = theme.colors.yellow[6];
+      accent = colors.yellow[6];
       break;
     case SponsorLevel.Platinum:
-      accent = theme.colors.violet[6];
+      accent = colors.violet[6];
       break;
     case SponsorLevel.Ultimate:
-      accent = theme.colors.red[6];
+      accent = colors.red[6];
       break;
   }
 
   return (
-    <Card withBorder radius="md" className="flex w-80 flex-col" shadow="lg">
+    <Card
+      withBorder
+      radius="md"
+      className="flex w-80 flex-col sponsor-card"
+      shadow="lg"
+    >
       <Card.Section className="my-auto flex h-48 flex-col items-center space-y-1 px-6 py-4">
-        {logo ? (
-          <IdealImage
-            img={darkLogo && colorScheme === "dark" ? darkLogo : logo}
-            alt={name + " logo"}
-            className="h-full my-auto object-contain"
-          />
+        {logo !== undefined ? (
+          <>
+            {darkLogo !== undefined ? (
+              <IdealImage
+                img={darkLogo}
+                alt={name + " logo"}
+                className="h-full object-contain dark:block hidden"
+              />
+            ) : null}
+            <IdealImage
+              img={logo}
+              alt={name + " logo"}
+              className={clsx(
+                "h-full object-contain",
+                darkLogo !== undefined ? "dark:hidden" : null
+              )}
+            />
+          </>
         ) : (
           <span className="text-4xl font-semibold my-auto">{name}</span>
         )}

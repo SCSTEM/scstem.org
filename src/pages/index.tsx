@@ -22,10 +22,10 @@ import IdealImage from "@theme/IdealImage";
 import { useState } from "react";
 import ReactPlayer from "react-player/lazy";
 
+import HeroHeader from "@site/src/components/HeroHeader";
 import FeatureCard, {
   FeatureCardProps,
-} from "@site/src/components/FeatureCard";
-import HeroHeader from "@site/src/components/HeroHeader";
+} from "@site/src/components/cards/FeatureCard";
 import { Button } from "@site/src/components/inputs/Button";
 import DefaultLayout from "@site/src/layouts/Default";
 
@@ -202,7 +202,7 @@ export default function Home(): JSX.Element {
 
       <div className="border-0 border-t-2 border-solid border-black border-opacity-20 dark:border-yellow dark:border-opacity-10">
         {/* Overview */}
-        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 mt-8">
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 mt-16 mb-8">
           <Title align="center" className="md:text-2xl font-black text-xl">
             Science, Technology, Engineering, Math, Business, Art, and more
           </Title>
@@ -212,15 +212,13 @@ export default function Home(): JSX.Element {
             className="max-w-5xl m-auto"
             align="center"
           >
-            <p>
-              The South Central STEM Collective (otherwise known as SC2) was
-              created to serve South Central Pennsylvania as "STEM Central";
-              inspiring youth aged 9-18 with hands-on education, competitive
-              robotics teams, and community outreach. With three rapidly growing
-              programs and a team of experienced volunteer mentors, SC2 is the
-              perfect place for students to learn real world skills in a fun and
-              competitive atmosphere.
-            </p>
+            The South Central STEM Collective (otherwise known as SC2) was
+            created to serve South Central Pennsylvania as "STEM Central";
+            inspiring youth aged 9-18 with hands-on education, competitive
+            robotics teams, and community outreach. With three rapidly growing
+            programs and a team of experienced volunteer mentors, SC2 is the
+            perfect place for students to learn real world skills in a fun and
+            competitive atmosphere.
           </Text>
         </div>
 

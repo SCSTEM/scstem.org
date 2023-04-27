@@ -1,4 +1,3 @@
-import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
 import {
   Title,
@@ -25,15 +24,14 @@ import {
   IconBrandFacebook,
 } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
-import { AddToCalendarButton } from "add-to-calendar-button-react";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
 
-import FeatureCard, {
-  FeatureCardProps,
-} from "@site/src/components/FeatureCard";
 import HeroHeader from "@site/src/components/HeroHeader";
 import Highlight from "@site/src/components/Highlight";
+import FeatureCard, {
+  FeatureCardProps,
+} from "@site/src/components/cards/FeatureCard";
 import DefaultLayout from "@site/src/layouts/Default";
 
 import { BrandButton } from "../components/inputs/Button";
