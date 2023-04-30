@@ -36,9 +36,9 @@ const programs: FeatureCardProps[] = [
   {
     key: "fll",
     title: (
-      <Text size="lg" weight={700}>
+      <Title order={3} className="font-bold text-xl font-sans">
         <span className="italic inline">FIRST®</span> LEGO® League
-      </Text>
+      </Title>
     ),
     body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     Icon: IconLego,
@@ -53,9 +53,9 @@ const programs: FeatureCardProps[] = [
   {
     key: "ftc",
     title: (
-      <Text size="lg" weight={700}>
+      <Title order={3} className="font-bold text-xl font-sans">
         <span className="italic">FIRST®</span> Tech Challenge
-      </Text>
+      </Title>
     ),
     body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     Icon: IconDeviceGamepad2,
@@ -70,9 +70,9 @@ const programs: FeatureCardProps[] = [
   {
     key: "frc",
     title: (
-      <Text size="lg" weight={700}>
+      <Title order={3} className="font-bold text-xl font-sans">
         <span className="italic">FIRST®</span> Robotics Competition
-      </Text>
+      </Title>
     ),
     body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
     Icon: IconRobot,
@@ -364,7 +364,11 @@ export default function Home(): JSX.Element {
         </div>
 
         <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 my-24">
-          <Title align="center" className="md:text-2xl font-black text-xl">
+          <Title
+            align="center"
+            className="md:text-2xl font-black text-xl"
+            order={2}
+          >
             Ready to join or find out more? Contact us!
           </Title>
           <Text

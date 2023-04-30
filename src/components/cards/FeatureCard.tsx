@@ -7,9 +7,10 @@ import {
   MantineColor,
   Text,
   ThemeIcon,
+  Title,
   useMantineColorScheme,
 } from "@mantine/core";
-import { IconExternalLink, TablerIconsProps } from "@tabler/icons-react";
+import { TablerIconsProps } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
 import { FC, useEffect, useState } from "react";
 
@@ -74,9 +75,9 @@ export default function FeatureCard({
       </ThemeIcon>
 
       {typeof title === "string" ? (
-        <Text size="lg" weight={700}>
+        <Title order={3} className="font-bold text-xl font-sans">
           {title}
-        </Text>
+        </Title>
       ) : (
         title
       )}

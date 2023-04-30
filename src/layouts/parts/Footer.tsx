@@ -97,6 +97,8 @@ export default function Footer({ copyright }: Props): JSX.Element {
             <img
               src="/img/svg/logo-color-full.svg"
               alt="South Central STEM Collective logo"
+              width="240px"
+              height="80px"
             />
             <Text color="dimmed" size="sm" className="text-center">
               SC2 is 501(c)(3) non-profit focused on providing STEM

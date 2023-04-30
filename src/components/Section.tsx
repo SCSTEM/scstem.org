@@ -24,7 +24,7 @@ export default function Section({ children, alt, title }: Props): JSX.Element {
   return (
     <div className="p-8 md:max-w-screen-xl mx-auto">
       <Title
-        order={3}
+        order={2}
         className="text-2xl font-black mb-6 text-center md:text-left"
       >
         {title}

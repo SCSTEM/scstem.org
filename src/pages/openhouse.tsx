@@ -1,3 +1,4 @@
+import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
 import {
   Title,
@@ -261,6 +262,9 @@ export default function OpenHouse(): JSX.Element {
       title="Open House"
       description="Are you or is someone you know interested in LEGO®, science, technology, engineering, math, business, marketing, video production, software development, web design, carpentry, or leadership? Find out more and get a chance to speak with our students and mentors at our upcoming open house."
     >
+      <Head>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
       <HeroHeader img="/img/students.webp">
         <div className="flex flex-col space-y-6 text-white">
           <div className="text-5xl font-bold">
