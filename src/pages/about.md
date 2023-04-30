@@ -22,7 +22,7 @@ Although still in the early stages, SC2 has big plans to help students excited a
 
 ## History
 
-<img align="right" style={{ marginLeft: "1rem" }} src="/img/svg/biohazard-logo.svg" width="200" />
+<img align="right" style={{ marginLeft: "1rem" }} src="/img/biohazard/logo.svg" width="200" />
 
 To understand where SC2 is going, it is equally important to understand where SC2 came from. For this reason, it is important to start at the beginning: Biohazard.
 
