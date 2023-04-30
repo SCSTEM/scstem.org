@@ -2,8 +2,6 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 /* eslint-disable */
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -78,7 +76,7 @@ const config = {
               },
               {
                 label: "FRC (Age 14-18)",
-                to: "https://go.scstem.tech/biofacebook",
+                to: "/biohazard",
               },
             ],
           },
@@ -94,10 +92,6 @@ const config = {
       },
       colorMode: {
         defaultMode: "dark",
-      },
-      prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
       },
       zoom: {
         selector: ".markdown img, .zoomable img",
