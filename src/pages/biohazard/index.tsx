@@ -38,10 +38,8 @@ export default function BiohazardHome(): JSX.Element {
           <div className="mx-5 space-y-4 md:space-y-10">
             <Title order={1} className="text-xl md:text-4xl !leading-[3rem]">
               Welcome to the{" "}
-              <Underline className="decoration-green">
-                next generation
-              </Underline>{" "}
-              of thinkers, engineers scientists, artists, and dreamers.
+              <Underline color="brand-green">next generation</Underline> of
+              thinkers, engineers scientists, artists, and dreamers.
             </Title>
             <Title className="font-sans md:text-h2 text-lg" order={2}>
               Inspiring students since <span className="text-green">2012</span>,

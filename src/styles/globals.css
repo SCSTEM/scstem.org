@@ -48,6 +48,11 @@
   --ifm-color-primary-lightest: var(--mantine-color-brand-blue-3);
 }
 
+::selection {
+  background-color: var(--ifm-color-primary);
+  color: var(--ifm-background-color);
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
