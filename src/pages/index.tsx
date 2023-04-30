@@ -42,7 +42,7 @@ const programs: FeatureCardProps[] = [
     body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     Icon: IconLego,
     color: "brand-red",
-    link: "https://www.firstinspires.org/robotics/fll",
+    link: "/clubs/fll",
     badge: "Ages 9 - 16",
     img: {
       src: require("../idealimage/unsplash/lego-robots.jpg"),
@@ -59,7 +59,7 @@ const programs: FeatureCardProps[] = [
     body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     Icon: IconDeviceGamepad2,
     color: "brand-orange",
-    link: "https://www.firstinspires.org/robotics/ftc",
+    link: "/clubs/ftc",
     badge: "Ages 12 - 18",
     img: {
       src: require("../idealimage/ftc-robot.jpg"),
@@ -76,7 +76,7 @@ const programs: FeatureCardProps[] = [
     body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
     Icon: IconRobot,
     color: "brand-blue",
-    link: "https://www.firstinspires.org/robotics/frc",
+    link: "/biohazard",
     badge: "Ages 14 - 18",
     img: {
       src: require("../idealimage/frc-driveteam.jpg"),

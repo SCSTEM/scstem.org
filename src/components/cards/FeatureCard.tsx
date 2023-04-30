@@ -112,12 +112,7 @@ export default function FeatureCard({
 
       {link ? (
         <Link to={link} className="ml-auto">
-          <Button
-            rightIcon={<IconExternalLink />}
-            color={highlightColor}
-            variant="subtle"
-            compact
-          >
+          <Button color={highlightColor} variant="subtle" compact>
             {linkText ? linkText : "Learn More"}
           </Button>
         </Link>
