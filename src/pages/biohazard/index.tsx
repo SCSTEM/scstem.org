@@ -12,7 +12,7 @@ export default function BiohazardHome(): JSX.Element {
       title="Biohazard Robotics"
       description="FRC Team 4050: Biohazard. Competitive high-school robotics team."
     >
-      <header className="relative h-[calc(101vh-var(--ifm-navbar-height))] w-full">
+      <header className="relative h-[calc(101vh-var(--ifm-navbar-height))] w-full text-white">
         <div className="absolute -z-0 h-full w-full">
           <Overlay gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, .5) 40%)" />
 
