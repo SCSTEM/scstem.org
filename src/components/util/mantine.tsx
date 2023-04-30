@@ -31,6 +31,9 @@ export default function RootStyleRegistry({
   const theme: MantineThemeOverride = {
     fontFamily: "Inter",
     fontFamilyMonospace: "SourceCodePro",
+    headings: {
+      fontFamily: "Orbitron",
+    },
     cursorType: "pointer",
     colorScheme,
     primaryColor: colorScheme === "dark" ? "brand-yellow" : "brand-blue",

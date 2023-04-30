@@ -13,6 +13,14 @@
   font-weight: 100 900;
 }
 
+@font-face {
+  font-family: "Orbitron";
+  src: url("/fonts/orbitron-variable.ttf")
+      format("truetype supports variations"),
+    url("/fonts/orbitron-variable.ttf") format("truetype-variations");
+  font-weight: 100 900;
+}
+
 :root {
   --ifm-font-family-base: "Inter";
   --ifm-font-family-monospace: "SourceCodePro";
@@ -43,3 +51,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Silly trick to get webpack(?) to load Orbitron */
+/* TODO: Move to Tailwind at some point */
+.yai4A {
+  font-family: "Orbitron";
+}
