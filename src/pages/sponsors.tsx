@@ -1,7 +1,7 @@
 import { Sponsors as data } from "@site/data";
 import HeroHeader from "@site/src/components/HeroHeader";
-import Highlight from "@site/src/components/Highlight";
 import SponsorCard from "@site/src/components/cards/SponsorCard";
+import Highlight from "@site/src/components/spans/Highlight";
 import DefaultLayout from "@site/src/layouts/Default";
 
 export default function Sponsors(): JSX.Element {

@@ -28,10 +28,10 @@ import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
 
 import HeroHeader from "@site/src/components/HeroHeader";
-import Highlight from "@site/src/components/Highlight";
 import FeatureCard, {
   FeatureCardProps,
 } from "@site/src/components/cards/FeatureCard";
+import Highlight from "@site/src/components/spans/Highlight";
 import DefaultLayout from "@site/src/layouts/Default";
 
 import { BrandButton } from "../components/inputs/Button";
