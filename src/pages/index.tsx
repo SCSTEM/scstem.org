@@ -29,6 +29,8 @@ import FeatureCard, {
 import { Button } from "@site/src/components/inputs/Button";
 import DefaultLayout from "@site/src/layouts/Default";
 
+import Underline from "../components/spans/Underline";
+
 const programs: FeatureCardProps[] = [
   {
     key: "fll",
@@ -187,10 +189,10 @@ export default function Home(): JSX.Element {
       <HeroHeader img="/img/legos.webp">
         <div className="flex flex-col space-y-6 text-white">
           <div className="text-4xl font-bold md:text-5xl">
-            <span className="text-yellow">Robots</span> are in Franklin County.{" "}
-            <div className="border-brand-yellow-5 border-b-4 border-0 border-solid w-fit">
+            <span className="text-yellow">Robots</span> are in Franklin County.
+            <Underline className="before:whitespace-pre-line before:content-['\a']">
               So are we.
-            </div>
+            </Underline>
           </div>
           <div className="text-2xl">
             The South Central STEM Collective is a non-profit organization

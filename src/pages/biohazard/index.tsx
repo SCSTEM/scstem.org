@@ -2,6 +2,7 @@ import { Overlay, Title } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 
+import Underline from "@site/src/components/spans/Underline";
 import DefaultLayout from "@site/src/layouts/Default";
 
 export default function BiohazardHome(): JSX.Element {
@@ -32,20 +33,22 @@ export default function BiohazardHome(): JSX.Element {
         </div>
         <div className="relative flex h-full flex-col w-full md:w-[750px] lg:w-[1000px] mx-auto text-center">
           <img
-            className="md:mt-36 my-4 md:mb-16"
+            className="lg:mt-36 my-4 lg:mb-16"
             src="/img/biohazard/header-logo.svg"
           />
           <div className="mx-5 space-y-4 md:space-y-10">
-            <Title order={1} className="text-xl md:text-4xl">
-              Welcome to the next generation of thinkers, engineers, scientists,
-              artists, and dreamers.
+            <Title order={1} className="text-xl md:text-4xl !leading-[3rem]">
+              Welcome to the{" "}
+              <Underline className="decoration-green">
+                next generation
+              </Underline>{" "}
+              of thinkers, engineers scientists, artists, and dreamers.
             </Title>
             <Title className="font-sans md:text-h2 text-lg" order={2}>
-              Biohazard robotics is south-central Pennsylvania's premiere
-              high-school robotics team and{" "}
-              <span className="text-green">
-                we need you to take us to the next level.
-              </span>
+              Inspiring students since <span className="text-green">2012</span>,
+              Biohazard is south-central Pennsylvania's premiere high-school
+              robotics team and we need you to take us to the{" "}
+              <span className="text-green">next level</span>.
             </Title>
           </div>
           <button
