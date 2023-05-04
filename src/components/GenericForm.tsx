@@ -1,3 +1,4 @@
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { TextInput, Textarea, Button, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Turnstile } from "@marsidev/react-turnstile";
@@ -21,6 +22,9 @@ export default function GenericForm({
   message,
   disabled,
 }: Props): JSX.Element {
+  const {
+    siteConfig: { customFields },
+  } = useDocusaurusContext();
   const [token, setToken] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -156,8 +160,11 @@ export default function GenericForm({
             ) : null}
             {!error && !submitted ? (
               <Turnstile
-                siteKey="0x4AAAAAAAA9KCNYNr6Mbs3J"
-                // siteKey="1x00000000000000000000AA" // Site key for always passing
+                siteKey={
+                  typeof customFields.turnstileSiteKey === "string"
+                    ? customFields.turnstileSiteKey
+                    : ""
+                }
                 onSuccess={(token) => setToken(token)}
                 onError={() => setError("Turnstile verification failed")}
                 onExpire={() => setError("Turnstile challenge expired")}

@@ -12,6 +12,9 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/svg/logo-color.svg",
+  customFields: {
+    turnstileSiteKey: process.env.TS_SITE_KEY || "1x00000000000000000000AA",
+  },
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
