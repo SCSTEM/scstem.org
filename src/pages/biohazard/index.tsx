@@ -1,4 +1,5 @@
 import { Overlay, Title } from "@mantine/core";
+import { createStyles, Text, rem } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 
@@ -35,7 +36,7 @@ export default function BiohazardHome(): JSX.Element {
             className="lg:mt-36 md:my-4 my-2 lg:mb-16"
             src="/img/biohazard/header-logo.svg"
           />
-          <div className="mx-5 space-y-4 md:space-y-10">
+          <div className="mx-5 space-y-4 md:space-y-10 mb-4">
             <Title order={1} className="text-xl md:text-4xl md:!leading-[3rem]">
               Welcome to the{" "}
               <Underline color="brand-green">next generation</Underline> of
@@ -67,7 +68,67 @@ export default function BiohazardHome(): JSX.Element {
         </div>
         <div id="scrollhere" className="mb-10"></div>
       </header>
-      <main>Resume normal homepage activities here</main>
+      <main>
+        <div className="md:mx-32 m-10 md:max-w-screen-xl">
+          <StatsGroup
+            stats={[
+              {
+                stats: "12+ years",
+                title: (
+                  <>
+                    <i>FIRST®</i> Robotics Competition
+                  </>
+                ),
+                description:
+                  "Biohazard has been an active FRC team since 2012 and we are not stopping any time soon. ",
+              },
+              {
+                stats: "10+ mentors",
+                title: "Guiding and teaching",
+                description:
+                  "Learn from industry experts in their fields who are ready to help you get to the next level.",
+              },
+              {
+                stats: "Endless",
+                title: "Opportunities",
+                description:
+                  "Scholarships, hands-on education, and access to an extensive employer, alumni, and community network.",
+              },
+            ]}
+          />
+        </div>
+      </main>
     </DefaultLayout>
+  );
+}
+
+type Stat = {
+  title: React.ReactNode;
+  stats: string;
+  description: string;
+};
+
+type StatsGroupProps = {
+  stats: Stat[];
+};
+
+export function StatsGroup({ stats }: StatsGroupProps) {
+  return (
+    <div className="flex sm:p-5 sm:px-0 px-5 pb-0 rounded-lg flex-col sm:flex-row bg-gradient-to-br from-green-500 to-green-800 shadow-xl divide-solid divide-x-0 sm:divide-x-2 sm:divide-y-0 divide-y-2 divide-white">
+      {stats.map((stat, i) => (
+        <div
+          key={i}
+          className="flex-1 sm:pl-5 sm:pb-0 pl-0 pb-5 pt-4 space-y-2 sm:pr-8"
+        >
+          <div className="text-white text-3xl font-bold font-heading">
+            {stat.stats}
+          </div>
+          <div className="text-white uppercase font-bold text-sm">
+            {stat.title}
+          </div>
+          <div className="text-gray-200 text-sm">{stat.description}</div>
+        </div>
+      ))}
+    </div>
   );
 }
