@@ -32,24 +32,25 @@ export default function BiohazardHome(): JSX.Element {
         </div>
         <div className="relative flex h-full flex-col w-full md:w-[750px] lg:w-[1000px] mx-auto text-center">
           <img
-            className="lg:mt-36 my-4 lg:mb-16"
+            className="lg:mt-36 md:my-4 my-2 lg:mb-16"
             src="/img/biohazard/header-logo.svg"
           />
           <div className="mx-5 space-y-4 md:space-y-10">
-            <Title order={1} className="text-xl md:text-4xl !leading-[3rem]">
+            <Title order={1} className="text-xl md:text-4xl md:!leading-[3rem]">
               Welcome to the{" "}
               <Underline color="brand-green">next generation</Underline> of
               thinkers, engineers scientists, artists, and dreamers.
             </Title>
             <Title className="font-sans md:text-h2 text-lg" order={2}>
-              Inspiring students since <span className="text-green">2012</span>,
-              Biohazard is south-central Pennsylvania's premiere high-school
-              robotics team and we need you to take us to the{" "}
-              <span className="text-green">next level</span>.
+              Inspiring students since{" "}
+              <span className="text-brand-green">2012</span>, Biohazard is
+              south-central Pennsylvania's premiere high-school robotics team
+              and we need you to take us to the{" "}
+              <span className="text-brand-green">next level</span>.
             </Title>
           </div>
           <button
-            className="mx-auto flex cursor-pointer flex-col items-center border-none bg-transparent md:text-2xl font-bold outline-none text-green mt-auto mb-20 md:mb-10"
+            className="mx-auto flex cursor-pointer flex-col items-center border-none bg-transparent md:text-2xl font-bold outline-none text-brand-green mt-auto mb-20 md:mb-10"
             onClick={() =>
               document
                 .getElementById("scrollhere")
