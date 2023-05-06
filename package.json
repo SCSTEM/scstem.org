@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@cloudflare/pages-plugin-cloudflare-access": "^1.0.3",
+    "@cloudflare/pages-plugin-vercel-og": "^0.1.0",
     "@docusaurus/core": "2.4.0",
     "@docusaurus/plugin-content-docs": "^2.4.0",
     "@docusaurus/plugin-ideal-image": "^2.4.0",
