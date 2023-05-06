@@ -30,13 +30,13 @@ function Sponsor({ sponsor }) {
             className="w-52 my-auto object-contain"
           />
         ) : (
-          <span className="text-4xl font-semibold my-auto text-gray">
+          <span className="text-4xl font-semibold my-auto text-brand-gray">
             {sponsor.name}
           </span>
         )}
 
         {sponsor.sub ? (
-          <Text size="sm" className="text-gray dark:text-white">
+          <Text size="sm" className="text-brand-gray dark:text-white">
             {sponsor.sub}
           </Text>
         ) : null}
@@ -112,10 +112,10 @@ export default function Footer({ copyright }: Props): JSX.Element {
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Support us
               </Text>
-              <Link to="/wiki/donations" className="text-gray">
+              <Link to="/wiki/donations" className="text-brand-gray">
                 Donate
               </Link>
-              <Link to="/sponsors" className="text-gray">
+              <Link to="/sponsors" className="text-brand-gray">
                 Sponsors
               </Link>
             </div>
@@ -123,13 +123,22 @@ export default function Footer({ copyright }: Props): JSX.Element {
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Find us online
               </Text>
-              <Link to="https://go.scstem.tech/facebook" className="text-gray">
+              <Link
+                to="https://go.scstem.tech/facebook"
+                className="text-brand-gray"
+              >
                 Facebook
               </Link>
-              <Link to="https://go.scstem.tech/linkedin" className="text-gray">
+              <Link
+                to="https://go.scstem.tech/linkedin"
+                className="text-brand-gray"
+              >
                 LinkedIn
               </Link>
-              <Link to="https://go.scstem.tech/github" className="text-gray">
+              <Link
+                to="https://go.scstem.tech/github"
+                className="text-brand-gray"
+              >
                 GitHub
               </Link>
             </div>
@@ -137,16 +146,19 @@ export default function Footer({ copyright }: Props): JSX.Element {
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Member area
               </Text>
-              <a className="text-gray" href="/team">
+              <a className="text-brand-gray" href="/team">
                 Team Login
               </a>
-              <Link to="https://go.scstem.tech/slack" className="text-gray">
+              <Link
+                to="https://go.scstem.tech/slack"
+                className="text-brand-gray"
+              >
                 Slack
               </Link>
-              <Link to="http://mail.scstem.org" className="text-gray">
+              <Link to="http://mail.scstem.org" className="text-brand-gray">
                 Gmail
               </Link>
-              <Link to="http://drive.scstem.org" className="text-gray">
+              <Link to="http://drive.scstem.org" className="text-brand-gray">
                 Google Drive
               </Link>
             </div>

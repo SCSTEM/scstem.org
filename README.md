@@ -108,7 +108,7 @@ The site's theme and styling are somewhat convoluted as they are handled in thre
 Brand colors are defined in `./src/styles.ts`, which is imported by Mantine and Tailwind to expose `brand-*` colors to both frameworks' styles. Additionally, both frameworks have mechanisms for checking whether the site is in dark mode or light mode. For Mantine, this is simply a [color scheme hook](https://mantine.dev/hooks/use-color-scheme/) and a `dark:` prefix for Tailwind classes. This makes creating thematic components very simple:
 
 ```tsx
-<div className="dark:text-yellow text-blue">I am yellow when dark, and blue when light.</div>
+<div className="dark:text-brand-yellow text-brand-blue">I am yellow when dark, and blue when light.</div>
 
 <Button ... color="brand-yellow">I am a Mantine button</Button>
 ```
