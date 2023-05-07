@@ -124,9 +124,9 @@ function PageSection({
   className?: string;
 }) {
   return (
-    <div className={clsx("md:mx-32 mx-10 md:max-w-screen-xl", className)}>
+    <section className={clsx("md:mx-32 mx-10 md:max-w-screen-xl", className)}>
       {children}
-    </div>
+    </section>
   );
 }
 
