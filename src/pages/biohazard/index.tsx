@@ -13,12 +13,15 @@ import { useMediaQuery } from "@mantine/hooks";
 import {
   IconChevronDown,
   IconMoodHappy,
+  IconPlayerPlay,
+  IconPlayerPlayFilled,
   IconRobot,
   IconTool,
   TablerIconsProps,
 } from "@tabler/icons-react";
 import { IconUsersGroup } from "@tabler/icons-react";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
+import ReactPlayer from "react-player/lazy";
 
 import { Button } from "@site/src/components/inputs/Button";
 import Underline from "@site/src/components/spans/Underline";
@@ -26,6 +29,7 @@ import DefaultLayout from "@site/src/layouts/Default";
 
 export default function BiohazardHome(): JSX.Element {
   const isSmall = useMediaQuery("(max-width: 992px)");
+  const [videoReady, setVideoReady] = useState(false);
 
   return (
     <DefaultLayout
@@ -92,6 +96,20 @@ export default function BiohazardHome(): JSX.Element {
         <div className="lg:block hidden lg:h-[750px] bg-center bg-no-repeat bg-fixed bg-[url(/img/biohazard/robot-field.webp)] lg:!my-16 shadow-2xl"></div>
         <PageSection className="lg:!mt-10">
           <StatsGroup />
+          <div className="aspect-video my-16 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
+            <ReactPlayer
+              className="-z-10"
+              url="https://youtu.be/147CgudTur8"
+              controls
+              light="/img/doc-thumb.webp"
+              volume={0.4}
+              width="100%"
+              height="100%"
+              playIcon={
+                <IconPlayerPlayFilled className="text-green md:w-28 md:h-28 w-16 h-16" />
+              }
+            />
+          </div>
         </PageSection>
       </main>
     </DefaultLayout>
@@ -140,7 +158,7 @@ function TeamOverview() {
       icon: IconUsersGroup,
       title: "Collaboration",
       description:
-        "Work closely with a team of students and mentors, who will help you learn and grow.",
+        "Work closely with a team of students and mentors, who will help turn your ideas into reality.",
     },
     {
       icon: IconMoodHappy,
@@ -240,7 +258,7 @@ function StatsGroup() {
   ];
 
   return (
-    <div className="flex sm:p-5 sm:px-0 px-5 py-0 rounded-lg flex-col sm:flex-row bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl divide-solid divide-x-0 sm:divide-x-2 sm:divide-y-0 divide-y-2 divide-white">
+    <div className="flex sm:p-5 sm:px-0 px-5 py-0 rounded-lg flex-col sm:flex-row bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 shadow-2xl divide-solid divide-x-0 sm:divide-x-2 sm:divide-y-0 divide-y-2 divide-white">
       {stats.map((stat, i) => (
         <div
           key={i}
