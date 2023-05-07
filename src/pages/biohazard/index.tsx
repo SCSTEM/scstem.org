@@ -89,8 +89,8 @@ export default function BiohazardHome(): JSX.Element {
         <PageSection>
           <TeamOverview />
         </PageSection>
-        <div className="lg:block hidden lg:h-[750px] bg-center bg-no-repeat bg-fixed bg-[url(/img/biohazard/robot-field.webp)] !my-16 shadow-2xl"></div>
-        <PageSection className="!mt-10">
+        <div className="lg:block hidden lg:h-[750px] bg-center bg-no-repeat bg-fixed bg-[url(/img/biohazard/robot-field.webp)] lg:!my-16 shadow-2xl"></div>
+        <PageSection className="lg:!mt-10">
           <StatsGroup />
         </PageSection>
       </main>
