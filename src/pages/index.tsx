@@ -190,8 +190,7 @@ export default function Home(): JSX.Element {
       <HeroHeader img="/img/legos.webp">
         <div className="flex flex-col space-y-6 text-white">
           <div className="text-4xl font-bold md:text-5xl">
-            <span className="text-brand-yellow">Robots</span> are in Franklin
-            County.
+            <span className="text-yellow">Robots</span> are in Franklin County.
             <Underline className="before:whitespace-pre-line before:content-['\a']">
               So are we.
             </Underline>
@@ -204,7 +203,7 @@ export default function Home(): JSX.Element {
         </div>
       </HeroHeader>
 
-      <main className="border-0 border-t-2 border-solid border-black border-opacity-20 dark:border-brand-yellow dark:border-opacity-10">
+      <main className="border-0 border-t-2 border-solid border-black border-opacity-20 dark:border-yellow dark:border-opacity-10">
         {/* Overview */}
         <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 mt-16 mb-8">
           <Title align="center" className="md:text-2xl font-black text-xl">
@@ -337,10 +336,10 @@ export default function Home(): JSX.Element {
 
         {/* Video */}
         <div className="my-10 bg-zinc-200 dark:bg-black">
-          <div className="aspect-video my-10 dark:border-brand-yellow border-brand-blue border-8 border-solid xl:max-w-6xl xl:mx-auto">
+          <div className="aspect-video my-10 dark:border-yellow border-blue border-8 border-solid xl:max-w-6xl xl:mx-auto">
             <div
               className={clsx(
-                "absolute dark:bg-brand-yellow bg-brand-blue mx-auto w-full md:w-fit left-0 right-0 text-center text-white dark:text-black pb-2 md:pb-1 md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
+                "absolute dark:bg-yellow bg-blue mx-auto w-full md:w-fit left-0 right-0 text-center text-white dark:text-black pb-2 md:pb-1 md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
                 videoReady ? "opacity-0" : "opacity-100"
               )}
             >
@@ -357,7 +356,7 @@ export default function Home(): JSX.Element {
               width="100%"
               height="100%"
               playIcon={
-                <IconPlayerPlay className="dark:text-brand-yellow text-brand-blue md:w-24 md:h-24 w-16 h-16" />
+                <IconPlayerPlay className="dark:text-yellow text-blue md:w-24 md:h-24 w-16 h-16" />
               }
               onReady={() => setVideoReady(true)}
             />
