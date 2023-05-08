@@ -89,7 +89,14 @@ import IdealImage from "@theme/IdealImage";
 
 #### Static
 
-Vector graphics, video files, and other special cases can be handled by placing them in the `./static/` directory, which is served from the site's root.
+Vector graphics, video files, and other special cases can be handled by placing them in the `./static/` directory, which is served from the site's root. If you need to serve a compressed image format (such as .jpg), compress + convert to a .webp file first using [Squoosh](https://squoosh.app/).
+
+Typical Squoosh settings:
+
+- Format: `webp`
+- Effort: `6`
+- Quality: `75`
+- Adjust settings as-needed for specific use case
 
 ```html
 <img src="/img/drill-bits.webp" />
