@@ -1,4 +1,5 @@
 import {
+  Card,
   Col,
   Grid,
   Overlay,
@@ -13,15 +14,15 @@ import { useMediaQuery } from "@mantine/hooks";
 import {
   IconChevronDown,
   IconMoodHappy,
-  IconPlayerPlay,
   IconPlayerPlayFilled,
   IconRobot,
   IconTool,
   TablerIconsProps,
 } from "@tabler/icons-react";
 import { IconUsersGroup } from "@tabler/icons-react";
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode } from "react";
 import ReactPlayer from "react-player/lazy";
+import { ParallaxBanner } from "react-scroll-parallax";
 
 import { Button } from "@site/src/components/inputs/Button";
 import Underline from "@site/src/components/spans/Underline";
@@ -29,7 +30,6 @@ import DefaultLayout from "@site/src/layouts/Default";
 
 export default function BiohazardHome(): JSX.Element {
   const isSmall = useMediaQuery("(max-width: 992px)");
-  const [videoReady, setVideoReady] = useState(false);
 
   return (
     <DefaultLayout
@@ -59,12 +59,18 @@ export default function BiohazardHome(): JSX.Element {
             src="/img/biohazard/header-logo.svg"
           />
           <div className="mx-5 space-y-4 md:space-y-10 mb-4">
-            <Title order={1} className="text-xl md:text-4xl md:!leading-[3rem]">
+            <Title
+              order={1}
+              className="text-xl md:text-4xl lg:text-5xl lg:!leading-[4rem] md:!leading-[3rem]"
+            >
               Welcome to the{" "}
               <Underline color="brand-green">next generation</Underline> of
               thinkers, engineers scientists, artists, and dreamers.
             </Title>
-            <Title className="font-sans md:text-h2 text-lg" order={2}>
+            <Title
+              className="font-sans md:text-2xl lg:text-3xl text-lg"
+              order={2}
+            >
               Inspiring students since <span className="text-green">2012</span>,
               Biohazard is south-central Pennsylvania's premiere high-school
               robotics team and we need you to take us to the{" "}
@@ -89,16 +95,39 @@ export default function BiohazardHome(): JSX.Element {
         </div>
         <div id="scrollhere" className="mb-10"></div>
       </header>
-      <main className="my-16 space-y-16 md:space-y-24 lg:space-y-36">
-        <PageSection>
+      <main className="my-16 space-y-16 md:space-y-24">
+        <PageSection className="space-y-16">
           <TeamOverview />
-        </PageSection>
-        <div className="lg:block hidden lg:h-[750px] bg-center bg-no-repeat bg-fixed bg-[url(/img/biohazard/robot-field.webp)] lg:!my-16 shadow-2xl"></div>
-        <PageSection className="lg:!mt-10">
           <StatsGroup />
+        </PageSection>
+        <ParallaxBanner
+          className="h-[400px] lg:h-[600px]"
+          layers={[
+            {
+              image: "/img/biohazard/robot-field.webp",
+              speed: -15,
+            },
+            {
+              speed: -15,
+              children: (
+                <div className="absolute top-[150px] md:top-[200px] lg:top-[250px] w-full">
+                  <div className="rounded-lg md:ml-10 mx-4 shadow-xl text-white p-4 md:w-fit bg-gradient-to-br from-brand-green-3 via-brand-green-4 to-brand-green-7 space-y-2 text-center">
+                    <div className="font-sans font-black text-2xl">
+                      Biohazard's 2023 Robot:
+                    </div>
+                    <div className="font-heading text-5xl font-black italic">
+                      Viper
+                    </div>
+                  </div>
+                </div>
+              ),
+            },
+          ]}
+        />
+        <PageSection className="lg:!mt-10">
           <div className="aspect-video my-16 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
             <ReactPlayer
-              className="-z-10"
+              className="-z-10 bg-white dark:bg-black"
               url="https://youtu.be/147CgudTur8"
               controls
               light="/img/doc-thumb.webp"
@@ -124,7 +153,9 @@ function PageSection({
   className?: string;
 }) {
   return (
-    <section className={clsx("md:mx-32 mx-10 md:max-w-screen-xl", className)}>
+    <section
+      className={clsx("md:mx-32 mx-10 md:max-w-screen-xl z-10", className)}
+    >
       {children}
     </section>
   );
