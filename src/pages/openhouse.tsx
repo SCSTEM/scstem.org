@@ -130,7 +130,7 @@ const whyJoin: FeatureCardProps[] = [
           competition.
         </div>
         <IdealImage
-          img={require("../idealimage/competition-1.jpg")}
+          img={require("../idealimage/biohazard/competition-1.jpg")}
           alt="Team members cheering at competition"
           className="overflow-hidden rounded-xl shadow-xl mt-auto aspect-video"
         />
@@ -151,7 +151,7 @@ const whyJoin: FeatureCardProps[] = [
           pursue careers in STEM (and related) fields.
         </div>
         <IdealImage
-          img={require("../idealimage/award.jpg")}
+          img={require("../idealimage/biohazard/award.jpg")}
           alt="Team members receiving an award at competition"
           className="overflow-hidden rounded-xl shadow-xl mt-auto aspect-video"
         />
@@ -171,7 +171,7 @@ const whyJoin: FeatureCardProps[] = [
           on our robots, we always manage to have a lot of fun.
         </div>
         <IdealImage
-          img={require("../idealimage/dean.jpg")}
+          img={require("../idealimage/biohazard/dean.jpg")}
           alt="Team members sharing a moment with Dean Kamen, the founder of FIRST®"
           className="overflow-hidden rounded-xl shadow-xl mt-auto aspect-video"
         />

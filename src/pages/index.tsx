@@ -80,7 +80,7 @@ const programs: FeatureCardProps[] = [
     link: "/biohazard",
     badge: "Ages 14 - 18",
     img: {
-      src: require("../idealimage/frc-driveteam.jpg"),
+      src: require("../idealimage/biohazard/frc-driveteam.jpg"),
       alt: `Team 4050 Biohazard's drive team and robot`,
     },
   },
@@ -134,7 +134,7 @@ const whyJoin: FeatureCardProps[] = [
     ),
     Icon: IconBooks,
     img: {
-      src: require("../idealimage/competition-1.jpg"),
+      src: require("../idealimage/biohazard/competition-1.jpg"),
       alt: "Team members cheering at competition",
       placement: "bottom",
     },
@@ -153,7 +153,7 @@ const whyJoin: FeatureCardProps[] = [
     ),
     Icon: IconBooks,
     img: {
-      src: require("../idealimage/award.jpg"),
+      src: require("../idealimage/biohazard/award.jpg"),
       alt: "Team members receiving an award at competition",
       placement: "bottom",
     },
@@ -171,7 +171,7 @@ const whyJoin: FeatureCardProps[] = [
     ),
     Icon: IconMoodSmile,
     img: {
-      src: require("../idealimage/dean.jpg"),
+      src: require("../idealimage/biohazard/dean.jpg"),
       alt: "Team members sharing a moment with Dean Kamen, the founder of FIRST®",
       placement: "bottom",
     },
