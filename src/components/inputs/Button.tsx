@@ -20,7 +20,8 @@ export function BrandButton(props: Props): JSX.Element {
     theme.colorScheme === "dark"
       ? theme.colors["brand-yellow"][4]
       : "brand-blue";
-  const to = theme.colorScheme === "dark" ? "brand-orange" : "brand-green";
+  const to =
+    theme.colorScheme === "dark" ? "brand-orange" : theme.colors.cyan[7];
 
   return (
     <Button

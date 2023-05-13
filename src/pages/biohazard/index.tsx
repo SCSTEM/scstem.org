@@ -24,7 +24,7 @@ import { FC, ReactNode } from "react";
 import ReactPlayer from "react-player/lazy";
 import { ParallaxBanner } from "react-scroll-parallax";
 
-import { Button } from "@site/src/components/inputs/Button";
+import { BrandButton } from "@site/src/components/inputs/Button";
 import Underline from "@site/src/components/spans/Underline";
 import DefaultLayout from "@site/src/layouts/Default";
 
@@ -216,21 +216,15 @@ function TeamOverview() {
             success as we compete with teams from around the world.
           </Text>
 
-          <Button
-            variant="gradient"
-            gradient={{
-              deg: 133,
-              from: colors["brand-green"][3],
-              to: colors["brand-green"][7],
-            }}
+          <BrandButton
             size="lg"
             radius="md"
             mt="xl"
             to="/get-involved"
-            className="shadow-md"
+            className="shadow-lg"
           >
             Join the Revolution
-          </Button>
+          </BrandButton>
         </Col>
         <Col span={12} md={7}>
           <SimpleGrid
