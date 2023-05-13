@@ -1,5 +1,4 @@
 import {
-  Card,
   Col,
   Grid,
   Overlay,
@@ -7,7 +6,6 @@ import {
   ThemeIcon,
   Title,
   clsx,
-  useMantineTheme,
 } from "@mantine/core";
 import { Text, rem } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
@@ -104,7 +102,7 @@ export default function BiohazardHome(): JSX.Element {
           className="h-[400px] lg:h-[600px]"
           layers={[
             {
-              image: "/img/biohazard/robot-field.webp",
+              image: "/img/biohazard/2023-robot-field.webp",
               speed: -15,
             },
             {
@@ -124,6 +122,7 @@ export default function BiohazardHome(): JSX.Element {
             },
           ]}
         />
+        <PageSection>{/* TODO: Robot profile here */}</PageSection>
         <PageSection className="lg:!mt-10">
           <div className="aspect-video my-16 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
             <ReactPlayer
@@ -162,8 +161,6 @@ function PageSection({
 }
 
 function TeamOverview() {
-  const { colors } = useMantineTheme();
-
   const items: {
     icon: FC<TablerIconsProps>;
     title: ReactNode;
