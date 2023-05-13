@@ -11,7 +11,7 @@ This readme assumes _some_ familiarity with VSCode, NodeJS, and Git.
 - VSCode
 - Git (If you prefer a GUI, [GitKraken](https://www.gitkraken.com/) is great)
 - NodeJS v18.16.0 or greater
-  - If you use Node Version Manager (NVM) or Fast Node Manager (FNM), simply run `[nvm|fnm] use` to auto-select the appropriate NodeKJS version from `.nvmrc`
+  - If you use Node Version Manager (NVM) or Fast Node Manager (FNM), simply run `[nvm|fnm] use` to auto-select the appropriate NodeJS version from `.nvmrc`
 - Recommended extensions
   - VSCode will likely ask if you want to use these
   - Although optional, it does help to ensure a consistent dev experience
