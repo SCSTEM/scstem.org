@@ -53,13 +53,13 @@ export default function BiohazardHome(): JSX.Element {
         </div>
         <div className="relative flex h-full flex-col w-full md:w-[750px] lg:w-[1000px] mx-auto text-center">
           <img
-            className="lg:mt-36 md:my-4 my-2 lg:mb-16"
+            className="lg:my-14 md:my-4 my-2"
             src="/img/biohazard/header-logo.svg"
           />
-          <div className="mx-5 space-y-4 md:space-y-10 mb-4">
+          <div className="mx-5 space-y-4 md:space-y-6 mb-4">
             <Title
               order={1}
-              className="text-xl md:text-4xl lg:text-5xl lg:!leading-[4rem] md:!leading-[3rem]"
+              className="text-xl md:text-4xl lg:text-4xl md:!leading-[3rem]"
             >
               Welcome to the{" "}
               <Underline color="brand-green">next generation</Underline> of
