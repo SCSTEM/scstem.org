@@ -1,10 +1,3 @@
-import {
-  GridCell,
-  GridCellKind,
-  GridColumn,
-  Item,
-} from "@glideapps/glide-data-grid";
-import "@glideapps/glide-data-grid/dist/index.css";
 import { TextInput, ActionIcon, Button, Text, CopyButton } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
@@ -109,38 +102,6 @@ export default function Shortlinks(): JSX.Element {
       .finally(() => {
         setGenerating(false);
       });
-  };
-
-  /* Data Grid */
-  const gridColumns: GridColumn[] = [
-    { title: "Code", width: 100 },
-    { title: "URL", width: 300 },
-    { title: "Clicks", width: 50 },
-  ];
-
-  const getData = ([col, row]: Item): GridCell => {
-    switch (col) {
-      case 0:
-        return {
-          kind: GridCellKind.Text,
-          data: "abc123",
-          allowOverlay: false,
-          displayData: "abc123",
-        };
-      case 1:
-        return {
-          kind: GridCellKind.Uri,
-          data: "https://example.com",
-          allowOverlay: false,
-        };
-      case 2:
-        return {
-          kind: GridCellKind.Number,
-          data: 3,
-          allowOverlay: false,
-          displayData: "Three",
-        };
-    }
   };
 
   return (
