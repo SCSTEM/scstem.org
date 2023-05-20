@@ -26,6 +26,8 @@ import { BrandButton } from "@site/src/components/inputs/Button";
 import Underline from "@site/src/components/spans/Underline";
 import DefaultLayout from "@site/src/layouts/Default";
 
+import "./index.css";
+
 export default function BiohazardHome(): JSX.Element {
   const isSmall = useMediaQuery("(max-width: 992px)");
 
@@ -53,7 +55,7 @@ export default function BiohazardHome(): JSX.Element {
         </div>
         <div className="relative flex h-full flex-col w-full md:w-[750px] lg:w-[1000px] mx-auto text-center">
           <img
-            className="lg:my-14 md:my-4 my-2"
+            className="lg:mt-14 md:my-4 my-2"
             src="/img/biohazard/header-logo.svg"
           />
           <div className="mx-5 space-y-4 md:space-y-6 mb-4">
@@ -93,52 +95,60 @@ export default function BiohazardHome(): JSX.Element {
         </div>
         <div id="scrollhere" className="mb-10"></div>
       </header>
-      <main className="my-16 space-y-16 md:space-y-24">
-        <PageSection className="space-y-16">
-          <TeamOverview />
-          <StatsGroup />
-        </PageSection>
-        <ParallaxBanner
-          className="h-[400px] lg:h-[600px]"
-          layers={[
-            {
-              image: "/img/biohazard/2023-robot-field.webp",
-              speed: -15,
-            },
-            {
-              speed: -15,
-              children: (
-                <div className="absolute top-[150px] md:top-[200px] lg:top-[250px] w-full">
-                  <div className="rounded-lg md:ml-10 mx-4 shadow-xl text-white p-4 md:w-fit bg-gradient-to-br from-brand-green-3 via-brand-green-4 to-brand-green-7 space-y-2 text-center">
-                    <div className="font-sans font-black text-2xl">
-                      Biohazard's 2023 Robot:
-                    </div>
-                    <div className="font-heading text-5xl font-black italic">
-                      Viper
+      <main className="bg-gradient-to-r bio-background relative">
+        <div className="absolute w-full h-full -z-10 bg-[url('/img/biohazard/circuit-board.svg')]" />
+        <div className="space-y-16 md:space-y-24 py-16">
+          <PageSection className="space-y-16">
+            <TeamOverview />
+            <StatsGroup />
+          </PageSection>
+          <ParallaxBanner
+            className="h-[400px] lg:h-[600px]"
+            layers={[
+              {
+                image: "/img/biohazard/2023-robot-field.webp",
+                speed: -15,
+              },
+              {
+                speed: -15,
+                children: (
+                  <div className="absolute top-[150px] md:top-[200px] lg:top-[250px] w-full">
+                    <div className="rounded-lg md:ml-10 mx-4 shadow-xl text-white p-4 md:w-fit bg-gradient-to-br from-brand-green-3 via-brand-green-4 to-brand-green-7 space-y-2 text-center">
+                      <div className="font-sans font-black text-2xl">
+                        Biohazard's 2023 Robot:
+                      </div>
+                      <div className="font-heading text-5xl font-black italic">
+                        Viper
+                      </div>
                     </div>
                   </div>
-                </div>
-              ),
-            },
-          ]}
-        />
-        <PageSection>{/* TODO: Robot profile here */}</PageSection>
-        <PageSection className="lg:!mt-10">
-          <div className="aspect-video my-16 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
-            <ReactPlayer
-              className="-z-10 bg-white dark:bg-black"
-              url="https://youtu.be/147CgudTur8"
-              controls
-              light="/img/doc-thumb.webp"
-              volume={0.4}
-              width="100%"
-              height="100%"
-              playIcon={
-                <IconPlayerPlayFilled className="text-green md:w-28 md:h-28 w-16 h-16" />
-              }
-            />
-          </div>
-        </PageSection>
+                ),
+              },
+            ]}
+          />
+          <PageSection>
+            <div className="flex md:flex-row flex-col mx-10 my-14">
+              <div></div>
+              <img src="/img/biohazard/2023-robot-render.webp" />
+            </div>
+          </PageSection>
+          <PageSection className="lg:!mt-10">
+            <div className="aspect-video m-20 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
+              <ReactPlayer
+                className="-z-10 bg-white dark:bg-black"
+                url="https://youtu.be/147CgudTur8"
+                controls
+                light="/img/doc-thumb.webp"
+                volume={0.4}
+                width="100%"
+                height="100%"
+                playIcon={
+                  <IconPlayerPlayFilled className="text-green md:w-28 md:h-28 w-16 h-16" />
+                }
+              />
+            </div>
+          </PageSection>
+        </div>
       </main>
     </DefaultLayout>
   );
@@ -152,9 +162,7 @@ function PageSection({
   className?: string;
 }) {
   return (
-    <section
-      className={clsx("md:mx-32 mx-10 md:max-w-screen-xl z-10", className)}
-    >
+    <section className={clsx("md:mx-32 mx-10 md:max-w-screen-xl", className)}>
       {children}
     </section>
   );
