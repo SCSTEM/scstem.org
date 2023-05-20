@@ -96,9 +96,9 @@ export default function BiohazardHome(): JSX.Element {
         <div id="scrollhere" className="mb-10"></div>
       </header>
       <main className="bg-gradient-to-r bio-background relative">
-        <div className="absolute w-full h-full -z-10 bg-[url('/img/biohazard/circuit-board.svg')]" />
-        <div className="space-y-16 md:space-y-24 py-16">
-          <PageSection className="space-y-16">
+        <div className="absolute w-full h-full -z-20 bg-[url('/img/biohazard/circuit-board.svg')]" />
+        <div className="space-y-20 md:space-y-28 py-16">
+          <PageSection className="space-y-16 md:space-y-24">
             <TeamOverview />
             <StatsGroup />
           </PageSection>
@@ -133,7 +133,7 @@ export default function BiohazardHome(): JSX.Element {
             </div>
           </PageSection>
           <PageSection className="lg:!mt-10">
-            <div className="aspect-video m-20 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
+            <div className="aspect-video md:m-20 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
               <ReactPlayer
                 className="-z-10 bg-white dark:bg-black"
                 url="https://youtu.be/147CgudTur8"
