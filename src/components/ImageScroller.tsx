@@ -1,13 +1,12 @@
 import { Carousel } from "@mantine/carousel";
-import { createStyles, Image, getStylesRef } from "@mantine/core";
+import { createStyles, getStylesRef } from "@mantine/core";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 
 interface Props {
   className?: string;
-  images: string[];
+  images: string[] | JSX.Element[];
   delay?: number;
-  minHeight?: number;
 }
 
 const useStyles = createStyles(() => ({
@@ -16,7 +15,6 @@ const useStyles = createStyles(() => ({
     transition: "opacity 150ms ease",
     opacity: 0,
   },
-
   root: {
     "&:hover": {
       [`& .${getStylesRef("controls")}`]: {
@@ -26,12 +24,7 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-export default function Scroller({
-  className,
-  images,
-  delay,
-  minHeight,
-}: Props) {
+export default function Scroller({ className, images, delay }: Props) {
   const autoplay = useRef(Autoplay({ delay: delay ?? 4000 }));
   const { classes } = useStyles();
 
@@ -41,12 +34,15 @@ export default function Scroller({
       draggable={false}
       plugins={[autoplay.current]}
       classNames={classes}
-      mx="auto"
       className={className}
     >
-      {images.map((image) => (
-        <Carousel.Slide key={image}>
-          <Image src={image} radius="lg" height={minHeight} withPlaceholder />
+      {images.map((image: string | JSX.Element, i: number) => (
+        <Carousel.Slide key={i}>
+          {typeof image === "string" ? (
+            <img src={image} className="object-contain my-auto h-full" />
+          ) : (
+            image
+          )}
         </Carousel.Slide>
       ))}
     </Carousel>
