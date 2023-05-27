@@ -12,6 +12,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 
 import { SponsorLevel, Sponsors } from "@site/data";
+import { ColorToggle } from "@site/src/components/inputs/ColorToggle";
 
 function Sponsor({ sponsor }) {
   const { colorScheme } = useMantineColorScheme();
@@ -196,6 +197,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
             >
               <IconBrandGithub size={20} stroke={1.5} />
             </ActionIcon>
+            <ColorToggle />
           </div>
         </div>
       </div>
