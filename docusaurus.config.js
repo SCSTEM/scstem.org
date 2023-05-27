@@ -88,6 +88,7 @@ const config = {
             label: "Get Involved",
             to: "/get-involved",
             position: "right",
+            className: "navbar-cta-button",
           },
         ],
       },

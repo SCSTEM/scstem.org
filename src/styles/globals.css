@@ -36,6 +36,30 @@
   --ifm-color-primary-lightest: var(--mantine-color-brand-yellow-3);
 }
 
+.navbar-cta-button {
+  padding: 5px 26px;
+  background-image: linear-gradient(
+    45deg,
+    var(--mantine-color-brand-yellow-5) 0%,
+    var(--mantine-color-brand-orange-6) 100%
+  );
+  border-radius: 100px;
+  color: var(--mantine-color-black);
+  width: fit-content;
+  margin: 0 auto;
+
+  &:hover {
+    background-size: 200%;
+    color: var(--mantine-color-black);
+  }
+}
+
+@media (max-width: 996px) {
+  .navbar-cta-button {
+    margin-top: 15px;
+  }
+}
+
 [data-theme="light"] {
   --ifm-background-color: var(--mantine-color-white);
 
@@ -46,6 +70,15 @@
   --ifm-color-primary-light: var(--mantine-color-brand-blue-5);
   --ifm-color-primary-lighter: var(--mantine-color-brand-blue-4);
   --ifm-color-primary-lightest: var(--mantine-color-brand-blue-3);
+
+  .navbar-cta-button {
+    background-image: linear-gradient(
+      45deg,
+      var(--mantine-color-brand-blue-5) 0%,
+      var(--mantine-color-cyan-8) 100%
+    );
+    color: var(--mantine-color-white);
+  }
 }
 
 ::selection {
