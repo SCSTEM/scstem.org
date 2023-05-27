@@ -22,7 +22,7 @@ export default function Section({ children, alt, title }: Props): JSX.Element {
     );
 
   return (
-    <section className="p-8 lg:max-w-screen-xl mx-auto">
+    <section className="p-8 lg:max-w-screen-2xl mx-auto">
       <Title
         order={2}
         className="text-2xl font-black mb-6 text-center lg:text-left"

@@ -126,7 +126,7 @@ export default function BiohazardHome(): JSX.Element {
             ]}
           />
           <PageSection>
-            <div className="my-28 md:my-36 md:mx-10 relative h-[400px] md:h-full">
+            <div className="my-16 md:my-36 md:mx-10 relative h-[400px] md:h-full">
               <div className="bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 absolute h-full md:h-[550px] w-full -z-10 rounded-2xl shadow-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 border-slate-600 border-solid border-[1px]" />
               <div className="flex md:flex-row flex-col mx-5">
                 <Card
@@ -190,7 +190,7 @@ function PageSection({
   className?: string;
 }) {
   return (
-    <section className={clsx("lg:mx-32 mx-10 lg:max-w-screen-xl", className)}>
+    <section className={clsx("p-8 lg:max-w-screen-2xl mx-auto", className)}>
       {children}
     </section>
   );
