@@ -18,6 +18,7 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      image: "img/meta.png",
       metadata: [
         {
           name: "keywords",
