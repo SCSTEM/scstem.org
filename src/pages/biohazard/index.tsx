@@ -31,7 +31,7 @@ import DefaultLayout from "@site/src/layouts/Default";
 import "./index.css";
 
 export default function BiohazardHome(): JSX.Element {
-  const isSmall = useMediaQuery("(max-width: 992px)");
+  const isSmall = useMediaQuery("(max-width: 800px)");
 
   return (
     <DefaultLayout
@@ -55,22 +55,19 @@ export default function BiohazardHome(): JSX.Element {
             <img src="/img/biohazard/home-image.webp" />
           </video>
         </div>
-        <div className="relative flex h-full flex-col w-full md:w-[750px] lg:w-[1000px] mx-auto text-center">
-          <img
-            className="lg:mt-14 md:my-4 my-2"
-            src="/img/biohazard/header-logo.svg"
-          />
-          <div className="mx-5 space-y-4 md:space-y-6 mb-4">
+        <div className="relative flex h-full flex-col w-full lg:w-[750px] xl:w-[1000px] mx-auto text-center">
+          <img className="md:mt-28 my-2" src="/img/biohazard/header-logo.svg" />
+          <div className="mx-5 space-y-4 md:space-y-10 mb-4 md:p-8">
             <Title
               order={1}
-              className="text-xl md:text-4xl lg:text-4xl md:!leading-[3rem]"
+              className="text-xl md:text-4xl lg:text-4xl lg:!leading-[3rem]"
             >
               Welcome to the{" "}
               <Underline color="brand-green">next generation</Underline> of
               thinkers, engineers scientists, artists, and dreamers.
             </Title>
             <Title
-              className="font-sans md:text-2xl lg:text-3xl text-lg"
+              className="font-sans md:text-2xl xl:text-3xl text-lg"
               order={2}
             >
               Inspiring students since <span className="text-green">2012</span>,
@@ -80,7 +77,7 @@ export default function BiohazardHome(): JSX.Element {
             </Title>
           </div>
           <button
-            className="mx-auto flex cursor-pointer flex-col items-center border-none bg-transparent md:text-2xl font-bold outline-none text-green mt-auto mb-20 md:mb-10"
+            className="mx-auto flex cursor-pointer flex-col items-center border-none bg-transparent md:text-2xl font-bold outline-none text-green mt-auto mb-20 lg:mb-10"
             onClick={() =>
               document
                 .getElementById("scrollhere")
@@ -99,13 +96,13 @@ export default function BiohazardHome(): JSX.Element {
       </header>
       <main className="bg-gradient-to-r bio-background relative">
         <div className="absolute w-full h-full -z-20 bg-[url('/img/biohazard/circuit-board.svg')]" />
-        <div className="space-y-20 md:space-y-28 py-16">
-          <PageSection className="space-y-16 md:space-y-24">
+        <div className="space-y-20 lg:space-y-28 py-16">
+          <PageSection className="space-y-16 lg:space-y-24">
             <TeamOverview />
             <StatsGroup />
           </PageSection>
           <ParallaxBanner
-            className="h-[400px] lg:h-[600px]"
+            className="h-[400px] xl:h-[600px]"
             layers={[
               {
                 image: "/img/biohazard/2023-robot-field.webp",
@@ -114,8 +111,8 @@ export default function BiohazardHome(): JSX.Element {
               {
                 speed: -15,
                 children: (
-                  <div className="absolute top-[150px] md:top-[200px] lg:top-[250px] w-full">
-                    <div className="rounded-lg md:ml-10 mx-4 shadow-xl text-white p-4 md:w-fit bg-gradient-to-br from-brand-green-3 via-brand-green-4 to-brand-green-7 space-y-2 text-center">
+                  <div className="absolute top-[150px] lg:top-[200px] xl:top-[250px] w-full">
+                    <div className="rounded-lg lg:ml-10 mx-4 shadow-xl text-white p-4 md:w-fit bg-gradient-to-br from-brand-green-3 via-brand-green-4 to-brand-green-7 space-y-2 text-center">
                       <div className="font-sans font-black text-2xl">
                         Biohazard's 2023 Robot:
                       </div>
@@ -139,7 +136,7 @@ export default function BiohazardHome(): JSX.Element {
                   radius="lg"
                   withBorder
                 >
-                  <div className="font-heading text-3xl md:text-5xl font-black italic text-green">
+                  <div className="font-heading text-3xl lg:text-5xl font-black italic text-green">
                     Viper
                   </div>
                 </Card>
@@ -155,7 +152,7 @@ export default function BiohazardHome(): JSX.Element {
                       <img
                         key={i}
                         src={src}
-                        className="object-contain h-[200px] md:h-full my-auto"
+                        className="object-contain h-[200px] lg:h-full my-auto"
                       />
                     ))}
                   />
@@ -163,8 +160,8 @@ export default function BiohazardHome(): JSX.Element {
               </div>
             </div>
           </PageSection>
-          <PageSection className="lg:!mt-10">
-            <div className="aspect-video md:m-20 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
+          <PageSection className="xl:!mt-10">
+            <div className="aspect-video lg:m-20 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
               <ReactPlayer
                 className="-z-10 bg-white dark:bg-black"
                 url="https://youtu.be/147CgudTur8"
@@ -174,7 +171,7 @@ export default function BiohazardHome(): JSX.Element {
                 width="100%"
                 height="100%"
                 playIcon={
-                  <IconPlayerPlayFilled className="text-green md:w-28 md:h-28 w-16 h-16" />
+                  <IconPlayerPlayFilled className="text-green lg:w-28 lg:h-28 w-16 h-16" />
                 }
               />
             </div>
@@ -193,7 +190,7 @@ function PageSection({
   className?: string;
 }) {
   return (
-    <section className={clsx("md:mx-32 mx-10 md:max-w-screen-xl", className)}>
+    <section className={clsx("lg:mx-32 mx-10 lg:max-w-screen-xl", className)}>
       {children}
     </section>
   );
@@ -319,11 +316,11 @@ function StatsGroup() {
   ];
 
   return (
-    <div className="flex sm:p-5 sm:px-0 px-5 py-0 rounded-lg flex-col sm:flex-row bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 shadow-2xl divide-solid divide-x-0 sm:divide-x-2 sm:divide-y-0 divide-y-2 divide-white">
+    <div className="flex md:p-5 md:px-0 px-5 py-0 rounded-lg flex-col md:flex-row bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 shadow-2xl divide-solid divide-x-0 md:divide-x-2 md:divide-y-0 divide-y-2 divide-white">
       {stats.map((stat, i) => (
         <div
           key={i}
-          className="flex-1 sm:pl-5 sm:pb-0 pl-0 pb-5 pt-4 space-y-2 sm:pr-8 text-white"
+          className="flex-1 md:pl-5 md:pb-0 pl-0 pb-5 pt-4 space-y-2 md:pr-8 text-white"
         >
           <div className="text-3xl font-bold font-heading">{stat.stats}</div>
           <div className="uppercase font-bold text-sm">{stat.title}</div>

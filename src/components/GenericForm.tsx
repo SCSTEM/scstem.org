@@ -99,7 +99,7 @@ export default function GenericForm({
     <>
       {heading && <h1 className="text-3xl font-bold">{heading}</h1>}
       <form
-        className="flex grid-cols-2 flex-col space-y-4 md:grid md:gap-x-8 md:gap-y-4 md:space-y-0"
+        className="flex grid-cols-2 flex-col space-y-4 lg:grid lg:gap-x-8 lg:gap-y-4 lg:space-y-0"
         onSubmit={form.onSubmit(handleSubmit, handleError)}
       >
         {/* First Row */}
@@ -142,7 +142,7 @@ export default function GenericForm({
         )}
 
         {/* Last Row */}
-        <div className="col-span-full row-start-3 flex flex-col md:flex-row">
+        <div className="col-span-full row-start-3 flex flex-col lg:flex-row">
           <Button
             type="submit"
             loading={submitting}
@@ -153,7 +153,7 @@ export default function GenericForm({
           >
             Submit
           </Button>
-          <div className="mt-4 md:mt-0 md:mr-0 md:ml-auto">
+          <div className="mt-4 lg:mt-0 lg:mr-0 lg:ml-auto">
             {error ? <Text color="red">{error}</Text> : null}
             {!error && submitted ? (
               <Text color="green">Your response has been recorded</Text>

@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-import { colors, black, white } from "./src/styles/styles";
+import { colors, black, white, breakpoints } from "./src/styles/styles";
 
 export default {
   darkMode: ["class", "[data-theme='dark']"],
@@ -8,13 +8,7 @@ export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   corePlugins: { preflight: false },
   theme: {
-    screens: {
-      xs: "576px",
-      sm: "768px",
-      md: "992px",
-      lg: "1200px",
-      xl: "1400px",
-    },
+    screens: breakpoints,
     extend: {
       fontFamily: {
         sans: ["var(--mantine-font-family)"],

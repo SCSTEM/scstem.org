@@ -32,10 +32,10 @@ export default function HeroHeader({
       <div className="absolute flex h-full flex-col w-full">
         <div
           className={clsx(
-            fullscreen ? "md:mt-44 md:ml-36" : "",
-            "w-full md:w-[750px] lg:w-[1000px]",
-            "md:ml-28 mt-10 md:mt-28",
-            "px-8 md:px-0 "
+            fullscreen ? "lg:mt-44 lg:ml-36" : "",
+            "w-full lg:w-[750px] xl:w-[1000px]",
+            "lg:ml-28 mt-10 lg:mt-28",
+            "px-8 lg:px-0 "
           )}
         >
           {children}

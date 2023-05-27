@@ -66,7 +66,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
           <Text
             size="lg"
             weight={700}
-            className="mx-auto mb-4 w-5/6 text-center dark:text-zinc-400 md:w-full"
+            className="mx-auto mb-4 w-5/6 text-center dark:text-zinc-400 lg:w-full"
           >
             Special thanks to our Ultimate and Platinum sponsors for powering
             our mission
@@ -89,12 +89,12 @@ export default function Footer({ copyright }: Props): JSX.Element {
               </Carousel.Slide>
             ))}
           </Carousel>
-          <div className="flex w-full flex-col items-center justify-evenly space-y-8 space-x-6 py-2 align-middle md:flex-row md:space-y-0"></div>
+          <div className="flex w-full flex-col items-center justify-evenly space-y-8 space-x-6 py-2 align-middle lg:flex-row lg:space-y-0"></div>
         </div>
 
         {/* Main Footer */}
-        <div className="flex md:flex-row flex-col min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
-          <div className="mx-auto w-80 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start mb-8 md:mb-0">
+        <div className="flex lg:flex-row flex-col min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
+          <div className="mx-auto w-80 items-center leading-3 lg:ml-0 lg:max-w-[240px] lg:items-start mb-8 lg:mb-0">
             <img
               src="/img/svg/logo-color-full.svg"
               alt="South Central STEM Collective logo"
@@ -109,8 +109,8 @@ export default function Footer({ copyright }: Props): JSX.Element {
           </div>
 
           {/* Links */}
-          <div className="justify-between md:flex grid grid-cols-2 gap-6 mx-auto md:mx-0">
-            <div className="flex md:w-40 flex-col items-center md:items-start">
+          <div className="justify-between lg:flex grid grid-cols-2 gap-6 mx-auto lg:mx-0">
+            <div className="flex lg:w-40 flex-col items-center lg:items-start">
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Support us
               </Text>
@@ -121,7 +121,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
                 Sponsors
               </Link>
             </div>
-            <div className="flex md:w-40 flex-col items-center md:items-start">
+            <div className="flex lg:w-40 flex-col items-center lg:items-start">
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Find us online
               </Text>
@@ -135,7 +135,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
                 GitHub
               </Link>
             </div>
-            <div className="flex md:w-40 flex-col col-span-2 mx-auto items-center md:items-start">
+            <div className="flex lg:w-40 flex-col col-span-2 mx-auto items-center lg:items-start">
               <Text size="lg" weight={700} className="dark:text-zinc-400">
                 Member area
               </Text>
@@ -156,8 +156,8 @@ export default function Footer({ copyright }: Props): JSX.Element {
         </div>
 
         {/* Copyright */}
-        <div className="mx-auto flex w-80 flex-col items-center justify-between md:w-full md:flex-row">
-          <Text color="dimmed" size="sm" className="text-center md:text-left">
+        <div className="mx-auto flex w-80 flex-col items-center justify-between lg:w-full lg:flex-row">
+          <Text color="dimmed" size="sm" className="text-center lg:text-left">
             {copyright}
           </Text>
           <div className="flex justify-end">

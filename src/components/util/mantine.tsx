@@ -8,7 +8,7 @@ import {
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 
-import { colors, black, white } from "../../styles/styles";
+import { colors, black, white, breakpoints } from "../../styles/styles";
 
 type RootStyleRegistryProps = {
   children: React.ReactNode;
@@ -29,6 +29,7 @@ export default function RootStyleRegistry({
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   const theme: MantineThemeOverride = {
+    breakpoints,
     fontFamily: "Inter",
     fontFamilyMonospace: "SourceCodePro",
     headings: {

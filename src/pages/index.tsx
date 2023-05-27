@@ -189,7 +189,7 @@ export default function Home(): JSX.Element {
     >
       <HeroHeader img="/img/legos.webp">
         <div className="flex flex-col space-y-6 text-white">
-          <div className="text-4xl font-bold md:text-5xl">
+          <div className="text-4xl font-bold lg:text-5xl">
             <span className="text-yellow">Robots</span> are in Franklin County.
             <Underline className="before:whitespace-pre-line before:content-['\a']">
               So are we.
@@ -205,8 +205,8 @@ export default function Home(): JSX.Element {
 
       <main className="border-0 border-t-2 border-solid border-black border-opacity-20 dark:border-yellow dark:border-opacity-10">
         {/* Overview */}
-        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 mt-16 mb-8">
-          <Title align="center" className="md:text-2xl font-black text-xl">
+        <div className="flex flex-col items-center space-y-6 mx-auto lg:max-w-screen-xl px-6 mt-16 mb-8">
+          <Title align="center" className="lg:text-2xl font-black text-xl">
             Science, Technology, Engineering, Math, Business, Art, and more
           </Title>
           <Text
@@ -238,7 +238,7 @@ export default function Home(): JSX.Element {
 
         {/* FIRST */}
         <Section alt>
-          <div className="md:w-[750px] mb-8 mx-auto">
+          <div className="lg:w-[750px] mb-8 mx-auto">
             <IdealImage
               img={require("../idealimage/first/first-horizontal-acro-light.png")}
               alt="FIRST® logo and acronym"
@@ -250,10 +250,10 @@ export default function Home(): JSX.Element {
               className="hidden dark:block"
             />
           </div>
-          <div className="flex flex-col lg:flex-row space-y-4 items-center">
-            <div className="flex-grow md:mr-12 mb-12 md:mb-0 flex flex-col space-y-4 md:max-w-2xl">
+          <div className="flex flex-col xl:flex-row space-y-4 items-center">
+            <div className="flex-grow lg:mr-12 mb-12 lg:mb-0 flex flex-col space-y-4 lg:max-w-2xl">
               <div className="rounded-3xl flex flex-col space-y-4">
-                <Title order={4} className="text-xl font-black md:text-left">
+                <Title order={4} className="text-xl font-black lg:text-left">
                   Who is <span className="italic">FIRST®</span>?
                 </Title>
                 <div>
@@ -289,7 +289,7 @@ export default function Home(): JSX.Element {
               <div className="rounded-3xl space-y-4 flex flex-col">
                 <Title
                   order={4}
-                  className="text-xl font-black text-center md:text-left"
+                  className="text-xl font-black text-center lg:text-left"
                 >
                   More Than Robots
                 </Title>
@@ -318,7 +318,7 @@ export default function Home(): JSX.Element {
             <IdealImage
               img={require("../idealimage/morethanrobots.jpg")}
               alt="Collage of photos capturing some of the many ways students can get involved"
-              className="overflow-hidden rounded-3xl md:max-w-2xl"
+              className="overflow-hidden rounded-3xl lg:max-w-2xl"
             />
           </div>
         </Section>
@@ -336,10 +336,10 @@ export default function Home(): JSX.Element {
 
         {/* Video */}
         <div className="my-10 bg-zinc-200 dark:bg-black">
-          <div className="aspect-video my-10 dark:border-yellow border-blue border-8 border-solid xl:max-w-6xl xl:mx-auto">
+          <div className="aspect-video my-10 dark:border-yellow border-blue border-8 border-solid 2xl:max-w-6xl 2xl:mx-auto">
             <div
               className={clsx(
-                "absolute dark:bg-yellow bg-blue mx-auto w-full md:w-fit left-0 right-0 text-center text-white dark:text-black pb-2 md:pb-1 md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
+                "absolute dark:bg-yellow bg-blue mx-auto w-full lg:w-fit left-0 right-0 text-center text-white dark:text-black pb-2 lg:pb-1 lg:text-2xl lg:rounded-b-lg lg:px-2 font-semibold transition-opacity duration-200",
                 videoReady ? "opacity-0" : "opacity-100"
               )}
             >
@@ -356,17 +356,17 @@ export default function Home(): JSX.Element {
               width="100%"
               height="100%"
               playIcon={
-                <IconPlayerPlay className="dark:text-yellow text-blue md:w-24 md:h-24 w-16 h-16" />
+                <IconPlayerPlay className="dark:text-yellow text-blue lg:w-24 lg:h-24 w-16 h-16" />
               }
               onReady={() => setVideoReady(true)}
             />
           </div>
         </div>
 
-        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 my-24">
+        <div className="flex flex-col items-center space-y-6 mx-auto lg:max-w-screen-xl px-6 my-24">
           <Title
             align="center"
-            className="md:text-2xl font-black text-xl"
+            className="lg:text-2xl font-black text-xl"
             order={2}
           >
             Ready to join or find out more? Contact us!
