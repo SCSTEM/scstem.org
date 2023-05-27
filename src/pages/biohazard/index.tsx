@@ -1,4 +1,5 @@
 import {
+  Card,
   Col,
   Grid,
   Overlay,
@@ -22,6 +23,7 @@ import { FC, ReactNode } from "react";
 import ReactPlayer from "react-player/lazy";
 import { ParallaxBanner } from "react-scroll-parallax";
 
+import Scroller from "@site/src/components/ImageScroller";
 import { BrandButton } from "@site/src/components/inputs/Button";
 import Underline from "@site/src/components/spans/Underline";
 import DefaultLayout from "@site/src/layouts/Default";
@@ -127,9 +129,38 @@ export default function BiohazardHome(): JSX.Element {
             ]}
           />
           <PageSection>
-            <div className="flex md:flex-row flex-col mx-10 my-14">
-              <div></div>
-              <img src="/img/biohazard/2023-robot-render.webp" />
+            <div className="my-28 md:my-36 md:mx-10 relative h-[400px] md:h-full">
+              <div className="bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 absolute h-full md:h-[550px] w-full -z-10 rounded-2xl shadow-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 border-slate-600 border-solid border-[1px]" />
+              <div className="flex md:flex-row flex-col mx-5">
+                <Card
+                  className="flex-1 -mt-10 mb-4 md:my-4 mx-8"
+                  shadow="xl"
+                  padding="lg"
+                  radius="lg"
+                  withBorder
+                >
+                  <div className="font-heading text-3xl md:text-5xl font-black italic text-green">
+                    Viper
+                  </div>
+                </Card>
+                <div className="md:max-w-xl md:py-24 px-5">
+                  <Scroller
+                    delay={5000}
+                    images={[
+                      "/img/biohazard/renders/2023-robot-render-1.webp",
+                      "/img/biohazard/renders/2023-robot-render-2.webp",
+                      "/img/biohazard/renders/2023-robot-render-3.webp",
+                      "/img/biohazard/renders/2023-robot-render-4.webp",
+                    ].map((src, i) => (
+                      <img
+                        key={i}
+                        src={src}
+                        className="object-contain h-[200px] md:h-full my-auto"
+                      />
+                    ))}
+                  />
+                </div>
+              </div>
             </div>
           </PageSection>
           <PageSection className="lg:!mt-10">

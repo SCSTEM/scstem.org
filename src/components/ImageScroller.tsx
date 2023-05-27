@@ -39,7 +39,7 @@ export default function Scroller({ className, images, delay }: Props) {
       {images.map((image: string | JSX.Element, i: number) => (
         <Carousel.Slide key={i}>
           {typeof image === "string" ? (
-            <img src={image} className="object-contain my-auto h-full" />
+            <img src={image} className="object-contain" />
           ) : (
             image
           )}
