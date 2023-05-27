@@ -6,13 +6,87 @@ import {
   IconBrandGithub,
   IconBrandLinkedin,
   IconMail,
+  TablerIconsProps,
 } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
 import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
+import { FC, useRef } from "react";
 
 import { SponsorLevel, Sponsors } from "@site/data";
 import { ColorToggle } from "@site/src/components/inputs/ColorToggle";
+
+type FooterSection = {
+  title: string;
+  links: FooterLink[];
+};
+
+type FooterLink =
+  | {
+      title: string;
+      to: string;
+      type?: "link";
+    }
+  | {
+      element: (key: string | number) => JSX.Element;
+      type?: "element";
+    };
+
+type FooterButton = {
+  href: string;
+  icon: FC<TablerIconsProps>;
+};
+
+const footerSections: FooterSection[] = [
+  {
+    title: "Support Us",
+    links: [
+      { title: "Donate", to: "/wiki/donations" },
+      { title: "Sponsors", to: "/sponsors" },
+    ],
+  },
+  {
+    title: "Find us online",
+    links: [
+      { title: "Facebook", to: "https://go.scstem.tech/facebook" },
+      { title: "LinkedIn", to: "https://go.scstem.tech/linkedin" },
+      { title: "GitHub", to: "https://go.scstem.tech/github" },
+    ],
+  },
+  {
+    title: "Member area",
+    links: [
+      {
+        element: (key) => (
+          <a key={key} className="text-gray" href="/team">
+            Team Login
+          </a>
+        ),
+      },
+      { title: "Slack", to: "https://go.scstem.tech/slack" },
+      { title: "Gmail", to: "http://mail.scstem.org" },
+      { title: "Google Drive", to: "http://drive.scstem.org" },
+    ],
+  },
+];
+
+const footerButtons: FooterButton[] = [
+  {
+    href: "mailto:info@scstem.org",
+    icon: IconMail,
+  },
+  {
+    href: "https://go.scstem.tech/facebook",
+    icon: IconBrandFacebook,
+  },
+  {
+    href: "https://go.scstem.tech/linkedin",
+    icon: IconBrandLinkedin,
+  },
+  {
+    href: "https://go.scstem.tech/github",
+    icon: IconBrandGithub,
+  },
+];
 
 function Sponsor({ sponsor }) {
   const { colorScheme } = useMantineColorScheme();
@@ -110,48 +184,25 @@ export default function Footer({ copyright }: Props): JSX.Element {
 
           {/* Links */}
           <div className="justify-between lg:flex grid grid-cols-2 gap-6 mx-auto lg:mx-0">
-            <div className="flex lg:w-40 flex-col items-center lg:items-start">
-              <Text size="lg" weight={700} className="dark:text-zinc-400">
-                Support us
-              </Text>
-              <Link to="/wiki/donations" className="text-gray">
-                Donate
-              </Link>
-              <Link to="/sponsors" className="text-gray">
-                Sponsors
-              </Link>
-            </div>
-            <div className="flex lg:w-40 flex-col items-center lg:items-start">
-              <Text size="lg" weight={700} className="dark:text-zinc-400">
-                Find us online
-              </Text>
-              <Link to="https://go.scstem.tech/facebook" className="text-gray">
-                Facebook
-              </Link>
-              <Link to="https://go.scstem.tech/linkedin" className="text-gray">
-                LinkedIn
-              </Link>
-              <Link to="https://go.scstem.tech/github" className="text-gray">
-                GitHub
-              </Link>
-            </div>
-            <div className="flex lg:w-40 flex-col col-span-2 mx-auto items-center lg:items-start">
-              <Text size="lg" weight={700} className="dark:text-zinc-400">
-                Member area
-              </Text>
-              <a className="text-gray" href="/team">
-                Team Login
-              </a>
-              <Link to="https://go.scstem.tech/slack" className="text-gray">
-                Slack
-              </Link>
-              <Link to="http://mail.scstem.org" className="text-gray">
-                Gmail
-              </Link>
-              <Link to="http://drive.scstem.org" className="text-gray">
-                Google Drive
-              </Link>
-            </div>
+            {footerSections.map((section, i) => (
+              <div
+                key={i}
+                className="flex lg:w-40 flex-col items-center lg:items-start"
+              >
+                <Text size="lg" weight={700} className="dark:text-zinc-400">
+                  {section.title}
+                </Text>
+                {section.links.map((link, i) =>
+                  link.type === "element" ? (
+                    link.element(i)
+                  ) : (
+                    <Link key={i} to={link.to} className="text-gray">
+                      {link.title}
+                    </Link>
+                  )
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -161,42 +212,21 @@ export default function Footer({ copyright }: Props): JSX.Element {
             {copyright}
           </Text>
           <div className="flex justify-end">
-            <ActionIcon
-              component="a"
-              href="mailto:info@scstem.org"
-              size="lg"
-              opacity={50}
-              target="_blank"
-            >
-              <IconMail size={20} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon
-              component="a"
-              href="https://go.scstem.tech/facebook"
-              size="lg"
-              opacity={50}
-              target="_blank"
-            >
-              <IconBrandFacebook size={20} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon
-              component="a"
-              href="https://go.scstem.tech/linkedin"
-              size="lg"
-              opacity={50}
-              target="_blank"
-            >
-              <IconBrandLinkedin size={20} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon
-              component="a"
-              href="https://go.scstem.tech/github"
-              size="lg"
-              opacity={50}
-              target="_blank"
-            >
-              <IconBrandGithub size={20} stroke={1.5} />
-            </ActionIcon>
+            {footerButtons.map((button, i) => {
+              const Icon = button.icon;
+              return (
+                <ActionIcon
+                  key={i}
+                  component="a"
+                  href={button.href}
+                  size="lg"
+                  opacity={50}
+                  target="_blank"
+                >
+                  <Icon size={20} stroke={1.5} />
+                </ActionIcon>
+              );
+            })}
             <ColorToggle />
           </div>
         </div>
