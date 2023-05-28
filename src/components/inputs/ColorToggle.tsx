@@ -1,5 +1,6 @@
 import { useColorMode } from "@docusaurus/theme-common";
 import { Switch, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import { useHotkeys } from "@mantine/hooks";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
 
 export function ColorToggle(): JSX.Element {
@@ -12,6 +13,8 @@ export function ColorToggle(): JSX.Element {
     toggleColorScheme(isDark ? "light" : "dark");
     setColorMode(isDark ? "light" : "dark");
   };
+
+  useHotkeys([["mod+J", () => toggle()]]);
 
   return (
     <Switch
