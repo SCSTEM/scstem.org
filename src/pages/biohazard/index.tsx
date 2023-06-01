@@ -40,7 +40,8 @@ import { breakpoints } from "@site/src/styles/styles";
 import "./index.css";
 
 export default function BiohazardHome(): JSX.Element {
-  const isSmall = useMediaQuery(`(max-width: ${breakpoints.sm})`);
+  const maxSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
+  const minXl = useMediaQuery(`(min-width: ${breakpoints.xl})`);
 
   return (
     <DefaultLayout
@@ -65,7 +66,7 @@ export default function BiohazardHome(): JSX.Element {
           </video>
         </div>
         <div className="relative flex h-full flex-col w-full lg:w-[750px] xl:w-[1000px] mx-auto text-center">
-          <img className="xl:mt-28 mt-2" src="/img/biohazard/header-logo.svg" />
+          <img className="xl:mt-20 mt-2" src="/img/biohazard/header-logo.svg" />
           <div className="mx-5 space-y-4 xl:space-y-10 mb-4 md:p-8">
             <Title
               order={1}
@@ -95,7 +96,7 @@ export default function BiohazardHome(): JSX.Element {
           >
             Find out how
             <IconChevronDown
-              size={isSmall ? 50 : 75}
+              size={maxSm ? 50 : 75}
               stroke={1.5}
               className="animate-bounce mt-1"
             />
@@ -132,9 +133,11 @@ export default function BiohazardHome(): JSX.Element {
               },
             ]}
           />
-          <PageSection>
-            <ViperProfile />
-          </PageSection>
+          {minXl ? (
+            <PageSection>
+              <ViperProfile />
+            </PageSection>
+          ) : null}
           <PageSection className="xl:!mt-10">
             <div className="aspect-video lg:m-20 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
               <ReactPlayer
@@ -157,11 +160,13 @@ export default function BiohazardHome(): JSX.Element {
   );
 }
 
+// TODO: The styles for this profile component are kinda a mess and don't really work that well on mobile
+// Need to redo this component at some point in the future
 function ViperProfile() {
   const { colorScheme } = useMantineColorScheme();
   const { colors } = useMantineTheme();
-  const sm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
-  const isLg = useMediaQuery(`(max-width: ${breakpoints.xl})`);
+  const maxSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
+  const maxLg = useMediaQuery(`(max-width: ${breakpoints.xl})`);
 
   const features: {
     title: string;
@@ -209,16 +214,17 @@ function ViperProfile() {
       <div className="bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 absolute h-full md:h-[850px] xl:h-[550px] w-full -z-10 rounded-2xl shadow-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 border-slate-600 border-solid border-[1px]" />
       <div className="flex xl:flex-row flex-col mx-5">
         <Card
-          className="flex-1 -mt-12 md:-mt-32 xl:mt-0 mb-4 md:my-4 -ml-10 mr-3 md:mx-8 md:p-8 md:pl-6 p-4 pl-2 h-fit"
+          className="flex-1 -mt-12 md:-mt-32 xl:mt-0 mb-6 md:my-4 -ml-10 mr-3 md:mx-8 md:p-8 md:pl-6 p-4 pl-2 h-fit"
           shadow="xl"
           radius="lg"
-          bg={colorScheme === "dark" ? undefined : colors["brand-green"][7]}
+          bg={colorScheme === "dark" ? undefined : colors["brand-green"][6]}
           withBorder
         >
           <div className="font-heading text-3xl lg:text-5xl font-black italic dark:text-green text-white">
             Viper
           </div>
-          {isLg ? (
+          {/* The maxLg case is functionally useless until this component is perfected for mobile */}
+          {maxLg ? (
             <Accordion className="mt-2" defaultValue={features[0].title}>
               {features.map((feature, i) => (
                 <Accordion.Item
@@ -246,12 +252,15 @@ function ViperProfile() {
               {features.map((feature, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex dark:text-green text-white space-x-2 pr-4">
-                    <feature.icon size={sm ? rem(30) : rem(36)} stroke={1.5} />
+                    <feature.icon
+                      size={maxSm ? rem(30) : rem(36)}
+                      stroke={1.5}
+                    />
                     <div className="w-full border-b-2 border-solid border-0 md:text-xl font-heading">
                       {feature.title}
                     </div>
                   </div>
-                  <div className="text-brand-gray-0 text-sm md:text-base">
+                  <div className="text-zinc-50 text-sm md:text-base">
                     {feature.description}
                   </div>
                 </div>
