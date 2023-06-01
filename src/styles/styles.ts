@@ -1,11 +1,11 @@
 import { Tuple } from "@mantine/core";
 
 export const breakpoints = {
-  sm: "500px",
-  md: "800px",
-  lg: "1000px",
-  xl: "1200px",
-  "2xl": "1400px",
+  sm: "30em",
+  md: "50em",
+  lg: "62em",
+  xl: "75em",
+  "2xl": "88em",
 };
 
 export const white = "#FAFAFA";

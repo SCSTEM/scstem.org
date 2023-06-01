@@ -153,12 +153,13 @@ export default function Footer({ copyright }: Props): JSX.Element {
             withControls={sponsors.length > 1}
             slideSize="33.333333%"
             breakpoints={[
-              { maxWidth: "md", slideSize: "50%" },
-              { maxWidth: "sm", slideSize: "100%", slideGap: 0 },
+              { minWidth: "lg", slideSize: "33.3333%" },
+              { minWidth: "md", slideSize: "50%" },
+              { maxWidth: "md", slideSize: "100%", slideGap: 0 },
             ]}
           >
-            {sponsors.map((sponsor) => (
-              <Carousel.Slide key={sponsor.name}>
+            {sponsors.map((sponsor, i) => (
+              <Carousel.Slide key={i}>
                 <Sponsor sponsor={sponsor} />
               </Carousel.Slide>
             ))}
