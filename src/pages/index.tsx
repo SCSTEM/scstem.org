@@ -188,7 +188,7 @@ export default function Home(): JSX.Element {
       description="The South Central STEM Collective is a non-profit organization focused on building the future of STEM, right here in Franklin County, Pennsylvania."
     >
       <HeroHeader img="/img/legos.webp">
-        <div className="flex flex-col space-y-6 text-white">
+        <div className="flex flex-col space-y-5 text-white">
           <div className="text-4xl font-bold lg:text-5xl">
             <span className="text-yellow">Robots</span> are in Franklin County.
             <Underline className="before:whitespace-pre-line before:content-['\a']">

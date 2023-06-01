@@ -34,7 +34,7 @@ export default function HeroHeader({
           className={clsx(
             fullscreen ? "lg:mt-44 lg:ml-36" : "",
             "w-full lg:w-[750px] xl:w-[1000px]",
-            "lg:ml-28 mt-10 lg:mt-28",
+            "lg:ml-28 mt-8 lg:mt-28",
             "px-8 lg:px-0 "
           )}
         >
