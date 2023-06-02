@@ -49,6 +49,7 @@ const config = {
         },
       ],
       navbar: {
+        hideOnScroll: true,
         title: "South Central STEM Collective",
         logo: {
           src: "img/svg/logo-color.svg",

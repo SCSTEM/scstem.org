@@ -228,7 +228,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
                 </ActionIcon>
               );
             })}
-            <ColorToggle />
+            {/* <ColorToggle /> */}
           </div>
         </div>
       </div>

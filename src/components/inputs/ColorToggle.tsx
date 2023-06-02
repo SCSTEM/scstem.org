@@ -1,5 +1,10 @@
 import { useColorMode } from "@docusaurus/theme-common";
-import { Switch, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import {
+  ColorScheme,
+  Switch,
+  useMantineColorScheme,
+  useMantineTheme,
+} from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
 
@@ -8,17 +13,18 @@ export function ColorToggle(): JSX.Element {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { colors, white, black } = useMantineTheme();
 
-  const toggle = () => {
-    const isDark = colorMode === "dark";
-    toggleColorScheme(isDark ? "light" : "dark");
+  const toggle = (theme?: ColorScheme) => {
+    const isDark = theme ? theme === "dark" : colorMode === "dark";
+
     setColorMode(isDark ? "light" : "dark");
+    toggleColorScheme(isDark ? "light" : "dark");
   };
 
   useHotkeys([["mod+J", () => toggle()]]);
 
   return (
     <Switch
-      checked={colorScheme === "dark"}
+      checked={colorMode === "dark"}
       onChange={() => toggle()}
       size="md"
       className="my-auto ml-2"
