@@ -1,23 +1,14 @@
 import { useColorMode } from "@docusaurus/theme-common";
-import {
-  ColorScheme,
-  Switch,
-  useMantineColorScheme,
-  useMantineTheme,
-} from "@mantine/core";
+import { Switch, useMantineTheme } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
 
 export function ColorToggle(): JSX.Element {
   const { colorMode, setColorMode } = useColorMode();
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { colors, white, black } = useMantineTheme();
 
-  const toggle = (theme?: ColorScheme) => {
-    const isDark = theme ? theme === "dark" : colorMode === "dark";
-
-    setColorMode(isDark ? "light" : "dark");
-    toggleColorScheme(isDark ? "light" : "dark");
+  const toggle = () => {
+    setColorMode(colorMode === "dark" ? "light" : "dark");
   };
 
   useHotkeys([["mod+J", () => toggle()]]);
@@ -33,7 +24,7 @@ export function ColorToggle(): JSX.Element {
       styles={{
         track: {
           backgroundColor:
-            colorScheme === "dark" ? black : colors["brand-blue"][6],
+            colorMode === "dark" ? black : colors["brand-blue"][6],
         },
       }}
     />

@@ -19,14 +19,13 @@ export default function RootStyleRegistry({
 }: RootStyleRegistryProps) {
   const cache = createEmotionCache({ key: "mtne", prepend: true });
 
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+  const [colorScheme] = useLocalStorage<ColorScheme>({
     key: "theme",
-    defaultValue: "dark",
+    defaultValue: document.documentElement.getAttribute(
+      "data-theme"
+    ) as ColorScheme,
     getInitialValueInEffect: true,
   });
-
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   const theme: MantineThemeOverride = {
     breakpoints,
@@ -79,10 +78,7 @@ export default function RootStyleRegistry({
 
   return (
     <CacheProvider value={cache}>
-      <ColorSchemeProvider
-        colorScheme={colorScheme}
-        toggleColorScheme={toggleColorScheme}
-      >
+      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={null}>
         <MantineProvider
           withGlobalStyles
           withCSSVariables
