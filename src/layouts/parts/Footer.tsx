@@ -1,3 +1,4 @@
+import BrowserOnly from "@docusaurus/BrowserOnly";
 import Link from "@docusaurus/Link";
 import { Carousel } from "@mantine/carousel";
 import { useMantineColorScheme, Text, ActionIcon } from "@mantine/core";

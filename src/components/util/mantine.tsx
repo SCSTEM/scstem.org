@@ -1,3 +1,4 @@
+import useIsBrowser from "@docusaurus/useIsBrowser";
 import { CacheProvider } from "@emotion/react";
 import {
   ColorScheme,
@@ -18,12 +19,13 @@ export default function RootStyleRegistry({
   children,
 }: RootStyleRegistryProps) {
   const cache = createEmotionCache({ key: "mtne", prepend: true });
+  const isBrowser = useIsBrowser();
 
   const [colorScheme] = useLocalStorage<ColorScheme>({
     key: "theme",
-    defaultValue: document.documentElement.getAttribute(
-      "data-theme"
-    ) as ColorScheme,
+    defaultValue: isBrowser
+      ? (document.documentElement.getAttribute("data-theme") as ColorScheme)
+      : "dark",
     getInitialValueInEffect: true,
   });
 

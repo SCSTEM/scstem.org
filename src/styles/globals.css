@@ -47,11 +47,11 @@
   color: var(--mantine-color-black);
   width: fit-content;
   margin: 0 auto;
+}
 
-  &:hover {
-    background-size: 200%;
-    color: var(--mantine-color-black);
-  }
+.navbar-cta-button:hover {
+  background-size: 200%;
+  color: var(--mantine-color-black);
 }
 
 @media (max-width: 996px) {
@@ -70,15 +70,15 @@
   --ifm-color-primary-light: var(--mantine-color-brand-blue-5);
   --ifm-color-primary-lighter: var(--mantine-color-brand-blue-4);
   --ifm-color-primary-lightest: var(--mantine-color-brand-blue-3);
+}
 
-  .navbar-cta-button {
-    background-image: linear-gradient(
-      45deg,
-      var(--mantine-color-brand-blue-5) 0%,
-      var(--mantine-color-cyan-8) 100%
-    );
-    color: var(--mantine-color-white);
-  }
+[data-theme="light"] .navbar-cta-button {
+  background-image: linear-gradient(
+    45deg,
+    var(--mantine-color-brand-blue-5) 0%,
+    var(--mantine-color-cyan-8) 100%
+  );
+  color: var(--mantine-color-white);
 }
 
 ::selection {
