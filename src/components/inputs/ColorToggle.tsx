@@ -1,22 +1,17 @@
-import { useColorMode } from "@docusaurus/theme-common";
-import { Switch, useMantineTheme } from "@mantine/core";
+import { Switch, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
 
 export function ColorToggle(): JSX.Element {
-  const { colorMode, setColorMode } = useColorMode();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { colors, white, black } = useMantineTheme();
 
-  const toggle = () => {
-    setColorMode(colorMode === "dark" ? "light" : "dark");
-  };
-
-  useHotkeys([["mod+J", () => toggle()]]);
+  useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
   return (
     <Switch
-      checked={colorMode === "dark"}
-      onChange={() => toggle()}
+      checked={colorScheme === "light"}
+      onChange={() => toggleColorScheme()}
       size="md"
       className="my-auto ml-2"
       onLabel={<IconSun size="1.25rem" stroke={1.5} color={black} />}
@@ -24,7 +19,7 @@ export function ColorToggle(): JSX.Element {
       styles={{
         track: {
           backgroundColor:
-            colorMode === "dark" ? black : colors["brand-blue"][6],
+            colorScheme === "light" ? black : colors["brand-blue"][6],
         },
       }}
     />

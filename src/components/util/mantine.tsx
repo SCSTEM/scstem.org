@@ -1,4 +1,3 @@
-import useIsBrowser from "@docusaurus/useIsBrowser";
 import { CacheProvider } from "@emotion/react";
 import {
   ColorScheme,
@@ -7,7 +6,6 @@ import {
   MantineProvider,
   MantineThemeOverride,
 } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
 
 import { colors, black, white, breakpoints } from "../../styles/styles";
 
@@ -19,15 +17,8 @@ export default function RootStyleRegistry({
   children,
 }: RootStyleRegistryProps) {
   const cache = createEmotionCache({ key: "mtne", prepend: true });
-  const isBrowser = useIsBrowser();
 
-  const [colorScheme] = useLocalStorage<ColorScheme>({
-    key: "theme",
-    defaultValue: isBrowser
-      ? (document.documentElement.getAttribute("data-theme") as ColorScheme)
-      : "dark",
-    getInitialValueInEffect: true,
-  });
+  const colorScheme: ColorScheme = "dark";
 
   const theme: MantineThemeOverride = {
     breakpoints,
