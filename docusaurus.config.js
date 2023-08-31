@@ -14,6 +14,7 @@ const config = {
   favicon: "img/svg/logo-color.svg",
   customFields: {
     turnstileSiteKey: process.env.TS_SITE_KEY || "1x00000000000000000000AA",
+    isProductionBuild: process.env.CF_PAGES_BRANCH === "main" ? true : false,
   },
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */

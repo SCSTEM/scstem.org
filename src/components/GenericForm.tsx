@@ -91,7 +91,8 @@ export default function GenericForm({
         form.reset();
       });
   };
-  const handleError = (values: typeof form.errors) => {
+
+  const handleError = (_values: typeof form.errors) => {
     return;
   };
 
@@ -160,6 +161,7 @@ export default function GenericForm({
             ) : null}
             {!error && !submitted ? (
               <Turnstile
+                hidden={!!customFields.isProductionBuild}
                 siteKey={
                   typeof customFields.turnstileSiteKey === "string"
                     ? customFields.turnstileSiteKey
@@ -171,7 +173,6 @@ export default function GenericForm({
                 options={{
                   responseField: false,
                 }}
-                className="pl-4"
               />
             ) : null}
           </div>
