@@ -1,5 +1,6 @@
 import { CacheProvider } from "@emotion/react";
 import {
+  ButtonStylesParams,
   ColorScheme,
   ColorSchemeProvider,
   createEmotionCache,
@@ -65,9 +66,12 @@ export default function RootStyleRegistry({
         defaultProps: {
           radius: "xl",
         },
-        styles: (theme) => ({
+        styles: (theme, _params: ButtonStylesParams, { variant }) => ({
           inner: {
-            color: theme.colorScheme === "dark" ? theme.black : theme.white,
+            color:
+              variant === "filled" && theme.colorScheme === "dark"
+                ? theme.black
+                : theme.white,
           },
         }),
       },

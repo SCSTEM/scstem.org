@@ -4,7 +4,6 @@ import {
   Title,
   Text,
   useMantineColorScheme,
-  MantineColor,
   Grid,
   Button,
   Divider,
@@ -25,7 +24,6 @@ import {
   IconBrandFacebook,
 } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
-import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
 
 import HeroHeader from "@site/src/components/HeroHeader";
@@ -250,12 +248,7 @@ const QA = ({
 
 export default function OpenHouse(): JSX.Element {
   const { colorScheme } = useMantineColorScheme();
-  const [color, setColor] = useState<MantineColor>("brand-dark");
   const mediaMd = useMediaQuery("(max-width: 992px)");
-
-  useEffect(() => {
-    colorScheme === "dark" ? setColor("brand-yellow") : setColor("brand-blue");
-  }, [colorScheme]);
 
   return (
     <DefaultLayout

@@ -12,7 +12,7 @@ interface Props {
   email?: boolean;
   name?: boolean;
   message?: boolean;
-  disabled?: boolean;
+  formDisabled?: boolean;
 }
 
 export default function GenericForm({
@@ -20,7 +20,7 @@ export default function GenericForm({
   email,
   name,
   message,
-  disabled,
+  formDisabled,
 }: Props): JSX.Element {
   const {
     siteConfig: { customFields },
@@ -110,7 +110,7 @@ export default function GenericForm({
               withAsterisk
               label="Name"
               placeholder="John Smith"
-              disabled={disabled}
+              disabled={formDisabled}
               {...form.getInputProps("name")}
             />
           </div>
@@ -122,7 +122,7 @@ export default function GenericForm({
               withAsterisk
               label="Email Address"
               placeholder="john@example.com"
-              disabled={disabled}
+              disabled={formDisabled}
               {...form.getInputProps("email")}
             />
           </div>
@@ -136,7 +136,7 @@ export default function GenericForm({
               label="Message"
               autosize
               minRows={4}
-              disabled={disabled}
+              disabled={formDisabled}
               {...form.getInputProps("message")}
             />
           </div>
@@ -150,7 +150,9 @@ export default function GenericForm({
             leftIcon={
               submitted ? <IconCheck size={18} /> : <IconSend size={18} />
             }
-            disabled={disabled || !token}
+            disabled={
+              formDisabled || !token || !!Object.entries(form.errors).length
+            }
           >
             Submit
           </Button>
