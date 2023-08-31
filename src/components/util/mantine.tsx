@@ -65,6 +65,11 @@ export default function RootStyleRegistry({
         defaultProps: {
           radius: "xl",
         },
+        styles: (theme) => ({
+          inner: {
+            color: theme.colorScheme === "dark" ? theme.black : theme.white,
+          },
+        }),
       },
     },
   };
