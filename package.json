@@ -33,7 +33,7 @@
     "@mantine/form": "^6.0.19",
     "@mantine/hooks": "^6.0.19",
     "@mantine/notifications": "^6.0.19",
-    "@marsidev/react-turnstile": "^0.2.1",
+    "@marsidev/react-turnstile": "^0.2.4",
     "@mdx-js/react": "^1.6.22",
     "@tabler/icons-react": "^2.32.0",
     "@types/react": "^18.2.21",
