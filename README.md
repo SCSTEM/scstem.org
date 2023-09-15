@@ -138,11 +138,11 @@ The breakpoints themselves are as follows:
 
 ```
 no prefix: 0px    // Screens 0px wide and up (essentially, the base style)
-sm:        500px  // Screens 500px wide and up (not often used)
-md:        800px  // Screens 800px wide and up - iPad Air is 820px
-lg:        1000px // Screens 1000px wide and up - Getting into laptop resolution territory
-xl:        1200px // And so on...
-2xl:       1400px
+xs:        500px  // Screens 500px wide and up (not often used)
+sm:        800px  // Screens 800px wide and up - iPad Air is 820px
+md:        1000px // Screens 1000px wide and up - Getting into laptop resolution territory
+lg:        1200px // And so on...
+xl:       1400px
 ```
 
 In general, breakpoints should only be used when necessary to tweak styles depending on screen size. For the most part, `md:` is all you need, to draw a line between phones and tablets/laptops, but the others can be helpful in specific edge-cases.

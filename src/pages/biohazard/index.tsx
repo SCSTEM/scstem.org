@@ -1,14 +1,12 @@
 import {
   Accordion,
   Card,
-  Col,
   Grid,
   MantineColor,
   Overlay,
   SimpleGrid,
   ThemeIcon,
   Title,
-  clsx,
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
@@ -27,15 +25,16 @@ import {
   TablerIconsProps,
 } from "@tabler/icons-react";
 import { IconUsersGroup } from "@tabler/icons-react";
+import { clsx } from "clsx";
 import { FC, ReactNode } from "react";
 import ReactPlayer from "react-player/lazy";
 import { ParallaxBanner } from "react-scroll-parallax";
 
+import breakpoints from "@site/breakpoints.config.cjs";
 import Scroller from "@site/src/components/ImageScroller";
 import { BrandButton } from "@site/src/components/inputs/Button";
 import Underline from "@site/src/components/spans/Underline";
 import DefaultLayout from "@site/src/layouts/Default";
-import { breakpoints } from "@site/src/styles/styles";
 
 import "./index.css";
 
@@ -65,19 +64,19 @@ export default function BiohazardHome(): JSX.Element {
             <img src="/img/biohazard/home-image.webp" />
           </video>
         </div>
-        <div className="relative flex h-full flex-col w-full lg:w-[750px] xl:w-[1000px] mx-auto text-center">
-          <img className="xl:mt-20 mt-2" src="/img/biohazard/header-logo.svg" />
-          <div className="mx-5 space-y-4 xl:space-y-10 mb-4 md:p-8">
+        <div className="relative flex h-full flex-col w-full md:w-[750px] lg:w-[1000px] mx-auto text-center">
+          <img className="lg:mt-20 mt-2" src="/img/biohazard/header-logo.svg" />
+          <div className="mx-5 space-y-4 lg:space-y-10 mb-4 sm:p-8">
             <Title
               order={1}
-              className="text-xl md:text-3xl xl:text-4xl md:!leading-[3rem]"
+              className="text-xl sm:text-3xl lg:text-4xl sm:!leading-[3rem]"
             >
               Welcome to the{" "}
               <Underline color="brand-green">next generation</Underline> of
               thinkers, engineers scientists, artists, and dreamers.
             </Title>
             <Title
-              className="font-sans md:text-2xl xl:text-3xl text-lg"
+              className="font-sans sm:text-2xl lg:text-3xl text-lg"
               order={2}
             >
               Inspiring students since <span className="text-green">2012</span>,
@@ -87,7 +86,7 @@ export default function BiohazardHome(): JSX.Element {
             </Title>
           </div>
           <button
-            className="mx-auto flex cursor-pointer flex-col items-center border-none bg-transparent md:text-2xl font-bold outline-none text-green mt-auto mb-20 lg:mb-10"
+            className="mx-auto flex cursor-pointer flex-col items-center border-none bg-transparent sm:text-2xl font-bold outline-none text-green mt-auto mb-20 lg:mb-10"
             onClick={() =>
               document
                 .getElementById("scrollhere")
@@ -106,13 +105,13 @@ export default function BiohazardHome(): JSX.Element {
       </header>
       <main className="bg-gradient-to-r bio-background relative">
         <div className="absolute w-full h-full -z-20 bg-[url('/img/biohazard/circuit-board.svg')]" />
-        <div className="space-y-20 lg:space-y-28 py-16">
-          <PageSection className="space-y-16 lg:space-y-24">
+        <div className="space-y-20 md:space-y-28 py-16">
+          <PageSection className="space-y-16 md:space-y-24">
             <TeamOverview />
             <StatsGroup />
           </PageSection>
           <ParallaxBanner
-            className="h-[400px] xl:h-[600px]"
+            className="h-[400px] lg:h-[600px]"
             layers={[
               {
                 image: "/img/biohazard/2023-robot-field.webp",
@@ -121,8 +120,8 @@ export default function BiohazardHome(): JSX.Element {
               {
                 speed: -15,
                 children: (
-                  <div className="absolute top-[150px] lg:top-[200px] xl:top-[200px] w-full">
-                    <div className="rounded-lg lg:ml-10 mx-4 shadow-xl text-white p-4 w-[200px] md:max-w-sm md:w-fit from-brand-green-3 via-brand-green-4 to-brand-green-7 space-y-2 text-center">
+                  <div className="absolute top-[150px] md:top-[200px] lg:top-[200px] w-full">
+                    <div className="rounded-lg md:ml-10 mx-4 shadow-xl text-white p-4 w-[200px] sm:max-w-sm sm:w-fit from-brand-green-3 via-brand-green-4 to-brand-green-7 space-y-2 text-center">
                       <img
                         src="/img/biohazard/viper-logo.webp"
                         className="aspect-square"
@@ -138,8 +137,8 @@ export default function BiohazardHome(): JSX.Element {
               <ViperProfile />
             </PageSection>
           ) : null}
-          <PageSection className="xl:!mt-10">
-            <div className="aspect-video lg:m-20 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
+          <PageSection className="lg:!mt-10">
+            <div className="aspect-video md:m-20 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
               <ReactPlayer
                 className="-z-10 bg-white dark:bg-black"
                 url="https://youtu.be/147CgudTur8"
@@ -149,7 +148,7 @@ export default function BiohazardHome(): JSX.Element {
                 width="100%"
                 height="100%"
                 playIcon={
-                  <IconPlayerPlayFilled className="text-green lg:w-28 lg:h-28 w-16 h-16" />
+                  <IconPlayerPlayFilled className="text-green md:w-28 md:h-28 w-16 h-16" />
                 }
               />
             </div>
@@ -210,17 +209,17 @@ function ViperProfile() {
   ];
 
   return (
-    <div className="my-10 xl:my-0 md:mx-10 mx-1 relative h-[500px] md:h-[750px] xl:h-full">
-      <div className="bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 absolute h-full md:h-[850px] xl:h-[550px] w-full -z-10 rounded-2xl shadow-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 border-slate-600 border-solid border-[1px]" />
-      <div className="flex xl:flex-row flex-col mx-5">
+    <div className="my-10 lg:my-0 sm:mx-10 mx-1 relative h-[500px] sm:h-[750px] lg:h-full">
+      <div className="bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 absolute h-full sm:h-[850px] lg:h-[550px] w-full -z-10 rounded-2xl shadow-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 border-slate-600 border-solid border-[1px]" />
+      <div className="flex lg:flex-row flex-col mx-5">
         <Card
-          className="flex-1 -mt-12 md:-mt-32 xl:mt-0 mb-6 md:my-4 -ml-10 mr-3 md:mx-8 md:p-8 md:pl-6 p-4 pl-2 h-fit"
+          className="flex-1 -mt-12 sm:-mt-32 lg:mt-0 mb-6 sm:my-4 -ml-10 mr-3 sm:mx-8 sm:p-8 sm:pl-6 p-4 pl-2 h-fit"
           shadow="xl"
           radius="lg"
           bg={colorScheme === "dark" ? undefined : colors["brand-green"][6]}
           withBorder
         >
-          <div className="font-heading text-3xl lg:text-5xl font-black italic dark:text-green text-white">
+          <div className="font-heading text-3xl md:text-5xl font-black italic dark:text-green text-white">
             Viper
           </div>
           {/* The maxLg case is functionally useless until this component is perfected for mobile */}
@@ -248,7 +247,7 @@ function ViperProfile() {
               ))}
             </Accordion>
           ) : (
-            <div className="mt-4 md:mt-10 ml-1 md:ml-2 grid xl:grid-cols-2 grid-cols-1 md:grid-cols-4 gap-y-6 md:gap-y-10 gap-x-10">
+            <div className="mt-4 sm:mt-10 ml-1 sm:ml-2 grid lg:grid-cols-2 grid-cols-1 sm:grid-cols-4 gap-y-6 sm:gap-y-10 gap-x-10">
               {features.map((feature, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex dark:text-green text-white space-x-2 pr-4">
@@ -256,11 +255,11 @@ function ViperProfile() {
                       size={maxSm ? rem(30) : rem(36)}
                       stroke={1.5}
                     />
-                    <div className="w-full border-b-2 border-solid border-0 md:text-xl font-heading">
+                    <div className="w-full border-b-2 border-solid border-0 sm:text-xl font-heading">
                       {feature.title}
                     </div>
                   </div>
-                  <div className="text-zinc-50 text-sm md:text-base">
+                  <div className="text-zinc-50 text-sm sm:text-base">
                     {feature.description}
                   </div>
                 </div>
@@ -268,7 +267,7 @@ function ViperProfile() {
             </div>
           )}
         </Card>
-        <div className="md:max-w-xl xl:py-24 px-5 mx-auto">
+        <div className="sm:max-w-xl lg:py-24 px-5 mx-auto">
           <Scroller
             delay={5000}
             images={[
@@ -280,7 +279,7 @@ function ViperProfile() {
               <img
                 key={i}
                 src={src}
-                className="object-contain h-[200px] lg:h-full my-auto"
+                className="object-contain h-[200px] md:h-full my-auto"
               />
             ))}
           />
@@ -298,7 +297,7 @@ function PageSection({
   className?: string;
 }) {
   return (
-    <section className={clsx("p-8 lg:max-w-screen-2xl mx-auto", className)}>
+    <section className={clsx("p-8 md:max-w-screen-2xl mx-auto", className)}>
       {children}
     </section>
   );
@@ -343,7 +342,7 @@ function TeamOverview() {
   return (
     <div className="p-5">
       <Grid gutter={80}>
-        <Col span={12} md={5}>
+        <Grid.Col span={12}>
           <Title
             className="text-3xl font-black mb-2 text-black dark:text-white font-sans"
             order={2}
@@ -366,12 +365,13 @@ function TeamOverview() {
           >
             Join the Revolution
           </BrandButton>
-        </Col>
-        <Col span={12} md={7}>
+        </Grid.Col>
+        <Grid.Col span={12}>
           <SimpleGrid
             cols={2}
             spacing={30}
-            breakpoints={[{ maxWidth: "md", cols: 1 }]}
+            // TODO: Fix
+            //breakpoints={[{ maxWidth: "md", cols: 1 }]}
           >
             {items.map((item, i) => (
               <div key={i}>
@@ -391,7 +391,7 @@ function TeamOverview() {
               </div>
             ))}
           </SimpleGrid>
-        </Col>
+        </Grid.Col>
       </Grid>
     </div>
   );
@@ -424,11 +424,11 @@ function StatsGroup() {
   ];
 
   return (
-    <div className="flex md:p-5 md:px-0 px-5 py-0 rounded-lg flex-col md:flex-row bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 shadow-2xl divide-solid divide-x-0 md:divide-x-2 md:divide-y-0 divide-y-2 divide-white">
+    <div className="flex sm:p-5 sm:px-0 px-5 py-0 rounded-lg flex-col sm:flex-row bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 shadow-2xl divide-solid divide-x-0 sm:divide-x-2 sm:divide-y-0 divide-y-2 divide-white">
       {stats.map((stat, i) => (
         <div
           key={i}
-          className="flex-1 md:pl-5 md:pb-0 pl-0 pb-5 pt-4 space-y-2 md:pr-8 text-white"
+          className="flex-1 sm:pl-5 sm:pb-0 pl-0 pb-5 pt-4 space-y-2 sm:pr-8 text-white"
         >
           <div className="text-3xl font-bold font-heading">{stat.stats}</div>
           <div className="uppercase font-bold text-sm">{stat.title}</div>

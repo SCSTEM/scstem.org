@@ -1,17 +1,13 @@
-import { Tuple } from "@mantine/core";
+import { MantineColorsTuple } from "@mantine/core";
 
-export const breakpoints = {
-  sm: "30em",
-  md: "50em",
-  lg: "62em",
-  xl: "75em",
-  "2xl": "88em",
-};
+export const defaultColorScheme: "dark" | "light" = "dark";
+
+export const defaultShade = 5;
 
 export const white = "#FAFAFA";
 export const black = "#171717";
 
-export const colors: Record<string, Tuple<string, 10>> = {
+export const colors: Record<string, MantineColorsTuple> = {
   "brand-yellow": [
     "#E6E1CF",
     "#DDD4B0",

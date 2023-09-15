@@ -1,5 +1,4 @@
 import { Carousel } from "@mantine/carousel";
-import { createStyles, getStylesRef } from "@mantine/core";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 
@@ -9,31 +8,33 @@ interface Props {
   delay?: number;
 }
 
-const useStyles = createStyles(() => ({
-  controls: {
-    ref: getStylesRef("controls"),
-    transition: "opacity 150ms ease",
-    opacity: 0,
-  },
-  root: {
-    "&:hover": {
-      [`& .${getStylesRef("controls")}`]: {
-        opacity: 1,
-      },
-    },
-  },
-}));
+// TODO: Fix
+// const useStyles = createStyles(() => ({
+//   controls: {
+//     ref: getStylesRef("controls"),
+//     transition: "opacity 150ms ease",
+//     opacity: 0,
+//   },
+//   root: {
+//     "&:hover": {
+//       [`& .${getStylesRef("controls")}`]: {
+//         opacity: 1,
+//       },
+//     },
+//   },
+// }));
 
 export default function Scroller({ className, images, delay }: Props) {
   const autoplay = useRef(Autoplay({ delay: delay ?? 4000 }));
-  const { classes } = useStyles();
+  // TODO: Fix
+  // const { classes } = useStyles();
 
   return (
     <Carousel
       loop
       draggable={false}
       plugins={[autoplay.current]}
-      classNames={classes}
+      //classNames={classes}
       className={className}
     >
       {images.map((image: string | JSX.Element, i: number) => (

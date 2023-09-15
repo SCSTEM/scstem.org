@@ -38,6 +38,7 @@
     "@types/react": "^18.2.21",
     "autoprefixer": "^10.4.15",
     "bad-words": "^3.0.4",
+    "clsx": "^2.0.0",
     "dayjs": "^1.11.9",
     "docusaurus-plugin-image-zoom": "^1.0.1",
     "embla-carousel-autoplay": "^7.1.0",

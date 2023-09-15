@@ -6,9 +6,9 @@ import {
   MantineColor,
   useMantineTheme,
 } from "@mantine/core";
-import { clsx } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
+import { clsx } from "clsx";
 
 import { Sponsor, SponsorLevel } from "@site/data";
 
@@ -70,7 +70,7 @@ export default function SponsorCard({
               alt={name + " logo"}
               className={clsx(
                 "h-full object-contain",
-                darkLogo !== undefined ? "dark:hidden" : null
+                darkLogo !== undefined ? "dark:hidden" : null,
               )}
             />
           </>
@@ -88,18 +88,12 @@ export default function SponsorCard({
       <Card.Section
         className={clsx(
           "flex border-0 border-solid px-2 py-2",
-          description || url ? "border-b" : null
+          description || url ? "border-b" : null,
         )}
       >
-        <Text weight={700} className="flex-grow">
-          {name}
-        </Text>
+        <Text className="flex-grow font-bold">{name}</Text>
         {level ? (
-          <Badge
-            className="my-auto"
-            variant="filled"
-            sx={{ borderColor: accent, backgroundColor: accent }}
-          >
+          <Badge className="my-auto" variant="filled" color={accent}>
             {level}
           </Badge>
         ) : null}

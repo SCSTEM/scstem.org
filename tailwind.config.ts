@@ -1,9 +1,10 @@
 import type { Config } from "tailwindcss";
 
-import { colors, black, white, breakpoints } from "./src/styles/styles";
+import breakpoints from "./breakpoints.config.cjs";
+import { colors, black, white, defaultShade } from "./src/styles/styles";
 
 export default {
-  darkMode: ["class", "[data-theme='dark']"],
+  darkMode: ["class", "[data-mantine-color-scheme='dark']"],
   plugins: [require("@tailwindcss/typography")],
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   corePlugins: { preflight: false },
@@ -23,11 +24,11 @@ export default {
         white,
 
         ...colors,
-        yellow: colors["brand-yellow"][5],
-        blue: colors["brand-blue"][5],
-        green: colors["brand-green"][5],
-        orange: colors["brand-orange"][5],
-        gray: colors["brand-gray"][5],
+        yellow: colors["brand-yellow"][defaultShade],
+        blue: colors["brand-blue"][defaultShade],
+        green: colors["brand-green"][defaultShade],
+        orange: colors["brand-orange"][defaultShade],
+        gray: colors["brand-gray"][defaultShade],
 
         bio: {
           // TODO Biohazard brand colors

@@ -17,8 +17,8 @@ export default function HeroHeader({
   return (
     <header
       className={clsx(
-        fullscreen ? null : "md:h-[500px]",
-        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-blue dark:border-yellow w-full"
+        fullscreen ? null : "sm:h-[500px]",
+        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-blue dark:border-yellow w-full",
       )}
     >
       <div className="absolute -z-0 h-full w-full">
@@ -32,18 +32,18 @@ export default function HeroHeader({
       <div className="absolute flex h-full flex-col w-full">
         <div
           className={clsx(
-            fullscreen ? "lg:mt-44 lg:ml-36" : "",
-            "w-full lg:w-[750px] xl:w-[1000px]",
-            "lg:ml-28 mt-8 lg:mt-28",
-            "px-8 lg:px-0 "
+            fullscreen ? "md:mt-44 md:ml-36" : "",
+            "w-full md:w-[750px] lg:w-[1000px]",
+            "md:ml-28 mt-8 md:mt-28",
+            "px-8 md:px-0 ",
           )}
         >
           {children}
         </div>
         <button
           className={clsx(
-            fullscreen ? "" : "md:hidden",
-            "mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-yellow mt-auto"
+            fullscreen ? "" : "sm:hidden",
+            "mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-yellow mt-auto",
           )}
           onClick={() =>
             document

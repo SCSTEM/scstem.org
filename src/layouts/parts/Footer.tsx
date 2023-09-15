@@ -129,7 +129,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
   const sponsors = Sponsors.filter(
     (sponsor) =>
       sponsor.level === SponsorLevel.Ultimate ||
-      sponsor.level === SponsorLevel.Platinum
+      sponsor.level === SponsorLevel.Platinum,
   );
 
   return (
@@ -139,8 +139,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
         <div>
           <Text
             size="lg"
-            weight={700}
-            className="mx-auto mb-4 w-5/6 text-center dark:text-zinc-400 lg:w-full"
+            className="mx-auto mb-4 w-5/6 text-center dark:text-zinc-400 md:w-full font-bold"
           >
             Special thanks to our Ultimate and Platinum sponsors for powering
             our mission
@@ -152,11 +151,12 @@ export default function Footer({ copyright }: Props): JSX.Element {
             draggable={false}
             withControls={sponsors.length > 1}
             slideSize="33.333333%"
-            breakpoints={[
-              { minWidth: "lg", slideSize: "33.3333%" },
-              { minWidth: "md", slideSize: "50%" },
-              { maxWidth: "md", slideSize: "100%", slideGap: 0 },
-            ]}
+            // TODO: Fix
+            // breakpoints={[
+            //   { minWidth: "lg", slideSize: "33.3333%" },
+            //   { minWidth: "md", slideSize: "50%" },
+            //   { maxWidth: "md", slideSize: "100%", slideGap: 0 },
+            // ]}
           >
             {sponsors.map((sponsor, i) => (
               <Carousel.Slide key={i}>
@@ -164,12 +164,12 @@ export default function Footer({ copyright }: Props): JSX.Element {
               </Carousel.Slide>
             ))}
           </Carousel>
-          <div className="flex w-full flex-col items-center justify-evenly space-y-8 space-x-6 py-2 align-middle lg:flex-row lg:space-y-0"></div>
+          <div className="flex w-full flex-col items-center justify-evenly space-y-8 space-x-6 py-2 align-middle md:flex-row md:space-y-0"></div>
         </div>
 
         {/* Main Footer */}
-        <div className="flex lg:flex-row flex-col min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
-          <div className="mx-auto w-80 items-center leading-3 lg:ml-0 lg:max-w-[240px] lg:items-start mb-8 lg:mb-0">
+        <div className="flex md:flex-row flex-col min-h-[160px] justify-between border-0 border-y border-solid border-slate-400 py-6 leading-9">
+          <div className="mx-auto w-80 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start mb-8 md:mb-0">
             <img
               src="/img/svg/logo-color-full.svg"
               alt="South Central STEM Collective logo"
@@ -184,13 +184,13 @@ export default function Footer({ copyright }: Props): JSX.Element {
           </div>
 
           {/* Links */}
-          <div className="justify-between lg:flex grid grid-cols-2 gap-6 mx-auto lg:mx-0">
+          <div className="justify-between md:flex grid grid-cols-2 gap-6 mx-auto md:mx-0">
             {footerSections.map((section, i) => (
               <div
                 key={i}
-                className="flex lg:w-40 flex-col items-center lg:items-start"
+                className="flex md:w-40 flex-col items-center md:items-start"
               >
-                <Text size="lg" weight={700} className="dark:text-zinc-400">
+                <Text size="lg" className="dark:text-zinc-400 font-bold">
                   {section.title}
                 </Text>
                 {section.links.map((link, i) =>
@@ -200,7 +200,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
                     <Link key={i} to={link.to} className="text-gray">
                       {link.title}
                     </Link>
-                  )
+                  ),
                 )}
               </div>
             ))}
@@ -208,8 +208,8 @@ export default function Footer({ copyright }: Props): JSX.Element {
         </div>
 
         {/* Copyright */}
-        <div className="mx-auto flex w-80 flex-col items-center justify-between lg:w-full lg:flex-row">
-          <Text color="dimmed" size="sm" className="text-center lg:text-left">
+        <div className="mx-auto flex w-80 flex-col items-center justify-between md:w-full md:flex-row">
+          <Text size="sm" className="text-center md:text-left opacity-25">
             {copyright}
           </Text>
           <div className="flex justify-end">

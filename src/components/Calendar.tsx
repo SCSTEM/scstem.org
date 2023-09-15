@@ -30,7 +30,6 @@ export enum CalColor {
   Gold = "%2388880E",
   Goldenrod = "%23AB8B00",
   DarkerGoldenrod = "%23856508",
-  PaleGreen = "%2328754E",
   LighterGreen = "%231B887A",
   Green = "%2328754E",
   ForestGreen = " %230D7813",
@@ -86,7 +85,7 @@ export default function CalendarFrame({
 
   return (
     <iframe
-      className="h-[800px] w-full border-none lg:h-[900px]"
+      className="h-[800px] w-full border-none md:h-[900px]"
       src={`https://calendar.google.com/calendar/embed?${src}&bgcolor=${bg}&ctz=America%2FNew_York${
         noTitle ? "&showTitle=0" : ""
       }${noNav ? "&showNav=0" : ""}${noDate ? "&showDate=0" : ""}${

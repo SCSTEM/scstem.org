@@ -39,8 +39,8 @@ const programs: FeatureCardProps[] = [
   {
     key: "fll",
     title: (
-      <Text size="lg" weight={700}>
-        <span className="italic inline">FIRST®</span> LEGO® League
+      <Text size="lg">
+        <span className="italic inline font-bold">FIRST®</span> LEGO® League
       </Text>
     ),
     body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
@@ -52,8 +52,8 @@ const programs: FeatureCardProps[] = [
   {
     key: "ftc",
     title: (
-      <Text size="lg" weight={700}>
-        <span className="italic">FIRST®</span> Tech Challenge
+      <Text size="lg">
+        <span className="italic font-bold">FIRST®</span> Tech Challenge
       </Text>
     ),
     body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
@@ -65,8 +65,8 @@ const programs: FeatureCardProps[] = [
   {
     key: "frc",
     title: (
-      <Text size="lg" weight={700}>
-        <span className="italic">FIRST®</span> Robotics Competition
+      <Text size="lg">
+        <span className="italic font-bold">FIRST®</span> Robotics Competition
       </Text>
     ),
     body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
@@ -222,10 +222,10 @@ const Section = ({
   title: string;
   children: React.ReactNode;
 }): JSX.Element => (
-  <div className="p-8 lg:max-w-screen-xl mx-auto">
+  <div className="p-8 md:max-w-screen-xl mx-auto">
     <Title
       order={3}
-      className="text-2xl font-black mb-6 text-center lg:text-left"
+      className="text-2xl font-black mb-6 text-center md:text-left"
     >
       {title}
     </Title>
@@ -277,19 +277,16 @@ export default function OpenHouse(): JSX.Element {
       </HeroHeader>
 
       <div className="flex flex-col space-y-8">
-        <div className="flex flex-col items-center space-y-6 mx-auto lg:max-w-screen-xl px-6 mt-8">
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 mt-8">
           <Title
             order={2}
-            align="center"
-            className="lg:text-3xl font-black text-xl"
+            className="md:text-3xl font-black text-xl text-center"
           >
             Meet the teams, see the robots, and learn more about our programs.
           </Title>
           <Text
-            color={colorScheme === "dark" ? "dimmed" : null}
             size="lg"
-            className="max-w-4xl m-auto"
-            align="center"
+            className="max-w-4xl m-auto text-center dark:opacity-25"
           >
             Are you or is someone you know interested in LEGO®, science,
             technology, engineering, math, business, marketing, video
@@ -302,7 +299,7 @@ export default function OpenHouse(): JSX.Element {
         <Section title="Our Programs">
           <Grid gutter="md" justify="center">
             {programs.map((program) => (
-              <Grid.Col md={6} lg={4} key={program.key}>
+              <Grid.Col key={program.key}>
                 <FeatureCard key={program.key} {...program} />
               </Grid.Col>
             ))}
@@ -310,8 +307,8 @@ export default function OpenHouse(): JSX.Element {
         </Section>
 
         <div className="space-y-4 bg-zinc-200 dark:bg-black shadow-inner py-12 px-8">
-          <div className="lg:max-w-screen-xl mx-auto lg:px-12">
-            <div className="lg:w-[750px] mb-8 mx-auto">
+          <div className="md:max-w-screen-xl mx-auto md:px-12">
+            <div className="md:w-[750px] mb-8 mx-auto">
               <IdealImage
                 img={require("../idealimage/first/first-horizontal-acro-light.png")}
                 alt="FIRST® logo and acronym"
@@ -323,10 +320,10 @@ export default function OpenHouse(): JSX.Element {
                 className="hidden dark:block"
               />
             </div>
-            <div className="flex flex-col xl:flex-row space-y-4 items-center">
-              <div className="flex-grow lg:mr-12 mb-12 lg:mb-0 flex flex-col space-y-4 lg:max-w-2xl">
+            <div className="flex flex-col lg:flex-row space-y-4 items-center">
+              <div className="flex-grow md:mr-12 mb-12 md:mb-0 flex flex-col space-y-4 md:max-w-2xl">
                 <div className="rounded-3xl flex flex-col space-y-4">
-                  <Title order={4} className="text-xl font-black lg:text-left">
+                  <Title order={4} className="text-xl font-black md:text-left">
                     Who is <span className="italic">FIRST®</span>?
                   </Title>
                   <div>
@@ -343,12 +340,11 @@ export default function OpenHouse(): JSX.Element {
                   </div>
                   <Link to="https://www.firstinspires.org/" className="ml-auto">
                     <Button
-                      rightIcon={<IconExternalLink />}
+                      rightSection={<IconExternalLink />}
                       color={
                         colorScheme === "dark" ? "brand-yellow" : "brand-blue"
                       }
                       variant="subtle"
-                      compact
                     >
                       <span className="italic">FIRST®</span>
                     </Button>
@@ -360,7 +356,7 @@ export default function OpenHouse(): JSX.Element {
                 <div className="rounded-3xl space-y-4 flex flex-col">
                   <Title
                     order={4}
-                    className="text-xl font-black text-center lg:text-left"
+                    className="text-xl font-black text-center md:text-left"
                   >
                     More Than Robots
                   </Title>
@@ -375,12 +371,11 @@ export default function OpenHouse(): JSX.Element {
                     className="ml-auto"
                   >
                     <Button
-                      rightIcon={<IconExternalLink />}
+                      rightSection={<IconExternalLink />}
                       color={
                         colorScheme === "dark" ? "brand-yellow" : "brand-blue"
                       }
                       variant="subtle"
-                      compact
                     >
                       More Than Robots
                     </Button>
@@ -401,7 +396,7 @@ export default function OpenHouse(): JSX.Element {
         <Section title="Why join?">
           <Grid gutter="md" justify="center">
             {whyJoin.map((wj) => (
-              <Grid.Col md={6} lg={4} key={wj.key}>
+              <Grid.Col key={wj.key}>
                 <FeatureCard {...wj} />
               </Grid.Col>
             ))}
@@ -409,8 +404,8 @@ export default function OpenHouse(): JSX.Element {
         </Section>
 
         <div className="space-y-4 bg-zinc-200 dark:bg-black shadow-inner py-8">
-          <div className="lg:max-w-screen-xl mx-auto px-10 lg:px-12">
-            <div className="lg:w-[700px] mb-10 mx-auto">
+          <div className="md:max-w-screen-xl mx-auto px-10 md:px-12">
+            <div className="md:w-[700px] mb-10 mx-auto">
               <IdealImage
                 img={require("../idealimage/open-house-banner.png")}
                 alt="South Central STEM Collective open house banner"
@@ -422,16 +417,16 @@ export default function OpenHouse(): JSX.Element {
                 p="xl"
                 radius="lg"
                 withBorder
-                className="flex flex-col lg:space-x-4 lg:space-y-0 space-y-4 overflow-visible w-fit mx-auto"
+                className="flex flex-col md:space-x-4 md:space-y-0 space-y-4 overflow-visible w-fit mx-auto"
               >
                 <div>
                   <Title order={4} className="text-center">
                     Connect on Facebook
                   </Title>
-                  <div className="space-y-4 items-center justify-center flex flex-col lg:h-40 my-auto">
+                  <div className="space-y-4 items-center justify-center flex flex-col md:h-40 my-auto">
                     <Link to="https://fb.me/e/2pbNhQ4Y7">
                       <Button
-                        leftIcon={<IconCalendarEvent />}
+                        leftSection={<IconCalendarEvent />}
                         styles={(theme) => ({
                           root: {
                             backgroundColor: "#F3425F",
@@ -439,9 +434,10 @@ export default function OpenHouse(): JSX.Element {
                             height: rem(42),
                             paddingLeft: rem(20),
                             paddingRight: rem(20),
-                            "&:not([data-disabled])": theme.fn.hover({
-                              backgroundColor: theme.fn.darken("#F3425F", 0.05),
-                            }),
+                            // TODO: Fix
+                            // "&:not([data-disabled])": theme.fn.hover({
+                            //   backgroundColor: theme.fn.darken("#F3425F", 0.05),
+                            // }),
                             leftIcon: {
                               marginRight: theme.spacing.md,
                             },
@@ -453,7 +449,7 @@ export default function OpenHouse(): JSX.Element {
                     </Link>
                     <Link to="https://fb.me/e/2pbNhQ4Y7">
                       <Button
-                        leftIcon={<IconBrandFacebook />}
+                        leftSection={<IconBrandFacebook />}
                         styles={(theme) => ({
                           root: {
                             backgroundColor: "#2374E1",
@@ -461,9 +457,10 @@ export default function OpenHouse(): JSX.Element {
                             height: rem(42),
                             paddingLeft: rem(20),
                             paddingRight: rem(20),
-                            "&:not([data-disabled])": theme.fn.hover({
-                              backgroundColor: theme.fn.darken("#2374E1", 0.05),
-                            }),
+                            // TODO: Fix
+                            // "&:not([data-disabled])": theme.fn.hover({
+                            //   backgroundColor: theme.fn.darken("#2374E1", 0.05),
+                            // }),
                             leftIcon: {
                               marginRight: theme.spacing.md,
                             },
@@ -477,7 +474,7 @@ export default function OpenHouse(): JSX.Element {
                 </div>
               </Card>
             </div>
-            <div className="flex flex-col lg:flex-row lg:space-x-6 lg:space-y-0 space-x-0 space-y-6">
+            <div className="flex flex-col md:flex-row md:space-x-6 md:space-y-0 space-x-0 space-y-6">
               <div className="flex-1">
                 <Title
                   order={3}
@@ -573,7 +570,7 @@ export default function OpenHouse(): JSX.Element {
 
         {videoUrl ? (
           <Section title="Can't make it?">
-            <div className="lg:w-[800px] xl:w-[1000px]">
+            <div className="md:w-[800px] lg:w-[1000px]">
               <Card shadow="lg" p="xl" radius="lg" withBorder>
                 <Title order={3} className="w-full text-center">
                   Check out this video to learn a little bit more about our FRC

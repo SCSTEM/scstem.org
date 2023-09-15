@@ -1,10 +1,10 @@
 import {
   MantineGradient,
   Text,
-  clsx,
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
+import { clsx } from "clsx";
 import { ReactNode } from "react";
 
 interface Props {

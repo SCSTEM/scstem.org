@@ -2,6 +2,7 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 /* eslint-disable */
+const breakpoints = require("./breakpoints.config.cjs");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -99,7 +100,6 @@ const config = {
       },
       colorMode: {
         defaultMode: "dark",
-        disableSwitch: true,
       },
       zoom: {
         selector: ".markdown img, .zoomable img",
@@ -113,7 +113,7 @@ const config = {
       ({
         docs: {
           routeBasePath: "wiki",
-          sidebarPath: require.resolve("./sidebars.js"),
+          sidebarPath: require.resolve("./sidebars.config.cjs"),
           path: "./wiki",
         },
         theme: {
@@ -142,12 +142,24 @@ const config = {
         name: "img/_optimized/[name].[hash:hex:7].[width].[ext]",
       },
     ],
-    async function tailwind(_context, _options) {
+    async function postcss(_context, _options) {
       return {
-        name: "docusaurus-tailwindcss",
+        name: "docusaurus-postcss",
         configurePostCss(postcssOptions) {
           postcssOptions.plugins.push(require("tailwindcss"));
           postcssOptions.plugins.push(require("autoprefixer"));
+          postcssOptions.plugins.push(require("postcss-preset-mantine"));
+          postcssOptions.plugins.push(
+            require("postcss-simple-vars")({
+              variables: {
+                "mantine-breakpoint-xs": breakpoints.xs,
+                "mantine-breakpoint-sm": breakpoints.sm,
+                "mantine-breakpoint-md": breakpoints.md,
+                "mantine-breakpoint-lg": breakpoints.lg,
+                "mantine-breakpoint-xl": breakpoints.xl,
+              },
+            }),
+          );
           return postcssOptions;
         },
       };

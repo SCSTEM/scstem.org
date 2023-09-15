@@ -1,13 +1,16 @@
+/* Fonts */
 @font-face {
   font-family: "Inter";
-  src: url("/fonts/inter-variable.ttf") format("truetype supports variations"),
+  src:
+    url("/fonts/inter-variable.ttf") format("truetype supports variations"),
     url("/fonts/inter-variable.ttf") format("truetype-variations");
   font-weight: 100 900;
 }
 
 @font-face {
   font-family: "SourceCodePro";
-  src: url("/fonts/sourcecodepro-variable.ttf")
+  src:
+    url("/fonts/sourcecodepro-variable.ttf")
       format("truetype supports variations"),
     url("/fonts/sourcecodepro-variable.ttf") format("truetype-variations");
   font-weight: 100 900;
@@ -15,11 +18,13 @@
 
 @font-face {
   font-family: "Orbitron";
-  src: url("/fonts/orbitron-variable.ttf")
-      format("truetype supports variations"),
+  src:
+    url("/fonts/orbitron-variable.ttf") format("truetype supports variations"),
     url("/fonts/orbitron-variable.ttf") format("truetype-variations");
   font-weight: 100 900;
 }
+
+/* Default Theme Overrides */
 
 :root {
   --ifm-font-family-base: "Inter";
@@ -34,6 +39,13 @@
   --ifm-color-primary-light: var(--mantine-color-brand-yellow-5);
   --ifm-color-primary-lighter: var(--mantine-color-brand-yellow-4);
   --ifm-color-primary-lightest: var(--mantine-color-brand-yellow-3);
+
+  --ifm-link-color: inherit;
+  --ifm-link-hover-color: var(--ifm-color-primary);
+}
+
+a:hover {
+  text-decoration: none;
 }
 
 .navbar-cta-button {
@@ -60,6 +72,13 @@
   }
 }
 
+::selection {
+  background-color: var(--ifm-color-primary);
+  color: var(--ifm-background-color);
+}
+
+/* Light Theme */
+
 [data-theme="light"] {
   --ifm-background-color: var(--mantine-color-white);
 
@@ -81,10 +100,7 @@
   color: var(--mantine-color-white);
 }
 
-::selection {
-  background-color: var(--ifm-color-primary);
-  color: var(--ifm-background-color);
-}
+/* Tailwind Style Injection */
 
 @tailwind base;
 @tailwind components;
@@ -92,6 +108,6 @@
 
 /* Silly trick to get webpack(?) to load Orbitron */
 /* TODO: Move to Tailwind at some point */
-.yai4A {
+/* .yai4A {
   font-family: "Orbitron";
-}
+} */

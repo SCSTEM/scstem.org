@@ -3,9 +3,8 @@ import {
   Grid,
   Title,
   Text,
-  useMantineTheme,
   Divider,
-  clsx,
+  useComputedColorScheme,
 } from "@mantine/core";
 import {
   IconBooks,
@@ -19,6 +18,7 @@ import {
   IconTool,
 } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
+import { clsx } from "clsx";
 import { useState } from "react";
 import ReactPlayer from "react-player/lazy";
 
@@ -179,8 +179,8 @@ const whyJoin: FeatureCardProps[] = [
 ];
 
 export default function Home(): JSX.Element {
-  const { colorScheme } = useMantineTheme();
   const [videoReady, setVideoReady] = useState(false);
+  const colorScheme = useComputedColorScheme("dark");
 
   return (
     <DefaultLayout
@@ -189,7 +189,7 @@ export default function Home(): JSX.Element {
     >
       <HeroHeader img="/img/legos.webp">
         <div className="flex flex-col space-y-5 text-white">
-          <div className="text-4xl font-bold lg:text-5xl">
+          <div className="text-4xl font-bold md:text-5xl">
             <span className="text-yellow">Robots</span> are in Franklin County.
             <Underline className="before:whitespace-pre-line before:content-['\a']">
               So are we.
@@ -205,16 +205,11 @@ export default function Home(): JSX.Element {
 
       <main className="border-0 border-t-2 border-solid border-black border-opacity-20 dark:border-yellow dark:border-opacity-10">
         {/* Overview */}
-        <div className="flex flex-col items-center space-y-6 mx-auto lg:max-w-screen-xl px-6 mt-16 mb-8">
-          <Title align="center" className="lg:text-2xl font-black text-xl">
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 mt-16 mb-8">
+          <Title className="md:text-2xl font-black text-xl text-center">
             Science, Technology, Engineering, Math, Business, Art, and more
           </Title>
-          <Text
-            color={colorScheme === "dark" ? "dimmed" : null}
-            size="lg"
-            className="max-w-5xl m-auto"
-            align="center"
-          >
+          <Text size="lg" className="max-w-5xl m-auto dark:opacity-25">
             The South Central STEM Collective (otherwise known as SC2) was
             created to serve South Central Pennsylvania as "STEM Central";
             inspiring youth aged 9-18 with hands-on education, competitive
@@ -229,7 +224,7 @@ export default function Home(): JSX.Element {
         <Section title="Our Programs">
           <Grid gutter="md" justify="center">
             {programs.map((program) => (
-              <Grid.Col md={6} lg={4} key={program.key}>
+              <Grid.Col key={program.key}>
                 <FeatureCard key={program.key} {...program} />
               </Grid.Col>
             ))}
@@ -238,7 +233,7 @@ export default function Home(): JSX.Element {
 
         {/* FIRST */}
         <Section alt>
-          <div className="lg:w-[750px] mb-8 mx-auto">
+          <div className="md:w-[750px] mb-8 mx-auto">
             <IdealImage
               img={require("../idealimage/first/first-horizontal-acro-light.png")}
               alt="FIRST® logo and acronym"
@@ -250,10 +245,10 @@ export default function Home(): JSX.Element {
               className="hidden dark:block"
             />
           </div>
-          <div className="flex flex-col xl:flex-row space-y-4 items-center">
-            <div className="flex-grow lg:mr-12 mb-12 lg:mb-0 flex flex-col space-y-4 lg:max-w-2xl">
+          <div className="flex flex-col lg:flex-row space-y-4 items-center">
+            <div className="flex-grow md:mr-12 mb-12 md:mb-0 flex flex-col space-y-4 md:max-w-2xl">
               <div className="rounded-3xl flex flex-col space-y-4">
-                <Title order={4} className="text-xl font-black lg:text-left">
+                <Title order={4} className="text-xl font-black md:text-left">
                   Who is <span className="italic">FIRST®</span>?
                 </Title>
                 <div>
@@ -270,12 +265,11 @@ export default function Home(): JSX.Element {
                 <div className="ml-auto">
                   <Button
                     to="https://www.firstinspires.org/"
-                    rightIcon={<IconExternalLink />}
+                    rightSection={<IconExternalLink />}
                     color={
                       colorScheme === "dark" ? "brand-yellow" : "brand-blue"
                     }
                     variant="subtle"
-                    compact
                   >
                     <span className="italic">FIRST®</span>
                   </Button>
@@ -289,7 +283,7 @@ export default function Home(): JSX.Element {
               <div className="rounded-3xl space-y-4 flex flex-col">
                 <Title
                   order={4}
-                  className="text-xl font-black text-center lg:text-left"
+                  className="text-xl font-black text-center md:text-left"
                 >
                   More Than Robots
                 </Title>
@@ -301,12 +295,11 @@ export default function Home(): JSX.Element {
                 </div>
                 <div className="ml-auto">
                   <Button
-                    rightIcon={<IconExternalLink />}
+                    rightSection={<IconExternalLink />}
                     color={
                       colorScheme === "dark" ? "brand-yellow" : "brand-blue"
                     }
                     variant="subtle"
-                    compact
                     to="https://info.firstinspires.org/morethanrobots"
                   >
                     More Than Robots
@@ -318,7 +311,7 @@ export default function Home(): JSX.Element {
             <IdealImage
               img={require("../idealimage/morethanrobots.jpg")}
               alt="Collage of photos capturing some of the many ways students can get involved"
-              className="overflow-hidden rounded-3xl lg:max-w-2xl"
+              className="overflow-hidden rounded-3xl md:max-w-2xl"
             />
           </div>
         </Section>
@@ -327,7 +320,7 @@ export default function Home(): JSX.Element {
         <Section title="Why join?">
           <Grid gutter="md" justify="center">
             {whyJoin.map((wj) => (
-              <Grid.Col md={6} lg={4} key={wj.key}>
+              <Grid.Col key={wj.key}>
                 <FeatureCard {...wj} />
               </Grid.Col>
             ))}
@@ -336,11 +329,11 @@ export default function Home(): JSX.Element {
 
         {/* Video */}
         <div className="my-10 bg-zinc-200 dark:bg-black">
-          <div className="aspect-video my-10 dark:border-yellow border-blue border-8 border-solid 2xl:max-w-6xl 2xl:mx-auto">
+          <div className="aspect-video my-10 dark:border-yellow border-blue border-8 border-solid xl:max-w-6xl xl:mx-auto">
             <div
               className={clsx(
-                "absolute dark:bg-yellow bg-blue mx-auto w-full lg:w-fit left-0 right-0 text-center text-white dark:text-black pb-2 lg:pb-1 lg:text-2xl lg:rounded-b-lg lg:px-2 font-semibold transition-opacity duration-200",
-                videoReady ? "opacity-0" : "opacity-100"
+                "absolute dark:bg-yellow bg-blue mx-auto w-full md:w-fit left-0 right-0 text-center text-white dark:text-black pb-2 md:pb-1 md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
+                videoReady ? "opacity-0" : "opacity-100",
               )}
             >
               Meet our highschool team, learn about{" "}
@@ -356,26 +349,21 @@ export default function Home(): JSX.Element {
               width="100%"
               height="100%"
               playIcon={
-                <IconPlayerPlay className="dark:text-yellow text-blue lg:w-24 lg:h-24 w-16 h-16" />
+                <IconPlayerPlay className="dark:text-yellow text-blue md:w-24 md:h-24 w-16 h-16" />
               }
               onReady={() => setVideoReady(true)}
             />
           </div>
         </div>
 
-        <div className="flex flex-col items-center space-y-6 mx-auto lg:max-w-screen-xl px-6 my-24">
-          <Title
-            align="center"
-            className="lg:text-2xl font-black text-xl"
-            order={2}
-          >
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 my-24">
+          <Title className="md:text-2xl font-black text-xl mx-auto" order={2}>
             Ready to join or find out more? Contact us!
           </Title>
           <Text
             color={colorScheme === "dark" ? "dimmed" : null}
             size="lg"
             className="max-w-5xl m-auto"
-            align="center"
           >
             We are always looking for new members, mentors, and sponsors! If you
             want to find out how you can get plugged in or are looking for more

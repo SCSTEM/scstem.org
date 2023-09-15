@@ -1,4 +1,4 @@
-import { clsx, createStyles } from "@mantine/core";
+import { clsx } from "clsx";
 
 import { ExtendedCustomColors } from "@site/src";
 
@@ -8,21 +8,22 @@ type Props = {
   color?: ExtendedCustomColors;
 };
 
-const useStyles = createStyles((theme, { color }: Props) => ({
-  underline: {
-    textDecorationColor: theme.colors[color || "brand-yellow"][5],
-  },
-}));
+// TODO: Fix
+// const useStyles = createStyles((theme, { color }: Props) => ({
+//   underline: {
+//     textDecorationColor: theme.colors[color || "brand-yellow"][5],
+//   },
+// }));
 
 export default function Underline(props: Props): JSX.Element {
-  const { classes } = useStyles(props);
+  // const { classes } = useStyles(props);
 
   return (
     <span
       className={clsx(
         "underline underline-offset-4",
-        classes.underline,
-        props.className
+        // classes.underline,
+        props.className,
       )}
     >
       {props.children}
