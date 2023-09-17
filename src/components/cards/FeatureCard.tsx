@@ -113,7 +113,7 @@ export default function FeatureCard({
 
       {link ? (
         <Link to={link} className="ml-auto">
-          <Button color={highlightColor} variant="subtle" compact>
+          <Button color={highlightColor} variant="subtle">
             {linkText ? linkText : "Learn More"}
           </Button>
         </Link>
