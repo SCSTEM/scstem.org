@@ -100,6 +100,7 @@ const config = {
       },
       colorMode: {
         defaultMode: "dark",
+        disableSwitch: true,
       },
       zoom: {
         selector: ".markdown img, .zoomable img",
@@ -133,6 +134,7 @@ const config = {
   ],
 
   plugins: [
+    require.resolve("docusaurus-plugin-vanilla-extract"),
     require.resolve("docusaurus-plugin-image-zoom"),
     [
       require.resolve("@docusaurus/plugin-ideal-image"),
