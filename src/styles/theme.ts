@@ -1,4 +1,10 @@
-import { MantineColorsTuple } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  MantineColorsTuple,
+  createTheme,
+} from "@mantine/core";
+import { themeToVars } from "@mantine/vanilla-extract";
 
 export const defaultColorScheme: "dark" | "light" = "dark";
 
@@ -93,3 +99,32 @@ export const colors: Record<string, MantineColorsTuple> = {
     "#6E3C3C",
   ],
 };
+
+export const theme = createTheme({
+  fontFamily: "Inter",
+  fontFamilyMonospace: "SourceCodePro",
+  headings: {
+    fontFamily: "Orbitron",
+  },
+  cursorType: "pointer",
+  primaryColor: "brand-yellow",
+  primaryShade: {
+    light: defaultShade,
+    dark: defaultShade,
+  },
+  colors: { ...colors },
+  components: {
+    ActionIcon: ActionIcon.extend({
+      defaultProps: {
+        variant: "transparent",
+      },
+    }),
+    Button: Button.extend({
+      defaultProps: {
+        radius: "xl",
+      },
+    }),
+  },
+});
+
+export const vars = themeToVars(theme);
