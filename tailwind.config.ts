@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 import breakpoints from "./breakpoints.config.cjs";
-import { colors, black, white, defaultShade } from "./src/styles/styles";
+import { colors, black, white, defaultShade } from "./src/styles/theme";
 
 export default {
   darkMode: ["class", "[data-mantine-color-scheme='dark']"],
