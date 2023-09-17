@@ -209,7 +209,11 @@ export default function Footer({ copyright }: Props): JSX.Element {
 
         {/* Copyright */}
         <div className="mx-auto flex w-80 flex-col items-center justify-between md:w-full md:flex-row">
-          <Text size="sm" className="text-center md:text-left opacity-25">
+          <Text
+            size="sm"
+            className="text-center md:text-left opacity-25"
+            component="div"
+          >
             {copyright}
           </Text>
           <div className="flex justify-end">
@@ -228,7 +232,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
                 </ActionIcon>
               );
             })}
-            {/* <ColorToggle /> */}
+            <ColorToggle />
           </div>
         </div>
       </div>
