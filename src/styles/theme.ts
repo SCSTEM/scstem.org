@@ -2,7 +2,10 @@ import {
   ActionIcon,
   Button,
   MantineColorsTuple,
+  VariantColorsResolver,
   createTheme,
+  defaultVariantColorsResolver,
+  parseThemeColor,
 } from "@mantine/core";
 import { themeToVars } from "@mantine/vanilla-extract";
 
@@ -100,6 +103,24 @@ export const colors: Record<string, MantineColorsTuple> = {
   ],
 };
 
+const variantColorResolver: VariantColorsResolver = (input) => {
+  const defaultResolvedColors = defaultVariantColorsResolver(input);
+  const parsedColor = parseThemeColor({
+    color: input.color || input.theme.primaryColor,
+    theme: input.theme,
+  });
+
+  if (input.variant === "outline") {
+    return {
+      ...defaultResolvedColors,
+      color: parsedColor.value,
+      border: parsedColor.value,
+    };
+  }
+
+  return defaultResolvedColors;
+};
+
 export const theme = createTheme({
   fontFamily: "Inter",
   fontFamilyMonospace: "SourceCodePro",
@@ -113,6 +134,7 @@ export const theme = createTheme({
     dark: defaultShade,
   },
   colors: { ...colors },
+  variantColorResolver,
   components: {
     ActionIcon: ActionIcon.extend({
       defaultProps: {
