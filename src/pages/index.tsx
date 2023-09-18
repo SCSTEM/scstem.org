@@ -36,9 +36,9 @@ const programs: FeatureCardProps[] = [
   {
     key: "fll",
     title: (
-      <Title order={3} className="font-bold text-xl font-sans">
+      <h3 className="font-bold text-xl font-sans">
         <span className="italic inline">FIRST®</span> LEGO® League
-      </Title>
+      </h3>
     ),
     body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     Icon: IconLego,
@@ -53,9 +53,9 @@ const programs: FeatureCardProps[] = [
   {
     key: "ftc",
     title: (
-      <Title order={3} className="font-bold text-xl font-sans">
+      <h3 className="font-bold text-xl font-sans">
         <span className="italic">FIRST®</span> Tech Challenge
-      </Title>
+      </h3>
     ),
     body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     Icon: IconDeviceGamepad2,
@@ -70,9 +70,9 @@ const programs: FeatureCardProps[] = [
   {
     key: "frc",
     title: (
-      <Title order={3} className="font-bold text-xl font-sans">
+      <h3 className="font-bold text-xl font-sans">
         <span className="italic">FIRST®</span> Robotics Competition
-      </Title>
+      </h3>
     ),
     body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
     Icon: IconRobot,
@@ -224,7 +224,7 @@ export default function Home(): JSX.Element {
         <Section title="Our Programs">
           <Grid gutter="md" justify="center">
             {programs.map((program) => (
-              <Grid.Col key={program.key}>
+              <Grid.Col key={program.key} span={{ md: 6, lg: 4 }}>
                 <FeatureCard key={program.key} {...program} />
               </Grid.Col>
             ))}
@@ -320,7 +320,7 @@ export default function Home(): JSX.Element {
         <Section title="Why join?">
           <Grid gutter="md" justify="center">
             {whyJoin.map((wj) => (
-              <Grid.Col key={wj.key}>
+              <Grid.Col key={wj.key} span={{ md: 6, lg: 4 }}>
                 <FeatureCard {...wj} />
               </Grid.Col>
             ))}

@@ -127,23 +127,12 @@ In certain situations, the abstraction of Mantine and Tailwind simply cannot han
 On the subject of styles, it's probably worth mentioning the breakpoints (defined in `./src/styles/styles.ts`) and how they work. Take a look at this code block:
 
 ```tsx
-<span className="text-yellow text-xs md:text-lg xl:text-xl 2xl:text-green ">
+<span className="text-yellow text-xs md:text-lg lg:text-xl xl:text-green ">
   Hello World!
 </span>
 ```
 
-The first two classes `text-yellow` and `text-xs` have no breakpoint prefix (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`) meaning they are base styles that apply to everything. The next class, `md:text-lg` sets the text size to large on screens "md" or larger. The next class, `xl:text-xl` sets the text size to extra large on screens "xl" or larger. Finally, `2xl:text-green` changes the text color to green on screens "2xl" or larger. Essentially, these classes can be stacked to conditionally apply styles depending on screen size, smallest to largest.
-
-The breakpoints themselves are as follows:
-
-```
-no prefix: 0px    // Screens 0px wide and up (essentially, the base style)
-xs:        500px  // Screens 500px wide and up (not often used)
-sm:        800px  // Screens 800px wide and up - iPad Air is 820px
-md:        1000px // Screens 1000px wide and up - Getting into laptop resolution territory
-lg:        1200px // And so on...
-xl:       1400px
-```
+The first two classes `text-yellow` and `text-xs` have no breakpoint prefix (`xs:`, `sm:`, `md:`, `lg:`, `xl:`) meaning they are base styles that apply to everything. The next class, `md:text-lg` sets the text size to large on screens "md" or larger. The next class, `lg:text-xl` sets the text size to extra large on screens "lg" or larger. Finally, `xl:text-green` changes the text color to green on screens "xl" or larger. Essentially, these classes can be stacked to conditionally apply styles depending on screen size, smallest to largest.
 
 In general, breakpoints should only be used when necessary to tweak styles depending on screen size. For the most part, `md:` is all you need, to draw a line between phones and tablets/laptops, but the others can be helpful in specific edge-cases.
 
