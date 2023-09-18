@@ -7,7 +7,6 @@ import {
   MantineColor,
   Text,
   ThemeIcon,
-  Title,
   useMantineColorScheme,
 } from "@mantine/core";
 import { TablerIconsProps } from "@tabler/icons-react";
@@ -69,15 +68,13 @@ export default function FeatureCard({
         color={highlightColor}
         className="w-12 h-12 border-none"
         variant="outline"
-        // border-none + variant="outline" is a hack to allow us to change the color of icon
+        size="xl"
       >
         <Icon size={50} stroke={1.5} />
       </ThemeIcon>
 
       {typeof title === "string" ? (
-        <Title order={3} className="font-bold text-xl font-sans">
-          {title}
-        </Title>
+        <h3 className="font-bold text-xl font-sans">{title}</h3>
       ) : (
         title
       )}
@@ -89,7 +86,7 @@ export default function FeatureCard({
       <div className="flex items-center">
         <Divider size="sm" color={highlightColor} className="flex-grow" />
         {badge ? (
-          <Badge className="ml-2" color={color} size="lg">
+          <Badge className="ml-2" color={color} size="lg" variant="light">
             {badge}
           </Badge>
         ) : null}
@@ -98,8 +95,8 @@ export default function FeatureCard({
       <div className="flex-grow flex flex-col">
         <Text
           size="md"
-          color={colorScheme === "dark" ? "dimmed" : null}
-          className="mb-3"
+          c={colorScheme === "dark" ? "dimmed" : undefined}
+          className="!mb-3"
         >
           {body}
         </Text>
@@ -113,7 +110,12 @@ export default function FeatureCard({
 
       {link ? (
         <Link to={link} className="ml-auto">
-          <Button color={highlightColor} variant="subtle">
+          <Button
+            color={highlightColor}
+            variant="subtle"
+            c="white"
+            size="compact-sm"
+          >
             {linkText ? linkText : "Learn More"}
           </Button>
         </Link>
