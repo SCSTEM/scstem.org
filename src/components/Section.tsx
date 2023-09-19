@@ -17,12 +17,12 @@ export default function Section({ children, alt, title }: Props): JSX.Element {
   if (alt)
     return (
       <section className="space-y-4 bg-zinc-200 dark:bg-black shadow-inner p-8">
-        <div className="md:max-w-screen-xl mx-auto md:px-12">{children}</div>
+        <div className="md:max-w-screen-lg mx-auto md:px-12">{children}</div>
       </section>
     );
 
   return (
-    <section className="p-8 md:max-w-screen-2xl mx-auto">
+    <section className="p-8 md:max-w-screen-xl mx-auto">
       <h2 className="text-2xl font-black mb-6 text-center md:text-left font-heading">
         {title}
       </h2>

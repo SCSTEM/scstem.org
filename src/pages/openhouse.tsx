@@ -222,7 +222,7 @@ const Section = ({
   title: string;
   children: React.ReactNode;
 }): JSX.Element => (
-  <div className="p-8 md:max-w-screen-xl mx-auto">
+  <div className="p-8 md:max-w-screen-lg mx-auto">
     <Title
       order={3}
       className="text-2xl font-black mb-6 text-center md:text-left"
@@ -277,7 +277,7 @@ export default function OpenHouse(): JSX.Element {
       </HeroHeader>
 
       <div className="flex flex-col space-y-8">
-        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 mt-8">
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-lg px-6 mt-8">
           <Title
             order={2}
             className="md:text-3xl font-black text-xl text-center"
@@ -307,7 +307,7 @@ export default function OpenHouse(): JSX.Element {
         </Section>
 
         <div className="space-y-4 bg-zinc-200 dark:bg-black shadow-inner py-12 px-8">
-          <div className="md:max-w-screen-xl mx-auto md:px-12">
+          <div className="md:max-w-screen-lg mx-auto md:px-12">
             <div className="md:w-[750px] mb-8 mx-auto">
               <IdealImage
                 img={require("../idealimage/first/first-horizontal-acro-light.png")}
@@ -404,7 +404,7 @@ export default function OpenHouse(): JSX.Element {
         </Section>
 
         <div className="space-y-4 bg-zinc-200 dark:bg-black shadow-inner py-8">
-          <div className="md:max-w-screen-xl mx-auto px-10 md:px-12">
+          <div className="md:max-w-screen-lg mx-auto px-10 md:px-12">
             <div className="md:w-[700px] mb-10 mx-auto">
               <IdealImage
                 img={require("../idealimage/open-house-banner.png")}

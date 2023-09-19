@@ -302,7 +302,7 @@ function PageSection({
   className?: string;
 }) {
   return (
-    <section className={clsx("p-8 md:max-w-screen-2xl mx-auto", className)}>
+    <section className={clsx("p-8 md:max-w-screen-xl mx-auto", className)}>
       {children}
     </section>
   );
@@ -347,7 +347,7 @@ function TeamOverview() {
   return (
     <div className="p-5">
       <Grid gutter={80}>
-        <Grid.Col span={12}>
+        <Grid.Col span={{ base: 12, md: 5 }}>
           <Title
             className="text-3xl font-black mb-2 text-black dark:text-white font-sans"
             order={2}
@@ -371,13 +371,8 @@ function TeamOverview() {
             Join the Revolution
           </BrandButton>
         </Grid.Col>
-        <Grid.Col span={12}>
-          <SimpleGrid
-            cols={2}
-            spacing={30}
-            // TODO: Fix
-            //breakpoints={[{ maxWidth: "md", cols: 1 }]}
-          >
+        <Grid.Col span={{ base: 12, md: 7 }}>
+          <SimpleGrid cols={{ base: 1, md: 2 }} spacing={30}>
             {items.map((item, i) => (
               <div key={i}>
                 <ThemeIcon

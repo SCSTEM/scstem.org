@@ -205,7 +205,7 @@ export default function Home(): JSX.Element {
 
       <main className="border-0 border-t-2 border-solid border-black border-opacity-20 dark:border-yellow dark:border-opacity-10">
         {/* Overview */}
-        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 mt-16 mb-8">
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-lg px-6 mt-16 mb-8">
           <Title className="md:text-2xl font-black text-xl text-center">
             Science, Technology, Engineering, Math, Business, Art, and more
           </Title>
@@ -356,7 +356,7 @@ export default function Home(): JSX.Element {
           </div>
         </div>
 
-        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-xl px-6 my-24">
+        <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-lg px-6 my-24">
           <Title className="md:text-2xl font-black text-xl mx-auto" order={2}>
             Ready to join or find out more? Contact us!
           </Title>
