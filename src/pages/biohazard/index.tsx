@@ -36,7 +36,7 @@ import { BrandButton } from "@site/src/components/inputs/Button";
 import Underline from "@site/src/components/spans/Underline";
 import DefaultLayout from "@site/src/layouts/Default";
 
-import "./index.css";
+import classes from "./index.module.css";
 
 export default function BiohazardHome(): JSX.Element {
   const maxSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
@@ -103,7 +103,12 @@ export default function BiohazardHome(): JSX.Element {
         </div>
         <div id="scrollhere" className="mb-10"></div>
       </header>
-      <main className="bg-gradient-to-r bio-background relative">
+      <main
+        className={clsx(
+          "bg-gradient-to-r bio-background relative",
+          classes.background,
+        )}
+      >
         <div className="absolute w-full h-full -z-20 bg-[url('/img/biohazard/circuit-board.svg')]" />
         <div className="space-y-20 md:space-y-28 py-16">
           <PageSection className="space-y-16 md:space-y-24">
