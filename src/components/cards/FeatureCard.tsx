@@ -23,12 +23,13 @@ export interface FeatureCardProps {
   linkText?: string;
   badge?: string;
   img?: {
-    src: any;
+    src: any; // eslint-disable-line @typescript-eslint/no-explicit-any
     alt: string;
     placement?: "top" | "bottom";
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Image = ({ src, alt }: { src: any; alt: string }) => (
   <IdealImage
     img={src}
