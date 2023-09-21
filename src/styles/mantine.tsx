@@ -6,7 +6,6 @@ import {
   localStorageColorSchemeManager,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
-import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
 
 import { defaultColorScheme, theme } from "./theme";
