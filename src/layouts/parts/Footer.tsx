@@ -1,6 +1,11 @@
 import Link from "@docusaurus/Link";
 import { Carousel } from "@mantine/carousel";
-import { useMantineColorScheme, Text, ActionIcon } from "@mantine/core";
+import {
+  useMantineColorScheme,
+  Text,
+  ActionIcon,
+  useComputedColorScheme,
+} from "@mantine/core";
 import {
   IconBrandFacebook,
   IconBrandGithub,
@@ -213,21 +218,19 @@ export default function Footer({ copyright }: Props): JSX.Element {
             {copyright}
           </div>
           <div className="flex justify-end">
-            {footerButtons.map((button, i) => {
-              const Icon = button.icon;
-              return (
-                <ActionIcon
-                  key={i}
-                  component="a"
-                  href={button.href}
-                  size="lg"
-                  opacity={50}
-                  target="_blank"
-                >
-                  <Icon size={20} stroke={1.5} />
-                </ActionIcon>
-              );
-            })}
+            {footerButtons.map((button, i) => (
+              // TODO: Redo ActionIcon styles
+              <ActionIcon
+                key={i}
+                component="a"
+                href={button.href}
+                size="lg"
+                opacity={50}
+                target="_blank"
+              >
+                <button.icon size={20} stroke={1.5} />
+              </ActionIcon>
+            ))}
             <ColorToggle />
           </div>
         </div>
