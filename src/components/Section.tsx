@@ -22,11 +22,9 @@ export default function Section({ children, alt, title }: Props): JSX.Element {
     );
 
   return (
-    <section className="p-8 md:max-w-screen-xl mx-auto">
-      <h2 className="text-2xl font-black mb-6 text-center md:text-left font-heading">
-        {title}
-      </h2>
-      {children}
+    <section className="px-6 py-10 md:max-w-screen-xl mx-auto">
+      <Title order={3}>{title}</Title>
+      <div className="mt-6">{children}</div>
     </section>
   );
 }

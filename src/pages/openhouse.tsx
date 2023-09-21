@@ -39,9 +39,9 @@ const programs: FeatureCardProps[] = [
   {
     key: "fll",
     title: (
-      <Text size="lg">
+      <>
         <span className="italic inline font-bold">FIRST®</span> LEGO® League
-      </Text>
+      </>
     ),
     body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     Icon: IconLego,
@@ -52,9 +52,9 @@ const programs: FeatureCardProps[] = [
   {
     key: "ftc",
     title: (
-      <Text size="lg">
+      <>
         <span className="italic font-bold">FIRST®</span> Tech Challenge
-      </Text>
+      </>
     ),
     body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     Icon: IconDeviceGamepad2,
@@ -65,9 +65,9 @@ const programs: FeatureCardProps[] = [
   {
     key: "frc",
     title: (
-      <Text size="lg">
+      <>
         <span className="italic font-bold">FIRST®</span> Robotics Competition
-      </Text>
+      </>
     ),
     body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
     Icon: IconRobot,
