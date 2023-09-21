@@ -177,7 +177,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
               height="80px"
               className="w-full"
             />
-            <Text color="dimmed" size="sm" className="text-center">
+            <Text c="dimmed" size="sm" className="text-center">
               SC2 is 501(c)(3) non-profit focused on providing STEM
               opportunities for students in and around Franklin County PA.
             </Text>
@@ -209,13 +209,9 @@ export default function Footer({ copyright }: Props): JSX.Element {
 
         {/* Copyright */}
         <div className="mx-auto flex w-80 flex-col items-center justify-between md:w-full md:flex-row">
-          <Text
-            size="sm"
-            className="text-center md:text-left opacity-25"
-            component="div"
-          >
+          <div className="text-center md:text-left dark:opacity-25 opacity-50 text-sm dark:text-white text-black">
             {copyright}
-          </Text>
+          </div>
           <div className="flex justify-end">
             {footerButtons.map((button, i) => {
               const Icon = button.icon;
