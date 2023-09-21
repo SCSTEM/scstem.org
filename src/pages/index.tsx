@@ -189,12 +189,12 @@ export default function Home(): JSX.Element {
     >
       <HeroHeader img="/img/legos.webp">
         <div className="flex flex-col space-y-5 text-white">
-          <div className="text-4xl font-bold md:text-5xl">
+          <Heading as="h4" className="text-4xl font-bold md:text-5xl mb-0">
             <span className="text-yellow">Robots</span> are in Franklin County.
             <Underline className="before:whitespace-pre-line before:content-['\a']">
               So are we.
             </Underline>
-          </div>
+          </Heading>
           <div className="text-2xl">
             The South Central STEM Collective is a non-profit organization
             focused on building the future of STEM, right here in Franklin

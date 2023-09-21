@@ -3,6 +3,7 @@ import { TextInput, Textarea, Button, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { IconSend, IconCheck } from "@tabler/icons-react";
+import Heading from "@theme/Heading";
 import { useState } from "react";
 
 import { APIResponse, GenericFormRequest } from "@site/functions/types";
@@ -98,7 +99,11 @@ export default function GenericForm({
 
   return (
     <>
-      {heading && <h1 className="text-3xl font-bold">{heading}</h1>}
+      {heading && (
+        <Heading as="h2" className="text-3xl font-bold">
+          {heading}
+        </Heading>
+      )}
       <form
         className="flex grid-cols-2 flex-col space-y-4 md:grid md:gap-x-8 md:gap-y-4 md:space-y-0"
         onSubmit={form.onSubmit(handleSubmit, handleError)}

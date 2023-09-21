@@ -8,8 +8,11 @@ import {
   Text,
   ThemeIcon,
   useMantineColorScheme,
+  useMantineTheme,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { TablerIconsProps } from "@tabler/icons-react";
+import Heading from "@theme/Heading";
 import IdealImage from "@theme/IdealImage";
 import { FC, useEffect, useState } from "react";
 
@@ -34,7 +37,7 @@ const Image = ({ src, alt }: { src: any; alt: string }) => (
   <IdealImage
     img={src}
     alt={alt}
-    className="h-48 w-full rounded-xl shadow-lg object-cover overflow-hidden zoomable"
+    className="h-44 lg:h-52 w-full rounded-xl shadow-lg object-cover overflow-hidden zoomable"
   />
 );
 
@@ -48,7 +51,11 @@ export default function FeatureCard({
   badge,
   img,
 }: FeatureCardProps): JSX.Element {
+  const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
+  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`, true, {
+    getInitialValueInEffect: false,
+  });
   const [highlightColor, setHighlightColor] = useState<MantineColor>(color);
 
   useEffect(() => {
@@ -60,25 +67,26 @@ export default function FeatureCard({
     <Card
       shadow="lg"
       radioGroup="md"
-      p="xl"
       radius="lg"
       withBorder
       className="flex flex-col space-y-3 h-full mx-auto"
     >
-      <ThemeIcon
-        color={highlightColor}
-        className="w-12 h-12 border-none"
-        variant="outline"
-        size="xl"
-      >
-        <Icon size={50} stroke={1.5} />
-      </ThemeIcon>
-
-      {typeof title === "string" ? (
-        <h3 className="font-bold text-xl font-sans">{title}</h3>
-      ) : (
-        title
-      )}
+      <div className="flex items-center space-x-2">
+        <ThemeIcon
+          color={highlightColor}
+          className="border-none"
+          variant="outline"
+          size={mobile ? "lg" : "xl"}
+        >
+          <Icon size={50} stroke={1.5} />
+        </ThemeIcon>
+        <Heading
+          as="h4"
+          className="font-bold text-lg xl:text-xl font-sans m-auto"
+        >
+          {title}
+        </Heading>
+      </div>
 
       {img && (!img.placement || img.placement === "top") ? (
         <Image src={img.src} alt={img.alt} />
@@ -111,12 +119,7 @@ export default function FeatureCard({
 
       {link ? (
         <Link to={link} className="ml-auto">
-          <Button
-            color={highlightColor}
-            variant="subtle"
-            c="white"
-            size="compact-sm"
-          >
+          <Button color={highlightColor} variant="subtle" size="compact-sm">
             {linkText ? linkText : "Learn More"}
           </Button>
         </Link>
