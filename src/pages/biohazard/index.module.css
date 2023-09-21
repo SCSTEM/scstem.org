@@ -1,4 +1,5 @@
 .background {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
   background: radial-gradient(
     circle,
     rgba(22, 163, 74, 0.2) 0%,
