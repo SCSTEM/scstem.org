@@ -1,7 +1,9 @@
 import { Title } from "@mantine/core";
+import clsx from "clsx";
 
 type Props = {
   children: React.ReactNode;
+  className?: string;
 } & (
   | {
       alt?: false;
@@ -13,16 +15,23 @@ type Props = {
     }
 );
 
-export default function Section({ children, alt, title }: Props): JSX.Element {
+export default function Section({
+  children,
+  alt,
+  title,
+  className,
+}: Props): JSX.Element {
   if (alt)
     return (
-      <section className="space-y-4 bg-zinc-200 dark:bg-black shadow-inner p-8">
+      <section className={clsx("space-y-4 shadow-inner p-8", className)}>
         <div className="md:max-w-screen-lg mx-auto md:px-12">{children}</div>
       </section>
     );
 
   return (
-    <section className="px-6 py-10 md:max-w-screen-xl mx-auto">
+    <section
+      className={clsx("px-6 py-10 md:max-w-screen-xl mx-auto", className)}
+    >
       <Title order={3}>{title}</Title>
       <div className="mt-6">{children}</div>
     </section>
