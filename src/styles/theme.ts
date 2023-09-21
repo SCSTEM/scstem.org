@@ -126,6 +126,7 @@ export const theme = createTheme({
   fontFamilyMonospace: "SourceCodePro",
   headings: {
     fontFamily: "Orbitron",
+    fontWeight: "900",
   },
   cursorType: "pointer",
   primaryColor: "brand-yellow",
