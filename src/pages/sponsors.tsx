@@ -1,7 +1,6 @@
 import { Sponsors as data } from "@site/data";
 import HeroHeader from "@site/src/components/HeroHeader";
 import SponsorCard from "@site/src/components/cards/SponsorCard";
-import Highlight from "@site/src/components/spans/Highlight";
 import DefaultLayout from "@site/src/layouts/Default";
 
 export default function Sponsors(): JSX.Element {
@@ -10,7 +9,8 @@ export default function Sponsors(): JSX.Element {
       <HeroHeader img="/img/parts-notes.webp">
         <div className="flex flex-col space-y-6 text-white">
           <div className="text-5xl font-bold">
-            Sponsors help us <Highlight theme="dark">build</Highlight>.
+            Sponsors help us{" "}
+            <span className="dark:text-yellow text-brand-blue-4">build</span>.
           </div>
           <div className="text-2xl">
             We are proud to partner organizations and individuals who want to
