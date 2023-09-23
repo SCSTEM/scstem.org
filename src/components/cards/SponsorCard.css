@@ -1,4 +1,22 @@
-.sponsor-card img {
-  height: 160px !important;
-  width: auto !important;
+.sponsor-card > .sponsor-card-image-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Rasterized Images */
+.sponsor-card div.sponsor-card-image {
+  height: 100%;
+}
+
+.sponsor-card div.sponsor-card-image > img {
+  max-width: 260px !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+
+/* SVGs */
+.sponsor-card img.sponsor-card-image {
+  max-width: 260px !important;
+  height: 100% !important;
+  object-fit: contain;
 }

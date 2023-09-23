@@ -55,21 +55,29 @@ export default function SponsorCard({
       className="flex w-80 flex-col sponsor-card"
       shadow="lg"
     >
-      <Card.Section className="my-auto flex h-48 flex-col items-center space-y-1 px-6 py-4">
+      <Card.Section
+        className={clsx(
+          "sponsor-card-image-container",
+          "my-auto flex h-48 flex-col items-center space-y-1 px-6 py-4",
+        )}
+      >
         {logo !== undefined ? (
           <>
             {darkLogo !== undefined ? (
               <IdealImage
                 img={darkLogo}
                 alt={name + " logo"}
-                className="h-full object-contain dark:block hidden"
+                className={clsx(
+                  "sponsor-card-image",
+                  "dark:flex hidden justify-center",
+                )}
               />
             ) : null}
             <IdealImage
               img={logo}
               alt={name + " logo"}
               className={clsx(
-                "h-full object-contain",
+                "sponsor-card-image",
                 darkLogo !== undefined ? "dark:hidden" : null,
               )}
             />
