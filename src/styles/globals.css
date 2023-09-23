@@ -40,12 +40,7 @@
   --ifm-color-primary-lighter: var(--mantine-color-brand-yellow-4);
   --ifm-color-primary-lightest: var(--mantine-color-brand-yellow-3);
 
-  --ifm-link-color: inherit;
   --ifm-link-hover-color: var(--ifm-color-primary);
-}
-
-a:hover {
-  text-decoration: none;
 }
 
 .navbar-cta-button {
@@ -105,9 +100,3 @@ a:hover {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Silly trick to get webpack(?) to load Orbitron */
-/* TODO: Move to Tailwind at some point */
-/* .yai4A {
-  font-family: "Orbitron";
-} */

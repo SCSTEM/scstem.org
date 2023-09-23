@@ -135,6 +135,8 @@ export const theme = createTheme({
     dark: defaultShade,
   },
   colors: { ...colors },
+  white,
+  black,
   variantColorResolver,
   components: {
     ActionIcon: ActionIcon.extend({

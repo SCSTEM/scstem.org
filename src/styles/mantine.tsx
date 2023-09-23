@@ -8,6 +8,7 @@ import {
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 
+import "./overrides.css";
 import { defaultColorScheme, theme } from "./theme";
 
 const colorSchemeManager = localStorageColorSchemeManager({ key: "theme" });

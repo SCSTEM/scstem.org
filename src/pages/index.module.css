@@ -1,0 +1,23 @@
+.background {
+  background: linear-gradient(
+    to right,
+    rgba(250, 204, 21, 0.15) 0%,
+    rgba(250, 204, 21, 0.05) 10%,
+    rgba(23, 23, 23, 0) 25%,
+    rgba(23, 23, 23, 0) 75%,
+    rgba(250, 204, 21, 0.05) 90%,
+    rgba(250, 204, 21, 0.15) 100%
+  );
+
+  @mixin light {
+    background: linear-gradient(
+      to right,
+      rgba(51, 117, 223, 0.25) 0%,
+      rgba(51, 117, 223, 0.15) 10%,
+      rgba(23, 23, 23, 0) 25%,
+      rgba(23, 23, 23, 0) 75%,
+      rgba(51, 117, 223, 0.15) 90%,
+      rgba(51, 117, 223, 0.25) 100%
+    );
+  }
+}

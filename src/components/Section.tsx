@@ -23,7 +23,7 @@ export default function Section({
 }: Props): JSX.Element {
   if (alt)
     return (
-      <section className={clsx("space-y-4 shadow-inner p-8", className)}>
+      <section className={clsx("shadow-inner p-8", className)}>
         <div className="md:max-w-screen-lg mx-auto md:px-12">{children}</div>
       </section>
     );
