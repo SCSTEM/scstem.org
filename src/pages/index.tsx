@@ -1,11 +1,5 @@
 import Link from "@docusaurus/Link";
-import {
-  Grid,
-  Title,
-  Text,
-  Divider,
-  useComputedColorScheme,
-} from "@mantine/core";
+import { Grid, Title, Text, Divider } from "@mantine/core";
 import {
   IconBooks,
   IconDeviceGamepad2,
@@ -32,6 +26,7 @@ import DefaultLayout from "@site/src/layouts/Default";
 
 import Section from "../components/Section";
 import Underline from "../components/spans/Underline";
+import { useColorScheme } from "../hooks/colorScheme";
 import classes from "./index.module.css";
 
 const programs: FeatureCardProps[] = [
@@ -182,7 +177,7 @@ const whyJoin: FeatureCardProps[] = [
 
 export default function Home(): JSX.Element {
   const [videoReady, setVideoReady] = useState(false);
-  const colorScheme = useComputedColorScheme("dark");
+  const colorScheme = useColorScheme();
 
   return (
     <DefaultLayout
