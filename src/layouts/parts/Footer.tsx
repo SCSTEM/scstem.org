@@ -1,11 +1,6 @@
 import Link from "@docusaurus/Link";
 import { Carousel } from "@mantine/carousel";
-import {
-  useMantineColorScheme,
-  Text,
-  ActionIcon,
-  useComputedColorScheme,
-} from "@mantine/core";
+import { useMantineColorScheme, Text } from "@mantine/core";
 import {
   IconBrandFacebook,
   IconBrandGithub,
@@ -18,6 +13,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { FC, useRef } from "react";
 
 import { SponsorLevel, Sponsors } from "@site/data";
+import { ActionIcon } from "@site/src/components/inputs/ActionIcon";
 import { ColorToggle } from "@site/src/components/inputs/ColorToggle";
 
 type FooterSection = {
@@ -62,7 +58,8 @@ const footerSections: FooterSection[] = [
     links: [
       {
         element: (key) => (
-          <a key={key} className="text-gray" href="/team">
+          // eslint-disable-next-line
+          <a key={key} className="text-gray-500" href="/team">
             Team Login
           </a>
         ),
@@ -110,13 +107,13 @@ function Sponsor({ sponsor }) {
             className="w-52 my-auto object-contain"
           />
         ) : (
-          <span className="text-4xl font-semibold my-auto text-gray">
+          <span className="text-4xl font-semibold my-auto text-gray-500">
             {sponsor.name}
           </span>
         )}
 
         {sponsor.sub ? (
-          <Text size="sm" className="text-gray dark:text-white">
+          <Text size="sm" className="text-gray-500 dark:text-white">
             {sponsor.sub}
           </Text>
         ) : null}
@@ -141,21 +138,18 @@ export default function Footer({ copyright }: Props): JSX.Element {
     <footer className="border-slate-400 bg-zinc-200 py-12 shadow-inner dark:border-zinc-700 dark:bg-zinc-900">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Sponsors */}
-        <div>
-          <Text
-            size="lg"
-            className="mx-auto mb-4 w-5/6 text-center dark:text-zinc-400 md:w-full font-bold"
-          >
+        <div className="space-y-6">
+          <p className="mx-auto mb-4 w-5/6 text-center dark:text-zinc-400 md:w-full font-bold">
             Special thanks to our Ultimate and Platinum sponsors for powering
             our mission
-          </Text>
+          </p>
 
           <Carousel
             plugins={sponsors.length > 1 ? [autoplay.current] : []}
             loop
             draggable={false}
             withControls={sponsors.length > 1}
-            slideSize="33.333333%"
+            slideSize="33.333%"
             // TODO: Fix
             // breakpoints={[
             //   { minWidth: "lg", slideSize: "33.3333%" },
@@ -202,7 +196,7 @@ export default function Footer({ copyright }: Props): JSX.Element {
                   link.type === "element" ? (
                     link.element(i)
                   ) : (
-                    <Link key={i} to={link.to} className="text-gray">
+                    <Link key={i} to={link.to} className="text-gray-500">
                       {link.title}
                     </Link>
                   ),
@@ -219,17 +213,13 @@ export default function Footer({ copyright }: Props): JSX.Element {
           </div>
           <div className="flex justify-end">
             {footerButtons.map((button, i) => (
-              // TODO: Redo ActionIcon styles
               <ActionIcon
                 key={i}
-                component="a"
-                href={button.href}
+                to={button.href}
                 size="lg"
-                opacity={50}
-                target="_blank"
-              >
-                <button.icon size={20} stroke={1.5} />
-              </ActionIcon>
+                icon={button.icon}
+                className="opacity-50"
+              />
             ))}
             <ColorToggle />
           </div>

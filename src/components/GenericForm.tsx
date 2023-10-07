@@ -162,9 +162,9 @@ export default function GenericForm({
             Submit
           </Button>
           <div className="mt-4 md:mt-0 md:mr-0 md:ml-auto">
-            {error ? <Text className="text-brand-red-5">{error}</Text> : null}
+            {error ? <Text className="text-red-500">{error}</Text> : null}
             {!error && submitted ? (
-              <Text className="text-brand-green-5">
+              <Text className="text-green-500">
                 Your response has been recorded
               </Text>
             ) : null}

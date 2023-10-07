@@ -16,7 +16,7 @@ export default function Underline({
 }: Props): JSX.Element {
   const theme = useMantineTheme();
   const parsedColor = parseThemeColor({
-    color: theme.colors[color || "brand-yellow"][5],
+    color: theme.colors[color || "yellow"][5],
     theme,
   });
 

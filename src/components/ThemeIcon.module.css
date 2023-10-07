@@ -1,0 +1,7 @@
+.root {
+  &[data-variant="default"] {
+    border: none;
+    background: none;
+    color: inherit;
+  }
+}

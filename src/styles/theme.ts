@@ -1,23 +1,17 @@
-import {
-  ActionIcon,
-  Button,
-  MantineColorsTuple,
-  VariantColorsResolver,
-  createTheme,
-  defaultVariantColorsResolver,
-  parseThemeColor,
-} from "@mantine/core";
+import { Button, MantineColorsTuple, createTheme } from "@mantine/core";
 import { themeToVars } from "@mantine/vanilla-extract";
 
 export const defaultColorScheme: "dark" | "light" = "dark";
 
 export const defaultShade = 5;
 
-export const white = "#FAFAFA";
-export const black = "#171717";
+export const baseColors = {
+  white: "#FAFAFA",
+  black: "#171717",
+};
 
 export const colors: Record<string, MantineColorsTuple> = {
-  "brand-yellow": [
+  yellow: [
     "#E6E1CF",
     "#DDD4B0",
     "#D9CA90",
@@ -29,7 +23,7 @@ export const colors: Record<string, MantineColorsTuple> = {
     "#938032",
     "#7C6E36",
   ],
-  "brand-gray": [
+  gray: [
     "#878B91",
     "#787E87",
     "#6C727C",
@@ -41,7 +35,7 @@ export const colors: Record<string, MantineColorsTuple> = {
     "#3B3F44",
     "#36393C",
   ],
-  "brand-green": [
+  green: [
     "#7AAF8E",
     "#62AD7E",
     "#4BAB6F",
@@ -53,7 +47,7 @@ export const colors: Record<string, MantineColorsTuple> = {
     "#295E3D",
     "#2A5038",
   ],
-  "brand-orange": [
+  orange: [
     "#E6D8CF",
     "#DCC2B0",
     "#D9AE90",
@@ -65,7 +59,7 @@ export const colors: Record<string, MantineColorsTuple> = {
     "#935A33",
     "#7B5336",
   ],
-  "brand-dark": [
+  black: [
     "#252525",
     "#222222",
     "#1F1F1F",
@@ -77,7 +71,7 @@ export const colors: Record<string, MantineColorsTuple> = {
     "#111111",
     "#0F0F0F",
   ],
-  "brand-blue": [
+  blue: [
     "#D3DCEB",
     "#B3C5E3",
     "#8FAFE2",
@@ -89,7 +83,7 @@ export const colors: Record<string, MantineColorsTuple> = {
     "#3F5B89",
     "#3F5475",
   ],
-  "brand-red": [
+  red: [
     "#DBC5C5",
     "#D0A9A9",
     "#CB8D8D",
@@ -103,24 +97,6 @@ export const colors: Record<string, MantineColorsTuple> = {
   ],
 };
 
-const variantColorResolver: VariantColorsResolver = (input) => {
-  const defaultResolvedColors = defaultVariantColorsResolver(input);
-  const parsedColor = parseThemeColor({
-    color: input.color || input.theme.primaryColor,
-    theme: input.theme,
-  });
-
-  if (input.variant === "outline") {
-    return {
-      ...defaultResolvedColors,
-      color: parsedColor.value,
-      border: parsedColor.value,
-    };
-  }
-
-  return defaultResolvedColors;
-};
-
 export const theme = createTheme({
   fontFamily: "Inter",
   fontFamilyMonospace: "SourceCodePro",
@@ -129,21 +105,15 @@ export const theme = createTheme({
     fontWeight: "900",
   },
   cursorType: "pointer",
-  primaryColor: "brand-yellow",
+  primaryColor: "blue",
   primaryShade: {
     light: defaultShade,
     dark: defaultShade,
   },
   colors: { ...colors },
-  white,
-  black,
-  variantColorResolver,
+  white: "#FAFAFA",
+  black: "#171717",
   components: {
-    ActionIcon: ActionIcon.extend({
-      defaultProps: {
-        variant: "transparent",
-      },
-    }),
     Button: Button.extend({
       defaultProps: {
         radius: "xl",

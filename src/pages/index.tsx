@@ -8,7 +8,7 @@ import {
   IconMoodSmile,
   IconPlayerPlay,
   IconPresentation,
-  IconRobot,
+  IconRobotFace,
   IconTool,
 } from "@tabler/icons-react";
 import Heading from "@theme/Heading";
@@ -39,7 +39,7 @@ const programs: FeatureCardProps[] = [
     ),
     body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     Icon: IconLego,
-    color: "brand-red",
+    color: "red",
     link: "/clubs/fll",
     badge: "Ages 9 - 16",
     img: {
@@ -56,7 +56,7 @@ const programs: FeatureCardProps[] = [
     ),
     body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     Icon: IconDeviceGamepad2,
-    color: "brand-orange",
+    color: "orange",
     link: "/clubs/ftc",
     badge: "Ages 12 - 18",
     img: {
@@ -72,8 +72,8 @@ const programs: FeatureCardProps[] = [
       </>
     ),
     body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
-    Icon: IconRobot,
-    color: "brand-blue",
+    Icon: IconRobotFace,
+    color: "blue",
     link: "/biohazard",
     badge: "Ages 14 - 18",
     img: {
@@ -187,11 +187,11 @@ export default function Home(): JSX.Element {
       <HeroHeader img="/img/legos.webp">
         <div className="flex flex-col space-y-5 text-white">
           <Heading as="h4" className="text-4xl font-bold md:text-5xl mb-0">
-            <span className="dark:text-yellow text-brand-blue-4">Robots</span>{" "}
+            <span className="dark:text-yellow-500 text-blue-400">Robots</span>{" "}
             are in Franklin County.
             <Underline
               className="before:whitespace-pre-line before:content-['\a']"
-              color={colorScheme === "light" ? "brand-blue" : undefined}
+              color={colorScheme === "light" ? "blue" : undefined}
             >
               So are we.
             </Underline>
@@ -274,9 +274,7 @@ export default function Home(): JSX.Element {
                     <Button
                       to="https://www.firstinspires.org/"
                       rightSection={<IconExternalLink />}
-                      color={
-                        colorScheme === "dark" ? "brand-yellow" : "brand-blue"
-                      }
+                      color={colorScheme === "dark" ? "yellow" : "blue"}
                       variant="subtle"
                       size="compact-sm"
                     >
@@ -285,9 +283,7 @@ export default function Home(): JSX.Element {
                   </div>
                 </div>
 
-                <Divider
-                  color={colorScheme === "dark" ? "brand-gray" : "brand-dark"}
-                />
+                <Divider color={colorScheme === "dark" ? "gray" : "dark"} />
 
                 <div className="rounded-3xl space-y-4 flex flex-col">
                   <Title order={4} className="text-center md:text-left">
@@ -303,9 +299,7 @@ export default function Home(): JSX.Element {
                     <Button
                       to="https://info.firstinspires.org/morethanrobots"
                       rightSection={<IconExternalLink />}
-                      color={
-                        colorScheme === "dark" ? "brand-yellow" : "brand-blue"
-                      }
+                      color={colorScheme === "dark" ? "yellow" : "blue"}
                       variant="subtle"
                       size="compact-sm"
                     >
@@ -335,10 +329,10 @@ export default function Home(): JSX.Element {
           </Section>
 
           {/* Video */}
-          <div className="aspect-video dark:border-yellow border-blue border-8 border-solid w-11/12 mx-auto xl:max-w-6xl rounded-xl">
+          <div className="aspect-video dark:border-yellow-500 border-blue-500 border-8 border-solid w-11/12 mx-auto xl:max-w-6xl rounded-xl">
             <div
               className={clsx(
-                "absolute dark:bg-yellow bg-blue mx-auto w-11/12 md:w-fit left-0 right-0 text-center text-white dark:text-black pb-2 md:pb-1 text-sm md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
+                "absolute dark:bg-yellow-500 bg-blue-500 mx-auto w-11/12 md:w-fit left-0 right-0 text-center text-white dark:text-black pb-2 md:pb-1 text-sm md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
                 videoReady ? "opacity-0" : "opacity-100",
               )}
             >
@@ -355,7 +349,7 @@ export default function Home(): JSX.Element {
               width="100%"
               height="100%"
               playIcon={
-                <IconPlayerPlay className="dark:text-yellow text-blue md:w-24 md:h-24 w-16 h-16" />
+                <IconPlayerPlay className="dark:text-yellow-500 text-blue-500 md:w-24 md:h-24 w-16 h-16" />
               }
               onReady={() => setVideoReady(true)}
             />

@@ -5,7 +5,6 @@ import {
   MantineColor,
   Overlay,
   SimpleGrid,
-  ThemeIcon,
   Title,
   useMantineColorScheme,
   useMantineTheme,
@@ -20,7 +19,7 @@ import {
   IconHandGrab,
   IconMoodHappy,
   IconPlayerPlayFilled,
-  IconRobot,
+  IconRobotFace,
   IconTool,
   TablerIconsProps,
 } from "@tabler/icons-react";
@@ -32,6 +31,7 @@ import { ParallaxBanner } from "react-scroll-parallax";
 
 import breakpoints from "@site/breakpoints.config.cjs";
 import Scroller from "@site/src/components/ImageScroller";
+import { ThemeIcon } from "@site/src/components/ThemeIcon";
 import { BrandButton } from "@site/src/components/inputs/Button";
 import Underline from "@site/src/components/spans/Underline";
 import DefaultLayout from "@site/src/layouts/Default";
@@ -72,21 +72,22 @@ export default function BiohazardHome(): JSX.Element {
               className="text-xl sm:text-3xl lg:text-4xl sm:!leading-[3rem]"
             >
               Welcome to the{" "}
-              <Underline color="brand-green">next generation</Underline> of
-              thinkers, engineers scientists, artists, and dreamers.
+              <Underline color="green">next generation</Underline> of thinkers,
+              engineers scientists, artists, and dreamers.
             </Title>
             <Title
               className="font-sans sm:text-2xl lg:text-3xl text-lg"
               order={2}
             >
-              Inspiring students since <span className="text-green">2012</span>,
-              Biohazard is south-central Pennsylvania's premiere high-school
-              robotics team and we need you to take us to the{" "}
-              <span className="text-green">next level</span>.
+              Inspiring students since{" "}
+              <span className="text-green-500">2012</span>, Biohazard is
+              south-central Pennsylvania's premiere high-school robotics team
+              and we need you to take us to the{" "}
+              <span className="text-green-500">next level</span>.
             </Title>
           </div>
           <button
-            className="mx-auto flex cursor-pointer flex-col items-center border-none bg-transparent sm:text-2xl font-bold outline-none text-green mt-auto mb-20 lg:mb-10"
+            className="mx-auto flex cursor-pointer flex-col items-center border-none bg-transparent sm:text-2xl font-bold outline-none text-green-500 mt-auto mb-20 lg:mb-10"
             onClick={() =>
               document
                 .getElementById("scrollhere")
@@ -122,7 +123,7 @@ export default function BiohazardHome(): JSX.Element {
                 speed: -15,
                 children: (
                   <div className="absolute top-[150px] md:top-[200px] lg:top-[200px] w-full">
-                    <div className="rounded-lg md:ml-10 mx-4 shadow-xl text-white p-4 w-[200px] sm:max-w-sm sm:w-fit from-brand-green-3 via-brand-green-4 to-brand-green-7 space-y-2 text-center">
+                    <div className="rounded-lg md:ml-10 mx-4 shadow-xl text-white p-4 w-[200px] sm:max-w-sm sm:w-fit from-green-300 via-green-400 to-green-700 space-y-2 text-center">
                       <img
                         src="/img/biohazard/viper-logo.webp"
                         className="aspect-square"
@@ -139,7 +140,7 @@ export default function BiohazardHome(): JSX.Element {
             </PageSection>
           ) : null}
           <PageSection className="lg:!mt-10">
-            <div className="aspect-video md:m-20 rounded-md p-2 bg-gradient-to-br from-brand-green-3 to-brand-green-8 shadow-2xl">
+            <div className="aspect-video md:m-20 rounded-md p-2 bg-gradient-to-br from-green-300 to-green-800 shadow-2xl">
               <ReactPlayer
                 className="-z-10 bg-white dark:bg-black"
                 url="https://youtu.be/147CgudTur8"
@@ -149,7 +150,7 @@ export default function BiohazardHome(): JSX.Element {
                 width="100%"
                 height="100%"
                 playIcon={
-                  <IconPlayerPlayFilled className="text-green md:w-28 md:h-28 w-16 h-16" />
+                  <IconPlayerPlayFilled className="text-green-500 md:w-28 md:h-28 w-16 h-16" />
                 }
               />
             </div>
@@ -179,14 +180,14 @@ function ViperProfile() {
       description:
         "Viper's drivetrain uses 4 mecanum wheels for rapid forward, backward, left, and right motion powered by 4 Vex Falcon 500 motors.",
       icon: IconEngine,
-      color: "brand-blue",
+      color: "blue",
     },
     {
       title: "Manipulator",
       description:
         "The claw is made of 3D printed parts using pneumatic cylinders to open and close. The fingers are mounted on a 3D printed, rotating wrist.",
       icon: IconHandGrab,
-      color: "brand-red",
+      color: "red",
     },
     {
       title: "Controls",
@@ -205,22 +206,22 @@ function ViperProfile() {
         </>
       ),
       icon: IconAward,
-      color: "brand-yellow",
+      color: "yellow",
     },
   ];
 
   return (
     <div className="my-10 lg:my-0 sm:mx-10 mx-1 relative h-[500px] sm:h-[750px] lg:h-full">
-      <div className="bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 absolute h-full sm:h-[850px] lg:h-[550px] w-full -z-10 rounded-2xl shadow-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 border-slate-600 border-solid border-[1px]" />
+      <div className="bg-gradient-to-br from-gray-3 to-gray-8 absolute h-full sm:h-[850px] lg:h-[550px] w-full -z-10 rounded-2xl shadow-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 border-slate-600 border-solid border-[1px]" />
       <div className="flex lg:flex-row flex-col mx-5">
         <Card
           className="flex-1 -mt-12 sm:-mt-32 lg:mt-0 mb-6 sm:my-4 -ml-10 mr-3 sm:mx-8 sm:p-8 sm:pl-6 p-4 pl-2 h-fit"
           shadow="xl"
           radius="lg"
-          bg={colorScheme === "dark" ? undefined : colors["brand-green"][6]}
+          bg={colorScheme === "dark" ? undefined : colors.green[6]}
           withBorder
         >
-          <div className="font-heading text-3xl md:text-5xl font-black italic dark:text-green text-white">
+          <div className="font-heading text-3xl md:text-5xl font-black italic dark:-500 text-white">
             Viper
           </div>
           {/* The maxLg case is functionally useless until this component is perfected for mobile */}
@@ -241,7 +242,7 @@ function ViperProfile() {
                       <div className="w-full font-heading">{feature.title}</div>
                     </div>
                   </Accordion.Control>
-                  <Accordion.Panel className="text-brand-gray-0 text-sm">
+                  <Accordion.Panel className="text-gray-0 text-sm">
                     {feature.description}
                   </Accordion.Panel>
                 </Accordion.Item>
@@ -251,7 +252,7 @@ function ViperProfile() {
             <div className="mt-4 sm:mt-10 ml-1 sm:ml-2 grid lg:grid-cols-2 grid-cols-1 sm:grid-cols-4 gap-y-6 sm:gap-y-10 gap-x-10">
               {features.map((feature, i) => (
                 <div key={i} className="space-y-2">
-                  <div className="flex dark:text-green text-white space-x-2 pr-4">
+                  <div className="flex dark:text-green-500 text-white space-x-2 pr-4">
                     <feature.icon
                       size={maxSm ? rem(30) : rem(36)}
                       stroke={1.5}
@@ -311,7 +312,7 @@ function TeamOverview() {
     description: ReactNode;
   }[] = [
     {
-      icon: IconRobot,
+      icon: IconRobotFace,
       title: "Innovation",
       description: (
         <>
@@ -363,6 +364,7 @@ function TeamOverview() {
             mt="xl"
             to="/get-involved"
             className="shadow-lg"
+            c="dark"
           >
             Join the Revolution
           </BrandButton>
@@ -374,9 +376,10 @@ function TeamOverview() {
                 <ThemeIcon
                   size={44}
                   radius="md"
-                  className="bg-gradient-to-br from-brand-green-3 via-brand-green-4 to-brand-green-7 shadow-md border-none"
+                  className="bg-gradient-to-br from-green-300 via-green-400 to-green-700 shadow-md border-none"
+                  variant="filled"
                 >
-                  <item.icon size={rem(26)} stroke={1.5} />
+                  <item.icon size={30} stroke={1.5} />
                 </ThemeIcon>
                 <Text fz="lg" mt="sm" fw={500}>
                   {item.title}
@@ -420,7 +423,7 @@ function StatsGroup() {
   ];
 
   return (
-    <div className="flex sm:p-5 sm:px-0 px-5 py-0 rounded-lg flex-col sm:flex-row bg-gradient-to-br from-brand-gray-3 to-brand-gray-8 shadow-2xl divide-solid divide-x-0 sm:divide-x-2 sm:divide-y-0 divide-y-2 divide-white">
+    <div className="flex sm:p-5 sm:px-0 px-5 py-0 rounded-lg flex-col sm:flex-row bg-gradient-to-br from-gray-300 to-gray-8 shadow-2xl divide-solid divide-x-0 sm:divide-x-2 sm:divide-y-0 divide-y-2 divide-white">
       {stats.map((stat, i) => (
         <div
           key={i}

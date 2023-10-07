@@ -3,6 +3,8 @@ import { IconChevronDown } from "@tabler/icons-react";
 import { clsx } from "clsx";
 import { ReactNode } from "react";
 
+import { useColorScheme } from "../hooks/colorScheme";
+
 interface Props {
   fullscreen?: boolean;
   img: string;
@@ -14,17 +16,19 @@ export default function HeroHeader({
   fullscreen,
   children,
 }: Props): JSX.Element {
+  const colorScheme = useColorScheme();
+
   return (
     <header
       className={clsx(
         fullscreen ? null : "sm:h-[500px]",
-        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-blue dark:border-yellow w-full",
+        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-blue-500 dark:border-yellow-500 w-full",
       )}
     >
       <div className="absolute -z-0 h-full w-full">
         <Overlay
           gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, .65) 40%)"
-          opacity={1}
+          opacity={colorScheme === "dark" ? 1 : 0.6}
         />
 
         <img src={img} alt="" className="h-full w-full object-cover" />
@@ -43,7 +47,7 @@ export default function HeroHeader({
         <button
           className={clsx(
             fullscreen ? "" : "sm:hidden",
-            "mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-yellow mt-auto",
+            "mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-yellow-500 mt-auto",
           )}
           onClick={() =>
             document

@@ -1,3 +1,8 @@
+/* Injected after globals.css. Used to override Docusaurus styles before Mantine styles are applied */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   background: none;
 }

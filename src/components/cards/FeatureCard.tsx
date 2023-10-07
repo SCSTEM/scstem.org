@@ -6,7 +6,6 @@ import {
   Divider,
   MantineColor,
   Text,
-  ThemeIcon,
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
@@ -15,6 +14,8 @@ import { TablerIconsProps } from "@tabler/icons-react";
 import Heading from "@theme/Heading";
 import IdealImage from "@theme/IdealImage";
 import { FC, useEffect, useState } from "react";
+
+import { ThemeIcon } from "../ThemeIcon";
 
 export interface FeatureCardProps {
   Icon: FC<TablerIconsProps>;
@@ -59,8 +60,7 @@ export default function FeatureCard({
   const [highlightColor, setHighlightColor] = useState<MantineColor>(color);
 
   useEffect(() => {
-    if (!color)
-      setHighlightColor(colorScheme === "dark" ? "brand-yellow" : "brand-blue");
+    if (!color) setHighlightColor(colorScheme === "dark" ? "yellow" : "blue");
   }, [colorScheme]);
 
   return (
@@ -72,12 +72,7 @@ export default function FeatureCard({
       className="flex flex-col space-y-3 h-full mx-auto"
     >
       <div className="flex items-center space-x-2">
-        <ThemeIcon
-          color={highlightColor}
-          className="border-none"
-          variant="outline"
-          size={mobile ? "lg" : "xl"}
-        >
+        <ThemeIcon c={highlightColor} size={mobile ? "lg" : "xl"}>
           <Icon size={50} stroke={1.5} />
         </ThemeIcon>
         <Heading

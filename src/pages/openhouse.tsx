@@ -45,7 +45,7 @@ const programs: FeatureCardProps[] = [
     ),
     body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     Icon: IconLego,
-    color: "brand-red",
+    color: "red",
     link: "https://www.firstinspires.org/robotics/fll",
     badge: "Ages 9 - 16",
   },
@@ -58,7 +58,7 @@ const programs: FeatureCardProps[] = [
     ),
     body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     Icon: IconDeviceGamepad2,
-    color: "brand-orange",
+    color: "orange",
     link: "https://www.firstinspires.org/robotics/ftc",
     badge: "Ages 12 - 18",
   },
@@ -71,7 +71,7 @@ const programs: FeatureCardProps[] = [
     ),
     body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
     Icon: IconRobot,
-    color: "brand-blue",
+    color: "blue",
     link: "https://www.firstinspires.org/robotics/frc",
     badge: "Ages 14 - 18",
   },
@@ -341,9 +341,7 @@ export default function OpenHouse(): JSX.Element {
                   <Link to="https://www.firstinspires.org/" className="ml-auto">
                     <Button
                       rightSection={<IconExternalLink />}
-                      color={
-                        colorScheme === "dark" ? "brand-yellow" : "brand-blue"
-                      }
+                      color={colorScheme === "dark" ? "yellow" : "blue"}
                       variant="subtle"
                     >
                       <span className="italic">FIRST®</span>
@@ -351,7 +349,7 @@ export default function OpenHouse(): JSX.Element {
                   </Link>
                 </div>
 
-                <Divider color="brand-dark" />
+                <Divider color="dark" />
 
                 <div className="rounded-3xl space-y-4 flex flex-col">
                   <Title
@@ -372,9 +370,7 @@ export default function OpenHouse(): JSX.Element {
                   >
                     <Button
                       rightSection={<IconExternalLink />}
-                      color={
-                        colorScheme === "dark" ? "brand-yellow" : "brand-blue"
-                      }
+                      color={colorScheme === "dark" ? "yellow" : "blue"}
                       variant="subtle"
                     >
                       More Than Robots

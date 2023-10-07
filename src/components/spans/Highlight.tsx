@@ -25,11 +25,11 @@ export default function Highlight({
 
   const from =
     colorScheme === "dark" || theme === "dark"
-      ? siteTheme.colors["brand-yellow"][5]
-      : siteTheme.colors["brand-blue"][5];
+      ? siteTheme.colors.yellow[5]
+      : siteTheme.colors.blue[5];
   const to =
     colorScheme === "dark" || theme === "dark"
-      ? siteTheme.colors["brand-orange"][7]
+      ? siteTheme.colors.orange[7]
       : siteTheme.colors.cyan[7];
 
   return (

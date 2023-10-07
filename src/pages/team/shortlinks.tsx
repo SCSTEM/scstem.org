@@ -160,7 +160,7 @@ export default function Shortlinks(): JSX.Element {
                       }
                       disabled={!submitted}
                       onClick={copy}
-                      color={copied ? "brand-green" : "brand-yellow"}
+                      color={copied ? "green" : "yellow"}
                     >
                       Copy Link
                     </Button>

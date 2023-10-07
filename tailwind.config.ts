@@ -1,7 +1,41 @@
+import { MantineColorsTuple } from "@mantine/core";
 import type { Config } from "tailwindcss";
+import twColors from "tailwindcss/colors";
 
 import breakpoints from "./breakpoints.config.cjs";
-import { colors, black, white, defaultShade } from "./src/styles/theme";
+import { colors, baseColors } from "./src/styles/theme";
+
+delete twColors["lightBlue"];
+delete twColors["warmGray"];
+delete twColors["trueGray"];
+delete twColors["coolGray"];
+delete twColors["blueGray"];
+
+type twColor = { [key: number]: string };
+
+function adaptColors(
+  colors: Record<string, MantineColorsTuple>,
+): Record<string, twColor> {
+  const result: Record<string, twColor> = {};
+
+  for (const [key, value] of Object.entries(colors)) {
+    result[key] = adaptShade(value);
+  }
+
+  return result;
+}
+
+function adaptShade(shades: MantineColorsTuple): twColor {
+  const convertedShades: twColor = {};
+
+  let index = 0;
+  for (const shade of shades) {
+    convertedShades[index] = shade;
+    index += 100;
+  }
+
+  return convertedShades;
+}
 
 export default {
   darkMode: ["class", "[data-mantine-color-scheme='dark']"],
@@ -10,29 +44,23 @@ export default {
   corePlugins: { preflight: false },
   theme: {
     screens: breakpoints,
+    colors: {
+      transparent: "transparent",
+      inherit: "inherit",
+
+      white: baseColors.white,
+      black: baseColors.black,
+
+      ...adaptColors(colors),
+    },
     extend: {
       fontFamily: {
-        sans: ["var(--mantine-font-family)"],
-        mono: ["var(--mantine-font-family-monospace)"],
-        heading: ["var(--mantine-font-family-headings)"],
+        sans: ["Inter"],
+        mono: ["SourceCodePro"],
+        heading: ["Orbitron"],
       },
       fontWeight: {
         heading: "var(--mantine-heading-font-weight)",
-      },
-      colors: {
-        black,
-        white,
-
-        ...colors,
-        yellow: colors["brand-yellow"][defaultShade],
-        blue: colors["brand-blue"][defaultShade],
-        green: colors["brand-green"][defaultShade],
-        orange: colors["brand-orange"][defaultShade],
-        gray: colors["brand-gray"][defaultShade],
-
-        bio: {
-          // TODO Biohazard brand colors
-        },
       },
       fontSize: {
         DEFAULT: ["var(--mantine-font-size-md)", "var(--mantine-line-height)"],

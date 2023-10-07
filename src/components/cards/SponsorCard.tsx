@@ -1,5 +1,4 @@
 import {
-  ActionIcon,
   Badge,
   Card,
   Text,
@@ -12,6 +11,7 @@ import { clsx } from "clsx";
 
 import { Sponsor, SponsorLevel } from "@site/data";
 
+import { ActionIcon } from "../inputs/ActionIcon";
 import "./SponsorCard.css";
 
 export default function SponsorCard({
@@ -25,7 +25,7 @@ export default function SponsorCard({
   supportSince,
 }: Sponsor) {
   const { colors } = useMantineTheme();
-  let accent: MantineColor = "brand-blue";
+  let accent: MantineColor = "blue";
 
   switch (level) {
     case SponsorLevel.Supporter:
@@ -52,13 +52,14 @@ export default function SponsorCard({
     <Card
       withBorder
       radius="md"
-      className="flex w-80 flex-col sponsor-card"
+      className="flex w-80 flex-col sponsor-card !px-0 !py-2 h-fit"
       shadow="lg"
     >
       <Card.Section
+        inheritPadding
         className={clsx(
           "sponsor-card-image-container",
-          "my-auto flex h-48 flex-col items-center space-y-1 px-6 py-4",
+          "my-auto flex h-48 flex-col items-center py-4",
         )}
       >
         {logo !== undefined ? (
@@ -87,31 +88,31 @@ export default function SponsorCard({
         )}
 
         {sub ? (
-          <Text size="md" className="text-gray dark:text-white">
+          <Text size="md" className="text-gray-500 dark:text-white">
             {sub}
           </Text>
         ) : null}
       </Card.Section>
 
-      <Card.Section
+      <div
         className={clsx(
-          "flex border-0 border-solid px-2 py-2",
+          "flex border-0 border-solid px-2 pb-2",
           description || url ? "border-b" : null,
         )}
       >
-        <Text className="flex-grow font-bold">{name}</Text>
+        <div className="flex-grow font-bold">{name}</div>
         {level ? (
           <Badge className="my-auto" variant="filled" color={accent}>
             {level}
           </Badge>
         ) : null}
-      </Card.Section>
+      </div>
 
-      <Card.Section className="flex-grow px-2 pt-1">
-        {description ? <Text>{description}</Text> : null}
-      </Card.Section>
+      <div className="px-2 pt-1">
+        {description ? <p className="mb-0">{description}</p> : null}
+      </div>
 
-      <Card.Section className="my-auto flex flex-none px-2 py-2">
+      <div className="my-auto flex flex-none px-2 mt-2">
         <div className="flex-grow">
           {supportSince ? (
             <Text size="sm" fs="italic">
@@ -120,17 +121,8 @@ export default function SponsorCard({
           ) : null}
         </div>
 
-        {url ? (
-          <ActionIcon
-            variant="outline"
-            component="a"
-            href={url}
-            target="_blank"
-          >
-            <IconExternalLink size={18} stroke={1.5} />
-          </ActionIcon>
-        ) : null}
-      </Card.Section>
+        {url ? <ActionIcon to={url} icon={IconExternalLink} /> : null}
+      </div>
     </Card>
   );
 }

@@ -24,9 +24,7 @@ export function ColorToggle(): JSX.Element {
       styles={{
         track: {
           backgroundColor:
-            colorMode === "dark"
-              ? colors["brand-yellow"][5]
-              : colors["brand-blue"][5],
+            colorMode === "dark" ? colors["yellow"][5] : colors["blue"][5],
         },
       }}
     />

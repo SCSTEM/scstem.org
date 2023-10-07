@@ -148,6 +148,7 @@ const config = {
       return {
         name: "docusaurus-postcss",
         configurePostCss(postcssOptions) {
+          postcssOptions.plugins.push(require("tailwindcss/nesting"));
           postcssOptions.plugins.push(require("tailwindcss"));
           postcssOptions.plugins.push(require("autoprefixer"));
           postcssOptions.plugins.push(require("postcss-preset-mantine"));

@@ -1,0 +1,10 @@
+.root {
+  &[data-variant="default"] {
+    border: none;
+    background: none;
+
+    &:hover {
+      color: var(--sc-theme-primary);
+    }
+  }
+}

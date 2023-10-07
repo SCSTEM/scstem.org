@@ -24,31 +24,55 @@
   font-weight: 100 900;
 }
 
-/* Default Theme Overrides */
-
+/* Default docusaurus theme overrides */
 :root {
   --ifm-font-family-base: "Inter";
   --ifm-font-family-monospace: "SourceCodePro";
+  --ifm-link-hover-color: var(--ifm-color-primary);
 
+  /* Helpers */
+  --sc-color-primary: var(--ifm-color-primary);
+  --sc-color-black: var(--mantine-color-black);
+  --sc-color-white: var(--mantine-color-white);
+}
+
+[data-mantine-color-scheme="dark"] {
   --ifm-background-color: var(--mantine-color-black);
 
-  --ifm-color-primary-darkest: var(--mantine-color-brand-yellow-9);
-  --ifm-color-primary-darker: var(--mantine-color-brand-yellow-8);
-  --ifm-color-primary-dark: var(--mantine-color-brand-yellow-7);
-  --ifm-color-primary: var(--mantine-color-brand-yellow-6);
-  --ifm-color-primary-light: var(--mantine-color-brand-yellow-5);
-  --ifm-color-primary-lighter: var(--mantine-color-brand-yellow-4);
-  --ifm-color-primary-lightest: var(--mantine-color-brand-yellow-3);
-
-  --ifm-link-hover-color: var(--ifm-color-primary);
+  --ifm-color-primary-darkest: var(--mantine-color-yellow-8);
+  --ifm-color-primary-darker: var(--mantine-color-yellow-7);
+  --ifm-color-primary-dark: var(--mantine-color-yellow-6);
+  --ifm-color-primary: var(--mantine-color-yellow-5);
+  --ifm-color-primary-light: var(--mantine-color-yellow-4);
+  --ifm-color-primary-lighter: var(--mantine-color-yellow-3);
+  --ifm-color-primary-lightest: var(--mantine-color-yellow-2);
 }
+
+[data-mantine-color-scheme="light"] {
+  --ifm-background-color: var(--mantine-color-white);
+
+  --ifm-color-primary-darkest: var(--mantine-color-blue-8);
+  --ifm-color-primary-darker: var(--mantine-color-blue-7);
+  --ifm-color-primary-dark: var(--mantine-color-blue-6);
+  --ifm-color-primary: var(--mantine-color-blue-5);
+  --ifm-color-primary-light: var(--mantine-color-blue-4);
+  --ifm-color-primary-lighter: var(--mantine-color-blue-3);
+  --ifm-color-primary-lightest: var(--mantine-color-blue-2);
+}
+
+::selection {
+  background-color: var(--ifm-color-primary);
+  color: var(--ifm-background-color);
+}
+
+/* Navbar styles */
 
 .navbar-cta-button {
   padding: 5px 26px;
   background-image: linear-gradient(
     45deg,
-    var(--mantine-color-brand-yellow-5) 0%,
-    var(--mantine-color-brand-orange-6) 100%
+    var(--mantine-color-yellow-5) 0%,
+    var(--mantine-color-orange-6) 100%
   );
   border-radius: 100px;
   color: var(--mantine-color-black);
@@ -67,36 +91,11 @@
   }
 }
 
-::selection {
-  background-color: var(--ifm-color-primary);
-  color: var(--ifm-background-color);
-}
-
-/* Light Theme */
-
-[data-theme="light"] {
-  --ifm-background-color: var(--mantine-color-white);
-
-  --ifm-color-primary-darkest: var(--mantine-color-brand-blue-9);
-  --ifm-color-primary-darker: var(--mantine-color-brand-blue-8);
-  --ifm-color-primary-dark: var(--mantine-color-brand-blue-7);
-  --ifm-color-primary: var(--mantine-color-brand-blue-6);
-  --ifm-color-primary-light: var(--mantine-color-brand-blue-5);
-  --ifm-color-primary-lighter: var(--mantine-color-brand-blue-4);
-  --ifm-color-primary-lightest: var(--mantine-color-brand-blue-3);
-}
-
 [data-theme="light"] .navbar-cta-button {
   background-image: linear-gradient(
     45deg,
-    var(--mantine-color-brand-blue-5) 0%,
+    var(--mantine-color-blue-5) 0%,
     var(--mantine-color-cyan-8) 100%
   );
   color: var(--mantine-color-white);
 }
-
-/* Tailwind Style Injection */
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;

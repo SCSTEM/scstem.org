@@ -10,7 +10,7 @@ export default function Sponsors(): JSX.Element {
         <div className="flex flex-col space-y-6 text-white">
           <div className="text-5xl font-bold">
             Sponsors help us{" "}
-            <span className="dark:text-yellow text-brand-blue-4">build</span>.
+            <span className="dark:text-yellow-500 text-blue-400">build</span>.
           </div>
           <div className="text-2xl">
             We are proud to partner organizations and individuals who want to

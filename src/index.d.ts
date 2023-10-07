@@ -1,13 +1,13 @@
 import { DefaultMantineColor, MantineColorsTuple } from "@mantine/core";
 
 type ExtendedCustomColors =
-  | "brand-yellow"
-  | "brand-gray"
-  | "brand-green"
-  | "brand-orange"
-  | "brand-dark"
-  | "brand-blue"
-  | "brand-red"
+  | "yellow"
+  | "gray"
+  | "green"
+  | "orange"
+  | "dark"
+  | "blue"
+  | "red"
   | DefaultMantineColor;
 
 declare module "@mantine/core" {

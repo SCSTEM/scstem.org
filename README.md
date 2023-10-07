@@ -112,10 +112,10 @@ The site's theme and styling are somewhat convoluted as they are handled in thre
 2. [Tailwind CSS](https://tailwindcss.com/): Tailwind is a CSS toolkit that essentially eliminates the need for writing `.css` files. Using their extensive array of classes, Tailwind auto-generates only the classes needed to handle the styling for the site.
 3. [Docusaurus Infima](https://docusaurus.io/docs/styling-layout#global-styles): Docusaurus has a few preset CSS variables to handle things like theme colors, dark/light mode, and fonts. These variables are all set from Mantine's generated CSS and shouldn't really need touched.
 
-Brand colors are defined in `./src/styles/styles.ts`, which is imported by Mantine and Tailwind to expose `brand-*` colors to both frameworks' styles. Additionally, both frameworks have mechanisms for checking whether the site is in dark mode or light mode. For Mantine, this is simply a [color scheme hook](https://mantine.dev/hooks/use-color-scheme/) and a `dark:` prefix for Tailwind classes. This makes creating thematic components very simple:
+Brand colors are defined in `./src/styles/theme.ts`, which is imported by Mantine and Tailwind to expose colors to both frameworks' styles. Additionally, both frameworks have mechanisms for checking whether the site is in dark mode or light mode. For Mantine, this is simply a [color scheme hook](https://mantine.dev/hooks/use-color-scheme/) and a `dark:` prefix for Tailwind classes. This makes creating thematic components very simple:
 
 ```tsx
-<div className="dark:text-yellow text-blue">I am yellow when dark, and blue when light.</div>
+<div className="dark:text-yellow-500 text-blue-500">I am yellow when dark, and blue when light.</div>
 
 <Button ... color="yellow">I am a Mantine button</Button>
 ```
@@ -127,12 +127,12 @@ In certain situations, the abstraction of Mantine and Tailwind simply cannot han
 On the subject of styles, it's probably worth mentioning the breakpoints (defined in `./src/styles/styles.ts`) and how they work. Take a look at this code block:
 
 ```tsx
-<span className="text-yellow text-xs md:text-lg lg:text-xl xl:text-green ">
+<span className="text-yellow-500 text-xs md:text-lg lg:text-xl xl:text-green-500">
   Hello World!
 </span>
 ```
 
-The first two classes `text-yellow` and `text-xs` have no breakpoint prefix (`xs:`, `sm:`, `md:`, `lg:`, `xl:`) meaning they are base styles that apply to everything. The next class, `md:text-lg` sets the text size to large on screens "md" or larger. The next class, `lg:text-xl` sets the text size to extra large on screens "lg" or larger. Finally, `xl:text-green` changes the text color to green on screens "xl" or larger. Essentially, these classes can be stacked to conditionally apply styles depending on screen size, smallest to largest.
+The first two classes `text-yellow-500` and `text-xs` have no breakpoint prefix (`xs:`, `sm:`, `md:`, `lg:`, `xl:`) meaning they are base styles that apply to everything. The next class, `md:text-lg` sets the text size to large on screens "md" or larger. The next class, `lg:text-xl` sets the text size to extra large on screens "lg" or larger. Finally, `xl:text-green` changes the text color to green on screens "xl" or larger. Essentially, these classes can be stacked to conditionally apply styles depending on screen size, smallest to largest.
 
 In general, breakpoints should only be used when necessary to tweak styles depending on screen size. For the most part, `md:` is all you need, to draw a line between phones and tablets/laptops, but the others can be helpful in specific edge-cases.
 
