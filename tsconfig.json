@@ -5,6 +5,7 @@
     "types": ["@cloudflare/workers-types"],
     "jsx": "preserve",
     "paths": {
+      "@img/*": ["./src/idealimage/*"],
       "@site/*": ["./*"],
       "@theme/*": [
         "./src/theme/*",
