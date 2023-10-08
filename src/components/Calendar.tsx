@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 interface Props {
   calendars: Calendar[];
   bgColor?: CalColor;
@@ -8,6 +10,7 @@ interface Props {
   noTabs?: boolean;
   noCalList?: boolean;
   noTimeZone?: boolean;
+  className?: string;
 }
 
 interface Calendar {
@@ -69,15 +72,18 @@ export default function CalendarFrame({
   noTabs,
   noCalList,
   noTimeZone,
+  className,
 }: Props): JSX.Element {
   // TODO See below const { colorMode } = useColorMode();
 
   let src = "";
-  calendars.forEach((calendar) => {
-    let color = CalColor.Black;
-    if (calendar.color) color = calendar.color;
-    src += `&src=${calendar.src}&color=${color}`;
-  });
+  if (calendars) {
+    calendars.forEach((calendar) => {
+      let color = CalColor.Black;
+      if (calendar.color) color = calendar.color;
+      src += `&src=${calendar.src}&color=${color}`;
+    });
+  }
 
   // TODO: Fix useColorMode let bg = colorMode === "dark" ? CalColor.Graphite : CalColor.White;
   let bg = CalColor.Graphite;
@@ -85,7 +91,7 @@ export default function CalendarFrame({
 
   return (
     <iframe
-      className="h-[800px] w-full border-none md:h-[900px]"
+      className={clsx("h-[800px] w-full border-none md:h-[900px]", className)}
       src={`https://calendar.google.com/calendar/embed?${src}&bgcolor=${bg}&ctz=America%2FNew_York${
         noTitle ? "&showTitle=0" : ""
       }${noNav ? "&showNav=0" : ""}${noDate ? "&showDate=0" : ""}${
