@@ -105,8 +105,9 @@ export default function BiohazardHome(): JSX.Element {
         <div id="scrollhere" className="mb-10"></div>
       </header>
 
-      <main className={classes.background}>
+      <main className={clsx(classes.background, "relative")}>
         <div className="absolute w-full h-full -z-20 bg-[url('/img/biohazard/circuit-board.svg')]" />
+
         <div className="space-y-20 md:space-y-28 py-16">
           <PageSection className="space-y-16 md:space-y-24">
             <TeamOverview />
@@ -212,7 +213,8 @@ function ViperProfile() {
 
   return (
     <div className="my-10 lg:my-0 sm:mx-10 mx-1 relative h-[500px] sm:h-[750px] lg:h-full">
-      <div className="bg-gradient-to-br from-gray-3 to-gray-8 absolute h-full sm:h-[850px] lg:h-[550px] w-full -z-10 rounded-2xl shadow-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 border-slate-600 border-solid border-[1px]" />
+      <div className="bg-gradient-to-br from-gray-300 to-gray-800 absolute h-full sm:h-[850px] lg:h-[550px] w-full -z-10 rounded-2xl shadow-2xl top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 border-slate-600 border-solid border-[1px]" />
+
       <div className="flex lg:flex-row flex-col mx-5">
         <Card
           className="flex-1 -mt-12 sm:-mt-32 lg:mt-0 mb-6 sm:my-4 -ml-10 mr-3 sm:mx-8 sm:p-8 sm:pl-6 p-4 pl-2 h-fit"
@@ -221,7 +223,7 @@ function ViperProfile() {
           bg={colorScheme === "dark" ? undefined : colors.green[6]}
           withBorder
         >
-          <div className="font-heading text-3xl md:text-5xl font-black italic dark:-500 text-white">
+          <div className="font-heading text-3xl md:text-5xl font-black italic dark:text-green-500 text-white">
             Viper
           </div>
           {/* The maxLg case is functionally useless until this component is perfected for mobile */}
@@ -253,10 +255,7 @@ function ViperProfile() {
               {features.map((feature, i) => (
                 <div key={i} className="space-y-2">
                   <div className="flex dark:text-green-500 text-white space-x-2 pr-4">
-                    <feature.icon
-                      size={maxSm ? rem(30) : rem(36)}
-                      stroke={1.5}
-                    />
+                    <feature.icon size={maxSm ? 40 : 50} stroke={1.5} />
                     <div className="w-full border-b-2 border-solid border-0 sm:text-xl font-heading">
                       {feature.title}
                     </div>

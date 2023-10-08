@@ -45,6 +45,7 @@ export default {
   theme: {
     screens: breakpoints,
     colors: {
+      ...twColors,
       transparent: "transparent",
       inherit: "inherit",
 
