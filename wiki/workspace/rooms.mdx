@@ -1,0 +1,158 @@
+---
+keywords:
+  - Layout
+  - Workspace
+  - Scheduling
+
+tags:
+  - Workspace
+---
+
+import Calendar, { CalColor } from "@site/src/components/Calendar";
+
+# Rooms
+
+<details>
+  <summary>Schedule for all rooms</summary>
+  <div>
+    <Calendar
+      noTitle
+      noTimeZone
+      noCalList
+      noTabs
+      noPrint
+      calendars={[
+        // FLL/Classroom
+        {
+          src: "c_1885006p6g54ohr5gi57n1afr9no6@resource.calendar.google.com",
+          color: CalColor.Red,
+        },
+        // FTC
+        {
+          src: "c_188fkbg3pl9qcguslqp0uok8gs0ha@resource.calendar.google.com",
+          color: CalColor.Orange,
+        },
+        // FRC
+        {
+          src: "c_188as3rdu5d4ag9jjbnkb0b4aksb2@resource.calendar.google.com",
+          color: CalColor.StandardBlue,
+        },
+        // FRC Field
+        {
+          src: "c_188fjdhatka1mg8enl1gp028flrk2@resource.calendar.google.com",
+          color: CalColor.Green,
+        },
+      ]}
+    />
+  </div>
+</details>
+
+## FLL/Classroom
+
+- Shared space for FLL and classroom-type meetings, FLL has preferential use of the space
+- Contains 75" display and whiteboard
+- Storage for food/drinks
+- Seating for ~15
+
+<details>
+  <summary>Show schedule</summary>
+  <div>
+    <Calendar
+      noTitle
+      noTimeZone
+      noCalList
+      noTabs
+      noPrint
+      calendars={[
+        {
+          src: "c_1885006p6g54ohr5gi57n1afr9no6@resource.calendar.google.com",
+          color: CalColor.Red,
+        },
+      ]}
+    />
+  </div>
+</details>
+
+## FTC
+
+- Dedicated space for FTC
+- Seating for ~12
+
+<details>
+  <summary>Show schedule</summary>
+  <div>
+    <Calendar
+      noTitle
+      noTimeZone
+      noCalList
+      noTabs
+      noPrint
+      calendars={[
+        {
+          src: "c_188fkbg3pl9qcguslqp0uok8gs0ha@resource.calendar.google.com",
+          color: CalColor.Orange,
+        },
+      ]}
+    />
+  </div>
+</details>
+
+## FRC
+
+- Dedicated space for FRC
+- Programming, electrical, and assembly areas + storage
+
+<details>
+  <summary>Show schedule</summary>
+  <div>
+    <Calendar
+      noTitle
+      noTimeZone
+      noCalList
+      noTabs
+      noPrint
+      calendars={[
+        {
+          src: "c_188as3rdu5d4ag9jjbnkb0b4aksb2@resource.calendar.google.com",
+          color: CalColor.StandardBlue,
+        },
+      ]}
+    />
+  </div>
+</details>
+
+## FRC Field
+
+- Direct access to FRC room
+- Old robot display
+
+<details>
+  <summary>Show schedule</summary>
+  <div>
+    <Calendar
+      noTitle
+      noTimeZone
+      noCalList
+      noTabs
+      noPrint
+      calendars={[
+        {
+          src: "c_188fjdhatka1mg8enl1gp028flrk2@resource.calendar.google.com",
+          color: CalColor.Green,
+        },
+      ]}
+    />
+  </div>
+</details>
+
+## Shop & Storage
+
+- Lumber and sheet material storage
+- Assembly area
+- Miter/band saw station
+
+## Admin
+
+- Printers
+- Filing cabinets for non-profit documentation
+- Secure storage
