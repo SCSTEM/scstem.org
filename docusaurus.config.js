@@ -117,9 +117,6 @@ const config = {
           sidebarPath: require.resolve("./sidebars.config.cjs"),
           path: "./wiki",
         },
-        theme: {
-          customCss: [require.resolve("./src/styles/globals.css")],
-        },
         gtag: {
           trackingID: "G-3TPD3DLYBR",
         },
