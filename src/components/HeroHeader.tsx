@@ -1,9 +1,6 @@
-import { Overlay } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
 import { clsx } from "clsx";
 import { ReactNode } from "react";
-
-import { useColorScheme } from "../hooks/colorScheme";
 
 interface Props {
   fullscreen?: boolean;
@@ -16,21 +13,15 @@ export default function HeroHeader({
   fullscreen,
   children,
 }: Props): JSX.Element {
-  const colorScheme = useColorScheme();
-
   return (
     <header
       className={clsx(
         fullscreen ? null : "sm:h-[500px]",
-        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-blue-500 dark:border-yellow-500 w-full",
+        "relative h-[calc(101vh-var(--ifm-navbar-height))] border-0 border-b-2 border-solid border-primary-500 w-full",
       )}
     >
       <div className="absolute -z-0 h-full w-full">
-        <Overlay
-          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, .65) 40%)"
-          opacity={colorScheme === "dark" ? 1 : 0.6}
-        />
-
+        <div className="bg-[linear-gradient(180deg,rgba(0,0,0,0.9)0%,rgba(0,0,0,.8)50%)] w-full h-full absolute dark:opacity-1 opacity-60" />
         <img src={img} alt="" className="h-full w-full object-cover" />
       </div>
       <div className="absolute flex h-full flex-col w-full">
