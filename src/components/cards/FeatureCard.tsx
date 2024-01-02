@@ -1,28 +1,26 @@
 import Link from "@docusaurus/Link";
+import { useColorMode } from "@docusaurus/theme-common";
 import {
-  Badge,
   Button,
   Card,
-  Divider,
-  MantineColor,
-  Text,
-  useMantineColorScheme,
-  useMantineTheme,
-} from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Chip,
+} from "@nextui-org/react";
 import { TablerIconsProps } from "@tabler/icons-react";
 import Heading from "@theme/Heading";
 import IdealImage from "@theme/IdealImage";
 import { FC, useEffect, useState } from "react";
 
-import { ThemeIcon } from "../ThemeIcon";
+import { ColorScale, colorScales } from "@site/src/styles/theme";
 
 export interface FeatureCardProps {
   Icon: FC<TablerIconsProps>;
   key: string;
   title: string | JSX.Element;
   body: string | JSX.Element;
-  color?: MantineColor;
+  color?: ColorScale;
   link?: string;
   linkText?: string;
   badge?: string;
@@ -52,72 +50,79 @@ export default function FeatureCard({
   badge,
   img,
 }: FeatureCardProps): JSX.Element {
-  const theme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`, true, {
-    getInitialValueInEffect: false,
-  });
-  const [highlightColor, setHighlightColor] = useState<MantineColor>(color);
+  const { colorMode } = useColorMode();
+  const [highlightColor, setHighlightColor] = useState<string>(color?.DEFAULT);
 
   useEffect(() => {
-    if (!color) setHighlightColor(colorScheme === "dark" ? "yellow" : "blue");
-  }, [colorScheme]);
+    if (!color)
+      setHighlightColor(
+        colorMode === "dark"
+          ? colorScales.yellow.DEFAULT
+          : colorScales.blue.DEFAULT,
+      );
+  }, [colorMode]);
 
   return (
     <Card
-      shadow="lg"
-      radioGroup="md"
-      radius="lg"
-      withBorder
-      className="flex flex-col space-y-3 h-full mx-auto"
+      classNames={{
+        base: "h-full px-1",
+        body: "pt-0",
+      }}
     >
-      <div className="flex items-center space-x-2">
-        <ThemeIcon c={highlightColor} size={mobile ? "lg" : "xl"}>
-          <Icon size={50} stroke={1.5} />
-        </ThemeIcon>
+      <CardHeader>
+        <Icon size={50} stroke={1.5} color={highlightColor} />
         <Heading
           as="h4"
-          className="font-bold text-lg xl:text-xl font-sans m-auto"
+          className="font-bold text-lg xl:text-xl font-sans ml-4"
         >
           {title}
         </Heading>
-      </div>
+      </CardHeader>
 
-      {img && (!img.placement || img.placement === "top") ? (
-        <Image src={img.src} alt={img.alt} />
-      ) : null}
-
-      <div className="flex items-center">
-        <Divider size="sm" color={highlightColor} className="flex-grow" />
-        {badge ? (
-          <Badge className="ml-2" color={color} size="lg" variant="light">
-            {badge}
-          </Badge>
+      <CardBody className="flex flex-col space-y-4">
+        {img && (!img.placement || img.placement === "top") ? (
+          <Image src={img.src} alt={img.alt} />
         ) : null}
-      </div>
+        <div className="flex items-center space-x-3">
+          <div
+            style={{ borderColor: highlightColor }}
+            className="flex-grow border-b-1"
+          />
+          {badge ? (
+            <Chip
+              variant="flat"
+              style={{ backgroundColor: `${highlightColor}20` }}
+              className="text-opacity-85"
+            >
+              {badge}
+            </Chip>
+          ) : null}
+        </div>
+        <div className="flex-grow flex flex-col">
+          <div className="mb-3 opacity-85">{body}</div>
 
-      <div className="flex-grow flex flex-col">
-        <Text
-          size="md"
-          c={colorScheme === "dark" ? "dimmed" : undefined}
-          className="!mb-3"
-        >
-          {body}
-        </Text>
-
-        {img && img.placement === "bottom" ? (
-          <div className="mt-auto">
-            <Image src={img.src} alt={img.alt} />
-          </div>
-        ) : null}
-      </div>
+          {img && img.placement === "bottom" ? (
+            <div className="mt-auto">
+              <Image src={img.src} alt={img.alt} />
+            </div>
+          ) : null}
+        </div>
+      </CardBody>
 
       {link ? (
-        <Link to={link} className="ml-auto">
-          <Button color={highlightColor} variant="subtle" size="compact-sm">
-            {linkText ? linkText : "Learn More"}
-          </Button>
-        </Link>
+        <CardFooter>
+          <Link to={link} className="ml-auto">
+            <Button
+              variant="light"
+              className="h-fit py-1 px-2"
+              style={{
+                color: highlightColor,
+              }}
+            >
+              {linkText ? linkText : "Learn More"}
+            </Button>
+          </Link>
+        </CardFooter>
       ) : null}
     </Card>
   );

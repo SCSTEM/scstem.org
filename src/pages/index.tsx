@@ -27,6 +27,7 @@ import DefaultLayout from "@site/src/layouts/Default";
 import Section from "../components/Section";
 import Underline from "../components/spans/Underline";
 import { useColorScheme } from "../hooks/colorScheme";
+import { colorScales } from "../styles/theme";
 import classes from "./index.module.css";
 
 const programs: FeatureCardProps[] = [
@@ -39,7 +40,7 @@ const programs: FeatureCardProps[] = [
     ),
     body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     Icon: IconLego,
-    color: "red",
+    color: colorScales.red,
     link: "/clubs/fll",
     badge: "Ages 9 - 16",
     img: {
@@ -56,7 +57,7 @@ const programs: FeatureCardProps[] = [
     ),
     body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     Icon: IconDeviceGamepad2,
-    color: "orange",
+    color: colorScales.orange,
     link: "/clubs/ftc",
     badge: "Ages 12 - 18",
     img: {
@@ -73,7 +74,7 @@ const programs: FeatureCardProps[] = [
     ),
     body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
     Icon: IconRobotFace,
-    color: "blue",
+    color: colorScales.blue,
     link: "/biohazard",
     badge: "Ages 14 - 18",
     img: {
@@ -205,7 +206,7 @@ export default function Home(): JSX.Element {
       </HeroHeader>
 
       <main className={clsx(classes.background, "relative")}>
-        <div className="absolute w-full h-full -z-20 dark:bg-[url('/img/svg/hexagons-dark.svg')] bg-[url('/img/svg/hexagons-light.svg')] bg-repeat" />
+        <div className="absolute w-full h-full dark:bg-[url('/img/svg/hexagons-dark.svg')] bg-[url('/img/svg/hexagons-light.svg')] bg-repeat" />
 
         <div className="lg:space-y-28 space-y-12 my-28">
           {/* Overview */}
