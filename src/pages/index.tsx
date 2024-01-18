@@ -26,7 +26,6 @@ import DefaultLayout from "@site/src/layouts/Default";
 
 import Section from "../components/Section";
 import Underline from "../components/spans/Underline";
-import { useColorScheme } from "../hooks/colorScheme";
 import { colorScales } from "../styles/theme";
 import classes from "./index.module.css";
 
@@ -178,7 +177,6 @@ const whyJoin: FeatureCardProps[] = [
 
 export default function Home(): JSX.Element {
   const [videoReady, setVideoReady] = useState(false);
-  const colorScheme = useColorScheme();
 
   return (
     <DefaultLayout
@@ -190,10 +188,7 @@ export default function Home(): JSX.Element {
           <Heading as="h4" className="text-4xl font-bold md:text-5xl mb-0">
             <span className="dark:text-yellow-500 text-blue-400">Robots</span>{" "}
             are in Franklin County.
-            <Underline
-              className="before:whitespace-pre-line before:content-['\a']"
-              color={colorScheme === "light" ? "blue" : undefined}
-            >
+            <Underline className="before:whitespace-pre-line before:content-['\a']">
               So are we.
             </Underline>
           </Heading>
@@ -275,7 +270,6 @@ export default function Home(): JSX.Element {
                     <Button
                       to="https://www.firstinspires.org/"
                       rightSection={<IconExternalLink />}
-                      color={colorScheme === "dark" ? "yellow" : "blue"}
                       variant="subtle"
                       size="compact-sm"
                     >
@@ -284,7 +278,7 @@ export default function Home(): JSX.Element {
                   </div>
                 </div>
 
-                <Divider color={colorScheme === "dark" ? "gray" : "dark"} />
+                <Divider />
 
                 <div className="rounded-3xl space-y-4 flex flex-col">
                   <Title order={4} className="text-center md:text-left">
@@ -300,7 +294,6 @@ export default function Home(): JSX.Element {
                     <Button
                       to="https://info.firstinspires.org/morethanrobots"
                       rightSection={<IconExternalLink />}
-                      color={colorScheme === "dark" ? "yellow" : "blue"}
                       variant="subtle"
                       size="compact-sm"
                     >
@@ -360,11 +353,7 @@ export default function Home(): JSX.Element {
             <Title className="mx-auto text-center" order={2}>
               Ready to join or find out more? Contact us!
             </Title>
-            <Text
-              c={colorScheme === "dark" ? "dimmed" : undefined}
-              size="lg"
-              className="max-w-5xl text-center"
-            >
+            <Text size="lg" className="max-w-5xl text-center">
               We are always looking for new members, mentors, and sponsors! If
               you want to find out how you can get plugged in or are looking for
               more information, please reach out through our{" "}

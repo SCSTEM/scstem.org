@@ -101,6 +101,7 @@ const config = {
       colorMode: {
         defaultMode: "dark",
         disableSwitch: true,
+        respectPrefersColorScheme: false,
       },
       zoom: {
         selector: ".markdown img, .zoomable img",

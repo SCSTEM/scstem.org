@@ -1,12 +1,12 @@
-import { parseThemeColor, useMantineTheme } from "@mantine/core";
 import { clsx } from "clsx";
 
-import { ExtendedCustomColors } from "@site/src";
+import useParseColor from "@site/src/hooks/useParseColor";
+import { ColorScale } from "@site/src/styles/theme";
 
 type Props = {
   children: React.ReactNode;
   className?: string;
-  color?: ExtendedCustomColors;
+  color?: ColorScale;
 };
 
 export default function Underline({
@@ -14,19 +14,13 @@ export default function Underline({
   children,
   color,
 }: Props): JSX.Element {
-  const theme = useMantineTheme();
-  const parsedColor = parseThemeColor({
-    color: theme.colors[color || "yellow"][5],
-    theme,
-  });
+  const parsedColor = useParseColor(color);
 
   return (
     <span
       className={clsx("underline underline-offset-4", className)}
       style={{
-        textDecorationColor: parsedColor.isThemeColor
-          ? `var(${parsedColor.variable})`
-          : parsedColor.value,
+        textDecorationColor: parsedColor,
       }}
     >
       {children}

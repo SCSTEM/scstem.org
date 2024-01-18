@@ -1,15 +1,11 @@
-import {
-  Badge,
-  Card,
-  Text,
-  MantineColor,
-  useMantineTheme,
-} from "@mantine/core";
+import { Card, Chip, commonColors } from "@nextui-org/react";
 import { IconExternalLink } from "@tabler/icons-react";
 import IdealImage from "@theme/IdealImage";
 import { clsx } from "clsx";
 
 import { Sponsor, SponsorLevel } from "@site/data";
+import useParseColor from "@site/src/hooks/useParseColor";
+import { ColorScale, colorScales } from "@site/src/styles/theme";
 
 import { ActionIcon } from "../inputs/ActionIcon";
 import "./SponsorCard.css";
@@ -24,42 +20,34 @@ export default function SponsorCard({
   sub,
   supportSince,
 }: Sponsor) {
-  const { colors } = useMantineTheme();
-  let accent: MantineColor = "blue";
+  let accent: ColorScale = colorScales.blue;
 
   switch (level) {
     case SponsorLevel.Supporter:
-      // Do nothing
       break;
     case SponsorLevel.Bronze:
-      accent = colors.orange[6];
+      accent = colorScales.orange;
       break;
     case SponsorLevel.Silver:
-      accent = colors.gray[6];
+      accent = colorScales.gray;
       break;
     case SponsorLevel.Gold:
-      accent = colors.yellow[6];
+      accent = colorScales.yellow;
       break;
     case SponsorLevel.Platinum:
-      accent = colors.violet[6];
+      accent = commonColors.purple;
       break;
     case SponsorLevel.Ultimate:
-      accent = colors.red[6];
+      accent = colorScales.red;
       break;
   }
 
   return (
-    <Card
-      withBorder
-      radius="md"
-      className="flex w-80 flex-col sponsor-card !px-0 !py-2 h-fit"
-      shadow="lg"
-    >
-      <Card.Section
-        inheritPadding
+    <Card className="sponsor-card flex flex-col">
+      <div
         className={clsx(
           "sponsor-card-image-container",
-          "my-auto flex h-48 flex-col items-center py-4",
+          "my-auto flex h-48 flex-col items-center p-4",
         )}
       >
         {logo !== undefined ? (
@@ -86,13 +74,10 @@ export default function SponsorCard({
         ) : (
           <span className="text-4xl font-semibold my-auto">{name}</span>
         )}
-
         {sub ? (
-          <Text size="md" className="text-gray-500 dark:text-white">
-            {sub}
-          </Text>
+          <div className="text-gray-500 dark:text-white text-md">{sub}</div>
         ) : null}
-      </Card.Section>
+      </div>
 
       <div
         className={clsx(
@@ -101,28 +86,45 @@ export default function SponsorCard({
         )}
       >
         <div className="flex-grow font-bold">{name}</div>
-        {level ? (
-          <Badge className="my-auto" variant="filled" color={accent}>
-            {level}
-          </Badge>
-        ) : null}
+        {level ? <LevelChip color={accent} label={level} /> : null}
       </div>
 
-      <div className="px-2 pt-1">
-        {description ? <p className="mb-0">{description}</p> : null}
-      </div>
+      <div className="px-2 flex flex-col space-y-2 mt-2 mx-1">
+        {description ? <p className="text-sm">{description}</p> : null}
 
-      <div className="my-auto flex flex-none px-2 mt-2">
-        <div className="flex-grow">
-          {supportSince ? (
-            <Text size="sm" fs="italic">
-              Partnering with us since {supportSince}
-            </Text>
-          ) : null}
+        <div className="flex flex-none opacity-70 h-8 items-center mb-1">
+          <div className="flex-grow">
+            {supportSince ? (
+              <div className="text-sm italic">
+                Partnering with us since {supportSince}
+              </div>
+            ) : null}
+          </div>
+
+          <div className="">
+            {url ? <ActionIcon href={url} icon={IconExternalLink} /> : null}
+          </div>
         </div>
-
-        {url ? <ActionIcon to={url} icon={IconExternalLink} /> : null}
       </div>
     </Card>
+  );
+}
+
+function LevelChip({
+  color,
+  label,
+}: {
+  color?: ColorScale;
+  label: string;
+}): JSX.Element {
+  const parsedColor = useParseColor(color);
+  return (
+    <Chip
+      variant="flat"
+      style={{ backgroundColor: `${parsedColor}60` }}
+      className="text-opacity-85"
+    >
+      {label}
+    </Chip>
   );
 }

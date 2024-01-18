@@ -1,5 +1,4 @@
 import Link from "@docusaurus/Link";
-import { useColorMode } from "@docusaurus/theme-common";
 import {
   Button,
   Card,
@@ -11,9 +10,10 @@ import {
 import { TablerIconsProps } from "@tabler/icons-react";
 import Heading from "@theme/Heading";
 import IdealImage from "@theme/IdealImage";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 
-import { ColorScale, colorScales } from "@site/src/styles/theme";
+import useParseColor from "@site/src/hooks/useParseColor";
+import { ColorScale } from "@site/src/styles/theme";
 
 export interface FeatureCardProps {
   Icon: FC<TablerIconsProps>;
@@ -50,17 +50,7 @@ export default function FeatureCard({
   badge,
   img,
 }: FeatureCardProps): JSX.Element {
-  const { colorMode } = useColorMode();
-  const [highlightColor, setHighlightColor] = useState<string>(color?.DEFAULT);
-
-  useEffect(() => {
-    if (!color)
-      setHighlightColor(
-        colorMode === "dark"
-          ? colorScales.yellow.DEFAULT
-          : colorScales.blue.DEFAULT,
-      );
-  }, [colorMode]);
+  const parsedColor = useParseColor(color);
 
   return (
     <Card
@@ -70,7 +60,7 @@ export default function FeatureCard({
       }}
     >
       <CardHeader>
-        <Icon size={50} stroke={1.5} color={highlightColor} />
+        <Icon size={50} stroke={1.5} color={parsedColor} />
         <Heading
           as="h4"
           className="font-bold text-lg xl:text-xl font-sans ml-4"
@@ -85,13 +75,13 @@ export default function FeatureCard({
         ) : null}
         <div className="flex items-center space-x-3">
           <div
-            style={{ borderColor: highlightColor }}
+            style={{ borderColor: parsedColor }}
             className="flex-grow border-b-1"
           />
           {badge ? (
             <Chip
               variant="flat"
-              style={{ backgroundColor: `${highlightColor}20` }}
+              style={{ backgroundColor: `${parsedColor}20` }}
               className="text-opacity-85"
             >
               {badge}
@@ -116,7 +106,7 @@ export default function FeatureCard({
               variant="light"
               className="h-fit py-1 px-2"
               style={{
-                color: highlightColor,
+                color: parsedColor,
               }}
             >
               {linkText ? linkText : "Learn More"}

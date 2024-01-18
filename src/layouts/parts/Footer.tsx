@@ -14,7 +14,8 @@ import { FC, useRef } from "react";
 
 import { SponsorLevel, Sponsors } from "@site/data";
 import { ActionIcon } from "@site/src/components/inputs/ActionIcon";
-import { ColorToggle } from "@site/src/components/inputs/ColorToggle";
+
+// import { ColorToggle } from "@site/src/components/inputs/ColorToggle";
 
 type FooterSection = {
   title: string;
@@ -215,13 +216,13 @@ export default function Footer({ copyright }: Props): JSX.Element {
             {footerButtons.map((button, i) => (
               <ActionIcon
                 key={i}
-                to={button.href}
+                href={button.href}
                 size="lg"
                 icon={button.icon}
                 className="opacity-50"
               />
             ))}
-            <ColorToggle />
+            {/* <ColorToggle /> */}
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
 import { useHistory } from "@docusaurus/router";
 import { NextUIProvider } from "@nextui-org/react";
 import clsx from "clsx";
-import useLocalStorage from "use-local-storage";
+import { useEffect } from "react";
+import useDarkMode from "use-dark-mode";
 
 import "@site/src/styles/tailwind.css";
 
@@ -11,17 +12,24 @@ export default function UIProvider({
   children: JSX.Element;
 }): JSX.Element {
   const navigate = useHistory();
-  const [theme] = useLocalStorage("theme", "dark", {
-    serializer: (obj) => obj,
-    parser: (str) => str,
+  const { value: dark } = useDarkMode(true, {
+    classNameDark: "dark",
+    classNameLight: "light",
+    storageKey: "darkMode",
   });
+
+  useEffect(() => {
+    if (dark) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  }, [dark]);
+
   return (
     <NextUIProvider navigate={navigate.push}>
       <div
-        className={clsx(
-          theme === "dark" ? "dark" : "light",
-          "text-foreground bg-background",
-        )}
+        className={clsx(dark ? "dark" : "", "text-foreground bg-background")}
       >
         {children}
       </div>

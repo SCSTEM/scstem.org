@@ -4,15 +4,18 @@
   --ifm-font-family-monospace: "SourceCodePro";
   --ifm-link-hover-color: var(--ifm-color-primary);
 
-  /* Helpers */
-  --sc-color-primary: var(--ifm-color-primary);
-  --sc-color-black: var(--mantine-color-black);
-  --sc-color-white: var(--mantine-color-white);
+  --ifm-background-color: var(--nextui-background);
+
+  --ifm-color-primary-darkest: var(--nextui-primary-800);
+  --ifm-color-primary-darker: var(--nextui-primary-700);
+  --ifm-color-primary-dark: var(--nextui-primary-600);
+  --ifm-color-primary: var(--nextui-primary-500);
+  --ifm-color-primary-light: var(--nextui-primary-400);
+  --ifm-color-primary-lighter: var(--nextui-primary-300);
+  --ifm-color-primary-lightest: var(--nextui-primary-200);
 }
 
-[data-mantine-color-scheme="dark"] {
-  --ifm-background-color: var(--mantine-color-black);
-
+/* [data-mantine-color-scheme="dark"] {
   --ifm-color-primary-darkest: var(--mantine-color-yellow-8);
   --ifm-color-primary-darker: var(--mantine-color-yellow-7);
   --ifm-color-primary-dark: var(--mantine-color-yellow-6);
@@ -23,8 +26,6 @@
 }
 
 [data-mantine-color-scheme="light"] {
-  --ifm-background-color: var(--mantine-color-white);
-
   --ifm-color-primary-darkest: var(--mantine-color-blue-8);
   --ifm-color-primary-darker: var(--mantine-color-blue-7);
   --ifm-color-primary-dark: var(--mantine-color-blue-6);
@@ -32,7 +33,7 @@
   --ifm-color-primary-light: var(--mantine-color-blue-4);
   --ifm-color-primary-lighter: var(--mantine-color-blue-3);
   --ifm-color-primary-lightest: var(--mantine-color-blue-2);
-}
+} */
 
 ::selection {
   background-color: var(--ifm-color-primary);

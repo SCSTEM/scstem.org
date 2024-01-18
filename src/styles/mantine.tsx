@@ -1,16 +1,7 @@
 import "@mantine/carousel/styles.css";
-import {
-  ColorSchemeScript,
-  MantineColorScheme,
-  MantineProvider,
-  localStorageColorSchemeManager,
-} from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
-
-import { defaultColorScheme, theme } from "./theme";
-
-const colorSchemeManager = localStorageColorSchemeManager({ key: "theme" });
 
 type RootStyleRegistryProps = {
   children: React.ReactNode;
@@ -19,18 +10,5 @@ type RootStyleRegistryProps = {
 export default function RootStyleRegistry({
   children,
 }: RootStyleRegistryProps) {
-  return (
-    <>
-      <ColorSchemeScript
-        defaultColorScheme={defaultColorScheme as MantineColorScheme}
-      />
-      <MantineProvider
-        defaultColorScheme={defaultColorScheme as MantineColorScheme}
-        colorSchemeManager={colorSchemeManager}
-        theme={theme}
-      >
-        {children}
-      </MantineProvider>
-    </>
-  );
+  return <MantineProvider>{children}</MantineProvider>;
 }
