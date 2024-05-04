@@ -131,7 +131,8 @@ export default function Footer({ copyright }: Props): JSX.Element {
   const sponsors = Sponsors.filter(
     (sponsor) =>
       sponsor.level === SponsorLevel.Ultimate ||
-      sponsor.level === SponsorLevel.Platinum,
+      sponsor.level === SponsorLevel.Platinum ||
+      sponsor.level === SponsorLevel.Gold,
   );
 
   return (
@@ -149,13 +150,13 @@ export default function Footer({ copyright }: Props): JSX.Element {
             loop
             draggable={false}
             withControls={sponsors.length > 1}
-            slideSize="33.333%"
+            // slideSize="33.333%"
             // TODO: Fix
-            // breakpoints={[
-            //   { minWidth: "lg", slideSize: "33.3333%" },
-            //   { minWidth: "md", slideSize: "50%" },
-            //   { maxWidth: "md", slideSize: "100%", slideGap: 0 },
-            // ]}
+            breakpoints={[
+              { minWidth: "lg", slideSize: "33.3333%" },
+              { minWidth: "md", slideSize: "50%" },
+              { maxWidth: "md", slideSize: "100%", slideGap: 0 },
+            ]}
           >
             {sponsors.map((sponsor, i) => (
               <Carousel.Slide key={i}>

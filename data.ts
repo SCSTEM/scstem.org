@@ -63,4 +63,11 @@ export const Sponsors: Sponsor[] = [
     url: "https://www.ybwelding.com/",
     supportSince: 2018,
   },
+  {
+    name: "Journalytic",
+    level: SponsorLevel.Platinum,
+    logo: "/img/sponsors/journalytic.svg",
+    url: "https://journalytic.com/",
+    supportSince: 2024,
+  },
 ].sort((a, b) => (a.supportSince < b.supportSince ? -1 : 1));
