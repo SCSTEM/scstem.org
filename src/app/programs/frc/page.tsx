@@ -47,8 +47,6 @@ export default function FRC(): JSX.Element {
         </div>
       </VideoHeader>
       <PatternBackground pattern="circuit" color="green">
-        <div className="sticky bg-background top-16">Hello</div>
-
         <div className="space-y-20 md:space-y-28 py-16">
           <PageSection className="space-y-16 md:space-y-24">
             <TeamOverview />
