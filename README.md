@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# scstem.org
 
-## Getting Started
+## Project Setup
 
-First, run the development server:
+1. Install NodeJS. Check `.nvmrc` for the version used by this project.
+2. Run `npm install` in the project root to install the necessary dependencies.
+3. If using VSCode, install the reccomended extensions.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Development
+
+1. Run `npm run dev` to start NextJS dev server.
+2. Browse to `http://localhost:3000` to view the site.
+
+### Adding a new page
+
+> [!NOTE]  
+> Learn more about NextJS App Router [here](https://nextjs.org/docs/app).
+
+1. Go to `src/app` and create a new directory for the page.
+   - For example, if you want to create a page at `scstem.org/hello-world`, you'd create a folder named `hello-world` in the `src/app` directory.
+2. Add `page.tsx` to your new directory with the following code (suggested: Replace `PageName` with the name of your page):
+   - Note: Anything returned from your page's default function is wrapped by `src/app/layout.tsx`. That file adds things like the navigation bar, footer, etc.
+
+```ts
+
+export const metadata: Metadata = {
+  title: "My New Page",
+  description:
+    "This is my new page",
+  // ... other metadata fields
+};
+
+export default function PageName(): JSX.Element {
+  return <div>Hello World!</div>;
+}
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
