@@ -40,6 +40,7 @@ export const metadata: Metadata = {
     "after school",
     "Franklin County",
   ],
+  metadataBase: new URL("https://scstem.org"),
 };
 
 export const viewport: Viewport = {
