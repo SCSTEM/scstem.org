@@ -1,0 +1,58 @@
+"use client";
+
+import { IconPlayerPlay } from "@tabler/icons-react";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+
+import { cn } from "@/lib/utils";
+
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+
+type Props = {
+  url: string;
+  placeholder?: string | JSX.Element;
+  classNames?: {
+    wrapper?: string;
+    player?: string;
+  };
+};
+
+export function VideoPlayer({
+  url,
+  classNames,
+  placeholder,
+}: Props): JSX.Element {
+  const [videoReady, setVideoReady] = useState(false);
+  return (
+    <div
+      className={cn(
+        "aspect-video border-primary border-8 border-solid w-11/12 mx-auto xl:max-w-6xl rounded-xl bg-background",
+        classNames?.wrapper,
+      )}
+    >
+      <div
+        className={cn(
+          "absolute bg-primary mx-auto w-11/12 md:w-fit inset-x-0 text-center text-black pb-2 md:pb-1 text-md md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
+          videoReady ? "opacity-0" : "opacity-100",
+        )}
+      >
+        Meet our highschool team, learn about{" "}
+        <span className="italic">FIRST®</span>
+      </div>
+
+      <ReactPlayer
+        className={cn(classNames?.player)}
+        url={url}
+        controls
+        light={placeholder}
+        volume={0.4}
+        width="100%"
+        height="100%"
+        playIcon={
+          <IconPlayerPlay className="text-primary md:size-24 size-16" />
+        }
+        onReady={() => setVideoReady(true)}
+      />
+    </div>
+  );
+}

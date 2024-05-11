@@ -1,12 +1,6 @@
-export interface Shortlink {
-  code?: string;
-  url?: string;
-  date?: Date;
-}
-
 export interface GenericFormRequest {
-  formName: string;
-  "cf-turnstile-response": string;
+  form: string;
+  turnstileToken: string;
   name?: string;
   email?: string;
   message?: string;
@@ -14,8 +8,9 @@ export interface GenericFormRequest {
 
 export interface APIResponse {
   success: boolean;
-  result?: any;
-  error?: Error;
+  // TODO: Fix this any type
+  result?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  error?: unknown;
   message?: string;
 }
 

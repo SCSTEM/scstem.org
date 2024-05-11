@@ -1,6 +1,5 @@
-import { GenericFormRequest } from "@site/functions/types";
-
-import { Res, ValidateTurnstile } from "../../util";
+import type { GenericFormRequest } from "@/types";
+import { res, validateTurnstile } from "@/util";
 
 export const onRequestPost: PagesFunction<{
   TS_SECRET_KEY: string;
@@ -12,44 +11,45 @@ export const onRequestPost: PagesFunction<{
   if (!key) key = "1x0000000000000000000000000000000AA";
 
   try {
-    const ts = await ValidateTurnstile(
+    const ts = await validateTurnstile(
       key,
-      data["cf-turnstile-response"],
-      request.headers.get("CF-Connecting-IP")
+      data.turnstileToken,
+      request.headers.get("CF-Connecting-IP"),
     );
 
     if (!ts.valid)
-      return Res(
+      return res(
         {
           success: false,
           message: "Challenge verification failed",
           result: ts.response,
         },
-        418
+        418,
       );
 
     if (env.SLACK_FORM_POST_GENERIC)
       await fetch(env.SLACK_FORM_POST_GENERIC, {
         method: "POST",
         body: JSON.stringify({
+          form: data.form,
           name: data.name ?? "",
           email: data.email ?? "",
           message: data.message ?? "",
         }),
       });
 
-    return Res(
+    return res(
       { success: true, message: "Submission received", result: data },
-      200
+      200,
     );
   } catch (error) {
-    return Res(
+    return res(
       {
         success: false,
         message: "Error handling submission",
         error: error,
       },
-      500
+      500,
     );
   }
 };

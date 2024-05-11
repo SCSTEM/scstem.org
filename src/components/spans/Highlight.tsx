@@ -1,45 +1,29 @@
-import {
-  MantineGradient,
-  Text,
-  useMantineColorScheme,
-  useMantineTheme,
-} from "@mantine/core";
-import { clsx } from "clsx";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
-interface Props {
-  theme?: "light" | "dark";
-  gradient?: MantineGradient;
-  className?: string;
+import { cn } from "@/lib/utils";
+
+type Props = {
   children: ReactNode;
-}
+  className?: string;
+  gradient?: boolean;
+};
 
 export default function Highlight({
   children,
-  theme,
-  gradient,
   className,
-}: Props) {
-  const siteTheme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-
-  const from =
-    colorScheme === "dark" || theme === "dark"
-      ? siteTheme.colors.yellow[5]
-      : siteTheme.colors.blue[5];
-  const to =
-    colorScheme === "dark" || theme === "dark"
-      ? siteTheme.colors.orange[7]
-      : siteTheme.colors.cyan[7];
-
+  gradient,
+}: Props): JSX.Element {
   return (
-    <Text
-      variant="gradient"
-      gradient={gradient ? gradient : { from, to, deg: 0 }}
-      className={clsx("leading-none", className)}
-      span
+    <span
+      className={cn(
+        "leading-none text-primary",
+        gradient
+          ? "bg-clip-text text-transparent bg-gradient-to-r from-primary-400 dark:to-orange-500 light:to-cyan-700"
+          : null,
+        className,
+      )}
     >
       {children}
-    </Text>
+    </span>
   );
 }

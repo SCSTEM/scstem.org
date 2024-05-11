@@ -1,49 +1,56 @@
-import Link from "@docusaurus/Link";
-import {
-  Badge,
-  Button,
-  Card,
-  Divider,
-  MantineColor,
-  Text,
-  useMantineColorScheme,
-  useMantineTheme,
-} from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-import { TablerIconsProps } from "@tabler/icons-react";
-import Heading from "@theme/Heading";
-import IdealImage from "@theme/IdealImage";
-import { FC, useEffect, useState } from "react";
+import { Button } from "@nextui-org/button";
+import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
+import { Chip } from "@nextui-org/chip";
+import Link from "next/link";
 
-import { ThemeIcon } from "../ThemeIcon";
+import type { StaticImport } from "@/components/Image";
+import { Image } from "@/components/Image";
+import { cn, type Icon } from "@/lib/utils";
+import type { ColorScale } from "@/styles/theme";
+import { parseColor } from "@/styles/theme";
 
-export interface FeatureCardProps {
-  Icon: FC<TablerIconsProps>;
-  key: string;
+function CardImage({
+  src,
+  alt,
+  className,
+}: {
+  src: StaticImport;
+  alt: string;
+  className?: string;
+}): JSX.Element {
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      className={cn(
+        "h-44 lg:h-52 w-full rounded-xl shadow-lg object-cover overflow-hidden",
+        className,
+      )}
+    />
+  );
+}
+
+export type FeatureCardProps = {
+  icon: Icon;
   title: string | JSX.Element;
   body: string | JSX.Element;
-  color?: MantineColor;
+  color?: ColorScale;
   link?: string;
   linkText?: string;
   badge?: string;
   img?: {
-    src: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    src: StaticImport;
     alt: string;
     placement?: "top" | "bottom";
   };
-}
+  classes?: {
+    base?: string;
+    body?: string;
+    header?: string;
+  };
+};
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Image = ({ src, alt }: { src: any; alt: string }) => (
-  <IdealImage
-    img={src}
-    alt={alt}
-    className="h-44 lg:h-52 w-full rounded-xl shadow-lg object-cover overflow-hidden zoomable"
-  />
-);
-
-export default function FeatureCard({
-  Icon,
+export function FeatureCard({
   title,
   body,
   color,
@@ -51,73 +58,71 @@ export default function FeatureCard({
   linkText,
   badge,
   img,
+  classes,
+  ...props
 }: FeatureCardProps): JSX.Element {
-  const theme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`, true, {
-    getInitialValueInEffect: false,
-  });
-  const [highlightColor, setHighlightColor] = useState<MantineColor>(color);
-
-  useEffect(() => {
-    if (!color) setHighlightColor(colorScheme === "dark" ? "yellow" : "blue");
-  }, [colorScheme]);
-
+  const parsedColor = parseColor(color);
   return (
     <Card
-      shadow="lg"
-      radioGroup="md"
-      radius="lg"
-      withBorder
-      className="flex flex-col space-y-3 h-full mx-auto"
+      classNames={{
+        base: cn(
+          "px-1 max-w-[400px] sm:w-[400px] mx-auto size-full",
+          classes?.base,
+        ),
+        body: cn("pt-0 px-4 pb-4", classes?.body),
+        header: cn("pb-0", classes?.header),
+      }}
     >
-      <div className="flex items-center space-x-2">
-        <ThemeIcon c={highlightColor} size={mobile ? "lg" : "xl"}>
-          <Icon size={50} stroke={1.5} />
-        </ThemeIcon>
-        <Heading
-          as="h4"
-          className="font-bold text-lg xl:text-xl font-sans m-auto"
-        >
-          {title}
-        </Heading>
-      </div>
+      <CardHeader>
+        <props.icon size={50} stroke={1.5} color={parsedColor} />
+        <h4 className="font-bold text-lg xl:text-xl font-sans ml-4">{title}</h4>
+      </CardHeader>
 
-      {img && (!img.placement || img.placement === "top") ? (
-        <Image src={img.src} alt={img.alt} />
-      ) : null}
-
-      <div className="flex items-center">
-        <Divider size="sm" color={highlightColor} className="flex-grow" />
-        {badge ? (
-          <Badge className="ml-2" color={color} size="lg" variant="light">
-            {badge}
-          </Badge>
+      <CardBody className="flex flex-col space-y-4">
+        {img && (!img.placement || img.placement === "top") ? (
+          <CardImage src={img.src} alt={img.alt} className="mt-2" />
         ) : null}
-      </div>
-
-      <div className="flex-grow flex flex-col">
-        <Text
-          size="md"
-          c={colorScheme === "dark" ? "dimmed" : undefined}
-          className="!mb-3"
-        >
-          {body}
-        </Text>
-
-        {img && img.placement === "bottom" ? (
-          <div className="mt-auto">
-            <Image src={img.src} alt={img.alt} />
+        <div className="flex items-center space-x-3 h-7">
+          <div
+            style={{ borderColor: parsedColor }}
+            className="grow border-b-2"
+          />
+          {badge ? (
+            <Chip
+              variant="flat"
+              style={{ backgroundColor: `${parsedColor}50` }}
+            >
+              {badge}
+            </Chip>
+          ) : null}
+        </div>
+        <div className="flex flex-col grow">
+          <div
+            className={cn(
+              img && img.placement === "bottom" ? "mb-4" : "h-full",
+            )}
+          >
+            {body}
           </div>
-        ) : null}
-      </div>
+
+          {img && img.placement === "bottom" ? (
+            <CardImage className="mt-auto" src={img.src} alt={img.alt} />
+          ) : null}
+        </div>
+      </CardBody>
 
       {link ? (
-        <Link to={link} className="ml-auto">
-          <Button color={highlightColor} variant="subtle" size="compact-sm">
+        <CardFooter>
+          <Button
+            variant="light"
+            as={Link}
+            href={link}
+            style={{ color: parsedColor }}
+            className="h-fit px-2 py-1 bg-opacity/0 hover:bg-opacity/20"
+          >
             {linkText ? linkText : "Learn More"}
           </Button>
-        </Link>
+        </CardFooter>
       ) : null}
     </Card>
   );

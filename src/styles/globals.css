@@ -1,110 +1,29 @@
-/* Fonts */
-@font-face {
-  font-family: "Inter";
-  src:
-    url("/fonts/inter-variable.ttf") format("truetype supports variations"),
-    url("/fonts/inter-variable.ttf") format("truetype-variations");
-  font-weight: 100 900;
-}
-
-@font-face {
-  font-family: "SourceCodePro";
-  src:
-    url("/fonts/sourcecodepro-variable.ttf")
-      format("truetype supports variations"),
-    url("/fonts/sourcecodepro-variable.ttf") format("truetype-variations");
-  font-weight: 100 900;
-}
-
-@font-face {
-  font-family: "Orbitron";
-  src:
-    url("/fonts/orbitron-variable.ttf") format("truetype supports variations"),
-    url("/fonts/orbitron-variable.ttf") format("truetype-variations");
-  font-weight: 100 900;
-}
-
-/* Default docusaurus theme overrides */
-:root {
-  --ifm-font-family-base: "Inter";
-  --ifm-font-family-monospace: "SourceCodePro";
-  --ifm-link-hover-color: var(--ifm-color-primary);
-
-  /* Helpers */
-  --sc-color-primary: var(--ifm-color-primary);
-  --sc-color-black: var(--mantine-color-black);
-  --sc-color-white: var(--mantine-color-white);
-}
-
-[data-mantine-color-scheme="dark"] {
-  --ifm-background-color: var(--mantine-color-black);
-
-  --ifm-color-primary-darkest: var(--mantine-color-yellow-8);
-  --ifm-color-primary-darker: var(--mantine-color-yellow-7);
-  --ifm-color-primary-dark: var(--mantine-color-yellow-6);
-  --ifm-color-primary: var(--mantine-color-yellow-5);
-  --ifm-color-primary-light: var(--mantine-color-yellow-4);
-  --ifm-color-primary-lighter: var(--mantine-color-yellow-3);
-  --ifm-color-primary-lightest: var(--mantine-color-yellow-2);
-}
-
-[data-mantine-color-scheme="light"] {
-  --ifm-background-color: var(--mantine-color-white);
-
-  --ifm-color-primary-darkest: var(--mantine-color-blue-8);
-  --ifm-color-primary-darker: var(--mantine-color-blue-7);
-  --ifm-color-primary-dark: var(--mantine-color-blue-6);
-  --ifm-color-primary: var(--mantine-color-blue-5);
-  --ifm-color-primary-light: var(--mantine-color-blue-4);
-  --ifm-color-primary-lighter: var(--mantine-color-blue-3);
-  --ifm-color-primary-lightest: var(--mantine-color-blue-2);
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 ::selection {
-  background-color: var(--ifm-color-primary);
-  color: var(--ifm-background-color);
+  background-color: hsl(var(--nextui-primary));
+  color: hsl(var(--nextui-background));
 }
 
-.theme-doc-markdown h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Orbitron";
-}
-
-/* Navbar styles */
-
-.navbar-cta-button {
-  padding: 5px 26px;
-  background-image: linear-gradient(
-    45deg,
-    var(--mantine-color-yellow-5) 0%,
-    var(--mantine-color-orange-6) 100%
-  );
-  border-radius: 100px;
-  color: var(--mantine-color-black);
-  width: fit-content;
-  margin: 0 auto;
-}
-
-.navbar-cta-button:hover {
-  background-size: 200%;
-  color: var(--mantine-color-black);
-}
-
-@media (max-width: 996px) {
-  .navbar-cta-button {
-    margin-top: 15px;
+@layer components {
+  .heading-1 {
+    @apply font-heading text-4xl font-bold;
   }
-}
-
-[data-theme="light"] .navbar-cta-button {
-  background-image: linear-gradient(
-    45deg,
-    var(--mantine-color-blue-5) 0%,
-    var(--mantine-color-cyan-8) 100%
-  );
-  color: var(--mantine-color-white);
+  .heading-2 {
+    @apply font-heading text-3xl font-bold;
+  }
+  .heading-3 {
+    @apply font-heading text-2xl font-bold;
+  }
+  .heading-4 {
+    @apply font-heading text-xl font-bold;
+  }
+  .heading-5 {
+    @apply font-heading text-lg font-bold;
+  }
+  .heading-6 {
+    @apply font-heading text-base font-bold;
+  }
 }

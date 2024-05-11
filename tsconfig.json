@@ -1,17 +1,32 @@
 {
-  "extends": "@tsconfig/docusaurus/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "types": ["@cloudflare/workers-types"],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@img/*": ["./src/idealimage/*"],
-      "@site/*": ["./*"],
-      "@theme/*": [
-        "./src/theme/*",
-        // Workaround to get @theme to stop making TS sad
-        "./node_modules/@docusaurus/plugin-ideal-image/lib/theme/*"
-      ]
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/styles/*": ["./src/styles/*"],
+      "@/layouts/*": ["./src/layouts/*"],
+      "@/functions/*": ["./functions/*"],
+      "@/data/*": ["./data/*"],
+      "@/image/*": ["./public/image/*"]
     }
-  }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "functions/**/*"]
 }

@@ -2,8 +2,6 @@
   "recommendations": [
     "bradlc.vscode-tailwindcss",
     "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "yzhang.markdown-all-in-one",
-    "unifiedjs.vscode-mdx"
+    "dbaeumer.vscode-eslint"
   ]
 }

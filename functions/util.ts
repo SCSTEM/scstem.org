@@ -1,8 +1,8 @@
-import {
+import type {
   APIResponse,
   TurnstileResponse,
   TurnstileVerificationResponse,
-} from "./types";
+} from "@/functions/types";
 
 /**
  * Helper function to generate response message to return to the client. Helps standardize
@@ -11,9 +11,9 @@ import {
  * @param status HTTP status code
  * @returns A standard HTTP Response object
  */
-export const Res = (apiResponse: APIResponse, status: number): Response => {
+export const res = (apiResponse: APIResponse, status: number): Response => {
   if (!apiResponse.success && apiResponse.error)
-    console.error(apiResponse.error.message);
+    console.error(apiResponse.error);
 
   return new Response(JSON.stringify(apiResponse), {
     status: status,
@@ -30,10 +30,10 @@ export const Res = (apiResponse: APIResponse, status: number): Response => {
  * @param ip IP Provided by the Turnstile client
  * @returns A boolean indicating whether or not the turnstile verification passed
  */
-export const ValidateTurnstile = async (
+export const validateTurnstile = async (
   secretKey: string,
   response: string,
-  ip: string
+  ip: string,
 ): Promise<TurnstileVerificationResponse> => {
   const formData = new FormData();
   formData.append("secret", secretKey);

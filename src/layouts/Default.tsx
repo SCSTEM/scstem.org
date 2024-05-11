@@ -1,21 +1,20 @@
-import Layout from "@theme/Layout";
+import type { ReactNode } from "react";
+
+import { Footer } from "../components/Footer";
+import { Navbar } from "../components/Navbar";
 
 interface Props {
-  children?: React.ReactNode;
-  title?: string;
-  description?: string;
-  noFooter?: boolean;
+  children: ReactNode;
 }
 
-export default function DefaultLayout({
-  children,
-  title,
-  description,
-  noFooter,
-}: Props): JSX.Element {
+export function DefaultLayout({ children }: Props): JSX.Element {
   return (
-    <Layout title={title} description={description} noFooter={noFooter}>
-      {children}
-    </Layout>
+    <div className="flex flex-col min-h-screen relative">
+      <Navbar />
+
+      <div className="flex-auto flex flex-col [&>*]:flex-auto">{children}</div>
+
+      <Footer />
+    </div>
   );
 }

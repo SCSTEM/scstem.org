@@ -3,10 +3,23 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "tailwindCSS.experimental.classRegex": [
-    ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+    [
+      "clsx\\(([^)]*)\\)",
+      "(?:'|\"|`)([^']*)(?:'|\"|`)",
+      "cn\\(([^)]*)\\)",
+      "classNames\\(([^)]*)\\)"
+    ]
   ],
   "files.associations": {
     "*.css": "css",
     "css": "css"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  },
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "css.lint.unknownAtRules": "ignore",
+  "[svg]": {
+    "editor.defaultFormatter": "jock.svg"
   }
 }

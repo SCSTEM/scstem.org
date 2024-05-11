@@ -1,79 +1,78 @@
-import { MantineColorsTuple } from "@mantine/core";
+import { nextui } from "@nextui-org/react";
 import type { Config } from "tailwindcss";
-import twColors from "tailwindcss/colors";
 
-import breakpoints from "./breakpoints.config.cjs";
-import { colors, baseColors } from "./src/styles/theme";
+import { colorBases, colorScales } from "./src/styles/theme";
 
-delete twColors["lightBlue"];
-delete twColors["warmGray"];
-delete twColors["trueGray"];
-delete twColors["coolGray"];
-delete twColors["blueGray"];
-
-type twColor = { [key: number]: string };
-
-function adaptColors(
-  colors: Record<string, MantineColorsTuple>,
-): Record<string, twColor> {
-  const result: Record<string, twColor> = {};
-
-  for (const [key, value] of Object.entries(colors)) {
-    result[key] = adaptShade(value);
-  }
-
-  return result;
-}
-
-function adaptShade(shades: MantineColorsTuple): twColor {
-  const convertedShades: twColor = {};
-
-  let index = 0;
-  for (const shade of shades) {
-    convertedShades[index] = shade;
-    index += 100;
-  }
-
-  return convertedShades;
-}
-
-export default {
-  darkMode: ["class", "[data-mantine-color-scheme='dark']"],
-  plugins: [require("@tailwindcss/typography")],
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
-  corePlugins: { preflight: false },
+const config: Config = {
+  darkMode: "class",
+  content: [
+    "./src/**/*.{ts,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
-    screens: breakpoints,
-    colors: {
-      ...twColors,
-      transparent: "transparent",
-      inherit: "inherit",
-
-      white: baseColors.white,
-      black: baseColors.black,
-
-      ...adaptColors(colors),
-    },
     extend: {
       fontFamily: {
-        sans: ["Inter"],
-        mono: ["SourceCodePro"],
-        heading: ["Orbitron"],
+        sans: ["var(--font-inter)"],
+        mono: ["var(--font-scp)"],
+        heading: ["var(--font-orbitron)"],
       },
-      fontWeight: {
-        heading: "var(--mantine-heading-font-weight)",
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
       },
-      fontSize: {
-        DEFAULT: ["var(--mantine-font-size-md)", "var(--mantine-line-height)"],
-        h1: ["var(--mantine-h1-font-size)", "var(--mantine-h1-line-height)"],
-        h2: ["var(--mantine-h2-font-size)", "var(--mantine-h2-line-height)"],
-        h3: ["var(--mantine-h3-font-size)", "var(--mantine-h3-line-height)"],
-        h4: ["var(--mantine-h4-font-size)", "var(--mantine-h4-line-height)"],
-        p1: ["var(--mantine-font-size-lg)", "var(--mantine-line-height)"],
-        p2: ["var(--mantine-font-size-md)", "var(--mantine-line-height)"],
-        p3: ["var(--mantine-font-size-sm)", "var(--mantine-line-height)"],
-        p4: ["var(--mantine-font-size-xs)", "var(--mantine-line-height)"],
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-} satisfies Config;
+  plugins: [
+    require("tailwindcss-animate"),
+    nextui({
+      defaultTheme: "dark",
+      defaultExtendTheme: "dark",
+      themes: {
+        dark: {
+          extend: "dark",
+          layout: {},
+          colors: {
+            background: colorScales.neutral[800],
+            foreground: colorBases.white,
+            focus: colorScales.yellow["500"],
+            divider: colorScales.gray["800"],
+
+            primary: colorScales.yellow,
+            secondary: colorScales.blue,
+            success: colorScales.green,
+            warning: colorScales.orange,
+            danger: colorScales.red,
+          },
+        },
+        bio: {
+          extend: "dark",
+          layout: {},
+          colors: {
+            background: colorScales.neutral[900],
+            foreground: colorBases.white,
+            focus: colorScales.blue["500"],
+            divider: colorScales.gray["800"],
+
+            primary: colorScales.green,
+            secondary: colorScales.yellow,
+            success: colorScales.blue,
+            warning: colorScales.orange,
+            danger: colorScales.red,
+          },
+        },
+      },
+    }),
+  ],
+};
+
+export default config;
