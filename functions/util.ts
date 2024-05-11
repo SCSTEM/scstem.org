@@ -2,7 +2,7 @@ import type {
   APIResponse,
   TurnstileResponse,
   TurnstileVerificationResponse,
-} from "@/functions/types";
+} from "@/types";
 
 /**
  * Helper function to generate response message to return to the client. Helps standardize

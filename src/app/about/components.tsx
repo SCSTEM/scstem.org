@@ -2,18 +2,18 @@ import type { StaticImport } from "@/components/Image";
 import { Image } from "@/components/Image";
 import { cn } from "@/lib/utils";
 
-import fll2024 from "@/image/about/fll/2024.webp";
-import frc2013 from "@/image/about/frc/2013.webp";
-import frc2014 from "@/image/about/frc/2014.webp";
-import frc2015 from "@/image/about/frc/2015.webp";
-import frc2016 from "@/image/about/frc/2016.webp";
-import frc2017 from "@/image/about/frc/2017.webp";
-import frc2018 from "@/image/about/frc/2018.webp";
-import frc2019 from "@/image/about/frc/2019.webp";
-import frc2020 from "@/image/about/frc/2020.webp";
-import frc2022 from "@/image/about/frc/2022.webp";
-import frc2023 from "@/image/about/frc/2023.webp";
-import frc2024 from "@/image/about/frc/2024.webp";
+import fll2024 from "@/image/team/fll/2024.webp";
+import frc2013 from "@/image/team/frc/2013.webp";
+import frc2014 from "@/image/team/frc/2014.webp";
+import frc2015 from "@/image/team/frc/2015.webp";
+import frc2016 from "@/image/team/frc/2016.webp";
+import frc2017 from "@/image/team/frc/2017.webp";
+import frc2018 from "@/image/team/frc/2018.webp";
+import frc2019 from "@/image/team/frc/2019.webp";
+import frc2020 from "@/image/team/frc/2020.webp";
+import frc2022 from "@/image/team/frc/2022.webp";
+import frc2023 from "@/image/team/frc/2023.webp";
+import frc2024 from "@/image/team/frc/2024.webp";
 
 type CaptionedImageProps = {
   src: StaticImport;
