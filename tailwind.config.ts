@@ -71,6 +71,22 @@ const config: Config = {
             danger: colorScales.red,
           },
         },
+        fll: {
+          extend: "dark",
+          layout: {},
+          colors: {
+            background: colorScales.neutral[800],
+            foreground: colorBases.white,
+            focus: colorScales.blue["500"],
+            divider: colorScales.gray["800"],
+
+            primary: colorScales.orange,
+            secondary: colorScales.green,
+            success: colorScales.blue,
+            warning: colorScales.yellow,
+            danger: colorScales.red,
+          },
+        },
       },
     }),
   ],
