@@ -34,7 +34,7 @@ export function VideoPlayer({
     >
       <div
         className={cn(
-          "absolute bg-primary mx-auto w-11/12 md:w-fit inset-x-0 text-center text-black pb-2 md:pb-1 text-md md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
+          "relative md:absolute bg-primary mx-auto w-full md:w-fit inset-x-0 text-center text-black pb-2 md:pb-1 text-md md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
           videoReady ? "opacity-0" : "opacity-100",
           classNames?.header,
         )}
