@@ -7,22 +7,27 @@ type HighlightProps = {
   children: ReactNode;
   className?: string;
   gradient?: boolean;
+  color?: ColorScale;
 };
 
 export function Highlight({
   children,
   className,
   gradient,
+  color,
 }: HighlightProps): JSX.Element {
   return (
     <span
       className={cn(
         "leading-none text-primary",
         gradient
-          ? "bg-clip-text text-transparent bg-gradient-to-r from-primary-400 dark:to-orange-500 light:to-cyan-700"
+          ? "bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-orange-500"
           : null,
         className,
       )}
+      style={{
+        color: color ? parseColor(color) : undefined,
+      }}
     >
       {children}
     </span>
@@ -42,9 +47,12 @@ export function Underline({
 }: UnderlineProps): JSX.Element {
   return (
     <span
-      className={cn("underline underline-offset-4", className)}
+      className={cn(
+        "underline underline-offset-4 decoration-primary",
+        className,
+      )}
       style={{
-        textDecorationColor: parseColor(color),
+        textDecorationColor: color ? parseColor(color) : undefined,
       }}
     >
       {children}

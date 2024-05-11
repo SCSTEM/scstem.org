@@ -59,7 +59,7 @@ const config: Config = {
           extend: "dark",
           layout: {},
           colors: {
-            background: colorScales.neutral[900],
+            background: colorScales.neutral[800],
             foreground: colorBases.white,
             focus: colorScales.blue["500"],
             divider: colorScales.gray["800"],

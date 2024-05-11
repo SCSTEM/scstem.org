@@ -14,6 +14,8 @@ type Props = {
   classNames?: {
     wrapper?: string;
     player?: string;
+    icon?: string;
+    header?: string;
   };
 };
 
@@ -34,6 +36,7 @@ export function VideoPlayer({
         className={cn(
           "absolute bg-primary mx-auto w-11/12 md:w-fit inset-x-0 text-center text-black pb-2 md:pb-1 text-md md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
           videoReady ? "opacity-0" : "opacity-100",
+          classNames?.header,
         )}
       >
         Meet our highschool team, learn about{" "}
@@ -49,7 +52,9 @@ export function VideoPlayer({
         width="100%"
         height="100%"
         playIcon={
-          <IconPlayerPlay className="text-primary md:size-24 size-16" />
+          <IconPlayerPlay
+            className={cn("text-primary md:size-24 size-16", classNames?.icon)}
+          />
         }
         onReady={() => setVideoReady(true)}
       />

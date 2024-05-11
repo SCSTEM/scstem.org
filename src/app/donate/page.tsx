@@ -46,37 +46,27 @@ const donateCards: FeatureCardProps[] = [
     ),
     icon: IconMail,
     color: "green",
-    classes: {
-      body: "min-h-[300px]",
-    },
   },
   {
     title: "Online",
-    body: (
-      <div className="flex flex-col h-full">
-        <div>
-          You can donate online through our secure PayPal Giving Fund link.
-        </div>
-        <Button
-          as={Link}
-          target="_blank"
-          className="w-full mt-auto"
-          href={siteConfig.donateUrl}
-          startContent={<IconBrandPaypal />}
-          style={{
-            backgroundColor: parseColor("blue"),
-          }}
-        >
-          Donate
-        </Button>
-      </div>
+    body: "You can donate online through our secure PayPal Giving Fund link.",
+    footer: (
+      <Button
+        as={Link}
+        target="_blank"
+        className="w-full"
+        href={siteConfig.donateUrl}
+        startContent={<IconBrandPaypal />}
+        style={{
+          backgroundColor: parseColor("blue"),
+        }}
+      >
+        Donate
+      </Button>
     ),
     icon: IconWallet,
     color: "blue",
     badge: "via PayPal",
-    classes: {
-      body: "min-h-[300px]",
-    },
   },
   {
     title: "Charitable Giving Fund",
@@ -98,12 +88,9 @@ const donateCards: FeatureCardProps[] = [
     ),
     icon: IconHeartHandshake,
     color: "orange",
-    classes: {
-      body: "min-h-[300px]",
-    },
   },
   {
-    title: "In kind",
+    title: "In Kind",
     body: (
       <div className="flex flex-col gap-y-3 h-full">
         <div>
@@ -114,25 +101,24 @@ const donateCards: FeatureCardProps[] = [
           Please refer to our wishlist for our current needs and contact us to
           arrange a donation.
         </div>
-        <Button
-          as={Link}
-          target="_blank"
-          className="w-full mt-auto"
-          href={siteConfig.wishlistUrl}
-          startContent={<IconListCheck />}
-          style={{
-            backgroundColor: parseColor("red"),
-          }}
-        >
-          Wishlist
-        </Button>
       </div>
+    ),
+    footer: (
+      <Button
+        as={Link}
+        target="_blank"
+        className="w-full mt-auto"
+        href={siteConfig.wishlistUrl}
+        startContent={<IconListCheck />}
+        style={{
+          backgroundColor: parseColor("red"),
+        }}
+      >
+        Wishlist
+      </Button>
     ),
     icon: IconTool,
     color: "red",
-    classes: {
-      body: "min-h-[300px]",
-    },
   },
   {
     title: "Corporate Sponsorship",
@@ -150,9 +136,6 @@ const donateCards: FeatureCardProps[] = [
     ),
     icon: IconFileDescription,
     color: "yellow",
-    classes: {
-      body: "min-h-[300px]",
-    },
   },
 ];
 

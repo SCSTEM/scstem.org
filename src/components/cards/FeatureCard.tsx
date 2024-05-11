@@ -2,6 +2,7 @@ import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Chip } from "@nextui-org/chip";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 import type { StaticImport } from "@/components/Image";
 import { Image } from "@/components/Image";
@@ -32,8 +33,8 @@ function CardImage({
 
 export type FeatureCardProps = {
   icon: Icon;
-  title: string | JSX.Element;
-  body: string | JSX.Element;
+  title: ReactNode;
+  body: ReactNode;
   color?: ColorScale;
   link?: string;
   linkText?: string;
@@ -43,11 +44,12 @@ export type FeatureCardProps = {
     alt: string;
     placement?: "top" | "bottom";
   };
-  classes?: {
+  classNames?: {
     base?: string;
     body?: string;
     header?: string;
   };
+  footer?: ReactNode;
 };
 
 export function FeatureCard({
@@ -58,7 +60,8 @@ export function FeatureCard({
   linkText,
   badge,
   img,
-  classes,
+  classNames,
+  footer,
   ...props
 }: FeatureCardProps): JSX.Element {
   const parsedColor = parseColor(color);
@@ -66,11 +69,12 @@ export function FeatureCard({
     <Card
       classNames={{
         base: cn(
-          "px-1 max-w-[400px] sm:w-[400px] mx-auto size-full",
-          classes?.base,
+          "max-w-[400px] sm:w-[400px] mx-auto min-h-full",
+          classNames?.base,
         ),
-        body: cn("pt-0 px-4 pb-4", classes?.body),
-        header: cn("pb-0", classes?.header),
+        body: cn("pt-0 px-4 pb-4", classNames?.body),
+        header: cn("pb-0", classNames?.header),
+        footer: "mb-1",
       }}
     >
       <CardHeader>
@@ -96,11 +100,9 @@ export function FeatureCard({
             </Chip>
           ) : null}
         </div>
-        <div className="flex flex-col grow h-full">
+        <div className="flex flex-col grow">
           <div
-            className={cn(
-              img && img.placement === "bottom" ? "mb-4" : "h-full",
-            )}
+            className={cn(img && img.placement === "bottom" ? "mb-4" : null)}
           >
             {body}
           </div>
@@ -111,7 +113,9 @@ export function FeatureCard({
         </div>
       </CardBody>
 
-      {link ? (
+      {footer ? (
+        <CardFooter>{footer}</CardFooter>
+      ) : link ? (
         <CardFooter>
           <Button
             variant="light"

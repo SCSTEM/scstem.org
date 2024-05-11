@@ -263,6 +263,7 @@ export default function Home(): JSX.Element {
                       href="https://www.firstinspires.org/"
                       endContent={<IconExternalLink />}
                       variant="light"
+                      color="primary"
                     >
                       <span className="italic">FIRST®</span>
                     </Button>
@@ -287,7 +288,7 @@ export default function Home(): JSX.Element {
                       href="https://info.firstinspires.org/morethanrobots"
                       endContent={<IconExternalLink />}
                       variant="light"
-                      className="hover:text-primary"
+                      color="primary"
                     >
                       More Than Robots
                     </Button>
