@@ -15,7 +15,6 @@ export default function SponsorCard({
   level,
   logo,
   url,
-  description,
   sub,
   supportSince,
 }: Sponsor) {
@@ -40,7 +39,7 @@ export default function SponsorCard({
   const parsedColor = parseColor(accent);
 
   return (
-    <Card className="flex flex-col bg-content2">
+    <Card className="flex flex-col max-w-[350px] sm:w-[400px] mx-auto size-full">
       <div className="my-auto flex h-48 flex-col items-center p-4">
         {logo ? (
           <Image src={logo} alt={name + " logo"} className="size-full" />
@@ -54,8 +53,8 @@ export default function SponsorCard({
 
       <div
         className={cn(
-          "flex border-0 border-solid mx-2 pb-2",
-          description || url || supportSince ? "border-b" : null,
+          "flex border-0 border-solid pb-2 px-2",
+          url || supportSince ? "border-b" : null,
         )}
       >
         <div className="grow font-bold">{name}</div>
@@ -66,22 +65,18 @@ export default function SponsorCard({
         ) : null}
       </div>
 
-      <div className="flex flex-col space-y-2 mx-2 my-1">
-        {description ? <p className="text-sm">{description}</p> : null}
-
-        <div className="flex flex-none h-8 items-center mb-1">
-          <div className="grow">
-            {supportSince ? (
-              <div className="text-sm italic">
-                Partnering with us since {supportSince}
-              </div>
-            ) : null}
-          </div>
-
-          {url ? (
-            <ActionIcon href={url} icon={IconExternalLink} color="default" />
+      <div className="flex mx-2 h-8 mb-1 mt-1.5 items-center">
+        <div className="grow">
+          {supportSince ? (
+            <div className="text-sm italic">
+              Partnering with us since {supportSince}
+            </div>
           ) : null}
         </div>
+
+        {url ? (
+          <ActionIcon href={url} icon={IconExternalLink} color="default" />
+        ) : null}
       </div>
     </Card>
   );

@@ -19,7 +19,6 @@ export interface Sponsor {
   level: SponsorLevel;
   logo?: string | StaticImport;
   url?: string;
-  description?: string;
   sub?: string;
   supportSince?: number;
 }
