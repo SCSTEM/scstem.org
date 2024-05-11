@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function About(): JSX.Element {
   return (
-    <main className="prose prose-invert max-w-screen-md mx-auto my-10 gap-y-10">
+    <main className="prose prose-invert max-w-screen-md md:mx-auto my-10 gap-y-10 mx-5">
       <article>
         <h1>About Us</h1>
         <p>
