@@ -70,6 +70,13 @@ const footerButtons: FooterButton[] = [
   },
 ];
 
+const footerSponsors = Sponsors.filter(
+  (sponsor) =>
+    sponsor.level === SponsorLevel.Silver ||
+    sponsor.level === SponsorLevel.Gold ||
+    sponsor.level === SponsorLevel.Platinum,
+);
+
 function SponsorSlide({ sponsor }: { sponsor: SponsorSlide }): JSX.Element {
   return (
     <Link href={sponsor.url} className="hover:no-underline size-full">
@@ -94,13 +101,6 @@ function SponsorSlide({ sponsor }: { sponsor: SponsorSlide }): JSX.Element {
   );
 }
 
-const footerSponsors = Sponsors.filter(
-  (sponsor) =>
-    sponsor.level === SponsorLevel.Silver ||
-    sponsor.level === SponsorLevel.Gold ||
-    sponsor.level === SponsorLevel.Platinum,
-);
-
 type Props = {
   className?: string;
 };
@@ -117,16 +117,30 @@ export function Footer({ className }: Props): JSX.Element {
               Special thanks to our sponsors for powering our mission.
             </div>
 
-            <Carousel
-              slides={footerSponsors.map((sponsor, i) => (
-                <div
-                  key={i}
-                  className="px-8 py-4 aspect-video w-full sm:w-[300px] md:w-[400px] mx-auto h-[200px]"
-                >
-                  <SponsorSlide sponsor={sponsor} />
-                </div>
-              ))}
-            />
+            <div className="md:hidden">
+              <Carousel
+                slides={footerSponsors.map((sponsor) => (
+                  <div
+                    key={sponsor.name}
+                    className="px-8 py-4 aspect-video w-full sm:w-[300px] md:w-[400px] mx-auto h-[200px]"
+                  >
+                    <SponsorSlide sponsor={sponsor} />
+                  </div>
+                ))}
+              />
+            </div>
+            <div className="hidden md:block my-5">
+              <div className="flex gap-5 justify-evenly">
+                {footerSponsors.map((sponsor) => (
+                  <div
+                    key={sponsor.name}
+                    className="aspect-video m-auto w-full max-h-[150px] px-5"
+                  >
+                    <SponsorSlide key={sponsor.name} sponsor={sponsor} />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         ) : null}
 

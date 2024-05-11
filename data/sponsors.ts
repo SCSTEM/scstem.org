@@ -14,6 +14,8 @@ export enum SponsorLevel {
   Platinum = "Platinum",
 }
 
+const levels = Object.values(SponsorLevel);
+
 export interface Sponsor {
   name: string;
   level: SponsorLevel;
@@ -80,4 +82,4 @@ export const Sponsors: Sponsor[] = [
   //   url: "https://example.com/",
   //   supportSince: 2024,
   // },
-].sort((a, b) => (a.supportSince < b.supportSince ? -1 : 1));
+].sort((a, b) => levels.indexOf(b.level) - levels.indexOf(a.level));
