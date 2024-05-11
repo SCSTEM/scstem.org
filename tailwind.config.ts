@@ -34,6 +34,7 @@ const config: Config = {
   },
   plugins: [
     require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
     nextui({
       defaultTheme: "dark",
       defaultExtendTheme: "dark",
