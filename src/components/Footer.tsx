@@ -102,7 +102,7 @@ function SponsorSlide({ sponsor }: { sponsor: SponsorSlide }): JSX.Element {
 export function Footer({ className }: { className?: string }): JSX.Element {
   return (
     <footer
-      className={cn("py-4 md:py-12 shadow-large bg-background/70", className)}
+      className={cn("py-4 md:py-12 shadow-large bg-background", className)}
     >
       <div className="mx-auto max-w-4xl gap-y-6">
         {footerSponsors.length > 0 ? (

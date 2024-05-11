@@ -12,7 +12,7 @@ export function DefaultLayout({ children }: Props): JSX.Element {
     <div className="flex flex-col min-h-screen relative">
       <Navbar />
 
-      <div className="flex-auto flex flex-col [&>*]:flex-auto">{children}</div>
+      <div className="flex-auto flex flex-col *:flex-auto">{children}</div>
 
       <Footer />
     </div>

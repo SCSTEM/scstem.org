@@ -3,6 +3,8 @@
 import { IconChevronDown } from "@tabler/icons-react";
 import type { ReactNode } from "react";
 
+import { cn } from "@/lib/utils";
+
 type Props = {
   children: ReactNode;
   src: {
@@ -11,15 +13,22 @@ type Props = {
     image: string;
   };
   scrollButtonText?: string;
+  className?: string;
 };
 
 export function VideoHeader({
   children,
   src,
   scrollButtonText,
+  className,
 }: Props): JSX.Element {
   return (
-    <header className="relative h-[calc(101vh-4rem)] w-full text-white shadow-2xl flex flex-col">
+    <header
+      className={cn(
+        "relative h-[calc(101vh-4rem)] w-full text-white shadow-2xl flex flex-col",
+        className,
+      )}
+    >
       <div className="absolute size-full -z-10">
         <div className="bg-[linear-gradient(180deg,rgba(0,0,0,0.9)0%,rgba(0,0,0,.8)50%)] size-full absolute dark:opacity-1 opacity-60" />
         <video

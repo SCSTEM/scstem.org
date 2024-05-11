@@ -262,6 +262,7 @@ export default function Home(): JSX.Element {
                     <Button
                       as={Link}
                       href="https://www.firstinspires.org/"
+                      target="_blank"
                       endContent={<IconExternalLink />}
                       variant="light"
                       color="primary"
@@ -287,6 +288,7 @@ export default function Home(): JSX.Element {
                     <Button
                       as={Link}
                       href="https://info.firstinspires.org/morethanrobots"
+                      target="_blank"
                       endContent={<IconExternalLink />}
                       variant="light"
                       color="primary"

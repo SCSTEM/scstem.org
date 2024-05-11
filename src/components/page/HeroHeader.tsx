@@ -12,8 +12,8 @@ export default function HeroHeader({ img, children }: Props): JSX.Element {
   return (
     <div className="sm:h-[500px] relative h-[calc(101vh-4rem)] border-0 border-b-2 border-solid border-primary-500 w-full">
       {/* Background Image */}
-      <div className="absolute -z-0 size-full">
-        <div className="bg-[linear-gradient(180deg,rgba(0,0,0,0.9)0%,rgba(0,0,0,.8)50%)] size-full absolute dark:opacity-1 opacity-60" />
+      <div className="absolute size-full">
+        <div className="bg-[linear-gradient(180deg,rgba(0,0,0,0.9)0%,rgba(0,0,0,.8)50%)] size-full absolute opacity-60" />
         <img
           id="header-image"
           src={img}
