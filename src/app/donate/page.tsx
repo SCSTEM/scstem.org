@@ -17,7 +17,7 @@ import {
   type FeatureCardProps,
 } from "@/components/cards/FeatureCard";
 import { ContactForm } from "@/components/forms/ContactForm";
-import Highlight from "@/components/spans/Highlight";
+import { Highlight } from "@/components/spans";
 import { siteConfig } from "@/data/config";
 import { parseColor } from "@/styles/theme";
 
@@ -54,10 +54,9 @@ const donateCards: FeatureCardProps[] = [
     title: "Online",
     body: (
       <div className="flex flex-col h-full">
-        <div className="mb-4">
+        <div>
           You can donate online through our secure PayPal Giving Fund link.
         </div>
-
         <Button
           as={Link}
           target="_blank"
@@ -106,7 +105,7 @@ const donateCards: FeatureCardProps[] = [
   {
     title: "In kind",
     body: (
-      <div className="flex flex-col h-full gap-y-3">
+      <div className="flex flex-col gap-y-3 h-full">
         <div>
           We accept donations of tools, materials, and equipment to keep our
           workspace stocked and our programs running.

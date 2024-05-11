@@ -20,8 +20,7 @@ import type { FeatureCardProps } from "@/components/cards/FeatureCard";
 import { FeatureCard } from "@/components/cards/FeatureCard";
 import HeroHeader from "@/components/page/HeroHeader";
 import Section from "@/components/page/Section";
-import Highlight from "@/components/spans/Highlight";
-import Underline from "@/components/spans/Underline";
+import { Underline, Highlight } from "@/components/spans";
 
 import awardImage from "@/image/award.webp";
 import competition1Image from "@/image/competition-1.webp";

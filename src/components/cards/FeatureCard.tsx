@@ -96,7 +96,7 @@ export function FeatureCard({
             </Chip>
           ) : null}
         </div>
-        <div className="flex flex-col grow">
+        <div className="flex flex-col grow h-full">
           <div
             className={cn(
               img && img.placement === "bottom" ? "mb-4" : "h-full",

@@ -1,11 +1,9 @@
-import { Link } from "@nextui-org/link";
 import type { Metadata } from "next/types";
 
 import { PatternBackground } from "@/components/PatternBackground";
 import SponsorCard from "@/components/cards/SponsorCard";
 import HeroHeader from "@/components/page/HeroHeader";
-import Highlight from "@/components/spans/Highlight";
-import Underline from "@/components/spans/Underline";
+import { Highlight, Underline } from "@/components/spans";
 import { Sponsors as data } from "@/data/sponsors";
 
 export const metadata: Metadata = {
