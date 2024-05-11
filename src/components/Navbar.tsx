@@ -46,8 +46,8 @@ const links: NavLink[] = [
     href: "/sponsors",
   },
   {
-    label: "Clubs",
-    href: "/club",
+    label: "Programs",
+    href: "/programs",
     children: [
       {
         label: "FLL",
@@ -56,7 +56,7 @@ const links: NavLink[] = [
             <i>FIRST</i>® Lego League
           </>
         ),
-        href: "/clubs/fll",
+        href: "/programs/fll",
         icon: <IconLego />,
         description: "A Hands-On Approach to STEM Learning",
       },
@@ -67,7 +67,7 @@ const links: NavLink[] = [
             <i>FIRST</i>® Robotics Competition
           </>
         ),
-        href: "/clubs/frc",
+        href: "/programs/frc",
         icon: <IconRobot />,
         description:
           "Combining the excitement of sport with the rigors of science and technology",

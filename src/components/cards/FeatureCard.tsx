@@ -38,6 +38,7 @@ export type FeatureCardProps = {
   color?: ColorScale;
   link?: string;
   linkText?: string;
+  linkIcon?: Icon;
   badge?: string;
   img?: {
     src: StaticImport;
@@ -123,6 +124,9 @@ export function FeatureCard({
             href={link}
             style={{ color: parsedColor }}
             className="h-fit px-2 py-1 bg-opacity/0 hover:bg-opacity/20"
+            endContent={
+              props.linkIcon ? <props.linkIcon className="size-5" /> : null
+            }
           >
             {linkText ? linkText : "Learn More"}
           </Button>

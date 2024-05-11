@@ -43,8 +43,8 @@ const programCards: FeatureCardProps[] = [
     ),
     body: "FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting hands-on learning. Participants gain real-world problem-solving experiences through a guided, global robotics program, helping today's students and teachers build a better future together.",
     icon: IconLego,
-    color: "red",
-    link: "/clubs/fll",
+    color: "orange",
+    link: "/programs/fll",
     badge: "Ages 9 - 16",
     img: {
       src: fllImage,
@@ -59,8 +59,9 @@ const programCards: FeatureCardProps[] = [
     ),
     body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
     icon: IconDeviceGamepad2,
-    color: "orange",
-    link: "/clubs/ftc",
+    color: "red",
+    link: "https://www.facebook.com/Reconnecting18035",
+    linkIcon: IconExternalLink,
     badge: "Ages 12 - 18",
     img: {
       src: ftcImage,
@@ -76,8 +77,8 @@ const programCards: FeatureCardProps[] = [
     body: "Under strict rules and limited time and resources, teams of high school students are challenged to build industrial-size robots to play a difficult field game in alliance with other teams, while also fundraising to meet their goals, designing a team “brand,” and advancing respect and appreciation for STEM within the local community.",
     icon: IconRobotFace,
     color: "blue",
-    link: "/biohazard",
-    badge: "Ages 14 - 18",
+    link: "/programs/frc",
+    badge: "Ages 13 - 18",
     img: {
       src: frcImage,
       alt: `Team 4050 Biohazard's drive team and robot`,
