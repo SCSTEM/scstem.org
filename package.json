@@ -11,7 +11,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@cloudflare/workers-types": "^4.20240423.0",
+    "@cloudflare/workers-types": "^4.20240502.0",
     "@hookform/resolvers": "^3.3.4",
     "@mantine/hooks": "^7.9.0",
     "@marsidev/react-turnstile": "^0.6.0",
@@ -22,15 +22,15 @@
     "@vanilla-extract/css": "^1.15.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "embla-carousel-autoplay": "^8.0.2",
-    "embla-carousel-react": "^8.0.2",
+    "embla-carousel-autoplay": "^8.0.3",
+    "embla-carousel-react": "^8.0.3",
     "framer-motion": "^11.1.7",
-    "lucide-react": "^0.377.0",
+    "lucide-react": "^0.378.0",
     "next": "14.2.3",
     "next-image-export-optimizer": "^1.12.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.51.3",
+    "react-hook-form": "^7.51.4",
     "react-player": "^2.16.0",
     "react-scroll-parallax": "^3.4.5",
     "tailwind-merge": "^2.3.0",
@@ -53,6 +53,6 @@
     "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5",
-    "wrangler": "^3.53.0"
+    "wrangler": "^3.53.1"
   }
 }
