@@ -1,14 +1,11 @@
 import { Divider } from "@nextui-org/divider";
 import { Link } from "@nextui-org/link";
-import type { IconProps } from "@tabler/icons-react";
 import {
   IconBrandFacebook,
   IconBrandGithub,
   IconBrandLinkedin,
   IconMail,
 } from "@tabler/icons-react";
-import type { FC } from "react";
-import React from "react";
 
 import { ActionIcon } from "@/components/ActionIcon";
 import { Carousel } from "@/components/Carousel";
@@ -16,6 +13,7 @@ import { Image } from "@/components/Image";
 import { LogoFullColor } from "@/components/Logo";
 import { SponsorLevel, Sponsors } from "@/data/sponsors";
 import type { Sponsor as SponsorSlide } from "@/data/sponsors";
+import type { Icon } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
 type FooterSection = {
@@ -30,7 +28,7 @@ type FooterLink = {
 
 type FooterButton = {
   href: string;
-  icon: FC<Omit<IconProps, "ref">>;
+  icon: Icon;
 };
 
 const footerSections: FooterSection[] = [
@@ -101,11 +99,7 @@ function SponsorSlide({ sponsor }: { sponsor: SponsorSlide }): JSX.Element {
   );
 }
 
-type Props = {
-  className?: string;
-};
-
-export function Footer({ className }: Props): JSX.Element {
+export function Footer({ className }: { className?: string }): JSX.Element {
   return (
     <footer
       className={cn("py-4 md:py-12 shadow-large bg-background/70", className)}

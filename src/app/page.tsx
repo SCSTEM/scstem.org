@@ -216,7 +216,7 @@ export default function Home(): JSX.Element {
           </div>
 
           {/* Programs */}
-          <Section title="Our Programs">
+          <Section>
             <div className="flex flex-wrap justify-center gap-5">
               {programCards.map((card, i) => (
                 <div key={i}>
