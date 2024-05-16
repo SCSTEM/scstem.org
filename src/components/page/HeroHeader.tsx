@@ -24,7 +24,7 @@ export default function HeroHeader({ img, children }: Props): JSX.Element {
 
       {/* Content */}
       <div className="absolute flex size-full flex-col">
-        <div className="w-full md:max-w-[750px] lg:max-w-[1000px] md:ml-40 2xl:mx-auto 2xl:max-w-[1400px] mt-8 md:mt-28 px-8 md:px-0">
+        <div className="w-full max-w-500 md:max-w-[700px] lg:max-w-[1000px] md:ml-16 lg:ml-40 2xl:mx-auto 2xl:max-w-[1400px] mt-8 md:mt-20 lg:mt-28 px-8 md:px-0">
           {children}
         </div>
         <button

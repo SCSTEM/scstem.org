@@ -7,7 +7,7 @@ import { parseColor } from "@/styles/theme";
 type PatternType = "circuit" | "topography" | "hexagons";
 
 type Props = {
-  pattern: PatternType;
+  pattern?: PatternType;
   classNames?: {
     container?: string;
     background?: string;
@@ -24,7 +24,7 @@ export function PatternBackground({
 }: Props): JSX.Element {
   const parsedColor = parseColor(color);
 
-  let url: string;
+  let url: string | undefined;
   switch (pattern) {
     case "circuit":
       url = "/image/pattern/circuit.svg";
@@ -53,14 +53,16 @@ export function PatternBackground({
         )`,
         }}
       ></div>
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          backgroundColor: `${parsedColor}`,
-          maskImage: `url(${url})`,
-          WebkitMaskImage: `url(${url})`,
-        }}
-      ></div>
+      {url ? (
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            backgroundColor: `${parsedColor}`,
+            maskImage: `url(${url})`,
+            WebkitMaskImage: `url(${url})`,
+          }}
+        ></div>
+      ) : null}
       <div className="grow">{children}</div>
       <div
         className={cn(

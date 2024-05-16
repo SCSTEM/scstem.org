@@ -228,7 +228,7 @@ export default function Home(): JSX.Element {
 
           {/* FIRST */}
           <Section alt>
-            <div className="md:w-[750px] mb-8 mx-auto">
+            <div className="md:max-w-[750px] mb-8 mx-auto">
               <Image
                 src={firstHorizontalAcroDarkImage}
                 alt="FIRST® logo and acronym"
@@ -302,7 +302,7 @@ export default function Home(): JSX.Element {
               <Image
                 src={moreThanRobotsImage}
                 alt="Collage of photos capturing some of the many ways students can get involved including robot design, photography, video, and more."
-                className="overflow-hidden rounded-3xl md:max-w-2xl"
+                className="overflow-hidden rounded-3xl md:max-w-2xl lg:block hidden"
               />
             </div>
           </Section>

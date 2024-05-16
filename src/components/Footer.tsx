@@ -106,7 +106,7 @@ export function Footer({ className }: { className?: string }): JSX.Element {
     >
       <div className="mx-auto max-w-4xl gap-y-6">
         {footerSponsors.length > 0 ? (
-          <div className="gap-y-6">
+          <div className="gap-y-6 mx-5 lg:mx-auto">
             <div className="mx-auto mb-4 w-5/6 text-center md:w-full font-bold text-xl">
               Special thanks to our sponsors for powering our mission.
             </div>
@@ -139,7 +139,7 @@ export function Footer({ className }: { className?: string }): JSX.Element {
         ) : null}
 
         {/* Main Footer */}
-        <div className="flex md:flex-row flex-col min-h-[160px] justify-between border-0 border-y border-solid border-gray-400 py-6 leading-9">
+        <div className="flex md:flex-row flex-col min-h-[160px] justify-between border-0 border-y border-solid border-gray-400 p-6 lg:px-0 leading-9">
           <div className="mx-auto w-80 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start mb-8 md:mb-0">
             <LogoFullColor className="w-full mb-4 md:mb-0" />
             <div className="text-center text-small">
@@ -172,7 +172,7 @@ export function Footer({ className }: { className?: string }): JSX.Element {
         </div>
 
         {/* Copyright */}
-        <div className="mx-auto flex w-60 md:w-70 items-center justify-between gap-y-2 md:w-full md:flex-row flex-col-reverse py-2">
+        <div className="mx-auto flex w-60 md:w-70 items-center justify-between gap-y-2 md:w-full md:flex-row flex-col-reverse p-2 lg:px-0">
           <div className="text-center md:text-left text-sm text-gray-400">
             {`Copyright © ${new Date().getFullYear()} South Central STEM Collective.`}
           </div>

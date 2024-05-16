@@ -22,7 +22,7 @@ const RightSidebar = dynamic(
 
 export default function About(): JSX.Element {
   return (
-    <div className="flex my-10">
+    <div className="flex m-2 md:m-10">
       <div className="hidden lg:block mx-auto">
         <LeftSidebar />
       </div>

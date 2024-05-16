@@ -233,14 +233,14 @@ export function Navbar(): JSX.Element {
       />
       <NavbarBrand className="gap-x-2" as={Link} href="/">
         <LogoColor className="max-h-[50px]" />
-        <div className="font-bold w-36 md:w-full whitespace-normal text-foreground">
+        <div className="font-bold w-36 lg:w-full whitespace-normal text-foreground">
           South Central STEM Collective
         </div>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {navButtons}
       </NavbarContent>
-      <NavbarContent justify="end" className="hidden sm:flex">
+      <NavbarContent justify="end" className="hidden lg:flex">
         <NavbarItem>
           <GetInvolved />
         </NavbarItem>

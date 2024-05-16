@@ -1,13 +1,12 @@
 import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 
+import { Providers } from "@/components/Providers";
 import { DefaultLayout } from "@/layouts/Default";
 import { cn } from "@/lib/utils";
 import { inter, orbitron, scp } from "@/styles/fonts";
 import "@/styles/globals.css";
 import { colorScales } from "@/styles/theme";
-
-import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: {

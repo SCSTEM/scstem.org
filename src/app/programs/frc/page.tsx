@@ -128,27 +128,27 @@ const teamOverview: {
 
 function TeamOverview() {
   return (
-    <div className="p-5 flex gap-16 flex-col md:flex-row">
-      <div className="space-y-8 my-auto">
-        <h2 className="text-2xl font-bold mb-2 text-black dark:text-white font-sans">
-          Join the Biohazard revolution and prepare for the hardest fun
-          you&apos;ll ever have.
-        </h2>
-        <div>
-          <i>FIRST®</i> Robotics Competition (FRC) is a &ldquo;Sport for the
-          Mind&rdquo; where creativity, determination, and teamwork are the keys
-          to success as we compete with teams from around the world.
+    <div className="p-5 flex gap-16 flex-col lg:flex-row">
+      <div className="space-y-8 flex flex-row lg:flex-col">
+        <div className="flex flex-col">
+          <h2 className="text-2xl font-bold mb-2 text-black dark:text-white font-sans">
+            Join the Biohazard revolution and prepare for the hardest fun
+            you&apos;ll ever have.
+          </h2>
+          <div>
+            <i>FIRST®</i> Robotics Competition (FRC) is a &ldquo;Sport for the
+            Mind&rdquo; where creativity, determination, and teamwork are the
+            keys to success as we compete with teams from around the world.
+          </div>
         </div>
-        <div className="size-full flex justify-center">
-          <Button
-            as={Link}
-            size="lg"
-            href="/get-involved"
-            className="shadow-lg bg-gradient-to-br from-yellow-400 to-orange-500 text-black"
-          >
-            Join the Revolution
-          </Button>
-        </div>
+        <Button
+          as={Link}
+          size="lg"
+          href="/get-involved"
+          className="shadow-lg bg-gradient-to-br from-yellow-400 to-orange-500 text-black lg:w-fit m-auto w-full justify-center"
+        >
+          Join the Revolution
+        </Button>
       </div>
       <div className="grid md:grid-cols-2 md:grid-rows-2 gap-10 md:gap-4">
         {teamOverview.map((item, i) => (
