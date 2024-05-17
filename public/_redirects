@@ -1,4 +1,4 @@
-/biohazard/get-involved /get-involved
-/biohazard /programs/frc
+/biohazard /programs/frc 301
+/biohazard/get-involved /get-involved 301
 
-/wiki/* https://wiki.scstem.org/:splat
+/wiki/* https://wiki.scstem.org/:splat 301
