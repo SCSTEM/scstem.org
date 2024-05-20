@@ -258,7 +258,7 @@ export default function OpenHouse(): JSX.Element {
                   alt="South Central STEM Collective open house banner"
                   className="mb-8"
                 />
-                <Card
+                {/* <Card
                   shadow="lg"
                   radioGroup="md"
                   radius="lg"
@@ -286,7 +286,7 @@ export default function OpenHouse(): JSX.Element {
                       </Button>
                     </div>
                   </CardBody>
-                </Card>
+                </Card> */}
               </div>
               <div className="flex flex-col md:flex-row gap-16">
                 <div className="flex-1 flex flex-col gap-y-4">
@@ -313,7 +313,10 @@ export default function OpenHouse(): JSX.Element {
 
                   <div>
                     We are located at{" "}
-                    <Link href="https://maps.app.goo.gl/kreAVn1bKVSrKXqQ8">
+                    <Link
+                      href="https://maps.app.goo.gl/kreAVn1bKVSrKXqQ8"
+                      target="_blank"
+                    >
                       20 South Main Street
                     </Link>{" "}
                     in downtown Chambersburg.
