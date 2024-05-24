@@ -1,15 +1,13 @@
 import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Card, CardBody } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 import { Link } from "@nextui-org/link";
 import {
-  IconDeviceGamepad2,
   IconLego,
   IconPresentation,
   IconTool,
   IconBooks,
   IconMoodSmile,
-  IconExternalLink,
   IconCalendarEvent,
   IconBrandFacebook,
   IconRobotFace,
@@ -30,14 +28,10 @@ import { Highlight } from "@/components/spans";
 import awardImage from "@/image/award.webp";
 import competition1Image from "@/image/competition-1.webp";
 import deanImage from "@/image/dean.webp";
-import firstHorizontalAcroDarkImage from "@/image/first/first-horizontal-acro-dark.png";
-import firstHorizontalDarkImage from "@/image/first/first-horizontal-dark.png";
 import frcImage from "@/image/frc-driveteam.webp";
-import ftcImage from "@/image/ftc-robot.webp";
 import handsOn2Image from "@/image/hands-on-2.webp";
 import leadership1Image from "@/image/leadership-1.webp";
 import fllImage from "@/image/lego-robots.webp";
-import moreThanRobotsImage from "@/image/morethanrobots.webp";
 import openHouseImage from "@/image/open-house-24-banner.webp";
 
 const programCards: FeatureCardProps[] = [
@@ -258,35 +252,51 @@ export default function OpenHouse(): JSX.Element {
                   alt="South Central STEM Collective open house banner"
                   className="mb-8"
                 />
-                {/* <Card
+                <Card
                   shadow="lg"
                   radioGroup="md"
                   radius="lg"
                   className="w-fit mx-auto p-2"
+                  classNames={{
+                    header: "m-0 p-0",
+                  }}
                 >
-                  <CardHeader>
-                    <h5 className="heading-5 mx-auto text-center">
-                      Connect with us
-                    </h5>
-                  </CardHeader>
                   <CardBody>
                     <div className="space-y-4 items-center justify-center flex flex-col my-auto">
-                      <Button
-                        startContent={<IconCalendarEvent />}
-                        className="bg-red-500 w-full"
-                      >
-                        Let us know you&apos;re coming
-                      </Button>
-
+                      <h5 className="text-lg">Connect with us</h5>
                       <Button
                         startContent={<IconBrandFacebook />}
                         className="bg-blue-500 w-full"
+                        as={Link}
+                        href="https://go.scstem.tech/facebook"
+                        target="_blank"
                       >
                         Like us on Facebook
                       </Button>
+                      <h5 className="text-lg !mt-6">
+                        Let us know you&apos;re coming
+                      </h5>
+                      <Button
+                        startContent={<IconCalendarEvent />}
+                        className="bg-red-500 w-full"
+                        as={Link}
+                        href="https://www.facebook.com/events/1113583296542229/"
+                        target="_blank"
+                      >
+                        Thursday
+                      </Button>
+                      <Button
+                        startContent={<IconCalendarEvent />}
+                        className="bg-red-500 w-full"
+                        as={Link}
+                        href="https://www.facebook.com/events/1113583299875562/"
+                        target="_blank"
+                      >
+                        Saturday
+                      </Button>
                     </div>
                   </CardBody>
-                </Card> */}
+                </Card>
               </div>
               <div className="flex flex-col md:flex-row gap-16">
                 <div className="flex-1 flex flex-col gap-y-4">

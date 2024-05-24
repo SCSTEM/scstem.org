@@ -1,5 +1,8 @@
 /biohazard /programs/frc 301
 /biohazard/get-involved /get-involved 301
+/biohazard/calendar /calendar/frc 301
+
+/calendar /calendar/sc2 301
 
 /wiki https://wiki.scstem.org 301
 /wiki/* https://wiki.scstem.org/:splat 301
