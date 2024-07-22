@@ -47,7 +47,7 @@ function Card({ children }: Props): JSX.Element {
 }
 
 //TODO: find better picture of Toxic Silver for display on mobile screens
-const slides = [
+const slides: JSX.Element[] = [
   <>
     <h1 className="heading-2 text-7xl text-center m-4">2019 - Toxic Silver</h1>
     <ParallaxImage background="/image/biohazard/2019-robot-field.webp">
