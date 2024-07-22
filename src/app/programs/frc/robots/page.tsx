@@ -29,7 +29,7 @@ function SlideButtons() {
   );
 }
 
-const slides = [
+const slides: JSX.Element[] = [
   <>
     <h1 className="heading-2 text-7xl text-center">2019</h1>
     <ParallaxImage background="/image/biohazard/2019-robot-field.webp">
