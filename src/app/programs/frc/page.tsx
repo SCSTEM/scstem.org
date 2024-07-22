@@ -53,16 +53,21 @@ export default function FRC(): JSX.Element {
             <StatsGroup />
           </PageSection>
           <div>
-            <ParallaxImage background="/image/biohazard/2023-robot-field.webp">
-              <div className="relative top-[160px] left-[10px] md:left-[100px] md:top-[250px] lg:top-[200px] w-[200px] md:w-[300px]">
-                <Image src={viperLogo} className="aspect-square" alt="" />
-              </div>
-            </ParallaxImage>
-            <ParallaxImage background="/image/biohazard/2024-robot-field.webp">
-              <div className="relative top-[150px] right-[-150px] md:right-[-700px] lg:right-[-900px] w-[250px] md:w-[400px]">
-                <Image src={troubleLogo} className="aspect-square" alt="" />
-              </div>
-            </ParallaxImage>
+            <a href="/programs/frc/robots">
+              <h1 className="heading-1 text-center m-5">
+                Check out our robots!
+              </h1>
+              <ParallaxImage background="/image/biohazard/2023-robot-field.webp">
+                <div className="relative top-[160px] left-[10px] md:left-[100px] md:top-[250px] lg:top-[200px] w-[200px] md:w-[300px]">
+                  <Image src={viperLogo} className="aspect-square" alt="" />
+                </div>
+              </ParallaxImage>
+              <ParallaxImage background="/image/biohazard/2024-robot-field.webp">
+                <div className="relative top-[150px] right-[-150px] md:right-[-700px] lg:right-[-900px] w-[250px] md:w-[400px]">
+                  <Image src={troubleLogo} className="aspect-square" alt="" />
+                </div>
+              </ParallaxImage>
+            </a>
           </div>
           <PageSection className="lg:!mt-10">
             <VideoPlayer

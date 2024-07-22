@@ -1,6 +1,7 @@
 "use client";
 
 import Autoplay from "embla-carousel-autoplay";
+import AutoHeight from "embla-carousel-auto-height";
 import type useEmblaCarousel from "embla-carousel-react";
 import type { ReactNode } from "react";
 
@@ -11,6 +12,7 @@ type Props = {
   noAuto?: boolean;
   noLoop?: boolean;
   delay?: number;
+  resize?: boolean;
 };
 
 export function Carousel({
@@ -18,12 +20,19 @@ export function Carousel({
   noLoop,
   noAuto,
   delay = 3000,
+  resize,
 }: Props): JSX.Element {
   const plugins: Parameters<typeof useEmblaCarousel>[1] = [];
 
   if (!noAuto) {
     plugins.push(
       Autoplay({ delay, stopOnInteraction: false, stopOnMouseEnter: true }),
+    );
+  }
+
+  if (resize) {
+    plugins.push(
+      AutoHeight(),
     );
   }
 
