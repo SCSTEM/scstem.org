@@ -3,7 +3,6 @@
 import AutoHeight from "embla-carousel-auto-height";
 import type useEmblaCarousel from "embla-carousel-react";
 import type { ReactNode } from "react";
-import { CarouselNext, CarouselPrevious } from "@/components/shadcn/ui/carousel";
 
 import * as SUICarousel from "@/components/shadcn/ui/carousel";
 
@@ -25,9 +24,7 @@ export function ManualCarousel({
   const plugins: Parameters<typeof useEmblaCarousel>[1] = [];
 
   if (autoHeight) {
-    plugins.push(
-      AutoHeight()
-    );  
+    plugins.push(AutoHeight());
   }
 
   if (reverse) {
