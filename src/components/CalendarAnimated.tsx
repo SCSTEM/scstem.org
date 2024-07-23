@@ -35,24 +35,19 @@ export default function CalendarAnimated({
   time,
   pages,
 }: Props): JSX.Element {
-  const top = [];
-  const bottom = [];
-  for (let i = 0; i < pages.length; i++) {
-    const element = pages[i];
-  }
-
   const styles = { height: height, width: "full" };
   const [index, setIndex] = useState(0);
   const initialValues = [];
   const initialValues2 = [];
   for (let i = 0; i < pages.length; i++) {
     initialValues.push({ scale: 1, y: 0, opacity: 1 });
+  }
+  initialValues2.push({ scale: 1, y: 0, opacity: 1 });
+  for (let i = 1; i < pages.length; i++) {
     initialValues2.push({ scale: -1, y: height, opacity: 0 });
   }
   const [tValues, setTValues] = useState(initialValues2);
   const [bValues, setBValues] = useState(initialValues);
-
-  const animates = [];
 
   const flip = () => {
     console.log(index);
@@ -62,7 +57,11 @@ export default function CalendarAnimated({
         { y: -height, scale: -1, opacity: 0 },
         index,
       );
-      const newTValues = insert(tValues, { y: 0, scale: 1, opacity: 1 }, index);
+      const newTValues = insert(
+        tValues,
+        { y: 0, scale: 1, opacity: 1 },
+        index + 1,
+      );
       setIndex(index + 1);
       setTValues(newTValues);
       setBValues(newBValues);
@@ -81,7 +80,7 @@ export default function CalendarAnimated({
       const newTValues = insert(
         tValues,
         { y: height, scale: -1, opacity: 0 },
-        index - 1,
+        index,
       );
       setIndex(index - 1);
       setTValues(newTValues);
