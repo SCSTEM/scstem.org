@@ -114,7 +114,7 @@ export default function CalendarAnimated({
               }}
               transition={{ type: "just", times: [0.5, 0.5001] }}
             >
-              <div className="bg-slate-400" style={styles}>
+              <div className="bg-slate-700" style={styles}>
                 {page.top}
               </div>
             </motion.div>
@@ -139,7 +139,7 @@ export default function CalendarAnimated({
               }}
               transition={{ type: "just", times: [0.5, 0.5001] }}
             >
-              <div className="bg-red-400" style={styles}>
+              <div className="bg-gray-800" style={styles}>
                 {page.bottom}
               </div>
             </motion.div>
