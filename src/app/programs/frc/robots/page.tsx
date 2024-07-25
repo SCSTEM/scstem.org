@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import IconTooltip from "@/components/IconTooltip";
 import { Image } from "@/components/Image";
 import { ManualCarousel } from "@/components/ManualCarousel";
 import { PatternBackground } from "@/components/PatternBackground";
@@ -10,6 +11,7 @@ import {
 
 import troubleClef from "@/image/biohazard/trouble-logo.webp";
 import viperLogo from "@/image/biohazard/viper-logo.webp";
+import InfoIcon from "@/image/svg/info-mark.svg";
 
 import { ParallaxImage } from "../components";
 
@@ -155,9 +157,32 @@ const slides: JSX.Element[] = [
 export default function Robots() {
   return (
     <>
-      <h1 className="heading-2 text-7xl p-8 m-12 text-center border-y-8 border-yellow-400">
-        2019-Present
-      </h1>
+      <div className="flex flex-row justify-center items-center">
+        <h1 className="relative heading-2 text-7xl p-8 m-12 text-center border-y-8 border-yellow-400">
+          2019-Present
+          <div className="text-center absolute right-1 top-1">
+            <IconTooltip
+              icon={
+                <>
+                  <Image
+                    src={InfoIcon}
+                    alt="Info"
+                    style={{
+                      filter: `invert(78%) sepia(90%) saturate(2908%) hue-rotate(346deg) brightness(102%) contrast(96%)`,
+                    }}
+                  ></Image>
+                </>
+              }
+              tooltip={
+                <>
+                  <h1>All robots that are in a semi-functional state</h1>
+                </>
+              }
+            ></IconTooltip>
+          </div>
+        </h1>
+      </div>
+
       <ManualCarousel
         slides={slides}
         noLoop={true}
