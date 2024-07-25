@@ -1,11 +1,8 @@
-import { motion } from "framer-motion";
 import type { StaticImageData } from "next/image";
-import { Children, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
-import SlidingDiv from "@/components/CalendarAnimated";
 import CalendarAnimated from "@/components/CalendarAnimated";
 import { Image } from "@/components/Image";
-import { PatternBackground } from "@/components/PatternBackground";
 
 import header2015 from "@/image/biohazard/2015-header.webp";
 import outreach2018 from "@/image/biohazard/2018-outreach.webp";
@@ -22,8 +19,6 @@ import logo2012 from "@/image/biohazard/logo-2012.webp";
 import logo2018 from "@/image/biohazard/logo-2018.webp";
 import logo2022 from "@/image/biohazard/logo-2022.webp";
 import deanSignature from "@/image/biohazard/signature.webp";
-import competition1Image from "@/image/competition-1.webp";
-import deanImage from "@/image/dean.webp";
 import logo2016 from "@/image/svg/biohazard-2016.svg";
 import logo2020 from "@/image/svg/biohazard-2020.svg";
 import testImage from "@/image/svg/logo-color.svg";
@@ -49,7 +44,7 @@ function PageTop({ year, image, children }: PageTopProps) {
   return (
     <>
       <div className="relative">
-        <h1 className="heading-1 ml-8 text-8xl z-10 text-center">{year}</h1>
+        <h1 className="heading-1 text-8xl z-10 mb-4 text-center">{year}</h1>
         <div className="h-full">
           <Image
             src={image}
@@ -74,19 +69,25 @@ function PageBottom({ text, children }: PageBottomProps) {
     <>
       <div style={{ height: 700 }}>
         <p className="p-8">{text}</p>
-        {children}
+        <div className="hidden md:block">{children}</div>
       </div>
     </>
   );
 }
 
 type Page = {
+  icon: ReactNode;
   top: ReactNode;
   bottom: ReactNode;
 };
 
 const pages: Page[] = [
   {
+    icon: (
+      <>
+        <h1>2012</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2012" image={testImage}></PageTop>
@@ -111,6 +112,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2013</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2013" image={image2013}>
@@ -156,6 +162,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2014</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2014" image={image2014}>
@@ -189,6 +200,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2015</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2015" image={image2015}>
@@ -219,6 +235,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2016</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2016" image={image2016}></PageTop>
@@ -250,6 +271,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2017</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2017" image={image2017}>
@@ -291,6 +317,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2018</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2018" image={image2018}>
@@ -328,6 +359,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2019</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2019" image={image2019}></PageTop>
@@ -350,7 +386,7 @@ const pages: Page[] = [
           <Image
             src={robot2019}
             alt="team logo"
-            style={{ maxHeight: 517 }}
+            style={{ maxHeight: 400 }}
             className="flex pt-8 items-center w-full"
           ></Image>
           <h1 className="text-center p-2">Demo image of Toxic Silver.</h1>
@@ -359,6 +395,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2020</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2020" image={image2020}>
@@ -386,7 +427,7 @@ const pages: Page[] = [
           <Image
             src={robot2021}
             alt="team logo"
-            style={{ maxHeight: 517 }}
+            style={{ maxHeight: 500 }}
             className="flex pt-8 items-center w-full"
           ></Image>
           <h1 className="text-center p-2">
@@ -397,6 +438,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2021</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2021" image={image2021}>
@@ -410,19 +456,28 @@ const pages: Page[] = [
     ),
     bottom: (
       <>
-        <PageBottom
-          text={
-            <>
-              For our tenth anniversary, 2021 was a unique year. Thankfully,
-              though there were no official competitions to attend, Battle
-              O&apos; Baltimore was still being hosted.{" "}
-            </>
-          }
-        ></PageBottom>
+        <div className="">
+          <PageBottom
+            text={
+              <>
+                For our tenth anniversary, 2021 was a unique year. With the
+                reduced meetings, we did not have a chance to build a robot.
+                Thankfully, though there were no official competitions to
+                attend, we were lucky enough to attend Battle O&apos; Baltimore
+                with Robo Fett.{" "}
+              </>
+            }
+          ></PageBottom>
+        </div>
       </>
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2022</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2022" image={image2022}>
@@ -451,7 +506,7 @@ const pages: Page[] = [
           <Image
             src={robot2022}
             alt="team logo"
-            style={{ maxHeight: 517 }}
+            style={{ maxHeight: 480 }}
             className="flex pt-8 items-center w-full"
           ></Image>
           <h1 className="text-center p-2">&quot;Hey there&quot;</h1>
@@ -460,6 +515,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2023</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2023" image={image2023}>
@@ -501,6 +561,11 @@ const pages: Page[] = [
     ),
   },
   {
+    icon: (
+      <>
+        <h1>2024</h1>
+      </>
+    ),
     top: (
       <>
         <PageTop year="2024" image={image2024}>
@@ -520,8 +585,8 @@ const pages: Page[] = [
               Between getting used to our new home at 20 S Main St. in
               Chambersburg, and creating SCSTEM, managing our thirteenth year
               was a challenge, let alone a fire nearly starting in the
-              workspace. Nevertheless, our robot, “Troubleclef” won us an
-              Imagery Award at the Buckeye Regional!
+              workspace. Nevertheless, our robot, aptly named “Troubleclef” won
+              us an Imagery Award at the Buckeye Regional!
             </>
           }
         >

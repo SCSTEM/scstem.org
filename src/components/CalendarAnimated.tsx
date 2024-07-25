@@ -10,7 +10,7 @@ import { PatternBackground } from "@/components/PatternBackground";
 type Props = {
   height: number;
   time?: number;
-  pages: Array<{ top: ReactNode; bottom: ReactNode }>;
+  pages: Array<{ icon: ReactNode; top: ReactNode; bottom: ReactNode }>;
 };
 
 function insert(
@@ -39,6 +39,7 @@ export default function CalendarAnimated({
   const [index, setIndex] = useState(0);
   const initialValues = [];
   const initialValues2 = [];
+
   for (let i = 0; i < pages.length; i++) {
     initialValues.push({ scale: 1, y: 0, opacity: 1 });
   }
@@ -46,6 +47,7 @@ export default function CalendarAnimated({
   for (let i = 1; i < pages.length; i++) {
     initialValues2.push({ scale: -1, y: height, opacity: 0 });
   }
+
   const [tValues, setTValues] = useState(initialValues2);
   const [bValues, setBValues] = useState(initialValues);
 
@@ -88,15 +90,52 @@ export default function CalendarAnimated({
     }
   };
 
+  const goTo = (index: number) => {
+    const newBValues = [];
+    const newTValues = [];
+
+    for (let i = 0; i < pages.length; i++) {
+      if (i <= index) {
+        newTValues.push({ scale: 1, y: 0, opacity: 1 });
+      } else {
+        newTValues.push({ y: height, scale: -1, opacity: 0 });
+      }
+      if (i >= index) {
+        newBValues.push({ y: 0, scale: 1, opacity: 1 });
+      } else {
+        newBValues.push({ y: -height, scale: -1, opacity: 0 });
+      }
+    }
+
+    setIndex(index);
+    setTValues(newTValues);
+    setBValues(newBValues);
+  };
+
   return (
     <>
-      <button style={{ zIndex: 100 }} onClick={flip}>
-        flip
-      </button>
-      <button style={{ zIndex: 100 }} onClick={drop}>
-        drop
-      </button>
-      <div className="relative w-full" style={styles}>
+      <div className="flex justify-center flex-wrap">
+        {pages.map((page, i) => (
+          <>
+            <button
+              className="m-4 px-4 heading-2 bg-green-700 border-green-700 border-5 rounded-md w-40"
+              onClick={() => {
+                goTo(i);
+              }}
+            >
+              {page.icon}
+            </button>
+          </>
+        ))}
+      </div>
+      <div className="relative mt-6 mx-2" style={styles}>
+        <button
+          style={{ zIndex: 39 }}
+          onClick={drop}
+          className="absolute right-4 bottom-10 font-bold text-2xl bg-green-700 border-green-700 border-5 rounded-md w-20"
+        >
+          Prev
+        </button>
         {pages.map((page, i) => (
           <motion.div
             key={i}
@@ -114,14 +153,24 @@ export default function CalendarAnimated({
               }}
               transition={{ type: "just", times: [0.5, 0.5001] }}
             >
-              <div className="bg-slate-700" style={styles}>
+              <div
+                className="bg-slate-700 border-b-2 border-black"
+                style={styles}
+              >
                 {page.top}
               </div>
             </motion.div>
           </motion.div>
         ))}
       </div>
-      <div className="relative w-full" style={styles}>
+      <div className="relative mb-6 mx-2" style={styles}>
+        <button
+          style={{ zIndex: 39 }}
+          className="absolute right-4 top-10 font-bold text-2xl bg-green-700 border-green-700 border-5 rounded-md w-20"
+          onClick={flip}
+        >
+          Next
+        </button>
         {pages.map((page, i) => (
           <motion.div
             key={i}
@@ -139,8 +188,11 @@ export default function CalendarAnimated({
               }}
               transition={{ type: "just", times: [0.5, 0.5001] }}
             >
-              <div className="bg-gray-800" style={styles}>
-                {page.bottom}
+              <div
+                className="bg-gray-800 border-t-2 border-black"
+                style={styles}
+              >
+                <div className="mr-32">{page.bottom}</div>
               </div>
             </motion.div>
           </motion.div>
