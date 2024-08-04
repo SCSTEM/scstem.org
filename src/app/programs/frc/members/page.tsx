@@ -29,7 +29,7 @@ function Portrait({ image, title }: Props): JSX.Element {
 
 type Props2 = {
   image: StaticImageData;
-  subtitles: [JSX.Element, JSX.Element];
+  subtitles: [string, string];
   body: JSX.Element;
 };
 
@@ -50,7 +50,7 @@ function StudentProfile({ image, subtitles, body }: Props2): JSX.Element {
           <h1 className="pb-2 text-center">{subtitles[0]}</h1>
           <h1 className="pb-2 text-center">{subtitles[1]}</h1>
         </div>
-        <p>{body}</p>
+        {body}
       </div>
     </>
   );
@@ -76,7 +76,7 @@ function MentorProfile({ image, subtitles, body }: Props2): JSX.Element {
           <h1 className="pb-2 text-center">{subtitles[0]}</h1>
           <h1 className="pb-2 text-center">{subtitles[1]}</h1>
         </div>
-        <p>{body}</p>
+        {body}
       </div>
     </>
   );
@@ -86,7 +86,7 @@ const profiles: JSX.Element[] = [
   <>
     <StudentProfile
       image={image2024}
-      subtitles={[<>Jane Doe, student</>, <>First year: 2020</>]}
+      subtitles={["Jane Doe, student", "First year: 2020"]}
       body={
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
@@ -107,7 +107,7 @@ const profiles: JSX.Element[] = [
   <>
     <MentorProfile
       image={image2024}
-      subtitles={[<>John Doe, mentor</>, <>First year: 2015</>]}
+      subtitles={["John Doe, mentor", "First year: 2015"]}
       body={
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
