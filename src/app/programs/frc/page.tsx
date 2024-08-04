@@ -36,8 +36,11 @@ export default function FRC(): JSX.Element {
         <div className="flex size-full flex-col md:w-[750px] lg:w-[1000px] md:mx-auto text-center justify-center px-4 md:px-0 space-y-6">
           <Image src={biohazardHeaderLogo} alt="Biohazard FRC team logo" />
           <h1 className="text-2xl md:text-4xl font-heading font-bold md:font-normal">
-            Welcome to the <Underline>next generation</Underline> of thinkers,
-            engineers scientists, artists, and dreamers.
+            Welcome to the{" "}
+            <a href="/programs/frc/members">
+              <Underline>next generation</Underline>
+            </a>{" "}
+            of thinkers, engineers scientists, artists, and dreamers.
           </h1>
           <h2 className="font-sans text-xl lg:text-3xl">
             Inspiring students since <Underline>2012</Underline>, Biohazard is
