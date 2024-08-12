@@ -3,6 +3,7 @@ import type { StaticImport } from "@/components/Image";
 import fivesLogo from "@/image/sponsor/fives.svg";
 import jlgLogo from "@/image/sponsor/jlg.svg";
 import journalyticLogo from "@/image/sponsor/journalytic.svg";
+import volvoLogo from "@/image/sponsor/volvo.png";
 import workshopeLogo from "@/image/sponsor/workshope.png";
 import ybLogo from "@/image/sponsor/yb-dark.png";
 
@@ -74,6 +75,13 @@ export const Sponsors: Sponsor[] = [
     level: SponsorLevel.Gold,
     logo: journalyticLogo,
     url: "https://journalytic.com/",
+    supportSince: 2024,
+  },
+  {
+    name: "Volvo",
+    level: SponsorLevel.Gold,
+    logo: volvoLogo,
+    url: "https://www.volvogroup.com/",
     supportSince: 2024,
   },
   // {
