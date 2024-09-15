@@ -7,8 +7,8 @@ import { IconCheck, IconSend } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import type { Output } from "valibot";
-import { email, nonOptional, object, string } from "valibot";
+import type { InferInput } from "valibot";
+import { email, nonOptional, object, string, pipe } from "valibot";
 
 import type { APIResponse, GenericFormRequest } from "@/functions/types";
 
@@ -18,11 +18,11 @@ import { cn } from "@/lib/utils";
 
 const contactSchema = object({
   name: nonOptional(string()),
-  email: string([email("Please enter a valid email address")]),
+  email: pipe(string(), email("Please enter a valid email address")),
   message: nonOptional(string()),
   turnstileToken: nonOptional(string()),
 });
-type ContactFormValues = Output<typeof contactSchema>;
+type ContactFormValues = InferInput<typeof contactSchema>;
 
 const contactDefaults: ContactFormValues = {
   name: "",
