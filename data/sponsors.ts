@@ -3,6 +3,8 @@ import type { StaticImport } from "@/components/Image";
 import fivesLogo from "@/image/sponsor/fives.svg";
 import jlgLogo from "@/image/sponsor/jlg.svg";
 import journalyticLogo from "@/image/sponsor/journalytic.svg";
+import manitowocLogo from "@/image/sponsor/manitowoc.png";
+import orrstownLogo from "@/image/sponsor/orrstown.png";
 import volvoLogo from "@/image/sponsor/volvo.png";
 import workshopeLogo from "@/image/sponsor/workshope.png";
 import ybLogo from "@/image/sponsor/yb-dark.png";
@@ -82,6 +84,20 @@ export const Sponsors: Sponsor[] = [
     level: SponsorLevel.Gold,
     logo: volvoLogo,
     url: "https://www.volvogroup.com/",
+    supportSince: 2024,
+  },
+  {
+    name: "Orrstown",
+    level: SponsorLevel.Bronze,
+    logo: orrstownLogo,
+    url: "https://www.orrstown.com/",
+    supportSince: 2024,
+  },
+  {
+    name: "Manitowoc",
+    level: SponsorLevel.Bronze,
+    logo: manitowocLogo,
+    url: "https://www.manitowoc.com/",
     supportSince: 2024,
   },
   // {
