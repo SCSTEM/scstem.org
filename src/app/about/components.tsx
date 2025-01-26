@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import type { StaticImport } from "@/components/Image";
 import { Image } from "@/components/Image";

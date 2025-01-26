@@ -1,7 +1,6 @@
 import { Link } from "@heroui/link";
-import dynamic from "next/dynamic";
 import type { Metadata } from "next/types";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { Image } from "@/components/Image";
 
