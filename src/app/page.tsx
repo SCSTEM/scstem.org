@@ -12,6 +12,7 @@ import {
   IconTool,
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 import { Image } from "@/components/Image";
 import { PatternBackground } from "@/components/PatternBackground";
@@ -178,7 +179,7 @@ export const metadata: Metadata = {
     "The South Central STEM Collective is a non-profit organization focused on building the future of STEM, right here in Franklin County, Pennsylvania.",
 };
 
-export default function Home(): JSX.Element {
+export default function Home(): ReactNode {
   return (
     <>
       <HeroHeader img="/image/legos.webp">

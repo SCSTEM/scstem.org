@@ -1,14 +1,14 @@
 "use client";
 
 import { IconChevronDown } from "@tabler/icons-react";
-import type { ReactNode } from "react";
+import type { ReactNode, JSX } from "react";
 
 interface Props {
   img: string;
   children: ReactNode;
 }
 
-export default function HeroHeader({ img, children }: Props): JSX.Element {
+export default function HeroHeader({ img, children }: Props): ReactNode {
   return (
     <div className="sm:h-[500px] relative h-[calc(101vh-4rem)] border-0 border-b-2 border-solid border-primary-500 w-full">
       {/* Background Image */}

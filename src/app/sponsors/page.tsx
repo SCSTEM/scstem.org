@@ -2,6 +2,7 @@ import { Card } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import { IconExternalLink } from "@tabler/icons-react";
 import type { Metadata } from "next/types";
+import type { ReactNode } from "react";
 
 import { ActionIcon } from "@/components/ActionIcon";
 import { Image } from "@/components/Image";
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     "We are proud to partner organizations and individuals who want to join us in building the future. This strong support enables our mentors, volunteers, and parents to focus on what really matters.",
 };
 
-export default function Sponsors(): JSX.Element {
+export default function Sponsors(): ReactNode {
   return (
     <>
       <HeroHeader img="/image/parts-notes.webp">

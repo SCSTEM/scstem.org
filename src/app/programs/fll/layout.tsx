@@ -1,7 +1,9 @@
+import type { ReactNode } from "react";
+
 export default function FRCLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>): JSX.Element {
+}>): ReactNode {
   return <div className="fll">{children}</div>;
 }

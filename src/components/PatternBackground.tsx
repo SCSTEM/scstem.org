@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 import type { ColorScale } from "@/styles/theme";
@@ -21,7 +21,7 @@ export function PatternBackground({
   pattern,
   classNames,
   children,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const parsedColor = parseColor(color);
 
   let url: string | undefined;

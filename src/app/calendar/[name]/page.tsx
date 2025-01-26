@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { CalColor, Calendar } from "@/components/Calendar";
 
 type CalendarName = "frc" | "sc2";
@@ -17,7 +19,7 @@ export default function CalendarPage({
   params,
 }: {
   params: { name: CalendarName };
-}): JSX.Element {
+}): ReactNode {
   const src = calendars[params.name];
 
   return (

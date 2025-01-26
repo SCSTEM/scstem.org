@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, JSX } from "react";
 
 import { Footer } from "../components/Footer";
 import { Navbar } from "../components/Navbar";
@@ -7,7 +7,7 @@ interface Props {
   children: ReactNode;
 }
 
-export function DefaultLayout({ children }: Props): JSX.Element {
+export function DefaultLayout({ children }: Props): ReactNode {
   return (
     <div className="flex flex-col min-h-screen relative">
       <Navbar />

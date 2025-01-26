@@ -4,7 +4,7 @@ import { IconUsersGroup } from "@tabler/icons-react";
 import { clsx } from "clsx";
 import type { Metadata } from "next";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { ReactNode, JSX } from "react";
 
 import { Image } from "@/components/Image";
 import { PatternBackground } from "@/components/PatternBackground";
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title: "Biohazard",
 };
 
-export default function FRC(): JSX.Element {
+export default function FRC(): ReactNode {
   return (
     <>
       <VideoHeader

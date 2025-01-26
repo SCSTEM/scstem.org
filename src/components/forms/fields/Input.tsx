@@ -1,5 +1,6 @@
 import type { InputProps } from "@heroui/input";
 import { Input as NUIInput } from "@heroui/input";
+import type { ReactNode } from "react";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
@@ -12,7 +13,7 @@ export function Input<T extends FieldValues>({
   control,
   name,
   ...props
-}: FieldProps<T, InputProps>): JSX.Element {
+}: FieldProps<T, InputProps>): ReactNode {
   return (
     <Controller
       name={name}

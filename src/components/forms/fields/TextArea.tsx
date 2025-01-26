@@ -1,5 +1,6 @@
 import type { TextAreaProps } from "@heroui/input";
 import { Textarea as NUITextArea } from "@heroui/input";
+import type { ReactNode } from "react";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
@@ -9,7 +10,7 @@ export function TextArea<T extends FieldValues>({
   control,
   name,
   ...props
-}: FieldProps<T, TextAreaProps>): JSX.Element {
+}: FieldProps<T, TextAreaProps>): ReactNode {
   return (
     <Controller
       name={name}

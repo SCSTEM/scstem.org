@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { ReactNode, JSX } from "react";
 import { ParallaxBanner } from "react-scroll-parallax";
 
 import { cn } from "@/lib/utils";
@@ -17,7 +17,7 @@ export function ParallaxImage({
   children,
   background,
   classNames,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <ParallaxBanner
       className="h-[400px] lg:h-[600px]"

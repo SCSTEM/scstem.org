@@ -1,9 +1,9 @@
 "use client";
 
-import Autoplay from "embla-carousel-autoplay";
 import AutoHeight from "embla-carousel-auto-height";
+import Autoplay from "embla-carousel-autoplay";
 import type useEmblaCarousel from "embla-carousel-react";
-import type { ReactNode } from "react";
+import type { ReactNode, JSX } from "react";
 
 import * as SUICarousel from "@/components/shadcn/ui/carousel";
 
@@ -21,7 +21,7 @@ export function Carousel({
   noAuto,
   delay = 3000,
   resize,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const plugins: Parameters<typeof useEmblaCarousel>[1] = [];
 
   if (!noAuto) {
@@ -31,9 +31,7 @@ export function Carousel({
   }
 
   if (resize) {
-    plugins.push(
-      AutoHeight(),
-    );
+    plugins.push(AutoHeight());
   }
 
   return (

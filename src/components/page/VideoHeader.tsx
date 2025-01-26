@@ -1,7 +1,7 @@
 "use client";
 
 import { IconChevronDown } from "@tabler/icons-react";
-import type { ReactNode } from "react";
+import type { ReactNode, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -21,7 +21,7 @@ export function VideoHeader({
   src,
   scrollButtonText,
   className,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <header
       className={cn(

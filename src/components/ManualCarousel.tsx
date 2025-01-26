@@ -2,7 +2,7 @@
 
 import AutoHeight from "embla-carousel-auto-height";
 import type useEmblaCarousel from "embla-carousel-react";
-import type { ReactNode } from "react";
+import type { ReactNode, JSX } from "react";
 
 import * as SUICarousel from "@/components/shadcn/ui/carousel";
 
@@ -20,7 +20,7 @@ export function ManualCarousel({
   autoHeight,
   startIndex = 0,
   reverse,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const plugins: Parameters<typeof useEmblaCarousel>[1] = [];
 
   if (autoHeight) {

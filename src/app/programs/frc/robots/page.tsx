@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, JSX } from "react";
 
 import { Image } from "@/components/Image";
 import { ManualCarousel } from "@/components/ManualCarousel";
@@ -34,7 +34,7 @@ type Props = {
   children?: ReactNode;
 };
 
-function Card({ children }: Props): JSX.Element {
+function Card({ children }: Props): ReactNode {
   return (
     <>
       <div className="border-y-8 border-yellow-400">
@@ -47,7 +47,7 @@ function Card({ children }: Props): JSX.Element {
 }
 
 //TODO: find better picture of Toxic Silver for display on mobile screens
-const slides: JSX.Element[] = [
+const slides: ReactNode[] = [
   <>
     <h1 className="heading-2 text-7xl text-center m-4">2019 - Toxic Silver</h1>
     <ParallaxImage background="/image/biohazard/2019-robot-field.webp">

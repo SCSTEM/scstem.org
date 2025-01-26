@@ -13,6 +13,7 @@ import {
   IconRobotFace,
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 import { Image } from "@/components/Image";
 import { PatternBackground } from "@/components/PatternBackground";
@@ -156,7 +157,7 @@ const joinCards: FeatureCardProps[] = [
   },
 ];
 
-const faq: { question: string; answer: string | JSX.Element }[] = [
+const faq: { question: string; answer: string | ReactNode }[] = [
   {
     question: "When is the open house?",
     answer:
@@ -201,7 +202,7 @@ export const metadata: Metadata = {
     "Are you or is someone you know interested in LEGO®, science, technology, engineering, math, business, marketing, video production, software development, web design, carpentry, or leadership? Find out more and get a chance to speak with our students and mentors at our upcoming open house.",
 };
 
-export default function OpenHouse(): JSX.Element {
+export default function OpenHouse(): ReactNode {
   return (
     <>
       <HeroHeader img="/image/students.webp">

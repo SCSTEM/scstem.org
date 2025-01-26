@@ -1,10 +1,10 @@
-import type { ComponentProps } from "react";
+import type { ComponentProps, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
 type LogoProps = Omit<ComponentProps<"img">, "src">;
 
-export function LogoFullColor({ className, ...props }: LogoProps): JSX.Element {
+export function LogoFullColor({ className, ...props }: LogoProps): ReactNode {
   return (
     <img
       alt="South Central STEM Collective logo."
@@ -15,7 +15,7 @@ export function LogoFullColor({ className, ...props }: LogoProps): JSX.Element {
   );
 }
 
-export function LogoColor({ className, ...props }: LogoProps): JSX.Element {
+export function LogoColor({ className, ...props }: LogoProps): ReactNode {
   return (
     <img
       alt="Square South Central STEM Collective logo."

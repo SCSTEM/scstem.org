@@ -89,7 +89,7 @@ function GetInvolved({
   href: _href,
   as: _as,
   ...props
-}: ButtonProps): JSX.Element {
+}: ButtonProps): ReactNode {
   return (
     <Button
       as={Link}
@@ -105,7 +105,7 @@ function GetInvolved({
   );
 }
 
-export function Navbar(): JSX.Element {
+export function Navbar(): ReactNode {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const isActive = useCallback(
@@ -143,7 +143,9 @@ export function Navbar(): JSX.Element {
               <DropdownItem
                 key={keyify(link)}
                 startContent={link.icon}
-                description={link.description}
+                description={
+                  <div className="text-wrap">{link.description}</div>
+                }
                 textValue={link.label}
                 href={link.href}
                 className={cn(

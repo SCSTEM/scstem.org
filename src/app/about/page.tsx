@@ -1,26 +1,20 @@
 import { Link } from "@heroui/link";
 import dynamic from "next/dynamic";
 import type { Metadata } from "next/types";
+import { ReactNode } from "react";
 
 import { Image } from "@/components/Image";
 
 import biohazardLogo from "@/image/biohazard/logo.svg";
 import sc2Logo from "@/image/svg/logo-color.svg";
 
+import { LeftSidebar, RightSidebar } from "./components";
+
 export const metadata: Metadata = {
   title: "About",
 };
 
-const LeftSidebar = dynamic(
-  () => import("./components").then((mod) => mod.LeftSidebar),
-  { ssr: false },
-);
-const RightSidebar = dynamic(
-  () => import("./components").then((mod) => mod.RightSidebar),
-  { ssr: false },
-);
-
-export default function About(): JSX.Element {
+export default function About(): ReactNode {
   return (
     <div className="flex m-2 md:m-10">
       <div className="hidden lg:block mx-auto">

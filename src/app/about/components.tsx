@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 import type { StaticImport } from "@/components/Image";
 import { Image } from "@/components/Image";
 import { cn } from "@/lib/utils";
@@ -23,7 +25,7 @@ type CaptionedImageProps = {
 export function CaptionedImage({
   src,
   caption,
-}: CaptionedImageProps): JSX.Element {
+}: CaptionedImageProps): ReactNode {
   return (
     <div className="w-[300px] 2xl:w-[500px] mx-auto aspect-square">
       <Image
@@ -42,7 +44,7 @@ function SidebarShell({
 }: {
   children: React.ReactNode;
   className?: string;
-}): JSX.Element {
+}): ReactNode {
   return (
     <div
       className={cn(
@@ -59,7 +61,7 @@ type SidebarProps = {
   className?: string;
 };
 
-export function LeftSidebar({ className }: SidebarProps): JSX.Element {
+export function LeftSidebar({ className }: SidebarProps): ReactNode {
   return (
     <SidebarShell className={className}>
       <div className="text-center mb-5 font-medium text-2xl">
@@ -80,7 +82,7 @@ export function LeftSidebar({ className }: SidebarProps): JSX.Element {
   );
 }
 
-export function RightSidebar({ className }: SidebarProps): JSX.Element {
+export function RightSidebar({ className }: SidebarProps): ReactNode {
   return (
     <SidebarShell className={className}>
       <div className="text-center mb-5 font-medium text-2xl">

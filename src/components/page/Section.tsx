@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -19,7 +21,7 @@ export default function Section({
   alt,
   title,
   className,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   if (alt)
     return (
       <section className={cn("shadow-inner p-8", className)}>

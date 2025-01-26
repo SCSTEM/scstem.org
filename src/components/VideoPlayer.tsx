@@ -2,7 +2,7 @@
 
 import { IconPlayerPlay } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useState, type JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -10,7 +10,7 @@ const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 type Props = {
   url: string;
-  placeholder?: string | JSX.Element;
+  placeholder?: string | ReactNode;
   classNames?: {
     wrapper?: string;
     player?: string;
@@ -23,7 +23,7 @@ export function VideoPlayer({
   url,
   classNames,
   placeholder,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   const [videoReady, setVideoReady] = useState(false);
   return (
     <div
