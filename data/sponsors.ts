@@ -51,13 +51,13 @@ export const Sponsors: Sponsor[] = [
   //   sub: "Chambersburg VFW Post 1599",
   //   supportSince: 2022,
   // },
-  {
-    name: "Fives",
-    level: SponsorLevel.Platinum,
-    logo: fivesLogo,
-    url: "https://www.fivesgroup.com/",
-    supportSince: 2022,
-  },
+  // {
+  //   name: "Fives",
+  //   level: SponsorLevel.Platinum,
+  //   logo: fivesLogo,
+  //   url: "https://www.fivesgroup.com/",
+  //   supportSince: 2022,
+  // },
   {
     name: "The WorkShope",
     level: SponsorLevel.Gold,
