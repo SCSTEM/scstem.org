@@ -1,6 +1,6 @@
 "use client";
 
-import type { ButtonProps } from "@nextui-org/react";
+import type { ButtonProps } from "@heroui/react";
 import {
   Accordion,
   AccordionItem,
@@ -17,7 +17,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { IconChevronDown, IconLego, IconRobot } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";

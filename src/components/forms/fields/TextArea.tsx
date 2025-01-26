@@ -1,5 +1,5 @@
-import type { TextAreaProps } from "@nextui-org/input";
-import { Textarea as NUITextArea } from "@nextui-org/input";
+import type { TextAreaProps } from "@heroui/input";
+import { Textarea as NUITextArea } from "@heroui/input";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 

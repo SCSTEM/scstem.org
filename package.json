@@ -16,7 +16,7 @@
     "@mantine/hooks": "^7.12.2",
     "@marsidev/react-turnstile": "^0.6.1",
     "@next/third-parties": "^14.2.11",
-    "@nextui-org/react": "^2.4.8",
+    "@heroui/react": "2.6.14",
     "@radix-ui/react-slot": "^1.1.0",
     "@tabler/icons-react": "^3.17.0",
     "@vanilla-extract/css": "^1.15.5",

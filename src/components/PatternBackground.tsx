@@ -44,12 +44,12 @@ export function PatternBackground({
         style={{
           backgroundImage: `linear-gradient(
           to right, 
-          hsla(var(--nextui-primary) / 15%) 0%, 
-          hsla(var(--nextui-primary) / 5%) 15%, 
-          hsla(var(--nextui-primary) / 0%) 30%, 
-          hsla(var(--nextui-primary) / 0%) 70%, 
-          hsla(var(--nextui-primary) / 5%) 85%, 
-          hsla(var(--nextui-primary) / 15%) 100%
+          hsla(var(--heroui-primary) / 15%) 0%, 
+          hsla(var(--heroui-primary) / 5%) 15%, 
+          hsla(var(--heroui-primary) / 0%) 30%, 
+          hsla(var(--heroui-primary) / 0%) 70%, 
+          hsla(var(--heroui-primary) / 5%) 85%, 
+          hsla(var(--heroui-primary) / 15%) 100%
         )`,
         }}
       ></div>

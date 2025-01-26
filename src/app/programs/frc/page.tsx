@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import { IconMoodHappy, IconRobotFace, IconTool } from "@tabler/icons-react";
 import { IconUsersGroup } from "@tabler/icons-react";
 import { clsx } from "clsx";

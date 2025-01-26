@@ -1,5 +1,5 @@
-import type { InputProps } from "@nextui-org/input";
-import { Input as NUIInput } from "@nextui-org/input";
+import type { InputProps } from "@heroui/input";
+import { Input as NUIInput } from "@heroui/input";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 

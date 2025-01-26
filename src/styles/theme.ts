@@ -1,4 +1,4 @@
-import type { ColorScale as NUIColorScale } from "@nextui-org/react";
+import type { ColorScale as NUIColorScale } from "@heroui/react";
 
 export const colorBases: { [key: string]: string } = {
   white: "#e5e5e5",

@@ -1,7 +1,7 @@
-import { Button } from "@nextui-org/button";
-import { Card, CardBody } from "@nextui-org/card";
-import { Divider } from "@nextui-org/divider";
-import { Link } from "@nextui-org/link";
+import { Button } from "@heroui/button";
+import { Card, CardBody } from "@heroui/card";
+import { Divider } from "@heroui/divider";
+import { Link } from "@heroui/link";
 import {
   IconLego,
   IconPresentation,

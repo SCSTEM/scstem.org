@@ -1,5 +1,5 @@
-import { Card } from "@nextui-org/card";
-import { Chip } from "@nextui-org/chip";
+import { Card } from "@heroui/card";
+import { Chip } from "@heroui/chip";
 import { IconExternalLink } from "@tabler/icons-react";
 import type { Metadata } from "next/types";
 
