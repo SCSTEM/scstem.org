@@ -4,7 +4,7 @@ import { IconUsersGroup } from "@tabler/icons-react";
 import { clsx } from "clsx";
 import type { Metadata } from "next";
 import Link from "next/link";
-import type { ReactNode, JSX } from "react";
+import type { ReactNode } from "react";
 
 import { Image } from "@/components/Image";
 import { PatternBackground } from "@/components/PatternBackground";

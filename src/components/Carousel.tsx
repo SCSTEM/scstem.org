@@ -3,7 +3,7 @@
 import AutoHeight from "embla-carousel-auto-height";
 import Autoplay from "embla-carousel-autoplay";
 import type useEmblaCarousel from "embla-carousel-react";
-import type { ReactNode, JSX } from "react";
+import type { ReactNode } from "react";
 
 import * as SUICarousel from "@/components/shadcn/ui/carousel";
 

@@ -15,12 +15,13 @@ export async function generateStaticParams(): Promise<
   return [{ name: "frc" }, { name: "sc2" }];
 }
 
-export default function CalendarPage({
+export default async function CalendarPage({
   params,
 }: {
-  params: { name: CalendarName };
-}): ReactNode {
-  const src = calendars[params.name];
+  params: Promise<{ name: CalendarName }>;
+}): Promise<ReactNode> {
+  const { name } = await params;
+  const src = calendars[name];
 
   return (
     <Calendar
@@ -28,7 +29,7 @@ export default function CalendarPage({
       calendars={[
         {
           src,
-          color: params.name === "frc" ? CalColor.Green : CalColor.Gold,
+          color: name === "frc" ? CalColor.Green : CalColor.Gold,
         },
       ]}
     />

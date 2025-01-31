@@ -2,7 +2,7 @@ import { Button } from "@heroui/button";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
 import Link from "next/link";
-import type { ReactNode, JSX } from "react";
+import type { ReactNode } from "react";
 
 import type { StaticImport } from "@/components/Image";
 import { Image } from "@/components/Image";

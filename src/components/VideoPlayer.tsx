@@ -2,7 +2,7 @@
 
 import { IconPlayerPlay } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
-import { useState, type JSX } from "react";
+import { useState, type ReactElement, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -10,7 +10,7 @@ const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 type Props = {
   url: string;
-  placeholder?: string | ReactNode;
+  placeholder?: string | ReactElement;
   classNames?: {
     wrapper?: string;
     player?: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode, JSX } from "react";
+import type { ReactNode } from "react";
 import { ParallaxBanner } from "react-scroll-parallax";
 
 import { cn } from "@/lib/utils";
