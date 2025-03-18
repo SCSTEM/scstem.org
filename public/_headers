@@ -7,11 +7,11 @@ https://*scstem-org.pages.dev/*
 https://scstem.org/image/*
   X-Robots-Tag: noindex
 
+https://scstem.org/video/*
+  X-Robots-Tag: noindex
+
 https://scstem.org/team/*
   X-Robots-Tag: noindex
 
 https://staging.scstem.org/*
-  X-Robots-Tag: noindex
-
-https://next.scstem.org/*
   X-Robots-Tag: noindex
