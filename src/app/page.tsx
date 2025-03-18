@@ -3,7 +3,6 @@ import { Divider } from "@heroui/divider";
 import { Link } from "@heroui/link";
 import {
   IconBooks,
-  IconDeviceGamepad2,
   IconExternalLink,
   IconLego,
   IconMoodSmile,
@@ -29,7 +28,6 @@ import deanImage from "@/image/dean.webp";
 import firstHorizontalAcroDarkImage from "@/image/first/first-horizontal-acro-dark.png";
 import firstHorizontalDarkImage from "@/image/first/first-horizontal-dark.png";
 import frcImage from "@/image/frc-driveteam.webp";
-import ftcImage from "@/image/ftc-robot.webp";
 import handsOn2Image from "@/image/hands-on-2.webp";
 import leadership1Image from "@/image/leadership-1.webp";
 import fllImage from "@/image/lego-robots.webp";
@@ -47,27 +45,7 @@ const programCards: FeatureCardProps[] = [
     color: "orange",
     link: "/programs/fll",
     badge: "Ages 9 - 16",
-    img: {
-      src: fllImage,
-      alt: "Lego® robots",
-    },
-  },
-  {
-    title: (
-      <>
-        <span className="italic">FIRST®</span> Tech Challenge
-      </>
-    ),
-    body: "FTC students learn to think like engineers. Teams design, build, and code robots to compete in an alliance format against other teams. Robots are built from a reusable platform, powered by Android technology, and can be coded using a variety of levels of Java-based programming.",
-    icon: IconDeviceGamepad2,
-    color: "red",
-    link: "https://www.facebook.com/Reconnecting18035",
-    linkIcon: IconExternalLink,
-    badge: "Ages 12 - 18",
-    img: {
-      src: ftcImage,
-      alt: `Team 18035 "Reconnecting"'s robot`,
-    },
+    img: { src: fllImage, alt: "Lego® robots" },
   },
   {
     title: (
@@ -80,10 +58,7 @@ const programCards: FeatureCardProps[] = [
     color: "blue",
     link: "/programs/frc",
     badge: "Ages 13 - 18",
-    img: {
-      src: frcImage,
-      alt: `Team 4050 Biohazard's drive team and robot`,
-    },
+    img: { src: frcImage, alt: `Team 4050 Biohazard's drive team and robot` },
   },
 ];
 
