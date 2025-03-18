@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -73,7 +75,7 @@ export function Calendar({
   noCalList,
   noTimeZone,
   className,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   let src = "";
   if (calendars) {
     calendars.forEach((calendar) => {

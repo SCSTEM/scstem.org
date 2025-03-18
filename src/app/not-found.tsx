@@ -1,11 +1,12 @@
-import { Button } from "@nextui-org/button";
-import { Link } from "@nextui-org/link";
+import { Button } from "@heroui/button";
+import { Link } from "@heroui/link";
+import type { ReactNode } from "react";
 
 import { Image } from "@/components/Image";
 
 import logo from "@/image/svg/logo-white-full.svg";
 
-export default function NotFound(): JSX.Element {
+export default function NotFound(): ReactNode {
   return (
     <div className="bg-[url(/image/metal-shavings.webp)] bg-cover relative h-[calc(100vh-4rem)] md:h-auto">
       <div

@@ -1,6 +1,6 @@
-import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
-import { Chip } from "@nextui-org/chip";
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
+import { Chip } from "@heroui/chip";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -18,7 +18,7 @@ function CardImage({
   src: StaticImport;
   alt: string;
   className?: string;
-}): JSX.Element {
+}): ReactNode {
   return (
     <Image
       src={src}
@@ -64,7 +64,7 @@ export function FeatureCard({
   classNames,
   footer,
   ...props
-}: FeatureCardProps): JSX.Element {
+}: FeatureCardProps): ReactNode {
   const parsedColor = parseColor(color);
   return (
     <Card

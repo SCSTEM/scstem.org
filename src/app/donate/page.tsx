@@ -1,5 +1,5 @@
-import { Button } from "@nextui-org/button";
-import { Link } from "@nextui-org/link";
+import { Button } from "@heroui/button";
+import { Link } from "@heroui/link";
 import {
   IconBrandPaypal,
   IconFileDescription,
@@ -10,6 +10,7 @@ import {
   IconWallet,
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 import { PatternBackground } from "@/components/PatternBackground";
 import {
@@ -143,7 +144,7 @@ export const metadata: Metadata = {
   title: "Donate",
 };
 
-export default function Donate(): JSX.Element {
+export default function Donate(): ReactNode {
   return (
     <PatternBackground pattern="topography">
       <div className="md:max-w-screen-xl md:mx-auto mx-2 my-10 md:my-24 space-y-10 md:space-y-24">

@@ -1,10 +1,10 @@
 "use client";
 
+import { Button } from "@heroui/react";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { Turnstile } from "@marsidev/react-turnstile";
-import { Button } from "@nextui-org/react";
 import { IconCheck, IconSend } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { InferInput } from "valibot";
@@ -39,7 +39,7 @@ type Props = {
   name: string;
 };
 
-export function ContactForm({ className, name }: Props): JSX.Element {
+export function ContactForm({ className, name }: Props): ReactNode {
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
 

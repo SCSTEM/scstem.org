@@ -21,7 +21,7 @@ export function VideoHeader({
   src,
   scrollButtonText,
   className,
-}: Props): JSX.Element {
+}: Props): ReactNode {
   return (
     <header
       className={cn(

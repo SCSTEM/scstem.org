@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 import { PatternBackground } from "@/components/PatternBackground";
 
@@ -6,7 +7,7 @@ export const metadata: Metadata = {
   title: "Get Involved",
 };
 
-export default function GetInvolved(): JSX.Element {
+export default function GetInvolved(): ReactNode {
   return (
     <PatternBackground pattern={"circuit"}>
       <div className="h-[1800px]" style={{ colorScheme: "light" }}>

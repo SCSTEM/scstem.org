@@ -15,7 +15,7 @@ export function Highlight({
   className,
   gradient,
   color,
-}: HighlightProps): JSX.Element {
+}: HighlightProps): ReactNode {
   return (
     <span
       className={cn(
@@ -44,7 +44,7 @@ export function Underline({
   className,
   children,
   color,
-}: UnderlineProps): JSX.Element {
+}: UnderlineProps): ReactNode {
   return (
     <span
       className={cn(

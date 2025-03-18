@@ -25,7 +25,8 @@
       "@/functions/*": ["./functions/*"],
       "@/data/*": ["./data/*"],
       "@/image/*": ["./public/image/*"]
-    }
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",

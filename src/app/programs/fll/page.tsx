@@ -1,10 +1,11 @@
-import { Link } from "@nextui-org/link";
+import { Link } from "@heroui/link";
+import type { ReactNode } from "react";
 
 import { PatternBackground } from "@/components/PatternBackground";
 import HeroHeader from "@/components/page/HeroHeader";
 import { Highlight } from "@/components/spans";
 
-export default function FLL(): JSX.Element {
+export default function FLL(): ReactNode {
   return (
     <>
       <HeroHeader img="/image/lego-robots.webp">

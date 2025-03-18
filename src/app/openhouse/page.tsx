@@ -1,18 +1,15 @@
-import { Button } from "@nextui-org/button";
-import { Card, CardBody } from "@nextui-org/card";
-import { Divider } from "@nextui-org/divider";
-import { Link } from "@nextui-org/link";
+import { Button } from "@heroui/button";
+import { Card, CardBody } from "@heroui/card";
+import { Divider } from "@heroui/divider";
+import { Link } from "@heroui/link";
 import {
   IconLego,
-  IconPresentation,
-  IconTool,
-  IconBooks,
-  IconMoodSmile,
   IconCalendarEvent,
   IconBrandFacebook,
   IconRobotFace,
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 import { Image } from "@/components/Image";
 import { PatternBackground } from "@/components/PatternBackground";
@@ -25,12 +22,7 @@ import HeroHeader from "@/components/page/HeroHeader";
 import Section from "@/components/page/Section";
 import { Highlight } from "@/components/spans";
 
-import awardImage from "@/image/award.webp";
-import competition1Image from "@/image/competition-1.webp";
-import deanImage from "@/image/dean.webp";
 import frcImage from "@/image/frc-driveteam.webp";
-import handsOn2Image from "@/image/hands-on-2.webp";
-import leadership1Image from "@/image/leadership-1.webp";
 import fllImage from "@/image/lego-robots.webp";
 import openHouseImage from "@/image/open-house-24-banner.webp";
 
@@ -69,94 +61,94 @@ const programCards: FeatureCardProps[] = [
   },
 ];
 
-const joinCards: FeatureCardProps[] = [
-  {
-    title: "Learn real-world skills",
-    body: (
-      <>
-        Get hands on with tools and technology under the supervision of experts
-        in their fields in everything from engineering to marketing. Learn not
-        only how the tools work, but how to use them effectively.
-      </>
-    ),
-    icon: IconTool,
-    img: {
-      src: handsOn2Image,
-      alt: "A student and mentor get hands-on with a robot",
-      placement: "bottom",
-    },
-  },
-  {
-    title: "Experience leadership and teamwork",
-    body: (
-      <>
-        Build strong relationships with teammates and mentors as you work
-        together throughout the season. Learn how to make decisions as a team
-        and take leadership in your area of expertise.
-      </>
-    ),
-    icon: IconPresentation,
-    img: {
-      src: leadership1Image,
-      alt: "Two students referencing a whiteboard during a planning meeting",
-      placement: "bottom",
-    },
-  },
-  {
-    title: "Education through competition",
-    body: (
-      <>
-        Prepare to compete against teams from around the world with a limited
-        time-frame, tight budget, and a complex challenge. Learn how to work
-        under pressure and build reliable systems that can handle intense
-        competition.
-      </>
-    ),
-    icon: IconBooks,
-    img: {
-      src: competition1Image,
-      alt: "Team members cheering at competition",
-      placement: "bottom",
-    },
-  },
-  {
-    title: "Scholarships and career opportunities",
-    body: (
-      <>
-        Being a member of a <span className="italic">FIRST®</span> team is more
-        than just building robots and learning about STEM. It opens doors to
-        scholarship and career opportunities that you cannot get anywhere else.
-        Many of our alumni used the skills developed while students to pursue
-        careers in STEM (and related) fields.
-      </>
-    ),
-    icon: IconBooks,
-    img: {
-      src: awardImage,
-      alt: "Team members receiving an award at competition",
-      placement: "bottom",
-    },
-  },
-  {
-    title: "Fun",
-    body: (
-      <>
-        Although we take our work seriously, we also have a lot of fun. Whether
-        it&apos;s dancing to the YMCA at competition, playing a game of Kahoot
-        during a meeting, or just hanging out with friends as we work on our
-        robots, we always manage to have a lot of fun.
-      </>
-    ),
-    icon: IconMoodSmile,
-    img: {
-      src: deanImage,
-      alt: "Team members sharing a moment with Dean Kamen, the founder of FIRST®",
-      placement: "bottom",
-    },
-  },
-];
+// const joinCards: FeatureCardProps[] = [
+//   {
+//     title: "Learn real-world skills",
+//     body: (
+//       <>
+//         Get hands on with tools and technology under the supervision of experts
+//         in their fields in everything from engineering to marketing. Learn not
+//         only how the tools work, but how to use them effectively.
+//       </>
+//     ),
+//     icon: IconTool,
+//     img: {
+//       src: handsOn2Image,
+//       alt: "A student and mentor get hands-on with a robot",
+//       placement: "bottom",
+//     },
+//   },
+//   {
+//     title: "Experience leadership and teamwork",
+//     body: (
+//       <>
+//         Build strong relationships with teammates and mentors as you work
+//         together throughout the season. Learn how to make decisions as a team
+//         and take leadership in your area of expertise.
+//       </>
+//     ),
+//     icon: IconPresentation,
+//     img: {
+//       src: leadership1Image,
+//       alt: "Two students referencing a whiteboard during a planning meeting",
+//       placement: "bottom",
+//     },
+//   },
+//   {
+//     title: "Education through competition",
+//     body: (
+//       <>
+//         Prepare to compete against teams from around the world with a limited
+//         time-frame, tight budget, and a complex challenge. Learn how to work
+//         under pressure and build reliable systems that can handle intense
+//         competition.
+//       </>
+//     ),
+//     icon: IconBooks,
+//     img: {
+//       src: competition1Image,
+//       alt: "Team members cheering at competition",
+//       placement: "bottom",
+//     },
+//   },
+//   {
+//     title: "Scholarships and career opportunities",
+//     body: (
+//       <>
+//         Being a member of a <span className="italic">FIRST®</span> team is more
+//         than just building robots and learning about STEM. It opens doors to
+//         scholarship and career opportunities that you cannot get anywhere else.
+//         Many of our alumni used the skills developed while students to pursue
+//         careers in STEM (and related) fields.
+//       </>
+//     ),
+//     icon: IconBooks,
+//     img: {
+//       src: awardImage,
+//       alt: "Team members receiving an award at competition",
+//       placement: "bottom",
+//     },
+//   },
+//   {
+//     title: "Fun",
+//     body: (
+//       <>
+//         Although we take our work seriously, we also have a lot of fun. Whether
+//         it&apos;s dancing to the YMCA at competition, playing a game of Kahoot
+//         during a meeting, or just hanging out with friends as we work on our
+//         robots, we always manage to have a lot of fun.
+//       </>
+//     ),
+//     icon: IconMoodSmile,
+//     img: {
+//       src: deanImage,
+//       alt: "Team members sharing a moment with Dean Kamen, the founder of FIRST®",
+//       placement: "bottom",
+//     },
+//   },
+// ];
 
-const faq: { question: string; answer: string | JSX.Element }[] = [
+const faq: { question: string; answer: string | ReactNode }[] = [
   {
     question: "When is the open house?",
     answer:
@@ -201,7 +193,7 @@ export const metadata: Metadata = {
     "Are you or is someone you know interested in LEGO®, science, technology, engineering, math, business, marketing, video production, software development, web design, carpentry, or leadership? Find out more and get a chance to speak with our students and mentors at our upcoming open house.",
 };
 
-export default function OpenHouse(): JSX.Element {
+export default function OpenHouse(): ReactNode {
   return (
     <>
       <HeroHeader img="/image/students.webp">

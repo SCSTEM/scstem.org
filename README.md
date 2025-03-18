@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   // ... other metadata fields
 };
 
-export default function PageName(): JSX.Element {
+export default function PageName(): ReactNode {
   return <div>Hello World!</div>;
 }
 ```

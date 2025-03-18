@@ -1,5 +1,6 @@
 import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 
 import { Providers } from "@/components/Providers";
 import { DefaultLayout } from "@/layouts/Default";
@@ -51,7 +52,7 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>): JSX.Element {
+}>): ReactNode {
   return (
     <html
       lang="en"

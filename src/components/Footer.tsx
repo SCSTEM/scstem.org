@@ -1,11 +1,12 @@
-import { Divider } from "@nextui-org/divider";
-import { Link } from "@nextui-org/link";
+import { Divider } from "@heroui/divider";
+import { Link } from "@heroui/link";
 import {
   IconBrandFacebook,
   IconBrandGithub,
   IconBrandLinkedin,
   IconMail,
 } from "@tabler/icons-react";
+import type { ReactNode } from "react";
 
 import { ActionIcon } from "@/components/ActionIcon";
 import { Carousel } from "@/components/Carousel";
@@ -75,7 +76,7 @@ const footerSponsors = Sponsors.filter(
     sponsor.level === SponsorLevel.Platinum,
 );
 
-function SponsorSlide({ sponsor }: { sponsor: SponsorSlide }): JSX.Element {
+function SponsorSlide({ sponsor }: { sponsor: SponsorSlide }): ReactNode {
   return (
     <Link href={sponsor.url} className="hover:no-underline size-full">
       <div className="flex flex-col items-center justify-center space-y-1 size-full">
@@ -99,7 +100,7 @@ function SponsorSlide({ sponsor }: { sponsor: SponsorSlide }): JSX.Element {
   );
 }
 
-export function Footer({ className }: { className?: string }): JSX.Element {
+export function Footer({ className }: { className?: string }): ReactNode {
   return (
     <footer
       className={cn("py-4 md:py-12 shadow-large bg-background", className)}
