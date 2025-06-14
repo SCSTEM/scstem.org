@@ -234,8 +234,10 @@ export function Navbar(): ReactNode {
         className="sm:hidden"
       />
       <NavbarBrand className="gap-x-2" as={Link} href="/">
-        <LogoColor className="max-h-[50px]" />
-        <div className="font-bold w-36 lg:w-full whitespace-normal text-foreground">
+        <div className="max-h-[50px] aspect-square flex-shrink-0">
+          <LogoColor className="size-full object-contain" />
+        </div>
+        <div className="font-bold w-36 lg:w-full whitespace-normal text-foreground flex-1">
           South Central STEM Collective
         </div>
       </NavbarBrand>
