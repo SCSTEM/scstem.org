@@ -25,7 +25,7 @@ export default function About(): ReactNode {
           <p>
             The South Central STEM Collective (otherwise known as SC2) was
             created to serve South Central Pennsylvania as &ldquo;STEM
-            Central&rdquo; to inspire youth aged K-12 through hands-on
+            Central&rdquo; to inspire youth aged 9-18 through hands-on
             education, competitive robotics and drone teams, maker spaces, and
             community outreach.
           </p>
