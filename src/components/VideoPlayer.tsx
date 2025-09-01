@@ -45,7 +45,7 @@ export function VideoPlayer({
 
       <ReactPlayer
         className={cn(classNames?.player)}
-        url={url}
+        src={url}
         controls
         light={placeholder}
         volume={0.4}
