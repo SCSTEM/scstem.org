@@ -11,13 +11,12 @@ import {
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-
-import { PatternBackground } from "@/components/PatternBackground";
 import {
   FeatureCard,
   type FeatureCardProps,
 } from "@/components/cards/FeatureCard";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { PatternBackground } from "@/components/PatternBackground";
 import { Highlight } from "@/components/spans";
 import { siteConfig } from "@/data/config";
 import { parseColor } from "@/styles/theme";
@@ -147,7 +146,7 @@ export const metadata: Metadata = {
 export default function Donate(): ReactNode {
   return (
     <PatternBackground pattern="topography">
-      <div className="md:max-w-screen-xl md:mx-auto mx-2 my-10 md:my-24 space-y-10 md:space-y-24">
+      <div className="md:max-w-(--breakpoint-xl) md:mx-auto mx-2 my-10 md:my-24 gap-y-10 md:gap-y-24 flex flex-col">
         <h1 className="text-4xl font-bold md:text-5xl mb-0 text-foreground text-center font-heading">
           How you can <Highlight>support</Highlight> the mission
         </h1>
@@ -155,12 +154,12 @@ export default function Donate(): ReactNode {
         <div className="flex flex-wrap justify-center gap-8">
           {donateCards.map((card, i) => (
             <div key={i} className="w-full md:w-auto min-h-[300px]">
-              <FeatureCard key={i} {...card} />
+              <FeatureCard {...card} />
             </div>
           ))}
         </div>
 
-        <div className="flex flex-col items-center gap-y-6 mx-auto md:max-w-screen-lg px-6 py-5 text-center text-lg max-w-3xl">
+        <div className="flex flex-col items-center gap-y-6 mx-auto px-6 py-5 text-center text-lg max-w-3xl">
           <div
             id="questions"
             className="relative top-[-100px] block invisible"

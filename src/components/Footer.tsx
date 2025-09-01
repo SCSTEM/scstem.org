@@ -12,8 +12,8 @@ import { ActionIcon } from "@/components/ActionIcon";
 import { Carousel } from "@/components/Carousel";
 import { Image } from "@/components/Image";
 import { LogoFullColor } from "@/components/Logo";
-import { SponsorLevel, Sponsors } from "@/data/sponsors";
 import type { Sponsor as SponsorSlide } from "@/data/sponsors";
+import { SponsorLevel, Sponsors } from "@/data/sponsors";
 import type { Icon } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
@@ -76,14 +76,14 @@ const footerSponsors = Sponsors.filter(
     sponsor.level === SponsorLevel.Platinum,
 );
 
-function SponsorSlide({ sponsor }: { sponsor: SponsorSlide }): ReactNode {
+function Slide({ sponsor }: { sponsor: SponsorSlide }): ReactNode {
   return (
     <Link href={sponsor.url} className="hover:no-underline size-full">
       <div className="flex flex-col items-center justify-center space-y-1 size-full">
         {sponsor.logo ? (
           <Image
             src={sponsor.logo}
-            alt={sponsor.name + " logo"}
+            alt={`${sponsor.name} logo`}
             className="size-full object-contain sponsor-image"
           />
         ) : (
@@ -119,7 +119,7 @@ export function Footer({ className }: { className?: string }): ReactNode {
                     key={sponsor.name}
                     className="px-8 py-4 aspect-video w-full sm:w-[300px] md:w-[400px] mx-auto h-[200px]"
                   >
-                    <SponsorSlide sponsor={sponsor} />
+                    <Slide sponsor={sponsor} />
                   </div>
                 ))}
               />
@@ -131,7 +131,7 @@ export function Footer({ className }: { className?: string }): ReactNode {
                     key={sponsor.name}
                     className="aspect-video m-auto w-full max-h-[150px] px-5"
                   >
-                    <SponsorSlide key={sponsor.name} sponsor={sponsor} />
+                    <Slide key={sponsor.name} sponsor={sponsor} />
                   </div>
                 ))}
               </div>
@@ -173,7 +173,7 @@ export function Footer({ className }: { className?: string }): ReactNode {
         </div>
 
         {/* Copyright */}
-        <div className="mx-auto flex w-60 md:w-70 items-center justify-between gap-y-2 md:w-full md:flex-row flex-col-reverse p-2 lg:px-0">
+        <div className="mx-auto flex w-60 md:w-full items-center justify-between gap-y-2 md:flex-row flex-col-reverse p-2 lg:px-0">
           <div className="text-center md:text-left text-sm text-gray-400">
             {`Copyright © ${new Date().getFullYear()} South Central STEM Collective.`}
           </div>

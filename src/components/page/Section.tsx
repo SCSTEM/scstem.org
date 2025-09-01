@@ -25,7 +25,7 @@ export default function Section({
   if (alt)
     return (
       <section className={cn("shadow-inner p-8", className)}>
-        <div className="md:max-w-screen-xl xl:max-w-screen-2xl mx-auto md:px-12">
+        <div className="md:max-w-(--breakpoint-xl) xl:max-w-(--breakpoint-2xl) mx-auto md:px-12">
           {children}
         </div>
       </section>
@@ -34,7 +34,7 @@ export default function Section({
   return (
     <section
       className={cn(
-        "px-6 py-10 md:max-w-screen-xl xl:max-w-screen-2xl mx-auto",
+        "px-6 py-10 md:max-w-(--breakpoint-xl) xl:max-w-(--breakpoint-2xl) mx-auto",
         className,
       )}
     >

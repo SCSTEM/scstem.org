@@ -3,24 +3,23 @@ import { Card, CardBody } from "@heroui/card";
 import { Divider } from "@heroui/divider";
 import { Link } from "@heroui/link";
 import {
-  IconLego,
-  IconCalendarEvent,
   IconBrandFacebook,
+  IconCalendarEvent,
+  IconLego,
   IconRobotFace,
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-
-import { Image } from "@/components/Image";
-import { PatternBackground } from "@/components/PatternBackground";
-import { VideoPlayer } from "@/components/VideoPlayer";
 import {
   FeatureCard,
   type FeatureCardProps,
 } from "@/components/cards/FeatureCard";
+import { Image } from "@/components/Image";
+import { PatternBackground } from "@/components/PatternBackground";
 import HeroHeader from "@/components/page/HeroHeader";
 import Section from "@/components/page/Section";
 import { Highlight } from "@/components/spans";
+import { VideoPlayer } from "@/components/VideoPlayer";
 
 import frcImage from "@/image/frc-driveteam.webp";
 import fllImage from "@/image/lego-robots.webp";
@@ -213,7 +212,7 @@ export default function OpenHouse(): ReactNode {
 
       <PatternBackground>
         <div className="flex flex-col gap-y-16 py-10">
-          <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-lg px-6 text-center">
+          <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-(--breakpoint-lg) px-6 text-center">
             <h2 className="heading-2">
               Meet the teams, see the robots, and learn more about our programs.
             </h2>
@@ -230,14 +229,14 @@ export default function OpenHouse(): ReactNode {
             <div className="flex flex-wrap justify-center gap-5">
               {programCards.map((card, i) => (
                 <div key={i}>
-                  <FeatureCard key={i} {...card} />
+                  <FeatureCard {...card} />
                 </div>
               ))}
             </div>
           </Section>
 
           <div className="space-y-4 py-8">
-            <div className="md:max-w-screen-xl mx-auto px-10 md:px-12">
+            <div className="md:max-w-(--breakpoint-xl) mx-auto px-10 md:px-12">
               <div className="md:max-w-[800px] mb-10 mx-auto">
                 <Image
                   src={openHouseImage}
@@ -265,7 +264,7 @@ export default function OpenHouse(): ReactNode {
                       >
                         Like us on Facebook
                       </Button>
-                      <h5 className="text-lg !mt-6">
+                      <h5 className="text-lg mt-6!">
                         Let us know you&apos;re coming
                       </h5>
                       <Button
@@ -336,6 +335,7 @@ export default function OpenHouse(): ReactNode {
                         style={{ width: "1.5rem" }}
                         className="inline-block -mt-1"
                       >
+                        <title>Map Pin</title>
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"

@@ -1,29 +1,53 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin "./hero.ts";
+@source "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
+@custom-variant dark (&:is(.dark *));
+
+@plugin "@tailwindcss/typography";
+
+/* Tailwind CSS v4 Configuration */
+@theme {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-scp);
+  --font-heading: var(--font-orbitron);
+
+  /* --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  } */
+}
+
+/* @plugin "tailwindcss-animate"; */
 
 ::selection {
   background-color: hsl(var(--nextui-primary));
   color: hsl(var(--nextui-background));
 }
 
-@layer components {
-  .heading-1 {
-    @apply font-heading text-4xl font-bold;
-  }
-  .heading-2 {
-    @apply font-heading text-3xl font-bold;
-  }
-  .heading-3 {
-    @apply font-heading text-2xl font-bold;
-  }
-  .heading-4 {
-    @apply font-heading text-xl font-bold;
-  }
-  .heading-5 {
-    @apply font-heading text-lg font-bold;
-  }
-  .heading-6 {
-    @apply font-heading text-base font-bold;
-  }
+.heading-1 {
+  @apply font-heading text-4xl font-bold;
+}
+.heading-2 {
+  @apply font-heading text-3xl font-bold;
+}
+.heading-3 {
+  @apply font-heading text-2xl font-bold;
+}
+.heading-4 {
+  @apply font-heading text-xl font-bold;
+}
+.heading-5 {
+  @apply font-heading text-lg font-bold;
+}
+.heading-6 {
+  @apply font-heading text-base font-bold;
 }

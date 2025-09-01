@@ -2,7 +2,7 @@
 
 import { IconPlayerPlay } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
-import { useState, type ReactElement, type ReactNode } from "react";
+import { type ReactElement, type ReactNode, useState } from "react";
 
 import { cn } from "@/lib/utils";
 

@@ -45,6 +45,7 @@ export function VideoHeader({
       </div>
       <div className="size-full">{children}</div>
       <button
+        type="button"
         className="mx-auto flex cursor-pointer flex-col items-center border-none bg-transparent sm:text-2xl font-bold outline-none text-primary mt-auto mb-10"
         onClick={() =>
           document

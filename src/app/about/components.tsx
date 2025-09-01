@@ -2,8 +2,6 @@ import type { ReactNode } from "react";
 
 import type { StaticImport } from "@/components/Image";
 import { Image } from "@/components/Image";
-import { cn } from "@/lib/utils";
-
 import fll2024 from "@/image/team/fll/2024.webp";
 import frc2013 from "@/image/team/frc/2013.webp";
 import frc2014 from "@/image/team/frc/2014.webp";
@@ -16,6 +14,7 @@ import frc2020 from "@/image/team/frc/2020.webp";
 import frc2022 from "@/image/team/frc/2022.webp";
 import frc2023 from "@/image/team/frc/2023.webp";
 import frc2024 from "@/image/team/frc/2024.webp";
+import { cn } from "@/lib/utils";
 
 type CaptionedImageProps = {
   src: StaticImport;

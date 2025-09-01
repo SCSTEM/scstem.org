@@ -1,6 +1,10 @@
 import { Button } from "@heroui/button";
-import { IconMoodHappy, IconRobotFace, IconTool } from "@tabler/icons-react";
-import { IconUsersGroup } from "@tabler/icons-react";
+import {
+  IconMoodHappy,
+  IconRobotFace,
+  IconTool,
+  IconUsersGroup,
+} from "@tabler/icons-react";
 import { clsx } from "clsx";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -8,14 +12,13 @@ import type { ReactNode } from "react";
 
 import { Image } from "@/components/Image";
 import { PatternBackground } from "@/components/PatternBackground";
-import { VideoPlayer } from "@/components/VideoPlayer";
 import { VideoHeader } from "@/components/page/VideoHeader";
 import { Underline } from "@/components/spans";
-import type { Icon } from "@/lib/utils";
-
+import { VideoPlayer } from "@/components/VideoPlayer";
 import biohazardHeaderLogo from "@/image/biohazard/header-logo.svg";
 import troubleLogo from "@/image/biohazard/trouble-logo.webp";
 import viperLogo from "@/image/biohazard/viper-logo.webp";
+import type { Icon } from "@/lib/utils";
 
 import { ParallaxImage } from "./components";
 
@@ -69,7 +72,7 @@ export default function FRC(): ReactNode {
               </ParallaxImage>
             </a>
           </div>
-          <PageSection className="lg:!mt-10">
+          <PageSection className="lg:mt-10!">
             <VideoPlayer
               url="https://youtu.be/147CgudTur8"
               classNames={{ icon: "text-green-500" }}
@@ -90,7 +93,9 @@ function PageSection({
   className?: string;
 }) {
   return (
-    <section className={clsx("p-8 md:max-w-screen-xl mx-auto", className)}>
+    <section
+      className={clsx("p-8 md:max-w-(--breakpoint-xl) mx-auto", className)}
+    >
       {children}
     </section>
   );
@@ -150,7 +155,7 @@ function TeamOverview() {
           as={Link}
           size="lg"
           href="/get-involved"
-          className="shadow-lg bg-gradient-to-br from-yellow-400 to-orange-500 text-black lg:w-fit m-auto w-full justify-center"
+          className="shadow-lg bg-linear-to-br from-yellow-400 to-orange-500 text-black lg:w-fit m-auto w-full justify-center"
         >
           Join the Revolution
         </Button>
@@ -159,7 +164,7 @@ function TeamOverview() {
         {teamOverview.map((item, i) => (
           <div key={i} className="space-y-3">
             <div className="flex flex-row space-x-3">
-              <div className="bg-gradient-to-br from-green-500 via-green-700 to-green-900 shadow-md border-none size-fit p-1.5 rounded-md">
+              <div className="bg-linear-to-br from-green-500 via-green-700 to-green-900 shadow-md border-none size-fit p-1.5 rounded-md">
                 <item.icon size={30} stroke={1.5} />
               </div>
               <h3 className="font-bold text-xl my-auto">{item.title}</h3>
@@ -203,7 +208,7 @@ const stats: {
 
 function StatsGroup() {
   return (
-    <div className=" sm:p-5 sm:px-0 px-5 py-0 rounded-lg bg-gradient-to-br from-green-900 to-green-700 shadow-2xl relative">
+    <div className=" sm:p-5 sm:px-0 px-5 py-0 rounded-lg bg-linear-to-br from-green-900 to-green-700 shadow-2xl relative">
       <div className="absolute size-full bg-background -z-10 inset-0"></div>
       <div className="flex flex-col sm:flex-row divide-solid divide-x-0 sm:divide-x-2 sm:divide-y-0 divide-y-2 divide-white">
         {stats.map((stat, i) => (

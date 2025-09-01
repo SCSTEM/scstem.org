@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
-import { parseColor, type ColorScale } from "@/styles/theme";
+import { type ColorScale, parseColor } from "@/styles/theme";
 
 type HighlightProps = {
   children: ReactNode;
@@ -21,7 +21,7 @@ export function Highlight({
       className={cn(
         "leading-none text-primary",
         gradient
-          ? "bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-orange-500"
+          ? "bg-clip-text text-transparent bg-linear-to-r from-primary-400 to-orange-500"
           : null,
         className,
       )}

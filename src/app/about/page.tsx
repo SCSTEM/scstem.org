@@ -19,7 +19,7 @@ export default function About(): ReactNode {
       <div className="hidden lg:block mx-auto">
         <LeftSidebar />
       </div>
-      <main className="prose prose-invert max-w-screen-md md:mx-auto gap-y-10 mx-5">
+      <main className="prose prose-invert max-w-(--breakpoint-md) md:mx-auto gap-y-10 mx-5">
         <article>
           <h1>About Us</h1>
           <p>
