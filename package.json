@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start",
+    "start": "serve build",
     "format": "biome format --write .",
     "lint": "biome lint --write .",
     "check": "biome check --write ."
@@ -44,6 +44,7 @@
     "@types/react-dom": "19.1.9",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
+    "serve": "^14.2.5",
     "tailwindcss": "^4.1.12",
     "typescript": "^5.9.2",
     "wrangler": "^4.33.1"
