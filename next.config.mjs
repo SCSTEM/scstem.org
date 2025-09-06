@@ -5,6 +5,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    optimizePackageImports: ["@heroui/react", "@tabler/icons-react"],
+  },
 };
 
 export default nextConfig;

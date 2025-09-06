@@ -1,5 +1,4 @@
-import { Divider } from "@heroui/divider";
-import { Link } from "@heroui/link";
+import { Divider, Link } from "@heroui/react";
 import {
   IconBrandFacebook,
   IconBrandGithub,
