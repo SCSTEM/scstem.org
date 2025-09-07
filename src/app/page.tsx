@@ -1,4 +1,6 @@
-import { Button, Divider, Link } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Divider } from "@heroui/divider";
+import { Link } from "@heroui/link";
 import {
   IconBooks,
   IconExternalLink,

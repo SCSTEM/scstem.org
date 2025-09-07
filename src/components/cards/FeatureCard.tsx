@@ -1,11 +1,6 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Chip,
-} from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
+import { Chip } from "@heroui/chip";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
