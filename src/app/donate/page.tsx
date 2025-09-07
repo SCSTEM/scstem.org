@@ -54,13 +54,13 @@ const donateCards: FeatureCardProps[] = [
       <Button
         as={Link}
         target="_blank"
-        className="w-full"
+        className="w-full mt-auto"
         href={siteConfig.donateUrl}
-        startContent={<IconBrandPaypal />}
         style={{
           backgroundColor: parseColor("blue"),
         }}
       >
+        <IconBrandPaypal />
         Donate
       </Button>
     ),
@@ -109,11 +109,11 @@ const donateCards: FeatureCardProps[] = [
         target="_blank"
         className="w-full mt-auto"
         href={siteConfig.wishlistUrl}
-        startContent={<IconListCheck />}
         style={{
           backgroundColor: parseColor("red"),
         }}
       >
+        <IconListCheck />
         Wishlist
       </Button>
     ),
