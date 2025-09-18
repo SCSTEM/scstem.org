@@ -28,6 +28,7 @@ export default function HeroHeader({ img, children }: Props): ReactNode {
           {children}
         </div>
         <button
+          type="button"
           className="sm:hidden mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-primary mt-auto"
           onClick={() =>
             document

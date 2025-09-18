@@ -1,31 +1,25 @@
 {
+  "editor.defaultFormatter": "biomejs.biome",
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit"
+  },
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "tailwindCSS.experimental.classRegex": [
     [
       "clsx\\(([^)]*)\\)",
       "(?:'|\"|`)([^']*)(?:'|\"|`)",
       "cn\\(([^)]*)\\)",
-      "classNames\\(([^)]*)\\)"
+      "classNames\\(([^)]+)\\)"
     ]
   ],
-  "files.associations": {
-    "*.css": "css",
-    "css": "css"
-  },
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "always"
-  },
-  "typescript.preferences.importModuleSpecifier": "non-relative",
-  "css.lint.unknownAtRules": "ignore",
-  "[svg]": {
-    "editor.defaultFormatter": "jock.svg"
-  },
+  "typescript.tsdk": "./node_modules/typescript/lib",
   "workbench.editor.customLabels.enabled": true,
   "workbench.editor.customLabels.patterns": {
     "**/app/**/page.tsx": "${dirname} - Page",
     "**/app/**/layout.tsx": "${dirname} - Layout",
     "**/app/**/template.tsx": "${dirname} - Template"
-  }
+  },
+  "css.lint.unknownAtRules": "ignore"
 }

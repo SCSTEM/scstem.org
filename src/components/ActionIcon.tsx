@@ -1,5 +1,4 @@
-import type { ButtonProps } from "@heroui/button";
-import { Button } from "@heroui/button";
+import { Button, type ButtonProps } from "@heroui/button";
 import { Link } from "@heroui/link";
 import type { IconProps } from "@tabler/icons-react";
 import type { FC, ReactNode } from "react";

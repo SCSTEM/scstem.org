@@ -1,6 +1,6 @@
 import type { StaticImport } from "@/components/Image";
 
-import fivesLogo from "@/image/sponsor/fives.svg";
+// import fivesLogo from "@/image/sponsor/fives.svg";
 import jlgLogo from "@/image/sponsor/jlg.svg";
 import journalyticLogo from "@/image/sponsor/journalytic.svg";
 import manitowocLogo from "@/image/sponsor/manitowoc.png";
