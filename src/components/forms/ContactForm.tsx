@@ -4,16 +4,14 @@ import { Button } from "@heroui/react";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { IconCheck, IconSend } from "@tabler/icons-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { InferInput } from "valibot";
-import { email, nonOptional, object, string, pipe } from "valibot";
-
-import type { APIResponse, GenericFormRequest } from "@/functions/types";
-
+import { email, nonOptional, object, pipe, string } from "valibot";
 import { Input } from "@/components/forms/fields/Input";
 import { TextArea } from "@/components/forms/fields/TextArea";
+import type { APIResponse, GenericFormRequest } from "@/functions/types";
 import { cn } from "@/lib/utils";
 
 const contactSchema = object({

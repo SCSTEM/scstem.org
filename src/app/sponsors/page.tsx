@@ -10,7 +10,7 @@ import { PatternBackground } from "@/components/PatternBackground";
 import HeroHeader from "@/components/page/HeroHeader";
 import { Highlight, Underline } from "@/components/spans";
 import type { Sponsor } from "@/data/sponsors";
-import { SponsorLevel, Sponsors as data } from "@/data/sponsors";
+import { Sponsors as data, SponsorLevel } from "@/data/sponsors";
 import { cn } from "@/lib/utils";
 import type { ColorScale } from "@/styles/theme";
 import { parseColor } from "@/styles/theme";
@@ -26,7 +26,7 @@ export default function Sponsors(): ReactNode {
     <>
       <HeroHeader img="/image/parts-notes.webp">
         <div className="flex flex-col space-y-6 text-white">
-          <div className="text-4xl font-bold md:text-5xl mb-0">
+          <div className="text-4xl font-bold md:text-5xl">
             <Highlight>Sponsors</Highlight> help us <Underline>build</Underline>
             .
           </div>

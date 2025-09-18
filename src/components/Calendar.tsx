@@ -90,6 +90,7 @@ export function Calendar({
 
   return (
     <iframe
+      title="Calendar"
       className={cn("h-[800px] w-full border-none md:h-[900px]", className)}
       src={`https://calendar.google.com/calendar/embed?${src}&bgcolor=${bg}&ctz=America%2FNew_York${
         noTitle ? "&showTitle=0" : ""

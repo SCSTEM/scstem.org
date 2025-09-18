@@ -10,13 +10,13 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Link,
-  Navbar as NUINavbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
+  Navbar as NUINavbar,
 } from "@heroui/react";
 import { IconChevronDown, IconLego, IconRobot } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
@@ -174,7 +174,7 @@ export function Navbar(): ReactNode {
           {link.element ?? link.label}
         </Link>
       ) : (
-        <div className="[&>*]:p-0">
+        <div className="*:p-0">
           <Accordion selectedKeys={isActive(link) ? "all" : undefined}>
             <AccordionItem
               aria-label={link.label}
@@ -234,7 +234,7 @@ export function Navbar(): ReactNode {
         className="sm:hidden"
       />
       <NavbarBrand className="gap-x-2" as={Link} href="/">
-        <div className="max-h-[50px] aspect-square flex-shrink-0">
+        <div className="max-h-[50px] aspect-square shrink-0">
           <LogoColor className="size-full object-contain" />
         </div>
         <div className="font-bold w-36 lg:w-full whitespace-normal text-foreground flex-1">

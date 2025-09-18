@@ -12,15 +12,14 @@ import {
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-
-import { Image } from "@/components/Image";
-import { PatternBackground } from "@/components/PatternBackground";
-import { VideoPlayer } from "@/components/VideoPlayer";
 import type { FeatureCardProps } from "@/components/cards/FeatureCard";
 import { FeatureCard } from "@/components/cards/FeatureCard";
+import { Image } from "@/components/Image";
+import { PatternBackground } from "@/components/PatternBackground";
 import HeroHeader from "@/components/page/HeroHeader";
 import Section from "@/components/page/Section";
-import { Underline, Highlight } from "@/components/spans";
+import { Highlight, Underline } from "@/components/spans";
+import { VideoPlayer } from "@/components/VideoPlayer";
 
 import awardImage from "@/image/award.webp";
 import competition1Image from "@/image/competition-1.webp";
@@ -159,7 +158,7 @@ export default function Home(): ReactNode {
     <>
       <HeroHeader img="/image/legos.webp">
         <div className="flex flex-col space-y-5 text-foreground">
-          <div className="text-4xl font-bold md:text-5xl mb-0">
+          <div className="text-4xl font-bold md:text-5xl">
             <Highlight>Robots</Highlight> are in Franklin County.
             <Underline className="before:whitespace-pre-line before:content-['\a']">
               So are we.
@@ -176,7 +175,7 @@ export default function Home(): ReactNode {
       <PatternBackground pattern="circuit">
         <div className="lg:space-y-20 space-y-12 py-20 md:py-28">
           {/* Overview */}
-          <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-screen-lg px-6">
+          <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-(--breakpoint-lg) px-6">
             <h2 className="heading-2 text-center">
               Science, Technology, Engineering, Math, Business, Art, and more
             </h2>
@@ -196,7 +195,7 @@ export default function Home(): ReactNode {
             <div className="flex flex-wrap justify-center gap-5">
               {programCards.map((card, i) => (
                 <div key={i}>
-                  <FeatureCard key={i} {...card} />
+                  <FeatureCard {...card} />
                 </div>
               ))}
             </div>
@@ -300,7 +299,7 @@ export default function Home(): ReactNode {
             placeholder="/image/morethanrobots.webp"
           />
 
-          <div className="flex flex-col items-center gap-y-6 mx-auto md:max-w-screen-lg px-6 py-5">
+          <div className="flex flex-col items-center gap-y-6 mx-auto md:max-w-(--breakpoint-lg) px-6 py-5">
             <h2 className="heading-2 mx-auto text-center">
               Ready to join or find out more? Contact us!
             </h2>

@@ -5,8 +5,8 @@ import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
 import {
-  typeToInputMode,
   type FieldProps,
+  typeToInputMode,
 } from "@/components/forms/fields/util";
 
 export function Input<T extends FieldValues>({

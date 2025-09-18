@@ -25,7 +25,7 @@ export default function FLL(): ReactNode {
         </div>
       </HeroHeader>
       <PatternBackground pattern="circuit" color="orange">
-        <main className="max-w-screen-md md:mx-auto gap-y-10 mx-5 h-[500px]"></main>
+        <main className="max-w-(--breakpoint-md) md:mx-auto gap-y-10 mx-5 h-[500px]"></main>
       </PatternBackground>
     </>
   );

@@ -8,8 +8,8 @@ export interface GenericFormRequest {
 
 export interface APIResponse {
   success: boolean;
-  // TODO: Fix this any type
-  result?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: "TODO: Fix this"
+  result?: any;
   error?: unknown;
   message?: string;
 }
