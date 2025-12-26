@@ -11,6 +11,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { Image } from "@/components/Image";
+import { LinkButton } from "@/components/LinkButton";
 import { PatternBackground } from "@/components/PatternBackground";
 import { VideoHeader } from "@/components/page/VideoHeader";
 import { Underline } from "@/components/spans";
@@ -19,7 +20,6 @@ import biohazardHeaderLogo from "@/image/biohazard/header-logo.svg";
 import troubleLogo from "@/image/biohazard/trouble-logo.webp";
 import viperLogo from "@/image/biohazard/viper-logo.webp";
 import type { Icon } from "@/lib/utils";
-
 import { ParallaxImage } from "./components";
 
 export const metadata: Metadata = {
@@ -36,7 +36,7 @@ export default function FRC(): ReactNode {
           image: "/image/biohazard/home-image.webp",
         }}
       >
-        <div className="flex size-full flex-col md:w-[750px] lg:w-[1000px] md:mx-auto text-center justify-center px-4 md:px-0 space-y-6">
+        <div className="flex size-full flex-col md:w-187.5 lg:w-250 md:mx-auto text-center justify-center px-4 md:px-0 space-y-6">
           <Image src={biohazardHeaderLogo} alt="Biohazard FRC team logo" />
           <h1 className="text-2xl md:text-4xl font-heading font-bold md:font-normal">
             Welcome to the <Underline>next generation</Underline> of thinkers,
@@ -61,12 +61,12 @@ export default function FRC(): ReactNode {
                 Check out our robots!
               </h1>
               <ParallaxImage background="/image/biohazard/2023-robot-field.webp">
-                <div className="relative top-[160px] left-[10px] md:left-[100px] md:top-[250px] lg:top-[200px] w-[200px] md:w-[300px]">
+                <div className="relative top-40 left-2.5 md:left-25 md:top-62.5 lg:top-50 w-50 md:w-75">
                   <Image src={viperLogo} className="aspect-square" alt="" />
                 </div>
               </ParallaxImage>
               <ParallaxImage background="/image/biohazard/2024-robot-field.webp">
-                <div className="relative top-[150px] right-[-150px] md:right-[-700px] lg:right-[-900px] w-[250px] md:w-[400px]">
+                <div className="relative top-37.5 right-[-37.5] md:right-[-175] lg:right-[-225] w-62.5 md:w-100">
                   <Image src={troubleLogo} className="aspect-square" alt="" />
                 </div>
               </ParallaxImage>
@@ -151,14 +151,13 @@ function TeamOverview() {
             keys to success as we compete with teams from around the world.
           </div>
         </div>
-        <Button
-          as={Link}
+        <LinkButton
           size="lg"
           href="/get-involved"
           className="shadow-lg bg-linear-to-br from-yellow-400 to-orange-500 text-black lg:w-fit m-auto w-full justify-center"
         >
           Join the Revolution
-        </Button>
+        </LinkButton>
       </div>
       <div className="grid md:grid-cols-2 md:grid-rows-2 gap-10 md:gap-4">
         {teamOverview.map((item, i) => (
