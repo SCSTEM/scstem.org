@@ -297,6 +297,12 @@ export default function Home(): ReactNode {
           <VideoPlayer
             url="https://youtu.be/147CgudTur8"
             placeholder="/image/morethanrobots.webp"
+            header={
+              <div>
+                Meet our highschool team, learn about{" "}
+                <span className="italic">FIRST®</span>
+              </div>
+            }
           />
 
           <div className="flex flex-col items-center gap-y-6 mx-auto md:max-w-(--breakpoint-lg) px-6 py-5">

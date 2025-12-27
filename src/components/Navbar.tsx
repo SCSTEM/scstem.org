@@ -4,7 +4,6 @@ import type { ButtonProps } from "@heroui/react";
 import {
   Accordion,
   AccordionItem,
-  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -22,9 +21,8 @@ import { IconChevronDown, IconLego, IconRobot } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
-
+import { LinkButton } from "@/components/LinkButton";
 import { cn } from "@/lib/utils";
-
 import { LogoColor } from "./Logo";
 
 type NavLink = {
@@ -91,8 +89,7 @@ function GetInvolved({
   ...props
 }: ButtonProps): ReactNode {
   return (
-    <Button
-      as={Link}
+    <LinkButton
       color="primary"
       href="/get-involved"
       variant="shadow"
@@ -101,7 +98,7 @@ function GetInvolved({
       {...props}
     >
       Get Involved
-    </Button>
+    </LinkButton>
   );
 }
 
@@ -133,7 +130,7 @@ export function Navbar(): ReactNode {
           </DropdownTrigger>
 
           <DropdownMenu
-            className="w-[340px]"
+            className="w-85"
             itemClasses={{
               base: "gap-4",
             }}
@@ -234,7 +231,7 @@ export function Navbar(): ReactNode {
         className="sm:hidden"
       />
       <NavbarBrand className="gap-x-2" as={Link} href="/">
-        <div className="max-h-[50px] aspect-square shrink-0">
+        <div className="max-h-12.5 aspect-square shrink-0">
           <LogoColor className="size-full object-contain" />
         </div>
         <div className="font-bold w-36 lg:w-full whitespace-normal text-foreground flex-1">

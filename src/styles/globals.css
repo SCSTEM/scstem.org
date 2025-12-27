@@ -31,8 +31,13 @@
 /* @plugin "tailwindcss-animate"; */
 
 ::selection {
-  background-color: hsl(var(--nextui-primary));
-  color: hsl(var(--nextui-background));
+  background-color: hsl(var(--heroui-primary)) !important; /* yellow from theme */
+  color: hsl(var(--heroui-primary-foreground)) !important;
+}
+
+::-moz-selection {
+  background-color: hsl(var(--heroui-primary)) !important;
+  color: hsl(var(--heroui-primary-foreground)) !important;
 }
 
 .heading-1 {

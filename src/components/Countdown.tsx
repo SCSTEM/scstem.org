@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -25,6 +25,7 @@ type CountdownProps = {
   labels?: CountdownLabels;
   className?: string;
   showSeconds?: boolean;
+  expiredContent?: ReactNode;
 };
 
 function calculateTimeRemaining(targetDate: Date): TimeRemaining {
@@ -53,12 +54,15 @@ export function Countdown({
   },
   className,
   showSeconds = true,
+  expiredContent,
 }: CountdownProps): ReactNode {
   const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(
     calculateTimeRemaining(targetDate),
   );
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const interval = setInterval(() => {
       setTimeRemaining(calculateTimeRemaining(targetDate));
     }, 1000);
@@ -67,6 +71,9 @@ export function Countdown({
   }, [targetDate]);
 
   if (timeRemaining.expired) {
+    if (expiredContent) {
+      return <>{expiredContent}</>;
+    }
     return (
       <div
         className={cn(
@@ -106,12 +113,12 @@ export function Countdown({
       {timeUnits.map((unit, index) => (
         <div
           key={index}
-          className="bg-linear-to-br from-green-900 to-green-700 p-6 rounded-lg shadow-xl text-center border-2 border-green-500"
+          className="bg-linear-to-br from-green-900/90 to-green-700/90 backdrop-blur-sm p-6 md:p-8 rounded-xl shadow-2xl text-center border-2 border-green-400"
         >
-          <div className="text-5xl md:text-6xl font-bold font-heading text-white">
-            {unit.value}
+          <div className="text-5xl md:text-7xl font-bold font-heading text-white drop-shadow-lg">
+            {mounted ? unit.value : "–"}
           </div>
-          <div className="text-lg md:text-xl text-green-100 uppercase tracking-wide mt-2">
+          <div className="text-sm md:text-lg text-green-100 uppercase tracking-widest mt-2 font-semibold">
             {unit.label}
           </div>
         </div>
