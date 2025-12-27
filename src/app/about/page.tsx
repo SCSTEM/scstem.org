@@ -18,6 +18,9 @@ export default function About(): ReactNode {
     <div className="flex m-2 md:m-10">
       <div className="hidden lg:block mx-auto">
         <LeftSidebar />
+        <div className="xl:hidden">
+          <RightSidebar />
+        </div>
       </div>
       <main className="prose prose-invert max-w-(--breakpoint-md) md:mx-auto gap-y-10 mx-5">
         <article>
@@ -225,7 +228,7 @@ export default function About(): ReactNode {
           </p>
         </article>
       </main>
-      <div className="hidden lg:block mx-auto">
+      <div className="hidden xl:block mx-auto">
         <RightSidebar />
       </div>
     </div>

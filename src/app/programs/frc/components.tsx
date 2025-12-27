@@ -20,7 +20,7 @@ export function ParallaxImage({
 }: Props): ReactNode {
   return (
     <ParallaxBanner
-      className="h-[400px] lg:h-[600px]"
+      className="h-100 lg:h-150"
       layers={[
         {
           image: background,

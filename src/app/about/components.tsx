@@ -26,13 +26,13 @@ export function CaptionedImage({
   caption,
 }: CaptionedImageProps): ReactNode {
   return (
-    <div className="w-[300px] 2xl:w-[500px] mx-auto aspect-square">
+    <div className="w-full mx-auto mb-4">
       <Image
         src={src}
         alt={caption}
-        className="rounded-lg object-cover mx-auto aspect-video"
+        className="rounded-lg object-cover w-full aspect-video"
       />
-      <div className="text-center">{caption}</div>
+      <div className="text-center mt-1">{caption}</div>
     </div>
   );
 }
@@ -47,7 +47,7 @@ function SidebarShell({
   return (
     <div
       className={cn(
-        "flex flex-col font-heading mx-5 mt-5 2xl:mx-auto w-[300px] 2xl:w-[500px]",
+        "flex flex-col font-heading mx-5 mt-5 w-80 2xl:w-96",
         className,
       )}
     >

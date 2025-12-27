@@ -36,13 +36,11 @@ type Props = {
 
 function Card({ children }: Props): ReactNode {
   return (
-    <>
-      <div className="border-y-8 border-yellow-400">
-        <PatternBackground pattern="circuit">
-          <div className="py-12 px-6">{children}</div>
-        </PatternBackground>
-      </div>
-    </>
+    <div className="border-y-8 border-yellow-400">
+      <PatternBackground pattern="circuit">
+        <div className="py-12 px-6">{children}</div>
+      </PatternBackground>
+    </div>
   );
 }
 

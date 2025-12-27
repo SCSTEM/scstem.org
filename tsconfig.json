@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -10,7 +14,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -18,13 +22,27 @@
       }
     ],
     "paths": {
-      "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/styles/*": ["./src/styles/*"],
-      "@/layouts/*": ["./src/layouts/*"],
-      "@/functions/*": ["./functions/*"],
-      "@/data/*": ["./data/*"],
-      "@/image/*": ["./public/image/*"]
+      "@/components/*": [
+        "./src/components/*"
+      ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ],
+      "@/styles/*": [
+        "./src/styles/*"
+      ],
+      "@/layouts/*": [
+        "./src/layouts/*"
+      ],
+      "@/functions/*": [
+        "./functions/*"
+      ],
+      "@/data/*": [
+        "./data/*"
+      ],
+      "@/image/*": [
+        "./public/image/*"
+      ]
     },
     "target": "ES2017"
   },
@@ -33,7 +51,12 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "build/types/**/*.ts"
+    "build/types/**/*.ts",
+    "build/dev/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "functions/**/*"]
+  "exclude": [
+    "node_modules",
+    "functions/**/*"
+  ]
 }
