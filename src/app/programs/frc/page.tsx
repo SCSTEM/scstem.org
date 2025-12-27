@@ -139,7 +139,7 @@ const teamOverview: {
 function TeamOverview() {
   return (
     <div className="p-5 flex gap-16 flex-col lg:flex-row">
-      <div className="space-y-8 flex flex-row lg:flex-col">
+      <div className="space-y-8 flex flex-col md:flex-row lg:flex-col">
         <div className="flex flex-col">
           <h2 className="text-2xl font-bold mb-2 text-black dark:text-white font-sans">
             Join the Biohazard revolution and prepare for the hardest fun
