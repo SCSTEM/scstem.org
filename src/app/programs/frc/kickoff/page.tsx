@@ -18,7 +18,6 @@ import { LinkButton } from "@/components/LinkButton";
 import { ModalCloseButton, ModalWithTrigger } from "@/components/Modal";
 import { PatternBackground } from "@/components/PatternBackground";
 import HeroHeader from "@/components/page/HeroHeader";
-import { Button } from "@/components/shadcn/ui/button";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import type { Icon } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -32,7 +31,6 @@ export const metadata: Metadata = {
 const KICKOFF_CONFIG = {
   event: {
     date: new Date("2026-01-10T12:00:00-05:00"),
-    // date: new Date("2025-12-25"),
     displayDate: "January 10, 2026 at 12:00 PM EST",
   },
   location: {
