@@ -101,7 +101,7 @@ export function Countdown({
   return (
     <div
       className={cn(
-        "grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto",
+        "grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto select-none",
         !showSeconds && "md:grid-cols-3",
         className,
       )}
@@ -113,7 +113,7 @@ export function Countdown({
       {timeUnits.map((unit, index) => (
         <div
           key={index}
-          className="bg-linear-to-br from-green-900/90 to-green-700/90 backdrop-blur-sm p-6 md:p-8 rounded-xl shadow-2xl text-center border-2 border-green-400"
+          className="bg-linear-to-br from-green-900/90 to-green-700/90 backdrop-blur-sm p-4 md:p-8 rounded-xl shadow-2xl text-center border-2 border-green-400"
         >
           <div className="text-5xl md:text-7xl font-bold font-heading text-white drop-shadow-lg">
             {mounted ? unit.value : "–"}

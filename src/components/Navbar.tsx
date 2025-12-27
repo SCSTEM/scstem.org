@@ -252,7 +252,7 @@ export function Navbar(): ReactNode {
           <GetInvolved
             className="text-[16px]"
             variant="solid"
-            onClick={onMenuItemClick}
+            onPress={onMenuItemClick}
           />
         </NavbarMenuItem>
       </NavbarMenu>

@@ -6,16 +6,19 @@ import {
   IconMoodHappy,
   IconRobotFace,
   IconTool,
+  IconTrophy,
   IconUsersGroup,
+  IconVideo,
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import type { ReactNode } from "react";
-
 import { Countdown } from "@/components/Countdown";
 import { LinkButton } from "@/components/LinkButton";
+import { ModalCloseButton, ModalWithTrigger } from "@/components/Modal";
 import { PatternBackground } from "@/components/PatternBackground";
 import HeroHeader from "@/components/page/HeroHeader";
+import { Button } from "@/components/shadcn/ui/button";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import type { Icon } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -69,8 +72,9 @@ export default function KickoffPage(): ReactNode {
       >
         <div className="space-y-8 text-center w-full">
           <div className="space-y-4">
-            <h1 className="text-5xl md:text-7xl font-heading font-bold text-white drop-shadow-lg">
-              2026 Season Kickoff
+            <h1 className="text-4xl md:text-7xl font-heading font-bold text-white drop-shadow-lg">
+              <span className="text-5xl md:text-7xl">2026</span>{" "}
+              <br className="md:hidden" /> Season Kickoff
             </h1>
             <h2 className="text-xl md:text-2xl font-sans text-white/90">
               Join Biohazard as we unveil this year&apos;s challenge
@@ -83,7 +87,7 @@ export default function KickoffPage(): ReactNode {
               targetDate={KICKOFF_CONFIG.event.date}
               showSeconds={true}
               expiredContent={
-                <div className="space-y-6 bg-black/40 backdrop-blur-sm p-8 rounded-xl border-2 border-red-500 shadow-2xl">
+                <div className="space-y-6 bg-black/40 backdrop-blur-sm p-4 md:p-8 mx-1 rounded-xl border-2 border-red-500 shadow-2xl">
                   <h3 className="text-3xl md:text-4xl font-heading font-bold text-white">
                     🔴 Kickoff is Live!
                   </h3>
@@ -103,7 +107,7 @@ export default function KickoffPage(): ReactNode {
         </div>
       </HeroHeader>
       <PatternBackground pattern="circuit" color="green">
-        <div className="space-y-16 md:space-y-24 py-16">
+        <div className="md:space-y-24 md:py-16">
           <AboutFRCSection />
           <ResourcesSection />
           <DirectionsSection />
@@ -122,7 +126,7 @@ function PageSection({
 }) {
   return (
     <section
-      className={cn("p-8 md:max-w-(--breakpoint-xl) mx-auto", className)}
+      className={cn("py-8 px-4 md:max-w-(--breakpoint-xl) mx-auto", className)}
     >
       {children}
     </section>
@@ -170,19 +174,19 @@ const buildSeasonTimeline: {
   description: string;
 }[] = [
   {
-    icon: IconCalendar,
+    icon: IconVideo,
     title: "Kickoff - January 10",
     description:
       "The game is revealed! Teams watch the live broadcast and receive the game manual to start strategizing.",
   },
   {
-    icon: IconTool,
+    icon: IconCalendar,
     title: "Build Season - 6 Weeks",
     description:
-      "Design, prototype, build, and program a 120-pound robot. Teams meet multiple times per week to collaborate.",
+      "Design, prototype, build, and program the robot to meet the game challenges.",
   },
   {
-    icon: IconRobotFace,
+    icon: IconTrophy,
     title: "Competition - March & April",
     description:
       "Compete in regional events, form alliances, and work toward qualifying for the World Championship.",
@@ -197,40 +201,15 @@ const buildSeasonTimeline: {
 
 function AboutFRCSection() {
   return (
-    <PageSection className="space-y-12">
+    <PageSection className="space-y-12 mx-2 md:mx-auto">
       {/* Two-column layout on larger screens */}
       <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-        {/* Left: What is FIRST? */}
-        <div className="flex flex-col h-full gap-y-6">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold">
-            What is <i>FIRST®</i> Robotics Competition?
-          </h2>
-          <p className="text-lg">
-            <i>FIRST®</i> Robotics Competition (FRC) is a &ldquo;Sport for the
-            Mind&rdquo; where creativity, determination, and teamwork are the
-            keys to success as we compete with teams from around the world.
-          </p>
-          <div className="grid sm:grid-cols-2 gap-6">
-            {frcInfo.map((item, i) => (
-              <div key={i} className="space-y-2">
-                <div className="flex flex-row space-x-3 items-center">
-                  <div className="bg-linear-to-br from-green-500 via-green-700 to-green-900 shadow-md border-none size-fit p-1.5 rounded-md">
-                    <item.icon size={24} stroke={1.5} />
-                  </div>
-                  <h3 className="font-bold text-lg">{item.title}</h3>
-                </div>
-                <div className="text-sm">{item.description}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right: Build Season Timeline */}
+        {/* Build Season Timeline */}
         <div className="flex flex-col gap-y-6">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold">
+          <h2 className="text-3xl text-center md:text-left md:text-4xl font-heading font-bold">
             The Build Season Journey
           </h2>
-          <div className="flex flex-col h-full justify-around">
+          <div className="flex flex-col h-full gap-y-4 md:justify-around">
             {buildSeasonTimeline.map((item) => (
               <div key={item.title} className="flex gap-4">
                 <div className="shrink-0">
@@ -242,6 +221,32 @@ function AboutFRCSection() {
                   <h3 className="font-bold text-lg mb-1">{item.title}</h3>
                   <p className="text-sm">{item.description}</p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* What is FIRST? */}
+        <div className="flex flex-col h-full gap-y-6">
+          <h2 className="text-3xl text-center md:text-left md:text-4xl font-heading font-bold">
+            What is <i>FIRST®</i> Robotics Competition?
+          </h2>
+          <p className="text-lg">
+            <i>FIRST®</i> Robotics Competition (FRC) is a high-school program
+            for robotics competition in the same way as traditional sports.
+            Creativity, determination, and teamwork are the keys to success as
+            we compete with teams from around the world.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-6">
+            {frcInfo.map((item, i) => (
+              <div key={i} className="space-y-2">
+                <div className="flex flex-row space-x-3 items-center">
+                  <div className="bg-linear-to-br from-green-500 via-green-700 to-green-900 shadow-md border-none size-fit p-1.5 rounded-md">
+                    <item.icon size={24} stroke={1.5} />
+                  </div>
+                  <h3 className="font-bold text-lg">{item.title}</h3>
+                </div>
+                <div className="text-sm">{item.description}</div>
               </div>
             ))}
           </div>
@@ -268,7 +273,7 @@ function ResourcesSection() {
         </h3>
         <p className="text-lg">
           Join us on {KICKOFF_CONFIG.event.displayDate} as FIRST reveals the
-          2026 game challenge!
+          2026 game!
         </p>
         <LinkButton
           href={KICKOFF_CONFIG.media.liveStreamUrl}
@@ -339,7 +344,7 @@ function DirectionsSection() {
 
       {/* Two-column layout */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Left: Join Us for Kickoff */}
+        {/* Join Us for Kickoff */}
         <div className="relative rounded-lg overflow-hidden shadow-2xl">
           {/* Map Background */}
           <div className="absolute inset-0">
@@ -353,7 +358,7 @@ function DirectionsSection() {
           </div>
 
           {/* Content */}
-          <div className="relative p-8 text-white text-center space-y-6">
+          <div className="relative px-4 py-6 md:p-8 text-white text-center space-y-6">
             <IconMapPin size={48} className="mx-auto" />
             <h3 className="text-2xl md:text-3xl font-heading font-bold">
               Join Us for Kickoff
@@ -363,19 +368,45 @@ function DirectionsSection() {
               <br />
               {KICKOFF_CONFIG.location.address}
             </p>
-            <LinkButton
-              href={KICKOFF_CONFIG.location.directionsLink}
-              size="lg"
-              className="bg-yellow-400 text-black shadow-lg hover:bg-yellow-500 font-bold"
-              endContent={<IconExternalLink />}
-              target="_blank"
-            >
-              Get Directions &amp; Parking Info
-            </LinkButton>
+            <div className="flex flex-col md:flex-row gap-2">
+              <LinkButton
+                href={KICKOFF_CONFIG.location.directionsLink}
+                size="lg"
+                className="bg-yellow-400 text-black shadow-lg hover:bg-yellow-500 font-bold"
+                endContent={<IconExternalLink />}
+                target="_blank"
+              >
+                Get Directions &amp; Parking Info
+              </LinkButton>
+              <ModalWithTrigger
+                trigger="Meeting Schedule"
+                triggerProps={{
+                  color: "primary",
+                  startContent: <IconCalendar />,
+                  size: "lg",
+                  className:
+                    "bg-yellow-400 text-black shadow-lg hover:bg-yellow-500 font-bold",
+                }}
+                title="Meeting Schedule"
+                size="lg"
+                footer={
+                  <ModalCloseButton variant="ghost">Close</ModalCloseButton>
+                }
+              >
+                <div>
+                  <ul className="list-disc list-inside">
+                    <li>10AM - Parent's meeting & Safety meeting</li>
+                    <li>11AM - Lunch break and prepare for game reveal</li>
+                    <li>12PM - Game reveal live stream beings</li>
+                    <li>~4PM - Meeting Ends</li>
+                  </ul>
+                </div>
+              </ModalWithTrigger>
+            </div>
           </div>
         </div>
 
-        {/* Right: Can't Make It? */}
+        {/* Can't Make It? */}
         <div className="relative rounded-lg overflow-hidden shadow-2xl">
           {/* Map Background */}
           <div className="absolute inset-0">
@@ -389,7 +420,7 @@ function DirectionsSection() {
           </div>
 
           {/* Content */}
-          <div className="relative p-8 text-white text-center space-y-6">
+          <div className="relative px-4 py-6 md:p-8 text-white text-center space-y-6">
             <IconUsersGroup size={48} className="mx-auto" />
             <h3 className="text-2xl md:text-3xl font-heading font-bold">
               Can&apos;t Make It?

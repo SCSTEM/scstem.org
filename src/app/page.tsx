@@ -203,7 +203,7 @@ export default function Home(): ReactNode {
 
           {/* FIRST */}
           <Section alt>
-            <div className="md:max-w-[750px] mb-8 mx-auto">
+            <div className="md:max-w-187.5 mb-8 mx-auto">
               <Image
                 src={firstHorizontalAcroDarkImage}
                 alt="FIRST® logo and acronym"

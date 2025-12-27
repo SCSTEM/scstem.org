@@ -48,7 +48,7 @@ export default function HeroHeader({
         </div>
         <button
           type="button"
-          className="sm:hidden mx-auto mb-10 flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-primary mt-auto"
+          className="sm:hidden mx-auto flex cursor-pointer flex-col items-center border-none bg-transparent p-0 text-lg font-medium outline-none text-primary mt-auto"
           onClick={() =>
             document
               .getElementById("scrollhere")
@@ -63,7 +63,7 @@ export default function HeroHeader({
           />
         </button>
         {/* This is a hack to scroll to the top of the body */}
-        <div id="scrollhere" className="mb-10"></div>
+        <div id="scrollhere" className="mb-2"></div>
       </div>
     </div>
   );
