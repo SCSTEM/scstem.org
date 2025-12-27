@@ -17,12 +17,14 @@ type Props = {
     icon?: string;
     header?: string;
   };
+  header?: string | ReactElement;
 };
 
 export function VideoPlayer({
   url,
   classNames,
   placeholder,
+  header,
 }: Props): ReactNode {
   const [videoReady, setVideoReady] = useState(false);
   return (
@@ -32,16 +34,17 @@ export function VideoPlayer({
         classNames?.wrapper,
       )}
     >
-      <div
-        className={cn(
-          "relative md:absolute bg-primary mx-auto w-full md:w-fit inset-x-0 text-center text-black pb-2 md:pb-1 text-md md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
-          videoReady ? "opacity-0" : "opacity-100",
-          classNames?.header,
-        )}
-      >
-        Meet our highschool team, learn about{" "}
-        <span className="italic">FIRST®</span>
-      </div>
+      {header ? (
+        <div
+          className={cn(
+            "relative md:absolute bg-primary mx-auto w-full md:w-fit inset-x-0 text-center text-black pb-2 md:pb-1 text-md md:text-2xl md:rounded-b-lg md:px-2 font-semibold transition-opacity duration-200",
+            videoReady ? "opacity-0" : "opacity-100",
+            classNames?.header,
+          )}
+        >
+          {header}
+        </div>
+      ) : null}
 
       <ReactPlayer
         className={cn(classNames?.player)}

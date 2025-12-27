@@ -203,7 +203,7 @@ export default function Home(): ReactNode {
 
           {/* FIRST */}
           <Section alt>
-            <div className="md:max-w-[750px] mb-8 mx-auto">
+            <div className="md:max-w-187.5 mb-8 mx-auto">
               <Image
                 src={firstHorizontalAcroDarkImage}
                 alt="FIRST® logo and acronym"
@@ -297,6 +297,12 @@ export default function Home(): ReactNode {
           <VideoPlayer
             url="https://youtu.be/147CgudTur8"
             placeholder="/image/morethanrobots.webp"
+            header={
+              <div>
+                Meet our highschool team, learn about{" "}
+                <span className="italic">FIRST®</span>
+              </div>
+            }
           />
 
           <div className="flex flex-col items-center gap-y-6 mx-auto md:max-w-(--breakpoint-lg) px-6 py-5">

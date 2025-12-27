@@ -1,11 +1,9 @@
-import { Button } from "@heroui/button";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Chip } from "@heroui/chip";
-import Link from "next/link";
 import type { ReactNode } from "react";
-
 import type { StaticImport } from "@/components/Image";
 import { Image } from "@/components/Image";
+import { LinkButton } from "@/components/LinkButton";
 import { cn, type Icon } from "@/lib/utils";
 import type { ColorScale } from "@/styles/theme";
 import { parseColor } from "@/styles/theme";
@@ -118,9 +116,8 @@ export function FeatureCard({
         <CardFooter>{footer}</CardFooter>
       ) : link ? (
         <CardFooter>
-          <Button
+          <LinkButton
             variant="light"
-            as={Link}
             href={link}
             style={{ color: parsedColor }}
             className="h-fit px-2 py-1 bg-opacity/0 hover:bg-opacity/20"
@@ -129,7 +126,7 @@ export function FeatureCard({
             }
           >
             {linkText ? linkText : "Learn More"}
-          </Button>
+          </LinkButton>
         </CardFooter>
       ) : null}
     </Card>

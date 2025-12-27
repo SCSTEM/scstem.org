@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function GetInvolved(): ReactNode {
   return (
     <PatternBackground pattern={"circuit"}>
-      <div className="h-[1800px]" style={{ colorScheme: "light" }}>
+      <div className="h-450" style={{ colorScheme: "light" }}>
         <iframe
           title="Get Involved Form"
           className="px-4 py-8 md:p-8 size-full bg-transparent!"
