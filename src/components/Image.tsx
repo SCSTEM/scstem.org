@@ -9,8 +9,5 @@ export type StaticImport = ImageStaticImport;
 
 // Helper component to wrap whatever image component we're using
 export function Image({ className, ...props }: ImageProps): ReactNode {
-  // if (typeof props.src === "string" || props.src instanceof String) {
-  //   return <img {...props} src={props.src as string} />;
-  // }
   return <NextImage className={cn("object-contain", className)} {...props} />;
 }

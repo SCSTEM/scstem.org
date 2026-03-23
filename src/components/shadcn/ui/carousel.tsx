@@ -1,9 +1,9 @@
 "use client";
 
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import * as React from "react";
 
 import { Button } from "@/components/shadcn/ui/button";
@@ -116,6 +116,7 @@ const Carousel = React.forwardRef<
       api.on("select", onSelect);
 
       return () => {
+        api?.off("reInit", onSelect);
         api?.off("select", onSelect);
       };
     }, [api, onSelect]);
@@ -218,7 +219,7 @@ const CarouselPrevious = React.forwardRef<
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft className="size-4" />
+      <IconArrowLeft size={16} />
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -247,7 +248,7 @@ const CarouselNext = React.forwardRef<
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className="size-4" />
+      <IconArrowRight size={16} />
       <span className="sr-only">Next slide</span>
     </Button>
   );

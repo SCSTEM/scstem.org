@@ -104,9 +104,7 @@ function Slide({ sponsor }: { sponsor: SponsorSlide }): ReactNode {
 
 export function Footer({ className }: { className?: string }): ReactNode {
   return (
-    <footer
-      className={cn("py-4 md:py-12 shadow-large bg-background", className)}
-    >
+    <footer className={cn("py-4 md:py-12 shadow-lg bg-background", className)}>
       <div className="mx-auto max-w-4xl gap-y-6">
         {footerSponsors.length > 0 ? (
           <div className="gap-y-6 mx-5 lg:mx-auto">

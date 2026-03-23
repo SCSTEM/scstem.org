@@ -86,7 +86,7 @@ export function ContactForm({ className, name }: Props): ReactNode {
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
-      .then(async (res: APIResponse) => {
+      .then((res: APIResponse) => {
         if (!res.success) {
           setFormError(res.message ?? "Error submitting form");
         }

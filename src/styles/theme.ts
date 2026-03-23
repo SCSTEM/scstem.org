@@ -12,11 +12,6 @@ type ColorScaleValues = {
   900: string;
 };
 
-export const colorBases: { [key: string]: string } = {
-  white: "#e5e5e5",
-  black: "#171717",
-};
-
 export const colorScales = {
   yellow: {
     DEFAULT: "#FACC15",
@@ -111,18 +106,10 @@ export const colorScales = {
 
 export type ColorScale = keyof typeof colorScales;
 
-export const breakpoints = {
-  xs: "36em",
-  sm: "48em",
-  md: "62em",
-  lg: "75em",
-  xl: "88em",
-};
-
 export function parseColor(color?: ColorScale): string {
   if (!color) {
     return colorScales.yellow.DEFAULT;
   }
 
-  return colorScales[color].DEFAULT || color[500];
+  return colorScales[color].DEFAULT;
 }

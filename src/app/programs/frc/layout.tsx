@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
-export default function FRCLayout({
+export default function FrcLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>): ReactNode {
-  return <div className="bio">{children}</div>;
+  return <div data-theme="bio">{children}</div>;
 }

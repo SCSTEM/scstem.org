@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
   },
   poweredByHeader: false,
-  compress: true,
   reactStrictMode: true,
 };
 

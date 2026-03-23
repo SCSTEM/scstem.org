@@ -10,7 +10,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/shadcn/ui/dialog";
 
 type ModalSize =
@@ -129,11 +128,9 @@ export function ModalWithTrigger({
 
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogTrigger asChild>
-          <Button {...triggerProps}>{trigger}</Button>
-        </DialogTrigger>
-      </Dialog>
+      <Button onClick={() => setIsOpen(true)} {...triggerProps}>
+        {trigger}
+      </Button>
       <Modal isOpen={isOpen} onOpenChange={setIsOpen} {...modalProps} />
     </>
   );

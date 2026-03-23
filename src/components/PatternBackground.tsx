@@ -43,13 +43,13 @@ export function PatternBackground({
         className="absolute inset-0 -z-10"
         style={{
           backgroundImage: `linear-gradient(
-          to right, 
-          hsla(var(--heroui-primary) / 15%) 0%, 
-          hsla(var(--heroui-primary) / 5%) 15%, 
-          hsla(var(--heroui-primary) / 0%) 30%, 
-          hsla(var(--heroui-primary) / 0%) 70%, 
-          hsla(var(--heroui-primary) / 5%) 85%, 
-          hsla(var(--heroui-primary) / 15%) 100%
+          to right,
+          hsla(var(--primary) / 15%) 0%,
+          hsla(var(--primary) / 5%) 15%,
+          hsla(var(--primary) / 0%) 30%,
+          hsla(var(--primary) / 0%) 70%,
+          hsla(var(--primary) / 5%) 85%,
+          hsla(var(--primary) / 15%) 100%
         )`,
         }}
       ></div>

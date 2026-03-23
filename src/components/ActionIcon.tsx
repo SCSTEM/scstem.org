@@ -1,11 +1,10 @@
-import type { IconProps } from "@tabler/icons-react";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Button, type ButtonProps } from "@/components/shadcn/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, type Icon } from "@/lib/utils";
 
 type Props = {
   href: string;
-  icon: FC<Omit<IconProps, "ref">>;
+  icon: Icon;
 } & Omit<ButtonProps, "asChild">;
 
 export function ActionIcon({

@@ -4,7 +4,6 @@ import {
   IconTool,
   IconUsersGroup,
 } from "@tabler/icons-react";
-import { clsx } from "clsx";
 import type { Metadata } from "next";
 
 import type { ReactNode } from "react";
@@ -18,7 +17,7 @@ import { VideoPlayer } from "@/components/VideoPlayer";
 import biohazardHeaderLogo from "@/image/biohazard/header-logo.svg";
 import troubleLogo from "@/image/biohazard/trouble-logo.webp";
 import viperLogo from "@/image/biohazard/viper-logo.webp";
-import type { Icon } from "@/lib/utils";
+import { cn, type Icon } from "@/lib/utils";
 import { ParallaxImage } from "./components";
 
 export const metadata: Metadata = {
@@ -93,7 +92,7 @@ function PageSection({
 }) {
   return (
     <section
-      className={clsx("p-8 md:max-w-(--breakpoint-xl) mx-auto", className)}
+      className={cn("p-8 md:max-w-(--breakpoint-xl) mx-auto", className)}
     >
       {children}
     </section>
