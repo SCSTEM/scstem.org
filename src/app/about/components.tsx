@@ -14,6 +14,8 @@ import frc2020 from "@/image/team/frc/2020.webp";
 import frc2022 from "@/image/team/frc/2022.webp";
 import frc2023 from "@/image/team/frc/2023.webp";
 import frc2024 from "@/image/team/frc/2024.webp";
+import frc2025 from "@/image/team/frc/2025.webp";
+import frc2026 from "@/image/team/frc/2026.webp";
 import { cn } from "@/lib/utils";
 
 type CaptionedImageProps = {
@@ -94,6 +96,8 @@ export function RightSidebar({ className }: SidebarProps): ReactNode {
           caption={`"Team Jeremy" & "Toxic Musicians" - 2024`}
         />
         <CaptionedImage src={frc2024} caption={`"Biohazard" - 2024`} />
+        <CaptionedImage src={frc2025} caption={`"Biohazard" - 2025`} />
+        <CaptionedImage src={frc2026} caption={`"Biohazard" - 2026`} />
       </div>
     </SidebarShell>
   );
