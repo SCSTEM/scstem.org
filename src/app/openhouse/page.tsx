@@ -1,7 +1,3 @@
-import { Button } from "@heroui/button";
-import { Card, CardBody } from "@heroui/card";
-import { Divider } from "@heroui/divider";
-import { Link } from "@heroui/link";
 import {
   IconBrandFacebook,
   IconCalendarEvent,
@@ -9,6 +5,7 @@ import {
   IconRobotFace,
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import {
   FeatureCard,
@@ -18,6 +15,8 @@ import { Image } from "@/components/Image";
 import { PatternBackground } from "@/components/PatternBackground";
 import HeroHeader from "@/components/page/HeroHeader";
 import Section from "@/components/page/Section";
+import { Button } from "@/components/shadcn/ui/button";
+import { Card, CardContent } from "@/components/shadcn/ui/card";
 import { Highlight } from "@/components/spans";
 import { VideoPlayer } from "@/components/VideoPlayer";
 
@@ -179,7 +178,13 @@ const faq: { question: string; answer: string | ReactNode }[] = [
       "I can't make it to the open house, is there another time I can visit or learn about what you do?",
     answer: (
       <>
-        Yes! You can fill out our <Link href="/get-involved">Get Involved</Link>{" "}
+        Yes! You can fill out our{" "}
+        <Link
+          href="/get-involved"
+          className="text-primary hover:opacity-80 transition-opacity"
+        >
+          Get Involved
+        </Link>{" "}
         form with your information and we will reach out. There&apos;s a good
         chance we have a meeting coming up you&apos;re welcome to visit!
       </>
@@ -243,56 +248,51 @@ export default function OpenHouse(): ReactNode {
                   alt="South Central STEM Collective open house banner"
                   className="mb-8"
                 />
-                <Card
-                  shadow="lg"
-                  radioGroup="md"
-                  radius="lg"
-                  className="w-fit mx-auto p-2"
-                  classNames={{
-                    header: "m-0 p-0",
-                  }}
-                >
-                  <CardBody>
+                <Card className="w-fit mx-auto p-2 shadow-lg rounded-lg">
+                  <CardContent>
                     <div className="space-y-4 items-center justify-center flex flex-col my-auto">
                       <h5 className="text-lg">Connect with us</h5>
-                      <Button
-                        startContent={<IconBrandFacebook />}
-                        className="bg-blue-500 w-full"
-                        as={Link}
-                        href="https://go.scstem.tech/facebook"
-                        target="_blank"
-                      >
-                        Like us on Facebook
+                      <Button asChild className="bg-blue-500 w-full">
+                        <a
+                          href="https://go.scstem.tech/facebook"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <IconBrandFacebook />
+                          Like us on Facebook
+                        </a>
                       </Button>
                       <h5 className="text-lg mt-6!">
                         Let us know you&apos;re coming
                       </h5>
-                      <Button
-                        startContent={<IconCalendarEvent />}
-                        className="bg-red-500 w-full"
-                        as={Link}
-                        href="https://www.facebook.com/events/1113583296542229/"
-                        target="_blank"
-                      >
-                        Thursday
+                      <Button asChild className="bg-red-500 w-full">
+                        <a
+                          href="https://www.facebook.com/events/1113583296542229/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <IconCalendarEvent />
+                          Thursday
+                        </a>
                       </Button>
-                      <Button
-                        startContent={<IconCalendarEvent />}
-                        className="bg-red-500 w-full"
-                        as={Link}
-                        href="https://www.facebook.com/events/1113583299875562/"
-                        target="_blank"
-                      >
-                        Saturday
+                      <Button asChild className="bg-red-500 w-full">
+                        <a
+                          href="https://www.facebook.com/events/1113583299875562/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <IconCalendarEvent />
+                          Saturday
+                        </a>
                       </Button>
                     </div>
-                  </CardBody>
+                  </CardContent>
                 </Card>
               </div>
               <div className="flex flex-col md:flex-row gap-16">
                 <div className="flex-1 flex flex-col gap-y-4">
                   <h3 className="heading-3 text-center">FAQ</h3>
-                  <Divider className="bg-white/50" />
+                  <hr className="border-white/50" />
                   <div className="space-y-6">
                     {faq.map((qa) => (
                       <div
@@ -310,16 +310,18 @@ export default function OpenHouse(): ReactNode {
                   <h3 className="heading-3 text-center">
                     Workspace and Directions
                   </h3>
-                  <Divider className="bg-white/50" />
+                  <hr className="border-white/50" />
 
                   <div>
                     We are located at{" "}
-                    <Link
+                    <a
                       href="https://maps.app.goo.gl/kreAVn1bKVSrKXqQ8"
                       target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:opacity-80 transition-opacity"
                     >
                       20 South Main Street
-                    </Link>{" "}
+                    </a>{" "}
                     in downtown Chambersburg.
                   </div>
                   <ol className="mb-6 list-decimal pl-6 space-y-2">

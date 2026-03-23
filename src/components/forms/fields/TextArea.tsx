@@ -1,16 +1,22 @@
-import type { TextAreaProps } from "@heroui/input";
-import { Textarea as NUITextArea } from "@heroui/input";
 import type { ReactNode } from "react";
 import type { FieldValues } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
+import { Label } from "@/components/shadcn/ui/label";
+import { Textarea as ShadcnTextarea } from "@/components/shadcn/ui/textarea";
+
 import type { FieldProps } from "./util";
+
+type TextAreaFieldProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  label?: string;
+};
 
 export function TextArea<T extends FieldValues>({
   control,
   name,
+  label,
   ...props
-}: FieldProps<T, TextAreaProps>): ReactNode {
+}: FieldProps<T, TextAreaFieldProps>): ReactNode {
   return (
     <Controller
       name={name}
@@ -19,17 +25,23 @@ export function TextArea<T extends FieldValues>({
         field: { value, onChange, onBlur, disabled },
         fieldState: { error },
       }) => (
-        <NUITextArea
-          {...props}
-          name={name}
-          label={props.label}
-          isInvalid={!!error}
-          errorMessage={error?.message}
-          value={value}
-          onValueChange={onChange}
-          onBlur={onBlur}
-          disabled={disabled}
-        />
+        <div className="flex flex-col gap-1.5 w-full">
+          {label && <Label htmlFor={name}>{label}</Label>}
+          <ShadcnTextarea
+            {...props}
+            id={name}
+            name={name}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            onBlur={onBlur}
+            disabled={disabled}
+            aria-invalid={!!error}
+            className={error ? "border-danger" : ""}
+          />
+          {error?.message && (
+            <p className="text-danger text-xs">{error.message}</p>
+          )}
+        </div>
       )}
     />
   );

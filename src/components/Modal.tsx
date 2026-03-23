@@ -1,61 +1,24 @@
 "use client";
 
-import type { ButtonProps } from "@heroui/react";
+import { type ReactNode, useState } from "react";
+import { Button, type ButtonProps } from "@/components/shadcn/ui/button";
 import {
-  Button,
-  Modal as HeroModal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from "@heroui/react";
-import { createContext, useContext, type ReactNode } from "react";
-
-const ModalContext = createContext<(() => void) | null>(null);
-
-/**
- * Hook to get the modal close function from context
- */
-function useModalClose() {
-  const onClose = useContext(ModalContext);
-  if (!onClose) {
-    throw new Error("useModalClose must be used within a Modal component");
-  }
-  return onClose;
-}
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/shadcn/ui/dialog";
 
 export interface ModalProps {
-  /**
-   * Whether the modal is open
-   */
   isOpen: boolean;
-
-  /**
-   * Callback fired when the modal open state changes
-   */
   onOpenChange: (isOpen: boolean) => void;
-
-  /**
-   * Modal title (optional)
-   */
   title?: ReactNode;
-
-  /**
-   * Modal body content
-   */
   children: ReactNode;
-
-  /**
-   * Footer content (optional)
-   * Use ModalCloseButton for buttons that should close the modal
-   */
   footer?: ReactNode;
-
-  /**
-   * Size of the modal
-   * @default "md"
-   */
   size?:
     | "xs"
     | "sm"
@@ -67,67 +30,25 @@ export interface ModalProps {
     | "4xl"
     | "5xl"
     | "full";
-
-  /**
-   * Whether clicking outside the modal should close it
-   * @default true
-   */
   isDismissable?: boolean;
-
-  /**
-   * Whether to hide the close button
-   * @default false
-   */
   hideCloseButton?: boolean;
-
-  /**
-   * Custom className for the modal
-   */
   className?: string;
-
-  /**
-   * Scroll behavior of the modal
-   * @default "inside"
-   */
   scrollBehavior?: "inside" | "outside" | "normal";
 }
 
-/**
- * Reusable Modal component built on HeroUI
- *
- * @example
- * ```tsx
- * import { Modal, ModalCloseButton } from "@/components/Modal";
- * import { useDisclosure, Button } from "@heroui/react";
- *
- * function MyComponent() {
- *   const { isOpen, onOpen, onOpenChange } = useDisclosure();
- *
- *   return (
- *     <>
- *       <Button onPress={onOpen}>Open Modal</Button>
- *       <Modal
- *         isOpen={isOpen}
- *         onOpenChange={onOpenChange}
- *         title="My Modal"
- *         footer={
- *           <>
- *             <ModalCloseButton color="danger" variant="light">
- *               Cancel
- *             </ModalCloseButton>
- *             <ModalCloseButton color="primary">
- *               Confirm
- *             </ModalCloseButton>
- *           </>
- *         }
- *       >
- *         <p>Modal content goes here</p>
- *       </Modal>
- *     </>
- *   );
- * }
- * ```
- */
+const sizeClasses: Record<string, string> = {
+  xs: "max-w-xs",
+  sm: "max-w-sm",
+  md: "max-w-lg",
+  lg: "max-w-2xl",
+  xl: "max-w-3xl",
+  "2xl": "max-w-4xl",
+  "3xl": "max-w-5xl",
+  "4xl": "max-w-6xl",
+  "5xl": "max-w-7xl",
+  full: "max-w-[calc(100vw-2rem)] h-[calc(100vh-2rem)]",
+};
+
 export function Modal({
   isOpen,
   onOpenChange,
@@ -140,104 +61,63 @@ export function Modal({
   className,
   scrollBehavior = "inside",
 }: ModalProps) {
+  const onInteractOutside = isDismissable
+    ? undefined
+    : (e: Event) => e.preventDefault();
+
   return (
-    <HeroModal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      size={size}
-      isDismissable={isDismissable}
-      hideCloseButton={hideCloseButton}
-      className={className}
-      scrollBehavior={scrollBehavior}
-    >
-      <ModalContent>
-        {(onClose) => (
-          <ModalContext.Provider value={onClose}>
-            {title && <ModalHeader>{title}</ModalHeader>}
-            <ModalBody>{children}</ModalBody>
-            {footer && <ModalFooter>{footer}</ModalFooter>}
-          </ModalContext.Provider>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent
+        className={`${sizeClasses[size] ?? sizeClasses.md} ${className ?? ""}`}
+        onInteractOutside={onInteractOutside}
+        onEscapeKeyDown={isDismissable ? undefined : (e) => e.preventDefault()}
+        hideCloseButton={hideCloseButton}
+      >
+        {title && (
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
         )}
-      </ModalContent>
-    </HeroModal>
+        <DialogBody
+          className={
+            scrollBehavior === "inside" ? "overflow-y-auto max-h-[60vh]" : ""
+          }
+        >
+          {children}
+        </DialogBody>
+        {footer && <DialogFooter>{footer}</DialogFooter>}
+      </DialogContent>
+    </Dialog>
   );
 }
 
 export interface ModalCloseButtonProps extends ButtonProps {
-  /**
-   * Additional action to perform before closing
-   */
   onBeforeClose?: () => void;
 }
 
-/**
- * Button component that automatically closes the modal when clicked
- * Can only be used inside Modal or ModalWithTrigger components
- *
- * @example
- * ```tsx
- * <Modal>
- *   <ModalCloseButton color="primary">Got it</ModalCloseButton>
- * </Modal>
- * ```
- */
 export function ModalCloseButton({
   onBeforeClose,
-  onPress,
+  onClick,
   ...props
 }: ModalCloseButtonProps) {
-  const onClose = useModalClose();
-
-  const handlePress = (e: Parameters<NonNullable<ButtonProps["onPress"]>>[0]) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     onBeforeClose?.();
-    onPress?.(e);
-    onClose();
+    onClick?.(e);
   };
 
-  return <Button onPress={handlePress} {...props} />;
+  return (
+    <DialogClose asChild>
+      <Button onClick={handleClick} {...props} />
+    </DialogClose>
+  );
 }
 
 export interface ModalWithTriggerProps
   extends Omit<ModalProps, "isOpen" | "onOpenChange"> {
-  /**
-   * The trigger button content
-   */
   trigger: ReactNode;
-
-  /**
-   * Props to pass to the trigger button
-   */
-  triggerProps?: Omit<ButtonProps, "onPress" | "children">;
+  triggerProps?: Omit<ButtonProps, "onClick" | "children">;
 }
 
-/**
- * Modal with built-in trigger button for use in Server Components
- *
- * This is a client component that handles its own state, allowing you to use it
- * directly in Server Components without needing "use client" in your file.
- *
- * @example
- * ```tsx
- * // In a Server Component (no "use client" needed)
- * import { ModalWithTrigger, ModalCloseButton } from "@/components/Modal";
- *
- * export default function MyPage() {
- *   return (
- *     <ModalWithTrigger
- *       trigger="Open Modal"
- *       title="Welcome"
- *       footer={
- *         <ModalCloseButton color="primary">
- *           Got it
- *         </ModalCloseButton>
- *       }
- *     >
- *       <p>Modal content goes here</p>
- *     </ModalWithTrigger>
- *   );
- * }
- * ```
- */
 export function ModalWithTrigger({
   trigger,
   triggerProps,
@@ -250,31 +130,47 @@ export function ModalWithTrigger({
   className,
   scrollBehavior,
 }: ModalWithTriggerProps) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <>
-      <Button onPress={onOpen} {...triggerProps}>
-        {trigger}
-      </Button>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        title={title}
-        footer={footer}
-        size={size}
-        isDismissable={isDismissable}
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button {...triggerProps}>{trigger}</Button>
+      </DialogTrigger>
+      <DialogContent
+        className={`${sizeClasses[size ?? "md"]} ${className ?? ""}`}
+        onInteractOutside={
+          isDismissable === false ? (e) => e.preventDefault() : undefined
+        }
+        onEscapeKeyDown={
+          isDismissable === false ? (e) => e.preventDefault() : undefined
+        }
         hideCloseButton={hideCloseButton}
-        className={className}
-        scrollBehavior={scrollBehavior}
       >
-        {children}
-      </Modal>
-    </>
+        {title && (
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
+        )}
+        <DialogBody
+          className={
+            scrollBehavior === "inside" ? "overflow-y-auto max-h-[60vh]" : ""
+          }
+        >
+          {children}
+        </DialogBody>
+        {footer && <DialogFooter>{footer}</DialogFooter>}
+      </DialogContent>
+    </Dialog>
   );
 }
 
-/**
- * Re-export HeroUI's useDisclosure hook for convenience
- */
-export { useDisclosure };
+export function useDisclosure(defaultOpen = false) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  return {
+    isOpen,
+    onOpen: () => setIsOpen(true),
+    onClose: () => setIsOpen(false),
+    onOpenChange: setIsOpen,
+  };
+}

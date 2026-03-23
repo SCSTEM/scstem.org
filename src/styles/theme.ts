@@ -1,4 +1,16 @@
-import type { ColorScale as NUIColorScale } from "@heroui/react";
+type ColorScaleValues = {
+  DEFAULT: string;
+  foreground?: string;
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+};
 
 export const colorBases: { [key: string]: string } = {
   white: "#e5e5e5",
@@ -95,7 +107,7 @@ export const colorScales = {
     800: "#171717",
     900: "#0a0a0a",
   },
-} satisfies { [key: string]: NUIColorScale };
+} satisfies { [key: string]: ColorScaleValues };
 
 export type ColorScale = keyof typeof colorScales;
 
@@ -108,7 +120,9 @@ export const breakpoints = {
 };
 
 export function parseColor(color?: ColorScale): string {
-  if (!color) return colorScales.yellow.DEFAULT;
+  if (!color) {
+    return colorScales.yellow.DEFAULT;
+  }
 
   return colorScales[color].DEFAULT || color[500];
 }

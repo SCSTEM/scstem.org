@@ -1,4 +1,4 @@
-import { Link } from "@heroui/link";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { PatternBackground } from "@/components/PatternBackground";
@@ -15,7 +15,7 @@ export default function FLL(): ReactNode {
             <div>
               <Link
                 href="/get-involved"
-                className="text-4xl font-bold md:text-5xl"
+                className="text-4xl font-bold md:text-5xl text-primary hover:opacity-80 transition-opacity"
               >
                 <Highlight>Contact Us</Highlight>
               </Link>{" "}

@@ -8,7 +8,9 @@ export const onRequestPost: PagesFunction<{
   const data = await request.json<GenericFormRequest>();
 
   let key = env.TS_SECRET_KEY;
-  if (!key) key = "1x0000000000000000000000000000000AA";
+  if (!key) {
+    key = "1x0000000000000000000000000000000AA";
+  }
 
   try {
     const ts = await validateTurnstile(
@@ -17,7 +19,7 @@ export const onRequestPost: PagesFunction<{
       request.headers.get("CF-Connecting-IP"),
     );
 
-    if (!ts.valid)
+    if (!ts.valid) {
       return res(
         {
           success: false,
@@ -26,8 +28,9 @@ export const onRequestPost: PagesFunction<{
         },
         418,
       );
+    }
 
-    if (env.SLACK_FORM_POST_GENERIC)
+    if (env.SLACK_FORM_POST_GENERIC) {
       await fetch(env.SLACK_FORM_POST_GENERIC, {
         method: "POST",
         body: JSON.stringify({
@@ -37,6 +40,7 @@ export const onRequestPost: PagesFunction<{
           message: data.message ?? "",
         }),
       });
+    }
 
     return res(
       { success: true, message: "Submission received", result: data },

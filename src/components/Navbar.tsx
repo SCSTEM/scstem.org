@@ -1,27 +1,23 @@
 "use client";
 
-import type { ButtonProps } from "@heroui/react";
 import {
-  Accordion,
-  AccordionItem,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Link,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenu,
-  NavbarMenuItem,
-  NavbarMenuToggle,
-  Navbar as NUINavbar,
-} from "@heroui/react";
-import { IconChevronDown, IconLego, IconRobot } from "@tabler/icons-react";
+  IconChevronDown,
+  IconLego,
+  IconMenu2,
+  IconRobot,
+  IconX,
+} from "@tabler/icons-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
 import { LinkButton } from "@/components/LinkButton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/shadcn/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { LogoColor } from "./Logo";
 
@@ -84,18 +80,16 @@ function keyify(link: NavLink): string {
 
 function GetInvolved({
   className,
-  href: _href,
-  as: _as,
-  ...props
-}: ButtonProps): ReactNode {
+  onPress,
+}: {
+  className?: string;
+  onPress?: () => void;
+}): ReactNode {
   return (
     <LinkButton
-      color="primary"
       href="/get-involved"
-      variant="shadow"
-      fullWidth
-      className={cn(className)}
-      {...props}
+      className={cn("shadow-lg w-full", className)}
+      onClick={onPress}
     >
       Get Involved
     </LinkButton>
@@ -114,148 +108,162 @@ export function Navbar(): ReactNode {
     setIsMenuOpen(false);
   };
 
-  const navButtons = links.map((link) => (
-    <NavbarItem key={keyify(link)} isActive={isActive(link)}>
-      {!link.children ? (
-        <Link href={link.href} aria-label={link.label} className="text-inherit">
-          {link.element ?? link.label}
-        </Link>
-      ) : (
-        <Dropdown>
-          <DropdownTrigger>
-            <div className="flex gap-2 cursor-pointer">
-              <div>{link.element ? link.element : link.label}</div>
-              <IconChevronDown />
-            </div>
-          </DropdownTrigger>
-
-          <DropdownMenu
-            className="w-85"
-            itemClasses={{
-              base: "gap-4",
-            }}
-            aria-label={link.label}
-          >
-            {link.children.map((link) => (
-              <DropdownItem
-                key={keyify(link)}
-                startContent={link.icon}
-                description={
-                  <div className="text-wrap">{link.description}</div>
-                }
-                textValue={link.label}
-                href={link.href}
-                className={cn(
-                  isActive(link) ? "border-x-2 border-primary" : null,
-                )}
-              >
-                {link.element ? link.element : link.label}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </Dropdown>
-      )}
-    </NavbarItem>
-  ));
-
-  const menuButtons = links.map((link) => (
-    <NavbarMenuItem key={keyify(link)}>
-      {!link.children ? (
-        <Link
-          href={link.href}
-          size="lg"
-          aria-label={link.label}
-          color={isActive(link) ? "primary" : "foreground"}
-          onClick={onMenuItemClick}
+  return (
+    <nav className="sticky top-0 z-50 h-16 backdrop-blur-lg bg-background/80 border-b border-border/50">
+      <div className="max-w-screen-xl mx-auto px-4 flex items-center h-full gap-4">
+        {/* Mobile menu toggle */}
+        <button
+          type="button"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="sm:hidden text-foreground p-1"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          {link.element ?? link.label}
+          {isMenuOpen ? <IconX size={24} /> : <IconMenu2 size={24} />}
+        </button>
+
+        {/* Brand */}
+        <Link href="/" className="flex items-center gap-x-2 shrink-0">
+          <div className="max-h-12.5 aspect-square shrink-0">
+            <LogoColor className="size-full object-contain" />
+          </div>
+          <div className="font-bold w-36 lg:w-full whitespace-normal text-foreground flex-1">
+            South Central STEM Collective
+          </div>
         </Link>
-      ) : (
-        <div className="*:p-0">
-          <Accordion selectedKeys={isActive(link) ? "all" : undefined}>
-            <AccordionItem
-              aria-label={link.label}
-              title={link.label}
-              classNames={{
-                trigger: "p-0",
-                content: "flex flex-col gap-2 pl-2",
-                indicator: "text-foreground",
-                title: cn(isActive(link) ? "text-primary" : null),
-              }}
+
+        {/* Desktop nav links */}
+        <div className="hidden sm:flex items-center gap-4 mx-auto h-full">
+          {links.map((link) => (
+            <div
+              key={keyify(link)}
+              className="relative flex items-center h-full"
             >
-              {link.children.map((link) => (
+              {!link.children ? (
                 <Link
-                  key={keyify(link)}
                   href={link.href}
                   aria-label={link.label}
-                  color={isActive(link) ? "primary" : "foreground"}
-                  onClick={onMenuItemClick}
+                  className={cn(
+                    "relative flex items-center h-full px-2 text-sm transition-colors",
+                    isActive(link)
+                      ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:rounded-full after:bg-primary"
+                      : "text-foreground hover:text-primary",
+                  )}
                 >
                   {link.element ?? link.label}
                 </Link>
-              ))}
-            </AccordionItem>
-          </Accordion>
+              ) : (
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    className={cn(
+                      "relative flex items-center h-full gap-1 px-2 text-sm transition-colors outline-none",
+                      isActive(link)
+                        ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:rounded-full after:bg-primary"
+                        : "text-foreground hover:text-primary",
+                    )}
+                  >
+                    {link.element ?? link.label}
+                    <IconChevronDown size={16} />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-80" align="start">
+                    {link.children.map((child) => (
+                      <DropdownMenuItem
+                        key={keyify(child)}
+                        asChild
+                        className={cn(
+                          "py-3",
+                          isActive(child)
+                            ? "border-l-2 border-primary text-primary"
+                            : null,
+                        )}
+                      >
+                        <Link href={child.href}>
+                          <div className="shrink-0">{child.icon}</div>
+                          <div className="flex flex-col gap-1">
+                            <div className="font-medium">
+                              {child.element ?? child.label}
+                            </div>
+                            {child.description && (
+                              <div className="text-xs text-muted-foreground text-wrap">
+                                {child.description}
+                              </div>
+                            )}
+                          </div>
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop CTA */}
+        <div className="hidden lg:flex items-center ml-auto">
+          <GetInvolved />
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      {isMenuOpen && (
+        <div className="sm:hidden absolute top-16 left-0 right-0 bg-background/95 backdrop-blur-lg border-b border-border/50 max-h-[calc(100dvh-4rem)] overflow-y-auto">
+          <div className="flex flex-col p-4 gap-2">
+            {links.map((link) => (
+              <div key={keyify(link)}>
+                {!link.children ? (
+                  <Link
+                    href={link.href}
+                    aria-label={link.label}
+                    className={cn(
+                      "block py-2 text-lg transition-colors",
+                      isActive(link) ? "text-primary" : "text-foreground",
+                    )}
+                    onClick={onMenuItemClick}
+                  >
+                    {link.element ?? link.label}
+                  </Link>
+                ) : (
+                  <details open={isActive(link) || undefined}>
+                    <summary
+                      className={cn(
+                        "py-2 text-lg cursor-pointer list-none flex items-center justify-between",
+                        isActive(link) ? "text-primary" : "text-foreground",
+                      )}
+                    >
+                      {link.label}
+                      <IconChevronDown
+                        size={16}
+                        className="transition-transform [[open]>&]:rotate-180"
+                      />
+                    </summary>
+                    <div className="flex flex-col gap-2 pl-4 pb-2">
+                      {link.children.map((child) => (
+                        <Link
+                          key={keyify(child)}
+                          href={child.href}
+                          aria-label={child.label}
+                          className={cn(
+                            "py-1 transition-colors",
+                            isActive(child)
+                              ? "text-primary"
+                              : "text-foreground",
+                          )}
+                          onClick={onMenuItemClick}
+                        >
+                          {child.element ?? child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </details>
+                )}
+              </div>
+            ))}
+            <div className="mt-4 mb-4">
+              <GetInvolved onPress={onMenuItemClick} />
+            </div>
+          </div>
         </div>
       )}
-    </NavbarMenuItem>
-  ));
-
-  return (
-    <NUINavbar
-      isBlurred
-      isMenuOpen={isMenuOpen}
-      onMenuOpenChange={setIsMenuOpen}
-      maxWidth="xl"
-      classNames={{
-        item: [
-          "flex",
-          "relative",
-          "h-full",
-          "items-center",
-          "text-foreground",
-          "data-[active=true]:after:content-['']",
-          "data-[active=true]:after:absolute",
-          "data-[active=true]:after:bottom-0",
-          "data-[active=true]:after:left-0",
-          "data-[active=true]:after:right-0",
-          "data-[active=true]:after:h-[2px]",
-          "data-[active=true]:after:rounded-[2px]",
-          "data-[active=true]:after:bg-primary",
-          "data-[active=true]:text-primary",
-        ],
-      }}
-    >
-      <NavbarMenuToggle
-        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        className="sm:hidden"
-      />
-      <NavbarBrand className="gap-x-2" as={Link} href="/">
-        <div className="max-h-12.5 aspect-square shrink-0">
-          <LogoColor className="size-full object-contain" />
-        </div>
-        <div className="font-bold w-36 lg:w-full whitespace-normal text-foreground flex-1">
-          South Central STEM Collective
-        </div>
-      </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {navButtons}
-      </NavbarContent>
-      <NavbarContent justify="end" className="hidden lg:flex">
-        <NavbarItem>
-          <GetInvolved />
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarMenu className="max-h-[calc(100dvh-4rem)]">
-        {menuButtons}
-        <NavbarMenuItem className="mt-auto mb-4">
-          <GetInvolved
-            className="text-[16px]"
-            variant="solid"
-            onPress={onMenuItemClick}
-          />
-        </NavbarMenuItem>
-      </NavbarMenu>
-    </NUINavbar>
+    </nav>
   );
 }

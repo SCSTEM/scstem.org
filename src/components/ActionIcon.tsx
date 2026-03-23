@@ -1,14 +1,12 @@
-import { Button, type ButtonProps } from "@heroui/button";
-import { Link } from "@heroui/link";
 import type { IconProps } from "@tabler/icons-react";
 import type { FC, ReactNode } from "react";
-
+import { Button, type ButtonProps } from "@/components/shadcn/ui/button";
 import { cn } from "@/lib/utils";
 
 type Props = {
   href: string;
   icon: FC<Omit<IconProps, "ref">>;
-} & ButtonProps;
+} & Omit<ButtonProps, "asChild">;
 
 export function ActionIcon({
   href,
@@ -18,16 +16,23 @@ export function ActionIcon({
 }: Props): ReactNode {
   return (
     <Button
-      isIconOnly
-      className={cn(className)}
-      href={href}
-      as={Link}
-      variant="light"
-      size="sm"
-      color="primary"
+      variant="ghost"
+      size="icon"
+      className={cn("size-8", className)}
+      asChild
       {...restProps}
     >
-      <Icon size={18} stroke={1.5} />
+      <a
+        href={href}
+        target={
+          href.startsWith("http") || href.startsWith("mailto:")
+            ? "_blank"
+            : undefined
+        }
+        rel="noopener noreferrer"
+      >
+        <Icon size={18} stroke={1.5} />
+      </a>
     </Button>
   );
 }

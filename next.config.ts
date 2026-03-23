@@ -6,9 +6,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  experimental: {
-    optimizePackageImports: ["@heroui/react"],
-  },
+  experimental: {},
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },

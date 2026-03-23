@@ -22,7 +22,7 @@ export default function Section({
   title,
   className,
 }: Props): ReactNode {
-  if (alt)
+  if (alt) {
     return (
       <section className={cn("shadow-inner p-8", className)}>
         <div className="md:max-w-(--breakpoint-xl) xl:max-w-(--breakpoint-2xl) mx-auto md:px-12">
@@ -30,6 +30,7 @@ export default function Section({
         </div>
       </section>
     );
+  }
 
   return (
     <section

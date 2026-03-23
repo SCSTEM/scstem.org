@@ -1,11 +1,10 @@
-import { Divider } from "@heroui/divider";
-import { Link } from "@heroui/link";
 import {
   IconBrandFacebook,
   IconBrandGithub,
   IconBrandLinkedin,
   IconMail,
 } from "@tabler/icons-react";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { ActionIcon } from "@/components/ActionIcon";
@@ -78,7 +77,10 @@ const footerSponsors = Sponsors.filter(
 
 function Slide({ sponsor }: { sponsor: SponsorSlide }): ReactNode {
   return (
-    <Link href={sponsor.url} className="hover:no-underline size-full">
+    <Link
+      href={sponsor.url ?? "#"}
+      className="hover:no-underline size-full block"
+    >
       <div className="flex flex-col items-center justify-center space-y-1 size-full">
         {sponsor.logo ? (
           <Image
@@ -157,7 +159,7 @@ export function Footer({ className }: { className?: string }): ReactNode {
                 className="flex md:w-32 flex-col text-center md:text-left"
               >
                 <div className="font-bold text-lg">{section.title}</div>
-                <Divider className="bg-foreground mb-2 mt-1" />
+                <hr className="border-foreground mb-2 mt-1" />
                 {section.links.map((link, i) => (
                   <Link
                     key={i}
@@ -183,7 +185,6 @@ export function Footer({ className }: { className?: string }): ReactNode {
                 key={i}
                 href={button.href}
                 icon={button.icon}
-                color="default"
                 className="hover:text-primary"
               />
             ))}

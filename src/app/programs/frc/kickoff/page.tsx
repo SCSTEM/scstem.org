@@ -93,10 +93,10 @@ export default function KickoffPage(): ReactNode {
                     href={KICKOFF_CONFIG.media.liveStreamUrl}
                     size="lg"
                     className="bg-red-600 text-white shadow-2xl hover:bg-red-700 font-bold text-xl px-8 py-6"
-                    endContent={<IconExternalLink size={28} />}
                     target="_blank"
                   >
                     Watch Live Now
+                    <IconExternalLink size={28} />
                   </LinkButton>
                 </div>
               }
@@ -277,10 +277,10 @@ function ResourcesSection() {
           href={KICKOFF_CONFIG.media.liveStreamUrl}
           size="lg"
           className="bg-yellow-400 text-black shadow-lg hover:bg-yellow-500 font-bold"
-          endContent={<IconExternalLink />}
           target="_blank"
         >
           Watch on FIRST Website
+          <IconExternalLink />
         </LinkButton>
       </div>
 
@@ -371,16 +371,18 @@ function DirectionsSection() {
                 href={KICKOFF_CONFIG.location.directionsLink}
                 size="lg"
                 className="bg-yellow-400 text-black shadow-lg hover:bg-yellow-500 font-bold"
-                endContent={<IconExternalLink />}
                 target="_blank"
               >
                 Get Directions &amp; Parking Info
+                <IconExternalLink />
               </LinkButton>
               <ModalWithTrigger
-                trigger="Meeting Schedule"
+                trigger={
+                  <>
+                    <IconCalendar /> Meeting Schedule
+                  </>
+                }
                 triggerProps={{
-                  color: "primary",
-                  startContent: <IconCalendar />,
                   size: "lg",
                   className:
                     "bg-yellow-400 text-black shadow-lg hover:bg-yellow-500 font-bold",

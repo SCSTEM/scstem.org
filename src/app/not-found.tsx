@@ -1,8 +1,7 @@
-import { Button } from "@heroui/button";
-import { Link } from "@heroui/link";
+import Link from "next/link";
 import type { ReactNode } from "react";
-
 import { Image } from "@/components/Image";
+import { Button } from "@/components/shadcn/ui/button";
 
 import logo from "@/image/svg/logo-white-full.svg";
 
@@ -27,8 +26,8 @@ export default function NotFound(): ReactNode {
           Looks like you might be lost, or this page is still under
           construction...
         </h1>
-        <Button as={Link} href="/" color="primary">
-          Take me back
+        <Button asChild>
+          <Link href="/">Take me back</Link>
         </Button>
       </main>
     </div>

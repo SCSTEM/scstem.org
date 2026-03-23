@@ -1,4 +1,4 @@
-import { Link } from "@heroui/link";
+import Link from "next/link";
 import type { Metadata } from "next/types";
 import type { ReactNode } from "react";
 
@@ -223,8 +223,13 @@ export default function About(): ReactNode {
             That&apos;s the story of SC2, but what about you? Whether you are a
             student, parent, industry professional, business owner, educator,
             explorer, or dreamer, we would love to hear from you. Feel free to{" "}
-            <Link href="/contact">get in touch</Link>, we are looking forward to
-            hearing from you.
+            <Link
+              href="/contact"
+              className="text-primary hover:opacity-80 transition-opacity"
+            >
+              get in touch
+            </Link>
+            , we are looking forward to hearing from you.
           </p>
         </article>
       </main>

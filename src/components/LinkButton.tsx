@@ -1,8 +1,28 @@
 "use client";
 
-import { Button, type ButtonProps } from "@heroui/button";
 import Link from "next/link";
+import type { AnchorHTMLAttributes } from "react";
 
-export function LinkButton(props: ButtonProps & { href: string }) {
-  return <Button as={Link} {...props} />;
+import { Button, type ButtonProps } from "@/components/shadcn/ui/button";
+
+type LinkButtonProps = ButtonProps & {
+  href: string;
+  target?: AnchorHTMLAttributes<HTMLAnchorElement>["target"];
+  rel?: string;
+};
+
+export function LinkButton({
+  href,
+  target,
+  rel,
+  children,
+  ...props
+}: LinkButtonProps) {
+  return (
+    <Button asChild {...props}>
+      <Link href={href} target={target} rel={rel}>
+        {children}
+      </Link>
+    </Button>
+  );
 }

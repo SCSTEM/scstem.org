@@ -1,5 +1,3 @@
-import { Button } from "@heroui/button";
-import { Link } from "@heroui/link";
 import {
   IconBrandPaypal,
   IconFileDescription,
@@ -10,6 +8,7 @@ import {
   IconWallet,
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import {
   FeatureCard,
@@ -17,6 +16,7 @@ import {
 } from "@/components/cards/FeatureCard";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { PatternBackground } from "@/components/PatternBackground";
+import { Button } from "@/components/shadcn/ui/button";
 import { Highlight } from "@/components/spans";
 import { siteConfig } from "@/data/config";
 import { parseColor } from "@/styles/theme";
@@ -52,16 +52,18 @@ const donateCards: FeatureCardProps[] = [
     body: "You can donate online through our secure PayPal Giving Fund link.",
     footer: (
       <Button
-        as={Link}
-        target="_blank"
+        asChild
         className="w-full mt-auto"
-        href={siteConfig.donateUrl}
-        style={{
-          backgroundColor: parseColor("blue"),
-        }}
+        style={{ backgroundColor: parseColor("blue") }}
       >
-        <IconBrandPaypal />
-        Donate
+        <a
+          href={siteConfig.donateUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <IconBrandPaypal />
+          Donate
+        </a>
       </Button>
     ),
     icon: IconWallet,
@@ -105,16 +107,18 @@ const donateCards: FeatureCardProps[] = [
     ),
     footer: (
       <Button
-        as={Link}
-        target="_blank"
+        asChild
         className="w-full mt-auto"
-        href={siteConfig.wishlistUrl}
-        style={{
-          backgroundColor: parseColor("red"),
-        }}
+        style={{ backgroundColor: parseColor("red") }}
       >
-        <IconListCheck />
-        Wishlist
+        <a
+          href={siteConfig.wishlistUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <IconListCheck />
+          Wishlist
+        </a>
       </Button>
     ),
     icon: IconTool,
@@ -129,8 +133,15 @@ const donateCards: FeatureCardProps[] = [
           continue improving our programs and workspace.
         </div>
         <div>
-          Please <Link href="#questions">contact us below</Link> if you are
-          interested in supporting us through a corporate sponsorship.
+          Please{" "}
+          <Link
+            href="#questions"
+            className="text-primary hover:opacity-80 transition-opacity"
+          >
+            contact us below
+          </Link>{" "}
+          if you are interested in supporting us through a corporate
+          sponsorship.
         </div>
       </div>
     ),

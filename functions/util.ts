@@ -12,8 +12,9 @@ import type {
  * @returns A standard HTTP Response object
  */
 export const res = (apiResponse: APIResponse, status: number): Response => {
-  if (!apiResponse.success && apiResponse.error)
+  if (!apiResponse.success && apiResponse.error) {
     console.error(apiResponse.error);
+  }
 
   return new Response(JSON.stringify(apiResponse), {
     status: status,

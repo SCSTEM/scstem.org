@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@heroui/react";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { IconCheck, IconSend } from "@tabler/icons-react";
@@ -11,6 +10,7 @@ import type { InferInput } from "valibot";
 import { email, nonOptional, object, pipe, string } from "valibot";
 import { Input } from "@/components/forms/fields/Input";
 import { TextArea } from "@/components/forms/fields/TextArea";
+import { Button } from "@/components/shadcn/ui/button";
 import type { APIResponse, GenericFormRequest } from "@/functions/types";
 import { cn } from "@/lib/utils";
 
@@ -70,7 +70,9 @@ export function ContactForm({ className, name }: Props): ReactNode {
   }, [turnstileTokenError]);
 
   const onSubmit: SubmitHandler<ContactFormValues> = (data) => {
-    if (submitDisabled) return;
+    if (submitDisabled) {
+      return;
+    }
     setSubmitting(true);
 
     const submission: GenericFormRequest = {
@@ -143,14 +145,13 @@ export function ContactForm({ className, name }: Props): ReactNode {
 
         <Button
           type="submit"
-          color="primary"
           className={cn(
-            "w-full md:ml-auto md:w-1/3 ",
-            submitDisabled ? "cursor-not-allowed bg-opacity-50" : null,
+            "w-full md:ml-auto md:w-1/3",
+            submitDisabled ? "cursor-not-allowed opacity-50" : null,
           )}
-          startContent={isSubmitted ? <IconCheck /> : <IconSend />}
           disabled={submitDisabled}
         >
+          {isSubmitted ? <IconCheck /> : <IconSend />}
           Submit
         </Button>
       </div>

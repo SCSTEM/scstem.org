@@ -40,6 +40,7 @@ export function VideoHeader({
         >
           <source src={src.webm} type="video/webm" />
           <source src={src.mp4} type="video/mp4" />
+          {/* biome-ignore lint/performance/noImgElement: video fallback cannot use next/image */}
           <img src={src.image} alt="" />
         </video>
       </div>

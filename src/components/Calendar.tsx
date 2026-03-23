@@ -80,13 +80,17 @@ export function Calendar({
   if (calendars) {
     calendars.forEach((calendar) => {
       let color = CalColor.Black;
-      if (calendar.color) color = calendar.color;
+      if (calendar.color) {
+        color = calendar.color;
+      }
       src += `&src=${calendar.src}&color=${color}`;
     });
   }
 
   let bg = CalColor.Graphite;
-  if (bgColor) bg = bgColor;
+  if (bgColor) {
+    bg = bgColor;
+  }
 
   return (
     <iframe

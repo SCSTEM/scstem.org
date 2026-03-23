@@ -1,6 +1,3 @@
-import { Button } from "@heroui/button";
-import { Divider } from "@heroui/divider";
-import { Link } from "@heroui/link";
 import {
   IconBooks,
   IconExternalLink,
@@ -11,6 +8,7 @@ import {
   IconTool,
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import type { FeatureCardProps } from "@/components/cards/FeatureCard";
 import { FeatureCard } from "@/components/cards/FeatureCard";
@@ -18,6 +16,7 @@ import { Image } from "@/components/Image";
 import { PatternBackground } from "@/components/PatternBackground";
 import HeroHeader from "@/components/page/HeroHeader";
 import Section from "@/components/page/Section";
+import { Button } from "@/components/shadcn/ui/button";
 import { Highlight, Underline } from "@/components/spans";
 import { VideoPlayer } from "@/components/VideoPlayer";
 
@@ -234,20 +233,20 @@ export default function Home(): ReactNode {
                     teams from around the world.
                   </div>
                   <div className="ml-auto">
-                    <Button
-                      as={Link}
-                      href="https://www.firstinspires.org/"
-                      target="_blank"
-                      endContent={<IconExternalLink />}
-                      variant="light"
-                      color="primary"
-                    >
-                      <span className="italic">FIRST®</span>
+                    <Button asChild variant="ghost" className="text-primary">
+                      <a
+                        href="https://www.firstinspires.org/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span className="italic">FIRST®</span>
+                        <IconExternalLink />
+                      </a>
                     </Button>
                   </div>
                 </div>
 
-                <Divider className="bg-white/50" />
+                <hr className="border-white/50" />
 
                 <div className="rounded-3xl space-y-4 flex flex-col">
                   <h4 className="text-center md:text-left heading-4">
@@ -260,15 +259,15 @@ export default function Home(): ReactNode {
                     ready to use their real world experience to help you grow.
                   </div>
                   <div className="ml-auto">
-                    <Button
-                      as={Link}
-                      href="https://info.firstinspires.org/morethanrobots"
-                      target="_blank"
-                      endContent={<IconExternalLink />}
-                      variant="light"
-                      color="primary"
-                    >
-                      More Than Robots
+                    <Button asChild variant="ghost" className="text-primary">
+                      <a
+                        href="https://info.firstinspires.org/morethanrobots"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        More Than Robots
+                        <IconExternalLink />
+                      </a>
                     </Button>
                   </div>
                 </div>
@@ -313,7 +312,13 @@ export default function Home(): ReactNode {
               We are always looking for new members, mentors, and sponsors! If
               you want to find out how you can get plugged in or are looking for
               more information, please reach out through our{" "}
-              <Link href="/get-involved">Get Involved form</Link>.
+              <Link
+                href="/get-involved"
+                className="text-primary hover:opacity-80 transition-opacity"
+              >
+                Get Involved form
+              </Link>
+              .
             </div>
           </div>
         </div>

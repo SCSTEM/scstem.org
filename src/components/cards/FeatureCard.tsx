@@ -1,9 +1,13 @@
-import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
-import { Chip } from "@heroui/chip";
 import type { ReactNode } from "react";
 import type { StaticImport } from "@/components/Image";
 import { Image } from "@/components/Image";
 import { LinkButton } from "@/components/LinkButton";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/shadcn/ui/card";
 import { cn, type Icon } from "@/lib/utils";
 import type { ColorScale } from "@/styles/theme";
 import { parseColor } from "@/styles/theme";
@@ -66,22 +70,22 @@ export function FeatureCard({
   const parsedColor = parseColor(color);
   return (
     <Card
-      classNames={{
-        base: cn(
-          "max-w-[400px] sm:w-[400px] mx-auto min-h-full",
-          classNames?.base,
-        ),
-        body: cn("pt-0 px-4 pb-4", classNames?.body),
-        header: cn("pb-0", classNames?.header),
-        footer: "mb-1",
-      }}
+      className={cn(
+        "max-w-[400px] sm:w-[400px] mx-auto min-h-full flex flex-col",
+        classNames?.base,
+      )}
     >
-      <CardHeader>
+      <CardHeader className={cn("pb-0", classNames?.header)}>
         <props.icon size={50} stroke={1.5} color={parsedColor} />
         <h4 className="font-bold text-lg xl:text-xl font-sans ml-4">{title}</h4>
       </CardHeader>
 
-      <CardBody className="flex flex-col space-y-4">
+      <CardContent
+        className={cn(
+          "pt-0 px-4 pb-4 flex flex-col space-y-4 flex-1",
+          classNames?.body,
+        )}
+      >
         {img && (!img.placement || img.placement === "top") ? (
           <CardImage src={img.src} alt={img.alt} className="mt-2" />
         ) : null}
@@ -91,12 +95,12 @@ export function FeatureCard({
             className="grow border-b-2"
           />
           {badge ? (
-            <Chip
-              variant="flat"
+            <span
+              className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
               style={{ backgroundColor: `${parsedColor}50` }}
             >
               {badge}
-            </Chip>
+            </span>
           ) : null}
         </div>
         <div className="flex flex-col grow">
@@ -110,22 +114,20 @@ export function FeatureCard({
             <CardImage className="mt-auto" src={img.src} alt={img.alt} />
           ) : null}
         </div>
-      </CardBody>
+      </CardContent>
 
       {footer ? (
-        <CardFooter>{footer}</CardFooter>
+        <CardFooter className="mb-1">{footer}</CardFooter>
       ) : link ? (
-        <CardFooter>
+        <CardFooter className="mb-1">
           <LinkButton
-            variant="light"
+            variant="ghost"
             href={link}
             style={{ color: parsedColor }}
-            className="h-fit px-2 py-1 bg-opacity/0 hover:bg-opacity/20"
-            endContent={
-              props.linkIcon ? <props.linkIcon className="size-5" /> : null
-            }
+            className="h-fit px-2 py-1"
           >
             {linkText ? linkText : "Learn More"}
+            {props.linkIcon ? <props.linkIcon className="size-5" /> : null}
           </LinkButton>
         </CardFooter>
       ) : null}

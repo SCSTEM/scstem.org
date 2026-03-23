@@ -1,5 +1,3 @@
-import { Card } from "@heroui/card";
-import { Chip } from "@heroui/chip";
 import { IconExternalLink } from "@tabler/icons-react";
 import type { Metadata } from "next/types";
 import type { ReactNode } from "react";
@@ -8,6 +6,7 @@ import { ActionIcon } from "@/components/ActionIcon";
 import { Image } from "@/components/Image";
 import { PatternBackground } from "@/components/PatternBackground";
 import HeroHeader from "@/components/page/HeroHeader";
+import { Card } from "@/components/shadcn/ui/card";
 import { Highlight, Underline } from "@/components/spans";
 import type { Sponsor } from "@/data/sponsors";
 import { Sponsors as data, SponsorLevel } from "@/data/sponsors";
@@ -74,7 +73,7 @@ function SponsorCard({ name, level, logo, url, sub, supportSince }: Sponsor) {
     <Card className="flex flex-col max-w-[350px] sm:w-[400px] size-full">
       <div className="my-auto flex h-48 flex-col items-center p-4">
         {logo ? (
-          <Image src={logo} alt={name + " logo"} className="size-full" />
+          <Image src={logo} alt={`${name} logo`} className="size-full" />
         ) : (
           <span className="text-4xl font-semibold my-auto">{name}</span>
         )}
@@ -91,9 +90,12 @@ function SponsorCard({ name, level, logo, url, sub, supportSince }: Sponsor) {
       >
         <div className="grow font-bold">{name}</div>
         {level ? (
-          <Chip variant="flat" style={{ backgroundColor: `${parsedColor}50` }}>
+          <span
+            className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
+            style={{ backgroundColor: `${parsedColor}50` }}
+          >
             {level}
-          </Chip>
+          </span>
         ) : null}
       </div>
 
