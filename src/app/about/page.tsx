@@ -53,7 +53,7 @@ export default function About(): ReactNode {
             </div>
             <Image
               src={biohazardLogo}
-              className="w-[200px]"
+              className="w-50"
               alt="Biohazard robotics team logo"
             />
           </div>
@@ -145,7 +145,7 @@ export default function About(): ReactNode {
             <Image
               src={sc2Logo}
               alt="South Central STEM Collective logo: A light bulb surrounded by a gear."
-              className="w-[200px]"
+              className="w-50"
             />
           </div>
           <ol className="space-y-1">

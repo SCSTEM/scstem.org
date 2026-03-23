@@ -110,7 +110,7 @@ export function Navbar(): ReactNode {
 
   return (
     <nav className="sticky top-0 z-50 h-16 backdrop-blur-lg bg-background/80 border-b border-border/50">
-      <div className="max-w-screen-xl mx-auto px-4 flex items-center h-full gap-4">
+      <div className="max-w-7xl mx-auto px-4 flex items-center h-full gap-4">
         {/* Mobile menu toggle */}
         <button
           type="button"

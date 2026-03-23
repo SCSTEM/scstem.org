@@ -164,7 +164,7 @@ export default function Donate(): ReactNode {
 
         <div className="flex flex-wrap justify-center gap-8">
           {donateCards.map((card, i) => (
-            <div key={i} className="w-full md:w-auto min-h-[300px]">
+            <div key={i} className="w-full md:w-auto min-h-75">
               <FeatureCard {...card} />
             </div>
           ))}
@@ -173,7 +173,7 @@ export default function Donate(): ReactNode {
         <div className="flex flex-col items-center gap-y-6 mx-auto px-6 py-5 text-center text-lg max-w-3xl">
           <div
             id="questions"
-            className="relative top-[-100px] block invisible"
+            className="relative -top-25 block invisible"
           ></div>
           <h2 className="heading-2 mx-auto text-center">Lets chat</h2>
           <div>We are always looking for new partners in STEM education.</div>
