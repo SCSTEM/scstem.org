@@ -80,16 +80,16 @@ function keyify(link: NavLink): string {
 
 function GetInvolved({
   className,
-  onPress,
+  onClick,
 }: {
   className?: string;
-  onPress?: () => void;
+  onClick?: () => void;
 }): ReactNode {
   return (
     <LinkButton
       href="/get-involved"
       className={cn("shadow-lg w-full", className)}
-      onClick={onPress}
+      onClick={onClick}
     >
       Get Involved
     </LinkButton>
@@ -259,7 +259,7 @@ export function Navbar(): ReactNode {
               </div>
             ))}
             <div className="mt-4 mb-4">
-              <GetInvolved onPress={onMenuItemClick} />
+              <GetInvolved onClick={onMenuItemClick} />
             </div>
           </div>
         </div>

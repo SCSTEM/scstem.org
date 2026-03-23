@@ -29,7 +29,11 @@ export function ActionIcon({
             ? "_blank"
             : undefined
         }
-        rel="noopener noreferrer"
+        rel={
+          href.startsWith("http") || href.startsWith("mailto:")
+            ? "noopener noreferrer"
+            : undefined
+        }
       >
         <Icon size={18} stroke={1.5} />
       </a>

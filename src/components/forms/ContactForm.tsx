@@ -93,14 +93,12 @@ export function ContactForm({ className, name }: Props): ReactNode {
       })
       .catch((err) => {
         setFormError("Error submitting form");
-        console.log(err);
+        console.error(err);
       })
       .finally(() => {
         setSubmitting(false);
         reset(contactDefaults);
       });
-
-    console.log(submission);
   };
 
   return (

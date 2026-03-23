@@ -24,6 +24,9 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
   --color-ring: var(--ring);
+  --color-card: var(--card);
+  --color-input: var(--input);
+  --color-overlay: var(--overlay);
 }
 
 /* Dark theme (default) */
@@ -43,6 +46,9 @@
   --accent-foreground: #e5e5e5;
   --border: #404040;
   --ring: #facc15;
+  --card: #18181b;
+  --input: #27272a;
+  --overlay: #18181b;
 }
 
 /* Bio theme (green primary) */

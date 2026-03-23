@@ -13,30 +13,32 @@ import {
   DialogTrigger,
 } from "@/components/shadcn/ui/dialog";
 
+type ModalSize =
+  | "xs"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl"
+  | "4xl"
+  | "5xl"
+  | "full";
+
 export interface ModalProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   title?: ReactNode;
   children: ReactNode;
   footer?: ReactNode;
-  size?:
-    | "xs"
-    | "sm"
-    | "md"
-    | "lg"
-    | "xl"
-    | "2xl"
-    | "3xl"
-    | "4xl"
-    | "5xl"
-    | "full";
+  size?: ModalSize;
   isDismissable?: boolean;
   hideCloseButton?: boolean;
   className?: string;
   scrollBehavior?: "inside" | "outside" | "normal";
 }
 
-const sizeClasses: Record<string, string> = {
+const sizeClasses: Record<ModalSize, string> = {
   xs: "max-w-xs",
   sm: "max-w-sm",
   md: "max-w-lg",
@@ -61,16 +63,16 @@ export function Modal({
   className,
   scrollBehavior = "inside",
 }: ModalProps) {
-  const onInteractOutside = isDismissable
+  const preventDismiss = isDismissable
     ? undefined
     : (e: Event) => e.preventDefault();
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent
-        className={`${sizeClasses[size] ?? sizeClasses.md} ${className ?? ""}`}
-        onInteractOutside={onInteractOutside}
-        onEscapeKeyDown={isDismissable ? undefined : (e) => e.preventDefault()}
+        className={`${sizeClasses[size]} ${className ?? ""}`}
+        onInteractOutside={preventDismiss}
+        onEscapeKeyDown={preventDismiss}
         hideCloseButton={hideCloseButton}
       >
         {title && (
@@ -121,56 +123,18 @@ export interface ModalWithTriggerProps
 export function ModalWithTrigger({
   trigger,
   triggerProps,
-  title,
-  children,
-  footer,
-  size,
-  isDismissable,
-  hideCloseButton,
-  className,
-  scrollBehavior,
+  ...modalProps
 }: ModalWithTriggerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button {...triggerProps}>{trigger}</Button>
-      </DialogTrigger>
-      <DialogContent
-        className={`${sizeClasses[size ?? "md"]} ${className ?? ""}`}
-        onInteractOutside={
-          isDismissable === false ? (e) => e.preventDefault() : undefined
-        }
-        onEscapeKeyDown={
-          isDismissable === false ? (e) => e.preventDefault() : undefined
-        }
-        hideCloseButton={hideCloseButton}
-      >
-        {title && (
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-          </DialogHeader>
-        )}
-        <DialogBody
-          className={
-            scrollBehavior === "inside" ? "overflow-y-auto max-h-[60vh]" : ""
-          }
-        >
-          {children}
-        </DialogBody>
-        {footer && <DialogFooter>{footer}</DialogFooter>}
-      </DialogContent>
-    </Dialog>
+    <>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>
+          <Button {...triggerProps}>{trigger}</Button>
+        </DialogTrigger>
+      </Dialog>
+      <Modal isOpen={isOpen} onOpenChange={setIsOpen} {...modalProps} />
+    </>
   );
-}
-
-export function useDisclosure(defaultOpen = false) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-  return {
-    isOpen,
-    onOpen: () => setIsOpen(true),
-    onClose: () => setIsOpen(false),
-    onOpenChange: setIsOpen,
-  };
 }
