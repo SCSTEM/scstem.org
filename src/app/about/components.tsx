@@ -16,7 +16,7 @@ import frc2023 from "@/image/team/frc/2023.webp";
 import frc2024 from "@/image/team/frc/2024.webp";
 import frc2025 from "@/image/team/frc/2025.webp";
 import frc2026 from "@/image/team/frc/2026.webp";
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 type CaptionedImageProps = {
   src: StaticImport;

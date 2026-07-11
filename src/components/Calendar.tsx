@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 interface Props {
   calendars: Calendar[];
@@ -91,7 +91,7 @@ export function Calendar({
   return (
     <iframe
       title="Calendar"
-      className={cn("h-[800px] w-full border-none md:h-[900px]", className)}
+      className={cn("h-200 w-full border-none md:h-225", className)}
       src={`https://calendar.google.com/calendar/embed?${src}&bgcolor=${bg}&ctz=America%2FNew_York${
         noTitle ? "&showTitle=0" : ""
       }${noNav ? "&showNav=0" : ""}${noDate ? "&showDate=0" : ""}${

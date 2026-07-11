@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { ParallaxBanner } from "react-scroll-parallax";
 
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 type Props = {
   children?: ReactNode;

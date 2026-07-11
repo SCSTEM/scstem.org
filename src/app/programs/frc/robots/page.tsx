@@ -98,7 +98,7 @@ const slides: ReactNode[] = [
       <Image
         src={viperLogo}
         alt="Viper logo"
-        className="relative m-auto inset-y-1/2 w-[200px]"
+        className="relative m-auto inset-y-1/2 w-50"
       ></Image>
       <SlideButtons></SlideButtons>
     </ParallaxImage>
@@ -120,7 +120,7 @@ const slides: ReactNode[] = [
       <Image
         src={troubleClef}
         alt="TroubleClef logo"
-        className="relative m-auto inset-y-1/2 w-[400px]"
+        className="relative m-auto inset-y-1/2 w-100"
       ></Image>
       <SlideButtons></SlideButtons>
     </ParallaxImage>

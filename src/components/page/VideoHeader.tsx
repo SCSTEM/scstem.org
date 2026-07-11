@@ -3,7 +3,7 @@
 import { IconChevronDown } from "@tabler/icons-react";
 import type { ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 type Props = {
   children: ReactNode;

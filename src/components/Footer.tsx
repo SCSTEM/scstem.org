@@ -15,7 +15,7 @@ import { LogoFullColor } from "@/components/Logo";
 import type { Sponsor as SponsorSlide } from "@/data/sponsors";
 import { SponsorLevel, Sponsors } from "@/data/sponsors";
 import type { Icon } from "@/lib/utils";
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 type FooterSection = {
   title: string;
@@ -117,7 +117,7 @@ export function Footer({ className }: { className?: string }): ReactNode {
                 slides={footerSponsors.map((sponsor) => (
                   <div
                     key={sponsor.name}
-                    className="px-8 py-4 aspect-video w-full sm:w-[300px] md:w-[400px] mx-auto h-[200px]"
+                    className="px-8 py-4 aspect-video w-full sm:w-75 md:w-100 mx-auto h-50"
                   >
                     <Slide sponsor={sponsor} />
                   </div>
@@ -129,7 +129,7 @@ export function Footer({ className }: { className?: string }): ReactNode {
                 {footerSponsors.map((sponsor) => (
                   <div
                     key={sponsor.name}
-                    className="aspect-video m-auto w-full max-h-[150px] px-5"
+                    className="aspect-video m-auto w-full max-h-37.5 px-5"
                   >
                     <Slide key={sponsor.name} sponsor={sponsor} />
                   </div>
@@ -140,8 +140,8 @@ export function Footer({ className }: { className?: string }): ReactNode {
         ) : null}
 
         {/* Main Footer */}
-        <div className="flex md:flex-row flex-col min-h-[160px] justify-between border-0 border-y border-solid border-gray-400 p-6 lg:px-0 leading-9">
-          <div className="mx-auto w-80 items-center leading-3 md:ml-0 md:max-w-[240px] md:items-start mb-8 md:mb-0">
+        <div className="flex md:flex-row flex-col min-h-40 justify-between border-0 border-y border-solid border-gray-400 p-6 lg:px-0 leading-9">
+          <div className="mx-auto w-80 items-center leading-3 md:ml-0 md:max-w-60 md:items-start mb-8 md:mb-0">
             <LogoFullColor className="w-full mb-4 md:mb-0" />
             <div className="text-center text-small">
               SC2 is 501(c)(3) non-profit focused on providing STEM

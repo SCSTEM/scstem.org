@@ -237,7 +237,7 @@ export default function OpenHouse(): ReactNode {
 
           <div className="space-y-4 py-8">
             <div className="md:max-w-(--breakpoint-xl) mx-auto px-10 md:px-12">
-              <div className="md:max-w-[800px] mb-10 mx-auto">
+              <div className="md:max-w-200 mb-10 mx-auto">
                 <Image
                   src={openHouseImage}
                   alt="South Central STEM Collective open house banner"
