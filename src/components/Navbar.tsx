@@ -22,7 +22,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
 import { LinkButton } from "@/components/LinkButton";
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 import { LogoColor } from "./Logo";
 
 type NavLink = {

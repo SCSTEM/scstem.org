@@ -1,4 +1,3 @@
-import { Button } from "@heroui/button";
 import {
   IconMoodHappy,
   IconRobotFace,
@@ -7,7 +6,6 @@ import {
 } from "@tabler/icons-react";
 import { clsx } from "clsx";
 import type { Metadata } from "next";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { Image } from "@/components/Image";

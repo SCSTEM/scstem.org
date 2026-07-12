@@ -11,7 +11,7 @@ import HeroHeader from "@/components/page/HeroHeader";
 import { Highlight, Underline } from "@/components/spans";
 import type { Sponsor } from "@/data/sponsors";
 import { Sponsors as data, SponsorLevel } from "@/data/sponsors";
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 import type { ColorScale } from "@/styles/theme";
 import { parseColor } from "@/styles/theme";
 
@@ -71,7 +71,7 @@ function SponsorCard({ name, level, logo, url, sub, supportSince }: Sponsor) {
   const parsedColor = parseColor(accent);
 
   return (
-    <Card className="flex flex-col max-w-[350px] sm:w-[400px] size-full">
+    <Card className="flex flex-col max-w-87.5 sm:w-100 size-full">
       <div className="my-auto flex h-48 flex-col items-center p-4">
         {logo ? (
           <Image src={logo} alt={name + " logo"} className="size-full" />

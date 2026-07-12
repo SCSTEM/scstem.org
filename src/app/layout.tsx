@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 
 import { Providers } from "@/components/Providers";
 import { DefaultLayout } from "@/layouts/Default";
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 import { inter, orbitron, scp } from "@/styles/fonts";
 import "@/styles/globals.css";
 import { colorScales } from "@/styles/theme";

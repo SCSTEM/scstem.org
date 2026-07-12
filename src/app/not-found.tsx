@@ -17,7 +17,7 @@ export default function NotFound(): ReactNode {
         }}
       ></div>
 
-      <main className="absolute inset-0 flex flex-col max-w-[500px] px-10 md:p-0 items-center justify-center mx-auto space-y-4 z-10">
+      <main className="absolute inset-0 flex flex-col max-w-125 px-10 md:p-0 items-center justify-center mx-auto space-y-4 z-10">
         <Image
           src={logo}
           alt="South Central STEM Collective's logo"

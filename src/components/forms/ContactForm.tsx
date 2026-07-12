@@ -12,7 +12,7 @@ import { email, nonOptional, object, pipe, string } from "valibot";
 import { Input } from "@/components/forms/fields/Input";
 import { TextArea } from "@/components/forms/fields/TextArea";
 import type { APIResponse, GenericFormRequest } from "@/functions/types";
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 const contactSchema = object({
   name: nonOptional(string()),

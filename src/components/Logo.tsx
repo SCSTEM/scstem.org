@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 type LogoProps = Omit<ComponentProps<"img">, "src">;
 

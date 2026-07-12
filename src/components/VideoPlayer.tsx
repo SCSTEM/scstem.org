@@ -4,7 +4,7 @@ import { IconPlayerPlay } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import { type ReactElement, type ReactNode, useState } from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 

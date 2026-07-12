@@ -7,7 +7,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import * as React from "react";
 
 import { Button } from "@/components/shadcn/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -174,15 +174,14 @@ const CarouselContent = React.forwardRef<
 CarouselContent.displayName = "CarouselContent";
 
 const CarouselItem = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  HTMLFieldSetElement,
+  React.HTMLAttributes<HTMLFieldSetElement>
 >(({ className, ...props }, ref) => {
   const { orientation } = useCarousel();
 
   return (
-    <div
+    <fieldset
       ref={ref}
-      role="group"
       aria-roledescription="slide"
       className={cn(
         "min-w-0 shrink-0 grow-0 basis-full",
@@ -254,10 +253,10 @@ const CarouselNext = React.forwardRef<
 CarouselNext.displayName = "CarouselNext";
 
 export {
-  type CarouselApi,
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
 };

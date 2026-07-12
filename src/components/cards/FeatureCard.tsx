@@ -4,7 +4,8 @@ import type { ReactNode } from "react";
 import type { StaticImport } from "@/components/Image";
 import { Image } from "@/components/Image";
 import { LinkButton } from "@/components/LinkButton";
-import { cn, type Icon } from "@/lib/utils";
+import type { Icon } from "@/lib/utils";
+import { cn } from "cnfast";
 import type { ColorScale } from "@/styles/theme";
 import { parseColor } from "@/styles/theme";
 

@@ -20,10 +20,9 @@ import HeroHeader from "@/components/page/HeroHeader";
 import Section from "@/components/page/Section";
 import { Highlight } from "@/components/spans";
 import { VideoPlayer } from "@/components/VideoPlayer";
-
-import frcImage from "@/image/frc-driveteam.webp";
-import fllImage from "@/image/lego-robots.webp";
+import frcImage from "@/image/frc-driveteam2.webp";
 import openHouseImage from "@/image/open-house-24-banner.webp";
+import fllImage from "@/image/team/fll/2024.webp";
 
 const programCards: FeatureCardProps[] = [
   {
@@ -150,8 +149,7 @@ const programCards: FeatureCardProps[] = [
 const faq: { question: string; answer: string | ReactNode }[] = [
   {
     question: "When is the open house?",
-    answer:
-      "Thursday, June 6 from 7PM to 8:30 and Saturday, June 8 from 9AM to 12PM.",
+    answer: "Saturday, August 1 from 1PM to 4PM.",
   },
   {
     question: "What age do I have to be to join?",
@@ -195,22 +193,24 @@ export const metadata: Metadata = {
 export default function OpenHouse(): ReactNode {
   return (
     <>
-      <HeroHeader img="/image/students.webp">
+      <HeroHeader img="/image/morethanrobots.webp">
         <div className="flex flex-col space-y-6 text-foreground">
-          <div className="text-4xl font-bold md:text-5xl mb-0">
+          <div className="text-4xl font-bold md:text-5xl">
             Want to know more about <Highlight>STEM</Highlight> and{" "}
             <Highlight>Robots</Highlight>?
           </div>
           <div className="text-2xl">
             Join us for our open house on{" "}
-            <Highlight>Thursday, June 6 (7PM - 8:30)</Highlight> and{" "}
-            <Highlight>Saturday, June 8 (9AM - 12PM)</Highlight> in downtown
-            Chambersburg to see what we&apos;re all about.
+            <Highlight>
+              Saturday, August 1 (1PM to 4PM)
+              <br />
+            </Highlight>{" "}
+            in downtown Chambersburg to see what we&apos;re all about.
           </div>
         </div>
       </HeroHeader>
 
-      <PatternBackground>
+      <PatternBackground pattern="topography">
         <div className="flex flex-col gap-y-16 py-10">
           <div className="flex flex-col items-center space-y-6 mx-auto md:max-w-(--breakpoint-lg) px-6 text-center">
             <h2 className="heading-2">
@@ -237,58 +237,6 @@ export default function OpenHouse(): ReactNode {
 
           <div className="space-y-4 py-8">
             <div className="md:max-w-(--breakpoint-xl) mx-auto px-10 md:px-12">
-              <div className="md:max-w-[800px] mb-10 mx-auto">
-                <Image
-                  src={openHouseImage}
-                  alt="South Central STEM Collective open house banner"
-                  className="mb-8"
-                />
-                <Card
-                  shadow="lg"
-                  radioGroup="md"
-                  radius="lg"
-                  className="w-fit mx-auto p-2"
-                  classNames={{
-                    header: "m-0 p-0",
-                  }}
-                >
-                  <CardBody>
-                    <div className="space-y-4 items-center justify-center flex flex-col my-auto">
-                      <h5 className="text-lg">Connect with us</h5>
-                      <Button
-                        startContent={<IconBrandFacebook />}
-                        className="bg-blue-500 w-full"
-                        as={Link}
-                        href="https://go.scstem.tech/facebook"
-                        target="_blank"
-                      >
-                        Like us on Facebook
-                      </Button>
-                      <h5 className="text-lg mt-6!">
-                        Let us know you&apos;re coming
-                      </h5>
-                      <Button
-                        startContent={<IconCalendarEvent />}
-                        className="bg-red-500 w-full"
-                        as={Link}
-                        href="https://www.facebook.com/events/1113583296542229/"
-                        target="_blank"
-                      >
-                        Thursday
-                      </Button>
-                      <Button
-                        startContent={<IconCalendarEvent />}
-                        className="bg-red-500 w-full"
-                        as={Link}
-                        href="https://www.facebook.com/events/1113583299875562/"
-                        target="_blank"
-                      >
-                        Saturday
-                      </Button>
-                    </div>
-                  </CardBody>
-                </Card>
-              </div>
               <div className="flex flex-col md:flex-row gap-16">
                 <div className="flex-1 flex flex-col gap-y-4">
                   <h3 className="heading-3 text-center">FAQ</h3>

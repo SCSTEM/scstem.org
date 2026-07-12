@@ -3,7 +3,7 @@ import type { ImageProps } from "next/image";
 import NextImage from "next/image";
 import type { ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 export type StaticImport = ImageStaticImport;
 

@@ -20,7 +20,7 @@ import { PatternBackground } from "@/components/PatternBackground";
 import HeroHeader from "@/components/page/HeroHeader";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import type { Icon } from "@/lib/utils";
-import { cn } from "@/lib/utils";
+import { cn } from "cnfast";
 
 export const metadata: Metadata = {
   title: "2026 Kickoff | Biohazard",
