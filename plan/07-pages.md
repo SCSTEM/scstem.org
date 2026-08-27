@@ -38,6 +38,9 @@ Shared rules for all groups:
 
 ## Group C — Programs (FRC/FLL)
 
+### `/programs` (new — the hub page backing the nav dropdown, D26)
+- No legacy counterpart. Program cards for FLL and FRC (same `ui/` components as the homepage programs section, fuller copy), plus links to Robots and the calendars. Title/description written fresh; breadcrumbs JSON-LD. This is the tap target for "Programs" on touch/no-JS (Phase 05 navbar).
+
 ### `/programs/frc` (`legacy/src/app/programs/frc/page.tsx` + `components.tsx`)
 - ProgramLayout `theme="frc"`. Port copy/sections; team identity (Biohazard) media from `src/assets/frc/`.
 

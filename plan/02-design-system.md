@@ -31,8 +31,12 @@
 
 ### 2. Fonts (§3)
 
-- Self-hosted: `@fontsource-variable/inter`, `@fontsource-variable/orbitron`, `@fontsource-variable/source-code-pro` (static @fontsource fallback for any without a variable axis). Latin subset only, `font-display: swap`.
+- Self-hosted: `@fontsource-variable/inter`, `@fontsource-variable/orbitron`, `@fontsource-variable/source-code-pro` (static @fontsource fallback for any without a variable axis). Latin subset only, `font-display: swap`. Source Code Pro is a first-class working face (stats, spec labels, chips — DESIGN.md §3), not an afterthought.
 - `src/styles/fonts.ts` exports the two above-the-fold woff2 paths (Inter var, Orbitron var) for BaseLayout's `<link rel="preload">` (wired in Phase 05).
+
+### 2b. Brand assets
+
+- Copy the official logo assets from `legacy/public/image/svg/` (`logo-color-full.svg`, `logo-color.svg`, plus the black/white variants) into `src/assets/brand/`. These are the only sanctioned marks (DESIGN.md §7): full-width lockup in desktop chrome, square mark in mobile chrome. Never rebuild the logo as inline SVG or set the name in Inter as a lockup substitute.
 
 ### 3. Signature motifs as utilities/components
 

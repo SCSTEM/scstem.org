@@ -31,17 +31,18 @@ Typed builder helpers returning `schema.org` objects, serialized via a tiny `<Js
 - Favicon/manifest set in `public/`: `favicon.ico` (carry over), new `icon.svg`, `apple-touch-icon.png` (180px), `site.webmanifest` (name, short_name SC2, theme/background colors from tokens, icons 192/512). Generate from the legacy logo asset.
 - `src/layouts/ProgramLayout.astro`: thin wrapper setting `theme` — replaces the duplicated legacy FRC/FLL layouts.
 
-### 4. Navbar — `src/components/ui/Navbar.astro`
+### 4. Navbar — `src/components/ui/Navbar.astro` (spec: DESIGN.md §5, D26)
 
-Rebuild (reference `legacy/src/components/Navbar.tsx`, 261 LOC, for link inventory and grouping only):
-- Semantic `<header><nav aria-label="Main">`, logo (Phase 02 treatment), current-page indication via `aria-current="page"`.
-- Mobile: disclosure menu — button with `aria-expanded` + small inline script toggling; CSS transition; no focus trap needed (non-modal); Esc closes. Works at 360px.
-- Desktop: programs dropdown (if legacy has one) via CSS `:focus-within`/popover attribute — keyboard reachable.
-- Sticky behavior only if DESIGN.md says so; no scroll-linked JS.
+Rebuild (reference `legacy/src/components/Navbar.tsx`, 261 LOC, for link inventory only):
+- Semantic `<header><nav aria-label="Main">`; **sticky on all viewports**, condensing slightly after scroll via pure CSS (scroll-driven animation with graceful no-support fallback); `background`/95 bg, bottom hairline.
+- Identity: **full-width color lockup** (`src/assets/brand/logo-color-full.svg`, ~40px) on ≥ md; **square mark alone** on mobile (brand rules: never "SC2" as a name substitute; the full name appears in page content).
+- Links: About / Programs ▾ / Sponsors / Donate + primary "Get involved" button (≥44px target). `aria-current="page"` states.
+- **Programs dropdown**: CSS `:focus-within`/popover-attribute disclosure listing FLL, FRC, Robots, Calendar — while the "Programs" link itself navigates to the **`/programs` hub page** (Phase 07), so touch and no-JS users get a real destination. Keyboard reachable, Esc closes.
+- Mobile menu: **full-height sheet** — ≥48px rows (About, Programs, Sponsors, Calendar), "Get involved" + "Donate" as large buttons pinned at the bottom; `aria-expanded` toggle script (~20 lines), Esc/backdrop close, body scroll locked while open.
 
 ### 5. Footer — `src/components/ui/Footer.astro`
 
-Reference `legacy/src/components/Footer.tsx` (195 LOC) for content inventory: nav links, social icons (Icon primitive), contact info, legal line. All data from `src/data/site.ts`. Semantic `<footer>`, one `<nav aria-label="Footer">`.
+Reference `legacy/src/components/Footer.tsx` (195 LOC) for content inventory: nav links, social icons (Icon primitive), contact info, legal line. All data from `src/data/site.ts`. Semantic `<footer>`, one `<nav aria-label="Footer">`. Styled as a recessed `card` band (DESIGN.md §2) with the full-width color lockup — never a grayscale logo.
 
 ### 6. 404 — `src/pages/404.astro`
 

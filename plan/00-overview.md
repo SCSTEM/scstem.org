@@ -53,6 +53,7 @@ This directory is the complete implementation plan for rewriting scstem.org from
 | D23 | Branch flow per "How to use this plan" above. |
 | D24 | Toolchain split (oxc-first hybrid): oxlint + oxfmt own `.ts/.js/.mjs/.cjs/.json/.jsonc/.css`; ESLint + Prettier own `.astro` and `.md`. When oxlint/oxfmt gain Astro support, migration = delete the ESLint/Prettier half (seam documented in `docs/adr/`). |
 | D25 | **No private/internal content on the main domain.** The legacy `_headers` per-path noindex rules (`/team/*`, `/image/*`, `/video/*`) are dropped entirely; only the preview/staging host rules (`*.pages.dev`, `staging.scstem.org`) carry over. Anything private lives off-domain. Image/video indexing is thereby enabled (helps image SEO). |
+| D26 | **Design review outcomes (owner-settled, 2026-08, recorded in DESIGN.md):** brand-literal recessed surfaces (`#262626` page, `#171717` "machined pocket" cards; V2+V3 grid-floor variant for feature moments); AAA text ramp (`#FAFAFA`/`#D4D4D4`, `#A3A3A3` captions-only); fill-vs-text token pairs for all brand accents; Science Blue = informational on dark and reserved light-theme primary; Source Code Pro owns numerals/spec labels; engineering-grid + dimension-tick motif replaces the circuit pattern; sentence-case headings; real logo lockups in chrome (full-width desktop, square mark mobile); sticky condensed header; Programs dropdown backed by a new `/programs` hub page; full-height mobile menu sheet; mobile heroes put text on solid ground below the photo. |
 
 ## Current-state facts (verified 2026-08)
 
