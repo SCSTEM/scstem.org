@@ -2,7 +2,7 @@
 
 Source of truth for the visual design of scstem.org. Every UI decision an implementer makes should be answerable from this document; if it isn't, propose an addition here first (PR + owner review), then build.
 
-The system is a **brand-faithful refresh** of the 2024–2026 site, grounded in the official **Brand Guidelines v1** (colors, fonts, logo, and naming rules below are normative from that document) and settled through an owner design review in 2026-08. The organizing metaphor is the **build document**: the page is a machined metal sheet — pockets cut *into* it, blueprint linework and spec labels scribed *onto* it — and data speaks in a monospaced spec-sheet voice. The official t-shirt art (wireframe gear-bulb with dimension callouts, the outlined-capsule tagline, the PROJECT/ORGANIZATION/URL title block) is a normative reference for this scribed register. The balance rule: the sheet stays technical, not themed — the bar is *great, not just good*: fewer competing treatments, stronger hierarchy, deliberate everything.
+The system is a **brand-faithful refresh** of the 2024–2026 site, grounded in the official **Brand Guidelines v1** (colors, fonts, logo, and naming rules below are normative from that document) and settled through an owner design review in 2026-08. The organizing metaphor is the **build document**, in three layers: the page is a machined metal sheet (pockets cut *into* it), blueprint linework and spec labels are scribed *onto* it, and an **engineer's hand markup** — highlighter swipes, chalk circles and underlines, sketched arrows — sits over the top. The machine provides structure; the hand provides warmth; data speaks in a monospaced spec-sheet voice. The official t-shirt art (wireframe gear-bulb with dimension callouts, the circled-word tagline, the PROJECT/ORGANIZATION/URL title block) is a normative reference. The balance rule: the sheet stays technical, not themed — the bar is *great, not just good*: fewer competing treatments, stronger hierarchy, deliberate everything.
 
 ## 1. Brand essence, voice, and naming
 
@@ -89,12 +89,22 @@ Large unmodulated `background` fields read sterile. Between the hero and the foo
 
 The blueprint devices printed *onto* the sheet. Each appears at most once per page unless noted:
 
-9. **Highlight capsules**: inline key words wrapped in a 1.5px `foreground`-stroke pill (`border-radius: 999px`, ~2px 10–12px padding) — the "Real **Skills**. Real **Robots**. Real **Fun**." treatment. Tagline/display contexts only; never inside headings ≥ h2, never in body copy; one capsule run per view. The tagline itself is sanctioned brand copy for heroes/CTAs.
-10. **Title block**: the engineering-drawing identity strip — bordered compartments, each an SCP uppercase label (`PROJECT:` / `ORGANIZATION:` / `URL:` …) over an Inter (or SCP for URLs/codes) value, 1px `border` dividers. Its home is the footer bottom (the drawing sheet's corner), horizontal strip ≥ md, stacked on mobile; contact/event pages may use the boxed stack as an info card.
-11. **Scribed lineart**: the wireframe gear-bulb (and sibling blueprint drawings) as large, faint decorative art — stroke-only, `foreground` or `primary`, 4–6% opacity, on `card` bands (footer, feature panels), never behind body copy. Obtain the real vector from the merch/brand source files into `src/assets/brand/` (the mockups use a drawn approximation).
-12. **Labeled callouts**: leader line (1px, dot or arrow terminus) + SCP label — figure captions under framed media ("FIG. 01 — BIOHAZARD, 2023 SEASON"), detail annotations on heroes ("DETAIL A" style). `muted` color; captions may double as the image's visible credit.
+9. **Title block**: the engineering-drawing identity strip — bordered compartments, each an SCP uppercase label (`PROJECT:` / `ORGANIZATION:` / `URL:` …) over an Inter (or SCP for URLs/codes) value, 1px `border` dividers. Its home is the footer bottom (the drawing sheet's corner), horizontal strip ≥ md, stacked on mobile; contact/event pages may use the boxed stack as an info card.
+10. **Scribed lineart**: the wireframe gear-bulb (and sibling blueprint drawings) as large, faint decorative art — stroke-only, `foreground` or `primary`, 4–6% opacity, on `card` bands (footer, feature panels), never behind body copy. Obtain the real vector from the merch/brand source files into `src/assets/brand/` (the mockups use a drawn approximation).
+11. **Labeled callouts**: leader line (1px, dot or arrow terminus) + SCP label — figure captions under framed media ("FIG. 01 — BIOHAZARD, 2023 SEASON"), detail annotations on heroes ("DETAIL A" style). `muted` color; captions may double as the image's visible credit.
 
-**Register budget**: across grid, ticks, ruler, numerals, pools, marks, capsules, title block, lineart, and callouts, a viewport shows **at most 4 distinct devices**. If a new one enters a view, another leaves.
+### Hand markup register (the human layer)
+
+The engineer's markup drawn *over* the sheet — this is what keeps the machined language from feeling sterile. All strokes are deliberately imperfect (hand-drawn SVG paths: slight curve, open ends, small rotation), 2–3px, `stroke-linecap: round`. **Pill-shaped UI is banned** (reviewed and rejected): a circled word is a chalk oval, never a `border-radius: 999px` box.
+
+12. **Chalk ovals**: key words circled with a hand-drawn open ellipse — `foreground` white (chalk) in hero/photo contexts, `primary` (grease pencil) on the ground. The "Real ⬭Skills⬭. Real ⬭Robots⬭. Real ⬭Fun⬭." treatment; the tagline itself is sanctioned brand copy for heroes/CTAs. Tagline/display contexts only, one run per view.
+13. **Highlighter swipes**: a skewed translucent `primary` rectangle (25–35% alpha, ~-1.5° rotation, 2–3px radius) behind white key words — the marker-highlight alternative to `primary`-colored text. A heading uses colored text *or* a swipe, never both; verify the white-on-swipe contrast on `/styleguide`.
+14. **Chalk underlines**: one hand-drawn, slightly curved underline stroke beneath a heading (`primary`). Distinct from the machined 32px card rule, which stays perfectly straight — machined vs. hand is a deliberate contrast, never blended.
+15. **Sketch arrows**: one hand-drawn curved arrow per page, pointing at exactly one action or detail (e.g. "Become a sponsor"). `primary`, 2px.
+
+Motion note (§6 applies): hand-markup strokes may *draw on* as their entrance (stroke-dashoffset, once, ~500ms, reduced-motion disables) — the one sanctioned decorative animation, because it enacts the metaphor.
+
+**Register budget**: across all machined, scribed, and hand-markup devices (grid, ticks, ruler, numerals, pools, marks, title block, lineart, callouts, ovals, swipes, underlines, arrows), a viewport shows **at most 4 distinct devices**. If a new one enters a view, another leaves.
 
 Restraint rule: these are atmosphere, not decoration — if a device is noticeable before the content is, it's too loud. `section-tint` bands (§2 surfaces) count as a device for their boundary.
 
@@ -197,6 +207,7 @@ CSS-only (D3, D20). Motion confirms — it never decorates.
 | "SC2" in a heading; "Scstem" in prose | Full name (capitalized STEM); SC2 only in prose with the full name present |
 | Faking the logo: gear SVG + name in Inter | Real lockup assets: full-width on desktop chrome, square mark on mobile |
 | Filled dark-on-dark tier pills | SCP outline chips per §8 |
+| Pill-shaped UI (`border-radius: 999px` capsules) | Radius tokens only; circled words are hand-drawn chalk ovals (§2.12) |
 | 5 cards centered as 3+2 with a floating orphan | Grid math planned: intentional 2+3 |
 | Drop shadows, glows, hover-lift on pockets | Border warms + floor lifts one step; depth only goes down |
 | `alt="image"` / missing alt | Descriptive alt or explicit `alt=""` |
