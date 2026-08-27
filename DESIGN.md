@@ -34,7 +34,7 @@ Dark-only for now (D15). All component color comes from **semantic tokens** — 
 | `success` / `warning` / `destructive` | `#46C769` / `#FB9F4F` / `#FF6B64` | Form + status states only (brightened 400-steps of the legacy scales for dark-bg contrast) |
 | `ring` | `#FACC15` | Focus ring |
 
-Legacy full scales (yellow/green/blue/orange/red from `legacy/src/styles/theme.ts`) are the source palette; only the tokens above are exposed to components.
+Legacy full scales (yellow/green/blue/orange/red from `legacy/src/styles/theme.ts`) are the source palette; only the tokens above are exposed to components. The logo mark's fixed colors (gray gear `#4B5563`, yellow bulb) are brand-asset colors, exempt from the token rule like any other image.
 
 ### Program themes (D16)
 
@@ -118,7 +118,7 @@ CSS-only (D3, D20). Motion confirms — it never decorates.
 
 ## 8. Components tone
 
-- **Buttons**: variants `primary` (filled `primary`/`primary-foreground`), `outline` (1px `border`, `foreground` text, hover border-primary), `ghost` (nav/tertiary). One `primary` button per view region. Min touch target 44×44px. Icon+label spacing 8px.
+- **Buttons**: variants `primary` (filled `primary`/`primary-foreground`), `outline` (1px `border`, `foreground` text, hover border-primary; over photography it gains a translucent `card` background for legibility), `ghost` (nav/tertiary). One `primary` button per view region. Min touch target 44×44px. Icon+label spacing 8px.
 - **Links**: in-prose links are `primary`-colored **and underlined**; UI links (cards, nav) may drop underline at rest but must underline on hover/focus. External links get the external icon at 0.8em + `rel="noopener"`.
 - **Cards**: FeatureCard = icon in a `radius-sm` accent-tinted square (12% alpha `primary` bg, `primary` icon), `h4` title with the 32px accent rule, `body` copy, optional footer link. Sponsor card = logo on `card` bg (padded, contain), name, tier badge, "since YYYY" meta, external link icon.
 - **Tier badges**: outline style, `small` weight-500 — platinum `#CBD5E1`, gold `#FACC15`, silver `#A3A3A3`, bronze `#D08954`; text = badge color, 1px border same color at 40% alpha, transparent bg. (Retires the muddy filled pills.)
