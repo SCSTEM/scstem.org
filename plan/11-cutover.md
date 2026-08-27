@@ -15,7 +15,7 @@
 ### 2. Cloudflare Pages configuration (dashboard — coordinate with owner; not in repo)
 
 - Build command: `pnpm build` (or `pnpm install --frozen-lockfile && pnpm build` per Pages' pnpm handling — it respects `packageManager`); output directory: `dist` (was `build`); Node version env var matching the mise pin.
-- Confirm preview deployments still noindexed (`_headers` covers `*.pages.dev` + `staging.scstem.org`).
+- Confirm preview deployments still noindexed (`_headers` covers `*.pages.dev` + `staging.scstem.org`; per D25 those are the only noindex rules left — `/team/*`, `/image/*`, `/video/*` are gone deliberately).
 - Env vars: set `PUBLIC_TURNSTILE_SITE_KEY` (real key for production, test key acceptable for previews), confirm `SLACK_FORM_POST_GENERIC` secret still bound for Functions, CF Web Analytics token if env-injected.
 - Apply settings to a **preview first**: trigger a deploy of `astro-rewrite` with the new settings and verify before touching branch mappings.
 

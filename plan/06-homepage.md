@@ -2,11 +2,11 @@
 
 **Prerequisites:** Phase 05.
 **Branch:** `overhaul/06-homepage` off `astro-rewrite`.
-**Gate:** ⛔ **Owner visual sign-off required before Phase 07 starts.** This is the checkpoint where "good → great" is settled while only one page is at stake.
+**Gate:** ⛔ **Owner sign-off required before Phase 07 starts.** The design itself was settled up front (DESIGN.md + owner-reviewed mockups shipped with the plan — D22), so this gate is a **conformance check**: does the built homepage match the approved design, and does it hold up on real devices?
 
 ## Objective
 
-The homepage rebuilt to DESIGN.md quality with existing marketing copy (D8), plus the composed `ui/` components the rest of the site will reuse. Then a structured visual review loop with the owner.
+The homepage rebuilt to the approved DESIGN.md/mockups with existing marketing copy (D8), plus the composed `ui/` components the rest of the site will reuse. Then a focused review with the owner.
 
 ## Reference
 
@@ -30,11 +30,11 @@ Built from primitives; these are the reusable section vocabulary for all later p
 - Sections per legacy content order unless DESIGN.md argues otherwise: hero → programs → sponsors → join/CTA. The `/openhouse` fork is *not* consulted (Phase 08 handles events).
 - LCP element (hero poster/heading) must not depend on JS; hero image/poster gets `fetchpriority="high"` + eager loading; everything below the fold lazy.
 
-### 3. Visual review loop (the gate)
+### 3. Conformance review (the gate)
 
 1. Merge-ready PR → CF Pages preview URL on `astro-rewrite` after merge, or the PR's own preview.
-2. Produce a review pack for the owner: full-page screenshots at 360px, 768px, 1440px (light on nothing — dark only), plus side-by-side with production scstem.org (use the pre-installed Chromium/Playwright).
-3. Owner critiques → iterate on the homepage **and fold every generalizable decision back into DESIGN.md** (that's the deliverable that keeps Phase 07 fast). Repeat until explicit sign-off.
+2. Produce a review pack for the owner: full-page screenshots at 360px, 768px, 1440px, side-by-side with the **approved mockups** and with production scstem.org (use the pre-installed Chromium/Playwright).
+3. Owner reviews for conformance + real-device feel. Deviations from DESIGN.md are bugs — fix them; genuine design changes discovered here go through DESIGN.md §11 (doc PR first). Repeat until explicit sign-off.
 4. Record sign-off: check the box below, note date + iteration count in the PR.
 
 ### 4. Housekeeping
@@ -48,5 +48,5 @@ Built from primitives; these are the reusable section vocabulary for all later p
 - [ ] Sponsors render from the collection; deactivating a sponsor file removes it without code changes.
 - [ ] Zero client JS except the video poster/in-view script and nav toggle; reduced-motion shows poster.
 - [ ] Lighthouse A11y = 100, SEO = 100 (mobile) on the preview.
-- [ ] ⛔ **Owner visual sign-off recorded; DESIGN.md updated with review outcomes.**
+- [ ] ⛔ **Owner conformance sign-off recorded; any DESIGN.md amendments merged via §11 process.**
 - [ ] `pnpm check && pnpm build` green.

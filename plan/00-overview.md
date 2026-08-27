@@ -49,14 +49,15 @@ This directory is the complete implementation plan for rewriting scstem.org from
 | D19 | Calendar pages: vanilla-TS client script rendering a branded agenda, fed by a new Pages Function that proxies the public Google Calendar feed (keys/parsing server-side). Fallback link to Google Calendar for no-JS/agents. |
 | D20 | Hero video kept but re-encoded to ≤3 MB with poster, `preload="none"`, `prefers-reduced-motion` respected. All motion is CSS-only; framer-motion/parallax/embla are gone. |
 | D21 | Analytics: GA4 via direct deferred gtag (fixes the current GTM-loader-with-GA4-id oddity) **plus** Cloudflare Web Analytics; tracking audit + event taxonomy in Phase 10. |
-| D22 | DESIGN.md written analytically first (Phase 02); homepage built against it (Phase 06); then a **visual review gate** with the owner before porting remaining pages. Bar: "start with great." |
+| D22 | **Design nailed down up front, in the plan PR**: `DESIGN.md` is authored at the repo root alongside this plan, and the visual direction is reviewed with the owner via design mockups *before implementation begins*. Phase 02 implements the approved doc (tokens/fonts/themes); Phase 06's gate verifies the built homepage *conforms* to it. Bar: "start with great." |
 | D23 | Branch flow per "How to use this plan" above. |
 | D24 | Toolchain split (oxc-first hybrid): oxlint + oxfmt own `.ts/.js/.mjs/.cjs/.json/.jsonc/.css`; ESLint + Prettier own `.astro` and `.md`. When oxlint/oxfmt gain Astro support, migration = delete the ESLint/Prettier half (seam documented in `docs/adr/`). |
+| D25 | **No private/internal content on the main domain.** The legacy `_headers` per-path noindex rules (`/team/*`, `/image/*`, `/video/*`) are dropped entirely; only the preview/staging host rules (`*.pages.dev`, `staging.scstem.org`) carry over. Anything private lives off-domain. Image/video indexing is thereby enabled (helps image SEO). |
 
 ## Current-state facts (verified 2026-08)
 
 - Next.js 16 App Router, static export to `build/`, React 19, HeroUI (dark-only, three theme variants: default yellow, FRC "bio" green, FLL), Tailwind v4 (CSS-first), framer-motion, embla (three carousel implementations), react-scroll-parallax, react-hook-form + valibot, Turnstile via React wrapper. ~5,100 LOC, 13 routes, 24 components.
-- Hosting: Cloudflare Pages (dashboard-configured; no wrangler config in repo). `functions/api/form/submit.ts` = Turnstile verify + Slack webhook. `public/_redirects` and `public/_headers` (staging/pages.dev noindex, `/team/*` noindex) exist and must survive.
+- Hosting: Cloudflare Pages (dashboard-configured; no wrangler config in repo). `functions/api/form/submit.ts` = Turnstile verify + Slack webhook. `public/_redirects` must survive verbatim; `public/_headers` survives **reduced per D25** (preview/staging noindex only).
 - Content is hardcoded: `data/sponsors.ts` (half commented-out), inline page arrays, JSX robot-history slides, hardcoded calendar IDs and kickoff config.
 - Known duplication: `/openhouse` forks the homepage; `/programs/frc/kickoff` forks `/programs/frc`; FLL layout is a copy of FRC layout (still named `FRCLayout`).
 - SEO gaps: no sitemap, no OG/twitter meta objects, no JSON-LD, no canonicals, several routes missing metadata entirely, robots.txt has no Sitemap directive, keyword-stuffed `keywords` meta.
@@ -106,7 +107,7 @@ This directory is the complete implementation plan for rewriting scstem.org from
 | Phase | File | Gate |
 |-------|------|------|
 | 01 | `01-foundation.md` — branch, legacy move, pnpm/mise, Astro scaffold, full toolchain, hooks, AGENTS.md, CI | CI green on scaffold |
-| 02 | `02-design-system.md` — DESIGN.md, tokens, fonts, program themes | DESIGN.md reviewed by owner |
+| 02 | `02-design-system.md` — implement the approved `DESIGN.md`: tokens, fonts, program themes | `DESIGN.md` already authored + owner-reviewed with the plan |
 | 03 | `03-primitives.md` — `ui/primitives`, shadcn-astro skill, styleguide page | — |
 | 04 | `04-content-model.md` — collections, schemas, data migration, `site.ts` | — |
 | 05 | `05-app-shell.md` — BaseLayout, SEO component, base JSON-LD, Navbar, Footer, 404 | — |

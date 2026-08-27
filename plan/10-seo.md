@@ -12,7 +12,7 @@ Finish everything discoverability: sitemap/robots, per-page OG images, structure
 ### 1. Sitemap & robots
 
 - `@astrojs/sitemap` (installed Phase 01): filter out `/styleguide`, `404`, and hidden events (use `getVisibleEvents()` from Phase 08). Verify `<lastmod>` behavior; set `changefreq` only if honest.
-- Replace `public/robots.txt`: `User-agent: *` allow-all, plus `Sitemap: https://scstem.org/sitemap-index.xml`. **Changes from legacy:** drop `Disallow: /image` and `/video` (blocks Google Images/video indexing of team content — we want that traffic; the privacy-sensitive `/team/*` paths remain protected by the `X-Robots-Tag: noindex` rule in `_headers`, which is carried over). Do not block AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.) — being in AI answers is an objective. Record this in `docs/adr/` as a deliberate posture.
+- Replace `public/robots.txt`: `User-agent: *` allow-all, plus `Sitemap: https://scstem.org/sitemap-index.xml`. **Changes from legacy:** drop `Disallow: /image` and `/video` (blocks Google Images/video indexing of team content — we want that traffic). Do not block AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.) — being in AI answers is an objective. Record this in `docs/adr/` as a deliberate posture alongside D25.
 - Add `noindex` meta to `/styleguide` via Seo prop.
 
 ### 2. Metadata verification (CI teeth)
@@ -37,7 +37,9 @@ Finish everything discoverability: sitemap/robots, per-page OG images, structure
 
 ### 6. Redirects/headers parity
 
-- Carry over `public/_redirects` verbatim (`/join`, `/biohazard/*`, `/calendar`, `/wiki` rules) and `public/_headers` (pages.dev/staging noindex, `/team/*` noindex). Confirm behavior on the preview deploy (spot-check each redirect).
+- Carry over `public/_redirects` verbatim (`/join`, `/biohazard/*`, `/calendar`, `/wiki` rules).
+- Rewrite `public/_headers` per **D25**: keep ONLY the preview/staging noindex rules (`https://scstem-org.pages.dev/*`, `https://*scstem-org.pages.dev/*`, `https://staging.scstem.org/*`). The legacy `/team/*`, `/image/*`, `/video/*` noindex rules are **dropped** — no private/internal content lives on the main domain, and media indexing is wanted. Verify nothing on the new site serves content that should be private (grep routes/assets for anything internal — meeting docs, rosters, etc.); anything found goes to the owner, not onto the domain.
+- Confirm behavior on the preview deploy (spot-check each redirect + a preview-host noindex header).
 - Verify apex/www canonical behavior at the Cloudflare level; note the finding (dashboard config, not repo).
 
 ### 7. Analytics (D21)
@@ -55,6 +57,6 @@ Finish everything discoverability: sitemap/robots, per-page OG images, structure
 - [ ] `verify-meta` script green across the full build and wired into CI.
 - [ ] Every distinct JSON-LD shape validates; OG images resolve absolute and render in a card debugger (e.g. opengraph.xyz) on preview.
 - [ ] `/llms.txt` serves accurate, collection-backed content.
-- [ ] All legacy redirects verified working on preview; `_headers` noindex intact for staging + `/team/*`.
+- [ ] All legacy redirects verified working on preview; `_headers` reduced to preview/staging noindex only (D25) and verified.
 - [ ] GA4 + CF Analytics fire on production hostname only (verified via GA DebugView on a hostname-spoofed check or temporary debug flag), events in taxonomy fire; `docs/analytics.md` written with audit results.
 - [ ] `pnpm check && pnpm build` green; Lighthouse SEO = 1.0 holds.
