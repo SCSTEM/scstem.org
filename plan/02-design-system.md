@@ -31,7 +31,7 @@
 
 ### 2. Fonts (§3)
 
-- Self-hosted: `@fontsource-variable/inter`, `@fontsource-variable/orbitron`, `@fontsource-variable/source-code-pro` (static @fontsource fallback for any without a variable axis). Latin subset only, `font-display: swap`. Source Code Pro is a first-class working face (stats, spec labels, chips — DESIGN.md §3), not an afterthought.
+- Self-hosted: `@fontsource-variable/inter`, `@fontsource-variable/orbitron`, `@fontsource-variable/source-code-pro`, `@fontsource/architects-daughter` (static @fontsource fallback for any without a variable axis). Latin subset only, `font-display: swap`. Source Code Pro is a first-class working face (stats, spec labels, chips — DESIGN.md §3); Architects Daughter is the annotation hand, markup-only, loaded lazily/subset aggressively since it renders ≤5 words per page.
 - `src/styles/fonts.ts` exports the two above-the-fold woff2 paths (Inter var, Orbitron var) for BaseLayout's `<link rel="preload">` (wired in Phase 05).
 
 ### 2b. Brand assets

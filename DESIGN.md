@@ -71,10 +71,10 @@ Rules:
 
 ### Signature motifs
 
-1. **Key-word emphasis**: display headings may color exactly one phrase in `primary` ("Robots are in Franklin County. **So are we.**"). Colored text only — no underlines/highlighter marks in headings.
+1. **Key-word emphasis**: display headings may emphasize exactly one phrase — either `primary`-colored text or a highlighter swipe (hand markup §13), never both, never more than one phrase. Link-style underlines never appear in headings.
 2. **Accent hairline**: heroes end with a 2px `primary` rule, full-bleed. Card titles may carry a 32px × 2px `primary` rule beneath.
 3. **Engineering grid** (replaces the legacy circuit-board texture): fine graph-paper grid (~24–28px cell, 1px `#FAFAFA` strokes) at 4–7% opacity, on heroes and section breaks and inside V2+V3 feature-pocket floors — never behind body copy, and **never on the page ground**: a page-level grid was tried and rejected in review (it competes with the pocket grid floors and dulls the recess effect). The ground stays smooth; its life comes from the atmosphere devices below, so the grid stays special where it appears. Optional **dimension-line ticks** (`primary` at ≤50%, SCP annotation) as rare garnish.
-4. **Framed media**: photo collages/feature media get a 2px `primary` border + `radius-xl` — the "team picture frame".
+4. **Framed media**: photo collages/feature media get a 2px `primary` border + `radius-lg` — the "team picture frame".
 
 ### Atmosphere layer
 
@@ -95,12 +95,14 @@ The blueprint devices printed *onto* the sheet. Each appears at most once per pa
 
 ### Hand markup register (the human layer)
 
-The engineer's markup drawn *over* the sheet — this is what keeps the machined language from feeling sterile. All strokes are deliberately imperfect (hand-drawn SVG paths: slight curve, open ends, small rotation), 2–3px, `stroke-linecap: round`. **Pill-shaped UI is banned** (reviewed and rejected): a circled word is a chalk oval, never a `border-radius: 999px` box.
+The engineer's markup drawn *over* the sheet — this is what keeps the machined language from feeling sterile. **The machined and scribed layers stay perfectly geometric everywhere; hand markup never earns more real estate than it has now — minor touches, not a style.** All strokes are deliberately imperfect (hand-drawn SVG paths: slight curve, open ends, small rotation), 2–3px, `stroke-linecap: round`. **Pill-shaped UI is banned** (reviewed and rejected): a circled word is a chalk oval, never a `border-radius: 999px` box.
+
+**Variation rule**: every markup device ships as a set of **at least 3 distinct SVG path variants** (implemented as primitives, e.g. `ChalkOval variant={1|2|3}`), further varied per-instance by small rotation/flip. Two adjacent instances never share a variant — identical "hand-drawn" marks read as a stamp and break the illusion. Swipes vary by rotation (±0.5–2°), inset, and alpha within their range.
 
 12. **Chalk ovals**: key words circled with a hand-drawn open ellipse — `foreground` white (chalk) in hero/photo contexts, `primary` (grease pencil) on the ground. The "Real ⬭Skills⬭. Real ⬭Robots⬭. Real ⬭Fun⬭." treatment; the tagline itself is sanctioned brand copy for heroes/CTAs. Tagline/display contexts only, one run per view.
-13. **Highlighter swipes**: a skewed translucent `primary` rectangle (25–35% alpha, ~-1.5° rotation, 2–3px radius) behind white key words — the marker-highlight alternative to `primary`-colored text. A heading uses colored text *or* a swipe, never both; verify the white-on-swipe contrast on `/styleguide`.
-14. **Chalk underlines**: one hand-drawn, slightly curved underline stroke beneath a heading (`primary`). Distinct from the machined 32px card rule, which stays perfectly straight — machined vs. hand is a deliberate contrast, never blended.
-15. **Sketch arrows**: one hand-drawn curved arrow per page, pointing at exactly one action or detail (e.g. "Become a sponsor"). `primary`, 2px.
+13. **Highlighter swipes**: a skewed translucent `primary` rectangle (25–35% alpha, ±0.5–2° rotation, 2–3px radius) behind white key words — the marker-highlight alternative to `primary`-colored text. A heading uses colored text *or* a swipe, never both; verify the white-on-swipe contrast on `/styleguide`.
+14. **Chalk underlines**: hand-drawn, slightly curved underline strokes (`primary`). Two uses: beneath a heading, and **inline within a sentence** under a short key phrase (≤3 words — e.g. "building the ~future of STEM~") as the sanctioned in-prose emphasis. Distinct from the machined 32px card rule, which stays perfectly straight — machined vs. hand is a deliberate contrast, never blended.
+15. **Sketch arrows**: one hand-drawn curved arrow per page. **An arrow's target is always handwritten annotation text (§3), never a regular-font element** — a sketched arrow pointing at typeset UI breaks the fiction. The annotation may itself be a link (e.g. the handwritten "Become a sponsor").
 
 Motion note (§6 applies): hand-markup strokes may *draw on* as their entrance (stroke-dashoffset, once, ~500ms, reduced-motion disables) — the one sanctioned decorative animation, because it enacts the metaphor.
 
@@ -117,6 +119,7 @@ Per Brand Guidelines: Orbitron for page headings/titles (avoid very long or smal
 | Display/headings | **Orbitron** (variable) | 500–700 | h1–h3 and eyebrow labels only. Never below h3 size, never italic, never long lines (≤ ~40 chars/line) — ration the display voice. |
 | UI & body | **Inter** (variable) | 400/500/600 | Everything else: body, h4–h6, nav, buttons, forms, captions |
 | Data voice | **Source Code Pro** | 400/600 | **Stats and numerals, countdowns, dates, spec labels** (ages chips, tier badges, "REF" annotations). The spec-sheet register of the build-document metaphor. |
+| Annotation hand | **Architects Daughter** | 400 | Hand-markup annotations only (≤5 words): sketch-arrow targets, margin notes, the handwritten link they point at. Never UI chrome, body copy, headings, or labels. |
 
 Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 
@@ -141,7 +144,7 @@ Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 
 - **Spacing**: 4px base scale. Component-internal 8–24px; between-component 24–48px.
 - **Section rhythm**: `py-16` (mobile) / `py-24` (≥ md), consistent on every section.
-- **Radius**: `radius-sm` 6px (badges, inputs), `radius-md` 8px (buttons), `radius-lg` 12px (cards/pockets), `radius-xl` 16px (framed media, feature panels).
+- **Radius — one end-mill**: three values, unified to the machining story. `radius-sm` **4px** (chips, spec labels, badges — stamped plates), `radius-md` **8px** (all controls: buttons, inputs, icon tiles), `radius-lg` **12px** (every cut feature: pockets, panels, framed media — one tool radius for everything machined). Nothing else; `16px` and pill radii are retired.
 - **Elevation**: there is none — depth goes *down*, not up (§2 pocket anatomy). No drop shadows anywhere; the inset pocket shadows are the only shadows in the system.
 
 ## 5. Layout & navigation
@@ -168,7 +171,7 @@ CSS-only (D3, D20). Motion confirms — it never decorates.
 
 - **Real photos of real students and robots** are the brand. Stock and unDraw illustrations retire wherever a photo can serve (recolor to tokens if one must stay temporarily).
 - Text over photos requires a scrim built from `background` (rgb(38 38 38)): gradient 100% at the text edge → ~20% opposite. **On mobile, heroes put text on solid ground below the photo** (photo fades into `background` via bottom gradient) — never gamble on scrims at small sizes.
-- Photo treatment: `radius-xl` framed in sections; full-bleed only in heroes. Consistent warm/neutral grading.
+- Photo treatment: `radius-lg` framed in sections; full-bleed only in heroes. Consistent warm/neutral grading.
 - Every image: honest `alt`; decorative pattern/grid SVGs `aria-hidden` with `alt=""`.
 - OG images (1200×630): photo + scrim + Orbitron title + lockup; one template, per-section variants.
 - **Logo usage** (Brand Guidelines): color lockup on light *and* dark; dark/light monochrome variants per background; never recolor, never set the name in another font as a substitute for the lockup where the lockup fits.
