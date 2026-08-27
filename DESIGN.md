@@ -2,7 +2,7 @@
 
 Source of truth for the visual design of scstem.org. Every UI decision an implementer makes should be answerable from this document; if it isn't, propose an addition here first (PR + owner review), then build.
 
-The system is a **brand-faithful refresh** of the 2024–2026 site, grounded in the official **Brand Guidelines v1** (colors, fonts, logo, and naming rules below are normative from that document) and settled through an owner design review in 2026-08. The organizing metaphor is the **build document**: the page is a machined surface, cards are pockets cut into it, the texture is engineering graph paper, and data speaks in a monospaced spec-sheet voice. The bar is *great, not just good*: fewer competing treatments, stronger hierarchy, deliberate everything.
+The system is a **brand-faithful refresh** of the 2024–2026 site, grounded in the official **Brand Guidelines v1** (colors, fonts, logo, and naming rules below are normative from that document) and settled through an owner design review in 2026-08. The organizing metaphor is the **build document**: the page is a machined metal sheet — pockets cut *into* it, blueprint linework and spec labels scribed *onto* it — and data speaks in a monospaced spec-sheet voice. The official t-shirt art (wireframe gear-bulb with dimension callouts, the outlined-capsule tagline, the PROJECT/ORGANIZATION/URL title block) is a normative reference for this scribed register. The balance rule: the sheet stays technical, not themed — the bar is *great, not just good*: fewer competing treatments, stronger hierarchy, deliberate everything.
 
 ## 1. Brand essence, voice, and naming
 
@@ -84,6 +84,17 @@ Large unmodulated `background` fields read sterile. Between the hero and the foo
 6. **Ghost section numerals**: oversized Source Code Pro 600 numerals (`01`, `02`, …) at 5–8% alpha `foreground`, placed behind section headings — the device from the Brand Guidelines' own section pages. Decorative (`aria-hidden`), numbering only top-level page sections, 3–4 per page max.
 7. **Ruler dividers**: a full-container tick-mark strip (baseline + graduated ticks, `foreground` at ≤18%) as the *strong* section divider; plain 1px hairlines remain the quiet default.
 8. **Registration marks**: small corner brackets (`primary` at ≤35%, 1.5px stroke, ~20px) on the corners of one feature pocket per view — the drafting-sheet crop-mark garnish. Never on standard cards.
+
+### Scribed register (from the t-shirt art)
+
+The blueprint devices printed *onto* the sheet. Each appears at most once per page unless noted:
+
+9. **Highlight capsules**: inline key words wrapped in a 1.5px `foreground`-stroke pill (`border-radius: 999px`, ~2px 10–12px padding) — the "Real **Skills**. Real **Robots**. Real **Fun**." treatment. Tagline/display contexts only; never inside headings ≥ h2, never in body copy; one capsule run per view. The tagline itself is sanctioned brand copy for heroes/CTAs.
+10. **Title block**: the engineering-drawing identity strip — bordered compartments, each an SCP uppercase label (`PROJECT:` / `ORGANIZATION:` / `URL:` …) over an Inter (or SCP for URLs/codes) value, 1px `border` dividers. Its home is the footer bottom (the drawing sheet's corner), horizontal strip ≥ md, stacked on mobile; contact/event pages may use the boxed stack as an info card.
+11. **Scribed lineart**: the wireframe gear-bulb (and sibling blueprint drawings) as large, faint decorative art — stroke-only, `foreground` or `primary`, 4–6% opacity, on `card` bands (footer, feature panels), never behind body copy. Obtain the real vector from the merch/brand source files into `src/assets/brand/` (the mockups use a drawn approximation).
+12. **Labeled callouts**: leader line (1px, dot or arrow terminus) + SCP label — figure captions under framed media ("FIG. 01 — BIOHAZARD, 2023 SEASON"), detail annotations on heroes ("DETAIL A" style). `muted` color; captions may double as the image's visible credit.
+
+**Register budget**: across grid, ticks, ruler, numerals, pools, marks, capsules, title block, lineart, and callouts, a viewport shows **at most 4 distinct devices**. If a new one enters a view, another leaves.
 
 Restraint rule: these are atmosphere, not decoration — if a device is noticeable before the content is, it's too loud. `section-tint` bands (§2 surfaces) count as a device for their boundary.
 
