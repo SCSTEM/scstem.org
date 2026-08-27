@@ -76,6 +76,16 @@ Rules:
 3. **Engineering grid** (replaces the legacy circuit-board texture): fine graph-paper grid (~24–28px cell, 1px `#FAFAFA` strokes) at 4–7% opacity, on heroes and section breaks — never behind body copy. Optional **dimension-line ticks** (measure lines with arrowheads, `primary` at ≤50% opacity, SCP annotation) as rare garnish on heroes/section dividers. Inside feature pockets per the V2+V3 spec above.
 4. **Framed media**: photo collages/feature media get a 2px `primary` border + `radius-xl` — the "team picture frame".
 
+### Atmosphere layer
+
+Large unmodulated `background` fields read sterile. Between the hero and the footer, every major section boundary carries **exactly one** of these devices (never stacked, never behind photos):
+
+5. **Ambient pools**: one radial gradient anchored to a section's top or its heading — `primary` at 2–4% alpha (or `#FAFAFA` at ~2% for neutral sections), fading to transparent by ~70%. A ±2-lightness modulation of the ground; text contrast is unaffected. Max one per section.
+6. **Ghost section numerals**: oversized Source Code Pro 600 numerals (`01`, `02`, …) at 3–5% alpha `foreground`, placed behind section headings — the device from the Brand Guidelines' own section pages. Decorative (`aria-hidden`), numbering only top-level page sections, 3–4 per page max.
+7. **Ruler dividers**: a full-container tick-mark strip (baseline + graduated ticks, `foreground` at ≤12%) as the *strong* section divider; plain 1px hairlines remain the quiet default.
+
+Restraint rule: these are atmosphere, not decoration — if a device is noticeable before the content is, it's too loud. `section-tint` bands (§2 surfaces) count as a device for their boundary.
+
 ## 3. Typography
 
 Per Brand Guidelines: Orbitron for page headings/titles (avoid very long or small lines), Inter for body/subheadings, Source Code Pro for monospaced/stylistic elements.
@@ -165,6 +175,7 @@ CSS-only (D3, D20). Motion confirms — it never decorates.
 | Don't | Do |
 |---|---|
 | Elevated lighter-than-page cards (the stock AI dark-UI look) | Pockets: darker cards machined *into* the page (§2) |
+| Bare, unmodulated `#262626` voids between sections | One atmosphere device per boundary: ambient pool, ghost numeral, ruler divider, or tint band (§2) |
 | Circuit-board wallpaper | Engineering grid + dimension ticks, ≤7%, heroes/section breaks only |
 | Yellow words, yellow underlines, and blue links competing in one viewport | One action accent per view; blue only in its informational role |
 | Orange button on the green FRC page | The page theme's primary pair |
