@@ -73,16 +73,17 @@ Rules:
 
 1. **Key-word emphasis**: display headings may color exactly one phrase in `primary` ("Robots are in Franklin County. **So are we.**"). Colored text only — no underlines/highlighter marks in headings.
 2. **Accent hairline**: heroes end with a 2px `primary` rule, full-bleed. Card titles may carry a 32px × 2px `primary` rule beneath.
-3. **Engineering grid** (replaces the legacy circuit-board texture): fine graph-paper grid (~24–28px cell, 1px `#FAFAFA` strokes) at 4–7% opacity, on heroes and section breaks — never behind body copy. Optional **dimension-line ticks** (measure lines with arrowheads, `primary` at ≤50% opacity, SCP annotation) as rare garnish on heroes/section dividers. Inside feature pockets per the V2+V3 spec above.
+3. **Engineering grid** (replaces the legacy circuit-board texture): fine graph-paper grid (~24–28px cell, 1px `#FAFAFA` strokes). It runs at two levels: (a) **the page ground itself** at ≤3% opacity — the whole page is the drawing sheet (this is what keeps the dark ground from reading barren; it sits beneath everything and is exempt from the reading-zone rule); (b) stronger accents at 4–7% on heroes and section breaks, kept out of reading zones. **Pockets stay smooth** (V2) so the recess reads against the textured ground — the V2+V3 grid floor is the deliberate exception. Optional **dimension-line ticks** (`primary` at ≤50%, SCP annotation) as rare garnish.
 4. **Framed media**: photo collages/feature media get a 2px `primary` border + `radius-xl` — the "team picture frame".
 
 ### Atmosphere layer
 
 Large unmodulated `background` fields read sterile. Between the hero and the footer, every major section boundary carries **exactly one** of these devices (never stacked, never behind photos):
 
-5. **Ambient pools**: one radial gradient anchored to a section's top or its heading — `primary` at 2–4% alpha (or `#FAFAFA` at ~2% for neutral sections), fading to transparent by ~70%. A ±2-lightness modulation of the ground; text contrast is unaffected. Max one per section.
-6. **Ghost section numerals**: oversized Source Code Pro 600 numerals (`01`, `02`, …) at 3–5% alpha `foreground`, placed behind section headings — the device from the Brand Guidelines' own section pages. Decorative (`aria-hidden`), numbering only top-level page sections, 3–4 per page max.
-7. **Ruler dividers**: a full-container tick-mark strip (baseline + graduated ticks, `foreground` at ≤12%) as the *strong* section divider; plain 1px hairlines remain the quiet default.
+5. **Ambient pools**: one radial gradient anchored to a section's top or its heading — `primary` at 3–6% alpha (or `#FAFAFA` at 2–4% for neutral sections), fading to transparent by ~70%. A small lightness modulation of the ground; text contrast is unaffected. Max one per section.
+6. **Ghost section numerals**: oversized Source Code Pro 600 numerals (`01`, `02`, …) at 5–8% alpha `foreground`, placed behind section headings — the device from the Brand Guidelines' own section pages. Decorative (`aria-hidden`), numbering only top-level page sections, 3–4 per page max.
+7. **Ruler dividers**: a full-container tick-mark strip (baseline + graduated ticks, `foreground` at ≤18%) as the *strong* section divider; plain 1px hairlines remain the quiet default.
+8. **Registration marks**: small corner brackets (`primary` at ≤35%, 1.5px stroke, ~20px) on the corners of one feature pocket per view — the drafting-sheet crop-mark garnish. Never on standard cards.
 
 Restraint rule: these are atmosphere, not decoration — if a device is noticeable before the content is, it's too loud. `section-tint` bands (§2 surfaces) count as a device for their boundary.
 
