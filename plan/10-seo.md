@@ -1,7 +1,7 @@
 # Phase 10 — SEO completion, AI SEO, analytics
 
 **Prerequisites:** Phases 05–09 (all pages + budgets in place).
-**Branch:** `overhaul/10-seo` off `astro-rewrite`.
+**Stack layer:** `overhaul/10-seo`, stacked on `overhaul/09-assets-performance` (D23).
 
 ## Objective
 

@@ -2,7 +2,7 @@
 
 **Prerequisites:** Phase 01. `DESIGN.md` already exists at the repo root — it was authored and owner-reviewed as part of the plan PR, alongside visual mockups. **This phase implements it; it does not redesign.** If implementation exposes a gap or contradiction in DESIGN.md, follow its §11 change process (small PR to the doc, owner review) rather than improvising.
 
-**Branch:** `overhaul/02-design-system` off `astro-rewrite`.
+**Stack layer:** `overhaul/02-design-system`, stacked on `overhaul/01-foundation` (D23).
 
 ## Objective
 
@@ -21,7 +21,7 @@
 - Tailwind v4 `@theme` block implementing DESIGN.md exactly:
   - Color tokens from §2 as `--color-*` (so `bg-background`, `text-muted-foreground`, `border-border`, etc. exist as utilities).
   - Fluid type scale from §3 as `--text-*` tokens with `clamp()` values and paired line-heights.
-  - Radius tokens from §4 (`--radius-sm/md/lg/xl`), `--breakpoint-3xl: 120rem`.
+  - Radius tokens from §4 (`--radius-sm/md/lg` — the 4/8/12 "one end-mill" scale, nothing else), `--breakpoint-3xl: 120rem`.
   - Motion tokens from §6 (`--duration-micro/ui/entrance`, easings).
   - Font family tokens (§3) wired to the self-hosted fonts below.
 - `:root { color-scheme: dark }`; body `bg-background text-foreground`.
@@ -44,8 +44,9 @@
 Implement DESIGN.md §2 "signature motifs" as reusable pieces so pages can't reinvent them:
 - `.accent-rule` (2px primary hairline) + hero-bottom full-bleed variant.
 - Key-word emphasis: documented pattern (`<span class="text-primary">` inside headings) — note in styleguide, no component needed.
-- Circuit texture: one `Pattern.astro` background component (≤ 4% opacity, `aria-hidden`, positioned behind hero/section-break content only) using the existing pattern asset re-exported to `src/assets/brand/`.
-- Framed-media treatment: `.media-frame` utility (2px primary border, `radius-xl`).
+- Engineering grid: one `Pattern.astro` background component (§2.3 opacities, `aria-hidden`, heroes/section breaks/feature-pocket floors only — never the page ground).
+- Framed-media treatment: `.media-frame` utility (2px primary border, `radius-lg`).
+- Hand-markup primitives (§ hand markup register): `ChalkOval`, `ChalkUnderline`, `SketchArrow` (each with ≥3 path variants + variant prop), highlighter-swipe utility, and the atmosphere/scribed pieces (`GhostNumeral`, `RulerDivider`, `RegistrationMarks`, `TitleBlock`) — all demoed on `/styleguide`.
 
 ### 4. `/styleguide` page
 

@@ -1,7 +1,7 @@
 # Phase 04 — Content model: collections, schemas, data migration
 
 **Prerequisites:** Phase 01 (Phase 02/03 not strictly required; can run in parallel with 03).
-**Branch:** `overhaul/04-content-model` off `astro-rewrite`.
+**Stack layer:** `overhaul/04-content-model`, stacked on `overhaul/03-primitives` (D23). (Content work has no code dependency on 02/03, but the stack is linear — landing order is fixed even when work is done in parallel.)
 
 ## Objective
 

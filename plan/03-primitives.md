@@ -1,7 +1,7 @@
 # Phase 03 — UI primitives + shadcn-astro agent skill
 
 **Prerequisites:** Phase 02 (tokens exist).
-**Branch:** `overhaul/03-primitives` off `astro-rewrite`.
+**Stack layer:** `overhaul/03-primitives`, stacked on `overhaul/02-design-system` (D23).
 
 ## Objective
 

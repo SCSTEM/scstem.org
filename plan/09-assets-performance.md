@@ -1,7 +1,7 @@
 # Phase 09 — Assets & performance: media pipeline, budgets in CI
 
 **Prerequisites:** Phases 06–08 (all pages exist; this phase optimizes what they serve).
-**Branch:** `overhaul/09-assets-performance` off `astro-rewrite`.
+**Stack layer:** `overhaul/09-assets-performance`, stacked on `overhaul/08-events` (D23).
 
 ## Objective
 

@@ -1,7 +1,7 @@
 # Phase 07 — Remaining pages
 
 **Prerequisites:** Phase 06 **including owner sign-off**.
-**Branch:** one branch per group is fine (`overhaul/07a-…`), all off `astro-rewrite`. Groups below are independent and can run as parallel agents.
+**Stack layers:** the groups below may land as sub-layers `overhaul/07a-…` through `overhaul/07d-…`, stacked in group order on `overhaul/06-homepage` (D23) — or as one `overhaul/07-pages` layer with one commit series per group. Groups are content-independent and can be *built* by parallel agents (worktrees), but they *land* in stack order.
 
 ## Objective
 

@@ -1,11 +1,12 @@
 # Phase 11 — Cutover: parity verification, staging QA, launch, cleanup
 
-**Prerequisites:** Phases 01–10 all merged to `astro-rewrite`, CI + Lighthouse gates green.
+**Prerequisites:** all Phase 01–10 stack layers pushed, reviewed, and green (CI + Lighthouse) — the full stack intact from `claude/website-overhaul-plan-38czl6` to the top layer, nothing merged yet (D23).
+**Stack layer:** `overhaul/11-cutover` (top of the stack), stacked on `overhaul/10-seo`.
 **Gate:** ⛔ Owner approves staging before merge to `main`. This phase touches production.
 
 ## Tasks
 
-### 1. Pre-flight parity verification (on `astro-rewrite` preview)
+### 1. Pre-flight parity verification (on the top-of-stack preview — it contains every layer)
 
 - **URL parity**: script or manual table — every legacy route returns 200 on the new build at the identical path (`/`, `/about`, `/contact`, `/donate`, `/get-involved`, `/openhouse`, `/sponsors`, `/programs/fll`, `/programs/frc`, `/programs/frc/robots`, `/programs/frc/kickoff`, `/calendar/frc`, `/calendar/sc2`, 404 behavior). Every `_redirects` rule verified.
 - **Copy parity spot-check**: owner-visible text diff per page against production (intentional changes were logged in phase PRs — compile them into one summary for the owner).
@@ -17,16 +18,16 @@
 - Build command: `pnpm build` (or `pnpm install --frozen-lockfile && pnpm build` per Pages' pnpm handling — it respects `packageManager`); output directory: `dist` (was `build`); Node version env var matching the mise pin.
 - Confirm preview deployments still noindexed (`_headers` covers `*.pages.dev` + `staging.scstem.org`; per D25 those are the only noindex rules left — `/team/*`, `/image/*`, `/video/*` are gone deliberately).
 - Env vars: set `PUBLIC_TURNSTILE_SITE_KEY` (real key for production, test key acceptable for previews), confirm `SLACK_FORM_POST_GENERIC` secret still bound for Functions, CF Web Analytics token if env-injected.
-- Apply settings to a **preview first**: trigger a deploy of `astro-rewrite` with the new settings and verify before touching branch mappings.
+- Apply settings to a **preview first**: trigger a deploy of the top stack branch with the new settings and verify before touching branch mappings.
 
 ### 3. Staging soak
 
-- Merge `astro-rewrite` → `staging`. Full QA on https://staging.scstem.org:
+- **Land the stack**: merge the top-of-stack PR — gh-stack cascades every unmerged PR below it, bottom-up, into `staging` in one action. Never merge layers individually or hand-sequence; the cascade *is* the merge plan. Full QA on https://staging.scstem.org:
   - Device pass: physical phone (small Android/iPhone), tablet, desktop; keyboard-only pass; screen-reader smoke (VoiceOver/NVDA on nav + form).
   - Lighthouse against staging (real CF serving): budgets hold.
   - Forms with production-mode Turnstile.
   - Analytics: confirm staging does NOT report (hostname guard), using GA DebugView.
-- Fix-forward on `astro-rewrite` → re-merge as needed.
+- Fix-forward: before the cascade, fixes land on the layer they belong to (restack above per D23); after the cascade, fixes are normal PRs to `staging`.
 - ⛔ **Owner sign-off on staging.**
 
 ### 4. Launch

@@ -1,7 +1,7 @@
 # Phase 08 — Event landing pattern: /openhouse and /programs/frc/kickoff
 
 **Prerequisites:** Phases 06, 07 (uses Hero/Section/FeatureGrid/FaqList vocabulary).
-**Branch:** `overhaul/08-events` off `astro-rewrite`.
+**Stack layer:** `overhaul/08-events`, stacked on the last Phase 07 layer (D23).
 
 ## Objective
 

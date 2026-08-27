@@ -1,7 +1,7 @@
 # Phase 05 — App shell: BaseLayout, SEO component, Navbar, Footer, 404
 
 **Prerequisites:** Phases 02, 03, 04.
-**Branch:** `overhaul/05-app-shell` off `astro-rewrite`.
+**Stack layer:** `overhaul/05-app-shell`, stacked on `overhaul/04-content-model` (D23).
 
 ## Objective
 

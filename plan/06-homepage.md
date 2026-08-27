@@ -1,7 +1,7 @@
 # Phase 06 — Homepage + visual review gate
 
 **Prerequisites:** Phase 05.
-**Branch:** `overhaul/06-homepage` off `astro-rewrite`.
+**Stack layer:** `overhaul/06-homepage`, stacked on `overhaul/05-app-shell` (D23).
 **Gate:** ⛔ **Owner sign-off required before Phase 07 starts.** The design itself was settled up front (DESIGN.md + owner-reviewed mockups shipped with the plan — D22), so this gate is a **conformance check**: does the built homepage match the approved design, and does it hold up on real devices?
 
 ## Objective
@@ -32,7 +32,7 @@ Built from primitives; these are the reusable section vocabulary for all later p
 
 ### 3. Conformance review (the gate)
 
-1. Merge-ready PR → CF Pages preview URL on `astro-rewrite` after merge, or the PR's own preview.
+1. Review-ready stack layer → this branch's own CF Pages preview URL (it contains every layer below it, so it previews the full site so far).
 2. Produce a review pack for the owner: full-page screenshots at 360px, 768px, 1440px, side-by-side with the **approved mockups** and with production scstem.org (use the pre-installed Chromium/Playwright).
 3. Owner reviews for conformance + real-device feel. Deviations from DESIGN.md are bugs — fix them; genuine design changes discovered here go through DESIGN.md §11 (doc PR first). Repeat until explicit sign-off.
 4. Record sign-off: check the box below, note date + iteration count in the PR.

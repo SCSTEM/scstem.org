@@ -1,7 +1,7 @@
 # Phase 01 — Foundation: branch, toolchain, scaffold, agent config, CI
 
-**Prerequisites:** none (first phase).
-**Branch:** create `astro-rewrite` from latest `main`; do this phase on `overhaul/01-foundation` off it.
+**Prerequisites:** none (first implementation phase).
+**Stack layer:** `overhaul/01-foundation`, stacked on `claude/website-overhaul-plan-38czl6` (the plan/DESIGN branch — bottom of the stack, targets `staging`). PR targets that branch (D23).
 
 ## Objective
 
@@ -100,7 +100,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 
 ### 6. CI (D14)
 
-- `.github/workflows/ci.yml` — on `pull_request` and pushes to `astro-rewrite`:
+- `.github/workflows/ci.yml` — on `pull_request` (every stack layer's PR gets checks; a stacked PR's diff is only that layer's changes, which keeps reviews and CI focused):
   1. Checkout; install mise (`jdx/mise-action`) → tools from `mise.toml`/`mise.lock`.
   2. `pnpm install --frozen-lockfile`.
   3. `pnpm check`.
