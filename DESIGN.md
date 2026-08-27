@@ -73,7 +73,7 @@ Rules:
 
 1. **Key-word emphasis**: display headings may color exactly one phrase in `primary` ("Robots are in Franklin County. **So are we.**"). Colored text only — no underlines/highlighter marks in headings.
 2. **Accent hairline**: heroes end with a 2px `primary` rule, full-bleed. Card titles may carry a 32px × 2px `primary` rule beneath.
-3. **Engineering grid** (replaces the legacy circuit-board texture): fine graph-paper grid (~24–28px cell, 1px `#FAFAFA` strokes). It runs at two levels: (a) **the page ground itself** at ≤3% opacity — the whole page is the drawing sheet (this is what keeps the dark ground from reading barren; it sits beneath everything and is exempt from the reading-zone rule); (b) stronger accents at 4–7% on heroes and section breaks, kept out of reading zones. **Pockets stay smooth** (V2) so the recess reads against the textured ground — the V2+V3 grid floor is the deliberate exception. Optional **dimension-line ticks** (`primary` at ≤50%, SCP annotation) as rare garnish.
+3. **Engineering grid** (replaces the legacy circuit-board texture): fine graph-paper grid (~24–28px cell, 1px `#FAFAFA` strokes) at 4–7% opacity, on heroes and section breaks and inside V2+V3 feature-pocket floors — never behind body copy, and **never on the page ground**: a page-level grid was tried and rejected in review (it competes with the pocket grid floors and dulls the recess effect). The ground stays smooth; its life comes from the atmosphere devices below, so the grid stays special where it appears. Optional **dimension-line ticks** (`primary` at ≤50%, SCP annotation) as rare garnish.
 4. **Framed media**: photo collages/feature media get a 2px `primary` border + `radius-xl` — the "team picture frame".
 
 ### Atmosphere layer
