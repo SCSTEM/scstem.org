@@ -1,4 +1,4 @@
-import { site } from "@/data/site";
+import { site, socials } from "@/data/site";
 
 /**
  * Typed builders for the schema.org objects the site emits. Keeping them here rather than inline
@@ -20,7 +20,7 @@ export interface JsonLdObject {
  * The organization, emitted on every page by BaseLayout. `NGO` rather than `Organization`: it is
  * the specific type for a nonprofit, and specificity is what makes structured data useful.
  */
-export const organization = (): JsonLdObject => ({
+export const organization: JsonLdObject = {
   "@context": "https://schema.org",
   "@type": "NGO",
   name: site.name,
@@ -37,17 +37,18 @@ export const organization = (): JsonLdObject => ({
     addressCountry: site.location.country,
   },
   areaServed: site.location.areaServed,
-  sameAs: [site.social.facebook, site.social.linkedin, site.social.github],
-});
+  sameAs: socials.map((social) => social.href),
+};
 
 /** The site itself. Homepage only — repeating it on every page adds nothing. */
-export const webSite = (): JsonLdObject => ({
+export const webSite: JsonLdObject = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: site.name,
   url: site.url,
-});
+};
 
+/** @public Consumed by the nested pages that arrive in Phases 07-08. */
 export interface Breadcrumb {
   readonly name: string;
   /** Site-root-relative, e.g. `/programs/frc`. */
@@ -55,6 +56,8 @@ export interface Breadcrumb {
 }
 
 /**
+ * @public Consumed by the nested pages that arrive in Phases 07-08.
+ *
  * Breadcrumbs for a nested page. Pass the full trail including the current page; the home link
  * is added automatically, since every trail starts there.
  */

@@ -5,7 +5,7 @@ import logoLockup from "@/assets/brand/logo-color-full.svg";
 import logoMark from "@/assets/brand/logo-color.svg";
 import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
-import { programs, site } from "@/data/site";
+import { nav, site } from "@/data/site";
 import { cn } from "@/lib/cn";
 
 /**
@@ -15,8 +15,13 @@ import { cn } from "@/lib/cn";
  * color lockup on ≥ md, the square mark alone on mobile. Brand rules forbid substituting "SC2"
  * for the name, and the full name appears in page content (hero and footer) to satisfy them.
  *
- * The Programs entry is a real link to `/programs` with a dropdown *in addition* — never
- * hover-only, so touch and no-JS both get a destination (§5, §9).
+ * The Programs entry is a real link to `/programs` with a disclosure *in addition* — never
+ * hover-only, so touch and no-JS both get a destination (§5, §9). The panel is a native
+ * `popover`, which supplies Esc, light-dismiss and top-layer placement without script (§9's
+ * "menus close on Esc"; WCAG 2.2 SC 1.4.13 needs the dismissal).
+ *
+ * Both viewports project `nav` from `src/data/site.ts`; the desktop/sheet split is the `surfaces`
+ * field there, not two hand-written lists.
  */
 interface Props {
   class?: string;
@@ -25,16 +30,23 @@ interface Props {
 const { class: className } = Astro.props;
 
 const current = Astro.url.pathname.replace(/\/$/, "") || "/";
-const isCurrent = (href: string): boolean => current === href;
 /** A section is "current" for its children too, so /programs/frc lights up Programs. */
 const inSection = (href: string): boolean => current === href || current.startsWith(`${href}/`);
 
-const programLinks = [
-  { href: programs.fll.href, label: programs.fll.shortName, name: programs.fll.name },
-  { href: programs.frc.href, label: programs.frc.shortName, name: programs.frc.name },
-  { href: "/programs/frc/robots", label: "Robots", name: "Our competition robots" },
-  { href: "/calendar/sc2", label: "Calendar", name: "Upcoming events" },
-] as const;
+/**
+ * `as const` on the data gives each entry's `surfaces` a literal tuple type, so a direct
+ * `.includes("header")` is an error on entries that lack it. Widening through the parameter is
+ * what keeps one list readable from both surfaces without a cast.
+ */
+const onSurface =
+  (surface: string) =>
+  (link: { readonly surfaces: readonly string[] }): boolean =>
+    link.surfaces.includes(surface);
+
+const headerLinks = nav.primary.filter(onSurface("header"));
+const sheetLinks = nav.primary.filter(onSurface("sheet"));
+
+const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
 ---
 
 <header
@@ -45,87 +57,77 @@ const programLinks = [
   )}
   data-site-header
 >
-  <nav aria-label="Main" class="mx-auto flex max-w-6xl items-center gap-4 px-4 md:px-6">
+  <nav aria-label="Main" class="container-page flex items-center gap-4">
     <a
       aria-label={`${site.name} — home`}
-      class="flex shrink-0 items-center py-2 no-underline"
+      class="ui-link flex shrink-0 items-center py-2"
+      data-sheet-inert
       href="/"
     >
       <Image
         alt=""
-        class="hidden h-10 w-auto transition-[height] duration-(--duration-ui) ease-(--ease-toggle) md:block"
+        class="hidden h-10 w-auto origin-left md:block"
         data-header-lockup
+        priority
         src={logoLockup}
       />
-      <Image alt="" class="h-10 w-auto md:hidden" src={logoMark} />
+      <Image alt="" class="h-10 w-auto md:hidden" priority src={logoMark} />
     </a>
 
-    <div class="ml-auto hidden items-center gap-1 md:flex">
-      <a
-        aria-current={isCurrent("/about") ? "page" : undefined}
-        class="text-small text-foreground hover:text-primary-bright aria-[current]:text-primary-bright rounded-md px-3 py-2 font-medium no-underline"
-        href="/about"
-      >
-        About
-      </a>
-
-      <!--
-        `:focus-within` and `:hover` on the wrapper open the panel; the trigger itself is a
-        link, so keyboard, touch, and no-JS users all land on the hub page instead.
-      -->
-      <div class="group relative">
-        <a
-          aria-current={inSection("/programs") ? "page" : undefined}
-          class="text-small text-foreground hover:text-primary-bright aria-[current]:text-primary-bright flex items-center gap-1 rounded-md px-3 py-2 font-medium no-underline"
-          href="/programs"
-        >
-          Programs
-          <Icon
-            class="transition-transform duration-(--duration-ui) group-focus-within:rotate-180 group-hover:rotate-180"
-            name="chevron-down"
-            size={20}
-          />
-        </a>
-        <div
-          class={cn(
-            "pocket invisible absolute left-0 top-full w-64 p-2 opacity-0",
-            "transition-[opacity,visibility] duration-(--duration-ui) ease-(--ease-toggle)",
-            "group-hover:visible group-hover:opacity-100",
-            "group-focus-within:visible group-focus-within:opacity-100",
-          )}
-        >
-          {
-            programLinks.map((link) => (
-              <a
-                aria-current={isCurrent(link.href) ? "page" : undefined}
-                class="hover:bg-card-hover block rounded-md px-3 py-2 no-underline"
-                href={link.href}
-              >
-                <span class="text-small text-foreground block font-medium">{link.label}</span>
-                <span class="text-small text-muted block">{link.name}</span>
-              </a>
-            ))
-          }
-        </div>
-      </div>
-
-      <a
-        aria-current={isCurrent("/sponsors") ? "page" : undefined}
-        class="text-small text-foreground hover:text-primary-bright aria-[current]:text-primary-bright rounded-md px-3 py-2 font-medium no-underline"
-        href="/sponsors"
-      >
-        Sponsors
-      </a>
-      <a
-        aria-current={isCurrent("/donate") ? "page" : undefined}
-        class="text-small text-foreground hover:text-primary-bright aria-[current]:text-primary-bright rounded-md px-3 py-2 font-medium no-underline"
-        href="/donate"
-      >
-        Donate
-      </a>
-      <Button class="ml-2" href="/get-involved" size="sm">Get involved</Button>
+    <div class="ml-auto hidden items-center gap-1 md:flex" data-sheet-inert>
+      {
+        headerLinks.map((link) =>
+          link.href === "/programs" ? (
+            <div class="relative">
+              <span class="flex items-center">
+                <a
+                  aria-current={inSection(link.href) ? "page" : undefined}
+                  class={cn(navLink, "pr-1")}
+                  href={link.href}
+                >
+                  {link.label}
+                </a>
+                <button
+                  aria-label="Show programs"
+                  class="text-foreground hover:text-primary-bright grid size-9 place-items-center rounded-md"
+                  popovertarget="programs-panel"
+                  type="button"
+                >
+                  <Icon name="chevron-down" size={20} />
+                </button>
+              </span>
+              <div class="pocket absolute top-full left-0 m-0 w-64 p-2" id="programs-panel" popover>
+                {nav.programs.map((entry) => (
+                  <a
+                    aria-current={current === entry.href ? "page" : undefined}
+                    class="ui-link hover:bg-card-hover block rounded-md px-3 py-2"
+                    href={entry.href}
+                  >
+                    <span class="text-small block font-medium">{entry.label}</span>
+                    <span class="text-small text-muted block">{entry.name}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <a
+              aria-current={inSection(link.href) ? "page" : undefined}
+              class={navLink}
+              href={link.href}
+            >
+              {link.label}
+            </a>
+          ),
+        )
+      }
+      <Button class="ml-2" href={nav.cta.href} size="sm">{nav.cta.label}</Button>
     </div>
 
+    <!--
+      One state, `aria-expanded`, with CSS deriving the icon swap from it. The icons used to be
+      toggled by two element handles found through `data-menu-icon-*`, which `Icon.astro` never
+      emitted — so the hamburger never became an X.
+    -->
     <button
       aria-controls="mobile-menu"
       aria-expanded="false"
@@ -134,35 +136,28 @@ const programLinks = [
       data-menu-toggle
       type="button"
     >
-      <Icon data-menu-icon-open name="menu-2" size={24} />
-      <Icon class="hidden" data-menu-icon-close name="x" size={24} />
+      <Icon class="menu-icon-open" name="menu-2" size={24} />
+      <Icon class="menu-icon-close" name="x" size={24} />
     </button>
   </nav>
 </header>
 
-<!-- Full-height sheet (D26). Nothing is more than two taps away. -->
-<div
-  class="bg-background fixed inset-0 z-40 hidden md:hidden"
-  data-menu-sheet
-  hidden
-  id="mobile-menu"
->
+<!--
+  Full-height sheet (D26). Nothing is more than two taps away. Opaque, so the page behind it is
+  marked `inert` while it is open rather than left in the tab order.
+-->
+<div class="bg-background fixed inset-0 z-40 md:hidden" data-menu-sheet hidden id="mobile-menu">
   <nav
     aria-label="Mobile"
     class="flex h-full flex-col overflow-y-auto px-4 pt-20 pb-[env(safe-area-inset-bottom)]"
   >
     <ul class="divide-border flex flex-col divide-y">
       {
-        [
-          { href: "/about", label: "About" },
-          { href: "/programs", label: "Programs" },
-          { href: "/sponsors", label: "Sponsors" },
-          { href: "/calendar/sc2", label: "Calendar" },
-        ].map((link) => (
+        sheetLinks.map((link) => (
           <li>
             <a
-              aria-current={isCurrent(link.href) ? "page" : undefined}
-              class="text-h4 text-foreground aria-[current]:text-primary-bright flex min-h-14 items-center font-semibold no-underline"
+              aria-current={inSection(link.href) ? "page" : undefined}
+              class="ui-link text-h4 flex min-h-14 items-center font-semibold"
               href={link.href}
             >
               {link.label}
@@ -172,7 +167,7 @@ const programLinks = [
       }
     </ul>
     <div class="mt-auto flex flex-col gap-3 py-6">
-      <Button href="/get-involved" size="lg">Get involved</Button>
+      <Button href={nav.cta.href} size="lg">{nav.cta.label}</Button>
       <Button href="/donate" size="lg" variant="outline">Donate</Button>
     </div>
   </nav>
@@ -182,6 +177,10 @@ const programLinks = [
   /**
    * Condense after scroll. Scroll-driven animations are progressive: where they are unsupported
    * the header simply keeps its full height, which is the correct fallback.
+   *
+   * `scale`, not `height`: height is not a compositor property, so animating it relayouts the
+   * sticky header and reflows the page below on every scroll frame (DESIGN.md §6 — "only
+   * `opacity` and `transform` animate").
    */
   @supports (animation-timeline: scroll()) {
     @media (prefers-reduced-motion: no-preference) {
@@ -195,43 +194,70 @@ const programLinks = [
 
   @keyframes condense-lockup {
     to {
-      height: 2rem;
+      scale: 0.8;
     }
+  }
+
+  /**
+   * The open/closed icon pair, derived from the button's own state.
+   *
+   * `:global()` on the icon is required: the `<svg>` is rendered by `Icon.astro`, so it carries no
+   * `data-astro-cid-*` of this component and a plain descendant selector would be rewritten to
+   * demand one and match nothing. The `[data-menu-toggle]` side keeps the scope.
+   */
+  [data-menu-toggle] :global(.menu-icon-close),
+  [data-menu-toggle][aria-expanded="true"] :global(.menu-icon-open) {
+    display: none;
+  }
+
+  [data-menu-toggle][aria-expanded="true"] :global(.menu-icon-close) {
+    display: block;
+  }
+
+  /* The scroll lock, likewise: no inline style to leave behind. */
+  body:has([data-menu-sheet]:not([hidden])) {
+    overflow: hidden;
   }
 </style>
 
 <script>
   const toggle = document.querySelector("[data-menu-toggle]");
   const sheet = document.querySelector("[data-menu-sheet]");
-  const iconOpen = document.querySelector("[data-menu-icon-open]");
-  const iconClose = document.querySelector("[data-menu-icon-close]");
 
-  if (toggle && sheet instanceof HTMLElement) {
+  if (toggle instanceof HTMLElement && sheet instanceof HTMLElement) {
+    /**
+     * The sheet is opaque and covers the page, so everything behind it leaves the tab order and
+     * the accessibility tree — otherwise Tab past the last item walks invisible links. `body`
+     * cannot be the target: it contains the sheet. Everything in the shell that is not the toggle
+     * carries `data-sheet-inert`.
+     */
+    const behind = document.querySelectorAll("main, footer, [data-sheet-inert]");
+
     const setOpen = (open: boolean) => {
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       sheet.hidden = !open;
-      sheet.classList.toggle("hidden", !open);
-      iconOpen?.classList.toggle("hidden", open);
-      iconClose?.classList.toggle("hidden", !open);
-      // Locking the body is what stops the page scrolling behind the sheet.
-      document.body.style.overflow = open ? "hidden" : "";
+      for (const element of behind) element.toggleAttribute("inert", open);
     };
 
     toggle.addEventListener("click", () => {
       setOpen(toggle.getAttribute("aria-expanded") !== "true");
     });
 
-    // A tap outside the nav column is a tap on the backdrop.
-    sheet.addEventListener("click", (event) => {
-      if (event.target === sheet) setOpen(false);
-    });
-
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && !sheet.hidden) {
         setOpen(false);
-        if (toggle instanceof HTMLElement) toggle.focus();
+        toggle.focus();
       }
+    });
+
+    /**
+     * Both the sheet and its toggle are `md:hidden`, so crossing the breakpoint while open would
+     * otherwise leave the page scroll-locked and inert with no visible control to undo it.
+     */
+    const desktop = window.matchMedia("(min-width: 48rem)");
+    desktop.addEventListener("change", (event) => {
+      if (event.matches) setOpen(false);
     });
   }
 </script>

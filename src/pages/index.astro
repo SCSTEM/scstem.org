@@ -11,9 +11,9 @@ import { webSite } from "@/lib/jsonld";
 ---
 
 <BaseLayout description={site.description} title="Home">
-  <JsonLd data={webSite()} slot="head" />
+  <JsonLd data={webSite} slot="head" />
 
-  <section class="section-y ambient-pool mx-auto max-w-6xl px-4 md:px-6">
+  <section class="section-y ambient-pool container-page">
     <p class="eyebrow text-primary">Rewrite in progress</p>
     <h1 class="mt-2">The app shell is in place</h1>
     <p class="measure text-body-lg mt-4">

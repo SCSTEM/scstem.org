@@ -30,7 +30,7 @@ interface Props {
 const {
   title,
   description,
-  ogImage = "/og/default.png",
+  ogImage = site.ogImage.path,
   ogType = "website",
   canonical,
   noindex = false,
@@ -42,9 +42,21 @@ const fullTitle = isHome ? site.name : site.titleTemplate.replace("%s", title);
 
 const canonicalUrl = new URL(canonical ?? Astro.url.pathname, site.url);
 
-const imageSource = typeof ogImage === "string" ? ogImage : ogImage.src;
-const imageUrl = new URL(imageSource, site.url);
-const imageDimensions = typeof ogImage === "string" ? undefined : ogImage;
+/**
+ * The default card is a fixed-size file, so its dimensions travel with its path in `site.ts` —
+ * this block used to be dead for every page, since `imageDimensions` was only set for an imported
+ * `ImageMetadata` and no page passes one. Without the pair a scraper must fetch the whole 466 KB
+ * image just to learn its aspect ratio.
+ */
+const imageUrl = new URL(typeof ogImage === "string" ? ogImage : ogImage.src, site.url);
+
+/** Known for an imported asset, and for the site default; unknown for any other bare path. */
+const imageSize =
+  typeof ogImage === "string"
+    ? ogImage === site.ogImage.path
+      ? { width: site.ogImage.width, height: site.ogImage.height }
+      : undefined
+    : { width: ogImage.width, height: ogImage.height };
 ---
 
 <title>{fullTitle}</title>
@@ -62,10 +74,10 @@ const imageDimensions = typeof ogImage === "string" ? undefined : ogImage;
 <meta content={imageUrl.href} property="og:image" />
 <meta content={`${site.name} logo over a photo of the team`} property="og:image:alt" />
 {
-  imageDimensions !== undefined && (
+  imageSize !== undefined && (
     <>
-      <meta content={String(imageDimensions.width)} property="og:image:width" />
-      <meta content={String(imageDimensions.height)} property="og:image:height" />
+      <meta content={String(imageSize.width)} property="og:image:width" />
+      <meta content={String(imageSize.height)} property="og:image:height" />
     </>
   )
 }
@@ -75,4 +87,4 @@ const imageDimensions = typeof ogImage === "string" ? undefined : ogImage;
 <meta content={description} name="twitter:description" />
 <meta content={imageUrl.href} name="twitter:image" />
 
-<meta content="#FACC15" name="theme-color" />
+<meta content={site.chrome.themeColor} name="theme-color" />

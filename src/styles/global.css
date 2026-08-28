@@ -178,9 +178,15 @@
     text-wrap: pretty;
   }
 
-  /* In-prose links are accent-colored and underlined (DESIGN.md §8). Preflight sets
-     `text-decoration: inherit` on `a`, which resolves to `none` from body — so the line
-     must be declared here, not only its thickness and offset. */
+  /**
+   * In-prose links are accent-colored and underlined (DESIGN.md §8). Preflight sets
+   * `text-decoration: inherit` on `a`, which resolves to `none` from body — so the line must be
+   * declared here, not only its thickness and offset.
+   *
+   * Not `:where()`: preflight's own `a { text-decoration: inherit }` has specificity 0,0,1, so
+   * zero-specificity here loses to it and the underline disappears. `ui-link` overrides this
+   * anyway — `@utility` lands in the utilities layer, which wins over `@layer base`.
+   */
   a {
     color: var(--color-primary-bright);
     text-decoration-line: underline;
@@ -455,6 +461,53 @@
 /* Prose measure (DESIGN.md §3). */
 @utility measure {
   max-width: 70ch;
+}
+
+/* The page container (DESIGN.md §5). One definition, so pages cannot reinvent the gutters. */
+@utility container-page {
+  margin-inline: auto;
+  max-width: var(--container-6xl);
+  padding-inline: 1rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 1.5rem;
+  }
+}
+
+/**
+ * Chrome links (DESIGN.md §8): "UI links may drop underline at rest but underline on
+ * hover/focus". The underline half was missing everywhere — every chrome link wrote
+ * `no-underline` and stopped there, so a link was distinguished by color alone on hover.
+ */
+@utility ui-link {
+  color: var(--color-foreground);
+  text-decoration-line: none;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-primary-bright);
+    text-decoration-line: underline;
+  }
+
+  /* The current page in a nav (§9 requires `aria-current="page"` there). */
+  &[aria-current] {
+    color: var(--color-primary-bright);
+  }
+}
+
+/**
+ * An external link's trailing marker (DESIGN.md §8: "icon at 0.8em"). A pseudo-element rather
+ * than an inline SVG per link, so it cannot be forgotten at a call site.
+ */
+@utility external-link {
+  &::after {
+    content: "↗";
+    display: inline-block;
+    margin-inline-start: 0.25em;
+    font-size: 0.8em;
+    line-height: 1;
+    vertical-align: baseline;
+  }
 }
 
 /**

@@ -2,9 +2,10 @@
 import { Image } from "astro:assets";
 
 import logoLockup from "@/assets/brand/logo-color-full.svg";
+import CardTitle from "@/components/ui/primitives/CardTitle.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
-import { site } from "@/data/site";
+import { nav, programs, site, socials } from "@/data/site";
 
 /**
  * Site footer, styled as a recessed `card` band (DESIGN.md §2) and carrying the full-width color
@@ -15,6 +16,11 @@ import { site } from "@/data/site";
  */
 const year = new Date().getFullYear();
 
+/**
+ * Columns project `nav` and `socials` from `src/data/site.ts`. The program names used to be
+ * re-typed here alongside the copies in that file, and the social list was declared twice in this
+ * component — once for the text column, once for the icon row.
+ */
 const sections = [
   {
     title: "Support us",
@@ -27,59 +33,43 @@ const sections = [
   {
     title: "Programs",
     links: [
-      { label: "FIRST LEGO League", href: "/programs/fll" },
-      { label: "FIRST Robotics Competition", href: "/programs/frc" },
-      { label: "Calendar", href: "/calendar/sc2" },
+      { label: programs.fll.name, href: programs.fll.href },
+      { label: programs.frc.name, href: programs.frc.href },
+      { label: "Calendar", href: nav.programs[3].href },
     ],
   },
-  {
-    title: "Find us online",
-    links: [
-      { label: "Facebook", href: site.social.facebook },
-      { label: "LinkedIn", href: site.social.linkedin },
-      { label: "GitHub", href: site.social.github },
-    ],
-  },
+  { title: "Find us online", links: socials },
 ] as const;
 
-const socials = [
-  { label: "Facebook", href: site.social.facebook, icon: "brand-facebook" },
-  { label: "LinkedIn", href: site.social.linkedin, icon: "brand-linkedin" },
-  { label: "GitHub", href: site.social.github, icon: "brand-github" },
+/** The icon row: the socials plus email, which is the same shape. */
+const iconLinks = [
+  ...socials,
+  { label: `Email ${site.name}`, href: `mailto:${site.email}`, icon: "mail" },
 ] as const;
+
+const isExternal = (href: string): boolean => href.startsWith("http");
 ---
 
 <footer class="bg-card mt-24">
-  <div class="mx-auto max-w-6xl px-4 py-12 md:px-6">
+  <div class="container-page py-12">
     <div class="flex flex-col gap-10 md:flex-row md:justify-between">
       <div class="max-w-xs">
         <Image alt={site.name} class="h-auto w-full max-w-[16rem]" src={logoLockup} />
-        <p class="text-small mt-4">
-          {site.shortName} is 501(c)(3) non-profit focused on providing STEM opportunities for students
-          in and around Franklin County PA.
-        </p>
+        <p class="text-small mt-4">{site.legal}</p>
         <ul class="mt-6 flex gap-2">
           {
-            socials.map((social) => (
+            iconLinks.map((link) => (
               <li>
                 <a
-                  class="text-foreground hover:bg-card-hover hover:text-primary-bright grid size-11 place-items-center rounded-md no-underline"
-                  href={social.href}
-                  rel="noopener"
+                  class="ui-link hover:bg-card-hover grid size-11 place-items-center rounded-md"
+                  href={link.href}
+                  rel={isExternal(link.href) ? "noopener" : undefined}
                 >
-                  <Icon label={social.label} name={social.icon} size={24} />
+                  <Icon label={link.label} name={link.icon} size={24} />
                 </a>
               </li>
             ))
           }
-          <li>
-            <a
-              class="text-foreground hover:bg-card-hover hover:text-primary-bright grid size-11 place-items-center rounded-md no-underline"
-              href={`mailto:${site.email}`}
-            >
-              <Icon label={`Email ${site.name}`} name="mail" size={24} />
-            </a>
-          </li>
         </ul>
       </div>
 
@@ -87,15 +77,19 @@ const socials = [
         {
           sections.map((section) => (
             <div>
-              <h2 class="text-h4 text-foreground font-sans font-semibold">{section.title}</h2>
-              <hr class="title-rule mt-2" />
+              <CardTitle as="h2" rule>
+                {section.title}
+              </CardTitle>
               <ul class="mt-3 flex flex-col gap-2">
                 {section.links.map((link) => (
                   <li>
                     <a
-                      class="text-small text-body hover:text-primary-bright no-underline"
+                      class:list={[
+                        "ui-link text-small text-body",
+                        isExternal(link.href) && "external-link",
+                      ]}
                       href={link.href}
-                      rel={link.href.startsWith("http") ? "noopener" : undefined}
+                      rel={isExternal(link.href) ? "noopener" : undefined}
                     >
                       {link.label}
                     </a>

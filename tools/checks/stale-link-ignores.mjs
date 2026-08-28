@@ -20,8 +20,21 @@ const routes = readFileSync(IGNORE_FILE, "utf8")
   .split("\n")
   .map((line) => line.trim())
   .filter((line) => line.length > 0 && !line.startsWith("#"))
-  .map((pattern) => /^\/dist(?<route>\/.*?)\$$/u.exec(pattern)?.groups?.route)
-  .filter((route) => route !== undefined);
+  .map((pattern) => {
+    const route = /^\/dist(?<route>\/.*?)\$$/u.exec(pattern)?.groups?.route;
+    /**
+     * An entry this script cannot parse used to be dropped silently — invisible to the staleness
+     * check while lychee still applied it as a regex, which is exactly the permanent blind spot
+     * the guard exists to prevent. A malformed entry is a hard failure instead.
+     */
+    if (route === undefined) {
+      console.error(
+        `${IGNORE_FILE}: cannot parse ${pattern}. Entries must read /dist/<route>$ so this check can tell when the route has been built.`,
+      );
+      process.exit(1);
+    }
+    return route;
+  });
 
 const stale = routes.filter((route) => existsSync(join(DIST, route, "index.html")));
 
