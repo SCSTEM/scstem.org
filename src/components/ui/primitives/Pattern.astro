@@ -19,8 +19,13 @@ interface Props {
 
 const { placement = "section", ticks = false, class: className } = Astro.props;
 
-const opacity = { hero: 0.07, section: 0.05, pocket: 0.04 }[placement];
-const cell = placement === "pocket" ? 26 : 28;
+/**
+ * The grid itself is `@utility engineering-grid` in global.css, shared with `pocket-feature`.
+ * Placement only picks the two custom properties it reads, so the linework's geometry and its
+ * token-derived stroke have a single definition.
+ */
+const alpha = { hero: "7%", section: "5%", pocket: "4%" }[placement];
+const cell = placement === "pocket" ? "26px" : "28px";
 ---
 
 <div
@@ -28,14 +33,8 @@ const cell = placement === "pocket" ? 26 : 28;
   class={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
 >
   <div
-    class="absolute inset-0"
-    style={`
-      opacity: ${String(opacity)};
-      background-image:
-        linear-gradient(to right, #FAFAFA 1px, transparent 1px),
-        linear-gradient(to bottom, #FAFAFA 1px, transparent 1px);
-      background-size: ${String(cell)}px ${String(cell)}px;
-    `}
+    class="engineering-grid absolute inset-0"
+    style={`--grid-cell: ${cell}; --grid-alpha: ${alpha};`}
   >
   </div>
   {

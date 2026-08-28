@@ -9,6 +9,7 @@ import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
 import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import { AA_NORMAL, AAA_NORMAL, blend, contrastRatio, formatRatio } from "@/lib/contrast";
+import { color, programColor, programThemes, radius, swipeAlpha } from "@/lib/tokens";
 import "@/styles/global.css";
 
 /**
@@ -16,27 +17,32 @@ import "@/styles/global.css";
  * contrast ratios. Noindexed, excluded from the sitemap in Phase 10, and the visual-review
  * artifact for the Phase 06 gate.
  *
- * The build fails if any pair drops below its floor — a token edit cannot quietly break
- * accessibility.
+ * The build fails if any pair drops below its floor. Every value is read from
+ * `src/styles/global.css` via `@/lib/tokens`, so a token edit cannot quietly break
+ * accessibility and a renamed token fails the build rather than checking a stale copy.
  */
 
-const BACKGROUND = "#262626";
-const CARD = "#171717";
+const BACKGROUND = color("background");
+const CARD = color("card");
 
 interface TextToken {
   name: string;
-  value: string;
   floor: number;
   use: string;
 }
 
+/**
+ * Values are never written here — `color()` reads them out of `src/styles/global.css`, so a
+ * token edited in the stylesheet alone still re-verifies, and a renamed token fails the build
+ * instead of silently checking a stale copy.
+ */
 const textTokens: readonly TextToken[] = [
-  { name: "foreground", value: "#FAFAFA", floor: AAA_NORMAL, use: "Headings, nav, emphasis" },
-  { name: "body", value: "#D4D4D4", floor: AAA_NORMAL, use: "All reading copy" },
-  { name: "muted", value: "#A3A3A3", floor: AA_NORMAL, use: "Captions, meta, labels only" },
-  { name: "primary-bright", value: "#FACC15", floor: AA_NORMAL, use: "Links, focus, key words" },
-  { name: "info-bright", value: "#60A5FA", floor: AA_NORMAL, use: "Informational text, data UI" },
-  { name: "destructive-bright", value: "#FCA5A5", floor: AA_NORMAL, use: "Form errors" },
+  { name: "foreground", floor: AAA_NORMAL, use: "Headings, nav, emphasis" },
+  { name: "body", floor: AAA_NORMAL, use: "All reading copy" },
+  { name: "muted", floor: AA_NORMAL, use: "Captions, meta, labels only" },
+  { name: "primary-bright", floor: AA_NORMAL, use: "Links, focus, key words" },
+  { name: "info-bright", floor: AA_NORMAL, use: "Informational text, data UI" },
+  { name: "destructive-bright", floor: AA_NORMAL, use: "Form errors" },
 ];
 
 interface FillPair {
@@ -46,37 +52,64 @@ interface FillPair {
 }
 
 const fillPairs: readonly FillPair[] = [
-  { name: "Safety Yellow (primary)", fill: "#FACC15", label: "#171717" },
-  { name: "Science Blue (info)", fill: "#3B82F6", label: "#171717" },
-  { name: "Hazard Green (FRC primary)", fill: "#16A34A", label: "#08240F" },
-  { name: "Danger Orange (FLL primary)", fill: "#F97316", label: "#241102" },
-  { name: "Destructive", fill: "#DB262F", label: "#FAFAFA" },
+  { name: "Safety Yellow (primary)", fill: color("primary"), label: color("primary-foreground") },
+  { name: "Science Blue (info)", fill: color("info"), label: color("info-foreground") },
+  {
+    name: "Hazard Green (FRC primary)",
+    fill: programColor("frc", "primary"),
+    label: programColor("frc", "primary-foreground"),
+  },
+  {
+    name: "Danger Orange (FLL primary)",
+    fill: programColor("fll", "primary"),
+    label: programColor("fll", "primary-foreground"),
+  },
+  {
+    name: "Destructive",
+    fill: color("destructive"),
+    label: color("destructive-foreground"),
+  },
 ];
 
-const tiers = [
-  { name: "platinum", value: "#CBD5E1" },
-  { name: "gold", value: "#FACC15" },
-  { name: "silver", value: "#A3A3A3" },
-  { name: "bronze", value: "#D08954" },
-] as const;
+const tiers = ["platinum", "gold", "silver", "bronze"].map((name) => ({
+  name,
+  value: color(`tier-${name}`),
+}));
 
 const surfaces = [
-  { name: "background", value: BACKGROUND, use: "Page ground" },
-  { name: "card", value: CARD, use: "Pockets: cards, panels, fields, footer" },
-  { name: "section-tint", value: "#212121", use: "Full-width alternate section bands" },
-  { name: "border", value: "#3A3A3A", use: "Hairlines, dividers" },
-  { name: "pocket-border", value: "#383838", use: "Pocket walls" },
-] as const;
+  { name: "background", use: "Page ground" },
+  { name: "card", use: "Pockets: cards, panels, fields, footer" },
+  { name: "section-tint", use: "Full-width alternate section bands" },
+  { name: "border", use: "Hairlines, dividers" },
+  { name: "pocket-border", use: "Pocket walls" },
+].map((surface) => ({ ...surface, value: color(surface.name) }));
 
 /** Every pair that must hold, checked at build time. */
 const failures: string[] = [];
 
 for (const token of textTokens) {
   for (const surface of [BACKGROUND, CARD]) {
-    const ratio = contrastRatio(token.value, surface);
+    const ratio = contrastRatio(color(token.name), surface);
     if (ratio < token.floor) {
       failures.push(
-        `${token.name} (${token.value}) on ${surface} is ${formatRatio(ratio)}, below its ${String(token.floor)}:1 floor`,
+        `${token.name} (${color(token.name)}) on ${surface} is ${formatRatio(ratio)}, below its ${String(token.floor)}:1 floor`,
+      );
+    }
+  }
+}
+
+/**
+ * Program themes remap the action accent, so their `primary-bright` is a text color the default
+ * theme never checks. DESIGN.md §2 tabulates those ratios, so they are gated here too — reading
+ * the theme list from the stylesheet means a new program cannot ship an unchecked accent.
+ */
+for (const program of programThemes()) {
+  const value = programColor(program, "primary-bright");
+  for (const surface of [BACKGROUND, CARD]) {
+    const ratio = contrastRatio(value, surface);
+    if (ratio < AA_NORMAL) {
+      failures.push(
+        `data-theme="${program}" primary-bright (${value}) on ${surface} is ${formatRatio(ratio)}, below AA`,
       );
     }
   }
@@ -92,12 +125,12 @@ for (const pair of fillPairs) {
 }
 
 /** DESIGN.md §2.13 asks for this one by name: white key words sit on a translucent swipe. */
-const SWIPE_ALPHA = 0.25;
-const swipeOnGround = blend("#FACC15", BACKGROUND, SWIPE_ALPHA);
-const swipeOnCard = blend("#FACC15", CARD, SWIPE_ALPHA);
+const SWIPE_ALPHA = swipeAlpha();
+const swipeOnGround = blend(color("primary"), BACKGROUND, SWIPE_ALPHA);
+const swipeOnCard = blend(color("primary"), CARD, SWIPE_ALPHA);
 const swipeRatio = Math.min(
-  contrastRatio("#FAFAFA", swipeOnGround),
-  contrastRatio("#FAFAFA", swipeOnCard),
+  contrastRatio(color("foreground"), swipeOnGround),
+  contrastRatio(color("foreground"), swipeOnCard),
 );
 
 if (swipeRatio < AAA_NORMAL) {
@@ -127,21 +160,34 @@ const typeRamp = [
   { token: "h4", label: "Heading 4", class: "text-h4 font-sans font-semibold" },
   { token: "stat", label: "1,240", class: "stat" },
   { token: "body-lg", label: "Body large", class: "text-body-lg" },
-  { token: "body", label: "Body", class: "text-body" },
+  { token: "body", label: "Body", class: "text-copy" },
   { token: "small", label: "Small", class: "text-small" },
   { token: "label", label: "Spec label", class: "spec-label" },
 ] as const;
 
 const radii = [
-  { token: "sm", px: "4px", use: "Chips, spec labels, badges" },
-  { token: "md", px: "8px", use: "All controls" },
-  { token: "lg", px: "12px", use: "Pockets, panels, framed media" },
-] as const;
+  { token: "sm", use: "Chips, spec labels, badges" },
+  { token: "md", use: "All controls" },
+  { token: "lg", use: "Pockets, panels, framed media" },
+].map((entry) => ({ ...entry, px: radius(entry.token) }));
 
+/**
+ * DESIGN.md §2 tabulates each accent's text-on-dark ratio. Rendering the measured value here
+ * keeps that table checkable: accents are AA-scoped (links, focus, key words — never long copy),
+ * so a value below 7:1 is in-bounds, but a value below 4.5:1 fails the gate above.
+ */
 const themes = [
-  { name: "Default (SC2 — Safety Yellow)", theme: undefined },
-  { name: 'data-theme="frc" (Hazard Green)', theme: "frc" },
-  { name: 'data-theme="fll" (Danger Orange)', theme: "fll" },
+  { name: "Default (SC2 — Safety Yellow)", theme: undefined, accent: color("primary-bright") },
+  {
+    name: 'data-theme="frc" (Hazard Green)',
+    theme: "frc",
+    accent: programColor("frc", "primary-bright"),
+  },
+  {
+    name: 'data-theme="fll" (Danger Orange)',
+    theme: "fll",
+    accent: programColor("fll", "primary-bright"),
+  },
 ] as const;
 ---
 
@@ -244,14 +290,15 @@ const themes = [
             <tbody>
               {
                 textTokens.map((token) => {
-                  const onBackground = contrastRatio(token.value, BACKGROUND);
-                  const onCard = contrastRatio(token.value, CARD);
+                  const value = color(token.name);
+                  const onBackground = contrastRatio(value, BACKGROUND);
+                  const onCard = contrastRatio(value, CARD);
                   return (
                     <tr class="border-border/60 border-b">
                       <td class="py-3">
-                        <span style={`color: ${token.value}`}>{token.name}</span>
+                        <span style={`color: ${value}`}>{token.name}</span>
                       </td>
-                      <td class="text-muted py-3 font-mono">{token.value}</td>
+                      <td class="text-muted py-3 font-mono">{value}</td>
                       <td class="py-3 font-mono">{formatRatio(onBackground)}</td>
                       <td class="py-3 font-mono">{formatRatio(onCard)}</td>
                       <td class="text-muted py-3 font-mono">{token.floor}:1</td>
@@ -422,13 +469,15 @@ const themes = [
 
         <div class="mt-12 flex items-start gap-2">
           <SketchArrow class="size-14" variant={2} />
-          <a class="font-hand text-body-lg mt-8" href="#">Become a sponsor</a>
+          <a class="font-hand text-body-lg mt-8" href="/styleguide">Become a sponsor</a>
         </div>
 
-        <div class="mt-12">
+        <figure class="mt-12">
           <div class="media-frame bg-card-hover aspect-video"></div>
-          <Callout class="mt-3" reference="FIG. 01">Framed media, 2px primary border</Callout>
-        </div>
+          <Callout as="figcaption" class="mt-3" reference="FIG. 01">
+            Framed media, 2px primary border
+          </Callout>
+        </figure>
 
         <h3 class="mt-12">Title block</h3>
         <TitleBlock
@@ -459,6 +508,11 @@ const themes = [
             themes.map((entry) => (
               <div class="pocket p-6" data-theme={entry.theme}>
                 <p class="eyebrow text-primary-bright">{entry.name}</p>
+                <p class="text-muted text-small mt-1 font-mono">
+                  primary-bright {entry.accent} &middot; on background{" "}
+                  {formatRatio(contrastRatio(entry.accent, BACKGROUND))} &middot; on card{" "}
+                  {formatRatio(contrastRatio(entry.accent, CARD))}
+                </p>
                 <div class="mt-4 flex flex-wrap items-center gap-4">
                   <span class="bg-primary text-small text-primary-foreground rounded-md px-4 py-2 font-semibold">
                     Primary button
@@ -466,7 +520,7 @@ const themes = [
                   <span class="border-border text-small text-foreground rounded-md border px-4 py-2">
                     Outline button
                   </span>
-                  <a class="text-small" href="#">
+                  <a class="text-small" href="/styleguide">
                     An in-prose link
                   </a>
                   <span class="stat">12</span>

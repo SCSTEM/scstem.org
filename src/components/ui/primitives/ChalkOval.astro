@@ -1,6 +1,8 @@
 ---
 import { cn } from "cnfast";
 
+import { type HandTone, handToneClass } from "@/lib/hand";
+
 /**
  * A key word circled by hand (DESIGN.md §2.12) — the "Real ⬭Skills⬭. Real ⬭Robots⬭." treatment.
  * Chalk white over photography, grease-pencil `primary` on the ground.
@@ -14,7 +16,7 @@ import { cn } from "cnfast";
 interface Props {
   variant?: 1 | 2 | 3;
   /** `chalk` is white for photo contexts; `pencil` is the accent, for the page ground. */
-  tone?: "chalk" | "pencil";
+  tone?: HandTone;
   class?: string;
 }
 
@@ -39,25 +41,17 @@ const rotations = { 1: "-1.2deg", 2: "0.9deg", 3: "-0.6deg" } as const;
   <svg
     aria-hidden="true"
     class:list={[
-      "draw-on pointer-events-none absolute -inset-x-4 -inset-y-1.5 h-[calc(100%+0.75rem)] w-[calc(100%+2rem)]",
-      tone === "chalk" ? "text-foreground" : "text-primary",
+      "draw-on hand-stroke pointer-events-none absolute -inset-x-4 -inset-y-1.5 h-[calc(100%+0.75rem)] w-[calc(100%+2rem)]",
+      handToneClass(tone),
     ]}
-    fill="none"
     preserveAspectRatio="none"
     style={`rotate: ${rotations[variant]}`}
     viewBox="0 0 180 56"
   >
     <!--
       pathLength normalizes the dash animation to percent, so the stroke always ends fully
-      drawn. non-scaling-stroke keeps the 2.5px weight even, since the SVG is stretched
-      non-uniformly over whatever word it wraps.
+      drawn. The stroke itself comes from `hand-stroke` (global.css).
     -->
-    <path
-      d={paths[variant]}
-      pathLength="100"
-      stroke="currentColor"
-      stroke-linecap="round"
-      stroke-width="2.5"
-      vector-effect="non-scaling-stroke"></path>
+    <path d={paths[variant]} pathLength="100"></path>
   </svg>
 </span>

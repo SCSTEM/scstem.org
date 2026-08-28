@@ -178,9 +178,12 @@
     text-wrap: pretty;
   }
 
-  /* In-prose links are accent-colored and underlined (DESIGN.md §8). */
+  /* In-prose links are accent-colored and underlined (DESIGN.md §8). Preflight sets
+     `text-decoration: inherit` on `a`, which resolves to `none` from body — so the line
+     must be declared here, not only its thickness and offset. */
   a {
     color: var(--color-primary-bright);
+    text-decoration-line: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.2em;
   }
@@ -203,14 +206,19 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Media never overflows its column. */
+  /* Media never overflows its column. `svg` is deliberately excluded: `max-width` is a
+     different property from `width`, so a utilities-layer `width` cannot override it, and
+     the hand-markup primitives size their strokes past the text box on purpose. */
   img,
   picture,
-  video,
-  svg {
+  video {
     display: block;
     max-width: 100%;
     height: auto;
+  }
+
+  svg {
+    display: block;
   }
 }
 
@@ -259,14 +267,36 @@
   }
 }
 
+/**
+ * The engineering grid (DESIGN.md §2.3). One definition, two consumers: `pocket-feature` below
+ * and `Pattern.astro`. Cell size and stroke alpha are custom properties, and the stroke reads
+ * `--color-foreground` rather than a literal hex — so the grid follows a future light theme's
+ * token set instead of needing a component edit (D15). Not `currentcolor`: this utility lands on
+ * elements that also hold text, and the linework must not be tied to the copy's color.
+ */
+@utility engineering-grid {
+  --grid-cell: 26px;
+  --grid-alpha: 5%;
+  --grid-line: color-mix(in srgb, var(--color-foreground) var(--grid-alpha), transparent);
+
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+
+  /* A `var()` alpha cannot be pre-resolved, so the build's computed fallback for `--grid-line`
+     lands on opaque foreground — solid white linework over content. The grid is atmosphere,
+     never information, so drop it entirely where `color-mix` is unavailable. */
+  @supports not (color: color-mix(in srgb, red, red)) {
+    background-image: none;
+  }
+}
+
 /* Feature pocket V2+V3, "drawing pocket" — the grid is *inside* the pocket, and only on
    screens wide enough for it to read. Dense card grids and mobile stay plain V2. */
 @utility pocket-feature {
   @media (width >= 48rem) {
-    background-image:
-      linear-gradient(to right, rgb(250 250 250 / 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(250 250 250 / 0.05) 1px, transparent 1px);
-    background-size: 26px 26px;
+    @apply engineering-grid;
   }
 }
 
@@ -336,7 +366,7 @@
   align-items: center;
   gap: 0.375rem;
   padding: 0.1875rem 0.5rem;
-  border: 1px solid currentcolor;
+  border: 1px solid color-mix(in srgb, currentcolor 40%, transparent);
   border-radius: var(--radius-sm);
   background-color: transparent;
 }
@@ -371,6 +401,9 @@
   }
 }
 
+/* Modifier for `ambient-pool`, not a peer of it: this only re-declares the gradient, so it
+   must be composed as `ambient-pool ambient-pool-neutral`. Used alone it emits a `::before`
+   with no `content` and renders nothing. */
 @utility ambient-pool-neutral {
   &::before {
     background: radial-gradient(
@@ -388,6 +421,35 @@
   @media (width >= 48rem) {
     padding-block: 6rem;
   }
+}
+
+/**
+ * The shared stroke contract for the hand-markup register (DESIGN.md §13): 2.5px round-capped
+ * `currentColor`, with `non-scaling-stroke` so the weight stays even when the SVG is stretched
+ * non-uniformly over a word. Applied to the `<svg>`; the paths carry only their `d` and
+ * `pathLength`, so a change to the hand's weight is one edit rather than one per device.
+ */
+@utility hand-stroke {
+  fill: none;
+
+  & path {
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-width: 2.5;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+/**
+ * `body` names both a color (§2) and a type size (§3), and Tailwind resolves the color
+ * namespace first — so `text-body` is the *color*, matching `text-muted` and `text-foreground`,
+ * and the size would otherwise be unreachable. Both tokens stay faithful to the doc; the size
+ * gets this utility. Elements inherit the body size from the base layer, so reach for
+ * `text-copy` only when resetting something back to it.
+ */
+@utility text-copy {
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
 }
 
 /* Prose measure (DESIGN.md §3). */

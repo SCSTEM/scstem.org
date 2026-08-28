@@ -36,7 +36,7 @@
 
 ### 2b. Brand assets
 
-- Copy the official logo assets from `legacy/public/image/svg/` (`logo-color-full.svg`, `logo-color.svg`, plus the black/white variants) into `src/assets/brand/`. These are the only sanctioned marks (DESIGN.md §7): full-width lockup in desktop chrome, square mark in mobile chrome. Never rebuild the logo as inline SVG or set the name in Inter as a lockup substitute.
+- Copy the official logo assets from `public/image/svg/` (`logo-color-full.svg`, `logo-color.svg`, plus the black/white variants) into `src/assets/brand/`. These are the only sanctioned marks (DESIGN.md §7): full-width lockup in desktop chrome, square mark in mobile chrome. Never rebuild the logo as inline SVG or set the name in Inter as a lockup substitute.
 - Request the **wireframe gear-bulb lineart vector** (and any sibling blueprint drawings) from the t-shirt/merch source files from the owner and add to `src/assets/brand/` — it powers the scribed-lineart motif (DESIGN.md §2.11). Until provided, the drawn approximation from the mockups may stand in, flagged in the PR.
 
 ### 3. Signature motifs as utilities/components
@@ -69,13 +69,13 @@ Implement DESIGN.md §2 "signature motifs" as reusable pieces so pages can't rei
   yellow on a green page.
 - **DESIGN.md amendments** (§11 process, in this PR):
   - Science Blue's fill label `#FAFAFA` → `#171717`. White on `#3B82F6` measures **3.5:1** —
-    below AA — and blue fills carry chip-sized text. A near-black label gives 4.9:1 and makes
+    below AA — and blue fills carry chip-sized text. A near-black label gives 4.8:1 and makes
     blue consistent with every other fill.
   - `body`'s stated ratio corrected from "≈11.5:1" to the measured **10.2:1** (still AAA).
   - Added a **destructive** pair (`#DB262F`/`#FAFAFA` fill, `#FCA5A5` text). §8 required the
     token; no value existed anywhere in the doc.
   - Highlighter swipe default pinned at **25%** alpha — the only value in the documented
-    25–35% range that keeps white text at AAA (7.7:1 on the ground).
+    25–35% range that keeps white text at AAA (7.6:1 on the ground).
 - **Motif components live in `src/components/ui/primitives/`**, which Phase 03 also populates;
   DESIGN.md §2.12 calls them primitives. The conventions README arrives with Phase 03.
 - **`@typescript-eslint/no-unsafe-return` is off for `.astro`.** `astro-eslint-parser` does not
@@ -85,7 +85,20 @@ Implement DESIGN.md §2 "signature motifs" as reusable pieces so pages can't rei
   source files). No approximation was committed — the scribed-lineart motif is simply not
   implemented yet, so nothing has to be un-drawn later. `Callout` and `TitleBlock`, the other
   scribed devices, are done.
+- **The four logo SVGs were moved, not copied.** `public/image/svg/logo-*.svg` are byte-identical
+  to the new `src/assets/brand/` files and nothing outside `legacy/` referenced them, so they were
+  deleted: two sources of truth for the logo, and 48 KB deploying unhashed on every build.
+- **`@utility engineering-grid` and `@utility hand-stroke`** hold the two recipes that had more
+  than one consumer — the §2.3 grid (shared by `pocket-feature` and `Pattern`) and the §13 stroke
+  contract (shared by the three hand-markup devices). Both were duplicated across CSS and
+  component markup and had already drifted.
+- **`/styleguide` reads the tokens rather than restating them.** `@/lib/tokens` parses the
+  `@theme` and `[data-theme]` blocks out of `global.css` at build time, so the contrast gate
+  verifies the shipped values. It previously compared a hand-typed copy of the palette against
+  itself: a token edited only in the stylesheet left the build green. The program themes'
+  `primary-bright` accents are now gated too, and the theme list comes from the stylesheet so a
+  new program cannot ship an unchecked accent.
 - **Hand-markup mechanics worth knowing:** each stroke carries `pathLength="100"` so the
   draw-on dash math is in percent (a hard-coded length silently truncates longer paths), and
-  ovals/underlines use `vector-effect="non-scaling-stroke"` because their SVG is stretched
-  non-uniformly over whatever word it wraps.
+  the register's stroke carries `vector-effect: non-scaling-stroke` (via `@utility hand-stroke`)
+  because these SVGs are stretched non-uniformly over whatever word they wrap.

@@ -1,6 +1,8 @@
 ---
 import { cn } from "cnfast";
 
+import { type HandTone, handToneClass } from "@/lib/hand";
+
 /**
  * A hand-drawn underline (DESIGN.md §2.14). Two uses: beneath a heading, and **inline within a
  * sentence** under a key phrase of three words or fewer — the sanctioned in-prose emphasis.
@@ -12,7 +14,7 @@ import { cn } from "cnfast";
  */
 interface Props {
   variant?: 1 | 2 | 3;
-  tone?: "chalk" | "pencil";
+  tone?: HandTone;
   class?: string;
 }
 
@@ -33,20 +35,13 @@ const rotations = { 1: "-0.5deg", 2: "0.4deg", 3: "-0.8deg" } as const;
   <svg
     aria-hidden="true"
     class:list={[
-      "draw-on pointer-events-none absolute -bottom-1.5 left-0 h-2 w-full",
-      tone === "chalk" ? "text-foreground" : "text-primary",
+      "draw-on hand-stroke pointer-events-none absolute -bottom-1.5 left-0 h-2 w-full",
+      handToneClass(tone),
     ]}
-    fill="none"
     preserveAspectRatio="none"
     style={`rotate: ${rotations[variant]}`}
     viewBox="0 0 180 10"
   >
-    <path
-      d={paths[variant]}
-      pathLength="100"
-      stroke="currentColor"
-      stroke-linecap="round"
-      stroke-width="2.5"
-      vector-effect="non-scaling-stroke"></path>
+    <path d={paths[variant]} pathLength="100"></path>
   </svg>
 </span>
