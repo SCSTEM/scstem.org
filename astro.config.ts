@@ -3,10 +3,10 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://scstem.org",
-  output: "static",
-  outDir: "./dist",
   integrations: [sitemap()],
+  outDir: "./dist",
+  output: "static",
+  site: "https://scstem.org",
   vite: {
     plugins: [tailwindcss()],
   },

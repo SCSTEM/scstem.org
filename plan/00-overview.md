@@ -79,7 +79,7 @@ This directory is the complete implementation plan for rewriting scstem.org from
 ├── astro.config.ts              # static, site: https://scstem.org, sitemap
 ├── .oxlintrc.json / .oxfmtrc.json
 ├── eslint.config.ts             # scoped to *.astro (+ md via Prettier)
-├── .prettierrc / .prettierignore
+├── .prettierrc.json / .prettierignore
 ├── .github/workflows/           # ci.yml (check+build+links), lighthouse.yml
 ├── .claude/
 │   ├── settings.json            # PostToolUse format+lint hook

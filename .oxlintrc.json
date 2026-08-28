@@ -1,5 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": ["./tools/lint/nkzw/oxlintrc.json"],
   "plugins": ["typescript", "unicorn", "oxc", "import"],
   "options": {
     "typeAware": true,
@@ -8,7 +9,7 @@
   "categories": {
     "correctness": "error",
     "suspicious": "error",
-    "perf": "warn",
+    "perf": "error",
     "style": "off"
   },
   "jsPlugins": [
@@ -38,13 +39,22 @@
       {
         "patterns": [
           {
-            "group": ["legacy/*", "**/legacy/*", "../legacy/*"],
+            "group": ["legacy/**", "**/legacy/**"],
             "message": "legacy/ is reference only \u2014 never import from it (plan/00-overview.md)"
           }
         ]
       }
-    ]
+    ],
+    "perfectionist/sort-objects": "off"
   },
+  "overrides": [
+    {
+      "files": ["functions/**"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ],
   "ignorePatterns": [
     "**/*.astro",
     "legacy/**",

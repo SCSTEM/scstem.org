@@ -1,4 +1,4 @@
-import * as astroParser from "astro-eslint-parser";
+import { parseForESLint } from "astro-eslint-parser";
 import { configs as astroConfigs } from "eslint-plugin-astro";
 import perfectionist from "eslint-plugin-perfectionist";
 import { defineConfig, globalIgnores } from "eslint/config";
@@ -12,15 +12,15 @@ export default defineConfig(
   astroConfigs.recommended,
   astroConfigs["jsx-a11y-strict"],
   {
-    files: ["**/*.astro"],
     extends: [tseslint.configs.strictTypeChecked],
+    files: ["**/*.astro"],
     languageOptions: {
       // strictTypeChecked would install the TS parser directly, which cannot read
       // `.astro`. The Astro parser stays outermost and delegates frontmatter to it.
-      parser: astroParser,
+      parser: { parseForESLint },
       parserOptions: {
-        parser: tseslint.parser,
         extraFileExtensions: [".astro"],
+        parser: tseslint.parser,
         // astro-eslint-parser does not implement projectService; it maps to `project`.
         project: true,
         tsconfigRootDir: import.meta.dirname,
@@ -38,7 +38,9 @@ export default defineConfig(
         {
           patterns: [
             {
-              group: ["legacy/*", "**/legacy/*", "../legacy/*", "**/../legacy/**"],
+              // `**`, not `*`: a single star matches one path segment, so `legacy/*` let
+              // `legacy/data/config` and every deep relative path through.
+              group: ["legacy/**", "**/legacy/**"],
               message: "legacy/ is reference only — never import from it (plan/00-overview.md)",
             },
           ],

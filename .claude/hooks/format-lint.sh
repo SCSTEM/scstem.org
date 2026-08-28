@@ -65,11 +65,16 @@ lint() {
 }
 
 case "${file##*.}" in
-  ts | tsx | js | jsx | mjs | cjs | json | jsonc | css)
+  ts | tsx | js | jsx | mjs | cjs | json | jsonc | json5 | css)
     # Without --ignore-path, oxfmt also reads .prettierignore, which excludes
     # every extension oxfmt owns.
     run oxfmt --ignore-path .gitignore "$file" >/dev/null
     lint oxlint --type-aware "$file"
+    ;;
+  # oxfmt's directory scan formats these too, so `pnpm check` fails on an unformatted one —
+  # but oxlint has no rules for them, so they are formatted and not linted.
+  yaml | yml | toml)
+    run oxfmt --ignore-path .gitignore "$file" >/dev/null
     ;;
   astro)
     run prettier --write "$file" >/dev/null

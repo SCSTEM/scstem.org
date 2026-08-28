@@ -45,7 +45,7 @@ Install scripts are denied by default; `allowBuilds` lists the exceptions (`shar
 
 | Extensions                            | Linter                                                   | Formatter |
 | ------------------------------------- | -------------------------------------------------------- | --------- |
-| `.ts .js .mjs .cjs .json .jsonc .css` | oxlint — type-aware, plus vendored anti-slop             | oxfmt     |
+| `.ts .js .mjs .cjs .json .jsonc .css` | oxlint — type-aware, vendored nkzw config + anti-slop    | oxfmt     |
 | `.astro`                              | ESLint — typed (`strictTypeChecked`) + `jsx-a11y-strict` | Prettier  |
 | `.md`                                 | —                                                        | Prettier  |
 
@@ -90,15 +90,73 @@ Rationale and the migration seam for collapsing onto oxc: `docs/adr/0001-toolcha
 
 **`astro check` cannot move yet, and that is why `typescript` is still a dependency.**
 `@astrojs/check` declares `peerDependencies: { "typescript": "^5.0.0 || ^6.0.0" }` and its language
-server is built against the JavaScript compiler's API. `@typescript/native-preview` exports only
-`version` and `versionMajorMinor` — there is no `typescript.js` or `tsserver.js` in it — so nothing
-can substitute it there. Re-check when `@astrojs/check` widens that peer range.
+server is built against the JavaScript compiler's Language Service API.
+`@typescript/native-preview` exports only `version` and `versionMajorMinor` — there is no
+`typescript.js` or `tsserver.js` in it — so nothing can substitute it there.
+
+This is not an Astro backlog item; it is upstream. From Astro's own tracking discussion
+([withastro/roadmap#1321](https://github.com/withastro/roadmap/discussions/1321)), maintainer
+delucis:
+
+> TypeScript 7 does not yet expose a stable programmatic API, and so tools (such as Volar) which
+> embed TypeScript into their own compilers and language services can only currently rely on
+> TypeScript 6.0.
+
+Astro's language server is Volar-based, so the same blocker hits Vue and Svelte. The TypeScript
+team is building a replacement for the deprecated JS ("Strada") API and reportedly targets it for
+**7.1**; no date is committed. **Watch that discussion** — when the API lands and `@astrojs/check`
+widens its peer range, `astro check` can move and `typescript` can be dropped.
+
+`js/ts.experimental.useTsgo` in `.vscode/settings.json` routes plain `.ts` files to tsgo. That is
+independent of the Astro extension, which keeps using its own TS 6 language server for `.astro`.
+The tracking discussion does carry reports of import/export resolution oddities in editors with
+tsgo enabled — if `.astro` intellisense misbehaves, that setting is the first thing to turn off.
 
 `@typescript/native-preview` is a `7.0.0-dev.*` build; it is pinned exactly, like every other tool
 here, and `pnpm-workspace.yaml`'s `minimumReleaseAge` still applies.
 
 In the editor, `js/ts.experimental.useTsgo` routes `.ts` files to tsgo while `js/ts.tsdk.path` keeps
 the JavaScript compiler available for the Astro language server — the same split as the table above.
+
+### Lint rule sources
+
+oxlint's rule set comes from three places, layered:
+
+1. **`tools/lint/nkzw/oxlintrc.json`** — a vendored copy of
+   [`@nkzw/oxlint-config`](https://github.com/nkzw-tech/oxlint-config) (MIT), extended by path from
+   `.oxlintrc.json`. 146 general-purpose rules: unicorn, typescript-eslint, oxc, import-x,
+   perfectionist, and the core set. See its `VENDOR.md` for what was dropped (React, Relay and
+   test-runner rules that do not apply here) and how to update it.
+2. **`tools/lint/anti-slop/`** — the vendored plugin below.
+3. **`.oxlintrc.json`'s own `rules`** — the `legacy/**` import ban and the anti-slop rule list.
+
+**Every rule is an error.** `perf` was a warning and is now an error; `style` is off. A warning
+nobody has to fix is a rule nobody obeys, so the choice is error or off — which is also the reason
+for adopting the nkzw set, whose severities are all `error` upstream.
+
+**`perfectionist/sort-objects` is off**, and it is the one rule from upstream that is disabled on
+its merits rather than for inapplicability. Its autofix reorders an object's keys but leaves leading
+comments where they were, so on any object whose keys carry doc comments it silently produces false
+documentation. Reproduced on `src/data/site.ts` in a single `--fix` pass: `shortName`'s comment
+ended up labelling `description`, `titleTemplate`'s ended up on `email`, and the multi-line comment
+for `calendars` ended up on `analytics`. AGENTS.md requires a comment to describe what is there, and
+a rule that rewrites them to describe something else cannot be a `--fix` away from green.
+
+The sibling rules do not have this flaw — `sort-interfaces` and `sort-object-types` were checked
+against a commented interface and a commented type literal and carried each comment with its member
+— so they stay on, as do `sort-imports`, `sort-enums`, `sort-heritage-clauses` and `sort-jsx-props`.
+
+Two deliberate exceptions live in `.oxlintrc.json`'s `overrides`:
+
+- `no-console` is off under `functions/**`. A Cloudflare Worker's console is its log stream —
+  `wrangler tail` and the dashboard read nothing else — so the rule's purpose (keeping debug
+  logging out of a shipped bundle) does not apply.
+- Upstream's own `.ts` override is kept, which turns off the correctness rules TypeScript already
+  covers (`no-undef`, `no-redeclare`, …). That is the config's speed principle, not a gap.
+
+**Import bans use `**`, not `*`.** A single star matches one path segment, so `legacy/*` allowed
+`legacy/data/config` and every deep relative path. Both linters use `["legacy/**", "**/legacy/**"]`
+and both are verified against a deep relative import.
 
 ### Vendored lint rules
 

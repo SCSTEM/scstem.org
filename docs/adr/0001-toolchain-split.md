@@ -38,7 +38,7 @@ sorted the same way regardless of which tool touched a file.
 
 When oxlint and oxfmt ship Astro support, collapsing onto oxc is a deletion, not a refactor:
 
-1. Delete `eslint.config.ts`, `.prettierrc`, `.prettierignore`.
+1. Delete `eslint.config.ts`, `.prettierrc.json`, `.prettierignore`.
 2. Remove these devDependencies: `eslint`, `eslint-plugin-astro`, `eslint-plugin-perfectionist`,
    `astro-eslint-parser`, `typescript-eslint`, `prettier`, `prettier-plugin-astro`,
    `prettier-plugin-tailwindcss`, `jiti`.

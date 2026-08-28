@@ -8,13 +8,15 @@ import type { APIResponse, TurnstileResponse, TurnstileVerificationResponse } fr
  * @returns A standard HTTP Response object
  */
 export const res = (apiResponse: APIResponse, status: number): Response => {
-  if (!apiResponse.success && apiResponse.error) console.error(apiResponse.error);
+  if (!apiResponse.success && apiResponse.error) {
+    console.error(apiResponse.error);
+  }
 
   return new Response(JSON.stringify(apiResponse), {
-    status: status,
     headers: {
       "Content-Type": "application/json",
     },
+    status,
   });
 };
 
@@ -34,11 +36,13 @@ export const validateTurnstile = async (
   formData.append("secret", secretKey);
   formData.append("response", response);
   // Turnstile treats remoteip as optional; sending a stringified null fails verification.
-  if (ip !== null) formData.append("remoteip", ip);
+  if (ip !== null) {
+    formData.append("remoteip", ip);
+  }
 
   const url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
   const result = await fetch(url, { body: formData, method: "POST" });
   const outcome = await result.json<TurnstileResponse>();
 
-  return Promise.resolve({ valid: outcome.success, response: outcome });
+  return { response: outcome, valid: outcome.success };
 };

@@ -50,9 +50,13 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 - `.oxlintrc.json` (model on spark's):
   - `plugins`: `typescript`, `unicorn`, `oxc`, `import`.
   - `options`: `typeAware: true`, `typeCheck: true` (add `oxlint-tsgolint` if required by the oxlint version).
-  - `categories`: `correctness: "error"`, `suspicious: "error"`, `perf: "warn"`, `style: "off"`.
+  - `categories`: `correctness: "error"`, `suspicious: "error"`, `perf: "error"`, `style: "off"` — no warnings anywhere.
   - `jsPlugins`: `{ "name": "anti-slop", "specifier": "./tools/lint/anti-slop/index.ts" }`, all its rules `error`.
-  - `no-restricted-imports` (error): any path matching `legacy/`.
+  - `no-restricted-imports` (error): any path matching `legacy/**` or `**/legacy/**` — `*` matches
+    one segment only, so a single star misses `legacy/data/config` and every deep relative path.
+  - `extends`: `./tools/lint/nkzw/oxlintrc.json`, a vendored copy of `@nkzw/oxlint-config`
+    (see its `VENDOR.md`). All severities are `error`; `perf` was moved from `warn` to `error` and
+    `style` stays off.
   - `ignorePatterns`: `legacy/**`, `dist/**`, `.astro/**`, `tools/lint/anti-slop/**`, `.claude/**`, `plan/**`.
 - `.oxfmtrc.json`: `sortTailwindcss: true`, `sortImports: true`, `sortPackageJson: true`; ignore `legacy/**`, `dist/**`, `.astro/**`, `.claude/**`, `tools/lint/anti-slop/**`, `**/*.md`, `**/*.astro`.
 - ESLint (flat, `eslint.config.ts`), **scoped to `**/*.astro` only**:
@@ -60,7 +64,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
   - Import sorting for `.astro` frontmatter: `eslint-plugin-perfectionist` `sort-imports` (autofixable) — mirrors oxfmt's `sortImports` so the whole repo is sorted.
   - Best-effort task: register the vendored anti-slop rules as a local ESLint plugin for `.astro` frontmatter (the rules use the ESLint rule API). If any rule fails to load under ESLint, skip that rule and note it in `docs/adr/0001-toolchain-split.md` — do not fork the rule source.
   - Global ignores: everything except `**/*.astro` (plus `legacy/**`, `dist/**`, `.astro/**`).
-- Prettier: `.prettierrc` with `plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"]` (tailwind plugin last), astro override (`parser: "astro"`). `.prettierignore`: everything except `**/*.astro`, `**/*.md` (`*`, `!*.astro`, `!*.md`, plus re-ignore `legacy/**`, `dist/**`, `plan/**` markdown stays formatted-by-hand: ignore `plan/**` and `docs/adr/**` if churn is unwanted — implementer's call, document it).
+- Prettier: `.prettierrc.json` with `plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"]` (tailwind plugin last), astro override (`parser: "astro"`). `.prettierignore`: everything except `**/*.astro`, `**/*.md` (`*`, `!*.astro`, `!*.md`, plus re-ignore `legacy/**`, `dist/**`, `plan/**` markdown stays formatted-by-hand: ignore `plan/**` and `docs/adr/**` if churn is unwanted — implementer's call, document it).
 - `.editorconfig` for what neither formatter covers (yaml/toml/shell): utf-8, lf, 2-space, final newline, trim trailing whitespace except `*.md`.
 - `knip.json`: all rules `"error"`; entry points: `astro.config.ts`, `src/pages/**`, `functions/**`, `eslint.config.ts`; ignore `legacy/**`, `tools/lint/anti-slop/**`.
 - `package.json` scripts (single source of truth):
@@ -131,7 +135,10 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
   182 ms on this tree. `astro check` stays on the JavaScript compiler because
   `@astrojs/check` peers `^5 || ^6` and its language server needs that compiler's API — the native
   preview exports only `version`/`versionMajorMinor`, with no `typescript.js` or `tsserver.js` to
-  substitute. The split is documented in `docs/tooling.md`.
+  substitute. The blocker is upstream of Astro: TypeScript 7 exposes no stable programmatic API, so
+  every Volar-based language server (Astro, Vue, Svelte) is pinned to TS 6
+  ([withastro/roadmap#1321](https://github.com/withastro/roadmap/discussions/1321)). Reportedly
+  targeted for TS 7.1, uncommitted. The split is documented in `docs/tooling.md`.
 - oxfmt is invoked with `--ignore-path .gitignore` and Prettier with an explicit
   `**/*.{astro,md}` glob; ESLint scopes by `files:` rather than a blanket ignore. All three
   are gitignore-semantics workarounds documented in `docs/tooling.md`.

@@ -3,6 +3,15 @@
   "sortImports": true,
   "sortPackageJson": true,
   "sortTailwindcss": true,
+  "trailingComma": "all",
+  "overrides": [
+    {
+      "files": ["**/*.json", "**/*.jsonc", "**/*.json5"],
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ],
   "ignorePatterns": [
     "legacy/**",
     "dist/**",
