@@ -58,6 +58,17 @@ export default defineConfig(
        * off the whole family. See docs/adr/0001-toolchain-split.md.
        */
       "@typescript-eslint/no-unsafe-return": "off",
+      /**
+       * A keyboard-reachable scroll container is a real pattern: an `overflow` region is not
+       * focusable by default, so without `tabindex="0"` its content is unreachable by keyboard
+       * (WCAG 2.2 SC 2.1.1). `role="region"` with an accessible name is how that container is
+       * named; the rule only allows `tabpanel` out of the box. Scoped to that one role — every
+       * other non-interactive element keeps the error.
+       */
+      "astro/jsx-a11y/no-noninteractive-tabindex": [
+        "error",
+        { roles: ["tabpanel", "region"], tags: [] },
+      ],
     },
   },
 );

@@ -1,0 +1,39 @@
+---
+import { cn } from "@/lib/cn";
+
+import Icon from "./Icon.astro";
+
+/**
+ * A field's error message (DESIGN.md §8): destructive text token, an icon, and an id the input
+ * points at with `aria-describedby`. `aria-live` so a message added after submit is announced.
+ *
+ * Renders its container even when empty, so adding a message later does not shift the layout.
+ */
+interface Props {
+  /** Must match the input's `aria-describedby`. */
+  id: string;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+<!--
+  The icon is gated on slot content, not just hidden with the container: `:empty` matches only
+  elements with no child nodes at all, so an unconditional `<Icon>` made `empty:hidden` dead and
+  a placeholder rendered a bare alert triangle with no message.
+-->
+<p
+  aria-live="polite"
+  class={cn("flex items-center gap-1.5 text-small text-destructive-bright empty:hidden", className)}
+  id={id}
+>
+  {
+    Astro.slots.has("default") && (
+      <>
+        <Icon name="alert-triangle" size={20} />
+        <slot />
+      </>
+    )
+  }
+</p>

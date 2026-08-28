@@ -1,6 +1,12 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "extends": ["./tools/lint/nkzw/oxlintrc.json"],
+  "env": {
+    "browser": true,
+    "builtin": true,
+    "es2024": true,
+    "node": true
+  },
   "plugins": ["typescript", "unicorn", "oxc", "import"],
   "options": {
     "typeAware": true,
@@ -49,7 +55,7 @@
   },
   "overrides": [
     {
-      "files": ["functions/**"],
+      "files": ["functions/**", "tools/**"],
       "rules": {
         "no-console": "off"
       }
