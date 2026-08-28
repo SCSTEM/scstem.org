@@ -1,0 +1,20 @@
+---
+import { cn } from "@/lib/cn";
+
+/**
+ * The wrapper for a group of `AccordionItem`s. Passing `name` makes the group exclusive-open
+ * via the native `name` attribute on `<details>` — no JavaScript, and it survives no-JS and
+ * agent readers with all content present in the DOM.
+ */
+interface Props {
+  /** Shared name for exclusive-open behavior. Omit for independently-toggling items. */
+  name?: string;
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+---
+
+<div class={cn("divide-y divide-border", className)} data-accordion-name={name}>
+  <slot />
+</div>

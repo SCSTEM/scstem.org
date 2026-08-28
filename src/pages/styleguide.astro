@@ -1,12 +1,31 @@
 ---
+import Accordion from "@/components/ui/primitives/Accordion.astro";
+import AccordionItem from "@/components/ui/primitives/AccordionItem.astro";
+import Badge from "@/components/ui/primitives/Badge.astro";
+import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
+import Card from "@/components/ui/primitives/Card.astro";
+import CardContent from "@/components/ui/primitives/CardContent.astro";
+import CardDescription from "@/components/ui/primitives/CardDescription.astro";
+import CardFooter from "@/components/ui/primitives/CardFooter.astro";
+import CardHeader from "@/components/ui/primitives/CardHeader.astro";
+import CardTitle from "@/components/ui/primitives/CardTitle.astro";
+import Carousel from "@/components/ui/primitives/Carousel.astro";
 import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
 import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
+import Dialog from "@/components/ui/primitives/Dialog.astro";
+import FieldError from "@/components/ui/primitives/FieldError.astro";
 import GhostNumeral from "@/components/ui/primitives/GhostNumeral.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Input from "@/components/ui/primitives/Input.astro";
+import Label from "@/components/ui/primitives/Label.astro";
 import Pattern from "@/components/ui/primitives/Pattern.astro";
 import RegistrationMarks from "@/components/ui/primitives/RegistrationMarks.astro";
 import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
+import Separator from "@/components/ui/primitives/Separator.astro";
+import Skeleton from "@/components/ui/primitives/Skeleton.astro";
 import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
+import Textarea from "@/components/ui/primitives/Textarea.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import { AA_NORMAL, AAA_NORMAL, blend, contrastRatio, formatRatio } from "@/lib/contrast";
 import { color, programColor, programThemes, radius, swipeAlpha } from "@/lib/tokens";
@@ -170,6 +189,10 @@ const radii = [
   { token: "md", use: "All controls" },
   { token: "lg", use: "Pockets, panels, framed media" },
 ].map((entry) => ({ ...entry, px: radius(entry.token) }));
+
+const buttonVariantNames = ["default", "secondary", "outline", "ghost", "link"] as const;
+const buttonSizes = ["sm", "md", "lg"] as const;
+const badgeTones = ["default", "muted", "info", "platinum", "gold", "silver", "bronze"] as const;
 
 /**
  * DESIGN.md §2 tabulates each accent's text-on-dark ratio. Rendering the measured value here
@@ -492,6 +515,181 @@ const themes = [
 
       <RulerDivider />
 
+      <!-- Primitives -->
+      <section class="section-y relative">
+        <GhostNumeral value={8} />
+        <h2>Primitives</h2>
+        <p class="measure mt-3">
+          Every primitive in <code class="text-foreground font-mono">ui/primitives/</code>, in all
+          variants and states. Repeated under each program theme at the end of the page — a
+          primitive missing here does not exist as far as review is concerned.
+        </p>
+
+        <h3 class="mt-12">Button</h3>
+        <div class="mt-6 space-y-4">
+          {
+            buttonVariantNames.map((variant) => (
+              <div class="flex flex-wrap items-center gap-3">
+                <code class="spec-label text-muted w-24 shrink-0">{variant}</code>
+                {buttonSizes.map((size) => (
+                  <Button size={size} variant={variant}>
+                    {size}
+                  </Button>
+                ))}
+                <Button disabled size="md" variant={variant}>
+                  disabled
+                </Button>
+                <Button href="/styleguide" size="md" variant={variant}>
+                  as link
+                </Button>
+              </div>
+            ))
+          }
+          <div class="flex flex-wrap items-center gap-3">
+            <code class="spec-label text-muted w-24 shrink-0">icon</code>
+            <Button size="icon" variant="secondary">
+              <Icon label="Previous" name="chevron-left" size={20} />
+            </Button>
+            <Button size="icon" variant="outline">
+              <Icon label="Next" name="chevron-right" size={20} />
+            </Button>
+            <Button size="md" variant="default">
+              <Icon name="download" size={20} />
+              With an icon
+            </Button>
+          </div>
+        </div>
+
+        <h3 class="mt-12">Badge</h3>
+        <div class="mt-6 flex flex-wrap gap-3">
+          {badgeTones.map((tone) => <Badge tone={tone}>{tone}</Badge>)}
+          <Badge tone="muted">Ages 9&ndash;16</Badge>
+        </div>
+
+        <h3 class="mt-12">Card</h3>
+        <div class="mt-6 grid gap-6 md:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <CardTitle rule>Standard pocket</CardTitle>
+              <CardDescription>
+                Header, title with the machined 32px rule, and a description.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p class="text-small text-muted">Content sits here.</p>
+            </CardContent>
+            <CardFooter>
+              <Button size="sm" variant="link">A footer link</Button>
+            </CardFooter>
+          </Card>
+          <Card interactive>
+            <CardHeader>
+              <CardTitle>Interactive</CardTitle>
+              <CardDescription>
+                Hover or focus: the border warms, the floor lifts one step, nothing moves.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          <Card feature>
+            <CardHeader>
+              <CardTitle>Feature</CardTitle>
+              <CardDescription> Grid floor inside the pocket, on md and up only. </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+
+        <h3 class="mt-12">Form fields</h3>
+        <div class="mt-6 grid gap-6 md:max-w-xl">
+          <div class="flex flex-col gap-2">
+            <Label for="sg-name" required>Name</Label>
+            <Input id="sg-name" name="name" placeholder="Ada Lovelace" required type="text" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <Label for="sg-email">Email</Label>
+            <Input
+              aria-describedby="sg-email-error"
+              id="sg-email"
+              invalid
+              name="email"
+              type="email"
+              value="not-an-email"
+            />
+            <FieldError id="sg-email-error">Enter a valid email address.</FieldError>
+          </div>
+          <div class="flex flex-col gap-2">
+            <Label for="sg-message">Message</Label>
+            <Textarea id="sg-message" name="message" placeholder="Tell us about your team…" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <Label for="sg-disabled">Disabled</Label>
+            <Input disabled id="sg-disabled" value="Not editable" />
+          </div>
+        </div>
+
+        <h3 class="mt-12">Accordion</h3>
+        <Accordion class="mt-6 md:max-w-2xl" name="sg-faq">
+          <AccordionItem name="sg-faq" open question="Does this work without JavaScript?">
+            <p>
+              Yes — it is a native <code class="font-mono">&lt;details&gt;</code> element. The shared
+              <code class="font-mono">name</code> attribute is what closes the others.
+            </p>
+          </AccordionItem>
+          <AccordionItem name="sg-faq" question="What opens when I open this one?">
+            <p>This one, and the one above closes. No script is involved.</p>
+          </AccordionItem>
+          <AccordionItem name="sg-faq" question="Is the content in the DOM when closed?">
+            <p>It is, so agents and search engines read every answer.</p>
+          </AccordionItem>
+        </Accordion>
+
+        <h3 class="mt-12">Dialog</h3>
+        <div class="mt-6">
+          <Button data-dialog-open="sg-dialog" variant="secondary">Open the dialog</Button>
+          <Dialog id="sg-dialog" title="A native dialog">
+            <p>
+              The browser supplies the focus trap, Esc handling, and the inert background. Esc, the
+              close button, and a backdrop click all close it.
+            </p>
+            <div class="mt-6 flex gap-3">
+              <Button data-dialog-close>Done</Button>
+              <Button data-dialog-close variant="ghost">Cancel</Button>
+            </div>
+          </Dialog>
+        </div>
+
+        <h3 class="mt-12">Carousel</h3>
+        <Carousel class="mt-6" label="Styleguide carousel demonstration">
+          {
+            [1, 2, 3, 4, 5].map((index) => (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Slide {index}</CardTitle>
+                  <CardDescription>
+                    Scroll-snap track. Drag, scroll, or use the arrows.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            ))
+          }
+        </Carousel>
+
+        <h3 class="mt-12">Icon, Separator, Skeleton</h3>
+        <div class="mt-6 flex flex-wrap items-center gap-6">
+          <Icon name="robot" size={32} />
+          <Icon name="calendar-event" size={24} />
+          <Icon name="tools" size={20} />
+          <Icon name="star" size={24} style="filled" />
+          <Separator class="h-8" orientation="vertical" />
+          <div class="w-48 space-y-2">
+            <Skeleton class="h-4 w-full" />
+            <Skeleton class="h-4 w-2/3" />
+          </div>
+        </div>
+        <Separator class="mt-6" />
+      </section>
+
+      <RulerDivider />
+
       <!-- Program themes -->
       <section class="section-y relative">
         <GhostNumeral value={7} />
@@ -513,23 +711,38 @@ const themes = [
                   {formatRatio(contrastRatio(entry.accent, BACKGROUND))} &middot; on card{" "}
                   {formatRatio(contrastRatio(entry.accent, CARD))}
                 </p>
+                <div class="mt-4 flex flex-wrap items-center gap-3">
+                  <Button>Primary</Button>
+                  <Button variant="secondary">Secondary</Button>
+                  <Button variant="outline">Outline</Button>
+                  <Button variant="ghost">Ghost</Button>
+                  <Button variant="link">Link</Button>
+                  <Button size="icon" variant="secondary">
+                    <Icon label="Next" name="chevron-right" size={20} />
+                  </Button>
+                </div>
                 <div class="mt-4 flex flex-wrap items-center gap-4">
-                  <span class="bg-primary text-small text-primary-foreground rounded-md px-4 py-2 font-semibold">
-                    Primary button
-                  </span>
-                  <span class="border-border text-small text-foreground rounded-md border px-4 py-2">
-                    Outline button
-                  </span>
+                  <Badge>Default badge</Badge>
+                  <Badge tone="info">Info</Badge>
                   <a class="text-small" href="/styleguide">
                     An in-prose link
                   </a>
                   <span class="stat">12</span>
-                  <button
-                    class="border-border text-small text-foreground rounded-md border px-4 py-2"
-                    type="button"
-                  >
-                    Focus me for the ring
-                  </button>
+                  <span class="highlight-swipe text-h4">swiped words</span>
+                </div>
+                <div class="mt-4 grid gap-4 md:grid-cols-2">
+                  <div class="flex flex-col gap-2">
+                    <Label for={`sg-theme-${entry.theme ?? "default"}`}>Focus for the ring</Label>
+                    <Input id={`sg-theme-${entry.theme ?? "default"}`} placeholder="Tab into me" />
+                  </div>
+                  <Card feature interactive>
+                    <CardHeader>
+                      <CardTitle rule>Themed pocket</CardTitle>
+                      <CardDescription>
+                        The title rule and hover border follow the theme.
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
                 </div>
                 <hr class="accent-rule mt-6" />
               </div>

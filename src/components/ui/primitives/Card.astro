@@ -1,0 +1,39 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/cn";
+
+/**
+ * A pocket machined into the page (DESIGN.md §2). Cards are *darker* than the ground — the
+ * opposite of the elevated-lighter-card dark UI this site deliberately avoids.
+ *
+ * Sub-parts are separate components (`CardHeader`, `CardTitle`, …) rather than named slots, so
+ * a caller can compose them freely, as in shadcn.
+ */
+interface Props extends Omit<HTMLAttributes<"div">, "class"> {
+  /** Warms the border and lifts the floor on hover. For cards that are themselves links. */
+  interactive?: boolean;
+  /**
+   * Renders the engineering grid inside the pocket floor on ≥ md — a *feature* moment only
+   * (program cards, CTA panels, stat bands). Dense card grids and mobile stay plain.
+   */
+  feature?: boolean;
+  as?: "div" | "article" | "li" | "section";
+  class?: string;
+}
+
+const {
+  interactive = false,
+  feature = false,
+  as: Tag = "div",
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<Tag
+  class={cn("pocket", interactive && "pocket-interactive", feature && "pocket-feature", className)}
+  {...rest}
+>
+  <slot />
+</Tag>

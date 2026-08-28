@@ -1,0 +1,45 @@
+---
+import { cn } from "@/lib/cn";
+import { type IconStyle, iconMarkup } from "@/lib/icon";
+
+/**
+ * A Tabler icon, inlined at build time — zero runtime, zero network
+ * (docs/adr/0002-tabler-icons-direct.md). Outline at 2px stroke is the house style
+ * (DESIGN.md §8).
+ *
+ * Icons are decorative by default and hidden from assistive tech. An icon that carries meaning
+ * on its own needs a `label`, which turns it into an `img` role with an accessible name — but
+ * prefer adjacent text where the design allows it.
+ */
+interface Props {
+  /** Tabler's own name, as listed on tabler.io/icons. An unknown name fails the build. */
+  name: string;
+  style?: IconStyle;
+  /** 20, 24, or 32 per DESIGN.md §8. */
+  size?: 20 | 24 | 32;
+  /** Supply only when the icon is the sole carrier of meaning. */
+  label?: string;
+  class?: string;
+}
+
+const { name, style = "outline", size = 24, label, class: className } = Astro.props;
+
+const markup = iconMarkup(name, style);
+const decorative = label === undefined;
+---
+
+<svg
+  aria-hidden={decorative ? "true" : undefined}
+  aria-label={label}
+  class={cn("shrink-0", className)}
+  fill={style === "filled" ? "currentColor" : "none"}
+  height={size}
+  role={decorative ? undefined : "img"}
+  stroke="currentColor"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  stroke-width="2"
+  viewBox="0 0 24 24"
+  width={size}
+  set:html={markup}
+/>

@@ -142,6 +142,9 @@ Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 
 - Eyebrow labels: Orbitron 500, 12px, uppercase, `+0.08em` tracking, `primary` or `muted` — Orbitron's one all-caps use; SCP `label` is the other sanctioned caps.
 - Prose measure: 65–75ch (`max-w-prose`).
+- Implementation note: `body` names both a color (§2) and a size (this table). Tailwind resolves
+  colors first, so in code `text-body` is the **color** and the **size** utility is `text-copy`.
+  Both tokens keep their documented names.
 - Headings: sentence case; one `h1` per page; no skipped levels; never "SC2" in a heading (§1).
 
 ## 4. Spacing, radius, elevation

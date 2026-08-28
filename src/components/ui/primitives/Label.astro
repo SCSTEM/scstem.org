@@ -1,0 +1,29 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/cn";
+
+/**
+ * Every field gets a visible label above it (DESIGN.md §8). Placeholder-as-label is not an
+ * option this system offers.
+ */
+interface Props extends Omit<HTMLAttributes<"label">, "class"> {
+  for: string;
+  /** Marks the field required, for sighted users; also set `required` on the input itself. */
+  required?: boolean;
+  class?: string;
+}
+
+const { for: htmlFor, required = false, class: className, ...rest } = Astro.props;
+---
+
+<label class={cn("text-small font-medium text-foreground", className)} for={htmlFor} {...rest}>
+  <slot />
+  {
+    required && (
+      <span class="text-destructive-bright" title="Required">
+        *
+      </span>
+    )
+  }
+</label>

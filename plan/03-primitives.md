@@ -51,8 +51,37 @@ An agent skill for "add/port a shadcn component as an Astro primitive". Contents
 
 ## Acceptance criteria
 
-- [ ] All primitives in the table exist, typed, token-only styling, and render on `/styleguide` in all variants and all three themes.
-- [ ] Keyboard test: Dialog (Esc/backdrop close, focus trap via native `<dialog>`), Accordion (Enter/Space), Carousel buttons focusable; icons are `aria-hidden` with text alternatives where needed.
-- [ ] Zero client JS shipped for a page using only Button/Card/Badge/Input/Accordion (`dist` inspection).
-- [ ] `ui/primitives/README.md` conventions written; `shadcn-astro` skill present and self-consistent.
-- [ ] `pnpm check && pnpm build` green.
+- [x] All primitives in the table exist, typed, token-only styling, and render on `/styleguide` in all variants and all three themes.
+- [x] Keyboard test: Dialog opens and closes on Esc (asserted against the live page: `dialog.open` true after the trigger, false after Escape); Accordion is native `<details>`, so Enter/Space are the browser's; Carousel arrows are `aria-hidden`/`tabindex="-1"` with the track itself a focusable, scrollable tab stop.
+- [x] Zero client JS for a page using only Button/Card/Badge/Input/Accordion — verified by building such a page: 0 `<script>` tags, 0 `.js` files in `dist`. The whole styleguide, Dialog and Carousel included, ships 835 bytes of inlined script.
+- [x] `ui/primitives/README.md` conventions written; `shadcn-astro` skill present and self-consistent.
+- [x] `pnpm check && pnpm build` green.
+
+### Two real bugs this phase surfaced
+
+Both were silent, and both would have spread through every page had they not been caught here.
+
+1. **`cn()` was dropping font sizes.** Tailwind builds `text-*` utilities from two namespaces
+   (`--text-*` sizes, `--color-*` colors), and the merge step only recognizes Tailwind's stock
+   scale — so it treated all `text-*` classes as one conflict group and kept only the last.
+   `cn("text-primary-foreground", "text-body")` collapsed to `text-body`, rendering every
+   primary button's label in body gray on Safety Yellow: **1.3:1**, measured in the browser.
+   `@/lib/cn` is now a configured merge that registers the §3 type scale as the font-size group;
+   the same buttons now measure 11.7:1, and `cn("text-small", "text-muted")` keeps both classes.
+2. **`text-body` is a color, not a size** (§3's note, added in Phase 02): `body` names both, and
+   Tailwind resolves colors first. Sizes now go through `text-copy`; Button, Input, and Textarea
+   were using `text-body` for size and silently getting none.
+
+### Deviations from this brief
+
+- **Icons come from `@tabler/icons`**, inlined at build (ADR 0002), not `astro-icon` +
+  `@iconify-json/tabler`. Two fewer dependencies; icon names are Tabler's own. The package's
+  `exports` map rewrites every subpath including `package.json`, so `src/lib/icon.ts` locates the
+  icons directory through a known icon file instead of the manifest.
+- **CVA recipes live in sibling `*.variants.ts` files**, because Astro forbids exporting values
+  from a component (`astro/no-exports-from-components`). This is also what lets one component
+  reuse another's recipe. Documented as a convention in the README and the skill.
+- **Card sub-parts are separate components** (`CardHeader`, `CardTitle`, …) rather than named
+  slots, matching shadcn's composition model.
+- **`Skeleton` is included** (the calendar's loading state needs it in Phase 07); no `Spinner`,
+  since nothing in the site has a use for one.

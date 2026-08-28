@@ -1,0 +1,16 @@
+---
+import { cn } from "@/lib/cn";
+
+/**
+ * A loading placeholder for the one genuinely async surface on the site: the calendar agenda,
+ * which fetches from a Pages Function (D19). Pulses via opacity only, and the global
+ * reduced-motion switch stops it.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div aria-hidden="true" class={cn("animate-pulse rounded-md bg-card-hover", className)}></div>

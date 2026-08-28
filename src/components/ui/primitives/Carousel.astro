@@ -1,0 +1,98 @@
+---
+import { cn } from "@/lib/cn";
+
+import Icon from "./Icon.astro";
+
+/**
+ * A CSS scroll-snap track — user-driven, no autoplay, no virtualization. Replaces all three
+ * legacy carousels (`Carousel`, `ManualCarousel`, and the shadcn/embla one).
+ *
+ * Touch and trackpad get native scrolling with zero JavaScript. The arrow buttons are the only
+ * scripted part and are hidden from assistive tech, since the track itself is keyboard
+ * scrollable and every slide is in the DOM and reachable by tab.
+ */
+interface Props {
+  label: string;
+  /**
+   * Slide width at ≥ md, as any CSS width (`45%`, `20rem`). Mobile is always one full-width
+   * slide — a partially visible slide at 360px is a worse affordance than a clean snap.
+   */
+  itemBasis?: string;
+  arrows?: boolean;
+  class?: string;
+}
+
+const { label, itemBasis = "45%", arrows = true, class: className } = Astro.props;
+---
+
+<div class={cn("relative", className)} data-carousel>
+  <div
+    aria-label={label}
+    class={cn(
+      "flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth",
+      // Hide the scrollbar without hiding the affordance: arrows and drag both remain.
+      "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+      "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+    )}
+    data-carousel-track
+    role="group"
+    tabindex="0"
+  >
+    <slot />
+  </div>
+
+  {
+    arrows && (
+      <div class="mt-4 flex justify-end gap-2">
+        <button
+          aria-hidden="true"
+          class="pocket pocket-interactive text-foreground grid size-11 place-items-center"
+          data-carousel-prev
+          tabindex="-1"
+          type="button"
+        >
+          <Icon name="chevron-left" size={20} />
+        </button>
+        <button
+          aria-hidden="true"
+          class="pocket pocket-interactive text-foreground grid size-11 place-items-center"
+          data-carousel-next
+          tabindex="-1"
+          type="button"
+        >
+          <Icon name="chevron-right" size={20} />
+        </button>
+      </div>
+    )
+  }
+</div>
+
+<style define:vars={{ carouselItemBasis: itemBasis }}>
+  [data-carousel-track] > * {
+    scroll-snap-align: start;
+    flex: 0 0 100%;
+  }
+
+  @media (width >= 48rem) {
+    [data-carousel-track] > * {
+      flex-basis: var(--carouselItemBasis);
+    }
+  }
+</style>
+
+<script>
+  for (const carousel of document.querySelectorAll("[data-carousel]")) {
+    const track = carousel.querySelector("[data-carousel-track]");
+    if (!(track instanceof HTMLElement)) continue;
+
+    // Scroll by one slide, measured from the first child so it follows the CSS basis.
+    const step = () => track.firstElementChild?.getBoundingClientRect().width ?? track.clientWidth;
+
+    carousel.querySelector("[data-carousel-prev]")?.addEventListener("click", () => {
+      track.scrollBy({ left: -step() - 16, behavior: "smooth" });
+    });
+    carousel.querySelector("[data-carousel-next]")?.addEventListener("click", () => {
+      track.scrollBy({ left: step() + 16, behavior: "smooth" });
+    });
+  }
+</script>

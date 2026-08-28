@@ -1,0 +1,28 @@
+---
+import { cn } from "@/lib/cn";
+
+import Icon from "./Icon.astro";
+
+/**
+ * A field's error message (DESIGN.md §8): destructive text token, an icon, and an id the input
+ * points at with `aria-describedby`. `aria-live` so a message added after submit is announced.
+ *
+ * Renders its container even when empty, so adding a message later does not shift the layout.
+ */
+interface Props {
+  /** Must match the input's `aria-describedby`. */
+  id: string;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+<p
+  aria-live="polite"
+  class={cn("flex items-center gap-1.5 text-small text-destructive-bright empty:hidden", className)}
+  id={id}
+>
+  <Icon name="alert-triangle" size={20} />
+  <slot />
+</p>
