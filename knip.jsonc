@@ -4,7 +4,9 @@
     "src/pages/**",
     "functions/**",
     // Exports the font URLs BaseLayout preloads; wired up in Phase 05.
-    "src/styles/fonts.ts"
+    "src/styles/fonts.ts",
+    // Org facts, external URLs, and IDs. Consumed by the app shell from Phase 05 onward.
+    "src/data/site.ts"
   ],
   "project": ["**/*.{ts,tsx,js,mjs,cjs,astro}"],
   "ignore": ["legacy/**", "tools/lint/anti-slop/**"],

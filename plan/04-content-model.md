@@ -87,9 +87,38 @@ Add a lint restriction (oxlint `no-restricted-imports` or a small check script i
 
 ## Acceptance criteria
 
-- [ ] `astro check`/build validates all collections; a deliberately broken frontmatter field fails the build with a readable zod error.
-- [ ] Sponsor migration is lossless: every active + commented legacy sponsor is represented; count and names listed in PR description.
-- [ ] Robots, team photos, FAQ, and both events fully migrated; no content invented — copy comes verbatim from legacy (D8: revision is Phase 12).
-- [ ] `src/data/site.ts` replaces every hardcoded constant found in legacy pages (config URLs, calendar IDs, kickoff config).
-- [ ] `docs/content.md` written; a non-author following it can add a sponsor without touching TS.
-- [ ] `pnpm check && pnpm build` green.
+- [x] `astro check`/build validates all collections; a deliberately broken frontmatter field fails the build with a readable zod error — verified: `level: Titanium` on a sponsor exits 1 with `Invalid option: expected one of "Platinum"|"Gold"|"Silver"|"Bronze"|"Friend"`.
+- [x] Sponsor migration is lossless: **10 files, 7 active + 3 `active: false`.** Active — JLG (Platinum), The WorkShope, Y.B. Welding, Journalytic, Volvo (Gold), Orrstown, Manitowoc (Bronze). Retired — Wellspan, VFW, Fives (all Platinum, `active: false`).
+- [x] Robots (6), team photos (13 FRC + 1 FLL), FAQ (6), and both events migrated; copy is verbatim from legacy, typos included (D8: revision is Phase 12).
+- [x] `src/data/site.ts` replaces every hardcoded constant found in legacy: `data/config.ts`'s four URLs, both calendar IDs, the GA4 measurement ID, the kickoff location and directions link, footer socials and contact email.
+- [x] `docs/content.md` written — add/retire a sponsor, add an FAQ, update or hide an event, add a robot and a team photo, each with a copy-paste template.
+- [x] `pnpm check && pnpm build` green.
+
+### Notes and deviations
+
+- **Collection names avoid slashes** (`frcRobots`, not `frc/robots`) while the content still
+  nests under `frc/`/`fll/` on disk as D18 requires. Astro writes each collection's editor JSON
+  schema to `.astro/collections/<name>.schema.json` without creating intermediate directories, so
+  a slashed name warned on every build and silently dropped frontmatter autocomplete for those
+  three collections.
+- **"Test Sponsor" was not migrated.** It is the one commented-out legacy entry that is a test
+  fixture rather than a former sponsor (no logo, `example.com` URL). Migrating it would have
+  invented a sponsor; the other three commented entries are real and came across as
+  `active: false`.
+- **`news/template.md` is a real entry with `draft: true`**, not a glob-excluded `_TEMPLATE.md`.
+  An excluded template drifts from the schema unnoticed and leaves the collection empty, which
+  warns on every build. As an entry it is schema-validated and still never renders.
+- **A mistyped content reference logs an error but exits 0.** Astro reports
+  `Invalid content reference: ... references "x" ... but that entry does not exist` and builds
+  anyway, so a typo'd FAQ slug in an event would silently drop that answer. Documented as a sharp
+  edge in `docs/content.md`; Phase 08 consumes these references and should throw there.
+- **`events` carries flat `locationName`/`locationAddress`** rather than the brief's nested
+  `location: { name, address }`, per D2's flat-schema rule and to keep the fields CMS-editable.
+  Also added `displayDate` (legacy's kickoff page had a hand-written date string alongside the
+  timestamp) and `directionsUrl`.
+- **Assets moved only as far as the collections need.** Sponsor logos, team photos, the five robot
+  photos, and two event heroes now live in `src/assets/`; `public/image` is down from 36 MB to
+  13 MB. The full inventory and prune is Phase 09's job.
+- The **schema guardrail is review guidance**, not a lint rule (the brief allowed either): the
+  rule now lives in `AGENTS.md` next to the content-editing pointer. A lint rule that recognizes
+  "an inline array that should be a collection" would be guesswork.
