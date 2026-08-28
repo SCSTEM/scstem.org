@@ -9,7 +9,9 @@ Close the biggest mobile-perf gaps (72 MB `public/`, 22 MB hero video, 11 MB bac
 
 ## Current worst offenders (from audit)
 
-`public/video/biohazard/home-video.mp4` 22.1 MB, `home-video.webm` 14.7 MB, `image/biohazard/2019-robot-field.webp` 11.3 MB, `2021-robot-field.webp` 4.1 MB, `team/frc/2023.webp` 2.5 MB, `2021-robot-pits.webp` 2.2 MB, `electronics.webp` 1.0 MB, `openhouse-header.webp` 931 KB, `legos.webp` 808 KB — 26 files > 300 KB total.
+`public/video/biohazard/home-video.mp4` 22.1 MB, `home-video.webm` 14.7 MB, `image/biohazard/2021-robot-pits.webp` 2.2 MB, `electronics.webp` 1.0 MB, `openhouse-header.webp` 931 KB, `legos.webp` 808 KB — 26 files > 300 KB total.
+
+Phase 04 already re-encoded the sources it moved into `src/assets/` (`tools/assets/optimize-sources.mjs`, §2 below, 17.8 MB saved) — `2019-robot-field.webp` was the worst at 11.3 MB. The video, and everything still in `public/image`, is untouched.
 
 ## Tasks
 
@@ -21,7 +23,7 @@ Close the biggest mobile-perf gaps (72 MB `public/`, 22 MB hero video, 11 MB bac
 ### 2. Source re-encoding
 
 - Script `tools/assets/optimize-sources.mjs` (sharp, run manually, documented): re-export any source > 500 KB — max dimension 2560px, quality-tuned WebP/JPEG sources (astro:assets derives AVIF/WebP variants at build). Commit re-encoded sources; keep originals only if under size, otherwise they're gone (git history preserves them).
-- Verify astro:assets output: every `<Image>`/`<Picture>` use has `widths` + `sizes` appropriate to its rendered layout, AVIF+WebP formats, explicit dimensions (CLS = 0). LCP image per page: `loading="eager"` + `fetchpriority="high"`; all others lazy.
+- Verify astro:assets output: every `<Image>`/`<Picture>` use has `widths` + `sizes` appropriate to its rendered layout, AVIF+WebP formats, explicit dimensions (CLS = 0). Note that with the Phase 04 sources already at q80/2560px, a variant generated at Astro's default quality comes out slightly *larger* than the source (+6 to +89 KB across the team photos) — `widths` plus an explicit `quality` at each call site is what closes that, and it needs the call sites this phase finally has. LCP image per page: `loading="eager"` + `fetchpriority="high"`; all others lazy.
 
 ### 3. Hero video (D20)
 

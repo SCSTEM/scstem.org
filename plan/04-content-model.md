@@ -87,9 +87,73 @@ Add a lint restriction (oxlint `no-restricted-imports` or a small check script i
 
 ## Acceptance criteria
 
-- [ ] `astro check`/build validates all collections; a deliberately broken frontmatter field fails the build with a readable zod error.
-- [ ] Sponsor migration is lossless: every active + commented legacy sponsor is represented; count and names listed in PR description.
-- [ ] Robots, team photos, FAQ, and both events fully migrated; no content invented — copy comes verbatim from legacy (D8: revision is Phase 12).
-- [ ] `src/data/site.ts` replaces every hardcoded constant found in legacy pages (config URLs, calendar IDs, kickoff config).
-- [ ] `docs/content.md` written; a non-author following it can add a sponsor without touching TS.
-- [ ] `pnpm check && pnpm build` green.
+- [x] `astro check`/build validates all collections; a deliberately broken frontmatter field fails the build with a readable zod error — verified both halves: a bad **value** (`level: Titanium`) exits 1 with `Invalid option: expected one of "Platinum"|"Gold"|"Silver"|"Bronze"|"Friend"`, and a bad **field name** (`sinceYear` for `since`) exits 1 with `Unrecognized key`. Field names need `z.strictObject`; plain `z.object` strips unknown keys and builds clean.
+- [x] Sponsor migration is lossless: **10 files, 7 active + 3 `active: false`.** Active — JLG (Platinum), The WorkShope, Y.B. Welding, Journalytic, Volvo (Gold), Orrstown, Manitowoc (Bronze). Retired — Wellspan, VFW, Fives (all Platinum, `active: false`).
+- [x] Robots (6), team photos (13 FRC + 1 FLL), FAQ (6), and both events migrated; copy is verbatim from legacy, typos included (D8: revision is Phase 12).
+- [x] `src/data/site.ts` replaces every hardcoded constant found in legacy: `data/config.ts`'s four URLs, both calendar IDs, the GA4 measurement ID, the kickoff location and directions link, footer socials and contact email.
+- [x] `docs/content.md` written — add/retire a sponsor, add an FAQ, update or hide an event, add a robot and a team photo, each with a copy-paste template.
+- [x] `pnpm check && pnpm build` green.
+
+### Notes and deviations
+
+- **Collection names avoid slashes** (`frcRobots`, not `frc/robots`) while the content still
+  nests under `frc/`/`fll/` on disk as D18 requires. Astro writes each collection's editor JSON
+  schema to `.astro/collections/<name>.schema.json` without creating intermediate directories, so
+  a slashed name warned on every build and silently dropped frontmatter autocomplete for those
+  three collections.
+- **"Test Sponsor" was not migrated.** It is the one commented-out legacy entry that is a test
+  fixture rather than a former sponsor (no logo, `example.com` URL). Migrating it would have
+  invented a sponsor; the other three commented entries are real and came across as
+  `active: false`.
+- **`news/template.md` is a real entry with `draft: true`**, not a glob-excluded `_TEMPLATE.md`.
+  An excluded template drifts from the schema unnoticed and leaves the collection empty, which
+  warns on every build. As an entry it is schema-validated and still never renders.
+- **`tools/checks/content-references.mjs` enforces reference integrity.** Astro reports
+  `Invalid content reference: ... references "x" ... but that entry does not exist` and then exits
+  0, so a typo'd FAQ slug would silently drop that answer from the page that lists it. "A
+  reference resolves" belongs to the collection that declares it, not to each future consumer, so
+  it is a `pnpm check` step rather than something Phase 08 has to remember to throw about.
+- **All seven schemas are `z.strictObject`.** `z.object` strips unknown keys, so a typo'd field
+  name built clean and dropped the value — the one thing `docs/content.md` promises it does not
+  do. Bad values already failed; bad field names did not.
+- **`events` carries flat `locationName`/`locationAddress`** rather than the brief's nested
+  `location: { name, address }`, per D2's flat-schema rule and to keep the fields CMS-editable.
+  Both are **optional** and default to the workspace in `src/data/site.ts`: the address was
+  otherwise written into every event's frontmatter alongside the copy in `site.ts`, and only an
+  off-site event has anything to say here.
+- **`displayDate` is gone, and no date is written in prose.** Every event stated its date twice —
+  as timestamps and as a hand-written string — and the open house stated it twice more, in body
+  copy and in an FAQ answer. `src/lib/event-date.ts` formats `start`/`end`, so rescheduling is one
+  edit. Its `knip.jsonc` entry is a seam Phase 08's acceptance criteria require closing.
+- **Kickoff teasers and hints came across.** Legacy's `KICKOFF_CONFIG.media` carried two season
+  teaser URLs and two game-hint links behind `hasTeasers`/`hasHints`. No schema field could hold
+  them, so they would have vanished when Phase 08 rebuilt the page. `teaserUrls`, `hintUrls` and
+  `hintLabels` are flat parallel arrays per D2. The kickoff `description` is also legacy's own
+  metadata description again rather than newly written prose (D8: revision is Phase 12).
+- **`subtitle` on `events`.** Legacy's kickoff hero had an `<h2>` subtitle under the `<h1>`. As
+  markdown that became an `##` with no section under it, which lands in the heading outline and
+  restates the title one line above.
+- **`yearLabel` and `logo` on `frcRobots`.** Robo Fett was "2020-2021" on the legacy page — the
+  COVID two-season robot — which a single `year` cannot hold; `year` stays the sort key. Legacy
+  also overlaid a per-robot wordmark on the Viper and TroubleClef slides; both images are now in
+  `src/assets/frc/robots/`.
+- **`programs` covers `sc2`.** The `program` enum accepted `sc2` (the open house uses it) while the
+  map had only `frc` and `fll`, so `programs[entry.data.program]` was `undefined` for that event.
+  The enum is now derived from `PROGRAM_KEYS` and the map `satisfies` a total record over it, so a
+  program the schema accepts but the map lacks is a compile error.
+- **`astro.config.ts` reads `site.url`.** The canonical origin was declared in both places, so a
+  domain change could leave canonical/OG tags disagreeing with the sitemap, silently.
+- **`sharp` is a direct dependency** (`docs/adr/0003`). This phase moves 33 images behind
+  `image()`, and pnpm's isolated layout keeps Astro's own copy where the bundled image service
+  cannot resolve it — every collection image would have fallen back to unoptimized passthrough.
+- **Assets moved only as far as the collections need,** and the moved ones were re-encoded.
+  Sponsor logos, team photos, the five robot photos, two event heroes and the two robot wordmarks
+  live in `src/assets/`. `openhouse-header.webp` went back to `public/image`: nothing references
+  it, and Phase 09's prune works from that inventory. The masters were camera-resolution — up to
+  6000px and near-lossless — so `<Image>` derived variants from them that came out *larger than
+  the source* and cost ~22s of sharp time per build. `tools/assets/optimize-sources.mjs`
+  (plan/09 §2, `pnpm assets:optimize`) capped them at 2560px: **17.8 MB saved across 12 files.**
+  The full `public/` inventory and prune is still Phase 09's job.
+- The **schema guardrail is review guidance**, not a lint rule (the brief allowed either): the
+  rule now lives in `AGENTS.md` next to the content-editing pointer. A lint rule that recognizes
+  "an inline array that should be a collection" would be guesswork.

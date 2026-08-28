@@ -4,7 +4,11 @@
     "src/pages/**",
     "functions/**",
     // Exports the font URLs BaseLayout preloads; wired up in Phase 05.
-    "src/styles/fonts.ts"
+    "src/styles/fonts.ts",
+    // Formats an event's date from `start`/`end`, which replaced the `displayDate` string every
+    // event used to restate. Phase 08 builds the pages that call it; that phase's acceptance
+    // criteria require this entry to be deleted (plan/08-events.md).
+    "src/lib/event-date.ts"
   ],
   "project": ["**/*.{ts,tsx,js,mjs,cjs,astro}"],
   "ignore": ["legacy/**", "tools/lint/anti-slop/**"],

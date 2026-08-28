@@ -37,4 +37,6 @@ Extend `docs/content.md`: "Update the open house for a new season" (edit dates/c
 - [ ] Event + FAQPage JSON-LD validate (Google Rich Results test, manual, once per template).
 - [ ] Countdown shows correct absolute date without JS; upgrades with JS; handles passed events.
 - [ ] Program theming correct (kickoff = frc green).
+- [ ] The `src/lib/event-date.ts` entry is deleted from `knip.jsonc` — the event pages added here
+      are its real consumers, so the seam has to close with them.
 - [ ] `pnpm check && pnpm build` green.

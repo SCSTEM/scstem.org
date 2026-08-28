@@ -46,7 +46,11 @@ edit, and feeds lint failures back to you. Do not reach for the other toolchain 
   (see the docstring). `clsx`, `classnames`, `tailwind-merge` are banned imports.
 - No new dependencies without an ADR in `docs/adr/`.
 - No client-side frameworks, no framework islands.
-- Content changes go in `src/content/` — see `docs/content.md`.
+- Content changes go in `src/content/` — see `docs/content.md`. **Never inline a content array
+  in a page** where a collection exists (the legacy site's habit): query the collection. New
+  repeating content earns a collection, not a `const` in frontmatter.
+- Collection schemas stay flat (strings, enums, booleans, dates, numbers, images) so a git-backed
+  CMS stays a later addition. A schema change needs an ADR.
 - Visual decisions come from `DESIGN.md`. When code and the doc disagree, the doc wins; when
   the doc is silent, add to it before building (its §11 change process).
 - Implementation plan and phase acceptance criteria live in `plan/`.
