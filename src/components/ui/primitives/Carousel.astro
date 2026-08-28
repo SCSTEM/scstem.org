@@ -1,6 +1,7 @@
 ---
 import { cn } from "@/lib/cn";
 
+import Button from "./Button.astro";
 import Icon from "./Icon.astro";
 
 /**
@@ -35,7 +36,7 @@ const { label, itemBasis = "45%", arrows = true, class: className } = Astro.prop
       "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     )}
     data-carousel-track
-    role="group"
+    role="region"
     tabindex="0"
   >
     <slot />
@@ -44,37 +45,30 @@ const { label, itemBasis = "45%", arrows = true, class: className } = Astro.prop
   {
     arrows && (
       <div class="mt-4 flex justify-end gap-2">
-        <button
-          aria-hidden="true"
-          class="pocket pocket-interactive text-foreground grid size-11 place-items-center"
-          data-carousel-prev
-          tabindex="-1"
-          type="button"
-        >
+        <Button aria-hidden="true" data-carousel-prev size="icon" tabindex={-1} variant="pocket">
           <Icon name="chevron-left" size={20} />
-        </button>
-        <button
-          aria-hidden="true"
-          class="pocket pocket-interactive text-foreground grid size-11 place-items-center"
-          data-carousel-next
-          tabindex="-1"
-          type="button"
-        >
+        </Button>
+        <Button aria-hidden="true" data-carousel-next size="icon" tabindex={-1} variant="pocket">
           <Icon name="chevron-right" size={20} />
-        </button>
+        </Button>
       </div>
     )
   }
 </div>
 
+<!--
+  `:global(*)` on the child is required: slides arrive through `<slot />` and carry no
+  `data-astro-cid-*` attribute, so a plain `> *` is rewritten to demand this component's scope
+  and matches nothing — no snapping, no slide sizing, and `itemBasis` dead.
+-->
 <style define:vars={{ carouselItemBasis: itemBasis }}>
-  [data-carousel-track] > * {
+  [data-carousel-track] > :global(*) {
     scroll-snap-align: start;
     flex: 0 0 100%;
   }
 
   @media (width >= 48rem) {
-    [data-carousel-track] > * {
+    [data-carousel-track] > :global(*) {
       flex-basis: var(--carouselItemBasis);
     }
   }
@@ -86,13 +80,15 @@ const { label, itemBasis = "45%", arrows = true, class: className } = Astro.prop
     if (!(track instanceof HTMLElement)) continue;
 
     // Scroll by one slide, measured from the first child so it follows the CSS basis.
+    // No explicit `behavior`: the track's `scroll-smooth` class supplies it, which means the
+    // reduced-motion override in global.css can turn it off.
     const step = () => track.firstElementChild?.getBoundingClientRect().width ?? track.clientWidth;
 
     carousel.querySelector("[data-carousel-prev]")?.addEventListener("click", () => {
-      track.scrollBy({ left: -step() - 16, behavior: "smooth" });
+      track.scrollBy({ left: -step() - 16 });
     });
     carousel.querySelector("[data-carousel-next]")?.addEventListener("click", () => {
-      track.scrollBy({ left: step() + 16, behavior: "smooth" });
+      track.scrollBy({ left: step() + 16 });
     });
   }
 </script>

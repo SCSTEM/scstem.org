@@ -3,6 +3,8 @@ import type { HTMLAttributes } from "astro/types";
 
 import { cn } from "@/lib/cn";
 
+import { fieldVariants } from "./Field.variants";
+
 /**
  * A pocket-floored field (DESIGN.md §8): `card` background, hairline border, focus ring from
  * the theme accent. Validation uses native attributes; the error message is `FieldError`, wired
@@ -19,14 +21,7 @@ const { id, invalid = false, class: className, ...rest } = Astro.props;
 
 <input
   aria-invalid={invalid ? "true" : undefined}
-  class={cn(
-    "h-11 w-full rounded-md border bg-card px-3 text-copy text-foreground",
-    "placeholder:text-muted",
-    "transition-colors duration-(--duration-micro) ease-(--ease-toggle)",
-    "disabled:cursor-not-allowed disabled:opacity-50",
-    invalid ? "border-destructive-bright" : "border-border hover:border-primary/40",
-    className,
-  )}
+  class={cn(fieldVariants({ control: "input", invalid }), className)}
   id={id}
   {...rest}
 />

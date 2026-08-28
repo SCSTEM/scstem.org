@@ -148,9 +148,10 @@ against a commented interface and a commented type literal and carried each comm
 
 Two deliberate exceptions live in `.oxlintrc.json`'s `overrides`:
 
-- `no-console` is off under `functions/**`. A Cloudflare Worker's console is its log stream —
-  `wrangler tail` and the dashboard read nothing else — so the rule's purpose (keeping debug
-  logging out of a shipped bundle) does not apply.
+- `no-console` is off under `functions/**` and `tools/**`. A Cloudflare Worker's console is its
+  log stream — `wrangler tail` and the dashboard read nothing else — and a CLI check script's
+  console is how it reports to the developer running it. Neither is the shipped-debug-logging case
+  the rule guards. Everywhere else it stays an error.
 - Upstream's own `.ts` override is kept, which turns off the correctness rules TypeScript already
   covers (`no-undef`, `no-redeclare`, …). That is the config's speed principle, not a gap.
 

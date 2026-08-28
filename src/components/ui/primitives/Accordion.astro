@@ -2,19 +2,19 @@
 import { cn } from "@/lib/cn";
 
 /**
- * The wrapper for a group of `AccordionItem`s. Passing `name` makes the group exclusive-open
- * via the native `name` attribute on `<details>` — no JavaScript, and it survives no-JS and
- * agent readers with all content present in the DOM.
+ * The layout wrapper for a group of `AccordionItem`s.
+ *
+ * Exclusive-open comes from the native `name` attribute on `<details>`, so pass the same `name`
+ * to each `AccordionItem` — Astro cannot push a prop into slotted children, and a wrapper prop
+ * would have to be read back by script, which this register does without (README, rung 1).
  */
 interface Props {
-  /** Shared name for exclusive-open behavior. Omit for independently-toggling items. */
-  name?: string;
   class?: string;
 }
 
-const { name, class: className } = Astro.props;
+const { class: className } = Astro.props;
 ---
 
-<div class={cn("divide-y divide-border", className)} data-accordion-name={name}>
+<div class={cn("divide-y divide-border", className)}>
   <slot />
 </div>

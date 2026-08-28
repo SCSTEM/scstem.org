@@ -3,6 +3,8 @@ import type { HTMLAttributes } from "astro/types";
 
 import { cn } from "@/lib/cn";
 
+import { fieldVariants } from "./Field.variants";
+
 interface Props extends Omit<HTMLAttributes<"textarea">, "class"> {
   id: string;
   invalid?: boolean;
@@ -14,14 +16,7 @@ const { id, invalid = false, rows = 5, class: className, ...rest } = Astro.props
 
 <textarea
   aria-invalid={invalid ? "true" : undefined}
-  class={cn(
-    "w-full rounded-md border bg-card px-3 py-2 text-copy text-foreground",
-    "placeholder:text-muted",
-    "transition-colors duration-(--duration-micro) ease-(--ease-toggle)",
-    "disabled:cursor-not-allowed disabled:opacity-50",
-    invalid ? "border-destructive-bright" : "border-border hover:border-primary/40",
-    className,
-  )}
+  class={cn(fieldVariants({ control: "textarea", invalid }), className)}
   id={id}
   rows={rows}
   {...rest}></textarea>

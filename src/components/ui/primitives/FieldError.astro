@@ -18,11 +18,22 @@ interface Props {
 const { id, class: className } = Astro.props;
 ---
 
+<!--
+  The icon is gated on slot content, not just hidden with the container: `:empty` matches only
+  elements with no child nodes at all, so an unconditional `<Icon>` made `empty:hidden` dead and
+  a placeholder rendered a bare alert triangle with no message.
+-->
 <p
   aria-live="polite"
   class={cn("flex items-center gap-1.5 text-small text-destructive-bright empty:hidden", className)}
   id={id}
 >
-  <Icon name="alert-triangle" size={20} />
-  <slot />
+  {
+    Astro.slots.has("default") && (
+      <>
+        <Icon name="alert-triangle" size={20} />
+        <slot />
+      </>
+    )
+  }
 </p>

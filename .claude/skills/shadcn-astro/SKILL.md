@@ -93,7 +93,9 @@ exclusive open.
 
 The Astro port is two files and no JavaScript:
 
-- `Accordion.astro` — a wrapper that takes `name` and passes it to its items.
+- `Accordion.astro` — a layout wrapper, nothing more. Astro cannot push a prop into slotted
+  children, so a wrapper `name` prop could only be read back by script; the caller passes the
+  same `name` to each item instead.
 - `AccordionItem.astro` — `<details name={name}>` with `<summary>` as the trigger.
 
 What maps directly:

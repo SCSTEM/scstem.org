@@ -8,6 +8,7 @@ import { cn } from "@/lib/cn";
  * pill radii — these are `radius-sm` plates.
  */
 export const badgeVariants = cva(cn("spec-chip", "border-current/40"), {
+  defaultVariants: { tone: "default" },
   variants: {
     tone: {
       default: "text-primary-bright",
@@ -19,5 +20,4 @@ export const badgeVariants = cva(cn("spec-chip", "border-current/40"), {
       bronze: "text-tier-bronze",
     },
   },
-  defaultVariants: { tone: "default" },
 });

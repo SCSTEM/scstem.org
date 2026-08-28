@@ -26,19 +26,26 @@ const { name, style = "outline", size = 24, label, class: className } = Astro.pr
 
 const markup = iconMarkup(name, style);
 const decorative = label === undefined;
+
+/**
+ * Tabler's filled sources carry no stroke. Painting one on centres it over the fill boundary,
+ * inflating the glyph ~1px on every edge and thickening narrow details — so a filled icon would
+ * read heavier and larger than its nominal `size`.
+ */
+const filled = style === "filled";
 ---
 
 <svg
   aria-hidden={decorative ? "true" : undefined}
   aria-label={label}
   class={cn("shrink-0", className)}
-  fill={style === "filled" ? "currentColor" : "none"}
+  fill={filled ? "currentColor" : "none"}
   height={size}
   role={decorative ? undefined : "img"}
-  stroke="currentColor"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  stroke-width="2"
+  stroke={filled ? undefined : "currentColor"}
+  stroke-linecap={filled ? undefined : "round"}
+  stroke-linejoin={filled ? undefined : "round"}
+  stroke-width={filled ? undefined : "2"}
   viewBox="0 0 24 24"
   width={size}
   set:html={markup}
