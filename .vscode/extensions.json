@@ -4,6 +4,8 @@
     "oxc.oxc-vscode",
     "esbenp.prettier-vscode",
     "bradlc.vscode-tailwindcss",
-    "hverlin.mise-vscode"
+    "hverlin.mise-vscode",
+    "dbaeumer.vscode-eslint",
+    "typescriptteam.native-preview"
   ]
 }

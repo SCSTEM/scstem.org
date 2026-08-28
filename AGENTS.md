@@ -42,7 +42,7 @@ edit, and feeds lint failures back to you. Do not reach for the other toolchain 
 
 ## Rules
 
-- `cn` comes from `@/lib/cn` only. `clsx`, `classnames`, `tailwind-merge` are banned imports.
+- `cn` comes from `cnfast` only. `clsx`, `classnames`, `tailwind-merge` are banned imports.
 - No new dependencies without an ADR in `docs/adr/`.
 - No client-side frameworks, no framework islands.
 - Content changes go in `src/content/` — see `docs/content.md`.

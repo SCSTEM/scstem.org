@@ -1,11 +1,7 @@
-# Install policy only — this repo is a single package, so there is no `packages:` key.
+minimumReleaseAge: 10080 # 7 days
 
-# Supply-chain cooldown: refuse versions published less than a week ago.
-minimumReleaseAge: 10080 # minutes (7 days)
-
-# Only these packages may run install scripts.
 allowBuilds:
-  sharp: true # astro:assets image processing
+  sharp: true
   esbuild: true
 
 # eslint-plugin-jsx-a11y 6.10.2 is its latest release and its peer range stops at

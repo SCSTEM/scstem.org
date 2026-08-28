@@ -36,20 +36,6 @@
     "no-restricted-imports": [
       "error",
       {
-        "paths": [
-          {
-            "name": "clsx",
-            "message": "use cn from @/lib/cn (cnfast)"
-          },
-          {
-            "name": "classnames",
-            "message": "use cn from @/lib/cn (cnfast)"
-          },
-          {
-            "name": "tailwind-merge",
-            "message": "use cn from @/lib/cn (cnfast)"
-          }
-        ],
         "patterns": [
           {
             "group": ["legacy/*", "**/legacy/*", "../legacy/*"],

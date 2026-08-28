@@ -1,16 +1,11 @@
 {
-  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "$schema": "./node_modules/knip/schema.json",
   "entry": [
     "src/pages/**",
-    "functions/**",
-    // The single sanctioned import site for `cn` (see .oxlintrc.json's import ban).
-    // Components consume it from Phase 03 onward; it is a seam, not dead code.
-    "src/lib/cn.ts",
+    "functions/**"
   ],
   "project": ["**/*.{ts,tsx,js,mjs,cjs,astro}"],
   "ignore": ["legacy/**", "tools/lint/anti-slop/**"],
-  // Consumed by `@import "tailwindcss"` in src/styles/global.css. knip does not
-  // follow imports inside compiled extensions, so it cannot see the reference.
   "ignoreDependencies": ["tailwindcss"],
   "rules": {
     "files": "error",
@@ -22,6 +17,6 @@
     "unresolved": "error",
     "exports": "error",
     "types": "error",
-    "duplicates": "error",
-  },
+    "duplicates": "error"
+  }
 }

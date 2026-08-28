@@ -40,7 +40,6 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 - Dependencies (latest stable at implementation time): `astro`, `@astrojs/check`, `@astrojs/sitemap`, `typescript`, `tailwindcss` + `@tailwindcss/vite` (Tailwind v4, CSS-first — no tailwind.config file), `cnfast`.
 - `astro.config.ts`: `site: "https://scstem.org"`, `output: "static"`, `outDir: "dist"`, `integrations: [sitemap()]`, vite plugin for tailwind. Match current URL shape (no trailing slashes in links; default `build.format: "directory"` is fine — CF Pages serves both).
 - `src/pages/index.astro` placeholder ("rewrite in progress" — never deployed to prod) and `src/styles/global.css` with `@import "tailwindcss";` (tokens come in Phase 02).
-- `src/lib/cn.ts`: `export { cn } from "cnfast";` — the only sanctioned import site.
 - `tsconfig.json`: `extends: "astro/tsconfigs/strictest"` plus explicitly ensure: `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitOverride`, `noFallthroughCasesInSwitch`, `verbatimModuleSyntax`, `isolatedModules`, `forceConsistentCasingInFileNames`. Path alias `@/*` → `./src/*`. Exclude `legacy`, `dist`, `functions` (functions keep their own tsconfig).
 
 ### 4. Lint/format toolchain (D12, D24)
@@ -53,7 +52,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
   - `options`: `typeAware: true`, `typeCheck: true` (add `oxlint-tsgolint` if required by the oxlint version).
   - `categories`: `correctness: "error"`, `suspicious: "error"`, `perf: "warn"`, `style: "off"`.
   - `jsPlugins`: `{ "name": "anti-slop", "specifier": "./tools/lint/anti-slop/index.ts" }`, all its rules `error`.
-  - `no-restricted-imports` (error): `clsx`, `classnames`, `tailwind-merge` (message: "use cn from @/lib/cn (cnfast)"), and any path matching `legacy/`.
+  - `no-restricted-imports` (error): any path matching `legacy/`.
   - `ignorePatterns`: `legacy/**`, `dist/**`, `.astro/**`, `tools/lint/anti-slop/**`, `.claude/**`, `plan/**`.
 - `.oxfmtrc.json`: `sortTailwindcss: true`, `sortImports: true`, `sortPackageJson: true`; ignore `legacy/**`, `dist/**`, `.astro/**`, `.claude/**`, `tools/lint/anti-slop/**`, `**/*.md`, `**/*.astro`.
 - ESLint (flat, `eslint.config.ts`), **scoped to `**/*.astro` only**:
@@ -89,8 +88,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
   2. Commands (`mise run check` / `pnpm check`, dev, build).
   3. Toolchain ownership table (which linter/formatter owns which extensions) + "hooks run them automatically on every edit."
   4. Architecture map (5 lines: pages, layouts, ui vs ui/primitives, content collections, data/site.ts, functions/).
-  5. Rules: `cn` only from `@/lib/cn`; no new dependencies without an ADR; no client-side frameworks; content edits go in `src/content/` (see `docs/content.md`); design decisions come from `DESIGN.md`.
-  6. Comments policy (adopt spark's): describe what is there, never what is not; no narrating edits; rejected alternatives go in `docs/adr/`.
+  5. Comments policy (adopt spark's): describe what is there, never what is not; no narrating edits; rejected alternatives go in `docs/adr/`.
 - `ln -s AGENTS.md CLAUDE.md` (symlink, committed).
 - `.claude/settings.json` PostToolUse hook on `Edit|Write|NotebookEdit` → `.claude/hooks/format-lint.sh` (timeout 60).
 - `.claude/hooks/format-lint.sh` (adapt spark's `oxc.sh`): read hook JSON from stdin; resolve `.tool_response.filePath // .tool_input.file_path`; exit 0 for files outside repo, in `legacy/`, `dist/`, `.astro/`, `node_modules/`, `plan/`, or vendored rule dirs. Route by extension:

@@ -4,10 +4,6 @@ import perfectionist from "eslint-plugin-perfectionist";
 import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
-/**
- * ESLint owns `.astro` only; oxlint owns every other extension (docs/tooling.md).
- * The seam for collapsing onto oxc is in docs/adr/0001-toolchain-split.md.
- */
 export default defineConfig(
   // Every block below is scoped to `**/*.astro`, so ESLint never reaches the
   // extensions oxlint owns. A blanket `ignores: ["**/*"]` cannot be used here:
@@ -40,11 +36,6 @@ export default defineConfig(
       "no-restricted-imports": [
         "error",
         {
-          paths: [
-            { name: "clsx", message: "use cn from @/lib/cn (cnfast)" },
-            { name: "classnames", message: "use cn from @/lib/cn (cnfast)" },
-            { name: "tailwind-merge", message: "use cn from @/lib/cn (cnfast)" },
-          ],
           patterns: [
             {
               group: ["legacy/*", "**/legacy/*", "../legacy/*", "**/../legacy/**"],

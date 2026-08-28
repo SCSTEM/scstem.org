@@ -1,7 +1,5 @@
 [settings]
-# Commit tool checksums so every clone installs byte-identical tools.
 lockfile = true
-# Supply-chain cooldown: never install a release younger than a week.
 minimum_release_age = "7d"
 npm.package_manager = "pnpm"
 
@@ -13,8 +11,6 @@ pnpm = "11.22.0"
 _.path = ["{{config_root}}/node_modules/.bin"]
 ASTRO_TELEMETRY_DISABLED = "1"
 
-# Tasks are thin forwarders. package.json scripts are the single source of truth —
-# never put a real command here.
 [tasks.install]
 run = "pnpm install"
 description = "Install dependencies"
