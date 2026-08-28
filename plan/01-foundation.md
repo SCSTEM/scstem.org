@@ -37,7 +37,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 
 ### 3. Astro scaffold
 
-- Dependencies (latest stable at implementation time): `astro`, `@astrojs/check`, `@astrojs/sitemap`, `typescript`, `tailwindcss` + `@tailwindcss/vite` (Tailwind v4, CSS-first — no tailwind.config file), `cnfast`.
+- Dependencies (latest stable at implementation time): `astro`, `@astrojs/check`, `@astrojs/sitemap`, `typescript`, `tailwindcss` + `@tailwindcss/vite` (Tailwind v4, CSS-first — no tailwind.config file). `cnfast` arrives in Phase 02 with the first component that merges classes — knip's `dependencies: "error"` rule means a dependency with no importer fails the build.
 - `astro.config.ts`: `site: "https://scstem.org"`, `output: "static"`, `outDir: "dist"`, `integrations: [sitemap()]`, vite plugin for tailwind. Match current URL shape (no trailing slashes in links; default `build.format: "directory"` is fine — CF Pages serves both).
 - `src/pages/index.astro` placeholder ("rewrite in progress" — never deployed to prod) and `src/styles/global.css` with `@import "tailwindcss";` (tokens come in Phase 02).
 - `tsconfig.json`: `extends: "astro/tsconfigs/strictest"` plus explicitly ensure: `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitOverride`, `noFallthroughCasesInSwitch`, `verbatimModuleSyntax`, `isolatedModules`, `forceConsistentCasingInFileNames`. Path alias `@/*` → `./src/*`. Exclude `legacy`, `dist`, `functions` (functions keep their own tsconfig).

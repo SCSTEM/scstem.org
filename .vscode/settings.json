@@ -16,13 +16,16 @@
 
   "files.associations": { "*.css": "tailwindcss" },
   "tailwindCSS.classFunctions": ["cn", "cva"],
-  "tailwindCSS.experimental.classRegex": [
-    ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]"],
-  ],
+  "tailwindCSS.experimental.classRegex": [["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]"]],
 
-  "search.exclude": { "legacy/**": true, "dist/**": true, "pnpm-lock.yaml": true, "node_modules/**": true },
+  "search.exclude": {
+    "legacy/**": true,
+    "dist/**": true,
+    "pnpm-lock.yaml": true,
+    "node_modules/**": true
+  },
 
   "js/ts.experimental.useTsgo": true,
   "js/ts.tsdk.path": "node_modules/typescript/lib",
-  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "js/ts.preferences.importModuleSpecifier": "non-relative"
 }
