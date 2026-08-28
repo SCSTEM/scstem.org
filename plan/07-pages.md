@@ -66,6 +66,7 @@ Shared rules for all groups:
 
 ## Acceptance criteria
 
+- [ ] **`.lycheeignore` is deleted.** It exists only because the Phase 05 app shell links to the routes this phase builds; `tools/checks/stale-link-ignores.mjs` fails CI for any entry whose page has landed, so entries must be removed as each group ships. This phase is not done while the file exists.
 - [ ] All routes above build at their exact legacy URLs; visible-copy parity per page (intentional diffs listed in PRs).
 - [ ] No page defines colors/spacing outside tokens; all imagery through astro:assets with dimensions.
 - [ ] Contact form: successful submit verified against the real function on a preview deploy (test Turnstile key), error path exercised.

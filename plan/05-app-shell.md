@@ -63,6 +63,15 @@ Point `src/pages/index.astro` (still placeholder) at BaseLayout so the shell is 
 
 ### Notes and deviations
 
+- **The offline link check needed an interim exclusion list.** The chrome built here links to ten
+  routes Phase 07 builds (`/about`, `/sponsors`, `/contact`, `/donate`, `/get-involved`,
+  `/programs`, `/programs/fll`, `/programs/frc`, `/programs/frc/robots`, `/calendar/sc2`), so
+  lychee failed on every page carrying the header and footer — a correct finding about an
+  unavoidable ordering problem, not a tooling bug. `.lycheeignore` excludes exactly those ten and
+  nothing else, and `tools/checks/stale-link-ignores.mjs` fails CI if an excluded route has since
+  been built, so the list cannot outlive its purpose. Phase 07's acceptance now requires the file
+  to be gone.
+
 - **`sharp` became a direct dependency.** The first real `<Image>` use made astro:assets need
   it; `pnpm-workspace.yaml`'s `allowBuilds: sharp` already anticipated this.
 - **Icons were generated with sharp, not committed by hand.** `apple-touch-icon.png` is flattened
