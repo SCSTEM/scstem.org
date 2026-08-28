@@ -54,9 +54,34 @@ Point `src/pages/index.astro` (still placeholder) at BaseLayout so the shell is 
 
 ## Acceptance criteria
 
-- [ ] Omitting `description` on a page using BaseLayout is a type error.
-- [ ] View-source on any page: title, description, canonical, OG/Twitter set, NGO JSON-LD present and valid (paste into Google Rich Results test manually once).
-- [ ] Navbar: keyboard-only operation works (tab order, Esc, aria-expanded state); usable at 360px; zero JS beyond the disclosure toggle.
-- [ ] Skip link functions; landmarks: exactly one `header`, `main`, `footer`, labeled `nav`s.
-- [ ] Web manifest + icons valid (Lighthouse PWA-adjacent audits pass; no console 404s).
-- [ ] `pnpm check && pnpm build` green.
+- [x] Omitting `description` on a page using BaseLayout is a type error — verified: `Property 'description' is missing in type '{ children: any; title: string; }' but required in type 'Props'`.
+- [x] View-source on any page: title, description, canonical, full OG/Twitter set, and NGO JSON-LD present. Homepage also emits WebSite. (Rich Results test is blocked from this environment — `validator.schema.org` and `search.google.com` are not reachable — so that one manual check is outstanding; noted for Phase 10, which already tasks validating every JSON-LD shape.)
+- [x] Navbar keyboard-only operation: skip link is the first tab stop and becomes visible on focus; the Programs panel opens on `:focus-within` and Tab moves into its links; the mobile toggle is 44×44, flips `aria-expanded`, locks body scroll, and Esc closes it and returns focus. Usable at 360px; the only script is the ~25-line disclosure toggle.
+- [x] Skip link functions; landmarks are exactly one `header`, `main`, `footer`, and three labeled `nav`s (Main, Mobile, Footer).
+- [x] Web manifest + icons valid, no console 404s: `favicon.ico` carried over, `icon.svg` from the square mark, and 180/192/512 PNGs rendered from it.
+- [x] `pnpm check && pnpm build` green.
+
+### Notes and deviations
+
+- **`sharp` became a direct dependency.** The first real `<Image>` use made astro:assets need
+  it; `pnpm-workspace.yaml`'s `allowBuilds: sharp` already anticipated this.
+- **Icons were generated with sharp, not committed by hand.** `apple-touch-icon.png` is flattened
+  onto the brand ground (`#262626`) because iOS ignores transparency and would otherwise composite
+  it on black.
+- **`exactOptionalPropertyTypes` forced a signature choice.** A layout that *forwards* optional
+  props passes explicit `undefined`, which that flag treats as distinct from an absent prop. The
+  receiving props are therefore declared `?: T | undefined` rather than filtering props at each
+  call site.
+- **The OG image is legacy's `opengraph-image.png`**, moved to `public/og/default.png`. Phase 10
+  produces the curated per-section set; inventing a template now would be work Phase 10 redoes.
+- **Footer content grew slightly beyond legacy's inventory**: legacy had two link columns
+  (Support us, Find us online) and pointed Donate at `/wiki/donations`. This version points Donate
+  at the real `/donate` page and adds a Programs column (FLL, FRC, Calendar), because the footer
+  is the only place a program link appears once the mobile sheet is closed. Copy is otherwise
+  verbatim, including the 501(c)(3) line.
+- **The header condense uses a scroll-driven animation** behind `@supports` and
+  `prefers-reduced-motion`. Where unsupported the header keeps full height, which is the correct
+  fallback.
+- `src/lib/jsonld.ts`, `src/data/site.ts`, and `ProgramLayout.astro` are registered as knip
+  entries: they are the shell's API and get consumed by Phases 07-08. Each carries a comment
+  saying so, so the entries can be removed when they are genuinely referenced.

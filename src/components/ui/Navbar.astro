@@ -1,0 +1,237 @@
+---
+import { Image } from "astro:assets";
+
+import logoLockup from "@/assets/brand/logo-color-full.svg";
+import logoMark from "@/assets/brand/logo-color.svg";
+import Button from "@/components/ui/primitives/Button.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import { programs, site } from "@/data/site";
+import { cn } from "@/lib/cn";
+
+/**
+ * Site header (DESIGN.md §5, D26). Sticky on all viewports, condensing after scroll in pure CSS.
+ *
+ * Identity is the **real lockup**, never a rebuilt gear plus the name in Inter: the full-width
+ * color lockup on ≥ md, the square mark alone on mobile. Brand rules forbid substituting "SC2"
+ * for the name, and the full name appears in page content (hero and footer) to satisfy them.
+ *
+ * The Programs entry is a real link to `/programs` with a dropdown *in addition* — never
+ * hover-only, so touch and no-JS both get a destination (§5, §9).
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const current = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (href: string): boolean => current === href;
+/** A section is "current" for its children too, so /programs/frc lights up Programs. */
+const inSection = (href: string): boolean => current === href || current.startsWith(`${href}/`);
+
+const programLinks = [
+  { href: programs.fll.href, label: programs.fll.shortName, name: programs.fll.name },
+  { href: programs.frc.href, label: programs.frc.shortName, name: programs.frc.name },
+  { href: "/programs/frc/robots", label: "Robots", name: "Our competition robots" },
+  { href: "/calendar/sc2", label: "Calendar", name: "Upcoming events" },
+] as const;
+---
+
+<header
+  class={cn(
+    "sticky top-0 z-50 border-b border-border",
+    "bg-background/95 supports-[backdrop-filter]:bg-background/80 supports-[backdrop-filter]:backdrop-blur",
+    className,
+  )}
+  data-site-header
+>
+  <nav aria-label="Main" class="mx-auto flex max-w-6xl items-center gap-4 px-4 md:px-6">
+    <a
+      aria-label={`${site.name} — home`}
+      class="flex shrink-0 items-center py-2 no-underline"
+      href="/"
+    >
+      <Image
+        alt=""
+        class="hidden h-10 w-auto transition-[height] duration-(--duration-ui) ease-(--ease-toggle) md:block"
+        data-header-lockup
+        src={logoLockup}
+      />
+      <Image alt="" class="h-10 w-auto md:hidden" src={logoMark} />
+    </a>
+
+    <div class="ml-auto hidden items-center gap-1 md:flex">
+      <a
+        aria-current={isCurrent("/about") ? "page" : undefined}
+        class="text-small text-foreground hover:text-primary-bright aria-[current]:text-primary-bright rounded-md px-3 py-2 font-medium no-underline"
+        href="/about"
+      >
+        About
+      </a>
+
+      <!--
+        `:focus-within` and `:hover` on the wrapper open the panel; the trigger itself is a
+        link, so keyboard, touch, and no-JS users all land on the hub page instead.
+      -->
+      <div class="group relative">
+        <a
+          aria-current={inSection("/programs") ? "page" : undefined}
+          class="text-small text-foreground hover:text-primary-bright aria-[current]:text-primary-bright flex items-center gap-1 rounded-md px-3 py-2 font-medium no-underline"
+          href="/programs"
+        >
+          Programs
+          <Icon
+            class="transition-transform duration-(--duration-ui) group-focus-within:rotate-180 group-hover:rotate-180"
+            name="chevron-down"
+            size={20}
+          />
+        </a>
+        <div
+          class={cn(
+            "pocket invisible absolute left-0 top-full w-64 p-2 opacity-0",
+            "transition-[opacity,visibility] duration-(--duration-ui) ease-(--ease-toggle)",
+            "group-hover:visible group-hover:opacity-100",
+            "group-focus-within:visible group-focus-within:opacity-100",
+          )}
+        >
+          {
+            programLinks.map((link) => (
+              <a
+                aria-current={isCurrent(link.href) ? "page" : undefined}
+                class="hover:bg-card-hover block rounded-md px-3 py-2 no-underline"
+                href={link.href}
+              >
+                <span class="text-small text-foreground block font-medium">{link.label}</span>
+                <span class="text-small text-muted block">{link.name}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <a
+        aria-current={isCurrent("/sponsors") ? "page" : undefined}
+        class="text-small text-foreground hover:text-primary-bright aria-[current]:text-primary-bright rounded-md px-3 py-2 font-medium no-underline"
+        href="/sponsors"
+      >
+        Sponsors
+      </a>
+      <a
+        aria-current={isCurrent("/donate") ? "page" : undefined}
+        class="text-small text-foreground hover:text-primary-bright aria-[current]:text-primary-bright rounded-md px-3 py-2 font-medium no-underline"
+        href="/donate"
+      >
+        Donate
+      </a>
+      <Button class="ml-2" href="/get-involved" size="sm">Get involved</Button>
+    </div>
+
+    <button
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label="Open menu"
+      class="text-foreground ml-auto grid size-11 place-items-center rounded-md md:hidden"
+      data-menu-toggle
+      type="button"
+    >
+      <Icon data-menu-icon-open name="menu-2" size={24} />
+      <Icon class="hidden" data-menu-icon-close name="x" size={24} />
+    </button>
+  </nav>
+</header>
+
+<!-- Full-height sheet (D26). Nothing is more than two taps away. -->
+<div
+  class="bg-background fixed inset-0 z-40 hidden md:hidden"
+  data-menu-sheet
+  hidden
+  id="mobile-menu"
+>
+  <nav
+    aria-label="Mobile"
+    class="flex h-full flex-col overflow-y-auto px-4 pt-20 pb-[env(safe-area-inset-bottom)]"
+  >
+    <ul class="divide-border flex flex-col divide-y">
+      {
+        [
+          { href: "/about", label: "About" },
+          { href: "/programs", label: "Programs" },
+          { href: "/sponsors", label: "Sponsors" },
+          { href: "/calendar/sc2", label: "Calendar" },
+        ].map((link) => (
+          <li>
+            <a
+              aria-current={isCurrent(link.href) ? "page" : undefined}
+              class="text-h4 text-foreground aria-[current]:text-primary-bright flex min-h-14 items-center font-semibold no-underline"
+              href={link.href}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-auto flex flex-col gap-3 py-6">
+      <Button href="/get-involved" size="lg">Get involved</Button>
+      <Button href="/donate" size="lg" variant="outline">Donate</Button>
+    </div>
+  </nav>
+</div>
+
+<style>
+  /**
+   * Condense after scroll. Scroll-driven animations are progressive: where they are unsupported
+   * the header simply keeps its full height, which is the correct fallback.
+   */
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      [data-header-lockup] {
+        animation: condense-lockup linear both;
+        animation-timeline: scroll(root block);
+        animation-range: 0 120px;
+      }
+    }
+  }
+
+  @keyframes condense-lockup {
+    to {
+      height: 2rem;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector("[data-menu-toggle]");
+  const sheet = document.querySelector("[data-menu-sheet]");
+  const iconOpen = document.querySelector("[data-menu-icon-open]");
+  const iconClose = document.querySelector("[data-menu-icon-close]");
+
+  if (toggle && sheet instanceof HTMLElement) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      sheet.hidden = !open;
+      sheet.classList.toggle("hidden", !open);
+      iconOpen?.classList.toggle("hidden", open);
+      iconClose?.classList.toggle("hidden", !open);
+      // Locking the body is what stops the page scrolling behind the sheet.
+      document.body.style.overflow = open ? "hidden" : "";
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    // A tap outside the nav column is a tap on the backdrop.
+    sheet.addEventListener("click", (event) => {
+      if (event.target === sheet) setOpen(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !sheet.hidden) {
+        setOpen(false);
+        if (toggle instanceof HTMLElement) toggle.focus();
+      }
+    });
+  }
+</script>

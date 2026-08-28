@@ -1,0 +1,31 @@
+---
+import type { ImageMetadata } from "astro";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+/**
+ * A program page is the same site wearing team colors (DESIGN.md §2, D16) — so this is a thin
+ * wrapper that sets the theme and nothing else. It replaces legacy's duplicated FRC and FLL
+ * layouts, one of which was still named `FRCLayout` while rendering FLL.
+ */
+interface Props {
+  title: string;
+  description: string;
+  program: "frc" | "fll";
+  ogImage?: ImageMetadata | string | undefined;
+  canonical?: URL | string | undefined;
+}
+
+const { title, description, program, ogImage, canonical } = Astro.props;
+---
+
+<BaseLayout
+  canonical={canonical}
+  description={description}
+  ogImage={ogImage}
+  theme={program}
+  title={title}
+>
+  <slot name="head" slot="head" />
+  <slot />
+</BaseLayout>

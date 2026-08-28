@@ -1,0 +1,81 @@
+---
+import type { ImageMetadata } from "astro";
+
+import JsonLd from "@/components/JsonLd.astro";
+import Seo from "@/components/Seo.astro";
+import Footer from "@/components/ui/Footer.astro";
+import Navbar from "@/components/ui/Navbar.astro";
+import { organization } from "@/lib/jsonld";
+import { preloadedFonts } from "@/styles/fonts";
+import "@/styles/global.css";
+
+/**
+ * The chrome every page shares. SEO correctness is built into the signature rather than left to
+ * each page: `title` and `description` are required, so a page cannot ship without them.
+ *
+ * Slots: the default slot is the page body; `head` takes per-page structured data.
+ */
+interface Props {
+  title: string;
+  description: string;
+  /**
+   * `| undefined` throughout: `ProgramLayout` forwards these, and
+   * `exactOptionalPropertyTypes` distinguishes an explicit `undefined` from an absent prop.
+   */
+  ogImage?: ImageMetadata | string | undefined;
+  ogType?: "website" | "article" | undefined;
+  canonical?: URL | string | undefined;
+  noindex?: boolean | undefined;
+  /** Remaps the action accent for a program page (D16). `ProgramLayout` sets this. */
+  theme?: "frc" | "fll" | undefined;
+}
+
+const { title, description, ogImage, ogType, canonical, noindex, theme } = Astro.props;
+---
+
+<!doctype html>
+<html data-theme={theme} lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="dark" name="color-scheme" />
+
+    <Seo
+      canonical={canonical}
+      description={description}
+      noindex={noindex}
+      ogImage={ogImage}
+      ogType={ogType}
+      title={title}
+    />
+
+    {
+      /* Only the two faces that render above the fold; Source Code Pro and the annotation hand
+         paint below it, and preloading four costs more than it saves. */
+      preloadedFonts.map((href) => (
+        <link as="font" crossorigin href={href} rel="preload" type="font/woff2" />
+      ))
+    }
+
+    <link href="/favicon.ico" rel="icon" sizes="32x32" />
+    <link href="/icon.svg" rel="icon" type="image/svg+xml" />
+    <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
+    <link href="/site.webmanifest" rel="manifest" />
+
+    <JsonLd data={organization()} />
+    <slot name="head" />
+  </head>
+  <body class="min-h-dvh">
+    <a
+      class="bg-primary text-primary-foreground sr-only rounded-md px-4 py-2 font-medium no-underline focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60]"
+      href="#main"
+    >
+      Skip to content
+    </a>
+    <Navbar />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

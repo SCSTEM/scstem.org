@@ -27,9 +27,9 @@ import Skeleton from "@/components/ui/primitives/Skeleton.astro";
 import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
 import Textarea from "@/components/ui/primitives/Textarea.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 import { AA_NORMAL, AAA_NORMAL, blend, contrastRatio, formatRatio } from "@/lib/contrast";
 import { color, programColor, programThemes, radius, swipeAlpha } from "@/lib/tokens";
-import "@/styles/global.css";
 
 /**
  * The proof page for DESIGN.md: every token, ramp, and motif rendered once, with computed
@@ -214,542 +214,537 @@ const themes = [
 ] as const;
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <meta content="noindex, nofollow" name="robots" />
-    <title>Styleguide</title>
-  </head>
-  <body>
-    <main class="mx-auto max-w-6xl px-4 md:px-6">
-      <header class="section-y">
-        <p class="eyebrow text-primary">Design system</p>
-        <h1 class="mt-2">Styleguide</h1>
-        <p class="measure text-body-lg mt-4">
-          Every token, ramp, and motif in <code class="text-foreground font-mono">DESIGN.md</code>,
-          rendered once. Contrast ratios are computed at build time; the build fails if a pair drops
-          below its floor.
-        </p>
-      </header>
+<BaseLayout
+  description="Every token, type ramp, motif, and primitive in the SC2 design system, with computed contrast ratios."
+  noindex
+  title="Styleguide"
+>
+  <div class="container-page">
+    <header class="section-y">
+      <p class="eyebrow text-primary">Design system</p>
+      <h1 class="mt-2">Styleguide</h1>
+      <p class="measure text-body-lg mt-4">
+        Every token, ramp, and motif in <code class="text-foreground font-mono">DESIGN.md</code>,
+        rendered once. Contrast ratios are computed at build time; the build fails if a pair drops
+        below its floor.
+      </p>
+    </header>
 
-      <RulerDivider />
+    <RulerDivider />
 
-      <!-- Surfaces -->
-      <section class="section-y relative">
-        <GhostNumeral value={1} />
-        <h2>Surfaces</h2>
-        <p class="measure mt-3">
-          The page is raised material; cards are pockets machined into it. Cards are
-          <em>darker</em> than the page — the opposite of the default elevated-card dark UI.
-        </p>
-        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {
-            surfaces.map((surface) => (
-              <div class="pocket p-4">
-                <div
-                  class="border-border h-16 rounded-md border"
-                  style={`background-color: ${surface.value}`}
-                />
-                <p class="text-small text-foreground mt-3 font-mono">{surface.name}</p>
-                <p class="text-small text-muted font-mono">{surface.value}</p>
-                <p class="text-small mt-1">{surface.use}</p>
-              </div>
-            ))
-          }
-        </div>
+    <!-- Surfaces -->
+    <section class="section-y relative">
+      <GhostNumeral value={1} />
+      <h2>Surfaces</h2>
+      <p class="measure mt-3">
+        The page is raised material; cards are pockets machined into it. Cards are
+        <em>darker</em> than the page — the opposite of the default elevated-card dark UI.
+      </p>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          surfaces.map((surface) => (
+            <div class="pocket p-4">
+              <div
+                class="border-border h-16 rounded-md border"
+                style={`background-color: ${surface.value}`}
+              />
+              <p class="text-small text-foreground mt-3 font-mono">{surface.name}</p>
+              <p class="text-small text-muted font-mono">{surface.value}</p>
+              <p class="text-small mt-1">{surface.use}</p>
+            </div>
+          ))
+        }
+      </div>
 
-        <h3 class="mt-12">Pocket anatomy</h3>
-        <div class="mt-6 grid gap-6 md:grid-cols-3">
-          <div class="pocket p-6">
-            <h4>V2 — machined pocket</h4>
-            <p class="text-small mt-2">
-              The standard card: <code class="font-mono">card</code> fill, 1px pocket border,
-              <code class="font-mono">radius-lg</code>, inset edge physics.
-            </p>
-          </div>
-          <div class="pocket pocket-interactive p-6">
-            <h4>V2 — interactive</h4>
-            <p class="text-small mt-2">
-              Hover or focus this card: the border warms to 40% primary and the floor lifts one
-              step. No translate, no glow, no shadow change.
-            </p>
-          </div>
-          <div class="pocket pocket-feature relative p-6">
-            <RegistrationMarks />
-            <h4>V2+V3 — drawing pocket</h4>
-            <p class="text-small mt-2">
-              Feature moments only, ≥ md screens: the engineering grid renders inside the pocket
-              floor. Registration marks are on this one card.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <RulerDivider />
-
-      <!-- Text ramp -->
-      <section class="section-y relative">
-        <GhostNumeral value={2} />
-        <h2>Text ramp &amp; contrast</h2>
-        <p class="measure mt-3">
-          AAA (≥ 7:1) for anything longer than a caption.
-          <code class="text-foreground font-mono">muted</code> is the floor — nothing text-bearing goes
-          dimmer.
-        </p>
-        <div class="mt-8 overflow-x-auto">
-          <table class="text-small w-full min-w-[42rem] border-collapse">
-            <thead>
-              <tr class="border-border border-b text-left">
-                <th class="spec-label text-muted py-2">Token</th>
-                <th class="spec-label text-muted py-2">Value</th>
-                <th class="spec-label text-muted py-2">On background</th>
-                <th class="spec-label text-muted py-2">On card</th>
-                <th class="spec-label text-muted py-2">Floor</th>
-                <th class="spec-label text-muted py-2">Use</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                textTokens.map((token) => {
-                  const value = color(token.name);
-                  const onBackground = contrastRatio(value, BACKGROUND);
-                  const onCard = contrastRatio(value, CARD);
-                  return (
-                    <tr class="border-border/60 border-b">
-                      <td class="py-3">
-                        <span style={`color: ${value}`}>{token.name}</span>
-                      </td>
-                      <td class="text-muted py-3 font-mono">{value}</td>
-                      <td class="py-3 font-mono">{formatRatio(onBackground)}</td>
-                      <td class="py-3 font-mono">{formatRatio(onCard)}</td>
-                      <td class="text-muted py-3 font-mono">{token.floor}:1</td>
-                      <td class="py-3">{token.use}</td>
-                    </tr>
-                  );
-                })
-              }
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <RulerDivider />
-
-      <!-- Accents -->
-      <section class="section-y relative">
-        <GhostNumeral value={3} />
-        <h2>Accents — the fill-vs-text law</h2>
-        <p class="measure mt-3">
-          Every accent is a pair: the brand hex for fills with a near-black label, and a brightened
-          variant for text on dark. One action accent per view.
-        </p>
-        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {
-            fillPairs.map((pair) => (
-              <div class="pocket p-4">
-                <div
-                  class="text-small flex h-16 items-center justify-center rounded-md font-semibold"
-                  style={`background-color: ${pair.fill}; color: ${pair.label}`}
-                >
-                  Label on fill
-                </div>
-                <p class="text-small text-foreground mt-3">{pair.name}</p>
-                <p class="text-small text-muted font-mono">
-                  {pair.fill} / {pair.label} &middot;{" "}
-                  {formatRatio(contrastRatio(pair.fill, pair.label))}
-                </p>
-              </div>
-            ))
-          }
-        </div>
-
-        <h3 class="mt-12">Sponsor tiers</h3>
-        <div class="mt-6 flex flex-wrap gap-3">
-          {
-            tiers.map((tier) => (
-              <span class="spec-chip" style={`color: ${tier.value}`}>
-                {tier.name} &middot; {formatRatio(contrastRatio(tier.value, CARD))}
-              </span>
-            ))
-          }
-        </div>
-      </section>
-
-      <RulerDivider />
-
-      <!-- Typography -->
-      <section class="section-y relative">
-        <GhostNumeral value={4} />
-        <h2>Typography</h2>
-        <p class="measure mt-3">
-          Orbitron owns h1–h3 and eyebrows. Source Code Pro owns numbers and spec labels. Architects
-          Daughter is markup-only. Everything else is Inter.
-        </p>
-        <div class="divide-border mt-8 divide-y">
-          {
-            typeRamp.map((entry) => (
-              <div class="flex flex-col gap-1 py-4 md:flex-row md:items-baseline md:gap-6">
-                <code class="spec-label text-muted w-28 shrink-0">{entry.token}</code>
-                <span class={entry.class}>{entry.label}</span>
-              </div>
-            ))
-          }
-        </div>
-        <p class="font-hand text-body-lg text-foreground mt-8">
-          The annotation hand — five words at most.
-        </p>
-      </section>
-
-      <RulerDivider />
-
-      <!-- Radius and motion -->
-      <section class="section-y relative">
-        <GhostNumeral value={5} />
-        <h2>Radius &amp; motion</h2>
-        <p class="measure mt-3">
-          One end-mill: three radii, nothing else. There is no elevation — depth goes down, not up,
-          so the inset pocket shadows are the only shadows in the system.
-        </p>
-        <div class="mt-8 grid gap-4 sm:grid-cols-3">
-          {
-            radii.map((radius) => (
-              <div class="pocket p-4">
-                <div
-                  class="border-primary/40 bg-card-hover h-16 border"
-                  style={`border-radius: ${radius.px}`}
-                />
-                <p class="text-small text-foreground mt-3 font-mono">radius-{radius.token}</p>
-                <p class="text-small text-muted font-mono">{radius.px}</p>
-                <p class="text-small mt-1">{radius.use}</p>
-              </div>
-            ))
-          }
-        </div>
-        <dl class="mt-8 grid gap-4 sm:grid-cols-3">
-          <div class="pocket p-4">
-            <dt class="spec-label text-muted">duration-micro</dt>
-            <dd class="text-small mt-1 font-mono">150ms — hover, focus</dd>
-          </div>
-          <div class="pocket p-4">
-            <dt class="spec-label text-muted">duration-ui</dt>
-            <dd class="text-small mt-1 font-mono">250ms — menus, accordions</dd>
-          </div>
-          <div class="pocket p-4">
-            <dt class="spec-label text-muted">duration-entrance</dt>
-            <dd class="text-small mt-1 font-mono">500ms — scroll-in entrances</dd>
-          </div>
-        </dl>
-      </section>
-
-      <RulerDivider />
-
-      <!-- Motifs -->
-      <section class="section-y relative">
-        <GhostNumeral value={6} />
-        <h2>Motifs</h2>
-        <p class="measure mt-3">
-          At most four distinct devices per viewport. If a new one enters a view, another leaves.
-        </p>
-
-        <div class="ambient-pool border-border relative mt-8 overflow-hidden rounded-lg border p-8">
-          <Pattern placement="hero" ticks />
-          <p class="eyebrow text-primary relative">Engineering grid + ticks</p>
-          <p class="text-small relative mt-2 max-w-md">
-            Heroes and section breaks only, never on the page ground and never behind body copy.
-            This panel also carries one ambient pool.
+      <h3 class="mt-12">Pocket anatomy</h3>
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        <div class="pocket p-6">
+          <h4>V2 — machined pocket</h4>
+          <p class="text-small mt-2">
+            The standard card: <code class="font-mono">card</code> fill, 1px pocket border,
+            <code class="font-mono">radius-lg</code>, inset edge physics.
           </p>
         </div>
-
-        <h3 class="mt-12">Hand markup</h3>
-        <p class="measure mt-3">
-          Every device ships at least three path variants. Two adjacent instances never share one —
-          identical marks read as a stamp.
-        </p>
-
-        <p class="text-h2 font-display text-foreground mt-8 font-semibold">
-          Real <ChalkOval variant={1}>skills</ChalkOval>. Real{" "}
-          <ChalkOval variant={2}>robots</ChalkOval>. Real <ChalkOval variant={3}>fun</ChalkOval>.
-        </p>
-
-        <p class="text-body-lg mt-10">
-          Chalk underlines work inline, under a phrase of three words or fewer — building the{" "}
-          <ChalkUnderline variant={1}>future of STEM</ChalkUnderline> in Franklin County.
-        </p>
-
-        <p class="text-h3 font-display mt-10 font-semibold">
-          A heading with a <span class="highlight-swipe">highlighter swipe</span>
-        </p>
-        <p class="text-h3 font-display mt-3 font-semibold">
-          Or <span class="text-primary">accent-colored text</span> — never both
-        </p>
-        <p class="text-small text-muted mt-3 font-mono">
-          Swipe at {SWIPE_ALPHA * 100}% alpha &middot; white on {swipeOnGround} ={" "}
-          {formatRatio(contrastRatio("#FAFAFA", swipeOnGround))} &middot; on {swipeOnCard} ={" "}
-          {formatRatio(contrastRatio("#FAFAFA", swipeOnCard))}
-        </p>
-
-        <div class="mt-12 flex items-start gap-2">
-          <SketchArrow class="size-14" variant={2} />
-          <a class="font-hand text-body-lg mt-8" href="/styleguide">Become a sponsor</a>
+        <div class="pocket pocket-interactive p-6">
+          <h4>V2 — interactive</h4>
+          <p class="text-small mt-2">
+            Hover or focus this card: the border warms to 40% primary and the floor lifts one step.
+            No translate, no glow, no shadow change.
+          </p>
         </div>
+        <div class="pocket pocket-feature relative p-6">
+          <RegistrationMarks />
+          <h4>V2+V3 — drawing pocket</h4>
+          <p class="text-small mt-2">
+            Feature moments only, ≥ md screens: the engineering grid renders inside the pocket
+            floor. Registration marks are on this one card.
+          </p>
+        </div>
+      </div>
+    </section>
 
-        <figure class="mt-12">
-          <div class="media-frame bg-card-hover aspect-video"></div>
-          <Callout as="figcaption" class="mt-3" reference="FIG. 01">
-            Framed media, 2px primary border
-          </Callout>
-        </figure>
+    <RulerDivider />
 
-        <h3 class="mt-12">Title block</h3>
-        <TitleBlock
-          class="mt-6"
-          fields={[
-            { label: "Project", value: "scstem.org" },
-            { label: "Organization", value: "South Central STEM Collective" },
-            { label: "URL", value: "scstem.org", mono: true, href: "https://scstem.org" },
-          ]}
-        />
-      </section>
+    <!-- Text ramp -->
+    <section class="section-y relative">
+      <GhostNumeral value={2} />
+      <h2>Text ramp &amp; contrast</h2>
+      <p class="measure mt-3">
+        AAA (≥ 7:1) for anything longer than a caption.
+        <code class="text-foreground font-mono">muted</code> is the floor — nothing text-bearing goes
+        dimmer.
+      </p>
+      <div class="mt-8 overflow-x-auto">
+        <table class="text-small w-full min-w-[42rem] border-collapse">
+          <thead>
+            <tr class="border-border border-b text-left">
+              <th class="spec-label text-muted py-2">Token</th>
+              <th class="spec-label text-muted py-2">Value</th>
+              <th class="spec-label text-muted py-2">On background</th>
+              <th class="spec-label text-muted py-2">On card</th>
+              <th class="spec-label text-muted py-2">Floor</th>
+              <th class="spec-label text-muted py-2">Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              textTokens.map((token) => {
+                const value = color(token.name);
+                const onBackground = contrastRatio(value, BACKGROUND);
+                const onCard = contrastRatio(value, CARD);
+                return (
+                  <tr class="border-border/60 border-b">
+                    <td class="py-3">
+                      <span style={`color: ${value}`}>{token.name}</span>
+                    </td>
+                    <td class="text-muted py-3 font-mono">{value}</td>
+                    <td class="py-3 font-mono">{formatRatio(onBackground)}</td>
+                    <td class="py-3 font-mono">{formatRatio(onCard)}</td>
+                    <td class="text-muted py-3 font-mono">{token.floor}:1</td>
+                    <td class="py-3">{token.use}</td>
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-      <RulerDivider />
+    <RulerDivider />
 
-      <!-- Primitives -->
-      <section class="section-y relative">
-        <GhostNumeral value={7} />
-        <h2>Primitives</h2>
-        <p class="measure mt-3">
-          Every primitive in <code class="text-foreground font-mono">ui/primitives/</code>, in all
-          variants and states. Repeated under each program theme at the end of the page — a
-          primitive missing here does not exist as far as review is concerned.
-        </p>
-
-        <h3 class="mt-12">Button</h3>
-        <div class="mt-6 space-y-4">
-          {
-            buttonVariantNames.map((variant) => (
-              <div class="flex flex-wrap items-center gap-3">
-                <code class="spec-label text-muted w-24 shrink-0">{variant}</code>
-                {buttonSizes.map((size) => (
-                  <Button size={size} variant={variant}>
-                    {size}
-                  </Button>
-                ))}
-                <Button disabled size="md" variant={variant}>
-                  disabled
-                </Button>
-                <Button href="/styleguide" size="md" variant={variant}>
-                  as link
-                </Button>
+    <!-- Accents -->
+    <section class="section-y relative">
+      <GhostNumeral value={3} />
+      <h2>Accents — the fill-vs-text law</h2>
+      <p class="measure mt-3">
+        Every accent is a pair: the brand hex for fills with a near-black label, and a brightened
+        variant for text on dark. One action accent per view.
+      </p>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          fillPairs.map((pair) => (
+            <div class="pocket p-4">
+              <div
+                class="text-small flex h-16 items-center justify-center rounded-md font-semibold"
+                style={`background-color: ${pair.fill}; color: ${pair.label}`}
+              >
+                Label on fill
               </div>
-            ))
-          }
-          <div class="flex flex-wrap items-center gap-3">
-            <code class="spec-label text-muted w-24 shrink-0">icon</code>
-            <Button size="icon" variant="secondary">
-              <Icon label="Previous" name="chevron-left" size={20} />
-            </Button>
-            <Button size="icon" variant="outline">
-              <Icon label="Next" name="chevron-right" size={20} />
-            </Button>
-            <Button size="md" variant="default">
-              <Icon name="download" size={20} />
-              With an icon
-            </Button>
-          </div>
-        </div>
-
-        <h3 class="mt-12">Badge</h3>
-        <div class="mt-6 flex flex-wrap gap-3">
-          {badgeTones.map((tone) => <Badge tone={tone}>{tone}</Badge>)}
-          <Badge tone="muted">Ages 9&ndash;16</Badge>
-        </div>
-
-        <h3 class="mt-12">Card</h3>
-        <div class="mt-6 grid gap-6 md:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <CardTitle rule>Standard pocket</CardTitle>
-              <CardDescription>
-                Header, title with the machined 32px rule, and a description.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p class="text-small text-muted">Content sits here.</p>
-            </CardContent>
-            <CardFooter>
-              <Button size="sm" variant="link">A footer link</Button>
-            </CardFooter>
-          </Card>
-          <Card interactive>
-            <CardHeader>
-              <CardTitle>Interactive</CardTitle>
-              <CardDescription>
-                Hover or focus: the border warms, the floor lifts one step, nothing moves.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card feature>
-            <CardHeader>
-              <CardTitle>Feature</CardTitle>
-              <CardDescription> Grid floor inside the pocket, on md and up only. </CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
-
-        <h3 class="mt-12">Form fields</h3>
-        <div class="mt-6 grid gap-6 md:max-w-xl">
-          <div class="flex flex-col gap-2">
-            <Label for="sg-name" required>Name</Label>
-            <Input id="sg-name" name="name" placeholder="Ada Lovelace" required type="text" />
-          </div>
-          <div class="flex flex-col gap-2">
-            <Label for="sg-email">Email</Label>
-            <Input
-              aria-describedby="sg-email-error"
-              id="sg-email"
-              invalid
-              name="email"
-              type="email"
-              value="not-an-email"
-            />
-            <FieldError id="sg-email-error">Enter a valid email address.</FieldError>
-          </div>
-          <div class="flex flex-col gap-2">
-            <Label for="sg-message">Message</Label>
-            <Textarea id="sg-message" name="message" placeholder="Tell us about your team…" />
-          </div>
-          <div class="flex flex-col gap-2">
-            <Label for="sg-disabled">Disabled</Label>
-            <Input disabled id="sg-disabled" value="Not editable" />
-          </div>
-        </div>
-
-        <h3 class="mt-12">Accordion</h3>
-        <Accordion class="mt-6 md:max-w-2xl">
-          <AccordionItem name="sg-faq" open question="Does this work without JavaScript?">
-            <p>
-              Yes — it is a native <code class="font-mono">&lt;details&gt;</code> element. The shared
-              <code class="font-mono">name</code> attribute is what closes the others.
-            </p>
-          </AccordionItem>
-          <AccordionItem name="sg-faq" question="What opens when I open this one?">
-            <p>This one, and the one above closes. No script is involved.</p>
-          </AccordionItem>
-          <AccordionItem name="sg-faq" question="Is the content in the DOM when closed?">
-            <p>It is, so agents and search engines read every answer.</p>
-          </AccordionItem>
-        </Accordion>
-
-        <h3 class="mt-12">Dialog</h3>
-        <div class="mt-6">
-          <Button data-dialog-open="sg-dialog" variant="secondary">Open the dialog</Button>
-          <Dialog id="sg-dialog" title="A native dialog">
-            <p>
-              The browser supplies the focus trap, Esc handling, and the inert background. Esc, the
-              close button, and a backdrop click all close it.
-            </p>
-            <div class="mt-6 flex gap-3">
-              <Button data-dialog-close>Done</Button>
-              <Button data-dialog-close variant="ghost">Cancel</Button>
+              <p class="text-small text-foreground mt-3">{pair.name}</p>
+              <p class="text-small text-muted font-mono">
+                {pair.fill} / {pair.label} &middot;{" "}
+                {formatRatio(contrastRatio(pair.fill, pair.label))}
+              </p>
             </div>
-          </Dialog>
+          ))
+        }
+      </div>
+
+      <h3 class="mt-12">Sponsor tiers</h3>
+      <div class="mt-6 flex flex-wrap gap-3">
+        {
+          tiers.map((tier) => (
+            <span class="spec-chip" style={`color: ${tier.value}`}>
+              {tier.name} &middot; {formatRatio(contrastRatio(tier.value, CARD))}
+            </span>
+          ))
+        }
+      </div>
+    </section>
+
+    <RulerDivider />
+
+    <!-- Typography -->
+    <section class="section-y relative">
+      <GhostNumeral value={4} />
+      <h2>Typography</h2>
+      <p class="measure mt-3">
+        Orbitron owns h1–h3 and eyebrows. Source Code Pro owns numbers and spec labels. Architects
+        Daughter is markup-only. Everything else is Inter.
+      </p>
+      <div class="divide-border mt-8 divide-y">
+        {
+          typeRamp.map((entry) => (
+            <div class="flex flex-col gap-1 py-4 md:flex-row md:items-baseline md:gap-6">
+              <code class="spec-label text-muted w-28 shrink-0">{entry.token}</code>
+              <span class={entry.class}>{entry.label}</span>
+            </div>
+          ))
+        }
+      </div>
+      <p class="font-hand text-body-lg text-foreground mt-8">
+        The annotation hand — five words at most.
+      </p>
+    </section>
+
+    <RulerDivider />
+
+    <!-- Radius and motion -->
+    <section class="section-y relative">
+      <GhostNumeral value={5} />
+      <h2>Radius &amp; motion</h2>
+      <p class="measure mt-3">
+        One end-mill: three radii, nothing else. There is no elevation — depth goes down, not up, so
+        the inset pocket shadows are the only shadows in the system.
+      </p>
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
+        {
+          radii.map((radius) => (
+            <div class="pocket p-4">
+              <div
+                class="border-primary/40 bg-card-hover h-16 border"
+                style={`border-radius: ${radius.px}`}
+              />
+              <p class="text-small text-foreground mt-3 font-mono">radius-{radius.token}</p>
+              <p class="text-small text-muted font-mono">{radius.px}</p>
+              <p class="text-small mt-1">{radius.use}</p>
+            </div>
+          ))
+        }
+      </div>
+      <dl class="mt-8 grid gap-4 sm:grid-cols-3">
+        <div class="pocket p-4">
+          <dt class="spec-label text-muted">duration-micro</dt>
+          <dd class="text-small mt-1 font-mono">150ms — hover, focus</dd>
         </div>
-
-        <h3 class="mt-12">Carousel</h3>
-        <Carousel class="mt-6" label="Styleguide carousel demonstration">
-          {
-            [1, 2, 3, 4, 5].map((index) => (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Slide {index}</CardTitle>
-                  <CardDescription>
-                    Scroll-snap track. Drag, scroll, or use the arrows.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            ))
-          }
-        </Carousel>
-
-        <h3 class="mt-12">Icon, Separator, Skeleton</h3>
-        <div class="mt-6 flex flex-wrap items-center gap-6">
-          <Icon name="robot" size={32} />
-          <Icon name="calendar-event" size={24} />
-          <Icon name="tools" size={20} />
-          <Icon name="star" size={24} style="filled" />
-          <Separator class="h-8" orientation="vertical" />
-          <div class="w-48 space-y-2">
-            <Skeleton class="h-4 w-full" />
-            <Skeleton class="h-4 w-2/3" />
-          </div>
+        <div class="pocket p-4">
+          <dt class="spec-label text-muted">duration-ui</dt>
+          <dd class="text-small mt-1 font-mono">250ms — menus, accordions</dd>
         </div>
-        <Separator class="mt-6" />
-      </section>
+        <div class="pocket p-4">
+          <dt class="spec-label text-muted">duration-entrance</dt>
+          <dd class="text-small mt-1 font-mono">500ms — scroll-in entrances</dd>
+        </div>
+      </dl>
+    </section>
 
-      <RulerDivider />
+    <RulerDivider />
 
-      <!-- Program themes -->
-      <section class="section-y relative">
-        <GhostNumeral value={8} />
-        <h2>Program themes</h2>
-        <p class="measure mt-3">
-          A program page is the same site wearing team colors. Each theme remaps four tokens —
-          <code class="text-foreground font-mono">primary</code>,
-          <code class="text-foreground font-mono">primary-bright</code>,
-          <code class="text-foreground font-mono">primary-foreground</code>,
-          <code class="text-foreground font-mono">ring</code> — and nothing else.
+    <!-- Motifs -->
+    <section class="section-y relative">
+      <GhostNumeral value={6} />
+      <h2>Motifs</h2>
+      <p class="measure mt-3">
+        At most four distinct devices per viewport. If a new one enters a view, another leaves.
+      </p>
+
+      <div class="ambient-pool border-border relative mt-8 overflow-hidden rounded-lg border p-8">
+        <Pattern placement="hero" ticks />
+        <p class="eyebrow text-primary relative">Engineering grid + ticks</p>
+        <p class="text-small relative mt-2 max-w-md">
+          Heroes and section breaks only, never on the page ground and never behind body copy. This
+          panel also carries one ambient pool.
         </p>
-        <div class="mt-8 space-y-6">
-          {
-            themes.map((entry) => (
-              <div class="pocket p-6" data-theme={entry.theme}>
-                <p class="eyebrow text-primary-bright">{entry.name}</p>
-                <p class="text-muted text-small mt-1 font-mono">
-                  primary-bright {entry.accent} &middot; on background{" "}
-                  {formatRatio(contrastRatio(entry.accent, BACKGROUND))} &middot; on card{" "}
-                  {formatRatio(contrastRatio(entry.accent, CARD))}
-                </p>
-                <div class="mt-4 flex flex-wrap items-center gap-3">
-                  <Button>Primary</Button>
-                  <Button variant="secondary">Secondary</Button>
-                  <Button variant="outline">Outline</Button>
-                  <Button variant="ghost">Ghost</Button>
-                  <Button variant="link">Link</Button>
-                  <Button size="icon" variant="secondary">
-                    <Icon label="Next" name="chevron-right" size={20} />
-                  </Button>
-                </div>
-                <div class="mt-4 flex flex-wrap items-center gap-4">
-                  <Badge>Default badge</Badge>
-                  <Badge tone="info">Info</Badge>
-                  <a class="text-small" href="/styleguide">
-                    An in-prose link
-                  </a>
-                  <span class="stat">12</span>
-                  <span class="highlight-swipe text-h4">swiped words</span>
-                </div>
-                <div class="mt-4 grid gap-4 md:grid-cols-2">
-                  <div class="flex flex-col gap-2">
-                    <Label for={`sg-theme-${entry.theme ?? "default"}`}>Focus for the ring</Label>
-                    <Input id={`sg-theme-${entry.theme ?? "default"}`} placeholder="Tab into me" />
-                  </div>
-                  <Card feature interactive>
-                    <CardHeader>
-                      <CardTitle rule>Themed pocket</CardTitle>
-                      <CardDescription>
-                        The title rule and hover border follow the theme.
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </div>
-                <hr class="accent-rule mt-6" />
-              </div>
-            ))
-          }
+      </div>
+
+      <h3 class="mt-12">Hand markup</h3>
+      <p class="measure mt-3">
+        Every device ships at least three path variants. Two adjacent instances never share one —
+        identical marks read as a stamp.
+      </p>
+
+      <p class="text-h2 font-display text-foreground mt-8 font-semibold">
+        Real <ChalkOval variant={1}>skills</ChalkOval>. Real{" "}
+        <ChalkOval variant={2}>robots</ChalkOval>. Real <ChalkOval variant={3}>fun</ChalkOval>.
+      </p>
+
+      <p class="text-body-lg mt-10">
+        Chalk underlines work inline, under a phrase of three words or fewer — building the{" "}
+        <ChalkUnderline variant={1}>future of STEM</ChalkUnderline> in Franklin County.
+      </p>
+
+      <p class="text-h3 font-display mt-10 font-semibold">
+        A heading with a <span class="highlight-swipe">highlighter swipe</span>
+      </p>
+      <p class="text-h3 font-display mt-3 font-semibold">
+        Or <span class="text-primary">accent-colored text</span> — never both
+      </p>
+      <p class="text-small text-muted mt-3 font-mono">
+        Swipe at {SWIPE_ALPHA * 100}% alpha &middot; white on {swipeOnGround} ={" "}
+        {formatRatio(contrastRatio("#FAFAFA", swipeOnGround))} &middot; on {swipeOnCard} ={" "}
+        {formatRatio(contrastRatio("#FAFAFA", swipeOnCard))}
+      </p>
+
+      <div class="mt-12 flex items-start gap-2">
+        <SketchArrow class="size-14" variant={2} />
+        <a class="font-hand text-body-lg mt-8" href="/styleguide">Become a sponsor</a>
+      </div>
+
+      <figure class="mt-12">
+        <div class="media-frame bg-card-hover aspect-video"></div>
+        <Callout as="figcaption" class="mt-3" reference="FIG. 01">
+          Framed media, 2px primary border
+        </Callout>
+      </figure>
+
+      <h3 class="mt-12">Title block</h3>
+      <TitleBlock
+        class="mt-6"
+        fields={[
+          { label: "Project", value: "scstem.org" },
+          { label: "Organization", value: "South Central STEM Collective" },
+          { label: "URL", value: "scstem.org", mono: true, href: "https://scstem.org" },
+        ]}
+      />
+    </section>
+
+    <RulerDivider />
+
+    <!-- Primitives -->
+    <section class="section-y relative">
+      <GhostNumeral value={7} />
+      <h2>Primitives</h2>
+      <p class="measure mt-3">
+        Every primitive in <code class="text-foreground font-mono">ui/primitives/</code>, in all
+        variants and states. Repeated under each program theme at the end of the page — a primitive
+        missing here does not exist as far as review is concerned.
+      </p>
+
+      <h3 class="mt-12">Button</h3>
+      <div class="mt-6 space-y-4">
+        {
+          buttonVariantNames.map((variant) => (
+            <div class="flex flex-wrap items-center gap-3">
+              <code class="spec-label text-muted w-24 shrink-0">{variant}</code>
+              {buttonSizes.map((size) => (
+                <Button size={size} variant={variant}>
+                  {size}
+                </Button>
+              ))}
+              <Button disabled size="md" variant={variant}>
+                disabled
+              </Button>
+              <Button href="/styleguide" size="md" variant={variant}>
+                as link
+              </Button>
+            </div>
+          ))
+        }
+        <div class="flex flex-wrap items-center gap-3">
+          <code class="spec-label text-muted w-24 shrink-0">icon</code>
+          <Button size="icon" variant="secondary">
+            <Icon label="Previous" name="chevron-left" size={20} />
+          </Button>
+          <Button size="icon" variant="outline">
+            <Icon label="Next" name="chevron-right" size={20} />
+          </Button>
+          <Button size="md" variant="default">
+            <Icon name="download" size={20} />
+            With an icon
+          </Button>
         </div>
-      </section>
-    </main>
-  </body>
-</html>
+      </div>
+
+      <h3 class="mt-12">Badge</h3>
+      <div class="mt-6 flex flex-wrap gap-3">
+        {badgeTones.map((tone) => <Badge tone={tone}>{tone}</Badge>)}
+        <Badge tone="muted">Ages 9&ndash;16</Badge>
+      </div>
+
+      <h3 class="mt-12">Card</h3>
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle rule>Standard pocket</CardTitle>
+            <CardDescription>
+              Header, title with the machined 32px rule, and a description.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p class="text-small text-muted">Content sits here.</p>
+          </CardContent>
+          <CardFooter>
+            <Button size="sm" variant="link">A footer link</Button>
+          </CardFooter>
+        </Card>
+        <Card interactive>
+          <CardHeader>
+            <CardTitle>Interactive</CardTitle>
+            <CardDescription>
+              Hover or focus: the border warms, the floor lifts one step, nothing moves.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <Card feature>
+          <CardHeader>
+            <CardTitle>Feature</CardTitle>
+            <CardDescription> Grid floor inside the pocket, on md and up only. </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+
+      <h3 class="mt-12">Form fields</h3>
+      <div class="mt-6 grid gap-6 md:max-w-xl">
+        <div class="flex flex-col gap-2">
+          <Label for="sg-name" required>Name</Label>
+          <Input id="sg-name" name="name" placeholder="Ada Lovelace" required type="text" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <Label for="sg-email">Email</Label>
+          <Input
+            aria-describedby="sg-email-error"
+            id="sg-email"
+            invalid
+            name="email"
+            type="email"
+            value="not-an-email"
+          />
+          <FieldError id="sg-email-error">Enter a valid email address.</FieldError>
+        </div>
+        <div class="flex flex-col gap-2">
+          <Label for="sg-message">Message</Label>
+          <Textarea id="sg-message" name="message" placeholder="Tell us about your team…" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <Label for="sg-disabled">Disabled</Label>
+          <Input disabled id="sg-disabled" value="Not editable" />
+        </div>
+      </div>
+
+      <h3 class="mt-12">Accordion</h3>
+      <Accordion class="mt-6 md:max-w-2xl">
+        <AccordionItem name="sg-faq" open question="Does this work without JavaScript?">
+          <p>
+            Yes — it is a native <code class="font-mono">&lt;details&gt;</code> element. The shared
+            <code class="font-mono">name</code> attribute is what closes the others.
+          </p>
+        </AccordionItem>
+        <AccordionItem name="sg-faq" question="What opens when I open this one?">
+          <p>This one, and the one above closes. No script is involved.</p>
+        </AccordionItem>
+        <AccordionItem name="sg-faq" question="Is the content in the DOM when closed?">
+          <p>It is, so agents and search engines read every answer.</p>
+        </AccordionItem>
+      </Accordion>
+
+      <h3 class="mt-12">Dialog</h3>
+      <div class="mt-6">
+        <Button data-dialog-open="sg-dialog" variant="secondary">Open the dialog</Button>
+        <Dialog id="sg-dialog" title="A native dialog">
+          <p>
+            The browser supplies the focus trap, Esc handling, and the inert background. Esc, the
+            close button, and a backdrop click all close it.
+          </p>
+          <div class="mt-6 flex gap-3">
+            <Button data-dialog-close>Done</Button>
+            <Button data-dialog-close variant="ghost">Cancel</Button>
+          </div>
+        </Dialog>
+      </div>
+
+      <h3 class="mt-12">Carousel</h3>
+      <Carousel class="mt-6" label="Styleguide carousel demonstration">
+        {
+          [1, 2, 3, 4, 5].map((index) => (
+            <Card>
+              <CardHeader>
+                <CardTitle>Slide {index}</CardTitle>
+                <CardDescription>
+                  Scroll-snap track. Drag, scroll, or use the arrows.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          ))
+        }
+      </Carousel>
+
+      <h3 class="mt-12">Icon, Separator, Skeleton</h3>
+      <div class="mt-6 flex flex-wrap items-center gap-6">
+        <Icon name="robot" size={32} />
+        <Icon name="calendar-event" size={24} />
+        <Icon name="tools" size={20} />
+        <Icon name="star" size={24} style="filled" />
+        <Separator class="h-8" orientation="vertical" />
+        <div class="w-48 space-y-2">
+          <Skeleton class="h-4 w-full" />
+          <Skeleton class="h-4 w-2/3" />
+        </div>
+      </div>
+      <Separator class="mt-6" />
+    </section>
+
+    <RulerDivider />
+
+    <!-- Program themes -->
+    <section class="section-y relative">
+      <GhostNumeral value={8} />
+      <h2>Program themes</h2>
+      <p class="measure mt-3">
+        A program page is the same site wearing team colors. Each theme remaps four tokens —
+        <code class="text-foreground font-mono">primary</code>,
+        <code class="text-foreground font-mono">primary-bright</code>,
+        <code class="text-foreground font-mono">primary-foreground</code>,
+        <code class="text-foreground font-mono">ring</code> — and nothing else.
+      </p>
+      <div class="mt-8 space-y-6">
+        {
+          themes.map((entry) => (
+            <div class="pocket p-6" data-theme={entry.theme}>
+              <p class="eyebrow text-primary-bright">{entry.name}</p>
+              <p class="text-muted text-small mt-1 font-mono">
+                primary-bright {entry.accent} &middot; on background{" "}
+                {formatRatio(contrastRatio(entry.accent, BACKGROUND))} &middot; on card{" "}
+                {formatRatio(contrastRatio(entry.accent, CARD))}
+              </p>
+              <div class="mt-4 flex flex-wrap items-center gap-3">
+                <Button>Primary</Button>
+                <Button variant="secondary">Secondary</Button>
+                <Button variant="outline">Outline</Button>
+                <Button variant="ghost">Ghost</Button>
+                <Button variant="link">Link</Button>
+                <Button size="icon" variant="secondary">
+                  <Icon label="Next" name="chevron-right" size={20} />
+                </Button>
+              </div>
+              <div class="mt-4 flex flex-wrap items-center gap-4">
+                <Badge>Default badge</Badge>
+                <Badge tone="info">Info</Badge>
+                <a class="text-small" href="/styleguide">
+                  An in-prose link
+                </a>
+                <span class="stat">12</span>
+                <span class="highlight-swipe text-h4">swiped words</span>
+              </div>
+              <div class="mt-4 grid gap-4 md:grid-cols-2">
+                <div class="flex flex-col gap-2">
+                  <Label for={`sg-theme-${entry.theme ?? "default"}`}>Focus for the ring</Label>
+                  <Input id={`sg-theme-${entry.theme ?? "default"}`} placeholder="Tab into me" />
+                </div>
+                <Card feature interactive>
+                  <CardHeader>
+                    <CardTitle rule>Themed pocket</CardTitle>
+                    <CardDescription>
+                      The title rule and hover border follow the theme.
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </div>
+              <hr class="accent-rule mt-6" />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

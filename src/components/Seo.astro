@@ -1,0 +1,78 @@
+---
+import type { ImageMetadata } from "astro";
+
+import { site } from "@/data/site";
+
+/**
+ * Everything that goes in `<head>` for discoverability. Rendered by BaseLayout, which passes
+ * these props straight through — so **`description` being required here is what stops a page
+ * from shipping without one.** Omitting it is a type error, not a review catch.
+ *
+ * No `keywords` meta: legacy carried a 22-term list, and search engines have ignored the signal
+ * for years.
+ */
+interface Props {
+  title: string;
+  /** 50–160 characters, written for a human deciding whether to click. */
+  description: string;
+  /**
+   * Defaults to the site-wide card image. These are declared `| undefined` because layouts
+   * forward them straight through, and `exactOptionalPropertyTypes` treats an explicitly
+   * passed `undefined` as distinct from an absent prop.
+   */
+  ogImage?: ImageMetadata | string | undefined;
+  ogType?: "website" | "article" | undefined;
+  /** Defaults to this page's own URL. Set it when two routes serve the same content. */
+  canonical?: URL | string | undefined;
+  noindex?: boolean | undefined;
+}
+
+const {
+  title,
+  description,
+  ogImage = "/og/default.png",
+  ogType = "website",
+  canonical,
+  noindex = false,
+} = Astro.props;
+
+/** The homepage is the site; anywhere else is a page *of* it. */
+const isHome = Astro.url.pathname === "/";
+const fullTitle = isHome ? site.name : site.titleTemplate.replace("%s", title);
+
+const canonicalUrl = new URL(canonical ?? Astro.url.pathname, site.url);
+
+const imageSource = typeof ogImage === "string" ? ogImage : ogImage.src;
+const imageUrl = new URL(imageSource, site.url);
+const imageDimensions = typeof ogImage === "string" ? undefined : ogImage;
+---
+
+<title>{fullTitle}</title>
+<meta content={description} name="description" />
+<link href={canonicalUrl.href} rel="canonical" />
+
+{noindex && <meta content="noindex, nofollow" name="robots" />}
+
+<meta content={fullTitle} property="og:title" />
+<meta content={description} property="og:description" />
+<meta content={ogType} property="og:type" />
+<meta content={canonicalUrl.href} property="og:url" />
+<meta content={site.name} property="og:site_name" />
+<meta content="en_US" property="og:locale" />
+<meta content={imageUrl.href} property="og:image" />
+<meta content={`${site.name} logo over a photo of the team`} property="og:image:alt" />
+{
+  imageDimensions !== undefined && (
+    <>
+      <meta content={String(imageDimensions.width)} property="og:image:width" />
+      <meta content={String(imageDimensions.height)} property="og:image:height" />
+    </>
+  )
+}
+
+<meta content="summary_large_image" name="twitter:card" />
+<meta content={fullTitle} name="twitter:title" />
+<meta content={description} name="twitter:description" />
+<meta content={imageUrl.href} name="twitter:image" />
+
+<meta content="#FACC15" name="theme-color" />

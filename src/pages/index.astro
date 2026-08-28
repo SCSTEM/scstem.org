@@ -1,22 +1,25 @@
 ---
-import "@/styles/global.css";
+import JsonLd from "@/components/JsonLd.astro";
+import { site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { webSite } from "@/lib/jsonld";
+
+/**
+ * Placeholder until Phase 06 ports the homepage. Present so the app shell is visible on the
+ * preview URL; never deployed to production.
+ */
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Rewrite in progress</title>
-    <meta name="robots" content="noindex" />
-  </head>
-  <body>
-    <main>
-      <h1>Rewrite in progress</h1>
-      <p>
-        The South Central STEM Collective site is being rebuilt. This placeholder is never deployed
-        to production.
-      </p>
-    </main>
-  </body>
-</html>
+<BaseLayout description={site.description} title="Home">
+  <JsonLd data={webSite()} slot="head" />
+
+  <section class="section-y ambient-pool mx-auto max-w-6xl px-4 md:px-6">
+    <p class="eyebrow text-primary">Rewrite in progress</p>
+    <h1 class="mt-2">The app shell is in place</h1>
+    <p class="measure text-body-lg mt-4">
+      Header, footer, metadata, and structured data are live. The homepage itself lands in Phase 06;
+      the design system and every primitive are on the{" "}
+      <a href="/styleguide">styleguide</a>.
+    </p>
+  </section>
+</BaseLayout>
