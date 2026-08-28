@@ -1,9 +1,21 @@
 {
   "$schema": "./node_modules/knip/schema.json",
-  "entry": ["src/pages/**", "functions/**"],
+  "entry": [
+    "src/pages/**",
+    "functions/**",
+    // Exports the font URLs BaseLayout preloads; wired up in Phase 05.
+    "src/styles/fonts.ts"
+  ],
   "project": ["**/*.{ts,tsx,js,mjs,cjs,astro}"],
   "ignore": ["legacy/**", "tools/lint/anti-slop/**"],
-  "ignoreDependencies": ["tailwindcss"],
+  // Referenced only from CSS — `tailwindcss` via `@import`, these two faces via `url()`
+  // in src/styles/fonts.css — and knip does not follow imports inside compiled extensions.
+  // Inter and Orbitron are absent on purpose: fonts.ts imports them, so knip sees those.
+  "ignoreDependencies": [
+    "tailwindcss",
+    "@fontsource-variable/source-code-pro",
+    "@fontsource/architects-daughter"
+  ],
   "rules": {
     "files": "error",
     "dependencies": "error",

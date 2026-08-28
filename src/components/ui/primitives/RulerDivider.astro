@@ -1,0 +1,38 @@
+---
+import { cn } from "cnfast";
+
+/**
+ * The strong section divider (DESIGN.md §2.7): a graduated tick strip, like the edge of a
+ * steel rule. Plain 1px hairlines remain the quiet default — reach for this when a boundary
+ * needs to be felt, and count it against the register budget.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const ticks = Array.from({ length: 61 }, (_, index) => index * 4);
+---
+
+<svg
+  aria-hidden="true"
+  class={cn("h-4 w-full text-foreground/[0.18]", className)}
+  preserveAspectRatio="none"
+  role="presentation"
+  viewBox="0 0 240 16"
+>
+  <line stroke="currentColor" stroke-width="1" x1="0" x2="240" y1="15" y2="15"></line>
+  {
+    ticks.map((x) => (
+      <line
+        stroke="currentColor"
+        stroke-width="1"
+        x1={x}
+        x2={x}
+        y1={x % 20 === 0 ? 4 : x % 8 === 0 ? 8 : 11}
+        y2="15"
+      />
+    ))
+  }
+</svg>

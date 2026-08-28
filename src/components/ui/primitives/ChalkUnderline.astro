@@ -1,0 +1,52 @@
+---
+import { cn } from "cnfast";
+
+/**
+ * A hand-drawn underline (DESIGN.md §2.14). Two uses: beneath a heading, and **inline within a
+ * sentence** under a key phrase of three words or fewer — the sanctioned in-prose emphasis.
+ *
+ * Deliberately distinct from `title-rule`, the machined 32px card rule, which stays perfectly
+ * straight. Machined versus hand is a contrast the system relies on; never blend the two.
+ *
+ * Three variants; adjacent instances must differ.
+ */
+interface Props {
+  variant?: 1 | 2 | 3;
+  tone?: "chalk" | "pencil";
+  class?: string;
+}
+
+const { variant = 1, tone = "pencil", class: className } = Astro.props;
+
+/** Each curve sags differently and overshoots at a different end. */
+const paths = {
+  1: "M2 6C34 2 92 1 148 4c22 1 32 2 30 3",
+  2: "M4 4C40 8 96 9 150 5c18-1 26-2 26-1",
+  3: "M2 5C30 3 70 2 110 3c26 1 50 3 66 5",
+} as const;
+
+const rotations = { 1: "-0.5deg", 2: "0.4deg", 3: "-0.8deg" } as const;
+---
+
+<span class={cn("relative inline-block", className)}>
+  <slot />
+  <svg
+    aria-hidden="true"
+    class:list={[
+      "draw-on pointer-events-none absolute -bottom-1.5 left-0 h-2 w-full",
+      tone === "chalk" ? "text-foreground" : "text-primary",
+    ]}
+    fill="none"
+    preserveAspectRatio="none"
+    style={`rotate: ${rotations[variant]}`}
+    viewBox="0 0 180 10"
+  >
+    <path
+      d={paths[variant]}
+      pathLength="100"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-width="2.5"
+      vector-effect="non-scaling-stroke"></path>
+  </svg>
+</span>

@@ -1,0 +1,488 @@
+---
+import Callout from "@/components/ui/primitives/Callout.astro";
+import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
+import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
+import GhostNumeral from "@/components/ui/primitives/GhostNumeral.astro";
+import Pattern from "@/components/ui/primitives/Pattern.astro";
+import RegistrationMarks from "@/components/ui/primitives/RegistrationMarks.astro";
+import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
+import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
+import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import { AA_NORMAL, AAA_NORMAL, blend, contrastRatio, formatRatio } from "@/lib/contrast";
+import "@/styles/global.css";
+
+/**
+ * The proof page for DESIGN.md: every token, ramp, and motif rendered once, with computed
+ * contrast ratios. Noindexed, excluded from the sitemap in Phase 10, and the visual-review
+ * artifact for the Phase 06 gate.
+ *
+ * The build fails if any pair drops below its floor — a token edit cannot quietly break
+ * accessibility.
+ */
+
+const BACKGROUND = "#262626";
+const CARD = "#171717";
+
+interface TextToken {
+  name: string;
+  value: string;
+  floor: number;
+  use: string;
+}
+
+const textTokens: readonly TextToken[] = [
+  { name: "foreground", value: "#FAFAFA", floor: AAA_NORMAL, use: "Headings, nav, emphasis" },
+  { name: "body", value: "#D4D4D4", floor: AAA_NORMAL, use: "All reading copy" },
+  { name: "muted", value: "#A3A3A3", floor: AA_NORMAL, use: "Captions, meta, labels only" },
+  { name: "primary-bright", value: "#FACC15", floor: AA_NORMAL, use: "Links, focus, key words" },
+  { name: "info-bright", value: "#60A5FA", floor: AA_NORMAL, use: "Informational text, data UI" },
+  { name: "destructive-bright", value: "#FCA5A5", floor: AA_NORMAL, use: "Form errors" },
+];
+
+interface FillPair {
+  name: string;
+  fill: string;
+  label: string;
+}
+
+const fillPairs: readonly FillPair[] = [
+  { name: "Safety Yellow (primary)", fill: "#FACC15", label: "#171717" },
+  { name: "Science Blue (info)", fill: "#3B82F6", label: "#171717" },
+  { name: "Hazard Green (FRC primary)", fill: "#16A34A", label: "#08240F" },
+  { name: "Danger Orange (FLL primary)", fill: "#F97316", label: "#241102" },
+  { name: "Destructive", fill: "#DB262F", label: "#FAFAFA" },
+];
+
+const tiers = [
+  { name: "platinum", value: "#CBD5E1" },
+  { name: "gold", value: "#FACC15" },
+  { name: "silver", value: "#A3A3A3" },
+  { name: "bronze", value: "#D08954" },
+] as const;
+
+const surfaces = [
+  { name: "background", value: BACKGROUND, use: "Page ground" },
+  { name: "card", value: CARD, use: "Pockets: cards, panels, fields, footer" },
+  { name: "section-tint", value: "#212121", use: "Full-width alternate section bands" },
+  { name: "border", value: "#3A3A3A", use: "Hairlines, dividers" },
+  { name: "pocket-border", value: "#383838", use: "Pocket walls" },
+] as const;
+
+/** Every pair that must hold, checked at build time. */
+const failures: string[] = [];
+
+for (const token of textTokens) {
+  for (const surface of [BACKGROUND, CARD]) {
+    const ratio = contrastRatio(token.value, surface);
+    if (ratio < token.floor) {
+      failures.push(
+        `${token.name} (${token.value}) on ${surface} is ${formatRatio(ratio)}, below its ${String(token.floor)}:1 floor`,
+      );
+    }
+  }
+}
+
+for (const pair of fillPairs) {
+  const ratio = contrastRatio(pair.fill, pair.label);
+  if (ratio < AA_NORMAL) {
+    failures.push(
+      `${pair.name}: label ${pair.label} on fill ${pair.fill} is ${formatRatio(ratio)}, below AA`,
+    );
+  }
+}
+
+/** DESIGN.md §2.13 asks for this one by name: white key words sit on a translucent swipe. */
+const SWIPE_ALPHA = 0.25;
+const swipeOnGround = blend("#FACC15", BACKGROUND, SWIPE_ALPHA);
+const swipeOnCard = blend("#FACC15", CARD, SWIPE_ALPHA);
+const swipeRatio = Math.min(
+  contrastRatio("#FAFAFA", swipeOnGround),
+  contrastRatio("#FAFAFA", swipeOnCard),
+);
+
+if (swipeRatio < AAA_NORMAL) {
+  failures.push(
+    `highlighter swipe at ${String(SWIPE_ALPHA * 100)}% alpha leaves white text at ${formatRatio(swipeRatio)}, below AAA`,
+  );
+}
+
+for (const tier of tiers) {
+  const ratio = contrastRatio(tier.value, CARD);
+  if (ratio < AA_NORMAL) {
+    failures.push(`tier-${tier.name} on card is ${formatRatio(ratio)}, below AA`);
+  }
+}
+
+if (failures.length > 0) {
+  throw new Error(
+    `DESIGN.md §9 contrast floors violated — fix the tokens in src/styles/global.css:\n  ${failures.join("\n  ")}`,
+  );
+}
+
+const typeRamp = [
+  { token: "display", label: "Display", class: "text-display font-display font-bold" },
+  { token: "h1", label: "Heading 1", class: "text-h1 font-display font-bold" },
+  { token: "h2", label: "Heading 2", class: "text-h2 font-display font-semibold" },
+  { token: "h3", label: "Heading 3", class: "text-h3 font-display font-semibold" },
+  { token: "h4", label: "Heading 4", class: "text-h4 font-sans font-semibold" },
+  { token: "stat", label: "1,240", class: "stat" },
+  { token: "body-lg", label: "Body large", class: "text-body-lg" },
+  { token: "body", label: "Body", class: "text-body" },
+  { token: "small", label: "Small", class: "text-small" },
+  { token: "label", label: "Spec label", class: "spec-label" },
+] as const;
+
+const radii = [
+  { token: "sm", px: "4px", use: "Chips, spec labels, badges" },
+  { token: "md", px: "8px", use: "All controls" },
+  { token: "lg", px: "12px", use: "Pockets, panels, framed media" },
+] as const;
+
+const themes = [
+  { name: "Default (SC2 — Safety Yellow)", theme: undefined },
+  { name: 'data-theme="frc" (Hazard Green)', theme: "frc" },
+  { name: 'data-theme="fll" (Danger Orange)', theme: "fll" },
+] as const;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="noindex, nofollow" name="robots" />
+    <title>Styleguide</title>
+  </head>
+  <body>
+    <main class="mx-auto max-w-6xl px-4 md:px-6">
+      <header class="section-y">
+        <p class="eyebrow text-primary">Design system</p>
+        <h1 class="mt-2">Styleguide</h1>
+        <p class="measure text-body-lg mt-4">
+          Every token, ramp, and motif in <code class="text-foreground font-mono">DESIGN.md</code>,
+          rendered once. Contrast ratios are computed at build time; the build fails if a pair drops
+          below its floor.
+        </p>
+      </header>
+
+      <RulerDivider />
+
+      <!-- Surfaces -->
+      <section class="section-y relative">
+        <GhostNumeral value={1} />
+        <h2>Surfaces</h2>
+        <p class="measure mt-3">
+          The page is raised material; cards are pockets machined into it. Cards are
+          <em>darker</em> than the page — the opposite of the default elevated-card dark UI.
+        </p>
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            surfaces.map((surface) => (
+              <div class="pocket p-4">
+                <div
+                  class="border-border h-16 rounded-md border"
+                  style={`background-color: ${surface.value}`}
+                />
+                <p class="text-small text-foreground mt-3 font-mono">{surface.name}</p>
+                <p class="text-small text-muted font-mono">{surface.value}</p>
+                <p class="text-small mt-1">{surface.use}</p>
+              </div>
+            ))
+          }
+        </div>
+
+        <h3 class="mt-12">Pocket anatomy</h3>
+        <div class="mt-6 grid gap-6 md:grid-cols-3">
+          <div class="pocket p-6">
+            <h4>V2 — machined pocket</h4>
+            <p class="text-small mt-2">
+              The standard card: <code class="font-mono">card</code> fill, 1px pocket border,
+              <code class="font-mono">radius-lg</code>, inset edge physics.
+            </p>
+          </div>
+          <div class="pocket pocket-interactive p-6">
+            <h4>V2 — interactive</h4>
+            <p class="text-small mt-2">
+              Hover or focus this card: the border warms to 40% primary and the floor lifts one
+              step. No translate, no glow, no shadow change.
+            </p>
+          </div>
+          <div class="pocket pocket-feature relative p-6">
+            <RegistrationMarks />
+            <h4>V2+V3 — drawing pocket</h4>
+            <p class="text-small mt-2">
+              Feature moments only, ≥ md screens: the engineering grid renders inside the pocket
+              floor. Registration marks are on this one card.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <RulerDivider />
+
+      <!-- Text ramp -->
+      <section class="section-y relative">
+        <GhostNumeral value={2} />
+        <h2>Text ramp &amp; contrast</h2>
+        <p class="measure mt-3">
+          AAA (≥ 7:1) for anything longer than a caption.
+          <code class="text-foreground font-mono">muted</code> is the floor — nothing text-bearing goes
+          dimmer.
+        </p>
+        <div class="mt-8 overflow-x-auto">
+          <table class="text-small w-full min-w-[42rem] border-collapse">
+            <thead>
+              <tr class="border-border border-b text-left">
+                <th class="spec-label text-muted py-2">Token</th>
+                <th class="spec-label text-muted py-2">Value</th>
+                <th class="spec-label text-muted py-2">On background</th>
+                <th class="spec-label text-muted py-2">On card</th>
+                <th class="spec-label text-muted py-2">Floor</th>
+                <th class="spec-label text-muted py-2">Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                textTokens.map((token) => {
+                  const onBackground = contrastRatio(token.value, BACKGROUND);
+                  const onCard = contrastRatio(token.value, CARD);
+                  return (
+                    <tr class="border-border/60 border-b">
+                      <td class="py-3">
+                        <span style={`color: ${token.value}`}>{token.name}</span>
+                      </td>
+                      <td class="text-muted py-3 font-mono">{token.value}</td>
+                      <td class="py-3 font-mono">{formatRatio(onBackground)}</td>
+                      <td class="py-3 font-mono">{formatRatio(onCard)}</td>
+                      <td class="text-muted py-3 font-mono">{token.floor}:1</td>
+                      <td class="py-3">{token.use}</td>
+                    </tr>
+                  );
+                })
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <RulerDivider />
+
+      <!-- Accents -->
+      <section class="section-y relative">
+        <GhostNumeral value={3} />
+        <h2>Accents — the fill-vs-text law</h2>
+        <p class="measure mt-3">
+          Every accent is a pair: the brand hex for fills with a near-black label, and a brightened
+          variant for text on dark. One action accent per view.
+        </p>
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            fillPairs.map((pair) => (
+              <div class="pocket p-4">
+                <div
+                  class="text-small flex h-16 items-center justify-center rounded-md font-semibold"
+                  style={`background-color: ${pair.fill}; color: ${pair.label}`}
+                >
+                  Label on fill
+                </div>
+                <p class="text-small text-foreground mt-3">{pair.name}</p>
+                <p class="text-small text-muted font-mono">
+                  {pair.fill} / {pair.label} &middot;{" "}
+                  {formatRatio(contrastRatio(pair.fill, pair.label))}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+
+        <h3 class="mt-12">Sponsor tiers</h3>
+        <div class="mt-6 flex flex-wrap gap-3">
+          {
+            tiers.map((tier) => (
+              <span class="spec-chip" style={`color: ${tier.value}`}>
+                {tier.name} &middot; {formatRatio(contrastRatio(tier.value, CARD))}
+              </span>
+            ))
+          }
+        </div>
+      </section>
+
+      <RulerDivider />
+
+      <!-- Typography -->
+      <section class="section-y relative">
+        <GhostNumeral value={4} />
+        <h2>Typography</h2>
+        <p class="measure mt-3">
+          Orbitron owns h1–h3 and eyebrows. Source Code Pro owns numbers and spec labels. Architects
+          Daughter is markup-only. Everything else is Inter.
+        </p>
+        <div class="divide-border mt-8 divide-y">
+          {
+            typeRamp.map((entry) => (
+              <div class="flex flex-col gap-1 py-4 md:flex-row md:items-baseline md:gap-6">
+                <code class="spec-label text-muted w-28 shrink-0">{entry.token}</code>
+                <span class={entry.class}>{entry.label}</span>
+              </div>
+            ))
+          }
+        </div>
+        <p class="font-hand text-body-lg text-foreground mt-8">
+          The annotation hand — five words at most.
+        </p>
+      </section>
+
+      <RulerDivider />
+
+      <!-- Radius and motion -->
+      <section class="section-y relative">
+        <GhostNumeral value={5} />
+        <h2>Radius &amp; motion</h2>
+        <p class="measure mt-3">
+          One end-mill: three radii, nothing else. There is no elevation — depth goes down, not up,
+          so the inset pocket shadows are the only shadows in the system.
+        </p>
+        <div class="mt-8 grid gap-4 sm:grid-cols-3">
+          {
+            radii.map((radius) => (
+              <div class="pocket p-4">
+                <div
+                  class="border-primary/40 bg-card-hover h-16 border"
+                  style={`border-radius: ${radius.px}`}
+                />
+                <p class="text-small text-foreground mt-3 font-mono">radius-{radius.token}</p>
+                <p class="text-small text-muted font-mono">{radius.px}</p>
+                <p class="text-small mt-1">{radius.use}</p>
+              </div>
+            ))
+          }
+        </div>
+        <dl class="mt-8 grid gap-4 sm:grid-cols-3">
+          <div class="pocket p-4">
+            <dt class="spec-label text-muted">duration-micro</dt>
+            <dd class="text-small mt-1 font-mono">150ms — hover, focus</dd>
+          </div>
+          <div class="pocket p-4">
+            <dt class="spec-label text-muted">duration-ui</dt>
+            <dd class="text-small mt-1 font-mono">250ms — menus, accordions</dd>
+          </div>
+          <div class="pocket p-4">
+            <dt class="spec-label text-muted">duration-entrance</dt>
+            <dd class="text-small mt-1 font-mono">500ms — scroll-in entrances</dd>
+          </div>
+        </dl>
+      </section>
+
+      <RulerDivider />
+
+      <!-- Motifs -->
+      <section class="section-y relative">
+        <GhostNumeral value={6} />
+        <h2>Motifs</h2>
+        <p class="measure mt-3">
+          At most four distinct devices per viewport. If a new one enters a view, another leaves.
+        </p>
+
+        <div class="ambient-pool border-border relative mt-8 overflow-hidden rounded-lg border p-8">
+          <Pattern placement="hero" ticks />
+          <p class="eyebrow text-primary relative">Engineering grid + ticks</p>
+          <p class="text-small relative mt-2 max-w-md">
+            Heroes and section breaks only, never on the page ground and never behind body copy.
+            This panel also carries one ambient pool.
+          </p>
+        </div>
+
+        <h3 class="mt-12">Hand markup</h3>
+        <p class="measure mt-3">
+          Every device ships at least three path variants. Two adjacent instances never share one —
+          identical marks read as a stamp.
+        </p>
+
+        <p class="text-h2 font-display text-foreground mt-8 font-semibold">
+          Real <ChalkOval variant={1}>skills</ChalkOval>. Real{" "}
+          <ChalkOval variant={2}>robots</ChalkOval>. Real <ChalkOval variant={3}>fun</ChalkOval>.
+        </p>
+
+        <p class="text-body-lg mt-10">
+          Chalk underlines work inline, under a phrase of three words or fewer — building the{" "}
+          <ChalkUnderline variant={1}>future of STEM</ChalkUnderline> in Franklin County.
+        </p>
+
+        <p class="text-h3 font-display mt-10 font-semibold">
+          A heading with a <span class="highlight-swipe">highlighter swipe</span>
+        </p>
+        <p class="text-h3 font-display mt-3 font-semibold">
+          Or <span class="text-primary">accent-colored text</span> — never both
+        </p>
+        <p class="text-small text-muted mt-3 font-mono">
+          Swipe at {SWIPE_ALPHA * 100}% alpha &middot; white on {swipeOnGround} ={" "}
+          {formatRatio(contrastRatio("#FAFAFA", swipeOnGround))} &middot; on {swipeOnCard} ={" "}
+          {formatRatio(contrastRatio("#FAFAFA", swipeOnCard))}
+        </p>
+
+        <div class="mt-12 flex items-start gap-2">
+          <SketchArrow class="size-14" variant={2} />
+          <a class="font-hand text-body-lg mt-8" href="#">Become a sponsor</a>
+        </div>
+
+        <div class="mt-12">
+          <div class="media-frame bg-card-hover aspect-video"></div>
+          <Callout class="mt-3" reference="FIG. 01">Framed media, 2px primary border</Callout>
+        </div>
+
+        <h3 class="mt-12">Title block</h3>
+        <TitleBlock
+          class="mt-6"
+          fields={[
+            { label: "Project", value: "scstem.org" },
+            { label: "Organization", value: "South Central STEM Collective" },
+            { label: "URL", value: "scstem.org", mono: true, href: "https://scstem.org" },
+          ]}
+        />
+      </section>
+
+      <RulerDivider />
+
+      <!-- Program themes -->
+      <section class="section-y relative">
+        <GhostNumeral value={7} />
+        <h2>Program themes</h2>
+        <p class="measure mt-3">
+          A program page is the same site wearing team colors. Each theme remaps four tokens —
+          <code class="text-foreground font-mono">primary</code>,
+          <code class="text-foreground font-mono">primary-bright</code>,
+          <code class="text-foreground font-mono">primary-foreground</code>,
+          <code class="text-foreground font-mono">ring</code> — and nothing else.
+        </p>
+        <div class="mt-8 space-y-6">
+          {
+            themes.map((entry) => (
+              <div class="pocket p-6" data-theme={entry.theme}>
+                <p class="eyebrow text-primary-bright">{entry.name}</p>
+                <div class="mt-4 flex flex-wrap items-center gap-4">
+                  <span class="bg-primary text-small text-primary-foreground rounded-md px-4 py-2 font-semibold">
+                    Primary button
+                  </span>
+                  <span class="border-border text-small text-foreground rounded-md border px-4 py-2">
+                    Outline button
+                  </span>
+                  <a class="text-small" href="#">
+                    An in-prose link
+                  </a>
+                  <span class="stat">12</span>
+                  <button
+                    class="border-border text-small text-foreground rounded-md border px-4 py-2"
+                    type="button"
+                  >
+                    Focus me for the ring
+                  </button>
+                </div>
+                <hr class="accent-rule mt-6" />
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

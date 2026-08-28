@@ -30,9 +30,9 @@ export default defineConfig(
     rules: {
       // Mirrors oxfmt's sortImports so the whole repo is sorted the same way.
       "perfectionist/sort-imports": "error",
-      // Restated from .oxlintrc.json, which ignores `**/*.astro`. ESLint is the
-      // only linter that reads this extension, so without this the two bans
-      // AGENTS.md leads with are off in the file type the site is built from.
+      // Restated from .oxlintrc.json, which ignores `**/*.astro`. ESLint is the only linter
+      // that reads this extension, so without this the ban is off in the file type the site
+      // is built from.
       "no-restricted-imports": [
         "error",
         {
@@ -46,6 +46,18 @@ export default defineConfig(
           ],
         },
       ],
+
+      /**
+       * astro-eslint-parser does not type the JSX-like expressions in an Astro *template*, so
+       * every `items.map(() => <El />)` resolves as `error` and trips this rule. It is a gap in
+       * the parser, not unsafety in the code: frontmatter — the part that holds real logic — is
+       * fully typed, and `astro check` type-checks templates properly.
+       *
+       * Sibling rules in this family (no-unsafe-assignment/-call/-member-access) may need the
+       * same treatment as templates grow; add them here with the same reasoning, never blanket
+       * off the whole family. See docs/adr/0001-toolchain-split.md.
+       */
+      "@typescript-eslint/no-unsafe-return": "off",
     },
   },
 );

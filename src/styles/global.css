@@ -1,7 +1,420 @@
 @import "tailwindcss";
+@import "./fonts.css";
 
 /* legacy/ is checked in and reference-only, so Tailwind's automatic source
    detection would otherwise emit utilities for the retired Next.js site. */
 @source not "../../legacy";
 
-/* Design tokens land here in Phase 02 (see DESIGN.md). */
+/**
+ * The token set from DESIGN.md. Values here are normative-by-copy: if one disagrees with the
+ * doc, the doc wins (DESIGN.md §11). `/styleguide` renders every pair's computed contrast ratio
+ * and fails visibly when one drops below its floor.
+ *
+ * Dark is the only theme today (D15). Base tokens live on `:root` with dark values as the
+ * defaults, so a light theme is a `[data-theme="light"]` block that re-declares them — a token
+ * addition, not a refactor. That block would land right after the program themes below.
+ */
+@theme {
+  /* --- Surfaces: the recessed system (DESIGN.md §2) --------------------------------------- */
+  /* The page is raised material; cards are pockets machined into it. Cards are *darker*. */
+  --color-background: #262626;
+  --color-card: #171717;
+  --color-section-tint: #212121;
+  --color-border: #3a3a3a;
+  /* Pocket walls read one step brighter than a plain divider. */
+  --color-pocket-border: #383838;
+  /* Interactive pocket hover: the floor lifts one step, nothing translates or glows. */
+  --color-card-hover: #1a1a1a;
+
+  /* --- Text ramp (DESIGN.md §2) ----------------------------------------------------------- */
+  --color-foreground: #fafafa; /* 14.5:1 on background — headings, nav, emphasis */
+  --color-body: #d4d4d4; /* 10.2:1 — all reading copy */
+  --color-muted: #a3a3a3; /* 6.0:1 — captions, meta, labels only. Never paragraphs. */
+
+  /* --- Accents: the fill-vs-text law (DESIGN.md §2) --------------------------------------- */
+  /* Every accent is a pair: brand hex for fills with a near-black label, and a brightened
+     variant for text/icons/focus on dark. Safety Yellow is bright enough to be both. */
+  --color-primary: #facc15;
+  --color-primary-bright: #facc15;
+  --color-primary-foreground: #171717;
+  --color-ring: #facc15;
+
+  /* Science Blue — informational only, and the reserved primary of a future light theme. */
+  --color-info: #3b82f6;
+  --color-info-bright: #60a5fa;
+  --color-info-foreground: #171717;
+
+  /* Errors. Added in Phase 02 under DESIGN.md §11: §8 requires a destructive text token but
+     the doc named no value. Follows the same pair law. */
+  --color-destructive: #db262f;
+  --color-destructive-bright: #fca5a5;
+  --color-destructive-foreground: #fafafa;
+
+  /* --- Sponsor tiers (DESIGN.md §8) ------------------------------------------------------- */
+  --color-tier-platinum: #cbd5e1;
+  --color-tier-gold: #facc15;
+  --color-tier-silver: #a3a3a3;
+  --color-tier-bronze: #d08954;
+
+  /* --- Typography (DESIGN.md §3) ---------------------------------------------------------- */
+  --font-display: "Orbitron", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Source Code Pro", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-hand: "Architects Daughter", "Comic Sans MS", cursive;
+
+  /* Fluid between 360px and 1440px viewports. */
+  --text-display: clamp(2.5rem, 1.9167rem + 2.5926vw, 4.25rem);
+  --text-display--line-height: 1.05;
+  --text-h1: clamp(2rem, 1.6667rem + 1.4815vw, 3rem);
+  --text-h1--line-height: 1.1;
+  --text-h2: clamp(1.5rem, 1.25rem + 1.1111vw, 2.25rem);
+  --text-h2--line-height: 1.15;
+  --text-h3: clamp(1.25rem, 1.1667rem + 0.3704vw, 1.5rem);
+  --text-h3--line-height: 1.25;
+  --text-h4: clamp(1.125rem, 1.0833rem + 0.1852vw, 1.25rem);
+  --text-h4--line-height: 1.35;
+  --text-stat: clamp(1.75rem, 1.5833rem + 0.7407vw, 2.25rem);
+  --text-stat--line-height: 1.1;
+  --text-body-lg: clamp(1.0625rem, 1.0208rem + 0.1852vw, 1.1875rem);
+  --text-body-lg--line-height: 1.65;
+  --text-body: clamp(1rem, 0.9792rem + 0.0926vw, 1.0625rem);
+  --text-body--line-height: 1.65;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-label: clamp(0.6875rem, 0.6667rem + 0.0926vw, 0.75rem);
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.05em;
+
+  /* --- Radius: one end-mill (DESIGN.md §4) ------------------------------------------------ */
+  /* Three values, nothing else. 16px and pill radii are retired. */
+  --radius-sm: 4px; /* chips, spec labels, badges */
+  --radius-md: 8px; /* every control: buttons, inputs, icon tiles */
+  --radius-lg: 12px; /* every cut feature: pockets, panels, framed media */
+
+  /* --- Motion (DESIGN.md §6) -------------------------------------------------------------- */
+  --duration-micro: 150ms; /* hover, focus */
+  --duration-ui: 250ms; /* menus, accordions */
+  --duration-entrance: 500ms; /* scroll-in entrances */
+  --ease-entrance: cubic-bezier(0, 0, 0.2, 1); /* ease-out */
+  --ease-toggle: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
+
+  /* --- Layout ----------------------------------------------------------------------------- */
+  --breakpoint-3xl: 120rem;
+}
+
+/**
+ * Program themes (DESIGN.md §2, D16). A program page is the same site wearing team colors:
+ * these blocks remap the action accent and nothing else. Adding a program is one block.
+ */
+[data-theme="frc"] {
+  --color-primary: #16a34a; /* Hazard Green */
+  --color-primary-bright: #3ecf6e;
+  --color-primary-foreground: #08240f;
+  --color-ring: #3ecf6e;
+}
+
+[data-theme="fll"] {
+  --color-primary: #f97316; /* Danger Orange */
+  --color-primary-bright: #fb923c;
+  --color-primary-foreground: #241102;
+  --color-ring: #fb923c;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Orbitron owns h1–h3 and stops there (DESIGN.md §3): h4–h6 are Inter. */
+  h1,
+  h2,
+  h3 {
+    color: var(--color-foreground);
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    font-weight: 700;
+    line-height: var(--text-h1--line-height);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+  }
+
+  h4,
+  h5,
+  h6 {
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    line-height: var(--text-h4--line-height);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* In-prose links are accent-colored and underlined (DESIGN.md §8). */
+  a {
+    color: var(--color-primary-bright);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  /* Never removed, on any interactive element (DESIGN.md §9). */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+  }
+
+  /* Numerals and dates speak in the data voice wherever they stand alone. */
+  time,
+  data {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Media never overflows its column. */
+  img,
+  picture,
+  video,
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/**
+ * Global reduced-motion kill switch (DESIGN.md §6, §9). Every animation in the system is
+ * confirmation, never content, so removing all of them costs nothing.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/**
+ * Signature motifs (DESIGN.md §2) as utilities, so pages cannot reinvent them. The register
+ * budget is a review rule, not something CSS can enforce: at most 4 distinct devices per
+ * viewport, and one atmosphere device per section boundary.
+ */
+
+/* Pocket anatomy V2, "machined pocket" — the standard card. Depth goes down, never up. */
+@utility pocket {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-pocket-border);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    inset 0 2px 8px rgb(0 0 0 / 0.55),
+    inset 0 -1px 0 rgb(255 255 255 / 0.05);
+}
+
+/* Interactive pockets: the border warms and the floor lifts one step. Nothing translates,
+   nothing glows, the shadow does not change. */
+@utility pocket-interactive {
+  transition:
+    background-color var(--duration-micro) var(--ease-toggle),
+    border-color var(--duration-micro) var(--ease-toggle);
+
+  &:hover,
+  &:focus-within {
+    background-color: var(--color-card-hover);
+    border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+}
+
+/* Feature pocket V2+V3, "drawing pocket" — the grid is *inside* the pocket, and only on
+   screens wide enough for it to read. Dense card grids and mobile stay plain V2. */
+@utility pocket-feature {
+  @media (width >= 48rem) {
+    background-image:
+      linear-gradient(to right, rgb(250 250 250 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(250 250 250 / 0.05) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+}
+
+/* The 2px primary hairline that ends a hero, full-bleed. */
+@utility accent-rule {
+  height: 2px;
+  background-color: var(--color-primary);
+  border: 0;
+}
+
+/* The 32px rule under a card title. Machined: perfectly straight, unlike a chalk underline. */
+@utility title-rule {
+  width: 32px;
+  height: 2px;
+  background-color: var(--color-primary);
+  border: 0;
+}
+
+/* The "team picture frame" for photo collages and feature media. */
+@utility media-frame {
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* Highlighter swipe: a skewed translucent marker stroke behind white key words. A heading
+   uses `primary` text *or* a swipe, never both. */
+@utility highlight-swipe {
+  position: relative;
+  color: var(--color-foreground);
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0.08em -0.12em 0.06em -0.12em;
+    z-index: -1;
+    /* 25% keeps white-on-swipe at AAA (7.7:1 on the ground); verified on /styleguide. */
+    background-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+    border-radius: 2px;
+    transform: rotate(-0.8deg);
+  }
+}
+
+/* Eyebrow label — Orbitron's one all-caps use (DESIGN.md §3). */
+@utility eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Spec label — the other sanctioned caps: Source Code Pro, tracked. */
+@utility spec-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: var(--text-label--letter-spacing);
+  line-height: var(--text-label--line-height);
+  text-transform: uppercase;
+}
+
+/* Spec chip — a stamped plate: transparent fill, 40%-alpha border in the chip's own color. */
+@utility spec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.1875rem 0.5rem;
+  border: 1px solid currentcolor;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+}
+
+/* Stat numeral — the data voice (DESIGN.md §8). */
+@utility stat {
+  font-family: var(--font-mono);
+  font-size: var(--text-stat);
+  font-weight: 600;
+  line-height: var(--text-stat--line-height);
+  color: var(--color-primary-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ambient pool — a small lightness modulation of the ground, anchored to a section's top.
+   One per section, never stacked with another atmosphere device, never behind a photo. */
+@utility ambient-pool {
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      color-mix(in srgb, var(--color-primary) 5%, transparent),
+      transparent 70%
+    );
+  }
+}
+
+@utility ambient-pool-neutral {
+  &::before {
+    background: radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      rgb(250 250 250 / 0.03),
+      transparent 70%
+    );
+  }
+}
+
+/* Section rhythm (DESIGN.md §4) — consistent on every section. */
+@utility section-y {
+  padding-block: 4rem;
+
+  @media (width >= 48rem) {
+    padding-block: 6rem;
+  }
+}
+
+/* Prose measure (DESIGN.md §3). */
+@utility measure {
+  max-width: 70ch;
+}
+
+/**
+ * Hand-markup entrance: strokes draw themselves on. The one sanctioned decorative animation,
+ * because it enacts the metaphor. Reduced motion disables it via the global kill switch, and
+ * the final state is a fully drawn stroke either way.
+ */
+@keyframes draw-on {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/**
+ * Paired with `pathLength="100"` on the animated path, so the dash math is in percent and the
+ * stroke always ends fully drawn. Hard-coded lengths silently truncate any path longer than
+ * the guess.
+ */
+@utility draw-on {
+  stroke-dasharray: 100;
+  animation: draw-on var(--duration-entrance) var(--ease-entrance) both;
+}

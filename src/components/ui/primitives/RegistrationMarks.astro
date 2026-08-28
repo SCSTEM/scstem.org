@@ -1,0 +1,42 @@
+---
+import { cn } from "cnfast";
+
+/**
+ * Drafting-sheet crop marks (DESIGN.md §2.8): corner brackets on **one** feature pocket per
+ * view. Never on standard cards — they stop reading as registration and start reading as
+ * decoration. Expects a `relative` parent.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const corners = [
+  { key: "tl", path: "M1 13 L1 1 L13 1" },
+  { key: "tr", path: "M11 1 L23 1 L23 13" },
+  { key: "br", path: "M23 11 L23 23 L11 23" },
+  { key: "bl", path: "M13 23 L1 23 L1 11" },
+] as const;
+
+const position = {
+  tl: "top-0 left-0",
+  tr: "top-0 right-0",
+  br: "right-0 bottom-0",
+  bl: "bottom-0 left-0",
+} as const;
+---
+
+<div aria-hidden="true" class={cn("pointer-events-none absolute inset-0", className)}>
+  {
+    corners.map((corner) => (
+      <svg
+        class:list={["text-primary/35 absolute size-5", position[corner.key]]}
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path d={corner.path} stroke="currentColor" stroke-linecap="round" stroke-width="1.5" />
+      </svg>
+    ))
+  }
+</div>
