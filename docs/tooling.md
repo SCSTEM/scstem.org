@@ -69,13 +69,36 @@ Rationale and the migration seam for collapsing onto oxc: `docs/adr/0001-toolcha
 - **The `clsx`/`tailwind-merge` and `legacy/*` import bans are declared twice** — once in
   `.oxlintrc.json` and again in `eslint.config.ts`. oxlint ignores `.astro`, so the ESLint copy is
   what enforces them in the file type the site is built from. Both copies must change together.
-- **`functions/` has its own tsconfig** and is typechecked separately (`tsc -p functions`, part of
+- **`functions/` has its own tsconfig** and is typechecked separately (`tsgo -p functions`, part of
   `pnpm typecheck`). It uses `moduleResolution: "bundler"` because Cloudflare bundles Functions
   with esbuild, which resolves the extensionless `@/*` path aliases the source already uses. It
   restates the root tsconfig's strictness flags rather than extending
   `astro/tsconfigs/strictest` (which pulls in DOM and Astro types the Workers runtime lacks) —
   this is the only code handling untrusted request input, so it must not typecheck more loosely
   than `src/`.
+
+### TypeScript: two compilers, on purpose
+
+| What                      | Compiler                                                          |
+| ------------------------- | ----------------------------------------------------------------- |
+| `src/**` and `.astro`     | `astro check` → JavaScript TypeScript (`typescript`)              |
+| `functions/**`            | `tsgo` → TypeScript 7, the Go port (`@typescript/native-preview`) |
+| oxlint's type-aware rules | `tsgolint` → also Go (`oxlint-tsgolint`)                          |
+
+`functions/` runs on TypeScript 7. Measured on this tree: `tsc -p functions` 961 ms, `tsgo -p functions`
+182 ms.
+
+**`astro check` cannot move yet, and that is why `typescript` is still a dependency.**
+`@astrojs/check` declares `peerDependencies: { "typescript": "^5.0.0 || ^6.0.0" }` and its language
+server is built against the JavaScript compiler's API. `@typescript/native-preview` exports only
+`version` and `versionMajorMinor` — there is no `typescript.js` or `tsserver.js` in it — so nothing
+can substitute it there. Re-check when `@astrojs/check` widens that peer range.
+
+`@typescript/native-preview` is a `7.0.0-dev.*` build; it is pinned exactly, like every other tool
+here, and `pnpm-workspace.yaml`'s `minimumReleaseAge` still applies.
+
+In the editor, `js/ts.experimental.useTsgo` routes `.ts` files to tsgo while `js/ts.tsdk.path` keeps
+the JavaScript compiler available for the Astro language server — the same split as the table above.
 
 ### Vendored lint rules
 

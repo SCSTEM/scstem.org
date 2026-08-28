@@ -119,13 +119,19 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 ### Deviations from this brief
 
 - `typescript` pinned to 6.0.3, not latest (7.x): `typescript-eslint` peers `<6.1.0`,
-  `@astrojs/check` peers `^5 || ^6`. Recorded in `docs/adr/0001-toolchain-split.md`.
+  `@astrojs/check` peers `^5 || ^6`. Recorded in `docs/adr/0001-toolchain-split.md`. This is the
+  JavaScript compiler; `functions/` runs on TypeScript 7 via `tsgo` (below).
 - Every dependency is pinned to the newest version **at least a week old**, because
   `minimumReleaseAge` rejects fresher ones. Pins are therefore not "latest".
-- `pnpm typecheck` is `astro check && tsc -p functions`; `functions/` moved to
-  `moduleResolution: "bundler"` + `strict` so its existing `@/*` imports typecheck. That
-  surfaced one real bug (a `null` `CF-Connecting-IP` was being sent to Turnstile as
-  `"null"`), fixed in `functions/util.ts`.
+- `pnpm typecheck` is `astro check && tsgo -p functions`; `functions/` moved to
+  `moduleResolution: "bundler"` + the root's strictness flags so its existing `@/*` imports
+  typecheck. That surfaced one real bug (a `null` `CF-Connecting-IP` was being sent to Turnstile
+  as `"null"`), fixed in `functions/util.ts`.
+- **`functions/` typechecks with TypeScript 7** (`tsgo`, `@typescript/native-preview`): 961 ms →
+  182 ms on this tree. `astro check` stays on the JavaScript compiler because
+  `@astrojs/check` peers `^5 || ^6` and its language server needs that compiler's API — the native
+  preview exports only `version`/`versionMajorMinor`, with no `typescript.js` or `tsserver.js` to
+  substitute. The split is documented in `docs/tooling.md`.
 - oxfmt is invoked with `--ignore-path .gitignore` and Prettier with an explicit
   `**/*.{astro,md}` glob; ESLint scopes by `files:` rather than a blanket ignore. All three
   are gitignore-semantics workarounds documented in `docs/tooling.md`.
