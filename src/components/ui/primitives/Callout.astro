@@ -1,0 +1,41 @@
+---
+import { cn } from "cnfast";
+
+/**
+ * A labeled callout (DESIGN.md §2.11): leader line plus a spec label, as figure captions under
+ * framed media ("FIG. 01 — BIOHAZARD, 2023 SEASON") or detail annotations on a hero. A caption
+ * may double as an image's visible credit.
+ *
+ * Renders `<p>` by default. HTML permits `<figcaption>` only as a direct child of `<figure>`, so
+ * `as="figcaption"` is opt-in and the caller owns the `<figure>` — the annotation use has no
+ * figure at all, and asserting the relationship without one is invalid markup that assistive
+ * tech cannot act on.
+ */
+interface Props {
+  /** The uppercase reference, e.g. `FIG. 01`. Rendered before the em dash. */
+  reference?: string;
+  /** Which side the leader line runs to. */
+  side?: "left" | "right";
+  /** Use `figcaption` only when this is a direct child of a `<figure>`. */
+  as?: "p" | "figcaption";
+  class?: string;
+}
+
+const { reference, side = "left", as: Tag = "p", class: className } = Astro.props;
+---
+
+<Tag
+  class={cn(
+    "spec-label flex items-center gap-2 text-muted",
+    side === "right" && "flex-row-reverse text-right",
+    className,
+  )}
+>
+  <svg aria-hidden="true" class="h-2 w-8 shrink-0" fill="none" viewBox="0 0 32 8">
+    <circle cx="1.5" cy="4" fill="currentColor" r="1.5"></circle>
+    <line stroke="currentColor" stroke-width="1" x1="3" x2="32" y1="4" y2="4"></line>
+  </svg>
+  <span>
+    {reference !== undefined && <>{reference} &mdash; </>}<slot />
+  </span>
+</Tag>

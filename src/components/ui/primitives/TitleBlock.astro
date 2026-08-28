@@ -1,0 +1,43 @@
+---
+import { cn } from "cnfast";
+
+/**
+ * The engineering-drawing identity strip (DESIGN.md §2.9): bordered compartments, each an
+ * uppercase spec label over its value. Its home is the footer bottom — the drawing sheet's
+ * corner. Contact and event pages may use the stacked form as an info card.
+ *
+ * Horizontal on ≥ md, stacked on mobile.
+ */
+interface Field {
+  label: string;
+  value: string;
+  /** Codes, URLs, and numbers stay in the data voice; prose values set in Inter. */
+  mono?: boolean;
+  href?: string;
+}
+
+interface Props {
+  fields: readonly Field[];
+  class?: string;
+}
+
+const { fields, class: className } = Astro.props;
+---
+
+<dl
+  class={cn(
+    "grid grid-cols-1 divide-y divide-border border border-border md:grid-flow-col md:auto-cols-fr md:grid-cols-none md:divide-x md:divide-y-0",
+    className,
+  )}
+>
+  {
+    fields.map((field) => (
+      <div class="px-4 py-3">
+        <dt class="spec-label text-muted">{field.label}</dt>
+        <dd class:list={["text-small text-body mt-1", field.mono === true && "font-mono"]}>
+          {field.href === undefined ? field.value : <a href={field.href}>{field.value}</a>}
+        </dd>
+      </div>
+    ))
+  }
+</dl>

@@ -1,0 +1,59 @@
+---
+import { cn } from "cnfast";
+
+import { type HandTone, handToneClass } from "@/lib/hand";
+
+/**
+ * A hand-drawn curved arrow (DESIGN.md §2.15). **One per page.**
+ *
+ * Its target is always handwritten annotation text (`font-hand`), never a typeset element — a
+ * sketched arrow pointing at regular UI breaks the fiction. The annotation it points at may
+ * itself be a link.
+ *
+ * Three variants; adjacent instances must differ.
+ */
+interface Props {
+  variant?: 1 | 2 | 3;
+  /** Which way the arrow sweeps. */
+  direction?: "down-right" | "down-left" | "right";
+  tone?: HandTone;
+  class?: string;
+}
+
+const { variant = 1, direction = "down-right", tone = "pencil", class: className } = Astro.props;
+
+/** Shaft plus a two-stroke head, all open-ended. */
+const paths = {
+  1: { shaft: "M6 6C10 26 26 42 54 48", head: "M54 48 38 44 M54 48 46 34" },
+  2: { shaft: "M8 4C6 24 18 44 52 50", head: "M52 50 35 48 M52 50 43 35" },
+  3: { shaft: "M4 8C14 24 28 38 56 46", head: "M56 46 40 43 M56 46 47 32" },
+} as const;
+
+/**
+ * Rotation is set inline (per-variant jitter), and Tailwind v4 implements `rotate-*` with the
+ * same individual `rotate` property — an inline style would silently beat the class. So the
+ * direction's rotation is summed into that one value instead of being a utility.
+ *
+ * Mirroring stays a class: `-scale-x-100` sets `scale`, which does not collide.
+ */
+const rotations = { 1: "0deg", 2: "-3deg", 3: "2deg" } as const;
+
+const directionRotation = { "down-right": "0deg", "down-left": "0deg", right: "-45deg" } as const;
+
+const mirror = { "down-right": "", "down-left": "-scale-x-100", right: "" } as const;
+---
+
+<svg
+  aria-hidden="true"
+  class={cn(
+    "draw-on hand-stroke pointer-events-none",
+    handToneClass(tone),
+    mirror[direction],
+    className,
+  )}
+  style={`rotate: calc(${rotations[variant]} + ${directionRotation[direction]})`}
+  viewBox="0 0 64 56"
+>
+  <path d={paths[variant].shaft} pathLength="100"></path>
+  <path d={paths[variant].head} pathLength="100"></path>
+</svg>

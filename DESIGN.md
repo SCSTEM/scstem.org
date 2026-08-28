@@ -44,21 +44,25 @@ The page is the raised material; cards are **pockets machined into it**. (This i
 | Token | Value | Contrast on `#262626` | Use |
 |---|---|---|---|
 | `foreground` | `#FAFAFA` | ≈14.5:1 (AAA) | Headings, nav, emphasis (brand White) |
-| `body` | `#D4D4D4` | ≈11.5:1 (AAA) | **All reading copy** |
+| `body` | `#D4D4D4` | 10.2:1 (AAA) | **All reading copy** |
 | `muted` | `#A3A3A3` | ≈6.0:1 (AA) | Captions, meta, labels only — never paragraphs |
 
 Rule: **AAA (≥7:1) for anything longer than a caption.** `muted` is the floor; nothing text-bearing goes dimmer.
 
 ### Accents — the fill-vs-text law
 
+All ratios in this section are measured against `background` `#262626` and verified at build
+time on `/styleguide`; the build fails if one drops below its floor.
+
 Every brand accent is a **token pair**: the brand hex for *fills* (buttons, bands, chips, large graphics — with a near-black label), and a brightened variant for *text/icons/focus on dark* (the brand hexes other than yellow fail AA as dark-bg text). No exceptions, no third variants.
 
 | Accent | Fill (brand hex / label color) | Text-on-dark (≈ contrast) | Role |
 |---|---|---|---|
-| Safety Yellow | `#FACC15` / `#171717` | `#FACC15` (9.9:1 — bright enough to be both) | **Action**: CTAs, links, focus ring, key-word emphasis. The default `primary`. |
-| Science Blue | `#3B82F6` / `#FAFAFA` | `#60A5FA` (6.0:1) | **Informational**: info callouts, calendar/event chips, data UI. Also the **designated primary of a future light theme** (yellow is illegible on white) — do not repurpose. |
+| Safety Yellow | `#FACC15` / `#171717` | `#FACC15` (9.8:1 — bright enough to be both) | **Action**: CTAs, links, focus ring, key-word emphasis. The default `primary`. |
+| Science Blue | `#3B82F6` / `#171717` | `#60A5FA` (5.9:1) | **Informational**: info callouts, calendar/event chips, data UI. Also the **designated primary of a future light theme** (yellow is illegible on white) — do not repurpose. |
 | Hazard Green | `#16A34A` / `#08240F` | `#3ECF6E` (7.4:1) | FRC/Biohazard theme accent pair |
-| Danger Orange | `#F97316` / `#241102` | `#FB923C` (8.0:1) | FLL theme accent pair |
+| Danger Orange | `#F97316` / `#241102` | `#FB923C` (6.6:1) | FLL theme accent pair |
+| Destructive | `#DB262F` / `#FAFAFA` (4.6:1) | `#FCA5A5` (7.9:1) | **Errors only**: form validation, destructive confirmations. Not a brand accent and never decorative — it appears when something is wrong and nowhere else. |
 
 ### Program themes (D16)
 
@@ -100,7 +104,7 @@ The engineer's markup drawn *over* the sheet — this is what keeps the machined
 **Variation rule**: every markup device ships as a set of **at least 3 distinct SVG path variants** (implemented as primitives, e.g. `ChalkOval variant={1|2|3}`), further varied per-instance by small rotation/flip. Two adjacent instances never share a variant — identical "hand-drawn" marks read as a stamp and break the illusion. Swipes vary by rotation (±0.5–2°), inset, and alpha within their range.
 
 12. **Chalk ovals**: key words circled with a hand-drawn open ellipse — `foreground` white (chalk) in hero/photo contexts, `primary` (grease pencil) on the ground. The "Real ⬭Skills⬭. Real ⬭Robots⬭. Real ⬭Fun⬭." treatment; the tagline itself is sanctioned brand copy for heroes/CTAs. Tagline/display contexts only, one run per view.
-13. **Highlighter swipes**: a skewed translucent `primary` rectangle (25–35% alpha, ±0.5–2° rotation, 2–3px radius) behind white key words — the marker-highlight alternative to `primary`-colored text. A heading uses colored text *or* a swipe, never both; verify the white-on-swipe contrast on `/styleguide`.
+13. **Highlighter swipes**: a skewed translucent `primary` rectangle (25–35% alpha — **25% is the default**, the only value in the range that keeps white text at AAA: 7.6:1 on the ground, 9.2:1 on `card`; ±0.5–2° rotation, 2–3px radius) behind white key words — the marker-highlight alternative to `primary`-colored text. A heading uses colored text *or* a swipe, never both; verify the white-on-swipe contrast on `/styleguide`.
 14. **Chalk underlines**: hand-drawn, slightly curved underline strokes (`primary`). Two uses: beneath a heading, and **inline within a sentence** under a short key phrase (≤3 words — e.g. "building the ~future of STEM~") as the sanctioned in-prose emphasis. Distinct from the machined 32px card rule, which stays perfectly straight — machined vs. hand is a deliberate contrast, never blended.
 15. **Sketch arrows**: one hand-drawn curved arrow per page. **An arrow's target is always handwritten annotation text (§3), never a regular-font element** — a sketched arrow pointing at typeset UI breaks the fiction. The annotation may itself be a link (e.g. the handwritten "Become a sponsor").
 

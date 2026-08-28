@@ -1,0 +1,61 @@
+---
+import { cn } from "cnfast";
+
+/**
+ * The engineering grid (DESIGN.md §2.3) — graph-paper linework at 4–7% opacity. Replaces the
+ * legacy circuit-board texture.
+ *
+ * Placement is deliberately limited: heroes, section breaks, and feature-pocket floors. Never
+ * behind body copy, and **never on the page ground** — a page-level grid was tried in review
+ * and rejected, because it competes with the pocket grid floors and dulls the recess effect.
+ */
+interface Props {
+  /** `hero` is the strongest at 7%, `section` sits at 5%, `pocket` at 4% under card content. */
+  placement?: "hero" | "section" | "pocket";
+  /** Optional dimension-line ticks along the top edge — rare garnish, one per view at most. */
+  ticks?: boolean;
+  class?: string;
+}
+
+const { placement = "section", ticks = false, class: className } = Astro.props;
+
+/**
+ * The grid itself is `@utility engineering-grid` in global.css, shared with `pocket-feature`.
+ * Placement only picks the two custom properties it reads, so the linework's geometry and its
+ * token-derived stroke have a single definition.
+ */
+const alpha = { hero: "7%", section: "5%", pocket: "4%" }[placement];
+const cell = placement === "pocket" ? "26px" : "28px";
+---
+
+<div
+  aria-hidden="true"
+  class={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
+>
+  <div
+    class="engineering-grid absolute inset-0"
+    style={`--grid-cell: ${cell}; --grid-alpha: ${alpha};`}
+  >
+  </div>
+  {
+    ticks && (
+      <svg
+        class="text-primary/50 absolute inset-x-0 top-0 h-3 w-full"
+        preserveAspectRatio="none"
+        viewBox="0 0 240 12"
+      >
+        <line stroke="currentColor" stroke-width="1" x1="0" x2="240" y1="1" y2="1" />
+        {Array.from({ length: 25 }, (_, index) => index * 10).map((x) => (
+          <line
+            stroke="currentColor"
+            stroke-width="1"
+            x1={x}
+            x2={x}
+            y1="1"
+            y2={x % 50 === 0 ? 9 : 5}
+          />
+        ))}
+      </svg>
+    )
+  }
+</div>
