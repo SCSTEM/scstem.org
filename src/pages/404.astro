@@ -1,0 +1,61 @@
+---
+import Button from "@/components/ui/primitives/Button.astro";
+import Card from "@/components/ui/primitives/Card.astro";
+import CardDescription from "@/components/ui/primitives/CardDescription.astro";
+import CardHeader from "@/components/ui/primitives/CardHeader.astro";
+import CardTitle from "@/components/ui/primitives/CardTitle.astro";
+import { nav } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+/**
+ * Cloudflare Pages serves `404.html` from static output automatically, so this needs no config.
+ * Noindexed, and useful rather than cute: the links are the four places people were most likely
+ * headed.
+ */
+const destinations = [
+  { href: "/programs", description: "FIRST LEGO League and FIRST Robotics Competition." },
+  { href: "/about", description: "Who we are and what we have built since 2013." },
+  { href: "/sponsors", description: "The businesses that make this possible." },
+  { href: "/contact", description: "Ask us anything — we answer." },
+].map((destination) => ({
+  ...destination,
+  /** Titles come from the nav inventory, so a renamed route renames itself here too. */
+  title: nav.primary.find((link) => link.href === destination.href)?.label ?? "Contact",
+}));
+---
+
+<BaseLayout
+  description="That page does not exist. Here are the places you were most likely headed."
+  noindex
+  title="Page not found"
+>
+  <section class="section-y ambient-pool container-page">
+    <p class="eyebrow text-primary">Error 404</p>
+    <h1 class="mt-2">We can't find that page</h1>
+    <p class="measure text-body-lg mt-4">
+      It may have moved, or the link may be out of date. Try one of these instead.
+    </p>
+
+    <div class="mt-10 grid gap-4 sm:grid-cols-2">
+      {
+        destinations.map((destination) => (
+          <Card as="article" interactive>
+            <CardHeader>
+              <CardTitle>
+                <a class="ui-link" href={destination.href}>
+                  {destination.title}
+                </a>
+              </CardTitle>
+              <CardDescription>{destination.description}</CardDescription>
+            </CardHeader>
+          </Card>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      <Button href="/">Back to the homepage</Button>
+      <Button href="/get-involved" variant="outline">Get involved</Button>
+    </div>
+  </section>
+</BaseLayout>

@@ -3,8 +3,9 @@
   "entry": [
     "src/pages/**",
     "functions/**",
-    // Exports the font URLs BaseLayout preloads; wired up in Phase 05.
-    "src/styles/fonts.ts",
+    // Used by the program pages in Phase 07. It exists now because the theming contract
+    // belongs with the rest of the shell, not with the first page that happens to need it.
+    "src/layouts/ProgramLayout.astro",
     // Formats an event's date from `start`/`end`, which replaced the `displayDate` string every
     // event used to restate. Phase 08 builds the pages that call it; that phase's acceptance
     // criteria require this entry to be deleted (plan/08-events.md).

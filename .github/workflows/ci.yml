@@ -46,6 +46,12 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # The app shell links to routes Phase 07 has not built yet, so `.lycheeignore` excludes
+      # exactly those. This fails if one of them has since been built, so the exclusions cannot
+      # outlive their purpose and start hiding a real 404.
+      - name: Check for stale link exclusions
+        run: node tools/checks/stale-link-ignores.mjs
+
       # --root-dir is required for the root-relative hrefs Astro emits (/_astro/...);
       # without it lychee cannot resolve them in local files and errors on every page.
       - name: Link check
