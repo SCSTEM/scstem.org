@@ -31,11 +31,37 @@ esac
 cd "$repo_root" || exit 0
 
 # Use the installed binaries directly so the hook works without pnpm on PATH.
+# Status 127 means the tool itself is missing, which callers must not report as
+# lint findings: on a fresh clone, before `pnpm install`, every edit would
+# otherwise be rejected with an empty message.
+readonly TOOL_MISSING=127
+
 run() {
   local tool="$1"; shift
   local bin="$repo_root/node_modules/.bin/$tool"
-  [[ -x "$bin" ]] || { command -v pnpm >/dev/null && pnpm exec "$tool" "$@" 2>&1; return; }
-  "$bin" "$@" 2>&1
+  if [[ -x "$bin" ]]; then
+    "$bin" "$@" 2>&1
+    return
+  fi
+  command -v pnpm >/dev/null || return "$TOOL_MISSING"
+  [[ -d "$repo_root/node_modules" ]] || return "$TOOL_MISSING"
+  pnpm exec "$tool" "$@" 2>&1
+}
+
+# Runs a linter and exits 2 with its findings. A missing toolchain exits 0 so the
+# edit is allowed through un-linted rather than blocked with nothing to act on.
+lint() {
+  local findings status
+  findings="$(run "$@")"
+  status=$?
+  case "$status" in
+    0) return 0 ;;
+    "$TOOL_MISSING") exit 0 ;;
+    *)
+      printf '%s\n' "$findings" >&2
+      exit 2
+      ;;
+  esac
 }
 
 case "${file##*.}" in
@@ -43,17 +69,11 @@ case "${file##*.}" in
     # Without --ignore-path, oxfmt also reads .prettierignore, which excludes
     # every extension oxfmt owns.
     run oxfmt --ignore-path .gitignore "$file" >/dev/null
-    if ! findings="$(run oxlint --type-aware "$file")"; then
-      printf '%s\n' "$findings" >&2
-      exit 2
-    fi
+    lint oxlint --type-aware "$file"
     ;;
   astro)
     run prettier --write "$file" >/dev/null
-    if ! findings="$(run eslint --max-warnings 0 "$file")"; then
-      printf '%s\n' "$findings" >&2
-      exit 2
-    fi
+    lint eslint --max-warnings 0 "$file"
     ;;
   md)
     run prettier --write "$file" >/dev/null

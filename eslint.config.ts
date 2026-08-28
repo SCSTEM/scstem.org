@@ -34,6 +34,25 @@ export default defineConfig(
     rules: {
       // Mirrors oxfmt's sortImports so the whole repo is sorted the same way.
       "perfectionist/sort-imports": "error",
+      // Restated from .oxlintrc.json, which ignores `**/*.astro`. ESLint is the
+      // only linter that reads this extension, so without this the two bans
+      // AGENTS.md leads with are off in the file type the site is built from.
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            { name: "clsx", message: "use cn from @/lib/cn (cnfast)" },
+            { name: "classnames", message: "use cn from @/lib/cn (cnfast)" },
+            { name: "tailwind-merge", message: "use cn from @/lib/cn (cnfast)" },
+          ],
+          patterns: [
+            {
+              group: ["legacy/*", "**/legacy/*", "../legacy/*", "**/../legacy/**"],
+              message: "legacy/ is reference only — never import from it (plan/00-overview.md)",
+            },
+          ],
+        },
+      ],
     },
   },
 );

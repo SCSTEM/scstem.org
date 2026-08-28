@@ -61,9 +61,21 @@ Rationale and the migration seam for collapsing onto oxc: `docs/adr/0001-toolcha
 - **ESLint's global ignores cannot use `ignores: ["**/*", "!**/*.astro"]`** for the same reason.
   Scoping comes from every config block being `files: ["**/*.astro"]`.
 - **oxlint ignores `**/*.astro`** so the two linters never both own a file.
+- **`eslint-plugin-jsx-a11y` is a direct devDependency.** It is an _optional_ peer of
+  `eslint-plugin-astro`, so without it `astroConfigs["jsx-a11y-strict"]` degrades to `{ rules: {} }`
+  silently — no install warning, no accessibility linting. Its published peer range stops at
+  eslint `^9`; `pnpm-workspace.yaml` allows eslint 10 there, and the rules do fire (check with
+  `eslint --print-config` on any `.astro` file — expect ~33 `jsx-a11y/*` entries, not zero).
+- **The `clsx`/`tailwind-merge` and `legacy/*` import bans are declared twice** — once in
+  `.oxlintrc.json` and again in `eslint.config.ts`. oxlint ignores `.astro`, so the ESLint copy is
+  what enforces them in the file type the site is built from. Both copies must change together.
 - **`functions/` has its own tsconfig** and is typechecked separately (`tsc -p functions`, part of
   `pnpm typecheck`). It uses `moduleResolution: "bundler"` because Cloudflare bundles Functions
-  with esbuild, which resolves the extensionless `@/*` path aliases the source already uses.
+  with esbuild, which resolves the extensionless `@/*` path aliases the source already uses. It
+  restates the root tsconfig's strictness flags rather than extending
+  `astro/tsconfigs/strictest` (which pulls in DOM and Astro types the Workers runtime lacks) —
+  this is the only code handling untrusted request input, so it must not typecheck more loosely
+  than `src/`.
 
 ### Vendored lint rules
 
