@@ -3,6 +3,7 @@ year: 2024
 name: Troubleclef
 image: ../../../assets/frc/robots/2024-robot-field.webp
 imageAlt: Troubleclef on the competition field
+logo: ../../../assets/frc/robots/2024-troubleclef-logo.webp
 achievements:
   - 15th place, Buckeye Valley Regional
   - Imagery Award, 2023-2024 season

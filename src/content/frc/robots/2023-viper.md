@@ -3,6 +3,7 @@ year: 2023
 name: Viper
 image: ../../../assets/frc/robots/2023-robot-field.webp
 imageAlt: Viper on the competition field
+logo: ../../../assets/frc/robots/2023-viper-logo.webp
 achievements:
   - Industrial Design Award, Pittsburgh Regional
 ---

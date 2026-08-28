@@ -1,5 +1,8 @@
 import { glob } from "astro/loaders";
-import { defineCollection, reference, type SchemaContext, z } from "astro:content";
+import { z } from "astro/zod";
+import { defineCollection, reference, type SchemaContext } from "astro:content";
+
+import { PROGRAM_KEYS } from "@/data/site";
 
 /**
  * Every maintainable fact about this site lives in `src/content/` as markdown with validated
@@ -11,18 +14,16 @@ import { defineCollection, reference, type SchemaContext, z } from "astro:conten
  * is why `location` below is two flat fields instead of an object. Schema changes need an ADR.
  */
 
-const PROGRAMS = ["sc2", "frc", "fll"] as const;
-
 /** Legacy's `SponsorLevel`, preserved exactly (`legacy/data/sponsors.ts`). */
 const SPONSOR_LEVELS = ["Platinum", "Gold", "Silver", "Bronze", "Friend"] as const;
 
 const sponsors = defineCollection({
   loader: glob({ base: "src/content/sponsors", pattern: "**/*.md" }),
   schema: ({ image }) =>
-    z.object({
+    z.strictObject({
       name: z.string(),
       level: z.enum(SPONSOR_LEVELS),
-      url: z.string().url().optional(),
+      url: z.url().optional(),
       logo: image().optional(),
       /**
        * `false` retires a sponsor without deleting the record — former sponsors stay in git as
@@ -41,22 +42,33 @@ const sponsors = defineCollection({
 const events = defineCollection({
   loader: glob({ base: "src/content/events", pattern: "**/*.md" }),
   schema: ({ image }) =>
-    z.object({
+    z.strictObject({
       title: z.string(),
-      program: z.enum(PROGRAMS),
+      /** Hero subtitle, sitting directly under the title. Not a heading — it has no section. */
+      subtitle: z.string().optional(),
+      program: z.enum(PROGRAM_KEYS),
       start: z.date(),
       end: z.date().optional(),
-      /** Human-readable date, for copy that should not be machine-formatted. */
-      displayDate: z.string().optional(),
-      locationName: z.string(),
-      locationAddress: z.string(),
-      directionsUrl: z.string().url().optional(),
+      /**
+       * Location is optional and defaults to the workspace from `src/data/site.ts` — only an
+       * off-site event carries these, which also makes "off-site" a visible signal.
+       */
+      locationName: z.string().optional(),
+      locationAddress: z.string().optional(),
+      directionsUrl: z.url().optional(),
       /** Meta description for the event's page. */
       description: z.string(),
       heroImage: image().optional(),
       ctaLabel: z.string(),
       ctaHref: z.string(),
-      registrationUrl: z.string().url().optional(),
+      registrationUrl: z.url().optional(),
+      /**
+       * Season teaser videos, and this year's game hints, as flat parallel arrays (D2 — no
+       * nested objects). `hintLabels[i]` names `hintUrls[i]`; a length mismatch fails the build.
+       */
+      teaserUrls: z.array(z.url()).optional(),
+      hintUrls: z.array(z.url()).optional(),
+      hintLabels: z.array(z.string()).optional(),
       /** FAQ entries to render on the page, by their file id. */
       faq: z.array(reference("faq")).optional(),
       /**
@@ -69,9 +81,9 @@ const events = defineCollection({
 
 const faq = defineCollection({
   loader: glob({ base: "src/content/faq", pattern: "**/*.md" }),
-  schema: z.object({
+  schema: z.strictObject({
     question: z.string(),
-    program: z.enum(PROGRAMS).optional(),
+    program: z.enum(PROGRAM_KEYS).optional(),
     tags: z.array(z.string()).optional(),
   }),
 });
@@ -85,7 +97,7 @@ const faq = defineCollection({
 const news = defineCollection({
   loader: glob({ base: "src/content/news", pattern: "**/*.md" }),
   schema: ({ image }) =>
-    z.object({
+    z.strictObject({
       title: z.string(),
       date: z.date(),
       description: z.string(),
@@ -97,20 +109,27 @@ const news = defineCollection({
 const frcRobots = defineCollection({
   loader: glob({ base: "src/content/frc/robots", pattern: "**/*.md" }),
   schema: ({ image }) =>
-    z.object({
+    z.strictObject({
       year: z.number().int(),
+      /**
+       * Overrides `year` in display copy where a robot spans two seasons — Robo Fett was
+       * "2020-2021" on the legacy page. `year` stays the sort key.
+       */
+      yearLabel: z.string().optional(),
       name: z.string(),
       /** The season's game, as FIRST named it. */
       game: z.string().optional(),
       image: image().optional(),
       imageAlt: z.string(),
+      /** Per-robot wordmark overlaid on the photo, where a season had one. */
+      logo: image().optional(),
       achievements: z.array(z.string()).optional(),
     }),
 });
 
 /** FRC and FLL team photos are the same shape; the split is by directory (D18). */
 const teamPhotoSchema = ({ image }: SchemaContext) =>
-  z.object({
+  z.strictObject({
     year: z.number().int(),
     photo: image(),
     alt: z.string(),

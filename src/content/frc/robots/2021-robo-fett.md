@@ -1,5 +1,6 @@
 ---
 year: 2021
+yearLabel: 2020-2021
 name: Robo Fett
 image: ../../../assets/frc/robots/2021-robot-field.webp
 imageAlt: Robo Fett on the competition field

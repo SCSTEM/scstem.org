@@ -41,6 +41,10 @@ Consequence: **pins are the newest version that is at least a week old**, not th
 
 Install scripts are denied by default; `allowBuilds` lists the exceptions (`sharp`, `esbuild`).
 
+`sharp` is a direct dependency rather than one inherited from Astro: pnpm's isolated layout keeps
+Astro's copy where the bundled image service cannot resolve it, so `astro:assets` falls back to
+unoptimized passthrough with one warning per image. See `docs/adr/0003-sharp-direct-dependency.md`.
+
 ## Toolchain ownership
 
 | Extensions                            | Linter                                                   | Formatter |

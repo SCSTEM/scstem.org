@@ -2,17 +2,21 @@
 title: 2026 Season Kickoff
 program: frc
 start: 2026-01-10T12:00:00-05:00
-displayDate: January 10, 2026 at 12:00 PM EST
-locationName: South Central STEM Collective Workspace
-locationAddress: 20 South Main Street, Downtown Chambersburg
-directionsUrl: https://wiki.scstem.org/workspace/#directions
-description: Join Biohazard as we unveil this year's challenge. FIRST reveals the 2026 Robotics Competition game, and we watch it live together at the workspace.
+subtitle: Join Biohazard as we unveil this year's challenge
+description: Join Biohazard for the 2026 FIRST Robotics Competition kickoff
 heroImage: ../../assets/events/cheering.webp
 ctaLabel: Watch on FIRST website
 ctaHref: https://www.firstinspires.org/robotics/frc/kickoff
+teaserUrls:
+  - https://www.youtube.com/watch?v=2AEdAID2U2o
+  - https://www.youtube.com/watch?v=0JaguGctF1A
+hintUrls:
+  - https://www.youtube.com/watch?v=0JaguGctF1A
+  - https://community.firstinspires.org/2025-game-hint-3-for-2026
+hintLabels:
+  - "Hint #1"
+  - "Hint #2"
 ---
-
-## Join Biohazard as we unveil this year's challenge
 
 ## The build season journey
 

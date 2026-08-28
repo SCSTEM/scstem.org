@@ -4,4 +4,5 @@ program: sc2
 tags: [openhouse]
 ---
 
-Saturday, August 1 from 1PM to 4PM.
+See the date and time at the top of this page — it comes from the event itself, so it is
+never out of step with the schedule.

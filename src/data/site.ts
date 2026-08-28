@@ -46,10 +46,7 @@ export const site = {
     directions: "https://wiki.scstem.org/workspace/#directions",
   },
 
-  /**
-   * Public Google Calendar IDs, from `legacy/src/app/calendar/[name]/page.tsx`. The Pages
-   * Function in `functions/api/calendar/` keeps its own copy — it cannot import from `src/`.
-   */
+  /** Public Google Calendar IDs, from `legacy/src/app/calendar/[name]/page.tsx`. */
   calendars: {
     frc: "Y19hYjljNWJlYTEwODgyYzAxYTAxOGNiZDUxYWIyMzcwYmY4NDk5NDZiZTRlMjUzNTAwZmZmMWQxMGZkY2M4NjFhQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20",
     sc2: "Y19wcDlkOXRrbGRrbThmdXZtcjMyZTBwZTgxc0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
@@ -63,8 +60,34 @@ export const site = {
   },
 } as const;
 
-/** The programs the site is organized around; the key doubles as the theme name (D16). */
+/** A program's facts. Flat, like the content schemas (D2). */
+interface Program {
+  ages?: string;
+  href: string;
+  name: string;
+  shortName: string;
+  teamName?: string;
+}
+
+/**
+ * The programs the site is organized around; the key doubles as the theme name (D16) and is the
+ * `program` enum in `src/content.config.ts`. Typed as a total record over `ProgramKey`, so a
+ * program accepted by the schema but missing here is a compile error rather than an `undefined`
+ * that surfaces as a runtime throw on a page.
+ */
+export const PROGRAM_KEYS = ["sc2", "frc", "fll"] as const;
+
+/** @public Consumed by the app shell and program pages from Phase 05 onward. */
+export type ProgramKey = (typeof PROGRAM_KEYS)[number];
+
+/** @public Consumed by the app shell and program pages from Phase 05 onward. */
 export const programs = {
+  /** The org-wide program: events and pages that are not FRC- or FLL-specific. */
+  sc2: {
+    name: "South Central STEM Collective",
+    shortName: "SC2",
+    href: "/programs",
+  },
   frc: {
     name: "FIRST Robotics Competition",
     shortName: "FRC",
@@ -78,4 +101,4 @@ export const programs = {
     ages: "9–16",
     href: "/programs/fll",
   },
-} as const;
+} as const satisfies Record<ProgramKey, Program>;

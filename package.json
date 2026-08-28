@@ -13,8 +13,10 @@
     "fmt": "oxfmt --ignore-path .gitignore && prettier --write \"**/*.{astro,md}\"",
     "fmt:check": "oxfmt --check --ignore-path .gitignore && prettier --check \"**/*.{astro,md}\"",
     "knip": "knip",
-    "check": "pnpm run typecheck && pnpm run lint && pnpm run fmt:check && pnpm run knip && pnpm run check:tokens",
-    "check:tokens": "node tools/checks/cn-font-size-group.mjs"
+    "check": "pnpm run typecheck && pnpm run lint && pnpm run fmt:check && pnpm run knip && pnpm run check:tokens && pnpm run check:content",
+    "check:tokens": "node tools/checks/cn-font-size-group.mjs",
+    "check:content": "node tools/checks/content-references.mjs",
+    "assets:optimize": "node tools/assets/optimize-sources.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.3",
@@ -26,6 +28,7 @@
     "astro": "7.2.4",
     "class-variance-authority": "0.7.1",
     "cnfast": "0.1.0",
+    "sharp": "0.35.3",
     "tailwindcss": "4.3.3"
   },
   "devDependencies": {

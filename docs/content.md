@@ -68,8 +68,8 @@ descriptive and stable. Renaming a file means updating any event that lists it.
 
 ## Update the open house for a new season
 
-Edit `src/content/events/openhouse.md`. The dates and location live in frontmatter; the page copy
-is the body below it.
+Edit `src/content/events/openhouse.md`. The dates live in frontmatter; the page copy is the body
+below it.
 
 ```md
 ---
@@ -77,9 +77,6 @@ title: Open house
 program: sc2
 start: 2026-08-01T13:00:00-04:00
 end: 2026-08-01T16:00:00-04:00
-displayDate: Saturday, August 1 (1PM to 4PM)
-locationName: South Central STEM Collective Workspace
-locationAddress: 20 South Main Street, Downtown Chambersburg
 description: Shown in search results and when the page is shared. One or two sentences.
 ctaLabel: Get involved
 ctaHref: /get-involved
@@ -93,7 +90,16 @@ faq:
 `-05:00` in winter. That offset is what makes the date correct for someone reading in another
 timezone, and it feeds the event's structured data.
 
-`faq` lists FAQ slugs to show on the page, in the order given.
+**Never write the date in prose as well.** The displayed date is formatted from `start`/`end`, so
+changing the season is one edit. A date typed into the body — or into an FAQ answer — is a second
+copy that will go stale.
+
+Location is **omitted** for anything at the workspace: it defaults to the address in
+`src/data/site.ts`. Set `locationName` / `locationAddress` / `directionsUrl` only for an off-site
+event, which also makes "off-site" visible at a glance.
+
+`faq` lists FAQ slugs to show on the page, in the order given. A slug that does not match a file
+fails `pnpm check` (`tools/checks/content-references.mjs`) — Astro alone only logs it.
 
 ### Hide an event after it passes
 
@@ -105,8 +111,8 @@ The page redirects to its parent and disappears from the sitemap. Flip it back n
 
 ### Create a new event
 
-Copy an existing file in `src/content/events/`, then add a route file for it — a
-[thin page](../src/pages/openhouse.astro) that renders the entry. Two events do not yet justify a
+Copy an existing file in `src/content/events/`, then add a route file for it — a thin page under
+`src/pages/` that renders the entry. Phase 08 adds those routes. Two events do not yet justify a
 dynamic route; when there are several, that is worth revisiting.
 
 ## Add a robot
