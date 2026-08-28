@@ -111,9 +111,26 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 
 ## Acceptance criteria
 
-- [ ] `mise install && pnpm install && pnpm check && pnpm build` all green on a fresh clone.
-- [ ] `legacy/` contains the entire old app; no tool reads it; `git grep -l "from \"legacy" src` is empty.
-- [ ] Deliberately adding `import clsx from "clsx"` to a `.ts` file fails `pnpm lint`; same for a chained type assertion (anti-slop active).
-- [ ] Editing a `.ts` and an `.astro` file via Claude Code triggers the hook and auto-formats each with the correct toolchain; a lint error is fed back to the agent.
-- [ ] CI workflow runs and blocks on a seeded lint error (verify once, then fix).
-- [ ] `AGENTS.md` + `CLAUDE.md` symlink, `docs/tooling.md`, `docs/adr/0001-toolchain-split.md` exist.
+- [x] `mise install && pnpm install && pnpm check && pnpm build` all green on a fresh clone.
+- [x] `legacy/` contains the entire old app; no tool reads it; `git grep -l "from \"legacy" src` is empty.
+- [x] Deliberately adding `import clsx from "clsx"` to a `.ts` file fails `pnpm lint`; same for a chained type assertion (anti-slop active).
+- [x] Editing a `.ts` and an `.astro` file via Claude Code triggers the hook and auto-formats each with the correct toolchain; a lint error is fed back to the agent.
+- [ ] CI workflow runs and blocks on a seeded lint error (verify once, then fix). — **verified on the phase PR, not locally.**
+- [x] `AGENTS.md` + `CLAUDE.md` symlink, `docs/tooling.md`, `docs/adr/0001-toolchain-split.md` exist.
+
+### Deviations from this brief
+
+- `typescript` pinned to 6.0.3, not latest (7.x): `typescript-eslint` peers `<6.1.0`,
+  `@astrojs/check` peers `^5 || ^6`. Recorded in `docs/adr/0001-toolchain-split.md`.
+- Every dependency is pinned to the newest version **at least a week old**, because
+  `minimumReleaseAge` rejects fresher ones. Pins are therefore not "latest".
+- `pnpm typecheck` is `astro check && tsc -p functions`; `functions/` moved to
+  `moduleResolution: "bundler"` + `strict` so its existing `@/*` imports typecheck. That
+  surfaced one real bug (a `null` `CF-Connecting-IP` was being sent to Turnstile as
+  `"null"`), fixed in `functions/util.ts`.
+- oxfmt is invoked with `--ignore-path .gitignore` and Prettier with an explicit
+  `**/*.{astro,md}` glob; ESLint scopes by `files:` rather than a blanket ignore. All three
+  are gitignore-semantics workarounds documented in `docs/tooling.md`.
+- The anti-slop rules are **not** re-registered as a local ESLint plugin for `.astro`
+  frontmatter; rationale in `docs/adr/0001-toolchain-split.md`.
+- `docs/adr/0002-tabler-icons-direct.md` supersedes Phase 03's icon dependency choice.

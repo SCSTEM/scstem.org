@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "sortImports": true,
+  "sortPackageJson": true,
+  "sortTailwindcss": true,
+  "ignorePatterns": [
+    "legacy/**",
+    "dist/**",
+    ".astro/**",
+    ".claude/**",
+    "tools/lint/anti-slop/**",
+    "**/*.md",
+    "**/*.astro"
+  ]
+}

@@ -38,10 +38,7 @@ export const onRequestPost: PagesFunction<{
         }),
       });
 
-    return res(
-      { success: true, message: "Submission received", result: data },
-      200,
-    );
+    return res({ success: true, message: "Submission received", result: data }, 200);
   } catch (error) {
     return res(
       {

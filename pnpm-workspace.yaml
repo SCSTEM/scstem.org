@@ -1,0 +1,9 @@
+# Install policy only — this repo is a single package, so there is no `packages:` key.
+
+# Supply-chain cooldown: refuse versions published less than a week ago.
+minimumReleaseAge: 10080 # minutes (7 days)
+
+# Only these packages may run install scripts.
+allowBuilds:
+  sharp: true # astro:assets image processing
+  esbuild: true

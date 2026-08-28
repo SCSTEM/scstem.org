@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "lib": ["esnext"],
     "types": ["@cloudflare/workers-types"],
     "paths": {
       "@/*": ["./*"]
-    }
-  }
+    },
+    "noEmit": true,
+    "strict": true
+  },
+  "include": ["**/*.ts"]
 }

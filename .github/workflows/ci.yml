@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  pull_request:
+
+# Deploys are owned by Cloudflare Pages' git integration (D14). This workflow is a PR gate only.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: check + build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install mise tools
+        uses: jdx/mise-action@v3
+        with:
+          version: 2026.8.14
+          install: true
+          cache: true
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check (typecheck + lint + format + knip)
+        run: pnpm check
+
+      - name: Build
+        run: pnpm build
+
+      - name: Link check
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --include-fragments --no-progress 'dist/**/*.html'
+          fail: true
