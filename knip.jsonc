@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/knip/schema.json",
+  "entry": ["src/pages/**", "functions/**"],
+  "project": ["**/*.{ts,tsx,js,mjs,cjs,astro}"],
+  "ignore": ["legacy/**", "tools/lint/anti-slop/**"],
+  "ignoreDependencies": ["tailwindcss"],
+  "rules": {
+    "files": "error",
+    "dependencies": "error",
+    "devDependencies": "error",
+    "optionalPeerDependencies": "error",
+    "unlisted": "error",
+    "binaries": "error",
+    "unresolved": "error",
+    "exports": "error",
+    "types": "error",
+    "duplicates": "error"
+  }
+}

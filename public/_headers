@@ -10,8 +10,5 @@ https://scstem.org/image/*
 https://scstem.org/video/*
   X-Robots-Tag: noindex
 
-https://scstem.org/team/*
-  X-Robots-Tag: noindex
-
 https://staging.scstem.org/*
   X-Robots-Tag: noindex

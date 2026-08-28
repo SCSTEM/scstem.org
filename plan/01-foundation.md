@@ -37,10 +37,9 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 
 ### 3. Astro scaffold
 
-- Dependencies (latest stable at implementation time): `astro`, `@astrojs/check`, `@astrojs/sitemap`, `typescript`, `tailwindcss` + `@tailwindcss/vite` (Tailwind v4, CSS-first — no tailwind.config file), `cnfast`.
+- Dependencies (latest stable at implementation time): `astro`, `@astrojs/check`, `@astrojs/sitemap`, `typescript`, `tailwindcss` + `@tailwindcss/vite` (Tailwind v4, CSS-first — no tailwind.config file). `cnfast` arrives in Phase 02 with the first component that merges classes — knip's `dependencies: "error"` rule means a dependency with no importer fails the build.
 - `astro.config.ts`: `site: "https://scstem.org"`, `output: "static"`, `outDir: "dist"`, `integrations: [sitemap()]`, vite plugin for tailwind. Match current URL shape (no trailing slashes in links; default `build.format: "directory"` is fine — CF Pages serves both).
 - `src/pages/index.astro` placeholder ("rewrite in progress" — never deployed to prod) and `src/styles/global.css` with `@import "tailwindcss";` (tokens come in Phase 02).
-- `src/lib/cn.ts`: `export { cn } from "cnfast";` — the only sanctioned import site.
 - `tsconfig.json`: `extends: "astro/tsconfigs/strictest"` plus explicitly ensure: `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noImplicitOverride`, `noFallthroughCasesInSwitch`, `verbatimModuleSyntax`, `isolatedModules`, `forceConsistentCasingInFileNames`. Path alias `@/*` → `./src/*`. Exclude `legacy`, `dist`, `functions` (functions keep their own tsconfig).
 
 ### 4. Lint/format toolchain (D12, D24)
@@ -51,9 +50,13 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 - `.oxlintrc.json` (model on spark's):
   - `plugins`: `typescript`, `unicorn`, `oxc`, `import`.
   - `options`: `typeAware: true`, `typeCheck: true` (add `oxlint-tsgolint` if required by the oxlint version).
-  - `categories`: `correctness: "error"`, `suspicious: "error"`, `perf: "warn"`, `style: "off"`.
+  - `categories`: `correctness: "error"`, `suspicious: "error"`, `perf: "error"`, `style: "off"` — no warnings anywhere.
   - `jsPlugins`: `{ "name": "anti-slop", "specifier": "./tools/lint/anti-slop/index.ts" }`, all its rules `error`.
-  - `no-restricted-imports` (error): `clsx`, `classnames`, `tailwind-merge` (message: "use cn from @/lib/cn (cnfast)"), and any path matching `legacy/`.
+  - `no-restricted-imports` (error): any path matching `legacy/**` or `**/legacy/**` — `*` matches
+    one segment only, so a single star misses `legacy/data/config` and every deep relative path.
+  - `extends`: `./tools/lint/nkzw/oxlintrc.json`, a vendored copy of `@nkzw/oxlint-config`
+    (see its `VENDOR.md`). All severities are `error`; `perf` was moved from `warn` to `error` and
+    `style` stays off.
   - `ignorePatterns`: `legacy/**`, `dist/**`, `.astro/**`, `tools/lint/anti-slop/**`, `.claude/**`, `plan/**`.
 - `.oxfmtrc.json`: `sortTailwindcss: true`, `sortImports: true`, `sortPackageJson: true`; ignore `legacy/**`, `dist/**`, `.astro/**`, `.claude/**`, `tools/lint/anti-slop/**`, `**/*.md`, `**/*.astro`.
 - ESLint (flat, `eslint.config.ts`), **scoped to `**/*.astro` only**:
@@ -61,7 +64,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
   - Import sorting for `.astro` frontmatter: `eslint-plugin-perfectionist` `sort-imports` (autofixable) — mirrors oxfmt's `sortImports` so the whole repo is sorted.
   - Best-effort task: register the vendored anti-slop rules as a local ESLint plugin for `.astro` frontmatter (the rules use the ESLint rule API). If any rule fails to load under ESLint, skip that rule and note it in `docs/adr/0001-toolchain-split.md` — do not fork the rule source.
   - Global ignores: everything except `**/*.astro` (plus `legacy/**`, `dist/**`, `.astro/**`).
-- Prettier: `.prettierrc` with `plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"]` (tailwind plugin last), astro override (`parser: "astro"`). `.prettierignore`: everything except `**/*.astro`, `**/*.md` (`*`, `!*.astro`, `!*.md`, plus re-ignore `legacy/**`, `dist/**`, `plan/**` markdown stays formatted-by-hand: ignore `plan/**` and `docs/adr/**` if churn is unwanted — implementer's call, document it).
+- Prettier: `.prettierrc.json` with `plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"]` (tailwind plugin last), astro override (`parser: "astro"`). `.prettierignore`: everything except `**/*.astro`, `**/*.md` (`*`, `!*.astro`, `!*.md`, plus re-ignore `legacy/**`, `dist/**`, `plan/**` markdown stays formatted-by-hand: ignore `plan/**` and `docs/adr/**` if churn is unwanted — implementer's call, document it).
 - `.editorconfig` for what neither formatter covers (yaml/toml/shell): utf-8, lf, 2-space, final newline, trim trailing whitespace except `*.md`.
 - `knip.json`: all rules `"error"`; entry points: `astro.config.ts`, `src/pages/**`, `functions/**`, `eslint.config.ts`; ignore `legacy/**`, `tools/lint/anti-slop/**`.
 - `package.json` scripts (single source of truth):
@@ -89,8 +92,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
   2. Commands (`mise run check` / `pnpm check`, dev, build).
   3. Toolchain ownership table (which linter/formatter owns which extensions) + "hooks run them automatically on every edit."
   4. Architecture map (5 lines: pages, layouts, ui vs ui/primitives, content collections, data/site.ts, functions/).
-  5. Rules: `cn` only from `@/lib/cn`; no new dependencies without an ADR; no client-side frameworks; content edits go in `src/content/` (see `docs/content.md`); design decisions come from `DESIGN.md`.
-  6. Comments policy (adopt spark's): describe what is there, never what is not; no narrating edits; rejected alternatives go in `docs/adr/`.
+  5. Comments policy (adopt spark's): describe what is there, never what is not; no narrating edits; rejected alternatives go in `docs/adr/`.
 - `ln -s AGENTS.md CLAUDE.md` (symlink, committed).
 - `.claude/settings.json` PostToolUse hook on `Edit|Write|NotebookEdit` → `.claude/hooks/format-lint.sh` (timeout 60).
 - `.claude/hooks/format-lint.sh` (adapt spark's `oxc.sh`): read hook JSON from stdin; resolve `.tool_response.filePath // .tool_input.file_path`; exit 0 for files outside repo, in `legacy/`, `dist/`, `.astro/`, `node_modules/`, `plan/`, or vendored rule dirs. Route by extension:
@@ -111,9 +113,35 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 
 ## Acceptance criteria
 
-- [ ] `mise install && pnpm install && pnpm check && pnpm build` all green on a fresh clone.
-- [ ] `legacy/` contains the entire old app; no tool reads it; `git grep -l "from \"legacy" src` is empty.
-- [ ] Deliberately adding `import clsx from "clsx"` to a `.ts` file fails `pnpm lint`; same for a chained type assertion (anti-slop active).
-- [ ] Editing a `.ts` and an `.astro` file via Claude Code triggers the hook and auto-formats each with the correct toolchain; a lint error is fed back to the agent.
-- [ ] CI workflow runs and blocks on a seeded lint error (verify once, then fix).
-- [ ] `AGENTS.md` + `CLAUDE.md` symlink, `docs/tooling.md`, `docs/adr/0001-toolchain-split.md` exist.
+- [x] `mise install && pnpm install && pnpm check && pnpm build` all green on a fresh clone.
+- [x] `legacy/` contains the entire old app; no tool reads it; `git grep -l "from \"legacy" src` is empty.
+- [x] Deliberately adding `import clsx from "clsx"` to a `.ts` file fails `pnpm lint`; same for a chained type assertion (anti-slop active).
+- [x] Editing a `.ts` and an `.astro` file via Claude Code triggers the hook and auto-formats each with the correct toolchain; a lint error is fed back to the agent.
+- [ ] CI workflow runs and blocks on a seeded lint error (verify once, then fix). — **verified on the phase PR, not locally.**
+- [x] `AGENTS.md` + `CLAUDE.md` symlink, `docs/tooling.md`, `docs/adr/0001-toolchain-split.md` exist.
+
+### Deviations from this brief
+
+- `typescript` pinned to 6.0.3, not latest (7.x): `typescript-eslint` peers `<6.1.0`,
+  `@astrojs/check` peers `^5 || ^6`. Recorded in `docs/adr/0001-toolchain-split.md`. This is the
+  JavaScript compiler; `functions/` runs on TypeScript 7 via `tsgo` (below).
+- Every dependency is pinned to the newest version **at least a week old**, because
+  `minimumReleaseAge` rejects fresher ones. Pins are therefore not "latest".
+- `pnpm typecheck` is `astro check && tsgo -p functions`; `functions/` moved to
+  `moduleResolution: "bundler"` + the root's strictness flags so its existing `@/*` imports
+  typecheck. That surfaced one real bug (a `null` `CF-Connecting-IP` was being sent to Turnstile
+  as `"null"`), fixed in `functions/util.ts`.
+- **`functions/` typechecks with TypeScript 7** (`tsgo`, `@typescript/native-preview`): 961 ms →
+  182 ms on this tree. `astro check` stays on the JavaScript compiler because
+  `@astrojs/check` peers `^5 || ^6` and its language server needs that compiler's API — the native
+  preview exports only `version`/`versionMajorMinor`, with no `typescript.js` or `tsserver.js` to
+  substitute. The blocker is upstream of Astro: TypeScript 7 exposes no stable programmatic API, so
+  every Volar-based language server (Astro, Vue, Svelte) is pinned to TS 6
+  ([withastro/roadmap#1321](https://github.com/withastro/roadmap/discussions/1321)). Reportedly
+  targeted for TS 7.1, uncommitted. The split is documented in `docs/tooling.md`.
+- oxfmt is invoked with `--ignore-path .gitignore` and Prettier with an explicit
+  `**/*.{astro,md}` glob; ESLint scopes by `files:` rather than a blanket ignore. All three
+  are gitignore-semantics workarounds documented in `docs/tooling.md`.
+- The anti-slop rules are **not** re-registered as a local ESLint plugin for `.astro`
+  frontmatter; rationale in `docs/adr/0001-toolchain-split.md`.
+- `docs/adr/0002-tabler-icons-direct.md` supersedes Phase 03's icon dependency choice.

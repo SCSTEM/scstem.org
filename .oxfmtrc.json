@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "sortImports": true,
+  "sortPackageJson": true,
+  "sortTailwindcss": true,
+  "trailingComma": "all",
+  "overrides": [
+    {
+      "files": ["**/*.json", "**/*.jsonc", "**/*.json5"],
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "legacy/**",
+    "dist/**",
+    ".astro/**",
+    ".claude/**",
+    "tools/lint/anti-slop/**",
+    "**/*.md",
+    "**/*.astro"
+  ]
+}

@@ -2,13 +2,15 @@ import type { GenericFormRequest } from "@/types";
 import { res, validateTurnstile } from "@/util";
 
 export const onRequestPost: PagesFunction<{
-  TS_SECRET_KEY: string;
   SLACK_FORM_POST_GENERIC: string;
-}> = async ({ request, env }) => {
+  TS_SECRET_KEY: string;
+}> = async ({ env, request }) => {
   const data = await request.json<GenericFormRequest>();
 
   let key = env.TS_SECRET_KEY;
-  if (!key) key = "1x0000000000000000000000000000000AA";
+  if (!key) {
+    key = "1x0000000000000000000000000000000AA";
+  }
 
   try {
     const ts = await validateTurnstile(
@@ -17,37 +19,36 @@ export const onRequestPost: PagesFunction<{
       request.headers.get("CF-Connecting-IP"),
     );
 
-    if (!ts.valid)
+    if (!ts.valid) {
       return res(
         {
-          success: false,
           message: "Challenge verification failed",
           result: ts.response,
+          success: false,
         },
         418,
       );
+    }
 
-    if (env.SLACK_FORM_POST_GENERIC)
+    if (env.SLACK_FORM_POST_GENERIC) {
       await fetch(env.SLACK_FORM_POST_GENERIC, {
-        method: "POST",
         body: JSON.stringify({
-          form: data.form,
-          name: data.name ?? "",
           email: data.email ?? "",
+          form: data.form,
           message: data.message ?? "",
+          name: data.name ?? "",
         }),
+        method: "POST",
       });
+    }
 
-    return res(
-      { success: true, message: "Submission received", result: data },
-      200,
-    );
+    return res({ message: "Submission received", result: data, success: true }, 200);
   } catch (error) {
     return res(
       {
-        success: false,
+        error,
         message: "Error handling submission",
-        error: error,
+        success: false,
       },
       500,
     );

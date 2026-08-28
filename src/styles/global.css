@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* legacy/ is checked in and reference-only, so Tailwind's automatic source
+   detection would otherwise emit utilities for the retired Next.js site. */
+@source not "../../legacy";
+
+/* Design tokens land here in Phase 02 (see DESIGN.md). */

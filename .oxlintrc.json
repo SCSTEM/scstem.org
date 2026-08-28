@@ -1,0 +1,68 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": ["./tools/lint/nkzw/oxlintrc.json"],
+  "plugins": ["typescript", "unicorn", "oxc", "import"],
+  "options": {
+    "typeAware": true,
+    "typeCheck": true
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "error",
+    "style": "off"
+  },
+  "jsPlugins": [
+    {
+      "name": "anti-slop",
+      "specifier": "./tools/lint/anti-slop/index.ts"
+    }
+  ],
+  "rules": {
+    "anti-slop/no-chained-type-assertions": "error",
+    "anti-slop/no-conditional-empty-object-spread": "error",
+    "anti-slop/no-known-value-widening": "error",
+    "anti-slop/no-module-mocking": "error",
+    "anti-slop/no-object-parameters": "error",
+    "anti-slop/no-reflect-apply": "error",
+    "anti-slop/no-reflect-get": "error",
+    "anti-slop/no-runtime-typeof": "error",
+    "anti-slop/no-shape-in-symbol-names": "error",
+    "anti-slop/no-unknown-parameters": "error",
+    "anti-slop/no-unknown-returns": "error",
+    "anti-slop/no-unknown-type-aliases": "error",
+    "anti-slop/no-unsafe-dictionary-type": "error",
+    "anti-slop/no-widen-then-assert": "error",
+    "anti-slop/require-safety-comment-for-type-assertion": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["legacy/**", "**/legacy/**"],
+            "message": "legacy/ is reference only \u2014 never import from it (plan/00-overview.md)"
+          }
+        ]
+      }
+    ],
+    "perfectionist/sort-objects": "off"
+  },
+  "overrides": [
+    {
+      "files": ["functions/**"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "**/*.astro",
+    "legacy/**",
+    "dist/**",
+    ".astro/**",
+    "tools/lint/anti-slop/**",
+    ".claude/**",
+    "plan/**",
+    "node_modules/**"
+  ]
+}

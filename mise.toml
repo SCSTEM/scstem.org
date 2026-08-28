@@ -1,0 +1,56 @@
+[settings]
+lockfile = true
+minimum_release_age = "7d"
+npm.package_manager = "pnpm"
+
+[tools]
+node = "26.7.0"
+pnpm = "11.22.0"
+
+[env]
+_.path = ["{{config_root}}/node_modules/.bin"]
+ASTRO_TELEMETRY_DISABLED = "1"
+
+[tasks.install]
+run = "pnpm install"
+description = "Install dependencies"
+
+[tasks.dev]
+run = "pnpm run dev"
+description = "Start the Astro dev server"
+
+[tasks.build]
+run = "pnpm run build"
+description = "Build the static site to dist/"
+
+[tasks.preview]
+run = "pnpm run preview"
+description = "Serve the built site locally"
+
+[tasks.check]
+run = "pnpm run check"
+description = "Typecheck + lint + format check + knip"
+
+[tasks.typecheck]
+run = "pnpm run typecheck"
+description = "astro check"
+
+[tasks.lint]
+run = "pnpm run lint"
+description = "oxlint + eslint"
+
+[tasks."lint:fix"]
+run = "pnpm run lint:fix"
+description = "oxlint + eslint with autofix"
+
+[tasks.fmt]
+run = "pnpm run fmt"
+description = "oxfmt + prettier, writing changes"
+
+[tasks."fmt:check"]
+run = "pnpm run fmt:check"
+description = "oxfmt + prettier in check mode"
+
+[tasks.knip]
+run = "pnpm run knip"
+description = "Find unused files, exports, and dependencies"

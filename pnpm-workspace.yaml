@@ -1,0 +1,13 @@
+minimumReleaseAge: 10080 # 7 days
+
+allowBuilds:
+  sharp: true
+  esbuild: true
+
+# eslint-plugin-jsx-a11y 6.10.2 is its latest release and its peer range stops at
+# eslint ^9, but the rules load and fire under eslint 10 (a seeded alt-text and
+# click-events violation is reported). Without this the unmet peer is a warning
+# on every install.
+peerDependencyRules:
+  allowedVersions:
+    eslint-plugin-jsx-a11y>eslint: "10"

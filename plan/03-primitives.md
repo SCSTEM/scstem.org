@@ -9,7 +9,7 @@
 
 ## Conventions (write these into `src/components/ui/primitives/README.md`)
 
-- **API mirrors shadcn**: same component names, `variant`/`size` prop vocabulary, CVA (`class-variance-authority`) for variants, `cn()` from `@/lib/cn` for merging, `class` prop + `...rest` spread onto the root element so callers can extend.
+- **API mirrors shadcn**: same component names, `variant`/`size` prop vocabulary, CVA (`class-variance-authority`) for variants, `cn()` from `cnfast` for merging, `class` prop + `...rest` spread onto the root element so callers can extend.
 - **Zero JS by default.** Interactivity ladder: (1) native HTML (`<details>`, `<dialog>`, popover attribute), (2) CSS-only, (3) a small inline `<script>` with no dependencies — only when 1–2 can't deliver, and always progressive-enhancement (content readable without JS).
 - **Accessibility is part of the primitive**, not the caller's job: focus-visible styles, aria wiring, keyboard behavior.
 - Polymorphism where shadcn uses `asChild`: an `as` prop (e.g. Button renders `a` when `href` is passed) — replaces legacy's separate `LinkButton`.
