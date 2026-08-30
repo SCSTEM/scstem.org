@@ -27,5 +27,12 @@ const strip = [
   role="presentation"
   viewBox="0 0 240 16"
 >
-  <path d={strip} fill="none" stroke="currentColor" stroke-width="1"></path>
+  <!-- `non-scaling-stroke`: the viewBox is stretched to the container, which would otherwise
+       widen every tick by the horizontal scale factor. Ticks stay hairlines, like the rule. -->
+  <path
+    d={strip}
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1"
+    vector-effect="non-scaling-stroke"></path>
 </svg>

@@ -1,7 +1,11 @@
 // `?raw` inlines the stylesheet's source at build time. `readFileSync` cannot be used here:
 // the page is bundled before it is prerendered, so a path relative to this module no longer
 // points at `src/`.
-import css from "@/styles/global.css?raw";
+import source from "@/styles/global.css?raw";
+
+// Comments are stripped before parsing: a `[data-theme="light"]` mentioned in prose would
+// otherwise register as a program theme, and a commented-out declaration would read as live.
+const css = source.replaceAll(/\/\*[\s\S]*?\*\//g, "");
 
 /**
  * Reads the design tokens out of `src/styles/global.css` at build time, so anything verifying

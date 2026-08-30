@@ -26,7 +26,9 @@ type ButtonVariant = (typeof buttonVariantNames)[number];
 
 export const buttonVariants = cva(
   cn(
-    "inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap",
+    // `no-underline` because the base layer underlines every `<a>`, and this recipe renders as
+    // an anchor whenever a Button gets an `href`. The `link` variant re-adds its underline.
+    "inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap no-underline",
     "transition-colors duration-(--duration-micro) ease-(--ease-toggle)",
     "disabled:pointer-events-none disabled:opacity-50",
     "aria-disabled:pointer-events-none aria-disabled:opacity-50",

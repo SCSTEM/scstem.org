@@ -52,7 +52,13 @@ const cell = placement === "pocket" ? "26px" : "28px";
         preserveAspectRatio="none"
         viewBox="0 0 240 12"
       >
-        <path d={tickStrip} fill="none" stroke="currentColor" stroke-width="1" />
+        <path
+          d={tickStrip}
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1"
+          vector-effect="non-scaling-stroke"
+        />
       </svg>
     )
   }
