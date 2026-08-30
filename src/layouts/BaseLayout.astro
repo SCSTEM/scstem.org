@@ -5,7 +5,7 @@ import JsonLd from "@/components/JsonLd.astro";
 import Seo from "@/components/Seo.astro";
 import Footer from "@/components/ui/Footer.astro";
 import Navbar from "@/components/ui/Navbar.astro";
-import { type ProgramKey, site } from "@/data/site";
+import { type ProgramTheme, site } from "@/data/site";
 import { organization } from "@/lib/jsonld";
 import { preloadedFonts } from "@/styles/fonts";
 import "@/styles/global.css";
@@ -29,7 +29,7 @@ interface Props {
   canonical?: URL | string | undefined;
   noindex?: boolean | undefined;
   /** Remaps the action accent for a program page (D16). `ProgramLayout` sets this. */
-  theme?: Exclude<ProgramKey, "sc2"> | undefined;
+  theme?: ProgramTheme | undefined;
 }
 
 const { title, description, ogImage, ogImageAlt, ogType, canonical, noindex, theme } = Astro.props;

@@ -466,6 +466,24 @@
   max-width: 70ch;
 }
 
+/**
+ * The carousel's snap track (Carousel.astro). Slides arrive through a slot, so their sizing
+ * cannot live in the component's scoped style; defining it here also lets the md boundary read
+ * the breakpoint token. `--carousel-item-basis` is set inline by the component.
+ */
+@utility carousel-track {
+  & > * {
+    scroll-snap-align: start;
+    flex: 0 0 100%;
+  }
+
+  @media (width >= theme(--breakpoint-md)) {
+    & > * {
+      flex-basis: var(--carousel-item-basis, 45%);
+    }
+  }
+}
+
 /* The page container (DESIGN.md §5). One definition, so pages cannot reinvent the gutters. */
 @utility container-page {
   margin-inline: auto;

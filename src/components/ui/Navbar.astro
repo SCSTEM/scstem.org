@@ -5,6 +5,7 @@ import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import { nav, type NavLink, site } from "@/data/site";
 import { cn } from "@/lib/cn";
+import { breakpoint } from "@/lib/tokens";
 
 /**
  * Site header (DESIGN.md §5, D26). Sticky on all viewports, condensing after scroll in pure CSS.
@@ -68,7 +69,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
       <picture>
         <source
           height={logoLockup.height}
-          media="(min-width: 48rem)"
+          media={`(min-width: ${breakpoint("md")})`}
           srcset={logoLockup.src}
           width={logoLockup.width}
         />
@@ -98,16 +99,20 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
                   {link.label}
                 </a>
                 <button
-                  aria-label="Show programs"
+                  aria-label={`Show ${link.label.toLowerCase()}`}
                   class="text-foreground hover:text-primary-bright grid size-9 place-items-center rounded-md"
-                  popovertarget="programs-panel"
+                  popovertarget={`${link.label.toLowerCase()}-panel`}
                   type="button"
                 >
                   <Icon name="chevron-down" size={20} />
                 </button>
               </span>
-              <div class="pocket absolute top-full left-0 m-0 w-64 p-2" id="programs-panel" popover>
-                {nav.programs.map((entry) => (
+              <div
+                class="pocket absolute top-full left-0 m-0 w-64 p-2"
+                id={`${link.label.toLowerCase()}-panel`}
+                popover
+              >
+                {link.panel.map((entry) => (
                   <a
                     aria-current={current === entry.href ? "page" : undefined}
                     class="ui-link hover:bg-card-hover block rounded-md px-3 py-2"
@@ -196,8 +201,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
    * `opacity` and `transform` animate").
    */
   @supports (animation-timeline: scroll()) {
-    /* ≥ md only: the square mark is already compact, so only the lockup condenses. */
-    @media (prefers-reduced-motion: no-preference) and (min-width: 48rem) {
+    @media (prefers-reduced-motion: no-preference) {
       [data-header-lockup] {
         animation: condense-lockup linear both;
         animation-timeline: scroll(root block);

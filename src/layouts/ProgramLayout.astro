@@ -1,7 +1,7 @@
 ---
 import type { ComponentProps } from "astro/types";
 
-import type { ProgramKey } from "@/data/site";
+import type { ProgramTheme } from "@/data/site";
 
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
@@ -11,7 +11,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
  * layouts, one of which was still named `FRCLayout` while rendering FLL.
  */
 type Props = Omit<ComponentProps<typeof BaseLayout>, "theme"> & {
-  program: Exclude<ProgramKey, "sc2">;
+  program: ProgramTheme;
 };
 
 const { program, ...rest } = Astro.props;

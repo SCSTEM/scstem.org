@@ -57,25 +57,34 @@ let savedBytes = 0;
 for (const path of (await walk(ROOT)).toSorted()) {
   const before = (await stat(path)).size;
   const pipeline = sharp(path).rotate();
-  const { width, height, format } = await pipeline.metadata();
-  if (width === undefined || height === undefined) {
+  const meta = await pipeline.metadata();
+  if (meta.width === undefined || meta.height === undefined) {
     continue;
   }
+
+  // metadata() reports pre-EXIF-rotation dimensions; rotate() writes the rotated image, so an
+  // orientation of 5-8 swaps the axes of everything logged below.
+  const swapped = meta.orientation !== undefined && meta.orientation >= 5;
+  const width = swapped ? meta.height : meta.width;
+  const height = swapped ? meta.width : meta.height;
 
   const scale = Math.min(1, MAX_DIMENSION / Math.max(width, height));
   if (scale === 1 && before < SIZE_THRESHOLD) {
     continue;
   }
 
-  const resized = pipeline.resize({
-    width: MAX_DIMENSION,
-    height: MAX_DIMENSION,
-    fit: "inside",
-    withoutEnlargement: true,
-  });
+  const resized =
+    scale === 1
+      ? pipeline
+      : pipeline.resize({
+          width: MAX_DIMENSION,
+          height: MAX_DIMENSION,
+          fit: "inside",
+          withoutEnlargement: true,
+        });
 
   const encoded =
-    format === "png"
+    meta.format === "png"
       ? await resized.png({ quality: QUALITY, compressionLevel: 9 }).toBuffer()
       : await resized.webp({ quality: QUALITY }).toBuffer();
 

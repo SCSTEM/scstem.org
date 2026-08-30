@@ -30,13 +30,14 @@ const { label, itemBasis = "45%", arrows = true, class: className } = Astro.prop
   <div
     aria-label={label}
     class={cn(
-      "flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth",
+      "carousel-track flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth",
       // Hide the scrollbar without hiding the affordance: arrows and drag both remain.
       "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
       "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     )}
     data-carousel-track
     role="region"
+    style={`--carousel-item-basis: ${itemBasis}`}
     tabindex="0"
   >
     <slot />
@@ -55,24 +56,6 @@ const { label, itemBasis = "45%", arrows = true, class: className } = Astro.prop
     )
   }
 </div>
-
-<!--
-  `:global(*)` on the child is required: slides arrive through `<slot />` and carry no
-  `data-astro-cid-*` attribute, so a plain `> *` is rewritten to demand this component's scope
-  and matches nothing — no snapping, no slide sizing, and `itemBasis` dead.
--->
-<style define:vars={{ carouselItemBasis: itemBasis }}>
-  [data-carousel-track] > :global(*) {
-    scroll-snap-align: start;
-    flex: 0 0 100%;
-  }
-
-  @media (width >= 48rem) {
-    [data-carousel-track] > :global(*) {
-      flex-basis: var(--carouselItemBasis);
-    }
-  }
-</style>
 
 <script>
   for (const carousel of document.querySelectorAll("[data-carousel]")) {

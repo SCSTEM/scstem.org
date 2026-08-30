@@ -12,14 +12,33 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
  * Noindexed, and useful rather than cute: the links are the four places people were most likely
  * headed.
  */
+
+/** Titles come from the nav inventory; a destination it no longer carries fails the build. */
+const navTitle = (href: string): string => {
+  const link = nav.primary.find((entry) => entry.href === href);
+  if (link === undefined) {
+    throw new Error(`404 destinations: ${href} is not in nav.primary`);
+  }
+  return link.label;
+};
+
 const destinations = [
   {
     href: "/programs",
-    title: "Programs",
+    title: navTitle("/programs"),
     description: "FIRST LEGO League and FIRST Robotics Competition.",
   },
-  { href: "/about", title: "About", description: "Who we are and what we have built since 2013." },
-  { href: "/sponsors", title: "Sponsors", description: "The businesses that make this possible." },
+  {
+    href: "/about",
+    title: navTitle("/about"),
+    description: "Who we are and what we have built since 2013.",
+  },
+  {
+    href: "/sponsors",
+    title: navTitle("/sponsors"),
+    description: "The businesses that make this possible.",
+  },
+  /** Contact is not a nav route, so its title is its own. */
   { href: "/contact", title: "Contact", description: "Ask us anything — we answer." },
 ];
 ---

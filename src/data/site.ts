@@ -127,22 +127,45 @@ export const programs = {
   },
 } as const satisfies Record<ProgramKey, Program>;
 
+/**
+ * @public Consumed by the layouts and `Seo` from Phase 05 onward.
+ *
+ * A program that carries a `[data-theme]` block in `global.css` (D16); the org-wide `sc2` look
+ * is the default and has none.
+ */
+export type ProgramTheme = Exclude<ProgramKey, "sc2">;
+
+/** A disclosure panel's row: the link plus the one-line description under it. */
+interface PanelLink {
+  readonly href: string;
+  readonly label: string;
+  readonly name: string;
+}
+
 export interface NavLink {
   readonly href: string;
   readonly label: string;
+  /** Disclosure panel this entry opens in the header, in addition to being a link. */
+  readonly panel?: ReadonlyArray<PanelLink>;
   /**
    * Which chrome shows this entry, and how. The desktop header and the mobile sheet carry
    * deliberately different sets (DESIGN.md §5) — Donate is a header link (`header`) and a
    * pinned sheet button (`sheet-cta`), Calendar lives in the desktop Programs panel and at
    * sheet top level — so the split is data, not a discrepancy between two hand-written lists.
    */
-  /** This entry opens a disclosure panel in the header, in addition to being a link. */
-  readonly panel?: boolean;
   readonly surfaces: ReadonlyArray<"header" | "sheet" | "sheet-cta">;
 }
 
 /** The org calendar, linked from the primary nav, the Programs panel, and the footer. */
 const calendar = { label: "Calendar", href: "/calendar/sc2" } as const;
+
+/** The Programs disclosure in the desktop header. */
+const programsPanel = [
+  { label: programs.fll.shortName, href: programs.fll.href, name: programs.fll.name },
+  { label: programs.frc.shortName, href: programs.frc.href, name: programs.frc.name },
+  { label: "Robots", href: "/programs/frc/robots", name: "Our competition robots" },
+  { ...calendar, name: "Upcoming events" },
+] as const;
 
 /**
  * @public Consumed by the app shell and the 404 page.
@@ -154,18 +177,10 @@ const calendar = { label: "Calendar", href: "/calendar/sc2" } as const;
 export const nav = {
   primary: [
     { label: "About", href: "/about", surfaces: ["header", "sheet"] },
-    { label: "Programs", href: "/programs", surfaces: ["header", "sheet"], panel: true },
+    { label: "Programs", href: "/programs", surfaces: ["header", "sheet"], panel: programsPanel },
     { label: "Sponsors", href: "/sponsors", surfaces: ["header", "sheet"] },
     { ...calendar, surfaces: ["sheet"] },
     { label: "Donate", href: "/donate", surfaces: ["header", "sheet-cta"] },
-  ],
-
-  /** The desktop Programs panel, and the Programs section of the footer. */
-  programs: [
-    { label: programs.fll.shortName, href: programs.fll.href, name: programs.fll.name },
-    { label: programs.frc.shortName, href: programs.frc.href, name: programs.frc.name },
-    { label: "Robots", href: "/programs/frc/robots", name: "Our competition robots" },
-    { ...calendar, name: "Upcoming events" },
   ],
 
   calendar,
@@ -176,7 +191,6 @@ export const nav = {
   calendar: { href: string; label: string };
   cta: { href: string; label: string };
   primary: ReadonlyArray<NavLink>;
-  programs: ReadonlyArray<{ href: string; label: string; name: string }>;
 };
 
 /** @public Consumed by the footer and the app shell. */

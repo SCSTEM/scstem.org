@@ -64,7 +64,8 @@ const loaded = new Map(
       return [
         collection,
         {
-          ids: targets.has(collection) ? new Set(files.map((file) => basename(file, ".md"))) : null,
+          ids: new Set(files.map((file) => basename(file, ".md"))),
+          // Frontmatter is only read where a reference field can appear.
           entries: sources.has(collection)
             ? await Promise.all(
                 files.map(async (file) => ({
