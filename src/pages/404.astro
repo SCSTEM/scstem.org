@@ -13,15 +13,15 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
  * headed.
  */
 const destinations = [
-  { href: "/programs", description: "FIRST LEGO League and FIRST Robotics Competition." },
-  { href: "/about", description: "Who we are and what we have built since 2013." },
-  { href: "/sponsors", description: "The businesses that make this possible." },
-  { href: "/contact", description: "Ask us anything — we answer." },
-].map((destination) => ({
-  ...destination,
-  /** Titles come from the nav inventory, so a renamed route renames itself here too. */
-  title: nav.primary.find((link) => link.href === destination.href)?.label ?? "Contact",
-}));
+  {
+    href: "/programs",
+    title: "Programs",
+    description: "FIRST LEGO League and FIRST Robotics Competition.",
+  },
+  { href: "/about", title: "About", description: "Who we are and what we have built since 2013." },
+  { href: "/sponsors", title: "Sponsors", description: "The businesses that make this possible." },
+  { href: "/contact", title: "Contact", description: "Ask us anything — we answer." },
+];
 ---
 
 <BaseLayout
@@ -55,7 +55,7 @@ const destinations = [
 
     <div class="mt-10 flex flex-wrap gap-3">
       <Button href="/">Back to the homepage</Button>
-      <Button href="/get-involved" variant="outline">Get involved</Button>
+      <Button href={nav.cta.href} variant="outline">{nav.cta.label}</Button>
     </div>
   </section>
 </BaseLayout>

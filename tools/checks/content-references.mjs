@@ -22,16 +22,6 @@ const COLLECTION_DIRS = {
   faq: "src/content/faq",
 };
 
-const ids = async (collection) => {
-  const dir = COLLECTION_DIRS[collection];
-  const entries = await readdir(dir, { withFileTypes: true });
-  return new Set(
-    entries
-      .filter((entry) => entry.isFile() && extname(entry.name) === ".md")
-      .map((entry) => basename(entry.name, ".md")),
-  );
-};
-
 /** The frontmatter block, as raw text. */
 const frontmatter = (source) => {
   const match = /^---\r?\n([\s\S]*?)\r?\n---/.exec(source);
@@ -57,44 +47,50 @@ const listField = (block, field) => {
   return values;
 };
 
-/** Every collection's ids, and every entry's frontmatter, read once up front. */
-const knownIds = new Map(
-  await Promise.all(Object.keys(COLLECTION_DIRS).map(async (name) => [name, await ids(name)])),
+const references = Object.entries(REFERENCE_FIELDS).flatMap(([collection, fields]) =>
+  Object.entries(fields).map(([field, target]) => ({ collection, field, target })),
 );
 
-const entriesByCollection = new Map(
+const sources = new Set(references.map(({ collection }) => collection));
+const targets = new Set(references.map(({ target }) => target));
+
+const loaded = new Map(
   await Promise.all(
-    Object.entries(REFERENCE_FIELDS).map(async ([collection]) => {
+    [...sources.union(targets)].map(async (collection) => {
       const dir = COLLECTION_DIRS[collection];
-      const files = (await readdir(dir)).filter((name) => extname(name) === ".md");
-      const entries = await Promise.all(
-        files.map(async (file) => ({
-          id: basename(file, ".md"),
-          block: frontmatter(await readFile(join(dir, file), "utf8")),
-        })),
-      );
-      return [collection, entries];
+      const files = (await readdir(dir, { withFileTypes: true }))
+        .filter((entry) => entry.isFile() && extname(entry.name) === ".md")
+        .map((entry) => entry.name);
+      return [
+        collection,
+        {
+          ids: targets.has(collection) ? new Set(files.map((file) => basename(file, ".md"))) : null,
+          entries: sources.has(collection)
+            ? await Promise.all(
+                files.map(async (file) => ({
+                  id: basename(file, ".md"),
+                  block: frontmatter(await readFile(join(dir, file), "utf8")),
+                })),
+              )
+            : [],
+        },
+      ];
     }),
   ),
 );
 
-const failures = [];
-
-for (const [collection, fields] of Object.entries(REFERENCE_FIELDS)) {
-  for (const [field, target] of Object.entries(fields)) {
-    const known = knownIds.get(target) ?? new Set();
-    for (const entry of entriesByCollection.get(collection) ?? []) {
-      for (const id of listField(entry.block, field)) {
-        if (!known.has(id)) {
-          failures.push(
-            `${collection}/${entry.id}: ${field} references "${id}", ` +
-              `which is not an entry in the ${target} collection`,
-          );
-        }
-      }
-    }
-  }
-}
+const failures = references.flatMap(({ collection, field, target }) => {
+  const known = loaded.get(target).ids;
+  return loaded.get(collection).entries.flatMap((entry) =>
+    listField(entry.block, field)
+      .filter((id) => !known.has(id))
+      .map(
+        (id) =>
+          `${collection}/${entry.id}: ${field} references "${id}", ` +
+          `which is not an entry in the ${target} collection`,
+      ),
+  );
+});
 
 if (failures.length > 0) {
   console.error("tools/checks/content-references: dangling content references");

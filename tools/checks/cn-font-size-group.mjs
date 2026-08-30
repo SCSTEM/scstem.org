@@ -1,9 +1,8 @@
 /**
  * `cn`'s `font-size` class group is a hand-maintained mirror of DESIGN.md §3's type scale. A
  * token missing from it silently loses to any color beside it — the failure only shows up as a
- * wrong size in a browser, which is exactly how it was found the first time.
- *
- * This makes the divergence a `pnpm check` failure instead. Run from the repo root.
+ * wrong size in a browser. This makes the divergence a `pnpm check` failure instead. Run from
+ * the repo root.
  */
 import { readFileSync } from "node:fs";
 

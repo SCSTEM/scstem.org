@@ -2,7 +2,9 @@
 import Accordion from "@/components/ui/primitives/Accordion.astro";
 import AccordionItem from "@/components/ui/primitives/AccordionItem.astro";
 import Badge from "@/components/ui/primitives/Badge.astro";
+import { badgeToneNames } from "@/components/ui/primitives/Badge.variants";
 import Button from "@/components/ui/primitives/Button.astro";
+import { buttonVariantNames } from "@/components/ui/primitives/Button.variants";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Card from "@/components/ui/primitives/Card.astro";
 import CardContent from "@/components/ui/primitives/CardContent.astro";
@@ -27,9 +29,10 @@ import Skeleton from "@/components/ui/primitives/Skeleton.astro";
 import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
 import Textarea from "@/components/ui/primitives/Textarea.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import { site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { AA_NORMAL, AAA_NORMAL, blend, contrastRatio, formatRatio } from "@/lib/contrast";
-import { color, programColor, programThemes, radius, swipeAlpha } from "@/lib/tokens";
+import { color, duration, programColor, programThemes, radius, swipeAlpha } from "@/lib/tokens";
 
 /**
  * The proof page for DESIGN.md: every token, ramp, and motif rendered once, with computed
@@ -50,11 +53,6 @@ interface TextToken {
   use: string;
 }
 
-/**
- * Values are never written here — `color()` reads them out of `src/styles/global.css`, so a
- * token edited in the stylesheet alone still re-verifies, and a renamed token fails the build
- * instead of silently checking a stale copy.
- */
 const textTokens: readonly TextToken[] = [
   { name: "foreground", floor: AAA_NORMAL, use: "Headings, nav, emphasis" },
   { name: "body", floor: AAA_NORMAL, use: "All reading copy" },
@@ -190,28 +188,28 @@ const radii = [
   { token: "lg", use: "Pockets, panels, framed media" },
 ].map((entry) => ({ ...entry, px: radius(entry.token) }));
 
-const buttonVariantNames = ["default", "secondary", "outline", "ghost", "link"] as const;
+const durations = [
+  { token: "micro", use: "hover, focus" },
+  { token: "ui", use: "menus, accordions" },
+  { token: "entrance", use: "scroll-in entrances" },
+].map((entry) => ({ ...entry, value: duration(entry.token) }));
+
 const buttonSizes = ["sm", "md", "lg"] as const;
-const badgeTones = ["default", "muted", "info", "platinum", "gold", "silver", "bronze"] as const;
 
 /**
  * DESIGN.md §2 tabulates each accent's text-on-dark ratio. Rendering the measured value here
  * keeps that table checkable: accents are AA-scoped (links, focus, key words — never long copy),
- * so a value below 7:1 is in-bounds, but a value below 4.5:1 fails the gate above.
+ * so a value below 7:1 is in-bounds, but a value below 4.5:1 fails the gate above. The list is
+ * read from the stylesheet like the gate's, so a new program theme renders here automatically.
  */
 const themes = [
-  { name: "Default (SC2 — Safety Yellow)", theme: undefined, accent: color("primary-bright") },
-  {
-    name: 'data-theme="frc" (Hazard Green)',
-    theme: "frc",
-    accent: programColor("frc", "primary-bright"),
-  },
-  {
-    name: 'data-theme="fll" (Danger Orange)',
-    theme: "fll",
-    accent: programColor("fll", "primary-bright"),
-  },
-] as const;
+  { name: "Default (SC2)", theme: undefined, accent: color("primary-bright") },
+  ...programThemes().map((program) => ({
+    name: `data-theme="${program}"`,
+    theme: program,
+    accent: programColor(program, "primary-bright"),
+  })),
+];
 ---
 
 <BaseLayout
@@ -232,7 +230,6 @@ const themes = [
 
     <RulerDivider />
 
-    <!-- Surfaces -->
     <section class="section-y relative">
       <GhostNumeral value={1} />
       <h2>Surfaces</h2>
@@ -285,7 +282,6 @@ const themes = [
 
     <RulerDivider />
 
-    <!-- Text ramp -->
     <section class="section-y relative">
       <GhostNumeral value={2} />
       <h2>Text ramp &amp; contrast</h2>
@@ -333,7 +329,6 @@ const themes = [
 
     <RulerDivider />
 
-    <!-- Accents -->
     <section class="section-y relative">
       <GhostNumeral value={3} />
       <h2>Accents — the fill-vs-text law</h2>
@@ -375,7 +370,6 @@ const themes = [
 
     <RulerDivider />
 
-    <!-- Typography -->
     <section class="section-y relative">
       <GhostNumeral value={4} />
       <h2>Typography</h2>
@@ -400,7 +394,6 @@ const themes = [
 
     <RulerDivider />
 
-    <!-- Radius and motion -->
     <section class="section-y relative">
       <GhostNumeral value={5} />
       <h2>Radius &amp; motion</h2>
@@ -410,38 +403,35 @@ const themes = [
       </p>
       <div class="mt-8 grid gap-4 sm:grid-cols-3">
         {
-          radii.map((radius) => (
+          radii.map((entry) => (
             <div class="pocket p-4">
               <div
                 class="border-primary/40 bg-card-hover h-16 border"
-                style={`border-radius: ${radius.px}`}
+                style={`border-radius: ${entry.px}`}
               />
-              <p class="text-small text-foreground mt-3 font-mono">radius-{radius.token}</p>
-              <p class="text-small text-muted font-mono">{radius.px}</p>
-              <p class="text-small mt-1">{radius.use}</p>
+              <p class="text-small text-foreground mt-3 font-mono">radius-{entry.token}</p>
+              <p class="text-small text-muted font-mono">{entry.px}</p>
+              <p class="text-small mt-1">{entry.use}</p>
             </div>
           ))
         }
       </div>
       <dl class="mt-8 grid gap-4 sm:grid-cols-3">
-        <div class="pocket p-4">
-          <dt class="spec-label text-muted">duration-micro</dt>
-          <dd class="text-small mt-1 font-mono">150ms — hover, focus</dd>
-        </div>
-        <div class="pocket p-4">
-          <dt class="spec-label text-muted">duration-ui</dt>
-          <dd class="text-small mt-1 font-mono">250ms — menus, accordions</dd>
-        </div>
-        <div class="pocket p-4">
-          <dt class="spec-label text-muted">duration-entrance</dt>
-          <dd class="text-small mt-1 font-mono">500ms — scroll-in entrances</dd>
-        </div>
+        {
+          durations.map((entry) => (
+            <div class="pocket p-4">
+              <dt class="spec-label text-muted">duration-{entry.token}</dt>
+              <dd class="text-small mt-1 font-mono">
+                {entry.value} — {entry.use}
+              </dd>
+            </div>
+          ))
+        }
       </dl>
     </section>
 
     <RulerDivider />
 
-    <!-- Motifs -->
     <section class="section-y relative">
       <GhostNumeral value={6} />
       <h2>Motifs</h2>
@@ -482,8 +472,10 @@ const themes = [
       </p>
       <p class="text-small text-muted mt-3 font-mono">
         Swipe at {SWIPE_ALPHA * 100}% alpha &middot; white on {swipeOnGround} ={" "}
-        {formatRatio(contrastRatio("#FAFAFA", swipeOnGround))} &middot; on {swipeOnCard} ={" "}
-        {formatRatio(contrastRatio("#FAFAFA", swipeOnCard))}
+        {formatRatio(contrastRatio(color("foreground"), swipeOnGround))} &middot; on {swipeOnCard} ={
+          " "
+        }
+        {formatRatio(contrastRatio(color("foreground"), swipeOnCard))}
       </p>
 
       <div class="mt-12 flex items-start gap-2">
@@ -502,16 +494,15 @@ const themes = [
       <TitleBlock
         class="mt-6"
         fields={[
-          { label: "Project", value: "scstem.org" },
-          { label: "Organization", value: "South Central STEM Collective" },
-          { label: "URL", value: "scstem.org", mono: true, href: "https://scstem.org" },
+          { label: "Project", value: new URL(site.url).host },
+          { label: "Organization", value: site.name },
+          { label: "URL", value: new URL(site.url).host, mono: true, href: site.url },
         ]}
       />
     </section>
 
     <RulerDivider />
 
-    <!-- Primitives -->
     <section class="section-y relative">
       <GhostNumeral value={7} />
       <h2>Primitives</h2>
@@ -558,7 +549,7 @@ const themes = [
 
       <h3 class="mt-12">Badge</h3>
       <div class="mt-6 flex flex-wrap gap-3">
-        {badgeTones.map((tone) => <Badge tone={tone}>{tone}</Badge>)}
+        {badgeToneNames.map((tone) => <Badge tone={tone}>{tone}</Badge>)}
         <Badge tone="muted">Ages 9&ndash;16</Badge>
       </div>
 
@@ -686,7 +677,6 @@ const themes = [
 
     <RulerDivider />
 
-    <!-- Program themes -->
     <section class="section-y relative">
       <GhostNumeral value={8} />
       <h2>Program themes</h2>

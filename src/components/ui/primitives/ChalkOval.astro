@@ -1,6 +1,6 @@
 ---
 import { cn } from "@/lib/cn";
-import { type HandTone, handToneClass } from "@/lib/hand";
+import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
 
 /**
  * A key word circled by hand (DESIGN.md §2.12) — the "Real ⬭Skills⬭. Real ⬭Robots⬭." treatment.
@@ -13,7 +13,7 @@ import { type HandTone, handToneClass } from "@/lib/hand";
  * Pill-shaped UI is banned (DESIGN.md §10) — this is the sanctioned way to ring a word.
  */
 interface Props {
-  variant?: 1 | 2 | 3;
+  variant?: HandVariant;
   /** `chalk` is white for photo contexts; `pencil` is the accent, for the page ground. */
   tone?: HandTone;
   class?: string;
@@ -40,7 +40,8 @@ const rotations = { 1: "-1.2deg", 2: "0.9deg", 3: "-0.6deg" } as const;
   <svg
     aria-hidden="true"
     class:list={[
-      "draw-on hand-stroke pointer-events-none absolute -inset-x-4 -inset-y-1.5 h-[calc(100%+0.75rem)] w-[calc(100%+2rem)]",
+      handMarkClass,
+      "absolute -inset-x-4 -inset-y-1.5 h-[calc(100%+0.75rem)] w-[calc(100%+2rem)]",
       handToneClass(tone),
     ]}
     preserveAspectRatio="none"

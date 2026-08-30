@@ -1,5 +1,7 @@
 ---
-import type { ImageMetadata } from "astro";
+import type { ComponentProps } from "astro/types";
+
+import type { ProgramKey } from "@/data/site";
 
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
@@ -8,24 +10,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
  * wrapper that sets the theme and nothing else. It replaces legacy's duplicated FRC and FLL
  * layouts, one of which was still named `FRCLayout` while rendering FLL.
  */
-interface Props {
-  title: string;
-  description: string;
-  program: "frc" | "fll";
-  ogImage?: ImageMetadata | string | undefined;
-  canonical?: URL | string | undefined;
-}
+type Props = Omit<ComponentProps<typeof BaseLayout>, "theme"> & {
+  program: Exclude<ProgramKey, "sc2">;
+};
 
-const { title, description, program, ogImage, canonical } = Astro.props;
+const { program, ...rest } = Astro.props;
 ---
 
-<BaseLayout
-  canonical={canonical}
-  description={description}
-  ogImage={ogImage}
-  theme={program}
-  title={title}
->
+<BaseLayout {...rest} theme={program}>
   <slot name="head" slot="head" />
   <slot />
 </BaseLayout>

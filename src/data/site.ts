@@ -25,11 +25,26 @@ export const site = {
   email: "info@scstem.org",
 
   /**
-   * The site-wide social card. Dimensions travel with the path so `og:image:width`/`height` are
-   * emitted for the fallback too — without them a scraper has to fetch all 466 KB just to learn
-   * the aspect ratio before it can lay the card out.
+   * The site-wide social card. Dimensions and alt travel with the path so `og:image:width`/
+   * `height` are emitted for the fallback too — without them a scraper has to fetch all 466 KB
+   * just to learn the aspect ratio before it can lay the card out.
    */
-  ogImage: { path: "/og/default.png", width: 1200, height: 630 },
+  ogImage: {
+    path: "/og/default.png",
+    width: 1200,
+    height: 630,
+    alt: "South Central STEM Collective logo over a photo of the team",
+  },
+
+  /** The favicon/app-icon set in `public/`, projected into head links, the manifest, and JSON-LD. */
+  icons: {
+    favicon: "/favicon.ico",
+    svg: "/icon.svg",
+    appleTouch: "/apple-touch-icon.png",
+    png192: "/icon-192.png",
+    png512: "/icon-512.png",
+    maskable512: "/icon-maskable-512.png",
+  },
 
   location: {
     workspace: "20 South Main Street, Downtown Chambersburg",
@@ -63,21 +78,9 @@ export const site = {
     sc2: "Y19wcDlkOXRrbGRrbThmdXZtcjMyZTBwZTgxc0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
   },
 
-  /**
-   * Browser-chrome colours, shared by the `theme-color` meta and the web manifest. Kept here
-   * rather than restated in both: they are the `--color-primary` and `--color-background` tokens,
-   * and a maskable icon needs the ground colour behind it.
-   */
-  chrome: {
-    themeColor: "#FACC15",
-    backgroundColor: "#262626",
-  },
-
   analytics: {
     /** GA4. Wired as a plain deferred gtag snippet in Phase 10 (D21). */
     ga4MeasurementId: "G-3TPD3DLYBR",
-    /** Cloudflare Web Analytics beacon token, added in Phase 10. */
-    cloudflareBeaconToken: undefined,
   },
 } as const;
 
@@ -128,26 +131,33 @@ export interface NavLink {
   readonly href: string;
   readonly label: string;
   /**
-   * Which chrome shows this entry. The desktop header and the mobile sheet carry deliberately
-   * different sets (DESIGN.md §5) — Donate is a header link and a sheet button, Calendar lives in
-   * the desktop Programs panel and at sheet top level — so the split is data, not a discrepancy
-   * between two hand-written lists.
+   * Which chrome shows this entry, and how. The desktop header and the mobile sheet carry
+   * deliberately different sets (DESIGN.md §5) — Donate is a header link (`header`) and a
+   * pinned sheet button (`sheet-cta`), Calendar lives in the desktop Programs panel and at
+   * sheet top level — so the split is data, not a discrepancy between two hand-written lists.
    */
-  readonly surfaces: ReadonlyArray<"header" | "sheet" | "footer">;
+  /** This entry opens a disclosure panel in the header, in addition to being a link. */
+  readonly panel?: boolean;
+  readonly surfaces: ReadonlyArray<"header" | "sheet" | "sheet-cta">;
 }
+
+/** The org calendar, linked from the primary nav, the Programs panel, and the footer. */
+const calendar = { label: "Calendar", href: "/calendar/sc2" } as const;
 
 /**
  * @public Consumed by the app shell and the 404 page.
  *
  * The site's route inventory. Adding a route is one edit here, not four across two components.
+ * The footer's columns stay curated in `Footer.astro` — they mix routes with external URLs and
+ * use full program names — but reference the entries here rather than re-typing an href.
  */
 export const nav = {
   primary: [
     { label: "About", href: "/about", surfaces: ["header", "sheet"] },
-    { label: "Programs", href: "/programs", surfaces: ["header", "sheet"] },
-    { label: "Sponsors", href: "/sponsors", surfaces: ["header", "sheet", "footer"] },
-    { label: "Calendar", href: "/calendar/sc2", surfaces: ["sheet", "footer"] },
-    { label: "Donate", href: "/donate", surfaces: ["header", "footer"] },
+    { label: "Programs", href: "/programs", surfaces: ["header", "sheet"], panel: true },
+    { label: "Sponsors", href: "/sponsors", surfaces: ["header", "sheet"] },
+    { ...calendar, surfaces: ["sheet"] },
+    { label: "Donate", href: "/donate", surfaces: ["header", "sheet-cta"] },
   ],
 
   /** The desktop Programs panel, and the Programs section of the footer. */
@@ -155,12 +165,15 @@ export const nav = {
     { label: programs.fll.shortName, href: programs.fll.href, name: programs.fll.name },
     { label: programs.frc.shortName, href: programs.frc.href, name: programs.frc.name },
     { label: "Robots", href: "/programs/frc/robots", name: "Our competition robots" },
-    { label: "Calendar", href: "/calendar/sc2", name: "Upcoming events" },
+    { ...calendar, name: "Upcoming events" },
   ],
+
+  calendar,
 
   /** The primary call to action, in the header and at the foot of the mobile sheet. */
   cta: { label: "Get involved", href: "/get-involved" },
 } as const satisfies {
+  calendar: { href: string; label: string };
   cta: { href: string; label: string };
   primary: ReadonlyArray<NavLink>;
   programs: ReadonlyArray<{ href: string; label: string; name: string }>;

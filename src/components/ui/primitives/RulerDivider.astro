@@ -12,7 +12,12 @@ interface Props {
 
 const { class: className } = Astro.props;
 
+/** Baseline plus 61 graduated ticks, as one path — one element instead of one per tick. */
 const ticks = Array.from({ length: 61 }, (_, index) => index * 4);
+const strip = [
+  "M0 15H240",
+  ...ticks.map((x) => `M${String(x)} ${String(x % 20 === 0 ? 4 : x % 8 === 0 ? 8 : 11)}V15`),
+].join("");
 ---
 
 <svg
@@ -22,17 +27,5 @@ const ticks = Array.from({ length: 61 }, (_, index) => index * 4);
   role="presentation"
   viewBox="0 0 240 16"
 >
-  <line stroke="currentColor" stroke-width="1" x1="0" x2="240" y1="15" y2="15"></line>
-  {
-    ticks.map((x) => (
-      <line
-        stroke="currentColor"
-        stroke-width="1"
-        x1={x}
-        x2={x}
-        y1={x % 20 === 0 ? 4 : x % 8 === 0 ? 8 : 11}
-        y2="15"
-      />
-    ))
-  }
+  <path d={strip} fill="none" stroke="currentColor" stroke-width="1"></path>
 </svg>

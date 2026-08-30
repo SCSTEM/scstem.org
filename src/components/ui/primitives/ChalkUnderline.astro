@@ -1,6 +1,6 @@
 ---
 import { cn } from "@/lib/cn";
-import { type HandTone, handToneClass } from "@/lib/hand";
+import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
 
 /**
  * A hand-drawn underline (DESIGN.md §2.14). Two uses: beneath a heading, and **inline within a
@@ -12,7 +12,7 @@ import { type HandTone, handToneClass } from "@/lib/hand";
  * Three variants; adjacent instances must differ.
  */
 interface Props {
-  variant?: 1 | 2 | 3;
+  variant?: HandVariant;
   tone?: HandTone;
   class?: string;
 }
@@ -33,10 +33,7 @@ const rotations = { 1: "-0.5deg", 2: "0.4deg", 3: "-0.8deg" } as const;
   <slot />
   <svg
     aria-hidden="true"
-    class:list={[
-      "draw-on hand-stroke pointer-events-none absolute -bottom-1.5 left-0 h-2 w-full",
-      handToneClass(tone),
-    ]}
+    class:list={[handMarkClass, "absolute -bottom-1.5 left-0 h-2 w-full", handToneClass(tone)]}
     preserveAspectRatio="none"
     style={`rotate: ${rotations[variant]}`}
     viewBox="0 0 180 10"

@@ -5,12 +5,9 @@ import css from "@/styles/global.css?raw";
 
 /**
  * Reads the design tokens out of `src/styles/global.css` at build time, so anything verifying
- * them verifies the values the site actually ships.
- *
- * `/styleguide` used to restate every hex as a TS literal, which meant its contrast gate
- * compared one copy of the palette against another: editing a token in the stylesheet alone
- * left the build green against the stale value. The stylesheet stays authoritative
- * (DESIGN.md §11) and this module is the only reader.
+ * them verifies the values the site actually ships. The stylesheet is authoritative
+ * (DESIGN.md §11) and this module is its only reader — a consumer restating a value as a
+ * literal can drift from the stylesheet with a green build.
  */
 
 /** Body of the first `{ … }` following `header`, or undefined when the header is absent. */
@@ -53,8 +50,16 @@ const declarations = (body: string): ReadonlyMap<string, string> => {
 
 const theme = declarations(blockAfter("@theme") ?? "");
 
-const themeOverrides = (program: string): ReadonlyMap<string, string> =>
-  declarations(blockAfter(`[data-theme="${program}"]`) ?? "");
+const overridesByProgram = new Map<string, ReadonlyMap<string, string>>();
+
+const themeOverrides = (program: string): ReadonlyMap<string, string> => {
+  let overrides = overridesByProgram.get(program);
+  if (overrides === undefined) {
+    overrides = declarations(blockAfter(`[data-theme="${program}"]`) ?? "");
+    overridesByProgram.set(program, overrides);
+  }
+  return overrides;
+};
 
 const required = (name: string, from: ReadonlyMap<string, string>, where: string): string => {
   const value = from.get(name);
@@ -69,6 +74,9 @@ export const color = (name: string): string => required(`--color-${name}`, theme
 
 /** A `--radius-*` token from the base `@theme` block. */
 export const radius = (name: string): string => required(`--radius-${name}`, theme, "@theme");
+
+/** A `--duration-*` token from the base `@theme` block. */
+export const duration = (name: string): string => required(`--duration-${name}`, theme, "@theme");
 
 /**
  * A `--color-*` token as a program theme remaps it (DESIGN.md §2, D16). Falls back to the base

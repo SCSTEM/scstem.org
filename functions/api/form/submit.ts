@@ -7,10 +7,8 @@ export const onRequestPost: PagesFunction<{
 }> = async ({ env, request }) => {
   const data = await request.json<GenericFormRequest>();
 
-  let key = env.TS_SECRET_KEY;
-  if (!key) {
-    key = "1x0000000000000000000000000000000AA";
-  }
+  // Falls back to Turnstile's documented always-passes test key for local dev without a secret.
+  const key = env.TS_SECRET_KEY || "1x0000000000000000000000000000000AA";
 
   try {
     const ts = await validateTurnstile(

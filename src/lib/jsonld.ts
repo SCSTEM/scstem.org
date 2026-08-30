@@ -26,7 +26,7 @@ export const organization: JsonLdObject = {
   name: site.name,
   alternateName: site.shortName,
   url: site.url,
-  logo: `${site.url}/icon-512.png`,
+  logo: `${site.url}${site.icons.png512}`,
   email: site.email,
   description: site.description,
   address: {

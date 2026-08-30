@@ -79,16 +79,19 @@ const { label, itemBasis = "45%", arrows = true, class: className } = Astro.prop
     const track = carousel.querySelector("[data-carousel-track]");
     if (!(track instanceof HTMLElement)) continue;
 
-    // Scroll by one slide, measured from the first child so it follows the CSS basis.
+    // Scroll by one slide plus the track's gap, both measured live so the step follows the CSS.
     // No explicit `behavior`: the track's `scroll-smooth` class supplies it, which means the
     // reduced-motion override in global.css can turn it off.
-    const step = () => track.firstElementChild?.getBoundingClientRect().width ?? track.clientWidth;
+    const step = () => {
+      const slide = track.firstElementChild?.getBoundingClientRect().width ?? track.clientWidth;
+      return slide + (Number.parseFloat(getComputedStyle(track).columnGap) || 0);
+    };
 
     carousel.querySelector("[data-carousel-prev]")?.addEventListener("click", () => {
-      track.scrollBy({ left: -step() - 16 });
+      track.scrollBy({ left: -step() });
     });
     carousel.querySelector("[data-carousel-next]")?.addEventListener("click", () => {
-      track.scrollBy({ left: step() + 16 });
+      track.scrollBy({ left: step() });
     });
   }
 </script>

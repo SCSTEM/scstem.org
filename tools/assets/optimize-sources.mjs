@@ -56,26 +56,23 @@ let savedBytes = 0;
 
 for (const path of (await walk(ROOT)).toSorted()) {
   const before = (await stat(path)).size;
-  const image = sharp(path);
-  const { width, height, format } = await image.metadata();
+  const pipeline = sharp(path).rotate();
+  const { width, height, format } = await pipeline.metadata();
   if (width === undefined || height === undefined) {
     continue;
   }
 
-  const tooLarge = Math.max(width, height) > MAX_DIMENSION;
-  if (!tooLarge && before < SIZE_THRESHOLD) {
+  const scale = Math.min(1, MAX_DIMENSION / Math.max(width, height));
+  if (scale === 1 && before < SIZE_THRESHOLD) {
     continue;
   }
 
-  const resized = tooLarge
-    ? sharp(path)
-        .rotate()
-        .resize({
-          width: width >= height ? MAX_DIMENSION : undefined,
-          height: height > width ? MAX_DIMENSION : undefined,
-          withoutEnlargement: true,
-        })
-    : sharp(path).rotate();
+  const resized = pipeline.resize({
+    width: MAX_DIMENSION,
+    height: MAX_DIMENSION,
+    fit: "inside",
+    withoutEnlargement: true,
+  });
 
   const encoded =
     format === "png"
@@ -87,10 +84,10 @@ for (const path of (await walk(ROOT)).toSorted()) {
     continue;
   }
 
-  const meta = await sharp(encoded).metadata();
   console.log(
     `${write ? "write" : "would"} ${path}  ${String(width)}x${String(height)} ${fmt(before)}` +
-      ` -> ${String(meta.width ?? 0)}x${String(meta.height ?? 0)} ${fmt(encoded.length)}`,
+      ` -> ${String(Math.round(width * scale))}x${String(Math.round(height * scale))}` +
+      ` ${fmt(encoded.length)}`,
   );
   if (write) {
     await writeFile(path, encoded);
