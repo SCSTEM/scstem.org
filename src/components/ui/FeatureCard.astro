@@ -1,0 +1,109 @@
+---
+import type { ImageMetadata } from "astro";
+
+import { Image } from "astro:assets";
+
+import Badge from "@/components/ui/primitives/Badge.astro";
+import Card from "@/components/ui/primitives/Card.astro";
+import CardContent from "@/components/ui/primitives/CardContent.astro";
+import CardFooter from "@/components/ui/primitives/CardFooter.astro";
+import CardHeader from "@/components/ui/primitives/CardHeader.astro";
+import CardTitle from "@/components/ui/primitives/CardTitle.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import { cn } from "@/lib/cn";
+
+/**
+ * The card the section grids are built from (DESIGN.md §8): an accent-tinted icon tile, a title
+ * over the machined 32px rule, body copy, and an optional footer link whose hit area covers the
+ * whole pocket. Replaces `legacy/src/components/cards/FeatureCard.tsx`.
+ *
+ * The photo is inset rather than bled to the pocket's top edge: a full-width image would cover
+ * the inset shadow that makes the card read as machined *into* the page (§2).
+ *
+ * Slots: `title` (so a title carrying markup still works) and the default body.
+ */
+interface Props {
+  /** Tabler icon name for the tile. */
+  icon: string;
+  image?: ImageMetadata;
+  /** Required alongside `image`. */
+  imageAlt?: string;
+  /** A spec chip in the header row — an age range, a season, a tier. */
+  badge?: string;
+  /** Turns the whole pocket into the link's hit area. */
+  href?: string;
+  /** The footer link's text, and therefore its accessible name — make it specific. */
+  cta?: string;
+  /** Renders the grid inside the pocket floor. Feature moments only; dense grids stay plain. */
+  feature?: boolean;
+  class?: string;
+}
+
+const {
+  icon,
+  image,
+  imageAlt,
+  badge,
+  href,
+  cta = "Learn more",
+  feature = false,
+  class: className,
+} = Astro.props;
+
+if (image !== undefined && imageAlt === undefined) {
+  throw new Error("FeatureCard: an `image` needs an `imageAlt`.");
+}
+---
+
+<Card
+  as="article"
+  class={cn("relative flex flex-col", className)}
+  feature={feature}
+  interactive={href !== undefined}
+>
+  {
+    image !== undefined && (
+      <div class="p-4 pb-0">
+        <Image
+          alt={imageAlt ?? ""}
+          class="aspect-16/10 w-full rounded-md object-cover"
+          loading="lazy"
+          sizes="(min-width: 64rem) 30rem, (min-width: 48rem) 45vw, 92vw"
+          src={image}
+          widths={[400, 640, 900]}
+        />
+      </div>
+    )
+  }
+
+  <CardHeader>
+    <div class="flex items-start justify-between gap-4">
+      <span
+        class="bg-primary/12 text-primary-bright grid size-12 shrink-0 place-items-center rounded-sm"
+      >
+        <Icon name={icon} size={24} />
+      </span>
+      {badge !== undefined && <Badge>{badge}</Badge>}
+    </div>
+    <CardTitle rule>
+      <slot name="title" />
+    </CardTitle>
+  </CardHeader>
+
+  <CardContent class="flex-1">
+    <slot />
+  </CardContent>
+
+  {
+    href !== undefined && (
+      <CardFooter>
+        {/* The stretched pseudo-element makes the pocket clickable without nesting the card's
+            content inside the anchor, so the link keeps one short accessible name. */}
+        <a class="ui-link text-small font-medium after:absolute after:inset-0" href={href}>
+          {cta}
+        </a>
+        <Icon class="text-primary-bright" name="arrow-right" size={20} />
+      </CardFooter>
+    )
+  }
+</Card>

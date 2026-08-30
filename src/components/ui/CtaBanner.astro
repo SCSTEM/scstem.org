@@ -1,0 +1,38 @@
+---
+import Card from "@/components/ui/primitives/Card.astro";
+import CardContent from "@/components/ui/primitives/CardContent.astro";
+import RegistrationMarks from "@/components/ui/primitives/RegistrationMarks.astro";
+import { cn } from "@/lib/cn";
+
+/**
+ * The closing "get involved" band — the one feature pocket a view is allowed to crop-mark
+ * (DESIGN.md §2.8).
+ *
+ * Slots: `title` (wrapped in the heading), the default body copy, and `actions`.
+ */
+interface Props {
+  headingLevel?: "h2" | "h3";
+  class?: string;
+}
+
+const { headingLevel: Heading = "h2", class: className } = Astro.props;
+---
+
+<Card class={cn("relative", className)} feature>
+  <RegistrationMarks />
+  <CardContent class="px-6 pt-12 pb-12 text-center md:px-12">
+    <Heading>
+      <slot name="title" />
+    </Heading>
+    <div class="measure text-body-lg mx-auto mt-5">
+      <slot />
+    </div>
+    {
+      Astro.slots.has("actions") && (
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <slot name="actions" />
+        </div>
+      )
+    }
+  </CardContent>
+</Card>

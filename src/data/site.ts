@@ -70,6 +70,11 @@ export const site = {
       "https://docs.google.com/forms/d/e/1FAIpQLScTjT3LHFAq1mOfKFztgMOpUT8hFWz81dYlaaDa4B8lG6yr2Q/viewform?embedded=true",
     wiki: "https://wiki.scstem.org",
     directions: "https://wiki.scstem.org/workspace/#directions",
+    /** The parent organization every program belongs to. */
+    firstInspires: "https://www.firstinspires.org/",
+    moreThanRobots: "https://info.firstinspires.org/morethanrobots",
+    /** The team's introduction video, linked out rather than embedded (no third-party player). */
+    teamVideo: "https://youtu.be/147CgudTur8",
   },
 
   /** Public Google Calendar IDs, from `legacy/src/app/calendar/[name]/page.tsx`. */
@@ -135,16 +140,18 @@ export const programs = {
  */
 export type ProgramTheme = Exclude<ProgramKey, "sc2">;
 
-/** A disclosure panel's row: the link plus the one-line description under it. */
-interface PanelLink {
+/** A destination and the text that links to it. */
+interface Route {
   readonly href: string;
   readonly label: string;
+}
+
+/** A disclosure panel's row: the link plus the one-line description under it. */
+interface PanelLink extends Route {
   readonly name: string;
 }
 
-export interface NavLink {
-  readonly href: string;
-  readonly label: string;
+export interface NavLink extends Route {
   /** Disclosure panel this entry opens in the header, in addition to being a link. */
   readonly panel?: ReadonlyArray<PanelLink>;
   /**
@@ -156,8 +163,14 @@ export interface NavLink {
   readonly surfaces: ReadonlyArray<"header" | "sheet" | "sheet-cta">;
 }
 
-/** The org calendar, linked from the primary nav, the Programs panel, and the footer. */
+/**
+ * Entries that other surfaces link to by name — the footer's columns, a page's call to action —
+ * are named here and spread into `primary` below, so a link never has to be found by index or
+ * re-typed at the call site.
+ */
 const calendar = { label: "Calendar", href: "/calendar/sc2" } as const;
+const donate = { label: "Donate", href: "/donate" } as const;
+const sponsors = { label: "Sponsors", href: "/sponsors" } as const;
 
 /** The Programs disclosure in the desktop header. */
 const programsPanel = [
@@ -178,19 +191,23 @@ export const nav = {
   primary: [
     { label: "About", href: "/about", surfaces: ["header", "sheet"] },
     { label: "Programs", href: "/programs", surfaces: ["header", "sheet"], panel: programsPanel },
-    { label: "Sponsors", href: "/sponsors", surfaces: ["header", "sheet"] },
+    { ...sponsors, surfaces: ["header", "sheet"] },
     { ...calendar, surfaces: ["sheet"] },
-    { label: "Donate", href: "/donate", surfaces: ["header", "sheet-cta"] },
+    { ...donate, surfaces: ["header", "sheet-cta"] },
   ],
 
   calendar,
+  donate,
+  sponsors,
 
   /** The primary call to action, in the header and at the foot of the mobile sheet. */
   cta: { label: "Get involved", href: "/get-involved" },
 } as const satisfies {
-  calendar: { href: string; label: string };
-  cta: { href: string; label: string };
+  calendar: Route;
+  cta: Route;
+  donate: Route;
   primary: ReadonlyArray<NavLink>;
+  sponsors: Route;
 };
 
 /** @public Consumed by the footer and the app shell. */

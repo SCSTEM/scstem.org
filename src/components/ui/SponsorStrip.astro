@@ -1,0 +1,58 @@
+---
+import type { ImageMetadata } from "astro";
+
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import { SPONSOR_LEVELS } from "@/content.config";
+import { cn } from "@/lib/cn";
+
+/**
+ * The active sponsors' logos, strongest level first. Retiring a sponsor is `active: false` in its
+ * markdown file — the strip needs no code change, and the record stays in git as data.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const sponsors = (await getCollection("sponsors", (entry) => entry.data.active)).toSorted(
+  (a, b) => SPONSOR_LEVELS.indexOf(a.data.level) - SPONSOR_LEVELS.indexOf(b.data.level),
+);
+
+/**
+ * Logos render 48px tall, so 96 covers a 2x screen — but never past a logo's own height. Several
+ * of these are small originals, and upscaling one only makes a heavier, blurrier file.
+ */
+const renderHeight = (logo: ImageMetadata): number => Math.min(96, logo.height);
+---
+
+<ul class={cn("flex flex-wrap items-center justify-center gap-x-10 gap-y-8", className)}>
+  {
+    sponsors.map(({ data }) => {
+      const Tag = data.url === undefined ? "span" : "a";
+      return (
+        <li>
+          <Tag
+            class="ui-link block"
+            href={data.url}
+            rel={data.url === undefined ? undefined : "sponsored noopener"}
+          >
+            {data.logo === undefined ? (
+              <span class="text-h4 font-semibold">{data.name}</span>
+            ) : (
+              <Image
+                alt={`${data.name} logo`}
+                class="h-10 w-auto max-w-40 object-contain md:h-12"
+                height={renderHeight(data.logo)}
+                loading="lazy"
+                src={data.logo}
+              />
+            )}
+          </Tag>
+        </li>
+      );
+    })
+  }
+</ul>

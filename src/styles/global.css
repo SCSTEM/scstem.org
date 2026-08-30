@@ -484,6 +484,40 @@
   }
 }
 
+/**
+ * Five feature cards as a deliberate 2 + 3 (DESIGN.md §5: "No orphan rows: plan the math —
+ * 5 cards = intentional 2+3"). Two columns first, so the odd card widens to fill its row rather
+ * than floating; six columns from `lg`, where 3+3 then 2+2+2 divides evenly.
+ *
+ * Here rather than in `FeatureGrid.astro` for the two reasons a style leaves a component: the
+ * spans land on slotted children, which a scoped style cannot reach, and the boundaries read the
+ * breakpoint tokens.
+ */
+@utility feature-grid-2-3 {
+  display: grid;
+  gap: 1.5rem;
+
+  @media (width >= theme(--breakpoint-md)) {
+    grid-template-columns: repeat(2, 1fr);
+
+    & > *:last-child {
+      grid-column: span 2;
+    }
+  }
+
+  @media (width >= theme(--breakpoint-lg)) {
+    grid-template-columns: repeat(6, 1fr);
+
+    & > *:nth-child(-n + 2) {
+      grid-column: span 3;
+    }
+
+    & > *:nth-child(n + 3) {
+      grid-column: span 2;
+    }
+  }
+}
+
 /* The page container (DESIGN.md §5). One definition, so pages cannot reinvent the gutters. */
 @utility container-page {
   margin-inline: auto;

@@ -20,11 +20,12 @@ Pages. **Zero client-side framework runtime** — `.astro` components and plain 
 
 ## Toolchain ownership
 
-| Extensions                            | Linter                                         | Formatter |
-| ------------------------------------- | ---------------------------------------------- | --------- |
-| `.ts .js .mjs .cjs .json .jsonc .css` | oxlint (type-aware, vendored nkzw + anti-slop) | oxfmt     |
-| `.astro`                              | ESLint (typed, jsx-a11y-strict)                | Prettier  |
-| `.md`                                 | —                                              | Prettier  |
+| Extensions                       | Linter                                         | Formatter |
+| -------------------------------- | ---------------------------------------------- | --------- |
+| `.ts .js .mjs .cjs .json .jsonc` | oxlint (type-aware, vendored nkzw + anti-slop) | oxfmt     |
+| `.css`                           | — (oxlint has no CSS rules)                    | oxfmt     |
+| `.astro`                         | ESLint (typed, jsx-a11y-strict)                | Prettier  |
+| `.md`                            | —                                              | Prettier  |
 
 The Claude Code hook in `.claude/hooks/format-lint.sh` runs the right pair on every file you
 edit, and feeds lint failures back to you. Do not reach for the other toolchain by hand.

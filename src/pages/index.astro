@@ -1,25 +1,326 @@
 ---
+import type { ImageMetadata } from "astro";
+
+import { getImage, Image } from "astro:assets";
+
+import collage from "@/assets/events/morethanrobots.webp";
+import firstAcronym from "@/assets/first/first-horizontal-acro-dark.png";
+import firstLockup from "@/assets/first/first-horizontal-dark.png";
+import fllRobots from "@/assets/fll/lego-robots.webp";
+import fllField from "@/assets/fll/legos.webp";
+import driveTeam from "@/assets/frc/frc-driveteam.webp";
+import teamVideoPoster from "@/assets/frc/frc-driveteam2.webp";
+import award from "@/assets/sc2/award.webp";
+import competition from "@/assets/sc2/competition-1.webp";
+import dean from "@/assets/sc2/dean.webp";
+import handsOn from "@/assets/sc2/hands-on-2.webp";
+import leadership from "@/assets/sc2/leadership-1.webp";
 import JsonLd from "@/components/JsonLd.astro";
-import { site } from "@/data/site";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Callout from "@/components/ui/primitives/Callout.astro";
+import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Separator from "@/components/ui/primitives/Separator.astro";
+import Section from "@/components/ui/Section.astro";
+import SponsorStrip from "@/components/ui/SponsorStrip.astro";
+import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { webSite } from "@/lib/jsonld";
+import { breakpoint } from "@/lib/tokens";
 
 /**
- * Placeholder until Phase 06 ports the homepage. Present so the app shell is visible on the
- * preview URL; never deployed to production.
+ * The FIRST identity is art-directed — the spelled-out acronym only reads from `md` up — so the
+ * two renditions are a `<source>` swap, which `<Image>` cannot express. `getImage` gives the
+ * `<source>` the same treatment `<Image>` would: the sources are 2560px masters and the widest
+ * slot here is 384 CSS px.
+ */
+const renderAt = async (source: ImageMetadata, width: number) => ({
+  height: Math.round((width * source.height) / source.width),
+  src: (await getImage({ format: "webp", src: source, width })).src,
+  width,
+});
+
+const acronymArt = await renderAt(firstAcronym, 768);
+const lockupArt = await renderAt(firstLockup, 640);
+
+/**
+ * Copy is legacy's, near-verbatim (D8). What changed is structure: the page now has an `h1`, the
+ * two hand-markup runs are the tagline and the hero's one emphasized phrase, and the sponsors
+ * strip is new — see plan/06-homepage.md for the full list.
  */
 ---
 
 <BaseLayout description={site.description} title="Home">
   <JsonLd data={webSite} slot="head" />
 
-  <section class="section-y ambient-pool container-page">
-    <p class="eyebrow text-primary">Rewrite in progress</p>
-    <h1 class="mt-2">The app shell is in place</h1>
-    <p class="measure text-body-lg mt-4">
-      Header, footer, metadata, and structured data are live. The homepage itself lands in Phase 06;
-      the design system and every primitive are on the{" "}
-      <a href="/styleguide">styleguide</a>.
+  <Hero>
+    <Image
+      alt="Two FIRST LEGO League tables of student-built robots, set up in the SC2 workshop"
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      loading="eager"
+      sizes="100vw"
+      slot="media"
+      src={fllField}
+      widths={[640, 960, 1280, 1920]}
+    />
+
+    <Fragment slot="title">
+      <span class="highlight-swipe">Robots</span> are in Franklin County. So are we.
+    </Fragment>
+
+    {site.description}
+
+    <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+    <Button href={programs.sc2.href} size="lg" slot="actions" variant="outline">
+      Explore our programs
+    </Button>
+  </Hero>
+
+  <Section atmosphere="numeral" index={1}>
+    <Fragment slot="title">Science, Technology, Engineering, Math, Business, Art, and more</Fragment
+    >
+    <Fragment slot="intro">
+      The South Central STEM Collective (otherwise known as SC2) was created to serve South Central
+      Pennsylvania as &lsquo;STEM Central&rsquo;; inspiring youth aged 9-18 with hands-on education,
+      competitive robotics teams, and community outreach. With three rapidly growing programs and a
+      team of experienced volunteer mentors, SC2 is the perfect place for students to learn real
+      world skills in a fun and competitive atmosphere.
+    </Fragment>
+  </Section>
+
+  <Section atmosphere="numeral" index={2}>
+    <Fragment slot="title">Our programs</Fragment>
+
+    <FeatureGrid columns={2}>
+      <FeatureCard
+        badge={`Ages ${programs.fll.ages}`}
+        cta={`Explore ${programs.fll.name}`}
+        feature
+        href={programs.fll.href}
+        icon="lego"
+        image={fllRobots}
+        imageAlt="LEGO® robots built by South Central STEM Collective students"
+      >
+        <Fragment slot="title"><span class="italic">FIRST®</span> LEGO® League</Fragment>
+        FLL introduces science, technology, engineering, and math (STEM) to children through fun, exciting
+        hands-on learning. Participants gain real-world problem-solving experiences through a guided,
+        global robotics program, helping today&rsquo;s students and teachers build a better future together.
+      </FeatureCard>
+
+      <FeatureCard
+        badge={`Ages ${programs.frc.ages}`}
+        cta={`Explore ${programs.frc.name}`}
+        feature
+        href={programs.frc.href}
+        icon="robot-face"
+        image={driveTeam}
+        imageAlt={`Team 4050 ${programs.frc.teamName}'s drive team standing with their robot at competition`}
+      >
+        <Fragment slot="title"><span class="italic">FIRST®</span> Robotics Competition</Fragment>
+        Under strict rules and limited time and resources, teams of high school students are challenged
+        to build industrial-size robots to play a difficult field game in alliance with other teams, while
+        also fundraising to meet their goals, designing a team &ldquo;brand,&rdquo; and advancing respect
+        and appreciation for STEM within the local community.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="tint">
+    <Fragment slot="title">Who is <span class="italic">FIRST®</span>?</Fragment>
+    <Fragment slot="intro">
+      All of our programs are members of a global organization called <span class="italic"
+        >FIRST®</span
+      >. The mission of <span class="italic">FIRST®</span> is to inspire young people to become leaders
+      in science and technology fields by teaching real-world skills through team work and competition.
+      Each year, a new challenge is presented to teams who, with the help of experienced mentors, must
+      apply their skills to build a functional robot. Once built, the robot is put to the test in a competition
+      setting against teams from around the world.
+    </Fragment>
+
+    <div class="grid items-start gap-10 lg:grid-cols-2">
+      <div>
+        <!-- The acronym line only reads at desktop widths, so it is a `<source>` swap rather than
+             two images toggled with `hidden`: a hidden `<img>` still downloads. -->
+        <picture>
+          <source
+            height={acronymArt.height}
+            media={`(min-width: ${breakpoint("md")})`}
+            srcset={acronymArt.src}
+            width={acronymArt.width}
+          />
+          <img
+            alt="FIRST® — For Inspiration and Recognition of Science and Technology"
+            class="h-auto w-full max-w-sm"
+            height={lockupArt.height}
+            loading="lazy"
+            src={lockupArt.src}
+            width={lockupArt.width}
+          />
+        </picture>
+
+        <Button
+          class="external-link mt-4 -ml-3"
+          href={site.urls.firstInspires}
+          rel="noopener"
+          variant="link"
+        >
+          <span class="italic">FIRST®</span>
+        </Button>
+
+        <Separator class="my-8" />
+
+        <h3>More than robots</h3>
+        <p class="measure mt-3">
+          Although the goal is to build a robot, you do not have to be an engineer. Whether you are
+          a future rocket scientist or an aspiring artist, there is a place here for you and mentors
+          ready to use their real world experience to help you grow.
+        </p>
+        <Button
+          class="external-link mt-4 -ml-3"
+          href={site.urls.moreThanRobots}
+          rel="noopener"
+          variant="link"
+        >
+          More Than Robots
+        </Button>
+      </div>
+
+      <figure>
+        <div class="media-frame">
+          <Image
+            alt="Collage of photos capturing some of the many ways students can get involved including robot design, photography, video, and more."
+            class="w-full"
+            loading="lazy"
+            sizes="(min-width: 64rem) 34rem, 92vw"
+            src={collage}
+            widths={[560, 1120]}
+          />
+        </div>
+        <Callout as="figcaption" class="mt-3" reference="FIG. 01">
+          Design, fabrication, photography, video, and more
+        </Callout>
+      </figure>
+    </div>
+  </Section>
+
+  <Section atmosphere="numeral" index={3}>
+    <Fragment slot="title">Why join?</Fragment>
+
+    <FeatureGrid columns="2+3">
+      <FeatureCard
+        icon="tool"
+        image={handsOn}
+        imageAlt="A student and mentor get hands-on with a robot"
+      >
+        <Fragment slot="title">Learn real-world skills</Fragment>
+        Get hands on with tools and technology under the supervision of experts in their fields in everything
+        from engineering to marketing. Learn not only how the tools work, but how to use them effectively.
+      </FeatureCard>
+
+      <FeatureCard
+        icon="presentation"
+        image={leadership}
+        imageAlt="Two students referencing a whiteboard during a planning meeting"
+      >
+        <Fragment slot="title">Experience leadership and teamwork</Fragment>
+        Build strong relationships with teammates and mentors as you work together throughout the season.
+        Learn how to make decisions as a team and take leadership in your area of expertise.
+      </FeatureCard>
+
+      <FeatureCard icon="books" image={competition} imageAlt="Team members cheering at competition">
+        <Fragment slot="title">Education through competition</Fragment>
+        Prepare to compete against teams from around the world with a limited time-frame, tight budget,
+        and a complex challenge. Learn how to work under pressure and build reliable systems that can
+        handle intense competition.
+      </FeatureCard>
+
+      <FeatureCard
+        icon="school"
+        image={award}
+        imageAlt="Team members receiving an award at competition"
+      >
+        <Fragment slot="title">Scholarships and career opportunities</Fragment>
+        Being a member of a <span class="italic">FIRST®</span> team is more than just building robots
+        and learning about STEM. It opens doors to scholarship and career opportunities that you cannot
+        get anywhere else. Many of our alumni used the skills developed while students to pursue careers
+        in STEM (and related) fields.
+      </FeatureCard>
+
+      <FeatureCard
+        icon="mood-smile"
+        image={dean}
+        imageAlt="Team members sharing a moment with Dean Kamen, the founder of FIRST®"
+      >
+        <Fragment slot="title">Fun</Fragment>
+        Although we take our work seriously, we also have a lot of fun. Whether it&rsquo;s dancing to
+        the YMCA at competition, playing a game of Kahoot during a meeting, or just hanging out with friends
+        as we work on our robots, we always manage to have a lot of fun.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="pool">
+    <Fragment slot="title">
+      Meet our high school team, learn about <span class="italic">FIRST®</span>
+    </Fragment>
+
+    <a
+      aria-label="Watch our team video on YouTube"
+      class="media-frame group relative mx-auto block max-w-3xl"
+      href={site.urls.teamVideo}
+      rel="noopener"
+    >
+      <Image
+        alt=""
+        class="w-full"
+        loading="lazy"
+        sizes="(min-width: 48rem) 48rem, 92vw"
+        src={teamVideoPoster}
+        widths={[640, 1024]}
+      />
+      <span class="bg-background/40 absolute inset-0 grid place-items-center">
+        <span
+          class="bg-primary text-primary-foreground grid size-16 place-items-center rounded-md transition-transform duration-(--duration-micro) group-hover:scale-105"
+        >
+          <Icon name="player-play" size={32} />
+        </span>
+      </span>
+    </a>
+  </Section>
+
+  <Section atmosphere="ruler">
+    <Fragment slot="title">Our sponsors</Fragment>
+    <Fragment slot="intro">
+      We are proud to partner organizations and individuals who want to join us in building the
+      future. This strong support enables our mentors, volunteers, and parents to focus on what
+      really matters.
+    </Fragment>
+
+    <SponsorStrip />
+    <p class="mt-10 text-center">
+      <a href={nav.sponsors.href}>See every sponsor and how to join them</a>
     </p>
-  </section>
+  </Section>
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">
+        Real <ChalkOval variant={1}>Skills</ChalkOval>. Real <ChalkOval variant={2}
+          >Robots</ChalkOval
+        >. Real <ChalkOval variant={3}>Fun</ChalkOval>.
+      </Fragment>
+      Ready to join or find out more? We are always looking for new members, mentors, and sponsors! If
+      you want to find out how you can get plugged in or are looking for more information, please reach
+      out through our <a href={nav.cta.href}>{nav.cta.label} form</a>.
+      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      <Button href={nav.donate.href} size="lg" slot="actions" variant="outline">
+        {nav.donate.label}
+      </Button>
+    </CtaBanner>
+  </Section>
 </BaseLayout>

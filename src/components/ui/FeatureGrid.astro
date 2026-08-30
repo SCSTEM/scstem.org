@@ -1,0 +1,25 @@
+---
+import { cn } from "@/lib/cn";
+
+/**
+ * The grid feature cards sit in. The column counts are a closed set because the layout math is a
+ * design decision rather than a call-site one (DESIGN.md §5: "No orphan rows: plan the math").
+ */
+interface Props {
+  /** `"2+3"` is the sanctioned five-card layout: two wide, then three. */
+  columns: 2 | 3 | "2+3";
+  class?: string;
+}
+
+const { columns, class: className } = Astro.props;
+
+const layouts = {
+  2: "grid gap-6 md:grid-cols-2",
+  3: "grid gap-6 sm:grid-cols-2 lg:grid-cols-3",
+  "2+3": "feature-grid-2-3",
+} as const;
+---
+
+<div class={cn(layouts[columns], className)}>
+  <slot />
+</div>

@@ -14,8 +14,12 @@ import { PROGRAM_KEYS } from "@/data/site";
  * is why `location` below is two flat fields instead of an object. Schema changes need an ADR.
  */
 
-/** Legacy's `SponsorLevel`, preserved exactly (`legacy/data/sponsors.ts`). */
-const SPONSOR_LEVELS = ["Platinum", "Gold", "Silver", "Bronze", "Friend"] as const;
+/**
+ * Legacy's `SponsorLevel`, preserved exactly (`legacy/data/sponsors.ts`). Declaration order is
+ * also display order, so anything listing sponsors sorts by index here rather than restating the
+ * ranking.
+ */
+export const SPONSOR_LEVELS = ["Platinum", "Gold", "Silver", "Bronze", "Friend"] as const;
 
 const sponsors = defineCollection({
   loader: glob({ base: "src/content/sponsors", pattern: "**/*.md" }),
