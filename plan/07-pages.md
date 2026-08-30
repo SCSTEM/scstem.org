@@ -11,6 +11,8 @@ Shared rules for all groups:
 - Reference the legacy page for copy/content inventory only; rebuild with `ui/` + primitives.
 - Images via astro:assets with explicit dimensions (sources may still be heavy — Phase 09 fixes sources; markup must already be responsive: `widths`/`sizes`, lazy below the fold).
 - Any repeating content discovered that should be a collection → add to Phase 04's collections in the same PR (schema + ADR note), don't inline it.
+- **Copy porting trap** (overview standing rule 4): a line break before an inline `<em>`/`<code>`/component collapses the preceding space in Astro's output. When porting prose, diff the *rendered* visible text against legacy, not the source.
+- The pages here are already linked from `nav.primary` in `src/data/site.ts` — do not add ad-hoc links; if a page's title differs from its nav label, the nav label wins in chrome. `/contact` is deliberately not a nav route (the 404 page titles it literally).
 
 ## Group A — About & Sponsors
 
@@ -67,6 +69,7 @@ Shared rules for all groups:
 ## Acceptance criteria
 
 - [ ] **`.lycheeignore` is deleted.** It exists only because the Phase 05 app shell links to the routes this phase builds; `tools/checks/stale-link-ignores.mjs` fails CI for any entry whose page has landed, so entries must be removed as each group ships. This phase is not done while the file exists.
+- [ ] **`src/layouts/ProgramLayout.astro`'s `knip.jsonc` entry is deleted** — the program pages built in Group C are its real consumers, so the seam closes with them (same mechanism as Phase 08's `event-date` entry).
 - [ ] All routes above build at their exact legacy URLs; visible-copy parity per page (intentional diffs listed in PRs).
 - [ ] No page defines colors/spacing outside tokens; all imagery through astro:assets with dimensions.
 - [ ] Contact form: successful submit verified against the real function on a preview deploy (test Turnstile key), error path exercised.

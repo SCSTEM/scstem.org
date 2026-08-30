@@ -11,9 +11,9 @@ Finish everything discoverability: sitemap/robots, per-page OG images, structure
 
 ### 1. Sitemap & robots
 
-- `@astrojs/sitemap` (installed Phase 01): filter out `/styleguide`, `404`, and hidden events (use `getVisibleEvents()` from Phase 08). Verify `<lastmod>` behavior; set `changefreq` only if honest.
-- Replace `public/robots.txt`: `User-agent: *` allow-all, plus `Sitemap: https://scstem.org/sitemap-index.xml`. **Changes from legacy:** drop `Disallow: /image` and `/video` (blocks Google Images/video indexing of team content — we want that traffic). Do not block AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.) — being in AI answers is an objective. Record this in `docs/adr/` as a deliberate posture alongside D25.
-- Add `noindex` meta to `/styleguide` via Seo prop.
+- `@astrojs/sitemap` (installed Phase 01; the `/styleguide` filter already exists in `astro.config.ts`): extend the filter to hidden events (use `getVisibleEvents()` from Phase 08). Verify `<lastmod>` behavior; set `changefreq` only if honest.
+- Replace `public/robots.txt` (still the legacy file): `User-agent: *` allow-all, plus `Sitemap: https://scstem.org/sitemap-index.xml`. **Changes from legacy:** drop `Disallow: /image` and `/video` (blocks Google Images/video indexing of team content — we want that traffic). Do not block AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.) — being in AI answers is an objective. Record this in `docs/adr/` as a deliberate posture alongside D25.
+- `/styleguide` noindex already ships (Phase 05, Seo prop) — verify it held; nothing to add.
 
 ### 2. Metadata verification (CI teeth)
 
@@ -22,7 +22,7 @@ Finish everything discoverability: sitemap/robots, per-page OG images, structure
 ### 3. OG images
 
 - Produce a curated set of 1200×630 OG images from brand photography + logo treatment (per DESIGN.md; created during this phase, stored `src/assets/og/` → emitted to `public/og/` or referenced via astro:assets `getImage`): one default, one per major section (programs/FRC, FLL, sponsors, events/openhouse, donate).
-- Wire per-page via the Seo `ogImage` prop; verify absolute URLs in output. (A generated-per-page satori pipeline is deliberately out of scope — note as future work in `12-content-strategy.md`.)
+- Wire per-page via the Seo `ogImage` prop. **Every custom `ogImage` requires `ogImageAlt`** — `Seo.astro` throws at build without it, so write each image's alt when you create it. Verify absolute URLs in output. (A generated-per-page satori pipeline is deliberately out of scope — note as future work in `12-content-strategy.md`.)
 
 ### 4. Structured data completion
 
@@ -45,7 +45,7 @@ Finish everything discoverability: sitemap/robots, per-page OG images, structure
 ### 7. Analytics (D21)
 
 - **GA4**: direct `gtag.js` snippet (measurement ID from `site.ts`), loaded with `defer`/`partytown-free`, after-load init; replaces the legacy GTM-component oddity (a GA4 ID was being passed to the GTM loader — works, but non-standard; fix = plain gtag).
-- **Cloudflare Web Analytics**: beacon snippet (token via env/`site.ts`).
+- **Cloudflare Web Analytics**: beacon snippet. Add `cloudflareBeaconToken` to `site.analytics` with its real value — the midpoint review removed the `undefined` placeholder, so this is a new key, not a fill-in.
 - Both load only in production (`import.meta.env.PROD`) **and** only on the production hostname (guard against preview/staging polluting data — check `location.hostname === "scstem.org"`).
 - **Consent Mode v2 defaults** set before gtag config (`analytics_storage: granted`-by-default is acceptable for a US nonprofit today; set the default explicitly so adding a banner later is config, not surgery).
 - **Event taxonomy** (delegated single listener script, `data-track` attributes): `donate_click`, `wishlist_click`, `sponsor_packet_download`, `get_involved_click`, `contact_submit` (fired on successful form response), `outbound_sponsor_click`. Document in `docs/analytics.md`.

@@ -1,7 +1,8 @@
 # Phase 06 — Homepage + visual review gate
 
-**Prerequisites:** Phase 05.
-**Stack layer:** `overhaul/06-homepage`, stacked on `overhaul/05-app-shell` (D23).
+**Prerequisites:** Phase 05 + the midpoint check-in (see overview "Standing rules").
+**Stack layer:** `overhaul/06-homepage`, stacked on `overhaul/midpoint-checkin` (D23) — the
+hardening layer that sits between 05 and this phase.
 **Gate:** ⛔ **Owner sign-off required before Phase 07 starts.** The design itself was settled up front (DESIGN.md + owner-reviewed mockups shipped with the plan — D22), so this gate is a **conformance check**: does the built homepage match the approved design, and does it hold up on real devices?
 
 ## Objective
@@ -33,7 +34,7 @@ Built from primitives; these are the reusable section vocabulary for all later p
 ### 3. Conformance review (the gate)
 
 1. Review-ready stack layer → this branch's own CF Pages preview URL (it contains every layer below it, so it previews the full site so far).
-2. Produce a review pack for the owner: full-page screenshots at 360px, 768px, 1440px, side-by-side with the **approved mockups** and with production scstem.org (use the pre-installed Chromium/Playwright).
+2. Produce a review pack for the owner: full-page screenshots at 360px, 768px, 1440px, side-by-side with the **approved mockups** and with production scstem.org. Use the chrome-devtools MCP (overview standing rule 9) — screenshots, console, a11y snapshot, and the Lighthouse run all come from the same session, against the production preview, not the dev server.
 3. Owner reviews for conformance + real-device feel. Deviations from DESIGN.md are bugs — fix them; genuine design changes discovered here go through DESIGN.md §11 (doc PR first). Repeat until explicit sign-off.
 4. Record sign-off: check the box below, note date + iteration count in the PR.
 

@@ -12,6 +12,12 @@ Kill the seasonal-fork problem (D17): `/openhouse` (fork of homepage) and `/prog
 - `legacy/src/app/openhouse/page.tsx` (335 LOC; hero, program cards, FAQ array, date handling).
 - `legacy/src/app/programs/frc/kickoff/page.tsx` (442 LOC; `KICKOFF_CONFIG`, countdown, schedule copy).
 - Collection entries already migrated in Phase 04 (`events/openhouse.md`, `events/frc-kickoff.md`).
+- **The shipped `events` schema deviates from early sketches** (Phase 04 notes are authoritative;
+  read `src/content.config.ts` before building): flat `locationName`/`locationAddress` — both
+  optional, defaulting to the workspace address in `src/data/site.ts` — plus `subtitle`,
+  `teaserUrls`/`hintUrls`/`hintLabels` (kickoff media), and **no `displayDate`**: render dates
+  from `start`/`end` with `formatEventDate` in `src/lib/event-date.ts`, never as hand-written
+  prose.
 
 ## Tasks
 
@@ -19,7 +25,7 @@ Kill the seasonal-fork problem (D17): `/openhouse` (fork of homepage) and `/prog
 
 - Renders an `events` entry: Hero (heroImage or program-themed fallback), date/time/location block (semantic `<time datetime>`), body markdown (typographic styles per DESIGN.md), CTA (registration/cta from frontmatter), FAQ section from referenced `faq` entries (Accordion primitive), program theming via `program` field → `data-theme`.
 - `Countdown.astro` (`ui/`): renders server-side absolute date always (agents/no-JS see the real date); a ~20-line inline script upgrades it to a live countdown; past-start state ("Happening now" / "This event has passed") handled in markup logic.
-- **Structured data**: `event()` builder in `src/lib/jsonld.ts` (`@type: Event` — name, startDate/endDate ISO, location as `Place` with address, organizer = the NGO org, image, eventStatus, offers if registrationUrl) and `faqPage()` (`@type: FAQPage` from the FAQ entries). Both emitted by EventLayout.
+- **Structured data**: `event()` builder in `src/lib/jsonld.ts` (`@type: Event` — name, startDate/endDate ISO, location as `Place` built from `locationName`/`locationAddress` with the `site.ts` workspace defaults, organizer = the NGO org, image, eventStatus, offers if registrationUrl) and `faqPage()` (`@type: FAQPage` from the FAQ entries). Both emitted by EventLayout.
 
 ### 2. Routes
 

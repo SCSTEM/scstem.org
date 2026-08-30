@@ -131,6 +131,44 @@ This directory is the complete implementation plan for rewriting scstem.org from
 - [ ] Anything user-visible respects `DESIGN.md` (from Phase 02 onward).
 - [ ] Phase file's acceptance checkboxes updated in the phase PR.
 
+## Standing rules from the midpoint review (binding for Phases 06+)
+
+A simplify + code-review + browser-verification pass ran between Phases 05 and 06 and landed as
+the **`overhaul/midpoint-checkin`** layer (stacked on `overhaul/05-app-shell`; **Phase 06 stacks
+on it**, not on 05 directly). These are the mistake patterns it found and fixed — reintroducing
+one is a review blocker:
+
+1. **Data drives chrome.** Routes, labels, and nav structure come from `src/data/site.ts`
+   (`nav.primary` with `surfaces`/`panel`, `nav.calendar`, `nav.cta`, `site.icons`,
+   `site.ogImage`). Never re-type an href or label a component can reference; never address a
+   list entry by index. The 404 page throws at build when a route it derives from `nav.primary`
+   disappears — that failure is the mechanism working, not a bug to suppress.
+2. **Tokens have one home.** Any value declared in `src/styles/global.css` `@theme` is read
+   through `@/lib/tokens` (`color`, `radius`, `duration`, `breakpoint`, `programColor`,
+   `programThemes`) — never restated as a literal in TS, frontmatter, or a meta tag. Component
+   `<style>` blocks cannot use `theme()`: a style that needs a token-driven media query or must
+   reach slotted children becomes an `@utility` in `global.css` (see `carousel-track`).
+3. **The styleguide is the contract.** Every primitive, variant, and prop renders on
+   `/styleguide`, and variant inventories are *exported from the `*.variants.ts` file*
+   (`buttonVariantNames` pattern) — never hand-listed on the page, where they drift.
+4. **Astro eats whitespace at inline-element boundaries.** A line break before `<em>`, `<code>`,
+   or a component in prose collapses the preceding space ("Cards aredarker"). Keep the space on
+   the same line or write `{" "}` — and proof the *rendered* text, not the source.
+5. **One fetch per image.** Never toggle two `<img>`s with `hidden`/`md:hidden` — a hidden
+   `<img>` still downloads. Use `<picture><source media>`. Every image carries explicit
+   width/height: the midpoint baseline is CLS 0.00 and it must not regress.
+6. **A `Button` with `href` renders an anchor** and inherits base-layer `a` styles; the recipe's
+   `no-underline` covers it. Generalize the lesson: whenever a component can render a new element
+   type, check it against `@layer base`.
+7. **A custom `ogImage` requires `ogImageAlt`** — `Seo.astro` throws at build without it. Write
+   the alt when you make the image.
+8. **Comments are rare.** No edit-history narration, no restating the adjacent code, no section
+   banners. A comment earns its place only for a non-obvious constraint (see `AGENTS.md`).
+9. **Verify in the real browser.** Drive the chrome-devtools MCP (`.mcp.json`; Chrome lives in
+   `.browser/`, `mise run chrome:install`) against the **production preview** — `astro preview`
+   shifts to :4322 when `pnpm dev` holds :4321, and the dev server's toolbar pollutes audits.
+   Midpoint Lighthouse baseline (mobile): 100 accessibility / 100 SEO / 100 best-practices.
+
 ## Performance & quality budgets (enforced from Phase 09; targeted from Phase 01)
 
 - Lighthouse (mobile emulation, throttled): Performance ≥ 95, Accessibility = 100, SEO = 100, Best Practices ≥ 95.
