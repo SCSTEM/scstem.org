@@ -19,3 +19,6 @@ pnpm-debug.log*
 
 # typescript
 *.tsbuildinfo
+
+# local Chrome for the devtools MCP (mise run chrome:install)
+.browser/

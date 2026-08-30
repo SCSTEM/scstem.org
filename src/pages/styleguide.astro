@@ -589,12 +589,20 @@ const themes = [
       <div class="mt-6 grid gap-6 md:max-w-xl">
         <div class="flex flex-col gap-2">
           <Label for="sg-name" required>Name</Label>
-          <Input id="sg-name" name="name" placeholder="Ada Lovelace" required type="text" />
+          <Input
+            autocomplete="name"
+            id="sg-name"
+            name="name"
+            placeholder="Ada Lovelace"
+            required
+            type="text"
+          />
         </div>
         <div class="flex flex-col gap-2">
           <Label for="sg-email">Email</Label>
           <Input
             aria-describedby="sg-email-error"
+            autocomplete="email"
             id="sg-email"
             invalid
             name="email"

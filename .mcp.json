@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "chrome-devtools-mcp",
+      "args": [
+        "--user-data-dir=.browser/chrome/user-data",
+        "--executable-path=.browser/chrome/chrome",
+        "--usage-statistics=false"
+      ],
+      "type": "stdio"
+    }
+  }
+}
