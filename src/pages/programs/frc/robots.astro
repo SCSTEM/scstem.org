@@ -1,0 +1,139 @@
+---
+import { Image } from "astro:assets";
+import { getCollection, render } from "astro:content";
+
+import pits from "@/assets/frc/robots/2021-robot-pits.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Callout from "@/components/ui/primitives/Callout.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Section from "@/components/ui/Section.astro";
+import { nav, programs } from "@/data/site";
+import ProgramLayout from "@/layouts/ProgramLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
+
+/**
+ * The `frcRobots` collection, newest first — legacy's six hand-written carousel slides, each with
+ * its own `<h1>`, are now six markdown files.
+ *
+ * Three legacy behaviours are deliberately gone: the carousel (a robot history is a list, and a
+ * list that hides five of six entries behind arrows is worse for readers and for search), the
+ * `react-scroll-parallax` banners (DESIGN.md §6 has no parallax), and the per-slide `<h1>`.
+ */
+const robots = await Promise.all(
+  (await getCollection("frcRobots"))
+    .toSorted((a, b) => b.data.year - a.data.year)
+    .map(async (entry) => ({ ...(await render(entry)), data: entry.data })),
+);
+---
+
+<ProgramLayout
+  description="Every Biohazard competition robot since 2019 — Toxic Silver, Robo Fett, O'Mega, Viper, and Troubleclef — with the games they played and the awards they won."
+  program="frc"
+  title="Our robots"
+>
+  <JsonLd
+    data={breadcrumbs([
+      { name: "Programs", path: "/programs" },
+      { name: programs.frc.name, path: programs.frc.href },
+      { name: "Robots", path: "/programs/frc/robots" },
+    ])}
+    slot="head"
+  />
+
+  <Hero>
+    <Image
+      alt="Biohazard's pit crew working on the robot between matches"
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      loading="eager"
+      sizes="100vw"
+      slot="media"
+      src={pits}
+      widths={[640, 960, 1280, 1920]}
+    />
+
+    <Fragment slot="eyebrow">2019 &ndash; present</Fragment>
+    <Fragment slot="title">Our robots</Fragment>
+
+    Six weeks of build season, one robot, and whatever we learned the year before. Here is every
+    machine Biohazard has taken to competition since 2019.
+  </Hero>
+
+  <Section atmosphere="pool">
+    <h2 class="sr-only">Competition robots, newest first</h2>
+
+    <div class="flex flex-col gap-20 md:gap-28">
+      {
+        robots.map(({ Content, data }, index) => (
+          <article class="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+            <figure class:list={[index % 2 === 1 && "lg:order-last"]}>
+              {data.image === undefined ? (
+                <div class="pocket grid aspect-video place-items-center px-6 text-center">
+                  <p class="spec-label text-muted">{data.imageAlt}</p>
+                </div>
+              ) : (
+                <div class="media-frame relative">
+                  <Image
+                    alt={data.imageAlt}
+                    class="w-full"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    sizes="(min-width: 64rem) 34rem, 92vw"
+                    src={data.image}
+                    widths={[560, 1120]}
+                  />
+                  {data.logo !== undefined && (
+                    <Image
+                      alt=""
+                      class="absolute right-4 bottom-4 w-1/4"
+                      loading="lazy"
+                      src={data.logo}
+                      widths={[140, 280]}
+                    />
+                  )}
+                </div>
+              )}
+              <Callout as="figcaption" class="mt-3" reference={data.yearLabel ?? String(data.year)}>
+                {data.name}
+              </Callout>
+            </figure>
+
+            <div>
+              <h3 class="text-h2">{data.name}</h3>
+              {data.game !== undefined && <p class="text-muted mt-2">{data.game}</p>}
+
+              <div class="prose-copy mt-5">
+                <Content />
+              </div>
+
+              {data.achievements !== undefined && (
+                <ul class="mt-6 flex flex-col gap-2">
+                  {data.achievements.map((achievement) => (
+                    <li class="text-small flex items-start gap-2">
+                      <Icon class="text-primary-bright mt-0.5" name="trophy" size={20} />
+                      <span>{achievement}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">The next one starts in January</Fragment>
+      Every robot on this page was designed, machined, wired, and programmed by students. The next one
+      needs a team.
+      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      <Button href={programs.frc.href} size="lg" slot="actions" variant="outline">
+        About the team
+      </Button>
+    </CtaBanner>
+  </Section>
+</ProgramLayout>
