@@ -24,11 +24,7 @@ const year = new Date().getFullYear();
 const sections = [
   {
     title: "Support us",
-    links: [
-      { label: "Donate", href: "/donate" },
-      { label: "Sponsors", href: "/sponsors" },
-      { label: "Wishlist", href: site.urls.wishlist },
-    ],
+    links: [nav.donate, nav.sponsors, { label: "Wishlist", href: site.urls.wishlist }],
   },
   {
     title: "Programs",

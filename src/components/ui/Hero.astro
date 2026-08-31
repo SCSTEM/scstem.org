@@ -1,0 +1,75 @@
+---
+import { cn } from "@/lib/cn";
+
+/**
+ * The page hero (DESIGN.md §5, §7). The media arrives through a slot, so the same component
+ * carries a photograph here and a looping video on the pages that have one — only the slotted
+ * element changes.
+ *
+ * Two layouts, one image: below `md` the copy sits on solid ground *underneath* the photo, which
+ * fades into the page (§7 — "never gamble on scrims at small sizes"); from `md` up the photo
+ * fills the hero and the copy sits on a scrim built from `background`.
+ *
+ * Slots: `media`, `eyebrow`, `title` (wrapped in the `h1`), the default subhead, and `actions`.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<section class={cn("relative", className)}>
+  <div class="hero-media relative aspect-3/2 md:absolute md:inset-0 md:aspect-auto">
+    <slot name="media" />
+    {
+      /* DESIGN.md §7: opaque at the text edge, ~20% at the far one. The desktop stops are placed
+        so the opaque band spans the copy column instead of ending halfway through it. */
+    }
+    <div
+      aria-hidden="true"
+      class="to-background md:from-background md:via-background/75 md:to-background/20 absolute inset-0 bg-linear-to-b from-transparent from-45% md:bg-linear-to-r md:from-35% md:via-65%"
+    >
+    </div>
+  </div>
+
+  <div class="container-page section-y relative md:flex md:min-h-[30rem] md:items-center">
+    <div class="max-w-2xl">
+      {
+        Astro.slots.has("eyebrow") && (
+          <p class="eyebrow text-primary">
+            <slot name="eyebrow" />
+          </p>
+        )
+      }
+      <h1 class="text-display mt-3">
+        <slot name="title" />
+      </h1>
+      <div class="measure text-body-lg text-foreground mt-5">
+        <slot />
+      </div>
+      {
+        Astro.slots.has("actions") && (
+          <div class="mt-8 flex flex-wrap gap-3">
+            <slot name="actions" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<hr class="accent-rule" />
+
+<style>
+  /**
+   * The slot takes an `<img>` or a `<video>`, and either has to fill the frame. `:global()`
+   * because the element is authored by the caller, so it carries no `data-astro-cid-*` of this
+   * component and a plain descendant selector would be rewritten to demand one.
+   */
+  .hero-media :global(:is(img, video)) {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+</style>

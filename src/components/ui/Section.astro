@@ -1,0 +1,86 @@
+---
+import GhostNumeral from "@/components/ui/primitives/GhostNumeral.astro";
+import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
+import { cn } from "@/lib/cn";
+
+/**
+ * The vertical rhythm and gutters every page section shares (DESIGN.md §4, §5), plus the one
+ * atmosphere device its boundary carries (§2). Replaces `legacy/src/components/page/Section.tsx`.
+ *
+ * The device is a single-valued prop rather than a set of booleans, because the doc allows
+ * exactly one per boundary and says "never stacked" — so the type is what enforces it.
+ *
+ * Slots: `eyebrow`, `title` (wrapped in the heading), `intro`, and the default body. They are
+ * slots rather than string props so a heading can carry markup, e.g. an italic FIRST®.
+ */
+interface Props {
+  atmosphere?: "none" | "numeral" | "pool" | "pool-neutral" | "ruler" | "tint";
+  /** The ghost numeral's value. Required by, and only read with, `atmosphere="numeral"`. */
+  index?: number;
+  /** Drops to `h3` for a section nested under another section's heading. */
+  headingLevel?: "h2" | "h3";
+  id?: string;
+  class?: string;
+}
+
+const {
+  atmosphere = "none",
+  index,
+  headingLevel: Heading = "h2",
+  id,
+  class: className,
+} = Astro.props;
+
+if (atmosphere === "numeral" && index === undefined) {
+  throw new Error('Section: atmosphere="numeral" needs an `index` for the numeral to show.');
+}
+
+const hasEyebrow = Astro.slots.has("eyebrow");
+const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("intro");
+---
+
+<section
+  class={cn(
+    "section-y relative",
+    atmosphere === "tint" && "bg-section-tint",
+    atmosphere === "pool" && "ambient-pool",
+    atmosphere === "pool-neutral" && "ambient-pool ambient-pool-neutral",
+    className,
+  )}
+  id={id}
+>
+  <div class="container-page">
+    {atmosphere === "ruler" && <RulerDivider class="mb-12" />}
+
+    {
+      hasHeader && (
+        <div class="relative">
+          {atmosphere === "numeral" && index !== undefined && <GhostNumeral value={index} />}
+          {hasEyebrow && (
+            <p class="eyebrow text-primary">
+              <slot name="eyebrow" />
+            </p>
+          )}
+          {Astro.slots.has("title") && (
+            <Heading class={hasEyebrow ? "mt-2" : undefined}>
+              <slot name="title" />
+            </Heading>
+          )}
+          {Astro.slots.has("intro") && (
+            <div class="measure text-body-lg mt-4">
+              <slot name="intro" />
+            </div>
+          )}
+        </div>
+      )
+    }
+
+    {
+      Astro.slots.has("default") && (
+        <div class={hasHeader ? "mt-10" : undefined}>
+          <slot />
+        </div>
+      )
+    }
+  </div>
+</section>
