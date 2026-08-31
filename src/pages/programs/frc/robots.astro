@@ -7,7 +7,6 @@ import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import Hero from "@/components/ui/Hero.astro";
 import Button from "@/components/ui/primitives/Button.astro";
-import Callout from "@/components/ui/primitives/Callout.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, programs } from "@/data/site";
@@ -68,12 +67,17 @@ const robots = await Promise.all(
     <div class="flex flex-col gap-20 md:gap-28">
       {
         robots.map(({ Content, data }, index) => (
-          <article class="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
-            <figure class:list={[index % 2 === 1 && "lg:order-last"]}>
+          <article
+            class:list={[
+              "grid items-center gap-8 lg:gap-14",
+              /* A season whose robot has no photo yet is a placeholder, not a feature: it stays
+                 one narrow column rather than pairing a heading with an empty half-page frame. */
+              data.image === undefined ? "max-w-xl" : "lg:grid-cols-2",
+            ]}
+          >
+            <div class:list={[index % 2 === 1 && "lg:order-last"]}>
               {data.image === undefined ? (
-                <div class="pocket grid aspect-video place-items-center px-6 text-center">
-                  <p class="spec-label text-muted">{data.imageAlt}</p>
-                </div>
+                <p class="pocket spec-label text-muted px-5 py-4">{data.imageAlt}</p>
               ) : (
                 <div class="media-frame relative">
                   <Image
@@ -95,13 +99,11 @@ const robots = await Promise.all(
                   )}
                 </div>
               )}
-              <Callout as="figcaption" class="mt-3" reference={data.yearLabel ?? String(data.year)}>
-                {data.name}
-              </Callout>
-            </figure>
+            </div>
 
             <div>
-              <h3 class="text-h2">{data.name}</h3>
+              <p class="spec-label text-primary-bright">{data.yearLabel ?? data.year}</p>
+              <h3 class="text-h2 mt-2">{data.name}</h3>
               {data.game !== undefined && <p class="text-muted mt-2">{data.game}</p>}
 
               <div class="prose-copy mt-5">
