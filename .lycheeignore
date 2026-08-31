@@ -10,10 +10,6 @@
 #
 # Anchored on purpose: /dist/programs$ must not also swallow /dist/programs/frc.
 
-# Phase 07 group A
-/dist/about$
-/dist/sponsors$
-
 # Phase 07 group B
 /dist/contact$
 /dist/donate$

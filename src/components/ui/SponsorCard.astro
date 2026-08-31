@@ -1,0 +1,92 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import { Image } from "astro:assets";
+
+import Badge from "@/components/ui/primitives/Badge.astro";
+import Card from "@/components/ui/primitives/Card.astro";
+import CardFooter from "@/components/ui/primitives/CardFooter.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import { cn } from "@/lib/cn";
+
+/**
+ * One sponsor's pocket: the logo on a plate, the name and its tier chip, and — where we have one
+ * — the year the partnership started. Replaces legacy's per-level `switch` returning a raw hex
+ * that was then applied as an inline `backgroundColor` with a 50% alpha suffix.
+ *
+ * The tier chip's tone comes from `Badge`'s tier tones (DESIGN.md §8), keyed by level, so the
+ * ranking's colors live with the rest of the token set.
+ */
+type Level = CollectionEntry<"sponsors">["data"]["level"];
+
+/** Every level maps to a tone; `satisfies` fails the build when a level is added without one. */
+const tones = {
+  Platinum: "platinum",
+  Gold: "gold",
+  Silver: "silver",
+  Bronze: "bronze",
+  /**
+   * Friend sits outside the metals, so DESIGN.md §8 names no color for it. `muted` is the
+   * neutral chip — present and legible, without inventing a sixth tier color.
+   */
+  Friend: "muted",
+} as const satisfies Record<Level, string>;
+
+interface Props {
+  sponsor: CollectionEntry<"sponsors">;
+  class?: string;
+}
+
+const { sponsor, class: className } = Astro.props;
+const { name, level, logo, url, sub, since } = sponsor.data;
+---
+
+<Card as="li" class={cn("relative flex flex-col", className)} interactive={url !== undefined}>
+  <div class="flex flex-1 flex-col items-center justify-center gap-3 p-6">
+    {
+      logo === undefined ? (
+        <span class="text-h4 text-foreground text-center font-semibold">{name}</span>
+      ) : (
+        <Image
+          alt={`${name} logo`}
+          class="h-20 w-full max-w-56 object-contain"
+          loading="lazy"
+          src={logo}
+          widths={[224, 448]}
+        />
+      )
+    }
+    {sub !== undefined && <p class="text-small text-body text-center">{sub}</p>}
+  </div>
+
+  <CardFooter class="flex-wrap justify-between">
+    <div>
+      <p class="text-foreground font-semibold">{name}</p>
+      {
+        since !== undefined && (
+          <p class="text-small text-muted mt-1">
+            Partnering with us since <time datetime={String(since)}>{since}</time>
+          </p>
+        )
+      }
+    </div>
+
+    <div class="flex items-center gap-3">
+      <Badge tone={tones[level]}>{level}</Badge>
+      {
+        url !== undefined && (
+          /* Stretching the anchor over the pocket keeps the whole card clickable while the link
+             itself keeps one short accessible name. */
+          <a
+            aria-label={`${name} website`}
+            class="ui-link after:absolute after:inset-0"
+            href={url}
+            rel="sponsored noopener"
+          >
+            <Icon name="external-link" size={20} />
+          </a>
+        )
+      }
+    </div>
+  </CardFooter>
+</Card>

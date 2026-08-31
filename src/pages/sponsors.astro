@@ -1,0 +1,122 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import partsNotes from "@/assets/sc2/parts-notes.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
+import Section from "@/components/ui/Section.astro";
+import SponsorCard from "@/components/ui/SponsorCard.astro";
+import { SPONSOR_LEVELS } from "@/content.config";
+import { nav, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
+
+/**
+ * Hero copy is legacy's, verbatim (D8). The single flat wall of cards becomes one group per
+ * level, strongest first, because the tier is the page's whole information hierarchy — and
+ * former sponsors, which legacy dropped from the page entirely, get a name-only acknowledgment
+ * out of the same collection (`active: false`, plan/07 Group A).
+ */
+const sponsors = await getCollection("sponsors");
+
+/** Declaration order in `SPONSOR_LEVELS` is the ranking, so the grouping never restates it. */
+const groups = SPONSOR_LEVELS.map((level) => ({
+  level,
+  members: sponsors.filter((entry) => entry.data.active && entry.data.level === level),
+})).filter((group) => group.members.length > 0);
+
+const past = sponsors
+  .filter((entry) => !entry.data.active)
+  .toSorted((a, b) => a.data.name.localeCompare(b.data.name));
+
+const description =
+  "We are proud to partner organizations and individuals who want to join us in building the future. This strong support enables our mentors, volunteers, and parents to focus on what really matters.";
+---
+
+<BaseLayout {description} title="Sponsors">
+  <JsonLd data={breadcrumbs([{ name: "Sponsors", path: "/sponsors" }])} slot="head" />
+
+  <Hero>
+    <Image
+      alt="Machined parts and hand-written build notes on the workshop bench"
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      loading="eager"
+      sizes="100vw"
+      slot="media"
+      src={partsNotes}
+      widths={[640, 960, 1280, 1920]}
+    />
+
+    <Fragment slot="title">
+      <span class="highlight-swipe">Sponsors</span> help us build.
+    </Fragment>
+
+    {description}
+  </Hero>
+
+  <Section atmosphere="numeral" index={1}>
+    <Fragment slot="title">Who backs this work</Fragment>
+
+    <div class="flex flex-col gap-14">
+      {
+        groups.map((group) => (
+          <div>
+            <h3>{group.level}</h3>
+            <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {group.members.map((sponsor) => (
+                <SponsorCard sponsor={sponsor} />
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  {
+    past.length > 0 && (
+      <Section atmosphere="ruler">
+        <Fragment slot="title">With thanks to</Fragment>
+        <Fragment slot="intro">
+          Organizations whose support carried us through earlier seasons.
+        </Fragment>
+        <ul class="text-body-lg text-foreground flex flex-wrap gap-x-10 gap-y-3">
+          {past.map((sponsor) => (
+            <li>{sponsor.data.name}</li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">Build the next season with us</Fragment>
+      Sponsorship keeps the tools sharp, the workspace open, and the registration fees paid. Our packet
+      lays out what each level supports and what it puts in front of your team.
+      <Button
+        class="external-link"
+        href={site.urls.sponsorPacket}
+        rel="noopener"
+        size="lg"
+        slot="actions"
+      >
+        Sponsorship packet
+      </Button>
+      <Button href={nav.donate.href} size="lg" slot="actions" variant="outline">
+        {nav.donate.label}
+      </Button>
+    </CtaBanner>
+
+    <p class="text-muted mt-8 flex flex-wrap items-center justify-center gap-2">
+      Rather just talk it through?
+      <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={2} />
+      <a class="font-hand text-primary-bright text-xl" href="/contact">Become a sponsor</a>
+    </p>
+  </Section>
+</BaseLayout>

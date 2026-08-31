@@ -1,0 +1,59 @@
+---
+import Card from "@/components/ui/primitives/Card.astro";
+import { cn } from "@/lib/cn";
+
+/**
+ * The stat band (DESIGN.md §8): a Source Code Pro numeral in the theme accent over an Inter
+ * caption, on a feature pocket. This is where the voice rule from §1 — "numbers beat adjectives"
+ * — gets its surface.
+ *
+ * Replaces two legacy treatments at once: the gradient-filled stats row on the FRC page and the
+ * bulleted count list on the about page, both of which set numbers in the heading font.
+ */
+interface Stat {
+  /** The numeral itself. Short — it sets in the data voice at display size. */
+  value: string;
+  /** What the numeral counts. */
+  label: string;
+  /** One line of context. Optional: the about page's counts need none. */
+  description?: string;
+}
+
+interface Props {
+  stats: ReadonlyArray<Stat>;
+  class?: string;
+}
+
+const { stats, class: className } = Astro.props;
+
+/**
+ * The band is a column or a single row, never a wrapping grid — which is what keeps the hairline
+ * dividers correct (a two-column intermediate would put a stray inline-start border on the first
+ * cell of every row after the first) and satisfies "no orphan rows" (DESIGN.md §5) by never
+ * having a second row at all. A short band can turn at `sm`; a long one needs the full container.
+ */
+const turn = stats.length <= 3 ? "sm" : "lg";
+const row = {
+  sm: "sm:grid-flow-col sm:auto-cols-fr sm:divide-x sm:divide-y-0",
+  lg: "lg:grid-flow-col lg:auto-cols-fr lg:divide-x lg:divide-y-0",
+} as const;
+---
+
+<Card class={cn("overflow-hidden", className)} feature>
+  <dl class={cn("divide-border grid divide-y", row[turn])}>
+    {
+      stats.map((stat) => (
+        <div class="p-6">
+          <dt class="sr-only">{stat.label}</dt>
+          <dd>
+            <span class="stat block">{stat.value}</span>
+            <span class="spec-label text-foreground mt-2 block">{stat.label}</span>
+            {stat.description !== undefined && (
+              <span class="text-small text-body mt-2 block">{stat.description}</span>
+            )}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</Card>
