@@ -5,6 +5,7 @@ import JsonLd from "@/components/JsonLd.astro";
 import Seo from "@/components/Seo.astro";
 import Footer from "@/components/ui/Footer.astro";
 import Navbar from "@/components/ui/Navbar.astro";
+import { type ProgramTheme, site } from "@/data/site";
 import { organization } from "@/lib/jsonld";
 import { preloadedFonts } from "@/styles/fonts";
 import "@/styles/global.css";
@@ -23,14 +24,15 @@ interface Props {
    * `exactOptionalPropertyTypes` distinguishes an explicit `undefined` from an absent prop.
    */
   ogImage?: ImageMetadata | string | undefined;
+  ogImageAlt?: string | undefined;
   ogType?: "website" | "article" | undefined;
   canonical?: URL | string | undefined;
   noindex?: boolean | undefined;
   /** Remaps the action accent for a program page (D16). `ProgramLayout` sets this. */
-  theme?: "frc" | "fll" | undefined;
+  theme?: ProgramTheme | undefined;
 }
 
-const { title, description, ogImage, ogType, canonical, noindex, theme } = Astro.props;
+const { title, description, ogImage, ogImageAlt, ogType, canonical, noindex, theme } = Astro.props;
 ---
 
 <!doctype html>
@@ -45,7 +47,9 @@ const { title, description, ogImage, ogType, canonical, noindex, theme } = Astro
       description={description}
       noindex={noindex}
       ogImage={ogImage}
+      ogImageAlt={ogImageAlt}
       ogType={ogType}
+      theme={theme}
       title={title}
     />
 
@@ -57,16 +61,16 @@ const { title, description, ogImage, ogType, canonical, noindex, theme } = Astro
       ))
     }
 
-    <link href="/favicon.ico" rel="icon" sizes="32x32" />
-    <link href="/icon.svg" rel="icon" type="image/svg+xml" />
-    <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
+    <link href={site.icons.favicon} rel="icon" sizes="32x32" />
+    <link href={site.icons.svg} rel="icon" type="image/svg+xml" />
+    <link href={site.icons.appleTouch} rel="apple-touch-icon" />
     <link href="/site.webmanifest" rel="manifest" />
 
     <JsonLd data={organization} />
     <slot name="head" />
   </head>
-  <!-- A flex column so `main` absorbs the slack: `min-h-dvh` on a block body stretched the
-       body box but left the recessed footer band ending mid-screen on a tall viewport. -->
+  <!-- A flex column so `main` absorbs the slack and the footer band reaches the bottom of a
+       tall viewport. -->
   <body class="flex min-h-dvh flex-col">
     <a
       class="bg-primary text-primary-foreground sr-only rounded-md px-4 py-2 font-medium no-underline focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60]"

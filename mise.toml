@@ -7,9 +7,26 @@ npm.package_manager = "pnpm"
 node = "26.7.0"
 pnpm = "11.22.0"
 
+"npm:@puppeteer/browsers" = "3.2.1"
+"npm:chrome-devtools-mcp" = "1.7.0"
+
 [env]
 _.path = ["{{config_root}}/node_modules/.bin"]
 ASTRO_TELEMETRY_DISABLED = "1"
+
+[tasks."install:chrome"]
+description = "Install Chrome for Testing"
+depends = ["clean:chrome"]
+run = """
+bin=$(browsers install chrome@stable --path="$MISE_PROJECT_ROOT/.browser" | tail -n1 | awk '{print $2}')
+ln -sfn "$bin" "$MISE_PROJECT_ROOT/.browser/chrome/chrome"
+mkdir -p "$MISE_PROJECT_ROOT/.browser/chrome/user-data"
+echo "Chrome linked: .browser/chrome/chrome -> $bin"
+"""
+
+[tasks."clean:chrome"]
+description = "Remove the installed Chrome for Testing"
+run = "rm -rf .browser/chrome"
 
 [tasks.install]
 run = "pnpm install"

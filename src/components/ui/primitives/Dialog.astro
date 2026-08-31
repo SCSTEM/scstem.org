@@ -43,7 +43,6 @@ const { id, title, class: className } = Astro.props;
 </dialog>
 
 <script>
-  // Delegated once per page, however many dialogs it contains.
   document.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;

@@ -1,13 +1,11 @@
 import type { APIRoute } from "astro";
 
 import { site } from "@/data/site";
+import { color } from "@/lib/tokens";
 
 /**
- * The web app manifest, built from `src/data/site.ts`.
- *
- * It used to be a static `public/site.webmanifest` restating the org name, a third variant of the
- * description, and the two brand colours as literals — none of which could follow a rename or a
- * token change. Emitting it from the same constants everything else reads means it cannot drift.
+ * The web app manifest, emitted from the same constants and tokens everything else reads, so a
+ * rename or a token change cannot leave it behind.
  */
 export const GET: APIRoute = () =>
   new Response(
@@ -18,12 +16,12 @@ export const GET: APIRoute = () =>
         description: site.description,
         start_url: "/",
         display: "standalone",
-        background_color: site.chrome.backgroundColor,
-        theme_color: site.chrome.themeColor,
+        background_color: color("background"),
+        theme_color: color("primary"),
         icons: [
-          { src: "/icon.svg", type: "image/svg+xml", sizes: "any" },
-          { src: "/icon-192.png", type: "image/png", sizes: "192x192" },
-          { src: "/icon-512.png", type: "image/png", sizes: "512x512" },
+          { src: site.icons.svg, type: "image/svg+xml", sizes: "any" },
+          { src: site.icons.png192, type: "image/png", sizes: "192x192" },
+          { src: site.icons.png512, type: "image/png", sizes: "512x512" },
           /**
            * A separate, padded render. The unpadded mark spans ~88% of its box, so a launcher's
            * circular mask — which keeps only the central 80%-diameter circle — clipped the outer
@@ -32,7 +30,7 @@ export const GET: APIRoute = () =>
            * of cropping.
            */
           {
-            src: "/icon-maskable-512.png",
+            src: site.icons.maskable512,
             type: "image/png",
             sizes: "512x512",
             purpose: "maskable",

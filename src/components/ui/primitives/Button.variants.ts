@@ -7,9 +7,28 @@ import { cn } from "@/lib/cn";
  * definitions live in a sibling `*.variants.ts`. Other components can then compose these
  * classes — a link styled as a button, say — without duplicating the recipe.
  */
+
+/**
+ * The variant inventory, exported so `/styleguide` renders every one — a variant missing there
+ * does not exist as far as review is concerned (primitives/README.md). `satisfies` below keeps
+ * this list and the recipe map in lockstep.
+ */
+export const buttonVariantNames = [
+  "default",
+  "secondary",
+  "outline",
+  "ghost",
+  "link",
+  "pocket",
+] as const;
+
+type ButtonVariant = (typeof buttonVariantNames)[number];
+
 export const buttonVariants = cva(
   cn(
-    "inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap",
+    // `no-underline` because the base layer underlines every `<a>`, and this recipe renders as
+    // an anchor whenever a Button gets an `href`. The `link` variant re-adds its underline.
+    "inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap no-underline",
     "transition-colors duration-(--duration-micro) ease-(--ease-toggle)",
     "disabled:pointer-events-none disabled:opacity-50",
     "aria-disabled:pointer-events-none aria-disabled:opacity-50",
@@ -30,7 +49,7 @@ export const buttonVariants = cva(
          * focus behavior cannot drift from every other button.
          */
         pocket: "pocket pocket-interactive text-foreground",
-      },
+      } satisfies Record<ButtonVariant, string>,
       size: {
         /**
          * Every size clears the 44px minimum touch target except `sm`, which is for dense,

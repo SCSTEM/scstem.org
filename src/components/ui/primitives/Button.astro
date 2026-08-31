@@ -24,17 +24,15 @@ interface Props
   class?: string;
 }
 
-const { variant, size, href, type = "button", class: className, ...rest } = Astro.props;
-
-const isLink = href !== undefined;
-const Tag = isLink ? "a" : "button";
-
 /**
  * `disabled` is meaningless on an anchor — the attribute is invalid there and `:disabled` never
  * matches — so it maps to `aria-disabled`, which the variants already style, and the `href` is
  * dropped so the control is genuinely not navigable.
  */
-const { disabled, ...attrs } = rest;
+const { variant, size, href, type = "button", class: className, disabled, ...attrs } = Astro.props;
+
+const isLink = href !== undefined;
+const Tag = isLink ? "a" : "button";
 ---
 
 <Tag

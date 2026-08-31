@@ -1,7 +1,8 @@
 ---
 import type { ImageMetadata } from "astro";
 
-import { site } from "@/data/site";
+import { type ProgramTheme, site } from "@/data/site";
+import { color, programColor } from "@/lib/tokens";
 
 /**
  * Everything that goes in `<head>` for discoverability. Rendered by BaseLayout, which passes
@@ -21,19 +22,28 @@ interface Props {
    * passed `undefined` as distinct from an absent prop.
    */
   ogImage?: ImageMetadata | string | undefined;
+  /**
+   * Required alongside a custom `ogImage` — enforced below, so the omission is a build failure
+   * rather than a card with no `og:image:alt`. The default image carries its own alt.
+   */
+  ogImageAlt?: string | undefined;
   ogType?: "website" | "article" | undefined;
   /** Defaults to this page's own URL. Set it when two routes serve the same content. */
   canonical?: URL | string | undefined;
   noindex?: boolean | undefined;
+  /** The program theme of the page, so browser chrome follows the action accent (D16). */
+  theme?: ProgramTheme | undefined;
 }
 
 const {
   title,
   description,
   ogImage = site.ogImage.path,
+  ogImageAlt,
   ogType = "website",
   canonical,
   noindex = false,
+  theme,
 } = Astro.props;
 
 /** The homepage is the site; anywhere else is a page *of* it. */
@@ -42,21 +52,22 @@ const fullTitle = isHome ? site.name : site.titleTemplate.replace("%s", title);
 
 const canonicalUrl = new URL(canonical ?? Astro.url.pathname, site.url);
 
-/**
- * The default card is a fixed-size file, so its dimensions travel with its path in `site.ts` —
- * this block used to be dead for every page, since `imageDimensions` was only set for an imported
- * `ImageMetadata` and no page passes one. Without the pair a scraper must fetch the whole 466 KB
- * image just to learn its aspect ratio.
- */
 const imageUrl = new URL(typeof ogImage === "string" ? ogImage : ogImage.src, site.url);
 
-/** Known for an imported asset, and for the site default; unknown for any other bare path. */
+/** Dimensions are known for an imported asset and for the site default; alt only when given. */
+const isDefaultImage = ogImage === site.ogImage.path;
 const imageSize =
-  typeof ogImage === "string"
-    ? ogImage === site.ogImage.path
-      ? { width: site.ogImage.width, height: site.ogImage.height }
-      : undefined
-    : { width: ogImage.width, height: ogImage.height };
+  typeof ogImage === "string" ? (isDefaultImage ? site.ogImage : undefined) : ogImage;
+const imageAlt = ogImageAlt ?? (isDefaultImage ? site.ogImage.alt : undefined);
+
+if (imageAlt === undefined) {
+  throw new Error(
+    `${Astro.url.pathname}: a page passing its own ogImage must pass ogImageAlt (og:image:alt).`,
+  );
+}
+
+/** Browser chrome follows the page's action accent, read from the same tokens the CSS ships. */
+const themeColor = theme === undefined ? color("primary") : programColor(theme, "primary");
 ---
 
 <title>{fullTitle}</title>
@@ -72,7 +83,7 @@ const imageSize =
 <meta content={site.name} property="og:site_name" />
 <meta content="en_US" property="og:locale" />
 <meta content={imageUrl.href} property="og:image" />
-<meta content={`${site.name} logo over a photo of the team`} property="og:image:alt" />
+<meta content={imageAlt} property="og:image:alt" />
 {
   imageSize !== undefined && (
     <>
@@ -87,4 +98,4 @@ const imageSize =
 <meta content={description} name="twitter:description" />
 <meta content={imageUrl.href} name="twitter:image" />
 
-<meta content={site.chrome.themeColor} name="theme-color" />
+<meta content={themeColor} name="theme-color" />

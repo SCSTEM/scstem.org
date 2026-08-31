@@ -1,12 +1,11 @@
 ---
-import { Image } from "astro:assets";
-
 import logoLockup from "@/assets/brand/logo-color-full.svg";
 import logoMark from "@/assets/brand/logo-color.svg";
 import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
-import { nav, site } from "@/data/site";
+import { nav, type NavLink, site } from "@/data/site";
 import { cn } from "@/lib/cn";
+import { breakpoint } from "@/lib/tokens";
 
 /**
  * Site header (DESIGN.md §5, D26). Sticky on all viewports, condensing after scroll in pure CSS.
@@ -43,8 +42,9 @@ const onSurface =
   (link: { readonly surfaces: readonly string[] }): boolean =>
     link.surfaces.includes(surface);
 
-const headerLinks = nav.primary.filter(onSurface("header"));
+const headerLinks: ReadonlyArray<NavLink> = nav.primary.filter(onSurface("header"));
 const sheetLinks = nav.primary.filter(onSurface("sheet"));
+const sheetCtas = nav.primary.filter(onSurface("sheet-cta"));
 
 const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
 ---
@@ -64,20 +64,31 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
       data-sheet-inert
       href="/"
     >
-      <Image
-        alt=""
-        class="hidden h-10 w-auto origin-left md:block"
-        data-header-lockup
-        priority
-        src={logoLockup}
-      />
-      <Image alt="" class="h-10 w-auto md:hidden" priority src={logoMark} />
+      <!-- One fetch, not two: a hidden `<img>` still downloads, so the lockup/mark swap is a
+           `<source>` media query rather than a pair of `hidden`/`md:hidden` images. -->
+      <picture>
+        <source
+          height={logoLockup.height}
+          media={`(min-width: ${breakpoint("md")})`}
+          srcset={logoLockup.src}
+          width={logoLockup.width}
+        />
+        <img
+          alt=""
+          class="h-10 w-auto origin-left"
+          data-header-lockup
+          fetchpriority="high"
+          height={logoMark.height}
+          src={logoMark.src}
+          width={logoMark.width}
+        />
+      </picture>
     </a>
 
     <div class="ml-auto hidden items-center gap-1 md:flex" data-sheet-inert>
       {
         headerLinks.map((link) =>
-          link.href === "/programs" ? (
+          link.panel ? (
             <div class="relative">
               <span class="flex items-center">
                 <a
@@ -88,16 +99,20 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
                   {link.label}
                 </a>
                 <button
-                  aria-label="Show programs"
+                  aria-label={`Show ${link.label.toLowerCase()}`}
                   class="text-foreground hover:text-primary-bright grid size-9 place-items-center rounded-md"
-                  popovertarget="programs-panel"
+                  popovertarget={`${link.label.toLowerCase()}-panel`}
                   type="button"
                 >
                   <Icon name="chevron-down" size={20} />
                 </button>
               </span>
-              <div class="pocket absolute top-full left-0 m-0 w-64 p-2" id="programs-panel" popover>
-                {nav.programs.map((entry) => (
+              <div
+                class="pocket absolute top-full left-0 m-0 w-64 p-2"
+                id={`${link.label.toLowerCase()}-panel`}
+                popover
+              >
+                {link.panel.map((entry) => (
                   <a
                     aria-current={current === entry.href ? "page" : undefined}
                     class="ui-link hover:bg-card-hover block rounded-md px-3 py-2"
@@ -123,22 +138,19 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
       <Button class="ml-2" href={nav.cta.href} size="sm">{nav.cta.label}</Button>
     </div>
 
-    <!--
-      One state, `aria-expanded`, with CSS deriving the icon swap from it. The icons used to be
-      toggled by two element handles found through `data-menu-icon-*`, which `Icon.astro` never
-      emitted — so the hamburger never became an X.
-    -->
-    <button
+    <!-- One state, `aria-expanded`, with CSS deriving the icon swap from it. -->
+    <Button
       aria-controls="mobile-menu"
       aria-expanded="false"
       aria-label="Open menu"
-      class="text-foreground ml-auto grid size-11 place-items-center rounded-md md:hidden"
+      class="ml-auto md:hidden"
       data-menu-toggle
-      type="button"
+      size="icon"
+      variant="ghost"
     >
       <Icon class="menu-icon-open" name="menu-2" size={24} />
       <Icon class="menu-icon-close" name="x" size={24} />
-    </button>
+    </Button>
   </nav>
 </header>
 
@@ -168,7 +180,13 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
     </ul>
     <div class="mt-auto flex flex-col gap-3 py-6">
       <Button href={nav.cta.href} size="lg">{nav.cta.label}</Button>
-      <Button href="/donate" size="lg" variant="outline">Donate</Button>
+      {
+        sheetCtas.map((link) => (
+          <Button href={link.href} size="lg" variant="outline">
+            {link.label}
+          </Button>
+        ))
+      }
     </div>
   </nav>
 </div>
@@ -253,9 +271,11 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
 
     /**
      * Both the sheet and its toggle are `md:hidden`, so crossing the breakpoint while open would
-     * otherwise leave the page scroll-locked and inert with no visible control to undo it.
+     * otherwise leave the page scroll-locked and inert with no visible control to undo it. The
+     * boundary is read from the emitted `--breakpoint-md` token so it cannot drift from the CSS.
      */
-    const desktop = window.matchMedia("(min-width: 48rem)");
+    const md = getComputedStyle(document.documentElement).getPropertyValue("--breakpoint-md");
+    const desktop = window.matchMedia(`(min-width: ${md.trim() || "48rem"})`);
     desktop.addEventListener("change", (event) => {
       if (event.matches) setOpen(false);
     });

@@ -1,6 +1,6 @@
 ---
 import { cn } from "@/lib/cn";
-import { type HandTone, handToneClass } from "@/lib/hand";
+import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
 
 /**
  * A hand-drawn curved arrow (DESIGN.md §2.15). **One per page.**
@@ -12,7 +12,7 @@ import { type HandTone, handToneClass } from "@/lib/hand";
  * Three variants; adjacent instances must differ.
  */
 interface Props {
-  variant?: 1 | 2 | 3;
+  variant?: HandVariant;
   /** Which way the arrow sweeps. */
   direction?: "down-right" | "down-left" | "right";
   tone?: HandTone;
@@ -37,20 +37,17 @@ const paths = {
  */
 const rotations = { 1: "0deg", 2: "-3deg", 3: "2deg" } as const;
 
-const directionRotation = { "down-right": "0deg", "down-left": "0deg", right: "-45deg" } as const;
-
-const mirror = { "down-right": "", "down-left": "-scale-x-100", right: "" } as const;
+const directions = {
+  "down-right": { rotate: "0deg", mirror: "" },
+  "down-left": { rotate: "0deg", mirror: "-scale-x-100" },
+  right: { rotate: "-45deg", mirror: "" },
+} as const;
 ---
 
 <svg
   aria-hidden="true"
-  class={cn(
-    "draw-on hand-stroke pointer-events-none",
-    handToneClass(tone),
-    mirror[direction],
-    className,
-  )}
-  style={`rotate: calc(${rotations[variant]} + ${directionRotation[direction]})`}
+  class={cn(handMarkClass, handToneClass(tone), directions[direction].mirror, className)}
+  style={`rotate: calc(${rotations[variant]} + ${directions[direction].rotate})`}
   viewBox="0 0 64 56"
 >
   <path d={paths[variant].shaft} pathLength="100"></path>

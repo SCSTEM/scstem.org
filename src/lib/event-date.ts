@@ -1,10 +1,7 @@
 /**
  * Formats an event's date range from `start`/`end` (DESIGN.md §8's data voice is applied at the
- * call site; this returns plain text).
- *
- * Events used to carry a `displayDate` string alongside the timestamps, which meant every event
- * stated its date twice and rescheduling one left stale prose behind. Timestamps are the only
- * source now.
+ * call site; this returns plain text). The timestamps are the only source — an event never
+ * carries display prose that can go stale against them.
  */
 const ZONE = "America/New_York";
 

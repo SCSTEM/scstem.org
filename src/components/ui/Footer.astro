@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 
 import logoLockup from "@/assets/brand/logo-color-full.svg";
+import Button from "@/components/ui/primitives/Button.astro";
 import CardTitle from "@/components/ui/primitives/CardTitle.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
@@ -17,9 +18,8 @@ import { nav, programs, site, socials } from "@/data/site";
 const year = new Date().getFullYear();
 
 /**
- * Columns project `nav` and `socials` from `src/data/site.ts`. The program names used to be
- * re-typed here alongside the copies in that file, and the social list was declared twice in this
- * component — once for the text column, once for the icon row.
+ * The columns are curated — they mix routes with external URLs and use full program names — but
+ * every value is a reference into `src/data/site.ts`, never a re-typed copy.
  */
 const sections = [
   {
@@ -35,7 +35,7 @@ const sections = [
     links: [
       { label: programs.fll.name, href: programs.fll.href },
       { label: programs.frc.name, href: programs.frc.href },
-      { label: "Calendar", href: nav.programs[3].href },
+      nav.calendar,
     ],
   },
   { title: "Find us online", links: socials },
@@ -60,13 +60,15 @@ const isExternal = (href: string): boolean => href.startsWith("http");
           {
             iconLinks.map((link) => (
               <li>
-                <a
-                  class="ui-link hover:bg-card-hover grid size-11 place-items-center rounded-md"
+                <Button
+                  class="hover:bg-card-hover"
                   href={link.href}
                   rel={isExternal(link.href) ? "noopener" : undefined}
+                  size="icon"
+                  variant="ghost"
                 >
                   <Icon label={link.label} name={link.icon} size={24} />
-                </a>
+                </Button>
               </li>
             ))
           }

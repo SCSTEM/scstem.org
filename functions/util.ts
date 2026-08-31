@@ -1,12 +1,5 @@
 import type { APIResponse, TurnstileResponse, TurnstileVerificationResponse } from "@/types";
 
-/**
- * Helper function to generate response message to return to the client. Helps standardize
- * communication and error logging between API and web frontend.
- * @param apiResponse A standardized response object, shared between the API and web frontend
- * @param status HTTP status code
- * @returns A standard HTTP Response object
- */
 export const res = (apiResponse: APIResponse, status: number): Response => {
   if (!apiResponse.success && apiResponse.error) {
     console.error(apiResponse.error);
@@ -20,13 +13,6 @@ export const res = (apiResponse: APIResponse, status: number): Response => {
   });
 };
 
-/**
- * Helper function to verify CF Turnstile challenges
- * @param secretKey Turnstile secret key (generated from the Cloudflare Dashboard)
- * @param response Response provided by the Turnstile client
- * @param ip IP Provided by the Turnstile client
- * @returns A boolean indicating whether or not the turnstile verification passed
- */
 export const validateTurnstile = async (
   secretKey: string,
   response: string,

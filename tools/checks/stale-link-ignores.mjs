@@ -23,9 +23,8 @@ const routes = readFileSync(IGNORE_FILE, "utf8")
   .map((pattern) => {
     const route = /^\/dist(?<route>\/.*?)\$$/u.exec(pattern)?.groups?.route;
     /**
-     * An entry this script cannot parse used to be dropped silently — invisible to the staleness
-     * check while lychee still applied it as a regex, which is exactly the permanent blind spot
-     * the guard exists to prevent. A malformed entry is a hard failure instead.
+     * A malformed entry is a hard failure: lychee would still apply it as a regex while this
+     * staleness check could not see it — the permanent blind spot the guard exists to prevent.
      */
     if (route === undefined) {
       console.error(

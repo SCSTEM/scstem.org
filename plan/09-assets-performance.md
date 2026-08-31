@@ -22,7 +22,7 @@ Phase 04 already re-encoded the sources it moved into `src/assets/` (`tools/asse
 
 ### 2. Source re-encoding
 
-- Script `tools/assets/optimize-sources.mjs` (sharp, run manually, documented): re-export any source > 500 KB — max dimension 2560px, quality-tuned WebP/JPEG sources (astro:assets derives AVIF/WebP variants at build). Commit re-encoded sources; keep originals only if under size, otherwise they're gone (git history preserves them).
+- Run `tools/assets/optimize-sources.mjs` (already built in Phase 04; sharp, manual, dry-run by default, `--write` to apply) across the full relocated inventory — it caps dimensions at 2560px and re-encodes anything over its size threshold, refusing changes with no meaningful gain so repeat runs are stable. Commit re-encoded sources; originals are gone (git history preserves them).
 - Verify astro:assets output: every `<Image>`/`<Picture>` use has `widths` + `sizes` appropriate to its rendered layout, AVIF+WebP formats, explicit dimensions (CLS = 0). Note that with the Phase 04 sources already at q80/2560px, a variant generated at Astro's default quality comes out slightly *larger* than the source (+6 to +89 KB across the team photos) — `widths` plus an explicit `quality` at each call site is what closes that, and it needs the call sites this phase finally has. LCP image per page: `loading="eager"` + `fetchpriority="high"`; all others lazy.
 
 ### 3. Hero video (D20)

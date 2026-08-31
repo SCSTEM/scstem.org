@@ -12,16 +12,35 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
  * Noindexed, and useful rather than cute: the links are the four places people were most likely
  * headed.
  */
+
+/** Titles come from the nav inventory; a destination it no longer carries fails the build. */
+const navTitle = (href: string): string => {
+  const link = nav.primary.find((entry) => entry.href === href);
+  if (link === undefined) {
+    throw new Error(`404 destinations: ${href} is not in nav.primary`);
+  }
+  return link.label;
+};
+
 const destinations = [
-  { href: "/programs", description: "FIRST LEGO League and FIRST Robotics Competition." },
-  { href: "/about", description: "Who we are and what we have built since 2013." },
-  { href: "/sponsors", description: "The businesses that make this possible." },
-  { href: "/contact", description: "Ask us anything — we answer." },
-].map((destination) => ({
-  ...destination,
-  /** Titles come from the nav inventory, so a renamed route renames itself here too. */
-  title: nav.primary.find((link) => link.href === destination.href)?.label ?? "Contact",
-}));
+  {
+    href: "/programs",
+    title: navTitle("/programs"),
+    description: "FIRST LEGO League and FIRST Robotics Competition.",
+  },
+  {
+    href: "/about",
+    title: navTitle("/about"),
+    description: "Who we are and what we have built since 2013.",
+  },
+  {
+    href: "/sponsors",
+    title: navTitle("/sponsors"),
+    description: "The businesses that make this possible.",
+  },
+  /** Contact is not a nav route, so its title is its own. */
+  { href: "/contact", title: "Contact", description: "Ask us anything — we answer." },
+];
 ---
 
 <BaseLayout
@@ -55,7 +74,7 @@ const destinations = [
 
     <div class="mt-10 flex flex-wrap gap-3">
       <Button href="/">Back to the homepage</Button>
-      <Button href="/get-involved" variant="outline">Get involved</Button>
+      <Button href={nav.cta.href} variant="outline">{nav.cta.label}</Button>
     </div>
   </section>
 </BaseLayout>

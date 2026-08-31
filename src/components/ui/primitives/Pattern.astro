@@ -19,6 +19,14 @@ interface Props {
 
 const { placement = "section", ticks = false, class: className } = Astro.props;
 
+/** The dimension-line strip as one path — one element instead of one per tick. */
+const tickStrip = [
+  "M0 1H240",
+  ...Array.from({ length: 25 }, (_, index) => index * 10).map(
+    (x) => `M${String(x)} 1V${String(x % 50 === 0 ? 9 : 5)}`,
+  ),
+].join("");
+
 /**
  * The grid itself is `@utility engineering-grid` in global.css, shared with `pocket-feature`.
  * Placement only picks the two custom properties it reads, so the linework's geometry and its
@@ -44,17 +52,13 @@ const cell = placement === "pocket" ? "26px" : "28px";
         preserveAspectRatio="none"
         viewBox="0 0 240 12"
       >
-        <line stroke="currentColor" stroke-width="1" x1="0" x2="240" y1="1" y2="1" />
-        {Array.from({ length: 25 }, (_, index) => index * 10).map((x) => (
-          <line
-            stroke="currentColor"
-            stroke-width="1"
-            x1={x}
-            x2={x}
-            y1="1"
-            y2={x % 50 === 0 ? 9 : 5}
-          />
-        ))}
+        <path
+          d={tickStrip}
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1"
+          vector-effect="non-scaling-stroke"
+        />
       </svg>
     )
   }

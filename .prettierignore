@@ -11,3 +11,4 @@ tools/lint/anti-slop/**
 plan/**
 docs/adr/**
 DESIGN.md
+.browser/**
