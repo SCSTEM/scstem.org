@@ -62,7 +62,12 @@ const events = defineCollection({
       directionsUrl: z.url().optional(),
       /** Meta description for the event's page. */
       description: z.string(),
+      /**
+       * Omitting the image is fine — the page falls back to a photo of the event's program — but
+       * supplying one without `heroImageAlt` fails the build (`docs/adr/0004`).
+       */
       heroImage: image().optional(),
+      heroImageAlt: z.string().optional(),
       ctaLabel: z.string(),
       ctaHref: z.string(),
       registrationUrl: z.url().optional(),

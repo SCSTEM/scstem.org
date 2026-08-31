@@ -1,0 +1,88 @@
+---
+import { cn } from "@/lib/cn";
+import { formatEventDate } from "@/lib/event-date";
+
+/**
+ * The event's date, plus the time left until it. The absolute date is always in the HTML — a
+ * static build cannot know when the page is read, and an agent or a reader without JavaScript
+ * gets the real answer rather than an empty slot.
+ *
+ * The three states are all in the markup, one shown, and the script below flips which. That keeps
+ * every word of copy here and stops the state the build happened to see from going stale in a
+ * browser.
+ *
+ * An event with no `end` never reaches the passed state: nothing in the entry says when it is
+ * over, and picking a duration would be inventing one.
+ */
+interface Props {
+  start: Date;
+  end?: Date | undefined;
+  class?: string;
+}
+
+const { start, end, class: className } = Astro.props;
+
+const now = Date.now();
+const state =
+  end !== undefined && now >= end.getTime()
+    ? "passed"
+    : now >= start.getTime()
+      ? "live"
+      : "upcoming";
+---
+
+<div
+  class={cn("pocket px-6 py-6", className)}
+  data-countdown
+  data-end={end?.toISOString()}
+  data-start={start.toISOString()}
+>
+  <p class="spec-label text-muted">
+    <span data-state="upcoming" hidden={state !== "upcoming"}>Counting down to</span>
+    <span data-state="live" hidden={state !== "live"}>Happening now</span>
+    <span data-state="passed" hidden={state !== "passed"}>This event has passed</span>
+  </p>
+
+  <p class="text-h3 mt-3 font-semibold">
+    <time datetime={start.toISOString()}>{formatEventDate(start, end)}</time>
+  </p>
+
+  <p class="text-body text-primary-bright mt-3 font-mono" data-countdown-remaining hidden></p>
+</div>
+
+<script>
+  const UNITS = [
+    ["day", 86_400_000],
+    ["hour", 3_600_000],
+    ["minute", 60_000],
+    ["second", 1000],
+  ] as const;
+
+  for (const node of document.querySelectorAll<HTMLElement>("[data-countdown]")) {
+    const start = Date.parse(node.dataset.start ?? "");
+    const end = node.dataset.end === undefined ? Infinity : Date.parse(node.dataset.end);
+    const remaining = node.querySelector<HTMLElement>("[data-countdown-remaining]");
+    if (Number.isNaN(start) || Number.isNaN(end) || remaining === null) continue;
+
+    const tick = (): void => {
+      const now = Date.now();
+      const state = now >= end ? "passed" : now >= start ? "live" : "upcoming";
+      for (const label of node.querySelectorAll<HTMLElement>("[data-state]")) {
+        label.hidden = label.dataset.state !== state;
+      }
+
+      remaining.hidden = state !== "upcoming";
+      if (state !== "upcoming") return;
+
+      let left = start - now;
+      remaining.textContent = UNITS.map(([unit, size]) => {
+        const value = Math.floor(left / size);
+        left -= value * size;
+        return `${value} ${unit}${value === 1 ? "" : "s"}`;
+      }).join(" · ");
+    };
+
+    tick();
+    setInterval(tick, 1000);
+  }
+</script>

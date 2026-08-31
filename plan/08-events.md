@@ -38,11 +38,51 @@ Extend `docs/content.md`: "Update the open house for a new season" (edit dates/c
 
 ## Acceptance criteria
 
-- [ ] Both URLs render from collection data; zero copy hardcoded in the route files; visible-copy parity with legacy pages.
-- [ ] Flipping `hidden: true` on an entry removes the page content (redirect) with no code change; flipping back restores it.
-- [ ] Event + FAQPage JSON-LD validate (Google Rich Results test, manual, once per template).
-- [ ] Countdown shows correct absolute date without JS; upgrades with JS; handles passed events.
-- [ ] Program theming correct (kickoff = frc green).
-- [ ] The `src/lib/event-date.ts` entry is deleted from `knip.jsonc` — the event pages added here
+- [x] Both URLs render from collection data; zero copy hardcoded in the route files; visible-copy parity with legacy pages. *(Deviations listed under Implementation notes.)*
+- [x] Flipping `hidden: true` on an entry removes the page content (redirect) with no code change; flipping back restores it. *(Verified by building both ways; the built page is Astro's meta-refresh stub, which also carries `noindex` and a canonical to the parent. The sitemap still lists a hidden event's URL — that filter is plan/10's, and `getVisibleEvents()` is here for it.)*
+- [x] Event + FAQPage JSON-LD validate (Google Rich Results test, manual, once per template). **Validated against the schema.org shapes offline; the Rich Results test itself needs a public URL, so it runs on the preview deploy.** Both objects are emitted and well-formed in the built HTML.
+- [x] Countdown shows correct absolute date without JS; upgrades with JS; handles passed events.
+- [x] Program theming correct (kickoff = frc green).
+- [x] The `src/lib/event-date.ts` entry is deleted from `knip.jsonc` — the event pages added here
       are its real consumers, so the seam has to close with them.
-- [ ] `pnpm check && pnpm build` green.
+- [x] `pnpm check && pnpm build` green.
+
+## Implementation notes
+
+- **`heroImageAlt` was added to the `events` schema** (`docs/adr/0004`). The layout had no honest
+  `alt` for a hero photo: the title repeats the `h1`, the `description` is written for search
+  results, and `alt=""` would call a photo of students decorative. Optional, but supplying
+  `heroImage` without it fails the build — the mechanism `Seo.astro` already uses for `ogImage`.
+- **An event with no `end` never reads as passed.** Nothing in such an entry says when the event
+  is over, and picking a duration would invent one. Kickoff gained the `end` its own meeting
+  schedule states (`~4PM - Meeting Ends`), so both events have a real window; `docs/content.md`
+  tells editors to always set one.
+- **`site.location.name`** — the workspace needed a venue name for the `Place` in the event's
+  structured data and for the info card's `LOCATION` row. It was previously only in legacy's
+  `KICKOFF_CONFIG`.
+- **Two dates written in prose are gone**, per the rule `docs/content.md` already states: the open
+  house's hero sentence lost "Saturday, August 1 (1PM to 4PM)" (the countdown renders it from
+  `start`/`end`), and kickoff's timeline entry is now "**Kickoff.**" rather than
+  "**Kickoff - January 10.**".
+- **Copy that did not come across from legacy `/openhouse`:** the two program cards (that is the
+  homepage fork D17 exists to kill — `/programs` and the homepage carry them), and the embedded
+  Google My Maps iframe plus its parking prose, which the `DIRECTIONS` row links to instead. From
+  legacy kickoff: the modal holding the meeting schedule (the schedule is body copy now) and the
+  two map-backed panels, whose content is the info card and the closing banner. Everything else is
+  present, including the teaser and hint links.
+- **`@typescript-eslint/no-misused-promises` is off for `.astro`** (`eslint.config.ts`). A `return`
+  in frontmatter — how a page short-circuits into a redirect — has no enclosing function node in
+  astro-eslint-parser's AST, and the rule asserts one exists, so it crashes rather than reporting.
+  Same class of parser gap as the `no-unsafe-return` entry beside it.
+- **`Accordion`/`AccordionItem` props gained `| undefined`** so `ui/FaqList` can forward its own
+  optional `class`/`name` under `exactOptionalPropertyTypes`, exactly as `BaseLayout` documents.
+
+## Verification notes
+
+Both routes driven in the pre-installed Chromium at 390px and 1440px against the production
+preview (`chrome-devtools-mcp` is still not on PATH in this environment, as in Phase 07, so
+Playwright drove the same checks). Per route and width: zero axe-core violations over WCAG 2.2 AA
+plus best-practice, no console or page errors, no horizontal overflow, every image carrying `alt`
+and explicit dimensions, and a clean heading outline. The countdown's three states were each
+rendered from a build (upcoming by dating the entry forward, passed from today's date, and the
+script's own transitions read from the same markup).

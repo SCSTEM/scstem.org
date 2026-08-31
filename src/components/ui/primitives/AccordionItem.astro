@@ -11,8 +11,11 @@ import Icon from "./Icon.astro";
  */
 interface Props {
   question: string;
-  /** Set from the parent group to make items exclusive-open. */
-  name?: string;
+  /**
+   * Set from the parent group to make items exclusive-open. `| undefined` because `ui/FaqList`
+   * forwards its own optional prop straight through.
+   */
+  name?: string | undefined;
   open?: boolean;
   class?: string;
 }

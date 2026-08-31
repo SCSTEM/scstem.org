@@ -69,15 +69,18 @@ descriptive and stable. Renaming a file means updating any event that lists it.
 ## Update the open house for a new season
 
 Edit `src/content/events/openhouse.md`. The dates live in frontmatter; the page copy is the body
-below it.
+below it. Nothing about `/openhouse` lives anywhere else.
 
 ```md
 ---
 title: Open house
+subtitle: One sentence under the title, in the hero.
 program: sc2
 start: 2026-08-01T13:00:00-04:00
 end: 2026-08-01T16:00:00-04:00
 description: Shown in search results and when the page is shared. One or two sentences.
+heroImage: ../../assets/events/morethanrobots.webp
+heroImageAlt: What the photo shows, for someone who cannot see it.
 ctaLabel: Get involved
 ctaHref: /get-involved
 faq:
@@ -89,6 +92,13 @@ faq:
 `start` and `end` are full timestamps **with the timezone offset** — `-04:00` in summer,
 `-05:00` in winter. That offset is what makes the date correct for someone reading in another
 timezone, and it feeds the event's structured data.
+
+Give every event an `end`. The page counts down to `start`, says "Happening now" from then until
+`end`, and "This event has passed" after it — with no `end` it never reaches the last of those,
+because nothing in the file says when the event is over.
+
+`heroImage` is optional: without one the page uses a photo of the event's program. With one,
+`heroImageAlt` is required and the build fails without it (`docs/adr/0004`).
 
 **Never write the date in prose as well.** The displayed date is formatted from `start`/`end`, so
 changing the season is one edit. A date typed into the body — or into an FAQ answer — is a second
@@ -107,13 +117,34 @@ fails `pnpm check` (`tools/checks/content-references.mjs`) — Astro alone only 
 hidden: true
 ```
 
-The page redirects to its parent and disappears from the sitemap. Flip it back next season.
+The page stops rendering and sends anyone who lands on it to its parent — `/` for the open house,
+`/programs/frc` for kickoff. Flip it back next season and the page returns unchanged.
 
 ### Create a new event
 
-Copy an existing file in `src/content/events/`, then add a route file for it — a thin page under
-`src/pages/` that renders the entry. Phase 08 adds those routes. Two events do not yet justify a
-dynamic route; when there are several, that is worth revisiting.
+Two steps. First copy an existing file in `src/content/events/` and edit it. Then add the route
+that renders it — a thin page under `src/pages/` at the URL you want:
+
+```astro
+---
+import EventLayout from "@/layouts/EventLayout.astro";
+import { getVisibleEvent } from "@/lib/events";
+
+const event = await getVisibleEvent("my-event");
+if (event === undefined) {
+  return Astro.redirect("/");
+}
+---
+
+<EventLayout {event} />
+```
+
+The id passed to `getVisibleEvent` is the filename without `.md`, and the path you redirect to is
+where a reader should land once the event is hidden. Everything else — the hero, the countdown,
+the location, the questions, the page copy — comes from the markdown file.
+
+Two events do not yet justify a dynamic `[event].astro` route; when there are several, that is
+worth revisiting.
 
 ## Add a robot
 
@@ -169,8 +200,8 @@ The `news` collection is scaffolded but has no routes yet (that is phase-2 work)
 
 - **Image paths are relative to the markdown file**, which is why they start with `../../`. If the
   path is wrong the build fails and names the file — it will not ship a broken image.
-- **A mistyped FAQ slug in an event logs an error but does not currently fail the build**, so
-  check the page renders the answers you expect after editing an event's `faq` list.
+- **A mistyped FAQ slug in an event fails `pnpm check`, not `pnpm build`** — Astro logs it and
+  builds anyway, dropping that answer from the page, so run `pnpm check` after editing a `faq` list.
 - **Do not add fields the schema does not define** — the build rejects them. If you need a new
   field, that is a schema change in `src/content.config.ts` and needs an ADR (`docs/adr/`), since
   the schemas are kept flat on purpose so a git-backed CMS can be added later.

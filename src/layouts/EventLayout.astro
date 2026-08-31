@@ -1,0 +1,225 @@
+---
+import type { ImageMetadata } from "astro";
+
+import { Image } from "astro:assets";
+import { type CollectionEntry, getEntries, render } from "astro:content";
+
+import fllHero from "@/assets/fll/lego-robots.webp";
+import frcHero from "@/assets/frc/frc-driveteam.webp";
+import sc2Hero from "@/assets/sc2/students.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import Countdown from "@/components/ui/Countdown.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FaqList from "@/components/ui/FaqList.astro";
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import Section from "@/components/ui/Section.astro";
+import { type ProgramKey, nav, programs, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { type Breadcrumb, breadcrumbs, event as eventJsonLd, faqPage } from "@/lib/jsonld";
+
+/**
+ * One layout for every seasonal event (D17). `/openhouse` and `/programs/frc/kickoff` used to be
+ * a fork of the homepage and a fork of the FRC page; both are now this component reading an
+ * `events` entry, so a new season is an edit to one markdown file.
+ *
+ * Nothing here is specific to either event: the hero, the date, the location, the media links and
+ * the questions are all frontmatter, and the long-form copy is the entry's body.
+ */
+interface Props {
+  event: CollectionEntry<"events">;
+  /** The trail above this page. Home and the page itself are added here. */
+  trail?: ReadonlyArray<Breadcrumb>;
+}
+
+/** The hero for an event that carries no photo of its own, so a new event needs no image work. */
+const programHeroes = {
+  sc2: {
+    src: sc2Hero,
+    alt: "South Central STEM Collective students at work in the Chambersburg workspace",
+  },
+  frc: {
+    src: frcHero,
+    alt: `Team 4050 ${programs.frc.teamName}'s drive team standing with their robot at competition`,
+  },
+  fll: {
+    src: fllHero,
+    alt: "LEGO® robots built by South Central STEM Collective students",
+  },
+} as const satisfies Record<ProgramKey, { src: ImageMetadata; alt: string }>;
+
+const { event, trail = [] } = Astro.props;
+const { data } = event;
+const { Content } = await render(event);
+
+/** `sc2` is the default look and has no `[data-theme]` block (D16). */
+const theme = data.program === "sc2" ? undefined : data.program;
+
+if (data.heroImage !== undefined && data.heroImageAlt === undefined) {
+  throw new Error(`events/${event.id}: an entry with a heroImage must also set heroImageAlt.`);
+}
+
+const hero =
+  data.heroImage !== undefined && data.heroImageAlt !== undefined
+    ? { src: data.heroImage, alt: data.heroImageAlt }
+    : programHeroes[data.program];
+
+const faqEntries = data.faq === undefined ? [] : await getEntries(data.faq);
+
+/**
+ * The two flat arrays the schema pairs by index (D2). A mismatch would silently drop a link's
+ * label, so it fails the build the schema comment promises it fails on.
+ */
+const hintLabels = data.hintLabels ?? [];
+const hintUrls = data.hintUrls ?? [];
+if (hintUrls.length !== hintLabels.length) {
+  throw new Error(
+    `events/${event.id}: hintUrls has ${String(hintUrls.length)} entries and hintLabels has ${String(hintLabels.length)}.`,
+  );
+}
+
+const media = [
+  ...(data.teaserUrls ?? []).map((url, index) => ({
+    url,
+    label: `Season teaser ${String(index + 1)}`,
+    icon: "player-play",
+  })),
+  ...hintUrls.map((url, index) => ({ url, label: hintLabels[index] ?? "", icon: "link" })),
+];
+
+const pageUrl = new URL(Astro.url.pathname, site.url).href;
+
+const details = [
+  { label: "Location", value: data.locationName ?? site.location.name },
+  { label: "Address", value: data.locationAddress ?? site.location.workspace },
+  {
+    label: "Directions",
+    value: "Parking and the door to use",
+    href: data.directionsUrl ?? site.urls.directions,
+  },
+];
+---
+
+<BaseLayout description={data.description} theme={theme} title={data.title}>
+  <Fragment slot="head">
+    <JsonLd
+      data={eventJsonLd({
+        name: data.title,
+        description: data.description,
+        start: data.start,
+        end: data.end,
+        locationName: data.locationName,
+        locationAddress: data.locationAddress,
+        url: pageUrl,
+        image: new URL(hero.src.src, site.url).href,
+        registrationUrl: data.registrationUrl,
+      })}
+    />
+    {
+      faqEntries.length > 0 && (
+        <JsonLd
+          data={faqPage(
+            faqEntries.map((entry) => ({
+              question: entry.data.question,
+              answer: entry.rendered?.html ?? entry.body ?? "",
+            })),
+          )}
+        />
+      )
+    }
+    {
+      trail.length > 0 && (
+        <JsonLd data={breadcrumbs([...trail, { name: data.title, path: Astro.url.pathname }])} />
+      )
+    }
+  </Fragment>
+
+  <Hero>
+    <Image
+      alt={hero.alt}
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      loading="eager"
+      sizes="100vw"
+      slot="media"
+      src={hero.src}
+      widths={[640, 960, 1280, 1920]}
+    />
+
+    <Fragment slot="eyebrow">{programs[data.program].name}</Fragment>
+    <Fragment slot="title">{data.title}</Fragment>
+
+    {data.subtitle}
+
+    <Button href={data.ctaHref} size="lg" slot="actions">{data.ctaLabel}</Button>
+    {
+      data.registrationUrl !== undefined && (
+        <Button href={data.registrationUrl} size="lg" slot="actions" variant="outline">
+          Register
+        </Button>
+      )
+    }
+  </Hero>
+
+  <Section atmosphere="pool">
+    <h2 class="sr-only">When and where</h2>
+
+    <div class="grid gap-6 md:grid-cols-2 md:items-start">
+      <Countdown end={data.end} start={data.start} />
+      <TitleBlock fields={details} orientation="stack" />
+    </div>
+  </Section>
+
+  <Section>
+    <div class="prose-copy">
+      <Content />
+    </div>
+  </Section>
+
+  {
+    media.length > 0 && (
+      <Section atmosphere="ruler">
+        <Fragment slot="title">Teasers and hints</Fragment>
+
+        <ul class="grid gap-3 sm:grid-cols-2">
+          {media.map(({ icon, label, url }) => (
+            <li>
+              <a
+                class="pocket pocket-interactive flex items-center gap-3 px-5 py-4 no-underline"
+                href={url}
+                rel="noopener"
+              >
+                <Icon class="text-primary-bright shrink-0" name={icon} size={24} />
+                <span class="text-body text-foreground flex-1 font-medium">{label}</span>
+                <Icon class="text-muted shrink-0" name="external-link" size={20} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  {
+    faqEntries.length > 0 && (
+      <Section atmosphere="tint">
+        <Fragment slot="title">Frequently asked questions</Fragment>
+        <FaqList class="md:max-w-3xl" entries={faqEntries} name="event-faq" />
+      </Section>
+    )
+  }
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">Tell us you are interested</Fragment>
+      Whether or not this one fits your calendar, we would like to know who you are. Students and mentors
+      both &mdash; there is a place on these teams for just about everyone.
+      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      <Button href={nav.calendar.href} size="lg" slot="actions" variant="outline">
+        See when we meet
+      </Button>
+    </CtaBanner>
+  </Section>
+</BaseLayout>

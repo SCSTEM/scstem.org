@@ -1,13 +1,6 @@
 {
   "$schema": "./node_modules/knip/schema.json",
-  "entry": [
-    "src/pages/**",
-    "functions/**",
-    // Formats an event's date from `start`/`end`, which replaced the `displayDate` string every
-    // event used to restate. Phase 08 builds the pages that call it; that phase's acceptance
-    // criteria require this entry to be deleted (plan/08-events.md).
-    "src/lib/event-date.ts"
-  ],
+  "entry": ["src/pages/**", "functions/**"],
   "project": ["**/*.{ts,tsx,js,mjs,cjs,astro}"],
   "ignore": ["legacy/**", "tools/lint/anti-slop/**"],
   // Referenced only from CSS — `tailwindcss` via `@import`, these two faces via `url()`

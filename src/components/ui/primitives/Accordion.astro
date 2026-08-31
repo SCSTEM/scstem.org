@@ -9,7 +9,8 @@ import { cn } from "@/lib/cn";
  * would have to be read back by script, which this register does without (README, rung 1).
  */
 interface Props {
-  class?: string;
+  /** `| undefined` because `ui/FaqList` forwards its own optional `class` straight through. */
+  class?: string | undefined;
 }
 
 const { class: className } = Astro.props;
