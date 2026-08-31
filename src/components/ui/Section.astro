@@ -59,9 +59,10 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
             "relative",
             /* The numeral is 5rem tall (8rem from `md`) and starts 1.5rem above the header, so
                a header carrying only a title is shorter than the device behind it and the
-               numeral spills into the content below — where §2.6 never puts it. Reserving its
-               height keeps it behind the heading; a header with an intro already exceeds this. */
-            atmosphere === "numeral" && "min-h-[3.5rem] md:min-h-[6.5rem]",
+               numeral spills into the content below — where §2.6 never puts it. These reserve
+               exactly what is left of it (3.5rem, 6.5rem); a header with an intro already
+               exceeds them. */
+            atmosphere === "numeral" && "min-h-14 md:min-h-26",
           ]}
         >
           {atmosphere === "numeral" && index !== undefined && <GhostNumeral value={index} />}
