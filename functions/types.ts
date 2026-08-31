@@ -25,3 +25,16 @@ export interface TurnstileResponse {
   hostname: string;
   success: boolean;
 }
+
+/**
+ * One occurrence on a public calendar, as `/api/calendar/[name]` returns it. `start` and `end`
+ * are ISO 8601 instants; the page formats them in the visitor's own locale and zone.
+ */
+export interface CalendarEvent {
+  allDay: boolean;
+  description: string;
+  end: string;
+  location: string;
+  start: string;
+  title: string;
+}

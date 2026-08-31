@@ -53,6 +53,8 @@ export const site = {
     country: "US",
     /** The service area, as used in copy and structured data. */
     areaServed: "Franklin County, Pennsylvania",
+    /** Everything we run happens here, so the calendar shows its times in this zone. */
+    timeZone: "America/New_York",
   },
 
   social: {
