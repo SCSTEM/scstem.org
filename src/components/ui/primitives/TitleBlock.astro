@@ -5,8 +5,6 @@ import { cn } from "@/lib/cn";
  * The engineering-drawing identity strip (DESIGN.md §2.9): bordered compartments, each an
  * uppercase spec label over its value. Its home is the footer bottom — the drawing sheet's
  * corner. Contact and event pages may use the stacked form as an info card.
- *
- * Horizontal on ≥ md, stacked on mobile.
  */
 interface Field {
   label: string;
@@ -18,15 +16,23 @@ interface Field {
 
 interface Props {
   fields: readonly Field[];
+  /**
+   * `strip` is the footer's full-width identity bar — horizontal from `md`, stacked below it.
+   * `stack` is the boxed column §2.9 sanctions for a contact or event page's info card, where
+   * the block sits in a narrow column that the horizontal form would crush.
+   */
+  orientation?: "strip" | "stack";
   class?: string;
 }
 
-const { fields, class: className } = Astro.props;
+const { fields, orientation = "strip", class: className } = Astro.props;
 ---
 
 <dl
   class={cn(
-    "grid grid-cols-1 divide-y divide-border border border-border md:grid-flow-col md:auto-cols-fr md:grid-cols-none md:divide-x md:divide-y-0",
+    "border-border divide-border grid grid-cols-1 divide-y border",
+    orientation === "strip" &&
+      "md:auto-cols-fr md:grid-flow-col md:grid-cols-none md:divide-x md:divide-y-0",
     className,
   )}
 >

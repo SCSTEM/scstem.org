@@ -178,13 +178,21 @@ vendored rule directory are skipped.
 
 ## Environment variables
 
-| Variable                    | Where                 | Purpose                                         |
-| --------------------------- | --------------------- | ----------------------------------------------- |
-| `PUBLIC_TURNSTILE_SITE_KEY` | build (public)        | Turnstile widget on the contact form (Phase 07) |
-| `TS_SECRET_KEY`             | Pages Function secret | Turnstile server-side verification              |
-| `SLACK_FORM_POST_GENERIC`   | Pages Function secret | Slack webhook for contact submissions           |
+| Variable                    | Where                 | Purpose                               |
+| --------------------------- | --------------------- | ------------------------------------- |
+| `PUBLIC_TURNSTILE_SITE_KEY` | build (public)        | Turnstile widget on the contact form  |
+| `TS_SECRET_KEY`             | Pages Function secret | Turnstile server-side verification    |
+| `SLACK_FORM_POST_GENERIC`   | Pages Function secret | Slack webhook for contact submissions |
 
-The dev/test Turnstile key that always passes is in `legacy/.env.development`.
+`PUBLIC_TURNSTILE_SITE_KEY` is declared in `astro.config.ts`'s `env.schema`, so pages import it
+from `astro:env/client` rather than reaching into an untyped `import.meta.env`. It **defaults to
+Cloudflare's documented always-passes test key** (`1x00000000000000000000AA`), which is why a
+fresh clone and every preview deploy have a working form with no setup — and why the production
+value has to be set deliberately, in the Cloudflare Pages dashboard, alongside the `TS_SECRET_KEY`
+its server half checks against. A site key is public by design: it ships in the page's HTML.
+
+The secret half has a matching always-passes test value baked into `functions/api/form/submit.ts`
+for the same reason, so the whole round trip works locally without credentials.
 
 ## CI
 

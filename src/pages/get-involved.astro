@@ -1,0 +1,67 @@
+---
+import { Image } from "astro:assets";
+
+import getInvolved from "@/assets/sc2/get-involved.webp";
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Section from "@/components/ui/Section.astro";
+import { site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+/**
+ * Legacy's page was the bare Google Form iframe on a patterned background — no heading, no
+ * metadata beyond a title, and nothing at all if the embed failed to load. The form itself is
+ * unchanged; what it gains is a page around it and a way out of it.
+ *
+ * The iframe is `loading="lazy"` with its height reserved, so it costs nothing until it scrolls
+ * into view and shifts nothing when it arrives.
+ */
+const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
+---
+
+<BaseLayout
+  description="Students, parents, mentors, and volunteers all start here. Tell the South Central STEM Collective who you are and what you are curious about."
+  title="Get involved"
+>
+  <Hero>
+    <Image
+      alt="Students and mentors working together at a build session"
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      loading="eager"
+      sizes="100vw"
+      slot="media"
+      src={getInvolved}
+      widths={[640, 960, 1280, 1920]}
+    />
+
+    <Fragment slot="title">Get involved</Fragment>
+
+    Students, parents, mentors, volunteers, and businesses all start in the same place. Tell us who
+    you are and what you are curious about — a real person reads every response.
+  </Hero>
+
+  <Section atmosphere="pool">
+    <Fragment slot="title">Tell us about you</Fragment>
+    <Fragment slot="intro">
+      The form takes a couple of minutes. Nothing on it is binding, and we will follow up by email.
+    </Fragment>
+
+    <Button class="external-link" href={site.urls.getInvolvedForm} rel="noopener" variant="outline">
+      Open the form in a new tab
+    </Button>
+
+    <!--
+      Google renders the form on a white ground and honors the embedding page's `color-scheme`
+      for its own controls, so the wrapper declares light rather than letting a dark page produce
+      dark-on-white form fields.
+    -->
+    <div class="pocket mt-8 overflow-hidden [color-scheme:light]">
+      <iframe
+        class="h-[1800px] w-full border-0"
+        loading="lazy"
+        src={embedded}
+        title="Get involved with the South Central STEM Collective"></iframe>
+    </div>
+  </Section>
+</BaseLayout>

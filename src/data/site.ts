@@ -66,8 +66,9 @@ export const site = {
     donate: "https://www.paypal.com/US/fundraiser/charity/4486755",
     wishlist: "https://wiki.scstem.org/donations/wishlist",
     sponsorPacket: "https://wiki.scstem.org/donations/packet",
+    /** The bare form; `/get-involved` appends `?embedded=true` for the iframe it renders. */
     getInvolvedForm:
-      "https://docs.google.com/forms/d/e/1FAIpQLScTjT3LHFAq1mOfKFztgMOpUT8hFWz81dYlaaDa4B8lG6yr2Q/viewform?embedded=true",
+      "https://docs.google.com/forms/d/e/1FAIpQLScTjT3LHFAq1mOfKFztgMOpUT8hFWz81dYlaaDa4B8lG6yr2Q/viewform",
     wiki: "https://wiki.scstem.org",
     directions: "https://wiki.scstem.org/workspace/#directions",
     /** The parent organization every program belongs to. */
