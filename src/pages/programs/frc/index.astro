@@ -1,0 +1,207 @@
+---
+import { Image } from "astro:assets";
+
+import collage from "@/assets/events/morethanrobots.webp";
+import biohazardLockup from "@/assets/frc/biohazard-lockup.svg";
+import heroStill from "@/assets/frc/home-image.webp";
+import robotField from "@/assets/frc/robots/2024-robot-field.webp";
+import troubleclefLogo from "@/assets/frc/robots/2024-troubleclef-logo.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Callout from "@/components/ui/primitives/Callout.astro";
+import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Section from "@/components/ui/Section.astro";
+import StatBand from "@/components/ui/StatBand.astro";
+import { nav, programs, site } from "@/data/site";
+import ProgramLayout from "@/layouts/ProgramLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
+
+/**
+ * Copy is legacy's, verbatim (D8), with one correction: legacy's h1 read "engineers scientists".
+ *
+ * The 22 MB hero video is deliberately still a poster this phase — plan/09 re-encodes it to
+ * ≤3 MB, and `Hero`'s media slot takes a `<video>` unchanged when it does.
+ *
+ * The two `react-scroll-parallax` banners between here and the robots page become one framed
+ * media link: DESIGN.md §6 has no parallax in it, and the banners were a link's only content.
+ */
+const stats = [
+  {
+    value: "12+ years",
+    label: "FIRST Robotics Competition",
+    description:
+      "Biohazard has been an active FRC team since 2012 and we are not stopping any time soon.",
+  },
+  {
+    value: "10+ mentors",
+    label: "Guiding and teaching",
+    description:
+      "Learn from industry experts in their fields who are ready to help you get to the next level.",
+  },
+  {
+    value: "Endless",
+    label: "Opportunities",
+    description:
+      "Scholarships, hands-on education, and access to an extensive employer, alumni, and community network.",
+  },
+];
+---
+
+<ProgramLayout
+  description="Team 4050 Biohazard has been south-central Pennsylvania's FIRST Robotics Competition team since 2012. Nine competition robots, ten-plus mentors, and room for you."
+  program="frc"
+  title="Biohazard — FIRST Robotics Competition"
+>
+  <JsonLd
+    data={breadcrumbs([
+      { name: "Programs", path: "/programs" },
+      { name: programs.frc.name, path: programs.frc.href },
+    ])}
+    slot="head"
+  />
+
+  <Hero>
+    <Image
+      alt="Biohazard's robot on the competition field"
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      loading="eager"
+      sizes="100vw"
+      slot="media"
+      src={heroStill}
+      widths={[640, 960, 1280, 1920]}
+    />
+
+    {/* The eyebrow is the slot above the `h1`; its type rules simply do not apply to an image. */}
+    <Image
+      alt={`${programs.frc.teamName}, FIRST Robotics Competition team 4050`}
+      class="h-auto w-56 md:w-72"
+      loading="eager"
+      slot="eyebrow"
+      src={biohazardLockup}
+    />
+
+    <Fragment slot="title">
+      Welcome to the <ChalkUnderline tone="chalk" variant={1}>next generation</ChalkUnderline> of thinkers,
+      engineers, scientists, artists, and dreamers.
+    </Fragment>
+
+    Inspiring students since 2012, Biohazard is south-central Pennsylvania&rsquo;s premiere
+    high-school robotics team and we need you to take us to the next level.
+
+    <Button href={nav.cta.href} size="lg" slot="actions">Join the revolution</Button>
+  </Hero>
+
+  <Section atmosphere="numeral" index={1}>
+    <Fragment slot="title">
+      Join the Biohazard revolution and prepare for the hardest fun you&rsquo;ll ever have.
+    </Fragment>
+    <Fragment slot="intro">
+      <span class="italic">FIRST®</span> Robotics Competition (FRC) is a &ldquo;Sport for the Mind&rdquo;
+      where creativity, determination, and teamwork are the keys to success as we compete with teams from
+      around the world.
+    </Fragment>
+
+    <FeatureGrid columns={2}>
+      <FeatureCard icon="robot-face">
+        <Fragment slot="title">Innovation</Fragment>
+        Design and build complex robots to compete in <span class="italic">FIRST®</span>, using
+        real-world skills to build the best robot possible.
+      </FeatureCard>
+
+      <FeatureCard icon="tool">
+        <Fragment slot="title">Hands-on learning</Fragment>
+        Gain valuable experience in engineering, programming, and problem solving that will help you in
+        your future career.
+      </FeatureCard>
+
+      <FeatureCard icon="users-group">
+        <Fragment slot="title">Collaboration</Fragment>
+        Work closely with a team of students and mentors, who will help turn your ideas into reality.
+      </FeatureCard>
+
+      <FeatureCard icon="mood-happy">
+        <Fragment slot="title">Fun</Fragment>
+        We compete hard, but we also have a lot of fun while doing it. Saturday lunches, team picnic,
+        off-season events, and more.
+      </FeatureCard>
+    </FeatureGrid>
+
+    <StatBand class="mt-10" {stats} />
+  </Section>
+
+  <Section atmosphere="pool">
+    <Fragment slot="title">Check out our robots</Fragment>
+
+    <a class="media-frame group relative block" href="/programs/frc/robots">
+      <Image
+        alt="Troubleclef, Biohazard's 2024 robot, on the competition field"
+        class="w-full"
+        loading="lazy"
+        sizes="(min-width: 72rem) 68rem, 92vw"
+        src={robotField}
+        widths={[720, 1440]}
+      />
+      <Image
+        alt=""
+        class="absolute right-4 bottom-4 w-24 md:right-8 md:bottom-8 md:w-40"
+        loading="lazy"
+        src={troubleclefLogo}
+        widths={[160, 320]}
+      />
+      <span
+        class="bg-background/70 text-foreground group-hover:text-primary-bright absolute top-4 left-4 inline-flex items-center gap-2 rounded-md px-4 py-2 font-medium transition-colors duration-(--duration-micro)"
+      >
+        Every robot since 2019
+        <Icon name="arrow-right" size={20} />
+      </span>
+    </a>
+    <Callout class="mt-3" reference="FIG. 01">Troubleclef, 2024 season</Callout>
+  </Section>
+
+  <Section atmosphere="tint">
+    <Fragment slot="title">
+      Meet the team, learn about <span class="italic">FIRST®</span>
+    </Fragment>
+
+    <a
+      aria-label="Watch our team video on YouTube"
+      class="media-frame group relative mx-auto block max-w-3xl"
+      href={site.urls.teamVideo}
+      rel="noopener"
+    >
+      <Image
+        alt=""
+        class="w-full"
+        loading="lazy"
+        sizes="(min-width: 48rem) 48rem, 92vw"
+        src={collage}
+        widths={[640, 1024]}
+      />
+      <span class="bg-background/40 absolute inset-0 grid place-items-center">
+        <span
+          class="bg-primary text-primary-foreground grid size-16 place-items-center rounded-md transition-transform duration-(--duration-micro) group-hover:scale-105"
+        >
+          <Icon name="player-play" size={32} />
+        </span>
+      </span>
+    </a>
+  </Section>
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">Take us to the next level</Fragment>
+      Build season starts every January and runs six weeks. Students, mentors, and sponsors all have a
+      place on this team — tell us which one you are.
+      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      <Button href={nav.calendar.href} size="lg" slot="actions" variant="outline">
+        See when we meet
+      </Button>
+    </CtaBanner>
+  </Section>
+</ProgramLayout>

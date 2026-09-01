@@ -1,0 +1,238 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+
+import JsonLd from "@/components/JsonLd.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Skeleton from "@/components/ui/primitives/Skeleton.astro";
+import Section from "@/components/ui/Section.astro";
+import { type ProgramTheme, nav, programs, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
+
+/**
+ * Legacy embedded Google's own calendar iframe — Google's chrome, Google's fonts, 600 KB of
+ * third-party script, and nothing at all for a reader without JavaScript. This renders our own
+ * agenda from JSON that `/api/calendar/[name]` parses out of the public feed server-side (D19).
+ *
+ * The link out to Google is not a fallback bolted on for no-JS: it is in the static HTML on
+ * every render, because "add this to my own calendar" is a thing people come here to do.
+ */
+/**
+ * Astro hoists `getStaticPaths` out of the component's scope, so the table it reads lives inside
+ * it and reaches the page as props rather than as a frontmatter constant.
+ */
+export const getStaticPaths = (() => {
+  interface Calendar {
+    /** The public calendar's id, as `src/data/site.ts` holds it. */
+    googleId: string;
+    heading: string;
+    intro: string;
+    description: string;
+    title: string;
+    theme?: ProgramTheme;
+  }
+
+  /**
+   * Total over `site.calendars` by `satisfies`, so adding a calendar there without a page here
+   * is a build error rather than a route that quietly does not exist.
+   */
+  const calendars = {
+    sc2: {
+      googleId: site.calendars.sc2,
+      title: "Calendar",
+      heading: "What is coming up",
+      intro:
+        "Build sessions, competitions, and community events across every program. Times are Eastern.",
+      description:
+        "Upcoming build sessions, competitions, and community events at the South Central STEM Collective in Chambersburg, Pennsylvania.",
+    },
+    frc: {
+      googleId: site.calendars.frc,
+      title: "Biohazard calendar",
+      heading: "Biohazard's season",
+      intro:
+        "Build sessions, competitions, and off-season events for the high-school robotics team. Times are Eastern.",
+      description:
+        "Upcoming build sessions and competitions for Biohazard, the South Central STEM Collective's FIRST Robotics Competition team.",
+      theme: "frc",
+    },
+  } as const satisfies Record<keyof typeof site.calendars, Calendar>;
+
+  return Object.entries(calendars).map(([name, calendar]) => ({
+    params: { name },
+    props: { calendar, name },
+  }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { calendar, name } = Astro.props;
+
+/**
+ * Google's own view of the same calendar — where "add to my calendar" lives, and the one place a
+ * reader can go if the agenda below fails for any reason.
+ */
+const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(
+  calendar.googleId,
+)}&ctz=${encodeURIComponent(site.location.timeZone)}`;
+---
+
+<BaseLayout
+  description={calendar.description}
+  theme={"theme" in calendar ? calendar.theme : undefined}
+  title={calendar.title}
+>
+  <JsonLd data={breadcrumbs([{ name: calendar.title, path: `/calendar/${name}` }])} slot="head" />
+
+  {
+    /* A photographic hero would push the agenda — the only reason anyone opens this page —
+       below the fold, so the header is compact and keeps only the hero's closing accent rule. */
+  }
+  <div class="container-page pt-12 pb-10 md:pt-16 md:pb-12">
+    <p class="eyebrow text-primary">{nav.calendar.label}</p>
+    <h1 class="mt-3">{calendar.heading}</h1>
+    <p class="measure text-body-lg mt-4">{calendar.intro}</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <Button class="external-link" href={embedUrl} rel="noopener" variant="outline">
+        View on Google Calendar
+      </Button>
+      {
+        "theme" in calendar && (
+          <Button href={programs[calendar.theme].href} variant="ghost">
+            About the team
+          </Button>
+        )
+      }
+    </div>
+  </div>
+
+  <hr class="accent-rule" />
+
+  <Section atmosphere="pool">
+    <h2 class="sr-only">The next 90 days</h2>
+
+    <div class="max-w-3xl" data-agenda data-calendar={name} data-time-zone={site.location.timeZone}>
+      <div class="flex flex-col gap-4" data-agenda-loading>
+        <Skeleton class="h-6 w-48" />
+        <Skeleton class="h-24 w-full" />
+        <Skeleton class="h-24 w-full" />
+        <Skeleton class="h-6 w-40" />
+        <Skeleton class="h-24 w-full" />
+      </div>
+
+      <p class="text-body-lg" data-agenda-message hidden></p>
+      <ol class="flex flex-col gap-10" data-agenda-days></ol>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script>
+  interface CalendarEvent {
+    allDay: boolean;
+    description: string;
+    end: string;
+    location: string;
+    start: string;
+    title: string;
+  }
+
+  /**
+   * Feed text is authored outside this repo, so every string reaches the page through
+   * `textContent` and never through markup — the reason this builds nodes rather than a
+   * template string.
+   */
+  const element = (tag: string, className: string, text?: string): HTMLElement => {
+    const node = document.createElement(tag);
+    node.className = className;
+    if (text !== undefined) {
+      node.textContent = text;
+    }
+    return node;
+  };
+
+  for (const agenda of document.querySelectorAll<HTMLElement>("[data-agenda]")) {
+    const { calendar, timeZone } = agenda.dataset;
+    const loading = agenda.querySelector<HTMLElement>("[data-agenda-loading]");
+    const message = agenda.querySelector<HTMLElement>("[data-agenda-message]");
+    const list = agenda.querySelector<HTMLElement>("[data-agenda-days]");
+    if (calendar === undefined || timeZone === undefined) continue;
+    if (loading === null || message === null || list === null) continue;
+
+    const dayFormat = new Intl.DateTimeFormat("en-US", {
+      day: "numeric",
+      month: "long",
+      timeZone,
+      weekday: "long",
+      year: "numeric",
+    });
+    const timeFormat = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone,
+    });
+
+    const say = (text: string): void => {
+      message.textContent = text;
+      message.hidden = false;
+    };
+
+    const when = (event: CalendarEvent): string => {
+      if (event.allDay) {
+        return "All day";
+      }
+      const start = timeFormat.format(new Date(event.start));
+      const end = timeFormat.format(new Date(event.end));
+      return start === end ? start : `${start} – ${end}`;
+    };
+
+    const render = (events: ReadonlyArray<CalendarEvent>): void => {
+      if (events.length === 0) {
+        say("Nothing on the calendar for the next 90 days. Check back soon.");
+        return;
+      }
+
+      let day: string | undefined;
+      let entries: HTMLElement | undefined;
+
+      for (const event of events) {
+        const label = dayFormat.format(new Date(event.start));
+        if (label !== day || entries === undefined) {
+          day = label;
+          const group = document.createElement("li");
+          group.append(element("h3", "spec-label text-primary-bright", label));
+          entries = element("ul", "mt-4 flex flex-col gap-3");
+          group.append(entries);
+          list.append(group);
+        }
+
+        const item = element("li", "pocket p-5 sm:grid sm:grid-cols-[9rem_1fr] sm:gap-5");
+        item.append(element("p", "text-small text-muted font-mono sm:pt-0.5", when(event)));
+
+        const detail = element("div", "mt-1 sm:mt-0");
+        detail.append(element("p", "text-h4 font-semibold text-foreground", event.title));
+        if (event.location !== "") {
+          detail.append(element("p", "text-small text-body mt-1", event.location));
+        }
+        item.append(detail);
+        entries.append(item);
+      }
+    };
+
+    void fetch(`/api/calendar/${calendar}`)
+      .then(async (response) => {
+        const body = (await response.json()) as { events?: CalendarEvent[]; message?: string };
+        if (!response.ok || body.events === undefined) {
+          throw new Error(body.message ?? "Could not load the calendar");
+        }
+        render(body.events);
+      })
+      .catch(() => {
+        say(
+          "We could not load the calendar just now — the Google Calendar link above still works.",
+        );
+      })
+      .finally(() => {
+        loading.remove();
+      });
+  }
+</script>

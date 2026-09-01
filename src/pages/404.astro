@@ -60,7 +60,8 @@ const destinations = [
         destinations.map((destination) => (
           <Card as="article" interactive>
             <CardHeader>
-              <CardTitle>
+              {/* `h2`: the page's only other heading is its `h1`, and the default `h3` skips a level. */}
+              <CardTitle as="h2">
                 <a class="ui-link" href={destination.href}>
                   {destination.title}
                 </a>

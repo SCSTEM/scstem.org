@@ -192,6 +192,7 @@ CSS-only (D3, D20). Motion confirms — it never decorates.
 - **Stat band**: SCP 600 numeral in `primary` + Inter caption in `body`, on a pocket (feature moments get the grid floor).
 - **Forms**: visible `Label` above every field; `card` bg inputs, 1px `border`, focus = `ring` 2px; errors in the destructive text token with icon + `aria-describedby`.
 - **Icons**: Tabler, outline, 2px stroke, 20/24/32. Always with text or `aria-label`. No emoji as UI.
+- **Long-form prose** (pages carrying an argument rather than a grid — about, news, an event body): one flowing column at prose measure. Lists take `primary` markers, `body` text, and one level of nesting at most. Blockquotes take a 2px `primary` rule on the leading edge and `body-lg` `foreground` text, with the attribution beneath in `muted` `small` — no quote glyphs, no italics; the rule is the signal. Paragraph rhythm 1rem, with 2rem above a heading that follows copy.
 
 ## 9. Accessibility
 

@@ -1,0 +1,130 @@
+---
+import { Image } from "astro:assets";
+
+import drillBits from "@/assets/sc2/drill-bits.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import ContactForm from "@/components/ui/ContactForm.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import Hero from "@/components/ui/Hero.astro";
+import Section from "@/components/ui/Section.astro";
+import { nav, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
+
+/**
+ * Copy is legacy's, verbatim (D8). What changed is the color story: legacy gave each of the five
+ * cards a different accent — green, blue, orange, red, yellow — and two of them a differently
+ * colored button. DESIGN.md §2 allows one action accent per view, so every card here is the
+ * page's `primary` and the ranking is carried by order and content instead.
+ *
+ * The addresses and the EIN set in the data voice (§3): they are spec values, not prose.
+ */
+const mailingAddress = [
+  "South Central STEM Collective",
+  "20 South Main Street",
+  "Chambersburg, PA 17201",
+];
+---
+
+<BaseLayout
+  description="Give by mail, online through PayPal Giving Fund, through a charitable giving fund, in kind, or as a corporate sponsor. Every route supports STEM programs in Franklin County."
+  title="Donate"
+>
+  <JsonLd data={breadcrumbs([{ name: "Donate", path: "/donate" }])} slot="head" />
+
+  <Hero>
+    <Image
+      alt="A rack of drill bits on the workshop wall"
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      loading="eager"
+      sizes="100vw"
+      slot="media"
+      src={drillBits}
+      widths={[640, 960, 1280, 1920]}
+    />
+
+    <Fragment slot="title">
+      How you can <span class="highlight-swipe">support</span> the mission
+    </Fragment>
+
+    Donations keep the tools sharp, the workspace open, and registration paid for every student who
+    walks in. Here is every way to give.
+  </Hero>
+
+  <Section atmosphere="numeral" index={1}>
+    <Fragment slot="title">Ways to give</Fragment>
+
+    <FeatureGrid columns="2+3">
+      <FeatureCard icon="mail">
+        <Fragment slot="title">By mail</Fragment>
+        <p>
+          We accept checks mailed to our workspace or delivered in person at our community events.
+        </p>
+        <p class="text-foreground mt-4 font-semibold">Make checks payable to:</p>
+        <p class="text-body font-mono">{site.name}</p>
+        <p class="text-foreground mt-4 font-semibold">Mailing address:</p>
+        <address class="text-body font-mono not-italic">
+          {mailingAddress.map((line) => <span class="block">{line}</span>)}
+        </address>
+      </FeatureCard>
+
+      <FeatureCard
+        badge="via PayPal"
+        cta="Donate through PayPal"
+        href={site.urls.donate}
+        icon="wallet"
+      >
+        <Fragment slot="title">Online</Fragment>
+        You can donate online through our secure PayPal Giving Fund link.
+      </FeatureCard>
+
+      <FeatureCard icon="heart-handshake">
+        <Fragment slot="title">Charitable giving fund</Fragment>
+        <p>
+          If you are already set up with a charitable giving fund, your fund may already have us in
+          their database.
+        </p>
+        <dl class="mt-4">
+          <dt class="spec-label text-muted">Name</dt>
+          <dd class="text-body">{site.name}</dd>
+          <dt class="spec-label text-muted mt-3">EIN</dt>
+          <dd class="text-body font-mono">86-2328794</dd>
+        </dl>
+        <p class="mt-4">Please reach out if we are not appearing in your fund&rsquo;s database.</p>
+      </FeatureCard>
+
+      <FeatureCard cta="See our wishlist" href={site.urls.wishlist} icon="tool">
+        <Fragment slot="title">In kind</Fragment>
+        <p>
+          We accept donations of tools, materials, and equipment to keep our workspace stocked and
+          our programs running.
+        </p>
+        <p class="mt-4">
+          Please refer to our wishlist for our current needs and contact us to arrange a donation.
+        </p>
+      </FeatureCard>
+
+      <FeatureCard icon="file-description">
+        <Fragment slot="title">Corporate sponsorship</Fragment>
+        <p>
+          Without strong corporate partnerships, we would not be able to continue improving our
+          programs and workspace.
+        </p>
+        <p class="mt-4">
+          Please <a href="#questions">contact us below</a> if you are interested in supporting us through
+          a corporate sponsorship. Our <a href={nav.sponsors.href}>sponsors page</a> shows who already
+          does.
+        </p>
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="tint" id="questions">
+    <Fragment slot="title">Let&rsquo;s chat</Fragment>
+    <Fragment slot="intro"> We are always looking for new partners in STEM education. </Fragment>
+
+    <ContactForm class="mx-auto max-w-3xl" name="Sponsor Question" />
+  </Section>
+</BaseLayout>

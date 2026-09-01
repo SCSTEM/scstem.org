@@ -68,12 +68,24 @@ Shared rules for all groups:
 
 ## Acceptance criteria
 
-- [ ] **`.lycheeignore` is deleted.** It exists only because the Phase 05 app shell links to the routes this phase builds; `tools/checks/stale-link-ignores.mjs` fails CI for any entry whose page has landed, so entries must be removed as each group ships. This phase is not done while the file exists.
-- [ ] **`src/layouts/ProgramLayout.astro`'s `knip.jsonc` entry is deleted** — the program pages built in Group C are its real consumers, so the seam closes with them (same mechanism as Phase 08's `event-date` entry).
-- [ ] All routes above build at their exact legacy URLs; visible-copy parity per page (intentional diffs listed in PRs).
-- [ ] No page defines colors/spacing outside tokens; all imagery through astro:assets with dimensions.
-- [ ] Contact form: successful submit verified against the real function on a preview deploy (test Turnstile key), error path exercised.
-- [ ] Calendar pages show live events on preview; no-JS fallback link present in static HTML.
-- [ ] Each page: unique title + description, breadcrumbs JSON-LD on nested routes, Lighthouse A11y = 100 spot-checked.
-- [ ] `react-hook-form`, `valibot`, `@marsidev/react-turnstile`, `react-scroll-parallax`, `react-player` have no successors in the new tree (knip stays green).
-- [ ] `pnpm check && pnpm build` green.
+- [x] **`.lycheeignore` is deleted.** It exists only because the Phase 05 app shell links to the routes this phase builds; `tools/checks/stale-link-ignores.mjs` fails CI for any entry whose page has landed, so entries must be removed as each group ships. This phase is not done while the file exists. *(The guard script and its CI step went with it — a check that can now only ever no-op.)*
+- [x] **`src/layouts/ProgramLayout.astro`'s `knip.jsonc` entry is deleted** — the program pages built in Group C are its real consumers, so the seam closes with them (same mechanism as Phase 08's `event-date` entry).
+- [x] All routes above build at their exact legacy URLs; visible-copy parity per page (intentional diffs listed in PRs).
+- [x] No page defines colors/spacing outside tokens; all imagery through astro:assets with dimensions.
+- [ ] Contact form: successful submit verified against the real function on a preview deploy (test Turnstile key), error path exercised. **Error path exercised; the success path needs the preview deploy** — `astro preview` serves static output and does not run Pages Functions, and this development environment's egress proxy blocks `challenges.cloudflare.com`, so Turnstile cannot issue a token here.
+- [ ] Calendar pages show live events on preview; no-JS fallback link present in static HTML. **Fallback link verified in the static HTML of both routes, and the agenda verified end to end — the real parser and the real page script — against a synthetic Google feed covering recurrence, exclusions, overrides, all-day and multi-day events, and a DST transition. Not yet run against the live feed:** the egress proxy blocks `calendar.google.com`, so this needs the preview deploy too.
+- [x] Each page: unique title + description, breadcrumbs JSON-LD on nested routes, Lighthouse A11y = 100 spot-checked. *(axe-core over WCAG 2.2 AA + best-practice reports zero violations on every route at 390px and 1440px — a superset of Lighthouse's accessibility audit. Lighthouse itself arrives with the Phase 09 budgets.)*
+- [x] `react-hook-form`, `valibot`, `@marsidev/react-turnstile`, `react-scroll-parallax`, `react-player` have no successors in the new tree (knip stays green).
+- [x] `pnpm check && pnpm build` green.
+
+## Verification notes
+
+Driven against the production preview in the pre-installed Chromium at 390px and 1440px. The
+`chrome-devtools` MCP the overview's standing rule 9 names could not start in this environment
+(`chrome-devtools-mcp` is not on PATH and `mise` could not be installed), so Playwright drove the
+same checks: per-route console and page errors, horizontal overflow, heading outline, `alt`
+coverage, explicit image dimensions, and axe-core.
+
+Two things a preview deploy still has to confirm, both blocked by this environment rather than by
+the code: a real Turnstile round trip on the contact form, and the calendar agenda against
+Google's live feed.

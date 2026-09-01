@@ -1,0 +1,292 @@
+---
+import { PUBLIC_TURNSTILE_SITE_KEY } from "astro:env/client";
+
+import Button from "@/components/ui/primitives/Button.astro";
+import FieldError from "@/components/ui/primitives/FieldError.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Input from "@/components/ui/primitives/Input.astro";
+import Label from "@/components/ui/primitives/Label.astro";
+import Textarea from "@/components/ui/primitives/Textarea.astro";
+import { site } from "@/data/site";
+import { cn } from "@/lib/cn";
+
+/**
+ * The form behind `/api/form/submit`, rebuilt on the primitives and a single vanilla script —
+ * react-hook-form, valibot, and `@marsidev/react-turnstile` have no successors here (D3).
+ *
+ * Validation is the browser's own Constraint Validation API: the fields carry native attributes,
+ * and the script only borrows the messages so they can render in the system's own error style
+ * instead of a native bubble. Turnstile renders explicitly into its container once its API
+ * arrives, so the widget is never a React component's side effect.
+ */
+interface Props {
+  /**
+   * Which form this is, echoed into the Slack message the function posts. Legacy sent
+   * "Contact Us" from `/contact` and "Sponsor Question" from `/donate`; keep those strings so
+   * the two funnels stay distinguishable on the receiving end.
+   */
+  name: string;
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+
+/** Ids must be unique per document, and `/donate` renders this form beneath other content. */
+const prefix = name.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-");
+
+const fields = [
+  { autocomplete: "name", id: `${prefix}-name`, label: "Name", type: "text" },
+  { autocomplete: "email", id: `${prefix}-email`, label: "Email", type: "email" },
+] as const;
+---
+
+<form
+  class={cn("flex flex-col gap-5", className)}
+  data-contact-form
+  data-form-name={name}
+  novalidate
+>
+  <div class="grid gap-5 md:grid-cols-2">
+    {
+      fields.map((field) => (
+        <div class="flex flex-col gap-2">
+          <Label for={field.id} required>
+            {field.label}
+          </Label>
+          <Input
+            aria-describedby={`${field.id}-error`}
+            autocomplete={field.autocomplete}
+            id={field.id}
+            name={field.label.toLowerCase()}
+            required
+            type={field.type}
+          />
+          <FieldError id={`${field.id}-error`} />
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <Label for={`${prefix}-message`} required>Message</Label>
+    <Textarea
+      aria-describedby={`${prefix}-message-error`}
+      id={`${prefix}-message`}
+      name="message"
+      required
+    />
+    <FieldError id={`${prefix}-message-error`} />
+  </div>
+
+  <!-- Reserves the widget's rendered height so its arrival does not shift the submit row. -->
+  <div class="min-h-18" data-turnstile data-sitekey={PUBLIC_TURNSTILE_SITE_KEY}></div>
+
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <p
+      class="text-small data-[state=error]:text-destructive-bright data-[state=ok]:text-primary-bright flex items-center gap-1.5 empty:hidden"
+      data-form-status
+      role="status"
+    >
+    </p>
+    <Button class="max-md:w-full" data-submit type="submit">
+      <Icon name="send" size={20} />
+      Submit
+    </Button>
+  </div>
+
+  <noscript>
+    <p class="text-small text-body">
+      This form needs JavaScript for its spam check. Email us at{" "}
+      <a href={`mailto:${site.email}`}>{site.email}</a> and we will get straight back to you.
+    </p>
+  </noscript>
+</form>
+
+<script>
+  /** The subset of the Turnstile API this uses. Loaded from Cloudflare, so it carries no types. */
+  interface Turnstile {
+    render: (
+      container: HTMLElement,
+      options: {
+        callback: (token: string) => void;
+        "error-callback": () => void;
+        "expired-callback": () => void;
+        "response-field": boolean;
+        sitekey: string;
+        theme: "dark";
+      },
+    ) => string;
+    reset: (widget: string) => void;
+  }
+
+  const TURNSTILE_API = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+
+  /**
+   * One shared load of Cloudflare's API for however many forms a page carries. Injected rather
+   * than written into the markup, because the widget is inert without this script anyway — so
+   * a no-JS visitor is spared the request, and the `<noscript>` note is what serves them.
+   */
+  let api: Promise<Turnstile> | undefined;
+
+  const turnstileApi = (): Promise<Turnstile> => {
+    api ??= new Promise<Turnstile>((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = TURNSTILE_API;
+      script.async = true;
+      script.addEventListener("load", () => {
+        const loaded = (globalThis as { turnstile?: Turnstile }).turnstile;
+        if (loaded === undefined) {
+          reject(new Error("Turnstile loaded without exposing its API"));
+          return;
+        }
+        resolve(loaded);
+      });
+      script.addEventListener("error", () => {
+        reject(new Error("Turnstile failed to load"));
+      });
+      document.head.append(script);
+    });
+    return api;
+  };
+
+  const setStatus = (
+    element: HTMLElement,
+    state: "error" | "ok" | undefined,
+    message: string,
+  ): void => {
+    element.textContent = message;
+    if (state === undefined) {
+      delete element.dataset.state;
+    } else {
+      element.dataset.state = state;
+    }
+  };
+
+  for (const form of document.querySelectorAll<HTMLFormElement>("[data-contact-form]")) {
+    const status = form.querySelector<HTMLElement>("[data-form-status]");
+    const submit = form.querySelector<HTMLButtonElement>("[data-submit]");
+    const container = form.querySelector<HTMLElement>("[data-turnstile]");
+    const sitekey = container?.dataset.sitekey;
+    if (status === null || submit === null || container === null || sitekey === undefined) {
+      continue;
+    }
+
+    let token = "";
+    let widget: string | undefined;
+
+    void turnstileApi()
+      .then((turnstile) => {
+        widget = turnstile.render(container, {
+          callback: (issued) => {
+            token = issued;
+          },
+          "error-callback": () => {
+            token = "";
+            setStatus(status, "error", "Spam protection failed. Please try again.");
+          },
+          "expired-callback": () => {
+            token = "";
+          },
+          // The token travels in the JSON body, so the hidden input it would otherwise add
+          // has nothing to submit.
+          "response-field": false,
+          sitekey,
+          theme: "dark",
+        });
+      })
+      .catch(() => {
+        setStatus(status, "error", "The spam check could not load. Please reload and try again.");
+      });
+
+    /**
+     * Each field's error paragraph is the `aria-describedby` target the markup already wired,
+     * so writing the browser's own message into it is the whole of the validation UI.
+     */
+    const controls = [...form.elements].filter(
+      (element): element is HTMLInputElement | HTMLTextAreaElement =>
+        element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement,
+    );
+
+    const errorFor = (control: HTMLInputElement | HTMLTextAreaElement): HTMLElement | null =>
+      document.getElementById(`${control.id}-error`);
+
+    const showValidity = (control: HTMLInputElement | HTMLTextAreaElement): boolean => {
+      const valid = control.checkValidity();
+      const message = errorFor(control);
+      if (message !== null) {
+        message.textContent = valid ? "" : control.validationMessage;
+      }
+      control.setAttribute("aria-invalid", valid ? "false" : "true");
+      return valid;
+    };
+
+    for (const control of controls) {
+      // Only after a field has been judged once: validating as someone first types a half-
+      // written address is noise, not help.
+      control.addEventListener("blur", () => {
+        showValidity(control);
+      });
+      control.addEventListener("input", () => {
+        if (control.getAttribute("aria-invalid") === "true") {
+          showValidity(control);
+        }
+      });
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const invalid = controls.map(showValidity).indexOf(false);
+      if (invalid !== -1) {
+        controls[invalid]?.focus();
+        return;
+      }
+
+      if (token === "") {
+        setStatus(status, "error", "Waiting on the spam check — try again in a moment.");
+        return;
+      }
+
+      const data = new FormData(form);
+      submit.disabled = true;
+      setStatus(status, undefined, "Sending…");
+
+      void fetch("/api/form/submit", {
+        body: JSON.stringify({
+          email: data.get("email"),
+          form: form.dataset.formName,
+          message: data.get("message"),
+          name: data.get("name"),
+          turnstileToken: token,
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      })
+        .then(async (response) => {
+          const body = (await response.json()) as { message?: string; success?: boolean };
+          if (body.success !== true) {
+            throw new Error(body.message ?? "Error submitting form");
+          }
+          setStatus(status, "ok", "Thanks — we have your message and will be in touch.");
+          form.reset();
+          for (const control of controls) {
+            control.removeAttribute("aria-invalid");
+          }
+        })
+        .catch((error: unknown) => {
+          setStatus(status, "error", error instanceof Error ? error.message : "Something failed.");
+        })
+        .finally(() => {
+          submit.disabled = false;
+          // The token is single-use either way, so the widget is reset on both paths.
+          token = "";
+          const rendered = widget;
+          if (rendered !== undefined) {
+            void turnstileApi().then((turnstile) => {
+              turnstile.reset(rendered);
+            });
+          }
+        });
+    });
+  }
+</script>

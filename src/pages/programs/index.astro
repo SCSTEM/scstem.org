@@ -1,0 +1,130 @@
+---
+import { Image } from "astro:assets";
+
+import fllRobots from "@/assets/fll/lego-robots.webp";
+import driveTeam from "@/assets/frc/frc-driveteam.webp";
+import handsOn from "@/assets/sc2/hands-on-1.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Section from "@/components/ui/Section.astro";
+import { nav, programs, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
+
+/**
+ * The hub the header's Programs disclosure points at (D26): it is the tap target on touch and
+ * the whole path with JavaScript off, so it has to stand on its own rather than duplicate the
+ * dropdown. No legacy counterpart — the copy here is new.
+ */
+---
+
+<BaseLayout
+  description="FIRST LEGO League for ages 9–16 and FIRST Robotics Competition for ages 14–18, run out of one workshop in downtown Chambersburg."
+  title="Programs"
+>
+  <JsonLd data={breadcrumbs([{ name: "Programs", path: "/programs" }])} slot="head" />
+
+  <Hero>
+    <Image
+      alt="A student and a mentor working on a robot together at the bench"
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      loading="eager"
+      sizes="100vw"
+      slot="media"
+      src={handsOn}
+      widths={[640, 960, 1280, 1920]}
+    />
+
+    <Fragment slot="title">Our programs</Fragment>
+
+    Two <span class="italic">FIRST®</span> teams under one roof in downtown Chambersburg. Same mentors,
+    same tools, same door — the difference is the age you start and the size of the robot you build.
+  </Hero>
+
+  <Section atmosphere="numeral" index={1}>
+    <Fragment slot="title">Pick where to start</Fragment>
+
+    <FeatureGrid columns={2}>
+      <FeatureCard
+        badge={`Ages ${programs.fll.ages}`}
+        cta={`Explore ${programs.fll.name}`}
+        feature
+        href={programs.fll.href}
+        icon="lego"
+        image={fllRobots}
+        imageAlt="LEGO® robots built by South Central STEM Collective students"
+      >
+        <Fragment slot="title"><span class="italic">FIRST®</span> LEGO® League</Fragment>
+        <p>
+          Small teams design a LEGO® robot to run missions on a themed table, research a real
+          problem, and present what they found. It is the shortest route from &ldquo;I like building
+          things&rdquo; to standing in front of judges with something you made.
+        </p>
+        <p class="mt-3">
+          Seasons run through the school year, and no experience is expected on day one.
+        </p>
+      </FeatureCard>
+
+      <FeatureCard
+        badge={`Ages ${programs.frc.ages}`}
+        cta={`Explore ${programs.frc.name}`}
+        feature
+        href={programs.frc.href}
+        icon="robot-face"
+        image={driveTeam}
+        imageAlt={`Team 4050 ${programs.frc.teamName}'s drive team standing with their robot at competition`}
+      >
+        <Fragment slot="title"><span class="italic">FIRST®</span> Robotics Competition</Fragment>
+        <p>
+          Team 4050 &mdash; {programs.frc.teamName} &mdash; builds a 120-pound robot in six weeks and
+          takes it to regional competitions. Students run the design, the fabrication, the code, the money,
+          and the brand, with mentors who do this for a living.
+        </p>
+        <p class="mt-3">
+          Competing since 2012, with nine competition robots behind us and the next one starting
+          every January.
+        </p>
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="tint">
+    <Fragment slot="title">Look around first</Fragment>
+    <Fragment slot="intro">
+      No commitment required. See what we have built and when we meet.
+    </Fragment>
+
+    <FeatureGrid columns={3}>
+      <FeatureCard cta="See the robots" href="/programs/frc/robots" icon="robot-face">
+        <Fragment slot="title">Our robots</Fragment>
+        Every competition robot since 2019 — what it did, what it won, and what we learned building it.
+      </FeatureCard>
+
+      <FeatureCard cta="Open the calendar" href={nav.calendar.href} icon="calendar-event">
+        <Fragment slot="title">What is coming up</Fragment>
+        Build sessions, competitions, and community events across both programs.
+      </FeatureCard>
+
+      <FeatureCard cta="Read about FIRST®" href={site.urls.firstInspires} icon="bulb">
+        <Fragment slot="title">The wider program</Fragment>
+        Both of our teams belong to <span class="italic">FIRST®</span>, a global organization
+        running student robotics from primary school through high school.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">Still deciding which one?</Fragment>
+      Tell us the student&rsquo;s age and what they are into, and we will point you at the right team.
+      Parents and prospective mentors are just as welcome to ask.
+      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      <Button href="/contact" size="lg" slot="actions" variant="outline">Ask a question</Button>
+    </CtaBanner>
+  </Section>
+</BaseLayout>

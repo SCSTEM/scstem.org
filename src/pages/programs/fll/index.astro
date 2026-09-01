@@ -1,0 +1,161 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import fllRobots from "@/assets/fll/lego-robots.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Callout from "@/components/ui/primitives/Callout.astro";
+import Section from "@/components/ui/Section.astro";
+import { nav, programs, site } from "@/data/site";
+import ProgramLayout from "@/layouts/ProgramLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
+
+/**
+ * Legacy's page was a placeholder — "This page is under construction" over a photo — so unlike
+ * the rest of Phase 07 this one has no copy to port. What is written here is limited to what the
+ * site can stand behind: what the program is (the description already running on the homepage),
+ * the three parts of a season as FIRST defines them, and the teams our own content collection
+ * knows about. Anything season-specific — dates, fees, meeting nights — routes to the calendar
+ * and the get-involved form rather than being stated here.
+ */
+const teamPhotos = (await getCollection("fllTeamPhotos")).toSorted(
+  (a, b) => b.data.year - a.data.year,
+);
+const latest = teamPhotos[0];
+---
+
+<ProgramLayout
+  description="FIRST LEGO League at the South Central STEM Collective: teams of 9- to 16-year-olds build a LEGO robot, research a real problem, and take both to competition."
+  program="fll"
+  title="FIRST LEGO League"
+>
+  <JsonLd
+    data={breadcrumbs([
+      { name: "Programs", path: "/programs" },
+      { name: programs.fll.name, path: programs.fll.href },
+    ])}
+    slot="head"
+  />
+
+  <Hero>
+    <Image
+      alt="LEGO® robots built by South Central STEM Collective students"
+      class="h-full w-full object-cover"
+      fetchpriority="high"
+      loading="eager"
+      sizes="100vw"
+      slot="media"
+      src={fllRobots}
+      widths={[640, 960, 1280, 1920]}
+    />
+
+    <Fragment slot="eyebrow">Ages {programs.fll.ages}</Fragment>
+
+    <Fragment slot="title">
+      Where <span class="highlight-swipe">building</span> turns into engineering
+    </Fragment>
+
+    <span class="italic">FIRST®</span> LEGO® League is where most of our students start: a small team,
+    a LEGO® robot, a table full of missions, and a real problem to go solve.
+
+    <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+  </Hero>
+
+  <Section atmosphere="numeral" index={1}>
+    <Fragment slot="title">What the program is</Fragment>
+    <Fragment slot="intro">
+      FLL introduces science, technology, engineering, and math (STEM) to children through fun,
+      exciting hands-on learning. Participants gain real-world problem-solving experiences through a
+      guided, global robotics program, helping today&rsquo;s students and teachers build a better
+      future together.
+    </Fragment>
+
+    <p class="measure">
+      Every season <span class="italic">FIRST®</span> sets a theme, and teams around the world work the
+      same challenge at the same time. Ours meet at the workspace in downtown Chambersburg, alongside
+      the high-school <a href={programs.frc.href}>{programs.frc.name}</a> team &mdash; same mentors, same
+      tools, smaller robots.
+    </p>
+  </Section>
+
+  <Section atmosphere="tint">
+    <Fragment slot="title">Three parts to a season</Fragment>
+    <Fragment slot="intro">
+      A team is judged on all three, which is why there is a job here for someone who would rather
+      research, present, or organize than drive.
+    </Fragment>
+
+    <FeatureGrid columns={3}>
+      <FeatureCard icon="robot-face">
+        <Fragment slot="title">The robot game</Fragment>
+        Design, build, and program a LEGO® robot to run missions on a themed table, then send it out alone
+        for a two and a half minute match.
+      </FeatureCard>
+
+      <FeatureCard icon="bulb">
+        <Fragment slot="title">The innovation project</Fragment>
+        Research a real problem connected to the season&rsquo;s theme, work out a solution, and present
+        it to judges the same way an engineer would to a client.
+      </FeatureCard>
+
+      <FeatureCard icon="users-group">
+        <Fragment slot="title">Core values</Fragment>
+        How the team works together — discovery, innovation, impact, inclusion, teamwork, and fun. It
+        is scored, and it is the part alumni remember.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  {
+    latest !== undefined && (
+      <Section atmosphere="pool">
+        <Fragment slot="title">Our teams</Fragment>
+        <Fragment slot="intro">
+          Teams stay small on purpose, so nobody spends the season watching someone else build.
+        </Fragment>
+
+        <figure class="mx-auto max-w-3xl">
+          <div class="media-frame">
+            <Image
+              alt={latest.data.alt}
+              class="w-full"
+              loading="lazy"
+              sizes="(min-width: 48rem) 48rem, 92vw"
+              src={latest.data.photo}
+              widths={[640, 1280]}
+            />
+          </div>
+          {latest.data.caption !== undefined && (
+            <Callout as="figcaption" class="mt-3">
+              {latest.data.caption}
+            </Callout>
+          )}
+        </figure>
+      </Section>
+    )
+  }
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">Start here</Fragment>
+      No experience needed, and no LEGO® collection required — the robots, the tools, and the mentors
+      are ours. Tell us your student&rsquo;s age and we will tell you what the next season looks like.
+      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      <Button
+        class="external-link"
+        href={site.urls.firstInspires}
+        rel="noopener"
+        size="lg"
+        slot="actions"
+        variant="outline"
+      >
+        About FIRST®
+      </Button>
+    </CtaBanner>
+  </Section>
+</ProgramLayout>
