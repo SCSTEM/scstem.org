@@ -26,6 +26,10 @@ resolver. `which pnpm` must resolve inside mise's shims directory; if not, `core
 | Dead code   | knip                                                                                     |
 | Repo checks | `tools/checks/*.ts`                                                                      |
 
+TypeScript is the 6.x line everywhere, one compiler for `astro check`, `tsc`, and
+`typescript-eslint`. `astro check` (Volar) needs the JavaScript compiler's API, which TypeScript 7
+does not expose yet; when it does and `@astrojs/check` widens its peer range, bump the pin.
+
 ### `tools/`
 
 TypeScript scripts run directly by Node (type stripping, no build step), each behind a
@@ -33,7 +37,6 @@ TypeScript scripts run directly by Node (type stripping, no build step), each be
 
 | Script            | Does                                                        | Runs in         |
 | ----------------- | ----------------------------------------------------------- | --------------- |
-| `check:tokens`    | `cn`'s font-size group matches the `--text-*` tokens        | `pnpm check`    |
 | `check:content`   | Every content-collection `reference()` resolves             | `pnpm check`    |
 | `check:meta`      | Every built page's head: unique title/description, og:image | CI, after build |
 | `assets:optimize` | Downscale and re-encode camera masters in `src/assets/`     | by hand         |

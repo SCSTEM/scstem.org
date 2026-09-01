@@ -20,9 +20,9 @@ Pages. **Zero client-side framework runtime** — `.astro` components and plain 
 
 ESLint (typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro` with
 `jsx-a11y-strict`, the vendored anti-slop rules in `tools/lint/`) lints every `.ts`, `.js`, and
-`.astro` file. Prettier formats everything.
-TypeScript is checked by `astro check` (`src/`, config files) and `tsc` (`functions/`, `tools/`).
-oxlint/oxfmt return when they support `.astro` (`docs/adr/0012-single-toolchain.md`).
+`.astro` file. Prettier formats everything (`docs/adr/0012-single-toolchain.md`).
+TypeScript 6 throughout: `astro check` covers `src/` and the config files, `tsc` covers
+`functions/` and `tools/`.
 
 The Claude Code hook in `.claude/hooks/format-lint.sh` formats and lints every file you edit and
 feeds lint failures back to you.
@@ -46,6 +46,10 @@ Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script
 
 - `cn` comes from `@/lib/cn` only — a `cnfast` merge configured with the DESIGN.md §3 type scale
   (see the docstring). `clsx`, `classnames`, `tailwind-merge` are banned imports.
+- The `font-size` group in `src/lib/cn.ts` mirrors the `--text-*` tokens in `src/styles/global.css`
+  by hand. Adding, renaming, or removing a size token means the same edit in both files, in the
+  same commit; nothing checks them, and a missing entry shows up only as a wrong size in the
+  browser.
 - No new dependencies without an ADR in `docs/adr/`.
 - No client-side frameworks, no framework islands.
 - Content changes go in `src/content/` — see `docs/content.md`. **Never inline a content array

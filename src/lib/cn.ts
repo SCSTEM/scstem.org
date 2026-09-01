@@ -10,8 +10,9 @@ import { createCn } from "cnfast";
  * type scale as the font-size group keeps a size and a color side by side.
  *
  * The list is the type scale from DESIGN.md §3 plus `text-copy` (the size utility, since the
- * color owns `text-body`). A new size token in `global.css` must be added here too;
- * `tools/checks/cn-font-size-group.ts` fails the build when the two diverge.
+ * color owns `text-body`). It mirrors the `--text-*` tokens in `src/styles/global.css` by hand:
+ * a new size token there is a new entry here, and a token missing here loses to any color beside
+ * it with no error, only a wrong size in the browser.
  */
 export const cn = createCn({
   extend: {

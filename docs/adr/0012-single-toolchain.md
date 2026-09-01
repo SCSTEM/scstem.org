@@ -14,7 +14,7 @@ twice. `.astro` files are the bulk of the site, and oxc still cannot read them.
 
 ## Decision
 
-ESLint and Prettier own every file until oxlint and oxfmt support `.astro`.
+ESLint and Prettier own every file.
 
 - `eslint.config.ts`: `typescript-eslint` `strictTypeChecked` + `stylisticTypeChecked` over
   `**/*.{ts,mts,js,mjs,astro}` with `projectService`; `eslint-plugin-astro` `recommended` +
@@ -33,5 +33,5 @@ ESLint and Prettier own every file until oxlint and oxfmt support `.astro`.
 - One linter, one formatter, one hook branch. `pnpm lint` is `eslint`, `pnpm fmt` is `prettier`.
 - Lint is slower than oxlint on `.ts` files: about 15 s for the repo, type-aware. Acceptable for
   a site this size.
-- Reversal is the migration seam from ADR 0001, applied once oxc reads `.astro`: swap the
-  binaries, keep the rules. Accessibility coverage (`jsx-a11y-strict`) must survive the swap.
+- Returning to oxc is a new decision, not a scheduled one: it would need `.astro` support and a
+  home for the `jsx-a11y-strict` and anti-slop coverage, and it earns its own ADR.

@@ -49,7 +49,7 @@ namespace first, so:
 Relatedly, `@/lib/cn` is a _configured_ merge, not a re-export: it registers the DESIGN.md §3
 type scale as the font-size conflict group. Without that, `cn()` treats every `text-*` class as
 one group and silently drops all but the last. **A new size token means one more entry in
-`cn.ts`**; `tools/checks/cn-font-size-group.ts` fails `pnpm check` when the two diverge.
+`cn.ts`**; nothing checks the two agree, so add both in the same change.
 
 ## Registering a new primitive
 
