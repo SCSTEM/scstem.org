@@ -52,20 +52,34 @@ Phase 04 already re-encoded the sources it moved into `src/assets/` (`tools/asse
 
 ## As built
 
-Medians of three Lighthouse runs per URL (mobile preset, simulated throttling), the same
-configuration `.github/workflows/lighthouse.yml` runs:
+Three Lighthouse runs per URL (mobile preset, simulated throttling), the same configuration
+`.github/workflows/lighthouse.yml` runs. Every assertion passes:
 
-| URL | Perf | A11y | BP | SEO | LCP | CLS | TBT | Transfer |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `/` | 99 | 100 | 100 | 100 | 1958 ms | 0.000 | 0 | 177 KB |
-| `/programs/frc/` | 99 | 100 | 100 | 100 | 1807 ms | 0.000 | 0 | 635 KB |
-| `/programs/frc/robots/` | 99 | 100 | 100 | 100 | 1885 ms | 0.000 | 0 | 268 KB |
-| `/sponsors/` | 100 | 100 | 100 | 100 | 1210 ms | 0.000 | 0 | 218 KB |
-| `/openhouse/` | 99 | 100 | 100 | 100 | 1807 ms | 0.000 | 0 | 135 KB |
-| `/contact/` | 99 | 100 | 96 | 100 | 1809 ms | 0.000 | 0 | 121 KB |
+| URL                     | Perf | A11y |  BP | SEO | LCP, the three runs | CLS   | TBT | Transfer |
+| ----------------------- | ---: | ---: | --: | --: | ------------------- | ----- | --: | -------: |
+| `/`                     |   99 |  100 | 100 | 100 | 1961 / 1961 / 1968  | 0.000 |   0 |   178 KB |
+| `/programs/frc/`        |   99 |  100 | 100 | 100 | 1212 / 1807 / 1807  | 0.000 |   0 |   636 KB |
+| `/programs/frc/robots/` |   99 |  100 | 100 | 100 | 1355 / 2108 / 2110  | 0.000 |   0 |   269 KB |
+| `/sponsors/`            |   99 |  100 | 100 | 100 | 1210 / 2032 / 2036  | 0.000 |   0 |   219 KB |
+| `/openhouse/`           |   99 |  100 | 100 | 100 | 1805 / 1806 / 1809  | 0.000 |   0 |   136 KB |
+| `/contact/`             |   99 |  100 |  96 | 100 | 1810 / 1813 / 1815  | 0.000 |   0 |   121 KB |
+
+**LCP is bimodal in Lantern's simulation, which is why the runs are listed rather than a median.**
+Five runs of `/programs/frc/robots/` on an idle machine gave 1212, 1218, 2039, 2109, 2110 ms — two
+clusters about 800 ms apart with nothing between them, tracking the same step in simulated FCP.
+Chasing it did not work: an LCP-image `<link rel="preload">` moved the median by 2 ms. The one
+change that did move the metric was the 768px ladder step (§2), worth ~220 ms, and it is smaller
+than the spread.
+
+So `lighthouserc.json` sets `aggregationMethod: "optimistic"` **explicitly** rather than inheriting
+it: three runs, and the best has to clear 2000 ms. That is a real gate — push the fast cluster over
+the budget and every run fails — but it is worth being plain that two of these six pages have runs
+above 2000 ms, and that a median assertion would fail them. The lever that would move the slow
+cluster is the 83 KB of webfont on the critical path, more than any hero image on the site; cutting
+a face is a DESIGN.md §3 decision, so it is written up in `plan/todo.md` instead of made here.
 
 `/contact/`'s Best Practices is 96 because of the Turnstile widget's third-party script; the
-threshold is 0.95 and the widget is what the form's spam defence is.
+threshold is 0.95, and the widget is the form's spam defence.
 
 ### Deviations from this brief, each with an ADR
 
