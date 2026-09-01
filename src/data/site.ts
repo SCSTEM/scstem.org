@@ -47,6 +47,8 @@ export const site = {
   },
 
   location: {
+    /** How the workspace is named where a venue needs a name — an event's location, chiefly. */
+    name: "South Central STEM Collective Workspace",
     workspace: "20 South Main Street, Downtown Chambersburg",
     locality: "Chambersburg",
     region: "PA",

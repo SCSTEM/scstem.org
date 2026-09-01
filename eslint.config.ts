@@ -59,6 +59,13 @@ export default defineConfig(
        */
       "@typescript-eslint/no-unsafe-return": "off",
       /**
+       * A `return` in Astro frontmatter — how a page short-circuits into a redirect or a 404 —
+       * has no enclosing function node in the parser's AST, and this rule asserts one exists:
+       * `Non-null Assertion Failed: Expected node to have a parent`, a crash rather than a
+       * finding. It cannot inspect the construct it exists to check, so it is off for `.astro`.
+       */
+      "@typescript-eslint/no-misused-promises": "off",
+      /**
        * A keyboard-reachable scroll container is a real pattern: an `overflow` region is not
        * focusable by default, so without `tabindex="0"` its content is unreachable by keyboard
        * (WCAG 2.2 SC 2.1.1). `role="region"` with an accessible name is how that container is

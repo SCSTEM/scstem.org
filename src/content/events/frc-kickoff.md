@@ -2,9 +2,11 @@
 title: 2026 Season Kickoff
 program: frc
 start: 2026-01-10T12:00:00-05:00
+end: 2026-01-10T16:00:00-05:00
 subtitle: Join Biohazard as we unveil this year's challenge
 description: Join Biohazard for the 2026 FIRST Robotics Competition kickoff
 heroImage: ../../assets/events/cheering.webp
+heroImageAlt: Biohazard team members cheering from the stands at competition
 ctaLabel: Watch on FIRST website
 ctaHref: https://www.firstinspires.org/robotics/frc/kickoff
 teaserUrls:
@@ -20,8 +22,8 @@ hintLabels:
 
 ## The build season journey
 
-**Kickoff - January 10.** The game is revealed! Teams watch the live broadcast and receive the
-game manual to start strategizing.
+**Kickoff.** The game is revealed! Teams watch the live broadcast and receive the game manual to
+start strategizing.
 
 **Build Season - 6 Weeks.** Design, prototype, build, and program the robot to meet the game
 challenges.
