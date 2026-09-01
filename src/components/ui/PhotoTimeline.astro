@@ -6,6 +6,7 @@ import { Image } from "astro:assets";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Carousel from "@/components/ui/primitives/Carousel.astro";
 import { cn } from "@/lib/cn";
+import { PHOTO_QUALITY } from "@/lib/images";
 
 /**
  * A run of team photos as a scroll-snap track, oldest first — the "photo groupings as
@@ -35,9 +36,11 @@ const { label, photos, class: className } = Astro.props;
           alt={data.alt}
           class="aspect-video w-full rounded-lg object-cover"
           loading="lazy"
+          quality={PHOTO_QUALITY}
           sizes="(min-width: 48rem) 30rem, 92vw"
           src={data.photo}
-          widths={[480, 960]}
+          width={960}
+          widths={[480, 768, 960]}
         />
         {data.caption !== undefined && (
           <Callout as="figcaption" class="mt-3">

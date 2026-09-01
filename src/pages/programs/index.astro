@@ -1,6 +1,4 @@
 ---
-import { Image } from "astro:assets";
-
 import fllRobots from "@/assets/fll/lego-robots.webp";
 import driveTeam from "@/assets/frc/frc-driveteam.webp";
 import handsOn from "@/assets/sc2/hands-on-1.webp";
@@ -9,6 +7,7 @@ import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
 import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, programs, site } from "@/data/site";
@@ -29,15 +28,10 @@ import { breadcrumbs } from "@/lib/jsonld";
   <JsonLd data={breadcrumbs([{ name: "Programs", path: "/programs" }])} slot="head" />
 
   <Hero>
-    <Image
+    <HeroImage
       alt="A student and a mentor working on a robot together at the bench"
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
       slot="media"
       src={handsOn}
-      widths={[640, 960, 1280, 1920]}
     />
 
     <Fragment slot="title">Our programs</Fragment>

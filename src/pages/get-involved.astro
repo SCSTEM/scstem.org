@@ -1,8 +1,7 @@
 ---
-import { Image } from "astro:assets";
-
 import getInvolved from "@/assets/sc2/get-involved.webp";
 import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
 import { site } from "@/data/site";
@@ -24,15 +23,10 @@ const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
   title="Get involved"
 >
   <Hero>
-    <Image
+    <HeroImage
       alt="Students and mentors working together at a build session"
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
       slot="media"
       src={getInvolved}
-      widths={[640, 960, 1280, 1920]}
     />
 
     <Fragment slot="title">Get involved</Fragment>

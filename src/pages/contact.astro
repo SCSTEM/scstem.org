@@ -1,9 +1,8 @@
 ---
-import { Image } from "astro:assets";
-
 import laptop from "@/assets/sc2/laptop.webp";
 import ContactForm from "@/components/ui/ContactForm.astro";
 import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Card from "@/components/ui/primitives/Card.astro";
 import CardContent from "@/components/ui/primitives/CardContent.astro";
@@ -34,15 +33,10 @@ const fields = [
   title="Contact"
 >
   <Hero>
-    <Image
+    <HeroImage
       alt="A student working at a laptop in the South Central STEM Collective workspace"
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
       slot="media"
       src={laptop}
-      widths={[640, 960, 1280, 1920]}
     />
 
     <Fragment slot="title">Contact us</Fragment>

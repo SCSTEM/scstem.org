@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 
 import collage from "@/assets/events/morethanrobots.webp";
 import biohazardLockup from "@/assets/frc/biohazard-lockup.svg";
-import heroStill from "@/assets/frc/home-image.webp";
+import heroVideoPoster from "@/assets/frc/hero-video-poster.webp";
 import robotField from "@/assets/frc/robots/2024-robot-field.webp";
 import troubleclefLogo from "@/assets/frc/robots/2024-troubleclef-logo.webp";
 import JsonLd from "@/components/JsonLd.astro";
@@ -11,6 +11,7 @@ import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
 import Hero from "@/components/ui/Hero.astro";
+import HeroVideo from "@/components/ui/HeroVideo.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
@@ -19,13 +20,11 @@ import Section from "@/components/ui/Section.astro";
 import StatBand from "@/components/ui/StatBand.astro";
 import { nav, programs, site } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
+import { PHOTO_QUALITY } from "@/lib/images";
 import { breadcrumbs } from "@/lib/jsonld";
 
 /**
  * Copy is legacy's, verbatim (D8), with one correction: legacy's h1 read "engineers scientists".
- *
- * The 22 MB hero video is deliberately still a poster this phase — plan/09 re-encodes it to
- * ≤3 MB, and `Hero`'s media slot takes a `<video>` unchanged when it does.
  *
  * The two `react-scroll-parallax` banners between here and the robots page become one framed
  * media link: DESIGN.md §6 has no parallax in it, and the banners were a link's only content.
@@ -66,15 +65,12 @@ const stats = [
   />
 
   <Hero>
-    <Image
-      alt="Biohazard's robot on the competition field"
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
+    <HeroVideo
+      alt="The view from Biohazard's driver station, out over a packed competition field"
+      mp4={site.heroVideo.mp4}
+      poster={heroVideoPoster}
       slot="media"
-      src={heroStill}
-      widths={[640, 960, 1280, 1920]}
+      webm={site.heroVideo.webm}
     />
 
     {/* The eyebrow is the slot above the `h1`; its type rules simply do not apply to an image. */}
@@ -143,15 +139,18 @@ const stats = [
         alt="Troubleclef, Biohazard's 2024 robot, on the competition field"
         class="w-full"
         loading="lazy"
+        quality={PHOTO_QUALITY}
         sizes="(min-width: 72rem) 68rem, 92vw"
         src={robotField}
-        widths={[720, 1440]}
+        width={1440}
+        widths={[720, 1080, 1440]}
       />
       <Image
         alt=""
         class="absolute right-4 bottom-4 w-24 md:right-8 md:bottom-8 md:w-40"
         loading="lazy"
         src={troubleclefLogo}
+        width={320}
         widths={[160, 320]}
       />
       <span
@@ -179,9 +178,11 @@ const stats = [
         alt=""
         class="w-full"
         loading="lazy"
+        quality={PHOTO_QUALITY}
         sizes="(min-width: 48rem) 48rem, 92vw"
         src={collage}
-        widths={[640, 1024]}
+        width={1024}
+        widths={[640, 840, 1024]}
       />
       <span class="bg-background/40 absolute inset-0 grid place-items-center">
         <span

@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # local Chrome for the devtools MCP (mise run chrome:install)
 .browser/
+
+# lighthouse ci
+.lighthouseci/

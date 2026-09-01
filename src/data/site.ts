@@ -36,6 +36,16 @@ export const site = {
     alt: "South Central STEM Collective logo over a photo of the team",
   },
 
+  /**
+   * The FRC hero's looping footage, in `public/` rather than `src/assets/`: astro:assets has no
+   * video pipeline, so the encode is a manual ffmpeg step recorded in
+   * `docs/adr/0006-hero-video-encode.md` and the files ship as-is.
+   */
+  heroVideo: {
+    mp4: "/video/biohazard/home-video.mp4",
+    webm: "/video/biohazard/home-video.webm",
+  },
+
   /** The favicon/app-icon set in `public/`, projected into head links, the manifest, and JSON-LD. */
   icons: {
     favicon: "/favicon.ico",

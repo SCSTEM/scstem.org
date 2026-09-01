@@ -1,11 +1,11 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 import partsNotes from "@/assets/sc2/parts-notes.webp";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
 import Section from "@/components/ui/Section.astro";
@@ -41,15 +41,10 @@ const description =
   <JsonLd data={breadcrumbs([{ name: "Sponsors", path: "/sponsors" }])} slot="head" />
 
   <Hero>
-    <Image
+    <HeroImage
       alt="Machined parts and hand-written build notes on the workshop bench"
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
       slot="media"
       src={partsNotes}
-      widths={[640, 960, 1280, 1920]}
     />
 
     <Fragment slot="title">

@@ -6,11 +6,13 @@ import pits from "@/assets/frc/robots/2021-robot-pits.webp";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, programs } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
+import { PHOTO_QUALITY } from "@/lib/images";
 import { breadcrumbs } from "@/lib/jsonld";
 
 /**
@@ -43,15 +45,10 @@ const robots = await Promise.all(
   />
 
   <Hero>
-    <Image
+    <HeroImage
       alt="Biohazard's pit crew working on the robot between matches"
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
       slot="media"
       src={pits}
-      widths={[640, 960, 1280, 1920]}
     />
 
     <Fragment slot="eyebrow">2019 &ndash; present</Fragment>
@@ -84,9 +81,11 @@ const robots = await Promise.all(
                     alt={data.imageAlt}
                     class="w-full"
                     loading={index === 0 ? "eager" : "lazy"}
+                    quality={PHOTO_QUALITY}
                     sizes="(min-width: 64rem) 34rem, 92vw"
                     src={data.image}
-                    widths={[560, 1120]}
+                    width={1120}
+                    widths={[560, 840, 1120]}
                   />
                   {data.logo !== undefined && (
                     <Image
@@ -94,6 +93,7 @@ const robots = await Promise.all(
                       class="absolute right-4 bottom-4 w-1/4"
                       loading="lazy"
                       src={data.logo}
+                      width={280}
                       widths={[140, 280]}
                     />
                   )}

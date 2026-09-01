@@ -1,12 +1,11 @@
 ---
-import { Image } from "astro:assets";
-
 import drillBits from "@/assets/sc2/drill-bits.webp";
 import JsonLd from "@/components/JsonLd.astro";
 import ContactForm from "@/components/ui/ContactForm.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
 import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -34,16 +33,7 @@ const mailingAddress = [
   <JsonLd data={breadcrumbs([{ name: "Donate", path: "/donate" }])} slot="head" />
 
   <Hero>
-    <Image
-      alt="A rack of drill bits on the workshop wall"
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
-      slot="media"
-      src={drillBits}
-      widths={[640, 960, 1280, 1920]}
-    />
+    <HeroImage alt="A rack of drill bits on the workshop wall" slot="media" src={drillBits} />
 
     <Fragment slot="title">
       How you can <span class="highlight-swipe">support</span> the mission

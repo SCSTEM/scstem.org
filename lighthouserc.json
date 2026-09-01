@@ -1,0 +1,35 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 3,
+      "settings": { "chromeFlags": "--no-sandbox" },
+      "startServerCommand": "pnpm exec astro preview --port 4321",
+      "startServerReadyPattern": "localhost:4321",
+      "url": [
+        "http://localhost:4321/",
+        "http://localhost:4321/programs/frc/",
+        "http://localhost:4321/programs/frc/robots/",
+        "http://localhost:4321/sponsors/",
+        "http://localhost:4321/openhouse/",
+        "http://localhost:4321/contact/"
+      ]
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.95 }],
+        "categories:accessibility": ["error", { "minScore": 1 }],
+        "categories:seo": ["error", { "minScore": 1 }],
+        "categories:best-practices": ["error", { "minScore": 0.95 }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 2000 }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.05 }],
+        "total-blocking-time": ["error", { "maxNumericValue": 100 }],
+        "resource-summary:script:size": ["error", { "maxNumericValue": 35840 }],
+        "resource-summary:total:size": ["error", { "maxNumericValue": 1048576 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci/reports"
+    }
+  }
+}

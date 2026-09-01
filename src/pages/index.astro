@@ -20,6 +20,7 @@ import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
 import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
@@ -29,6 +30,7 @@ import Section from "@/components/ui/Section.astro";
 import SponsorStrip from "@/components/ui/SponsorStrip.astro";
 import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { PHOTO_QUALITY } from "@/lib/images";
 import { webSite } from "@/lib/jsonld";
 import { breakpoint } from "@/lib/tokens";
 
@@ -58,15 +60,10 @@ const lockupArt = await renderAt(firstLockup, 640);
   <JsonLd data={webSite} slot="head" />
 
   <Hero>
-    <Image
+    <HeroImage
       alt="Two FIRST LEGO League tables of student-built robots, set up in the SC2 workshop"
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
       slot="media"
       src={fllField}
-      widths={[640, 960, 1280, 1920]}
     />
 
     <Fragment slot="title">
@@ -196,9 +193,11 @@ const lockupArt = await renderAt(firstLockup, 640);
             alt="Collage of photos capturing some of the many ways students can get involved including robot design, photography, video, and more."
             class="w-full"
             loading="lazy"
+            quality={PHOTO_QUALITY}
             sizes="(min-width: 64rem) 34rem, 92vw"
             src={collage}
-            widths={[560, 1120]}
+            width={1120}
+            widths={[560, 840, 1120]}
           />
         </div>
         <Callout as="figcaption" class="mt-3" reference="FIG. 01">
@@ -279,9 +278,11 @@ const lockupArt = await renderAt(firstLockup, 640);
         alt=""
         class="w-full"
         loading="lazy"
+        quality={PHOTO_QUALITY}
         sizes="(min-width: 48rem) 48rem, 92vw"
         src={teamVideoPoster}
-        widths={[640, 1024]}
+        width={1024}
+        widths={[640, 840, 1024]}
       />
       <span class="bg-background/40 absolute inset-0 grid place-items-center">
         <span

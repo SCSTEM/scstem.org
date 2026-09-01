@@ -11,6 +11,7 @@ import CardHeader from "@/components/ui/primitives/CardHeader.astro";
 import CardTitle from "@/components/ui/primitives/CardTitle.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import { cn } from "@/lib/cn";
+import { PHOTO_QUALITY } from "@/lib/images";
 
 /**
  * The card the section grids are built from (DESIGN.md §8): an accent-tinted icon tile, a title
@@ -68,9 +69,11 @@ if (image !== undefined && imageAlt === undefined) {
           alt={imageAlt ?? ""}
           class="aspect-16/10 w-full rounded-md object-cover"
           loading="lazy"
+          quality={PHOTO_QUALITY}
           sizes="(min-width: 64rem) 30rem, (min-width: 48rem) 45vw, 92vw"
           src={image}
-          widths={[400, 640, 900]}
+          width={900}
+          widths={[400, 640, 768, 900]}
         />
       </div>
     )

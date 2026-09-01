@@ -8,6 +8,7 @@ import students from "@/assets/sc2/students.webp";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
 import PhotoTimeline from "@/components/ui/PhotoTimeline.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
@@ -54,15 +55,10 @@ const biohazardStats = [
   <JsonLd data={breadcrumbs([{ name: "About", path: "/about" }])} slot="head" />
 
   <Hero>
-    <Image
+    <HeroImage
       alt="South Central STEM Collective students at work in the Chambersburg workspace"
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
       slot="media"
       src={students}
-      widths={[640, 960, 1280, 1920]}
     />
 
     <Fragment slot="title">About us</Fragment>
