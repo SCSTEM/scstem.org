@@ -8,11 +8,13 @@ import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
 import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, programs, site } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
+import { PHOTO_QUALITY } from "@/lib/images";
 import { breadcrumbs } from "@/lib/jsonld";
 
 /**
@@ -43,15 +45,10 @@ const latest = teamPhotos[0];
   />
 
   <Hero>
-    <Image
+    <HeroImage
       alt="LEGO® robots built by South Central STEM Collective students"
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
       slot="media"
       src={fllRobots}
-      widths={[640, 960, 1280, 1920]}
     />
 
     <Fragment slot="eyebrow">Ages {programs.fll.ages}</Fragment>
@@ -125,9 +122,11 @@ const latest = teamPhotos[0];
               alt={latest.data.alt}
               class="w-full"
               loading="lazy"
+              quality={PHOTO_QUALITY}
               sizes="(min-width: 48rem) 48rem, 92vw"
               src={latest.data.photo}
-              widths={[640, 1280]}
+              width={1280}
+              widths={[640, 840, 1280]}
             />
           </div>
           {latest.data.caption !== undefined && (

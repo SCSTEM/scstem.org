@@ -7,7 +7,6 @@ import Footer from "@/components/ui/Footer.astro";
 import Navbar from "@/components/ui/Navbar.astro";
 import { type ProgramTheme, site } from "@/data/site";
 import { organization } from "@/lib/jsonld";
-import { preloadedFonts } from "@/styles/fonts";
 import "@/styles/global.css";
 
 /**
@@ -52,14 +51,6 @@ const { title, description, ogImage, ogImageAlt, ogType, canonical, noindex, the
       theme={theme}
       title={title}
     />
-
-    {
-      /* Only the two faces that render above the fold; Source Code Pro and the annotation hand
-         paint below it, and preloading four costs more than it saves. */
-      preloadedFonts.map((href) => (
-        <link as="font" crossorigin href={href} rel="preload" type="font/woff2" />
-      ))
-    }
 
     <link href={site.icons.favicon} rel="icon" sizes="32x32" />
     <link href={site.icons.svg} rel="icon" type="image/svg+xml" />

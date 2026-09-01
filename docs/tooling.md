@@ -198,8 +198,56 @@ for the same reason, so the whole round trip works locally without credentials.
 
 `.github/workflows/ci.yml` runs on every pull request: mise install → `pnpm install
 --frozen-lockfile` → `pnpm check` → `pnpm build` → offline link check over `dist/`. All steps
-block. Lighthouse CI budgets join in Phase 09. Deploys are **not** driven by Actions — Cloudflare
-Pages' dashboard git integration owns them (D14).
+block. Deploys are **not** driven by Actions — Cloudflare Pages' dashboard git integration owns
+them (D14).
+
+### Performance budgets
+
+`.github/workflows/lighthouse.yml` is the second required check. It builds, serves `dist/` with
+`astro preview`, and runs `pnpm dlx @lhci/cli@0.15.1 autorun` three times against six URLs — one
+of each page shape: `/`, `/programs/frc/`, `/programs/frc/robots/`, `/sponsors/`, `/openhouse/`,
+`/contact/`. Every assertion in `lighthouserc.json` is an error, so a regression blocks the merge.
+
+| Assertion                | Budget    |
+| ------------------------ | --------- |
+| Performance              | ≥ 0.95    |
+| Accessibility            | = 1.00    |
+| SEO                      | = 1.00    |
+| Best Practices           | ≥ 0.95    |
+| Largest Contentful Paint | < 2000 ms |
+| Cumulative Layout Shift  | < 0.05    |
+| Total Blocking Time      | < 100 ms  |
+| Script transfer size     | < 35 KB   |
+| Total page transfer size | < 1 MB    |
+
+Assertions aggregate on the **median** of the three runs. Lantern's LCP for this site carries one
+slow run per page — a ~500 ms step in simulated FCP that appears run to run even on an idle
+machine — and median-of-three absorbs exactly that. Every run on every budgeted URL is currently
+under the 2000 ms LCP budget, the worst being 1953 ms; the tightest medians are `/` and
+`/openhouse/` at 1807 ms. Getting there was two font changes, not the image work — see
+`plan/09-assets-performance.md` for the before/after and `docs/adr/0008` and `0011` for the
+reasoning.
+
+Mobile emulation with simulated throttling (1.6 Mbps, 150 ms RTT) — the default preset, and the
+reason transfer size dominates every metric here. `astro preview` gzips, which is what makes the
+measurement comparable to what Cloudflare serves; a server that did not would fail budgets
+production meets.
+
+To run it locally, with a Chrome that Lighthouse can find:
+
+```sh
+pnpm build
+pnpm dlx @lhci/cli@0.15.1 autorun
+pnpm exec astro preview stop   # LHCI kills its wrapper; the preview server outlives it
+```
+
+Reports land in `.lighthouseci/reports/` (gitignored) as HTML and JSON, and CI uploads them as an
+artifact on every run. Why `pnpm dlx` rather than a devDependency or a marketplace action:
+`docs/adr/0007-lighthouse-ci-gate.md`.
+
+The hero video on `/programs/frc/` is `preload="none"` and only arms after the `load` event, so it
+does not count against that page's transfer budget during a run — see
+`docs/adr/0006-hero-video-encode.md`.
 
 ### Known environment limitation
 

@@ -1,0 +1,94 @@
+---
+import type { ImageMetadata } from "astro";
+
+import HeroImage from "@/components/ui/HeroImage.astro";
+
+/**
+ * A `Hero`'s looping background footage, over the frame it starts from (D20).
+ *
+ * The poster is a real `<Image>` rather than the video's own `poster` attribute, because it is
+ * the page's LCP element and only an `<Image>` gives it a responsive ladder — `poster=` hands a
+ * phone the same still a desktop gets. The video lies on top at `preload="none"` and reveals
+ * itself once it is genuinely playing, so a visitor who never reaches that point pays nothing
+ * for it.
+ */
+interface Props {
+  /** Describes the footage: the poster is what a reader who never sees it moving is left with. */
+  alt: string;
+  mp4: string;
+  poster: ImageMetadata;
+  webm: string;
+}
+
+const { alt, mp4, poster, webm } = Astro.props;
+---
+
+<HeroImage alt={alt} src={poster} />
+
+<video aria-hidden="true" data-hero-video loop muted playsinline preload="none">
+  <source src={webm} type="video/webm" />
+  <source src={mp4} type="video/mp4" />
+</video>
+
+<style>
+  video {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--duration-entrance) var(--ease-entrance);
+  }
+
+  video[data-playing] {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  const video = document.querySelector("[data-hero-video]");
+
+  if (video instanceof HTMLVideoElement) {
+    /**
+     * SAFETY: `NetworkInformation` is absent from lib.dom, so the shape is named here; the `in`
+     * guard is what makes the read safe, and `saveData` is the only member touched.
+     */
+    const connection =
+      "connection" in navigator ? (navigator.connection as { saveData?: boolean }) : undefined;
+
+    /** Motion the visitor has asked not to see, and bytes they have asked not to spend. */
+    const wanted =
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+      connection?.saveData !== true;
+
+    /**
+     * Not before `load`: the hero is in the viewport from the first paint, so an observer armed
+     * any earlier puts the video's first megabyte in a bandwidth race with the poster that *is*
+     * the LCP.
+     */
+    const arm = () => {
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            // Autoplay can still be refused; give up rather than retry on every scroll, and the
+            // poster carries the hero exactly as it does under reduced motion.
+            video.play().catch(() => observer.disconnect());
+          } else {
+            video.pause();
+          }
+        }
+      });
+
+      // Only on `playing`: revealing it any earlier shows a blank frame over the poster. It stays
+      // revealed through later pauses, since fading back would read as a glitch.
+      video.addEventListener("playing", () => video.setAttribute("data-playing", ""));
+      observer.observe(video);
+    };
+
+    if (wanted) {
+      if (document.readyState === "complete") {
+        arm();
+      } else {
+        window.addEventListener("load", arm, { once: true });
+      }
+    }
+  }
+</script>

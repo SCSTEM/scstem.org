@@ -1,7 +1,6 @@
 ---
 import type { ImageMetadata } from "astro";
 
-import { Image } from "astro:assets";
 import { type CollectionEntry, getEntries, render } from "astro:content";
 
 import fllHero from "@/assets/fll/lego-robots.webp";
@@ -12,6 +11,7 @@ import Countdown from "@/components/ui/Countdown.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FaqList from "@/components/ui/FaqList.astro";
 import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
@@ -137,16 +137,7 @@ const details = [
   </Fragment>
 
   <Hero>
-    <Image
-      alt={hero.alt}
-      class="h-full w-full object-cover"
-      fetchpriority="high"
-      loading="eager"
-      sizes="100vw"
-      slot="media"
-      src={hero.src}
-      widths={[640, 960, 1280, 1920]}
-    />
+    <HeroImage alt={hero.alt} slot="media" src={hero.src} />
 
     <Fragment slot="eyebrow">{programs[data.program].name}</Fragment>
     <Fragment slot="title">{data.title}</Fragment>
