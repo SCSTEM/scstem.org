@@ -10,7 +10,7 @@
         "http://localhost:4321/programs/frc/",
         "http://localhost:4321/programs/frc/robots/",
         "http://localhost:4321/sponsors/",
-        "http://localhost:4321/openhouse/",
+        "http://localhost:4321/about/",
         "http://localhost:4321/contact/"
       ]
     },

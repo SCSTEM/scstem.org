@@ -102,10 +102,18 @@ These need account access this repository does not have. Tracked in `plan/todo.m
   reachable URL. `tools/checks/verify-meta.mjs` covers parse-and-type in CI; it cannot cover
   Google's own eligibility rules.
 
-## A budget note
+## The JS budget covers first-party script only
 
-`plan/00-overview.md` budgets "total client JS < 35 KB gzipped per page including analytics".
-`gtag.js` alone is around that on its own, and the Lighthouse gate never sees it because of the
-hostname check. So the enforced budget is the site _without_ analytics, and production carries
-GA4 on top of it, after `load`. Worth a deliberate decision if the budget is meant literally:
-Cloudflare Web Analytics is a ~5 KB beacon and would satisfy it alone.
+`plan/00-overview.md` originally budgeted "total client JS < 35 KB gzipped per page **including
+analytics**". `gtag.js` is about 35 KB gzipped on its own, so that wording and D21 could not both
+hold. Settled by the project owner during Phase 10: **the budget excludes analytics**, and the
+overview now says so.
+
+What that means in practice. The Lighthouse gate measures the site without GA4 — not by omission
+but by design, since the production-hostname check keeps the tag out of every local run, every
+preview deploy, and CI. First-party JS is 0.7–3.1 KB per page, inline in the document, against a
+35 KB budget. Production adds `gtag.js` after `load`, so it never touches LCP or TBT; it does add
+to total transfer, which the 1 MB page-weight assertion has ample room for.
+
+If that trade ever stops being worth it, Cloudflare Web Analytics' ~5 KB cookieless beacon would
+satisfy the original literal reading on its own.

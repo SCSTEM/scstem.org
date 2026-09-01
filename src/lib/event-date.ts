@@ -22,6 +22,18 @@ const timeFormat = new Intl.DateTimeFormat("en-US", {
 const compactTime = (date: Date): string =>
   timeFormat.format(date).replace(":00", "").replace(" ", "");
 
+/**
+ * @public Consumed by `Countdown` and by `src/lib/events.ts`.
+ *
+ * `true` once the event is over. One definition, because two would let a page say "this event has
+ * passed" while still being in the sitemap — or the reverse.
+ *
+ * An event with no `end` never passes: nothing in the entry says when it is over, and picking a
+ * duration would invent one. `docs/content.md` tells editors to always set one, which is what
+ * makes this rule sufficient rather than a loophole.
+ */
+export const hasPassed = (end?: Date): boolean => end !== undefined && Date.now() >= end.getTime();
+
 /** `Saturday, August 1 (1PM to 4PM)`, or `Saturday, January 10 (12PM)` with no end. */
 export const formatEventDate = (start: Date, end?: Date): string => {
   const day = dayFormat.format(start);

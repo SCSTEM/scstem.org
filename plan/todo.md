@@ -17,12 +17,6 @@ item says what is already in the repository waiting for it.
       `get_involved_click`, `donate_click`, `wishlist_click`, `sponsor_packet_download`,
       `outbound_sponsor_click`, `contact_submit`. They fire already; GA4 just does not count them
       as conversions until they are marked.
-- [ ] **Decide the analytics budget question.** `plan/00-overview.md` budgets total client JS at
-      < 35 KB gzipped *including analytics*; `gtag.js` is about that on its own, and the Lighthouse
-      gate never measures it because of the production-hostname check. Either the budget means the
-      site without GA4 (write that down), or Cloudflare Web Analytics' ~5 KB beacon becomes the
-      only collector. `docs/analytics.md` closes with the same note.
-
 ## Search engines
 
 - [ ] **Verify `scstem.org` in Google Search Console**, submit
@@ -55,9 +49,11 @@ item says what is already in the repository waiting for it.
 ## Content and media
 
 - [ ] **Both events in `src/content/events/` are in the past** (kickoff 2026-01-10, open house
-      2026-08-01) and still render. Either date the next season's entries forward or set
-      `hidden: true` — that one field takes the page out of service *and* out of the sitemap and
-      `/llms.txt`, with no code change. `docs/content.md` has the workflow.
+      2026-08-01), so as of this build neither page renders: each redirects to its parent and is
+      absent from the sitemap and `/llms.txt`. That is automatic now — an event retires itself once
+      its `end` passes, on the first deploy after it. Nothing is broken; the site simply has no
+      live event. **Date the next season's entries forward when you have real dates** and both
+      pages come back on the next deploy. `docs/content.md` has the workflow.
 - [ ] **Re-shoot or re-pick the hero video source if the softness bothers you.** The committed cut
       is 720p because the master is an out-of-focus wide-angle action-cam take, and a 1080p encode
       of it is 2.4x the bytes for no visible difference (`docs/adr/0006-hero-video-encode.md`).
@@ -70,14 +66,19 @@ item says what is already in the repository waiting for it.
       `pip install fonttools brotli`, then `pnpm assets:og-fonts` once per machine. Only relevant
       when the cards change.
 
-## Known thin margin
+## Performance
 
-- [ ] **LCP is bimodal under Lighthouse's simulation, and the slow cluster sits over the gate.**
-      Five runs of `/programs/frc/robots/` on an idle machine: 1212, 1218, 2039, 2109, 2110 ms,
-      against a blocking 2000 ms. `lighthouserc.json` asserts optimistically — best of three runs —
-      which is stable and still catches a real regression, but two of the six budgeted pages do
-      have runs above 2000 ms, so this is worth knowing rather than assuming green means fast.
-      The one lever that would move the slow cluster is the 83 KB of webfont on the critical path
-      (Inter, Orbitron and Source Code Pro between them — more than any hero image). Cutting a
-      face, or instancing Inter's weight axis, is a DESIGN.md §3 decision, so it was left to you
-      rather than made in Phase 09.
+- [ ] **The Lighthouse URL list no longer includes an event-landing page.** `plan/09` §5 budgeted
+      `/openhouse/` as one of the six page shapes; an event retires itself now, so that URL is a
+      redirect stub out of season and the list uses `/about/` instead. When a live event exists and
+      you want its shape budgeted, add its URL to `lighthouserc.json` — and take it out again when
+      the season ends.
+- [ ] **Watch item, not an open problem: the LCP budget is met, tightest median 1807 ms against
+      2000 ms.** This was a real failure and is closed — trimming Inter's weight axis
+      (`docs/adr/0011-inter-weight-axis.md`) took 12 KB off the critical path and collapsed a
+      bimodal distribution that had two pages running over budget. Every run on every budgeted URL
+      is now under 2000 ms, and `lighthouserc.json` asserts on the median rather than the best run.
+      If CI ever goes red here, the levers left are Source Code Pro (22 KB, owns the numerals and
+      spec labels) and Orbitron (11 KB, the display voice). Both are DESIGN.md §3 decisions, and
+      axis-trimming them was measured at 3.2 KB and 0.7 KB — so cutting a face outright is the only
+      meaningful move remaining.

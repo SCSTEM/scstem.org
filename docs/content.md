@@ -99,9 +99,15 @@ one-liner tells a searcher nothing. It also has to be **unique across the site**
 the same description is the same check's other failure. Write it for someone deciding whether to
 click, not as a summary of the page.
 
-Retiring an event is `hidden: true` in its frontmatter. That one field takes the page out of
-service — it redirects to its parent — and out of the sitemap and `/llms.txt` in the same build.
-There is nothing else to remember.
+**An event retires itself once its `end` has passed.** The first deploy after the event ends is
+the one that does it: the page redirects to its parent, and the URL leaves the sitemap and
+`/llms.txt` together. Nothing to remember, and nothing to clean up — dating next season's entry
+forward brings the page straight back.
+
+`hidden: true` is still there, for retiring one _early_ or one that has no `end` at all. An entry
+with no `end` never retires on its own, for the same reason the countdown never calls it passed:
+nothing in the entry says when the event is over, and picking a duration would invent one. That is
+why `end` is worth always setting.
 
 Give every event an `end`. The page counts down to `start`, says "Happening now" from then until
 `end`, and "This event has passed" after it — with no `end` it never reaches the last of those,

@@ -84,6 +84,13 @@ Each of these is a task for the project owner, not unfinished work; `plan/todo.m
   access. `docs/analytics.md` lists what to change and why.
 - **Apex/www canonical behaviour** is Cloudflare dashboard configuration, as §6 says.
 
+**Two gaps closed during review**, both by the project owner's decision:
+
+- **The JS budget excludes analytics.** `plan/00-overview.md` budgeted "< 35 KB gzipped per page
+  *including* analytics", which `gtag.js` cannot fit alone. The overview now reads "first-party",
+  and `docs/analytics.md` states what the Lighthouse gate does and does not measure.
+- **Events retire on date**, rather than waiting for someone to set `hidden: true`. See below.
+
 ## As built
 
 ### The sitemap filter is "noindex pages are not in the sitemap"
@@ -137,6 +144,28 @@ through fontconfig, which reads neither the variable woff2 the site ships nor a 
 build-time pipeline would need a font cache on every build machine to render files that change
 about never. `pnpm assets:og-fonts` then `pnpm assets:og`, by hand, output committed. 34–52 KB
 each, against the 456 KB PNG they replace.
+
+### Events retire themselves (owner-requested, after review)
+
+Asked for during PR review: an event dated in the past should drop out of generated content on the
+next build rather than sit there as live copy. `inService()` in `src/lib/events.ts` now also
+excludes an entry whose `end` has passed, which flows through every consumer already built — the
+route redirects to its parent, the sitemap filter drops it because the redirect page is `noindex`,
+and `/llms.txt` drops it because it reads `getVisibleEvents()`.
+
+The rule is `hasPassed(end)`, moved into `src/lib/event-date.ts` and **shared with `Countdown`**,
+which already had exactly this definition. Two copies would have let a page say "this event has
+passed" while still being in the sitemap. An entry with no `end` never retires on its own, which is
+the rule `Countdown` established in Phase 08 and the reason `docs/content.md` tells editors to
+always set one. `hidden: true` remains the way to retire one early.
+
+Both current entries are dated in the past, so this ships with **no live event page** — verified:
+`/openhouse/` and `/programs/frc/kickoff/` are redirect stubs, both are absent from
+`sitemap-0.xml`, `/llms.txt` omits the Events section rather than printing a bare heading, and
+nothing in the built HTML links to either. Two knock-ons: `lighthouserc.json` budgeted `/openhouse/`
+as its event-landing page shape and now budgets `/about/` instead (a seasonal URL cannot be a
+stable budget target — noted in `plan/todo.md`), and the countdown's "passed" state is now only
+reachable in the window between an event ending and the next deploy.
 
 ### Agent-readability audit
 

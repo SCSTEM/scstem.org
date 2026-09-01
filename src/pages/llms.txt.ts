@@ -27,15 +27,21 @@ interface Entry {
 
 const absolute = (href: string): string => new URL(href, site.url).href;
 
-const section = (heading: string, entries: ReadonlyArray<Entry>): string =>
-  [
-    `## ${heading}`,
-    "",
-    ...entries.map(
-      ({ title, href, description }) => `- [${title}](${absolute(href)}): ${description}`,
-    ),
-    "",
-  ].join("\n");
+/**
+ * A section with no entries is omitted rather than rendered as a bare heading — events retire
+ * themselves, so "Events" is empty out of season.
+ */
+const section = (heading: string, entries: ReadonlyArray<Entry>): string | undefined =>
+  entries.length === 0
+    ? undefined
+    : [
+        `## ${heading}`,
+        "",
+        ...entries.map(
+          ({ title, href, description }) => `- [${title}](${absolute(href)}): ${description}`,
+        ),
+        "",
+      ].join("\n");
 
 /** `2026-09-06`, in the timezone everything the organization runs happens in. */
 const isoDay = (date: Date): string =>
@@ -134,7 +140,10 @@ export const GET: APIRoute = async () => {
     `- [Sitemap](${absolute("/sitemap-index.xml")}): every indexable page on this site.`,
     `- [Wiki](${site.urls.wiki}): the organization's own documentation, on a separate domain.`,
     "",
-  ].join("\n");
+  ]
+    // An omitted section would otherwise join as a stray blank line.
+    .filter((part): part is string => part !== undefined)
+    .join("\n");
 
   return new Response(body, { headers: { "content-type": "text/plain; charset=utf-8" } });
 };

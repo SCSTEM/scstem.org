@@ -1,11 +1,18 @@
 import { type CollectionEntry, getCollection, getEntry } from "astro:content";
 
+import { hasPassed } from "@/lib/event-date";
+
 /**
- * One definition of "this event is in service", read by the routes that render events and by the
- * sitemap filter. Flipping `hidden` therefore cannot retire the page and leave the URL in the
- * sitemap, or the reverse.
+ * One definition of "this event is in service", read by the routes that render events, by the
+ * sitemap filter, and by `/llms.txt`. Flipping `hidden` therefore cannot retire the page and
+ * leave the URL in the sitemap, or the reverse.
+ *
+ * An event also goes out of service on its own once it is over, so last season's page stops being
+ * live content without anyone having to remember it — the deploy that follows the event is what
+ * removes it. `hidden` stays the way to retire one *early*, or one that never had an `end`.
  */
-const inService = (entry: CollectionEntry<"events">): boolean => !entry.data.hidden;
+const inService = (entry: CollectionEntry<"events">): boolean =>
+  !entry.data.hidden && !hasPassed(entry.data.end);
 
 /**
  * @public Consumed by the sitemap filter (plan/10).
