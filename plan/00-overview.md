@@ -173,5 +173,5 @@ one is a review blocker:
 
 - Lighthouse (mobile emulation, throttled): Performance ≥ 95, Accessibility = 100, SEO = 100, Best Practices ≥ 95.
 - LCP < 2.0 s, CLS < 0.05, TBT < 100 ms on every page.
-- Total client JS < 35 KB gzipped per page including analytics; zero framework runtime.
+- Total **first-party** client JS < 35 KB gzipped per page; zero framework runtime. **Amended in Phase 10** (owner-settled): this budget excludes analytics. `gtag.js` is about 35 KB gzipped on its own, so the original "including analytics" wording made the budget and D21 mutually exclusive. GA4 loads after `load` and only on the production hostname, so it is on top of this figure in production and absent from every Lighthouse run — see `docs/analytics.md`.
 - No image served larger than 300 KB at any rendered size; hero video ≤ 3 MB, never blocks LCP.

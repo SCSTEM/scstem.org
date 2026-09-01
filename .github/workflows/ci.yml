@@ -46,13 +46,20 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # Needs dist/, so it cannot live in `pnpm check`: uniqueness of titles and descriptions,
+      # and whether an og:image resolves, are only answerable across the whole built site.
+      - name: Verify page metadata
+        run: pnpm run check:meta
+
       # --root-dir is required for the root-relative hrefs Astro emits (/_astro/...);
       # without it lychee cannot resolve them in local files and errors on every page.
+      # llms.txt is in scope because its links are hand-written paths in src/data/events.ts,
+      # which nothing else would catch drifting from the routes they name.
       - name: Link check
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
             --offline --include-fragments --no-progress
             --root-dir ${{ github.workspace }}/dist
-            'dist/**/*.html'
+            'dist/**/*.html' 'dist/llms.txt'
           fail: true

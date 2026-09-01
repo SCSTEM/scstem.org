@@ -78,7 +78,7 @@ subtitle: One sentence under the title, in the hero.
 program: sc2
 start: 2026-08-01T13:00:00-04:00
 end: 2026-08-01T16:00:00-04:00
-description: Shown in search results and when the page is shared. One or two sentences.
+description: Shown in search results and when the page is shared. 50-160 characters.
 heroImage: ../../assets/events/morethanrobots.webp
 heroImageAlt: What the photo shows, for someone who cannot see it.
 ctaLabel: Get involved
@@ -92,6 +92,22 @@ faq:
 `start` and `end` are full timestamps **with the timezone offset** — `-04:00` in summer,
 `-05:00` in winter. That offset is what makes the date correct for someone reading in another
 timezone, and it feeds the event's structured data.
+
+`description` has a length budget: `tools/checks/verify-meta.mjs` fails the build over 160
+characters, because that is roughly where Google stops printing one, and under 50 because a
+one-liner tells a searcher nothing. It also has to be **unique across the site** — two pages with
+the same description is the same check's other failure. Write it for someone deciding whether to
+click, not as a summary of the page.
+
+**An event retires itself once its `end` has passed.** The first deploy after the event ends is
+the one that does it: the page redirects to its parent, and the URL leaves the sitemap and
+`/llms.txt` together. Nothing to remember, and nothing to clean up — dating next season's entry
+forward brings the page straight back.
+
+`hidden: true` is still there, for retiring one _early_ or one that has no `end` at all. An entry
+with no `end` never retires on its own, for the same reason the countdown never calls it passed:
+nothing in the entry says when the event is over, and picking a duration would invent one. That is
+why `end` is worth always setting.
 
 Give every event an `end`. The page counts down to `start`, says "Happening now" from then until
 `end`, and "This event has passed" after it — with no `end` it never reaches the last of those,

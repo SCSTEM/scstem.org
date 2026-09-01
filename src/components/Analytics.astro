@@ -1,0 +1,85 @@
+---
+import { PUBLIC_CF_BEACON_TOKEN } from "astro:env/client";
+
+import { nav, site } from "@/data/site";
+import { TRACK_EVENT } from "@/lib/analytics";
+
+/**
+ * GA4 and Cloudflare Web Analytics (D21). The taxonomy, and the property-side audit this needs,
+ * are in `docs/analytics.md`.
+ *
+ * Two gates, both necessary. `import.meta.env.PROD` keeps the snippet out of `pnpm dev`; the
+ * hostname check keeps every preview deploy, `astro preview`, and Lighthouse run out of the
+ * production property — a preview URL is a real hostname serving a production build, so the
+ * build-time gate alone would pollute the data.
+ *
+ * Nothing loads before `load`: analytics is never worth a millisecond of anyone's LCP.
+ *
+ * The snippet is a string rather than markup because a `<script>` inside an Astro expression has
+ * its body parsed as JSX, where every `{` of a block opens an interpolation.
+ */
+const { hostname } = new URL(site.url);
+
+/**
+ * Link destination to GA4 event name. Reading the destination beats tagging twenty call sites
+ * with `data-track`, for the same reason the rest of the chrome reads `src/data/site.ts`: a route
+ * is named once. `data-track` stays available for the clicks a URL cannot identify — a sponsor's
+ * own site, whose href is a per-entry value.
+ */
+const destinations = {
+  [nav.cta.href]: "get_involved_click",
+  [nav.donate.href]: "donate_click",
+  [site.urls.donate]: "donate_click",
+  [site.urls.wishlist]: "wishlist_click",
+  [site.urls.sponsorPacket]: "sponsor_packet_download",
+};
+
+const snippet = `
+if (location.hostname === ${JSON.stringify(hostname)}) {
+  addEventListener("load", function () {
+    var destinations = ${JSON.stringify(destinations)};
+    var beacon = ${JSON.stringify(PUBLIC_CF_BEACON_TOKEN)};
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+
+    /* Consent Mode v2 defaults, before config, so adding a banner later changes these values
+       rather than this structure. Measurement is granted by default and every advertising
+       signal is denied outright: this property runs no ads. */
+    gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "granted",
+    });
+    gtag("js", new Date());
+    gtag("config", ${JSON.stringify(site.analytics.ga4MeasurementId)});
+
+    var tag = document.createElement("script");
+    tag.async = true;
+    tag.src = "https://www.googletagmanager.com/gtag/js?id=" + ${JSON.stringify(site.analytics.ga4MeasurementId)};
+    document.head.append(tag);
+
+    if (beacon) {
+      var cf = document.createElement("script");
+      cf.defer = true;
+      cf.src = "https://static.cloudflareinsights.com/beacon.min.js";
+      cf.dataset.cfBeacon = JSON.stringify({ token: beacon });
+      document.head.append(cf);
+    }
+
+    document.addEventListener("click", function (event) {
+      var link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      if (!link) return;
+      var name = link.dataset.track || destinations[link.getAttribute("href")];
+      if (name) gtag("event", name);
+    });
+
+    document.addEventListener(${JSON.stringify(TRACK_EVENT)}, function (event) {
+      gtag("event", event.detail);
+    });
+  });
+}
+`;
+---
+
+{import.meta.env.PROD && <script is:inline set:html={snippet} />}

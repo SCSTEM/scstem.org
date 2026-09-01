@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from "astro";
 
+import Analytics from "@/components/Analytics.astro";
 import JsonLd from "@/components/JsonLd.astro";
 import Seo from "@/components/Seo.astro";
 import Footer from "@/components/ui/Footer.astro";
@@ -75,5 +76,6 @@ const { title, description, ogImage, ogImageAlt, ogType, canonical, noindex, the
       <slot />
     </main>
     <Footer />
+    <Analytics />
   </body>
 </html>

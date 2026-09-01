@@ -1,6 +1,6 @@
 ---
 import { cn } from "@/lib/cn";
-import { formatEventDate } from "@/lib/event-date";
+import { formatEventDate, hasPassed } from "@/lib/event-date";
 
 /**
  * The event's date, plus the time left until it. The absolute date is always in the HTML — a
@@ -11,8 +11,9 @@ import { formatEventDate } from "@/lib/event-date";
  * every word of copy here and stops the state the build happened to see from going stale in a
  * browser.
  *
- * An event with no `end` never reaches the passed state: nothing in the entry says when it is
- * over, and picking a duration would be inventing one.
+ * `hasPassed` is shared with the visibility rule in `src/lib/events.ts`, so a page that says an
+ * event has passed and a page that has dropped out of the sitemap are the same page. The window
+ * where this state is visible is between the event ending and the next deploy.
  */
 interface Props {
   start: Date;
@@ -22,13 +23,7 @@ interface Props {
 
 const { start, end, class: className } = Astro.props;
 
-const now = Date.now();
-const state =
-  end !== undefined && now >= end.getTime()
-    ? "passed"
-    : now >= start.getTime()
-      ? "live"
-      : "upcoming";
+const state = hasPassed(end) ? "passed" : Date.now() >= start.getTime() ? "live" : "upcoming";
 ---
 
 <div

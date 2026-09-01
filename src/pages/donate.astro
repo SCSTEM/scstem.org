@@ -1,4 +1,5 @@
 ---
+import ogDonate from "@/assets/og/donate.jpg";
 import drillBits from "@/assets/sc2/drill-bits.webp";
 import JsonLd from "@/components/JsonLd.astro";
 import ContactForm from "@/components/ui/ContactForm.astro";
@@ -27,7 +28,9 @@ const mailingAddress = [
 ---
 
 <BaseLayout
-  description="Give by mail, online through PayPal Giving Fund, through a charitable giving fund, in kind, or as a corporate sponsor. Every route supports STEM programs in Franklin County."
+  description="Give by mail, online through PayPal Giving Fund, in kind, or as a corporate sponsor. Every route supports STEM programs in Franklin County."
+  ogImage={ogDonate}
+  ogImageAlt="The South Central STEM Collective logo over a rack of drill bits, captioned “Donate”"
   title="Donate"
 >
   <JsonLd data={breadcrumbs([{ name: "Donate", path: "/donate" }])} slot="head" />

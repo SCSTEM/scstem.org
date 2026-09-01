@@ -5,6 +5,7 @@ import { type CollectionEntry, getEntries, render } from "astro:content";
 
 import fllHero from "@/assets/fll/lego-robots.webp";
 import frcHero from "@/assets/frc/frc-driveteam.webp";
+import ogEvents from "@/assets/og/events.jpg";
 import sc2Hero from "@/assets/sc2/students.webp";
 import JsonLd from "@/components/JsonLd.astro";
 import Countdown from "@/components/ui/Countdown.astro";
@@ -102,7 +103,13 @@ const details = [
 ];
 ---
 
-<BaseLayout description={data.description} theme={theme} title={data.title}>
+<BaseLayout
+  description={data.description}
+  ogImage={ogEvents}
+  ogImageAlt="The South Central STEM Collective logo over a collage of students at work, captioned “Events”"
+  theme={theme}
+  title={data.title}
+>
   <Fragment slot="head">
     <JsonLd
       data={eventJsonLd({

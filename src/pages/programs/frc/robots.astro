@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
 
 import pits from "@/assets/frc/robots/2021-robot-pits.webp";
+import ogFrc from "@/assets/og/frc.jpg";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import Hero from "@/components/ui/Hero.astro";
@@ -32,6 +33,8 @@ const robots = await Promise.all(
 
 <ProgramLayout
   description="Every Biohazard competition robot since 2019 — Toxic Silver, Robo Fett, O'Mega, Viper, and Troubleclef — with the games they played and the awards they won."
+  ogImage={ogFrc}
+  ogImageAlt="The South Central STEM Collective logo over the Biohazard drive team at competition, captioned “FIRST Robotics Competition”"
   program="frc"
   title="Our robots"
 >
