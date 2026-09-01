@@ -1,7 +1,6 @@
 # Editing content
 
-Everything on this site that changes over time is a markdown file in `src/content/`. You do not
-need to touch TypeScript to add a sponsor, publish an event, or answer a new question.
+Everything on this site that changes over time is a markdown file in `src/content/`.
 
 Frontmatter is validated on build: a typo in a field name or a value that is not allowed fails
 `pnpm build` with a message naming the file and the field. That is the safety net — if it builds,

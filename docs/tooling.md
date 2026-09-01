@@ -16,17 +16,6 @@ source of truth for commands.
 Corepack's `pnpm` shim can shadow the mise-pinned pnpm and rewrite the lockfile with a different
 resolver. `which pnpm` must resolve inside mise's shims directory; if not, `corepack disable pnpm`.
 
-### Supply-chain cooldown
-
-- `mise.toml` → `minimum_release_age = "7d"` for node and pnpm.
-- `pnpm-workspace.yaml` → `minimumReleaseAge: 10080` (minutes) for every npm dependency.
-
-Pins are the newest version that is at least a week old. To take a newer one early, add a
-`minimumReleaseAgeExclude` entry in `pnpm-workspace.yaml` and say why. Install scripts are denied
-by default; `allowBuilds` lists the exceptions.
-
-`sharp` is a direct dependency, not one inherited from Astro (`docs/adr/0003`).
-
 ## Toolchain
 
 | Concern     | Tool                                                                                     |
@@ -36,22 +25,6 @@ by default; `allowBuilds` lists the exceptions.
 | Types       | `astro check` for `src/` and config files; `tsc -p functions`, `tsc -p tools`            |
 | Dead code   | knip                                                                                     |
 | Repo checks | `tools/checks/*.ts`                                                                      |
-
-One toolchain by decision (`docs/adr/0012-single-toolchain.md`); oxlint/oxfmt return when they
-read `.astro`.
-
-- `eslint-plugin-jsx-a11y` is a direct devDependency because it is an optional peer of
-  `eslint-plugin-astro`: without it `jsx-a11y-strict` silently degrades to no rules. Its peer
-  range stops at eslint 9, so `pnpm-workspace.yaml` allows eslint 10 there.
-- `jiti` is what ESLint uses to load `eslint.config.ts`.
-- `tools/lint/anti-slop/` is a vendored copy of dmmulroy/anti-slop, written for oxlint and run
-  under ESLint through its `compat.ts` (`docs/adr/0013`). Its `VENDOR.md` lists the deviations
-  from upstream and the update procedure.
-- `functions/` and `tools/` have their own `tsconfig.json`: the Workers runtime and Node scripts
-  cannot use `astro/tsconfigs/strictest` (it pulls in DOM and Astro types), so each restates the
-  same strictness flags.
-- The `legacy/**` and `clsx`/`classnames`/`tailwind-merge` import bans live in
-  `eslint.config.ts`'s `no-restricted-imports`.
 
 ### `tools/`
 
@@ -128,5 +101,3 @@ pnpm build
 pnpm dlx @lhci/cli@0.15.1 autorun
 pnpm exec astro preview stop   # the preview server outlives lhci
 ```
-
-Loosening a budget is an ADR, not an edit to `lighthouserc.json`.
