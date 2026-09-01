@@ -12,6 +12,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "legacy", "functions", "node_modules", "tools/lint/anti-slop"]
+  "include": [".astro/types.d.ts", "src/**/*"]
 }

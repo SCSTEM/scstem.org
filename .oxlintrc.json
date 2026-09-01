@@ -46,7 +46,7 @@
         "patterns": [
           {
             "group": ["legacy/**", "**/legacy/**"],
-            "message": "legacy/ is reference only \u2014 never import from it (plan/00-overview.md)"
+            "message": "legacy/ is reference only, never import from it (plan/00-overview.md)"
           }
         ]
       }

@@ -3,13 +3,12 @@
   "entry": ["src/pages/**", "functions/**"],
   "project": ["**/*.{ts,tsx,js,mjs,cjs,astro}"],
   "ignore": ["legacy/**", "tools/lint/anti-slop/**"],
+
   // fontconfig's cache tool, called by the one-time OG font setup. Present on any machine
   // with fontconfig, which is the only kind that can render the cards at all.
   "ignoreBinaries": ["fc-cache"],
-  // Referenced only from CSS — `tailwindcss` via `@import`, three of the four faces via `url()`
-  // in src/styles/fonts.css — and knip does not follow imports inside compiled extensions. Inter
-  // is there for a different reason: fonts.css points at the trimmed copies in src/styles/fonts/,
-  // and the package is what `pnpm assets:fonts` regenerates them from.
+
+  // Referenced only from CSS
   "ignoreDependencies": [
     "tailwindcss",
     "@fontsource-variable/inter",
@@ -17,6 +16,7 @@
     "@fontsource-variable/source-code-pro",
     "@fontsource/architects-daughter"
   ],
+
   "rules": {
     "files": "error",
     "dependencies": "error",
