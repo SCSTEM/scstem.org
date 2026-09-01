@@ -40,6 +40,7 @@
     "@cloudflare/workers-types": "5.20260825.1",
     "@tabler/icons": "3.46.0",
     "@types/node": "26.3.0",
+    "@typescript-eslint/utils": "8.68.0",
     "eslint": "10.9.1",
     "eslint-plugin-astro": "3.1.0",
     "eslint-plugin-jsx-a11y": "6.10.2",

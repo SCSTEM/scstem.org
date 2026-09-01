@@ -29,13 +29,13 @@ by default; `allowBuilds` lists the exceptions.
 
 ## Toolchain
 
-| Concern     | Tool                                                                          |
-| ----------- | ----------------------------------------------------------------------------- |
-| Lint        | ESLint: `strictTypeChecked` + `stylisticTypeChecked`, `astro/jsx-a11y-strict` |
-| Format      | Prettier, with the Astro and Tailwind plugins                                 |
-| Types       | `astro check` for `src/` and config files; `tsc -p functions`, `tsc -p tools` |
-| Dead code   | knip                                                                          |
-| Repo checks | `tools/checks/*.ts`                                                           |
+| Concern     | Tool                                                                                     |
+| ----------- | ---------------------------------------------------------------------------------------- |
+| Lint        | ESLint: `strictTypeChecked` + `stylisticTypeChecked`, `astro/jsx-a11y-strict`, anti-slop |
+| Format      | Prettier, with the Astro and Tailwind plugins                                            |
+| Types       | `astro check` for `src/` and config files; `tsc -p functions`, `tsc -p tools`            |
+| Dead code   | knip                                                                                     |
+| Repo checks | `tools/checks/*.ts`                                                                      |
 
 One toolchain by decision (`docs/adr/0012-single-toolchain.md`); oxlint/oxfmt return when they
 read `.astro`.
@@ -44,6 +44,9 @@ read `.astro`.
   `eslint-plugin-astro`: without it `jsx-a11y-strict` silently degrades to no rules. Its peer
   range stops at eslint 9, so `pnpm-workspace.yaml` allows eslint 10 there.
 - `jiti` is what ESLint uses to load `eslint.config.ts`.
+- `tools/lint/anti-slop/` is a vendored copy of dmmulroy/anti-slop, written for oxlint and run
+  under ESLint through its `compat.ts` (`docs/adr/0013`). Its `VENDOR.md` lists the deviations
+  from upstream and the update procedure.
 - `functions/` and `tools/` have their own `tsconfig.json`: the Workers runtime and Node scripts
   cannot use `astro/tsconfigs/strictest` (it pulls in DOM and Astro types), so each restates the
   same strictness flags.

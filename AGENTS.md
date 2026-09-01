@@ -19,7 +19,8 @@ Pages. **Zero client-side framework runtime** — `.astro` components and plain 
 ## Toolchain
 
 ESLint (typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro` with
-`jsx-a11y-strict`) lints every `.ts`, `.js`, and `.astro` file. Prettier formats everything.
+`jsx-a11y-strict`, the vendored anti-slop rules in `tools/lint/`) lints every `.ts`, `.js`, and
+`.astro` file. Prettier formats everything.
 TypeScript is checked by `astro check` (`src/`, config files) and `tsc` (`functions/`, `tools/`).
 oxlint/oxfmt return when they support `.astro` (`docs/adr/0012-single-toolchain.md`).
 

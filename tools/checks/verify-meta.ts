@@ -1,3 +1,4 @@
+import { z } from "astro/zod";
 /**
  * Asserts the head of every built page (plan/10 §2).
  *
@@ -48,13 +49,11 @@ const exists = async (path: string): Promise<boolean> => {
   }
 };
 
-/** The two JSON-LD keys asserted below; every other key is opaque here. */
-interface JsonLd {
-  "@context"?: unknown;
-  "@type"?: unknown;
-}
-const isJsonLd = (value: unknown): value is JsonLd =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
+/** The keys asserted on every JSON-LD block; the rest of the object is opaque here. */
+const JsonLd = z.looseObject({
+  "@context": z.literal("https://schema.org"),
+  "@type": z.string().min(1),
+});
 
 const paths = (await walk(DIST, (name) => extname(name) === ".html")).toSorted();
 const pages = await Promise.all(
@@ -143,15 +142,11 @@ for (const { html, route } of pages) {
       fail("JSON-LD does not parse");
       continue;
     }
-    if (!isJsonLd(data)) {
-      fail("JSON-LD is not an object");
-      continue;
-    }
-    if (data["@context"] !== "https://schema.org") {
-      fail(`JSON-LD @context is ${String(data["@context"])}, expected https://schema.org`);
-    }
-    if (typeof data["@type"] !== "string" || data["@type"].length === 0) {
-      fail("JSON-LD has no @type");
+    const parsed = JsonLd.safeParse(data);
+    if (!parsed.success) {
+      for (const issue of parsed.error.issues) {
+        fail(`JSON-LD ${issue.path.join(".") || "block"}: ${issue.message}`);
+      }
     }
   }
 }

@@ -3,16 +3,42 @@ import perfectionist from "eslint-plugin-perfectionist";
 import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
+import antiSlop from "./tools/lint/anti-slop/index.ts";
+
 export default defineConfig(
-  globalIgnores(["legacy/", "dist/", ".astro/", "public/"]),
+  globalIgnores([
+    "legacy/",
+    "dist/",
+    ".astro/",
+    "public/",
+    // Vendored upstream rule source (tools/lint/anti-slop/VENDOR.md); its glue is linted.
+    "tools/lint/anti-slop/rules/",
+    "tools/lint/anti-slop/shared/",
+  ]),
   {
     files: ["**/*.{ts,mts,js,mjs,astro}"],
     extends: [tseslint.configs.strictTypeChecked, tseslint.configs.stylisticTypeChecked],
     languageOptions: {
       parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
     },
-    plugins: { perfectionist },
+    plugins: { "anti-slop": antiSlop, perfectionist },
     rules: {
+      "anti-slop/no-chained-type-assertions": "error",
+      "anti-slop/no-conditional-empty-object-spread": "error",
+      "anti-slop/no-known-value-widening": "error",
+      "anti-slop/no-module-mocking": "error",
+      "anti-slop/no-object-parameters": "error",
+      "anti-slop/no-reflect-apply": "error",
+      "anti-slop/no-reflect-get": "error",
+      // A type guard from `unknown` is the boundary parser the rule asks for.
+      "anti-slop/no-runtime-typeof": ["error", { allowInTypeGuards: true }],
+      "anti-slop/no-shape-in-symbol-names": "error",
+      "anti-slop/no-unknown-parameters": "error",
+      "anti-slop/no-unknown-returns": "error",
+      "anti-slop/no-unknown-type-aliases": "error",
+      "anti-slop/no-unsafe-dictionary-type": "error",
+      "anti-slop/no-widen-then-assert": "error",
+      "anti-slop/require-safety-comment-for-type-assertion": "error",
       "no-console": "error",
       "no-restricted-imports": [
         "error",

@@ -2,7 +2,8 @@
   "$schema": "./node_modules/knip/schema.json",
   // Cloudflare Pages Functions are file-routed, which knip has no plugin for.
   "entry": ["functions/**/*.ts"],
-  "ignore": ["legacy/**"],
+  // tools/lint/anti-slop/shared is vendored upstream source (see its VENDOR.md).
+  "ignore": ["legacy/**", "tools/lint/anti-slop/shared/**"],
   // fontconfig's cache tool, run by the OG font setup on machines that can render the cards.
   "ignoreBinaries": ["fc-cache"],
   // Referenced only from CSS.

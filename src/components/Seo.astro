@@ -2,6 +2,7 @@
 import type { ImageMetadata } from "astro";
 
 import { type ProgramTheme, site } from "@/data/site";
+import { isImageMetadata } from "@/lib/images";
 import { color, programColor } from "@/lib/tokens";
 
 /**
@@ -51,12 +52,11 @@ const fullTitle = isHome ? site.name : site.titleTemplate.replace("%s", title);
 
 const canonicalUrl = new URL(canonical ?? Astro.url.pathname, site.url);
 
-const imageUrl = new URL(typeof ogImage === "string" ? ogImage : ogImage.src, site.url);
+const imageUrl = new URL(isImageMetadata(ogImage) ? ogImage.src : ogImage, site.url);
 
 /** Dimensions are known for an imported asset and for the site default; alt only when given. */
 const isDefaultImage = ogImage === site.ogImage.path;
-const imageSize =
-  typeof ogImage === "string" ? (isDefaultImage ? site.ogImage : undefined) : ogImage;
+const imageSize = isImageMetadata(ogImage) ? ogImage : isDefaultImage ? site.ogImage : undefined;
 const imageAlt = ogImageAlt ?? (isDefaultImage ? site.ogImage.alt : undefined);
 
 if (imageAlt === undefined) {

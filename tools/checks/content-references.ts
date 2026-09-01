@@ -17,14 +17,14 @@ import { basename, extname, join } from "node:path";
 type Collection = "events" | "faq";
 
 /** `collection: { field: referencedCollection }` — mirrors `src/content.config.ts`. */
-const REFERENCE_FIELDS: Partial<Record<Collection, Record<string, Collection>>> = {
+const REFERENCE_FIELDS = {
   events: { faq: "faq" },
-};
+} satisfies Partial<Record<Collection, Record<string, Collection>>>;
 
-const COLLECTION_DIRS: Record<Collection, string> = {
+const COLLECTION_DIRS = {
   events: "src/content/events",
   faq: "src/content/faq",
-};
+} satisfies Record<Collection, string>;
 
 interface Reference {
   collection: Collection;

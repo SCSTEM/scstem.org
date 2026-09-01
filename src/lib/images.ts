@@ -1,3 +1,5 @@
+import type { ImageMetadata } from "astro";
+
 /**
  * Quality for photographic `<Image>` variants. Every raster in `src/assets/` is already a 2560px
  * q80 master (`tools/assets/optimize-sources.ts`), so the default quality recompresses a lossy
@@ -8,3 +10,7 @@
  * look cheap.
  */
 export const PHOTO_QUALITY = 70;
+
+/** Distinguishes an imported asset from a path under `public/`. */
+export const isImageMetadata = (image: ImageMetadata | string): image is ImageMetadata =>
+  typeof image !== "string";

@@ -22,8 +22,8 @@ ESLint and Prettier own every file until oxlint and oxfmt support `.astro`.
 - `.prettierrc.json`: `prettier-plugin-astro` and `prettier-plugin-tailwindcss` (class sorting
   in markup and in `cn`/`cva` calls, resolved against `src/styles/global.css`). No per-directory
   ignore list for Markdown: tables and lists are formatted like everything else.
-- The vendored `tools/lint/` (nkzw's oxlint config, the anti-slop oxlint plugin) is removed with
-  the runtime it was written for. Its type-safety intent is carried by `strictTypeChecked`.
+- The vendored nkzw oxlint config is removed; `strictTypeChecked` replaces it. The anti-slop rules
+  return under ESLint in [0013](0013-anti-slop-eslint-port.md).
 - `tsgo` (`@typescript/native-preview`) is dropped too: `functions/` and `tools/` typecheck with
   the `tsc` the repo already ships for `astro check`. Two compilers for one small tree was not
   worth a dependency.

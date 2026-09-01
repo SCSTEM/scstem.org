@@ -117,7 +117,7 @@ export const GET: APIRoute = async () => {
     section(
       "Events",
       events.map((entry) => {
-        const href = eventRoutes[entry.id];
+        const href = eventRoutes.get(entry.id);
         if (href === undefined) {
           throw new Error(`events/${entry.id} has no route in src/data/events.ts.`);
         }
