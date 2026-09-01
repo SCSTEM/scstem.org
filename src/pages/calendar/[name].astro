@@ -150,6 +150,16 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
     return node;
   };
 
+  /**
+   * A machine-readable date beside the human one (plan/10 §5). `datetime` is the feed's own
+   * timestamp, so it carries the offset and needs no reformatting.
+   */
+  const stamp = (className: string, text: string, datetime: string): HTMLElement => {
+    const node = element("time", className, text);
+    node.setAttribute("datetime", datetime);
+    return node;
+  };
+
   for (const agenda of document.querySelectorAll<HTMLElement>("[data-agenda]")) {
     const { calendar, timeZone } = agenda.dataset;
     const loading = agenda.querySelector<HTMLElement>("[data-agenda-loading]");
@@ -199,14 +209,23 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
         if (label !== day || entries === undefined) {
           day = label;
           const group = document.createElement("li");
-          group.append(element("h3", "spec-label text-primary-bright", label));
+          const heading = element("h3", "spec-label text-primary-bright");
+          heading.append(stamp("", label, event.start.slice(0, 10)));
+          group.append(heading);
           entries = element("ul", "mt-4 flex flex-col gap-3");
           group.append(entries);
           list.append(group);
         }
 
         const item = element("li", "pocket p-5 sm:grid sm:grid-cols-[9rem_1fr] sm:gap-5");
-        item.append(element("p", "text-small text-muted font-mono sm:pt-0.5", when(event)));
+        item.append(
+          stamp(
+            "text-small text-muted font-mono block sm:pt-0.5",
+            when(event),
+            // An all-day entry has no clock, so its `datetime` is the day alone.
+            event.allDay ? event.start.slice(0, 10) : event.start,
+          ),
+        );
 
         const detail = element("div", "mt-1 sm:mt-0");
         detail.append(element("p", "text-h4 font-semibold text-foreground", event.title));

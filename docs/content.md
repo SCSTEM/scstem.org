@@ -78,7 +78,7 @@ subtitle: One sentence under the title, in the hero.
 program: sc2
 start: 2026-08-01T13:00:00-04:00
 end: 2026-08-01T16:00:00-04:00
-description: Shown in search results and when the page is shared. One or two sentences.
+description: Shown in search results and when the page is shared. 50-160 characters.
 heroImage: ../../assets/events/morethanrobots.webp
 heroImageAlt: What the photo shows, for someone who cannot see it.
 ctaLabel: Get involved
@@ -92,6 +92,16 @@ faq:
 `start` and `end` are full timestamps **with the timezone offset** — `-04:00` in summer,
 `-05:00` in winter. That offset is what makes the date correct for someone reading in another
 timezone, and it feeds the event's structured data.
+
+`description` has a length budget: `tools/checks/verify-meta.mjs` fails the build over 160
+characters, because that is roughly where Google stops printing one, and under 50 because a
+one-liner tells a searcher nothing. It also has to be **unique across the site** — two pages with
+the same description is the same check's other failure. Write it for someone deciding whether to
+click, not as a summary of the page.
+
+Retiring an event is `hidden: true` in its frontmatter. That one field takes the page out of
+service — it redirects to its parent — and out of the sitemap and `/llms.txt` in the same build.
+There is nothing else to remember.
 
 Give every event an `end`. The page counts down to `start`, says "Happening now" from then until
 `end`, and "This event has passed" after it — with no `end` it never reaches the last of those,

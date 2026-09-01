@@ -6,6 +6,7 @@ import biohazardLockup from "@/assets/frc/biohazard-lockup.svg";
 import heroVideoPoster from "@/assets/frc/hero-video-poster.webp";
 import robotField from "@/assets/frc/robots/2024-robot-field.webp";
 import troubleclefLogo from "@/assets/frc/robots/2024-troubleclef-logo.webp";
+import ogFrc from "@/assets/og/frc.jpg";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
@@ -52,7 +53,9 @@ const stats = [
 ---
 
 <ProgramLayout
-  description="Team 4050 Biohazard has been south-central Pennsylvania's FIRST Robotics Competition team since 2012. Nine competition robots, ten-plus mentors, and room for you."
+  description="Team 4050 Biohazard has been south-central Pennsylvania's FIRST Robotics Competition team since 2012 — nine robots, ten-plus mentors, and room for you."
+  ogImage={ogFrc}
+  ogImageAlt="The South Central STEM Collective logo over the Biohazard drive team at competition, captioned “FIRST Robotics Competition”"
   program="frc"
   title="Biohazard — FIRST Robotics Competition"
 >

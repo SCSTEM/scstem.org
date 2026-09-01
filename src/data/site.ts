@@ -30,10 +30,12 @@ export const site = {
    * just to learn the aspect ratio before it can lay the card out.
    */
   ogImage: {
-    path: "/og/default.png",
+    path: "/og/default.jpg",
     width: 1200,
     height: 630,
-    alt: "South Central STEM Collective logo over a photo of the team",
+    alt:
+      "The South Central STEM Collective logo over students building in the workshop, " +
+      "captioned “South Central STEM Collective”",
   },
 
   /**
@@ -99,7 +101,11 @@ export const site = {
   },
 
   analytics: {
-    /** GA4. Wired as a plain deferred gtag snippet in Phase 10 (D21). */
+    /**
+     * GA4, loaded by `Analytics.astro` as a plain gtag snippet after `load` (D21). Cloudflare
+     * Web Analytics' token is not here: it has no value to commit yet, so it comes through
+     * `PUBLIC_CF_BEACON_TOKEN` in `astro.config.ts`'s env schema, set in the Pages dashboard.
+     */
     ga4MeasurementId: "G-3TPD3DLYBR",
   },
 } as const;

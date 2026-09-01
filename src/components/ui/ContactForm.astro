@@ -103,6 +103,8 @@ const fields = [
 </form>
 
 <script>
+  import { TRACK_EVENT } from "@/lib/analytics";
+
   /** The subset of the Turnstile API this uses. Loaded from Cloudflare, so it carries no types. */
   interface Turnstile {
     render: (
@@ -268,6 +270,9 @@ const fields = [
             throw new Error(body.message ?? "Error submitting form");
           }
           setStatus(status, "ok", "Thanks — we have your message and will be in touch.");
+          document.dispatchEvent(
+            new CustomEvent<string>(TRACK_EVENT, { detail: "contact_submit" }),
+          );
           form.reset();
           for (const control of controls) {
             control.removeAttribute("aria-invalid");

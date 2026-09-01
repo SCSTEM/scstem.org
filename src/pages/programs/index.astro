@@ -1,6 +1,7 @@
 ---
 import fllRobots from "@/assets/fll/lego-robots.webp";
 import driveTeam from "@/assets/frc/frc-driveteam.webp";
+import ogPrograms from "@/assets/og/programs.jpg";
 import handsOn from "@/assets/sc2/hands-on-1.webp";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
@@ -23,6 +24,8 @@ import { breadcrumbs } from "@/lib/jsonld";
 
 <BaseLayout
   description="FIRST LEGO League for ages 9–16 and FIRST Robotics Competition for ages 14–18, run out of one workshop in downtown Chambersburg."
+  ogImage={ogPrograms}
+  ogImageAlt="The South Central STEM Collective logo over students working in the workshop, captioned “Our programs”"
   title="Programs"
 >
   <JsonLd data={breadcrumbs([{ name: "Programs", path: "/programs" }])} slot="head" />

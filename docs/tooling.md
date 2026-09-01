@@ -181,8 +181,13 @@ vendored rule directory are skipped.
 | Variable                    | Where                 | Purpose                               |
 | --------------------------- | --------------------- | ------------------------------------- |
 | `PUBLIC_TURNSTILE_SITE_KEY` | build (public)        | Turnstile widget on the contact form  |
+| `PUBLIC_CF_BEACON_TOKEN`    | build (public)        | Cloudflare Web Analytics beacon (D21) |
 | `TS_SECRET_KEY`             | Pages Function secret | Turnstile server-side verification    |
 | `SLACK_FORM_POST_GENERIC`   | Pages Function secret | Slack webhook for contact submissions |
+
+`PUBLIC_CF_BEACON_TOKEN` defaults to empty, and an empty token means the beacon is simply not
+injected — so a fresh clone and every preview run with GA4 alone. Setting it is an owner task in
+`docs/analytics.md`.
 
 `PUBLIC_TURNSTILE_SITE_KEY` is declared in `astro.config.ts`'s `env.schema`, so pages import it
 from `astro:env/client` rather than reaching into an untyped `import.meta.env`. It **defaults to

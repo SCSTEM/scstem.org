@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
+import ogSponsors from "@/assets/og/sponsors.jpg";
 import partsNotes from "@/assets/sc2/parts-notes.webp";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
@@ -33,11 +34,17 @@ const past = sponsors
   .filter((entry) => !entry.data.active)
   .toSorted((a, b) => a.data.name.localeCompare(b.data.name));
 
-const description =
+/** Hero copy, legacy's verbatim (D8) — too long to double as the meta description below. */
+const intro =
   "We are proud to partner organizations and individuals who want to join us in building the future. This strong support enables our mentors, volunteers, and parents to focus on what really matters.";
 ---
 
-<BaseLayout {description} title="Sponsors">
+<BaseLayout
+  description="The organizations and individuals backing SC2's robotics and STEM programs in Franklin County, by level — and how a company joins them."
+  ogImage={ogSponsors}
+  ogImageAlt="The South Central STEM Collective logo over a workbench of parts and notes, captioned “Sponsors”"
+  title="Sponsors"
+>
   <JsonLd data={breadcrumbs([{ name: "Sponsors", path: "/sponsors" }])} slot="head" />
 
   <Hero>
@@ -51,7 +58,7 @@ const description =
       <span class="highlight-swipe">Sponsors</span> help us build.
     </Fragment>
 
-    {description}
+    {intro}
   </Hero>
 
   <Section atmosphere="numeral" index={1}>

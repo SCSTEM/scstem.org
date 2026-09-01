@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 import fllRobots from "@/assets/fll/lego-robots.webp";
+import ogFll from "@/assets/og/fll.jpg";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
@@ -33,6 +34,8 @@ const latest = teamPhotos[0];
 
 <ProgramLayout
   description="FIRST LEGO League at the South Central STEM Collective: teams of 9- to 16-year-olds build a LEGO robot, research a real problem, and take both to competition."
+  ogImage={ogFll}
+  ogImageAlt="The South Central STEM Collective logo over a student-built LEGO robot, captioned “FIRST LEGO League”"
   program="fll"
   title="FIRST LEGO League"
 >
