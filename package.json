@@ -16,7 +16,8 @@
     "check": "pnpm run typecheck && pnpm run lint && pnpm run fmt:check && pnpm run knip && pnpm run check:tokens && pnpm run check:content",
     "check:tokens": "node tools/checks/cn-font-size-group.mjs",
     "check:content": "node tools/checks/content-references.mjs",
-    "assets:optimize": "node tools/assets/optimize-sources.mjs"
+    "assets:optimize": "node tools/assets/optimize-sources.mjs",
+    "assets:fonts": "node tools/assets/font-subset.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.3",

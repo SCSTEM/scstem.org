@@ -220,13 +220,13 @@ of each page shape: `/`, `/programs/frc/`, `/programs/frc/robots/`, `/sponsors/`
 | Script transfer size     | < 35 KB   |
 | Total page transfer size | < 1 MB    |
 
-Assertions aggregate **optimistically**: three runs, and the best has to meet the budget. That is
-not laziness about flake — Lighthouse's Lantern simulation produces a _bimodal_ LCP on this site,
-either ~1.2 s or ~2.0 s with nothing between, tracking a ~750 ms step in simulated FCP that
-appears run to run on an idle machine. Five runs of `/programs/frc/robots/` measured
-1212, 1218, 2039, 2109, 2110 ms. A median assertion would therefore encode which side of that step
-a run landed on rather than anything about the site, while an optimistic one still fails on a real
-regression: push the fast path past the budget and every run fails.
+Assertions aggregate on the **median** of the three runs. Lantern's LCP for this site carries one
+slow run per page — a ~500 ms step in simulated FCP that appears run to run even on an idle
+machine — and median-of-three absorbs exactly that. Every run on every budgeted URL is currently
+under the 2000 ms LCP budget, the worst being 1953 ms; the tightest medians are `/` and
+`/openhouse/` at 1807 ms. Getting there was two font changes, not the image work — see
+`plan/09-assets-performance.md` for the before/after and `docs/adr/0008` and `0011` for the
+reasoning.
 
 Mobile emulation with simulated throttling (1.6 Mbps, 150 ms RTT) — the default preset, and the
 reason transfer size dominates every metric here. `astro preview` gzips, which is what makes the

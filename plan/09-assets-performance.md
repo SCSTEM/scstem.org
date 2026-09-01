@@ -53,33 +53,39 @@ Phase 04 already re-encoded the sources it moved into `src/assets/` (`tools/asse
 ## As built
 
 Three Lighthouse runs per URL (mobile preset, simulated throttling), the same configuration
-`.github/workflows/lighthouse.yml` runs. Every assertion passes:
+`.github/workflows/lighthouse.yml` runs. Every assertion passes, on the **median** of the three:
 
-| URL                     | Perf | A11y |  BP | SEO | LCP, the three runs | CLS   | TBT | Transfer |
-| ----------------------- | ---: | ---: | --: | --: | ------------------- | ----- | --: | -------: |
-| `/`                     |   99 |  100 | 100 | 100 | 1961 / 1961 / 1968  | 0.000 |   0 |   178 KB |
-| `/programs/frc/`        |   99 |  100 | 100 | 100 | 1212 / 1807 / 1807  | 0.000 |   0 |   636 KB |
-| `/programs/frc/robots/` |   99 |  100 | 100 | 100 | 1355 / 2108 / 2110  | 0.000 |   0 |   269 KB |
-| `/sponsors/`            |   99 |  100 | 100 | 100 | 1210 / 2032 / 2036  | 0.000 |   0 |   219 KB |
-| `/openhouse/`           |   99 |  100 | 100 | 100 | 1805 / 1806 / 1809  | 0.000 |   0 |   136 KB |
-| `/contact/`             |   99 |  100 |  96 | 100 | 1810 / 1813 / 1815  | 0.000 |   0 |   121 KB |
-
-**LCP is bimodal in Lantern's simulation, which is why the runs are listed rather than a median.**
-Five runs of `/programs/frc/robots/` on an idle machine gave 1212, 1218, 2039, 2109, 2110 ms — two
-clusters about 800 ms apart with nothing between them, tracking the same step in simulated FCP.
-Chasing it did not work: an LCP-image `<link rel="preload">` moved the median by 2 ms. The one
-change that did move the metric was the 768px ladder step (§2), worth ~220 ms, and it is smaller
-than the spread.
-
-So `lighthouserc.json` sets `aggregationMethod: "optimistic"` **explicitly** rather than inheriting
-it: three runs, and the best has to clear 2000 ms. That is a real gate — push the fast cluster over
-the budget and every run fails — but it is worth being plain that two of these six pages have runs
-above 2000 ms, and that a median assertion would fail them. The lever that would move the slow
-cluster is the 83 KB of webfont on the critical path, more than any hero image on the site; cutting
-a face is a DESIGN.md §3 decision, so it is written up in `plan/todo.md` instead of made here.
+| URL                     | Perf | A11y |  BP | SEO | LCP median | LCP, the three runs |   CLS | TBT | Transfer |
+| ----------------------- | ---: | ---: | --: | --: | ---------: | ------------------- | ----: | --: | -------: |
+| `/`                     |   99 |  100 | 100 | 100 |    1807 ms | 1355 / 1807 / 1819  | 0.000 |   0 |   165 KB |
+| `/programs/frc/`        |  100 |  100 | 100 | 100 |    1659 ms | 1658 / 1659 / 1663  | 0.000 |   0 |   623 KB |
+| `/programs/frc/robots/` |  100 |  100 | 100 | 100 |    1430 ms | 1355 / 1430 / 1881  | 0.000 |   0 |   256 KB |
+| `/sponsors/`            |  100 |  100 | 100 | 100 |    1282 ms | 1210 / 1282 / 1953  | 0.000 |   0 |   206 KB |
+| `/openhouse/`           |   99 |  100 | 100 | 100 |    1807 ms | 1657 / 1807 / 1808  | 0.000 |   0 |   123 KB |
+| `/contact/`             |  100 |  100 |  96 | 100 |    1659 ms | 1658 / 1659 / 1663  | 0.000 |   0 |   109 KB |
 
 `/contact/`'s Best Practices is 96 because of the Turnstile widget's third-party script; the
 threshold is 0.95, and the widget is the form's spam defence.
+
+### How the LCP budget was actually met
+
+It was not met by the image work. Two font changes did it, in this order:
+
+1. **Removing the two font preloads** (§4, `docs/adr/0008-no-font-preloads.md`). 61 KB of
+   High-priority font was queued from `<head>` ahead of the render-blocking stylesheet and well
+   ahead of the hero `<img>`, on pages whose LCP element is always a photograph. Worth ~660 ms.
+2. **Trimming Inter's weight axis** to the range DESIGN.md §3 sanctions
+   (`docs/adr/0011-inter-weight-axis.md`), 47.1 KB → 35.2 KB on the critical path.
+
+Before the second change, LCP was **bimodal** — clusters around 1.2 s and 2.1 s with nothing
+between, and `/programs/frc/robots/` and `/sponsors/` each had runs above the 2000 ms budget
+(1355 / 2108 / 2110 and 1210 / 2032 / 2036). Chasing it structurally got nowhere: an LCP-image
+`<link rel="preload">` moved the median by 2 ms. Taking 12 KB off the critical path is what
+collapsed it — every run on every budgeted URL is now under 2000 ms, the worst being 1953 ms.
+
+So `lighthouserc.json` asserts on the **median** of three runs rather than the best, which is what
+the budget was always supposed to mean. The remaining spread is one slow run per page and
+median-of-three absorbs it. Tightest margin is `/` and `/openhouse/` at 1807 ms.
 
 ### Deviations from this brief, each with an ADR
 
