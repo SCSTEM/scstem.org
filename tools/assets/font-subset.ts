@@ -5,26 +5,22 @@
  * and nothing else uses it — the two `font-bold` call sites are Orbitron — so more than half the
  * axis is delta data for weights that never render. Instancing to `400 700` (one step of headroom,
  * for 0.6 KB, so a stray `font-bold` on body copy renders rather than synthesizes) takes the face
- * on the critical path from 47.1 KB to 35.3 KB.
+ * on the critical path from 47.1 KB to 35.3 KB. `docs/adr/0011-inter-weight-axis.md` covers why,
+ * including why Orbitron and Source Code Pro are left alone.
  *
  * Needs Python with `fonttools` and `brotli` (`pip install fonttools brotli`). Run by hand, from
- * the repo root, and commit `src/styles/fonts/`:
+ * the repo root, and commit `src/styles/fonts/`; nothing in `pnpm build` depends on it:
  *
- *     pnpm assets:fonts
- *
- * Nothing in `pnpm build` depends on it. `docs/adr/0011-inter-weight-axis.md` covers why.
- *
- * The other two variable faces were measured and left alone: Orbitron 500-700 saves 0.7 KB and
- * Source Code Pro 400-600 saves 3.2 KB, neither worth narrowing what the design may reach for.
+ *     node tools/assets/font-subset.ts
  */
 import { execFileSync } from "node:child_process";
 
 /** `[source in node_modules, committed name]`. Both Inter subsets, so the pair cannot drift. */
-const FACES = [
+const FACES: [source: string, name: string][] = [
   ["inter-latin-wght-normal.woff2", "inter-latin-wght-400-700.woff2"],
   ["inter-latin-ext-wght-normal.woff2", "inter-latin-ext-wght-400-700.woff2"],
 ];
-const RANGE = [400, 700];
+const RANGE: [low: number, high: number] = [400, 700];
 const OUT = "src/styles/fonts";
 
 execFileSync(

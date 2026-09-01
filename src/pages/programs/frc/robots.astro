@@ -17,12 +17,8 @@ import { PHOTO_QUALITY } from "@/lib/images";
 import { breadcrumbs } from "@/lib/jsonld";
 
 /**
- * The `frcRobots` collection, newest first — legacy's six hand-written carousel slides, each with
- * its own `<h1>`, are now six markdown files.
- *
- * Three legacy behaviours are deliberately gone: the carousel (a robot history is a list, and a
- * list that hides five of six entries behind arrows is worse for readers and for search), the
- * `react-scroll-parallax` banners (DESIGN.md §6 has no parallax), and the per-slide `<h1>`.
+ * The `frcRobots` collection, newest first, as a list rather than a carousel: one that hides five
+ * of six entries behind arrows is worse for readers and for search.
  */
 const robots = await Promise.all(
   (await getCollection("frcRobots"))
@@ -77,9 +73,9 @@ const robots = await Promise.all(
           >
             <div class:list={[index % 2 === 1 && "lg:order-last"]}>
               {data.image === undefined ? (
-                <p class="pocket spec-label text-muted px-5 py-4">{data.imageAlt}</p>
+                <p class="pocket px-5 py-4 spec-label text-muted">{data.imageAlt}</p>
               ) : (
-                <div class="media-frame relative">
+                <div class="relative media-frame">
                   <Image
                     alt={data.imageAlt}
                     class="w-full"
@@ -106,8 +102,8 @@ const robots = await Promise.all(
 
             <div>
               <p class="spec-label text-primary-bright">{data.yearLabel ?? data.year}</p>
-              <h3 class="text-h2 mt-2">{data.name}</h3>
-              {data.game !== undefined && <p class="text-muted mt-2">{data.game}</p>}
+              <h3 class="mt-2 text-h2">{data.name}</h3>
+              {data.game !== undefined && <p class="mt-2 text-muted">{data.game}</p>}
 
               <div class="prose-copy mt-5">
                 <Content />
@@ -116,8 +112,8 @@ const robots = await Promise.all(
               {data.achievements !== undefined && (
                 <ul class="mt-6 flex flex-col gap-2">
                   {data.achievements.map((achievement) => (
-                    <li class="text-small flex items-start gap-2">
-                      <Icon class="text-primary-bright mt-0.5" name="trophy" size={20} />
+                    <li class="flex items-start gap-2 text-small">
+                      <Icon class="mt-0.5 text-primary-bright" name="trophy" size={20} />
                       <span>{achievement}</span>
                     </li>
                   ))}

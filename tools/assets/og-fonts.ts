@@ -1,10 +1,12 @@
 /**
  * Instances the Orbitron variable woff2 the site ships into a static TTF in `~/.fonts`, so
- * `tools/assets/og-cards.mjs` can name it in an SVG: librsvg resolves `font-family` through
+ * `tools/assets/og-cards.ts` can name it in an SVG: librsvg resolves `font-family` through
  * fontconfig, which reads neither woff2 nor a variable axis.
  *
  * Needs Python with `fonttools` and `brotli` (`pip install fonttools brotli`). Run once per
- * machine, before the card generator; nothing in `pnpm build` depends on it.
+ * machine, before the card generator; nothing in `pnpm build` depends on it:
+ *
+ *     node tools/assets/og-fonts.ts
  */
 import { execFileSync } from "node:child_process";
 

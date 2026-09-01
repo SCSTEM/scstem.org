@@ -5,7 +5,7 @@ description: Port a shadcn/ui component to an Astro primitive in src/components/
 
 # Porting shadcn components to Astro primitives
 
-This site ships **zero client framework runtime** (D3). shadcn is React + Radix, so a port is a
+This site ships **zero client framework runtime**. shadcn is React + Radix, so a port is a
 re-implementation, not a copy — but the _design API_ comes across almost verbatim, and should.
 
 ## When to use this

@@ -6,9 +6,6 @@ import { cn } from "@/lib/cn";
  * The stat band (DESIGN.md §8): a Source Code Pro numeral in the theme accent over an Inter
  * caption, on a feature pocket. This is where the voice rule from §1 — "numbers beat adjectives"
  * — gets its surface.
- *
- * Replaces two legacy treatments at once: the gradient-filled stats row on the FRC page and the
- * bulleted count list on the about page, both of which set numbers in the heading font.
  */
 interface Stat {
   /** The numeral itself. Short — it sets in the data voice at display size. */
@@ -20,7 +17,7 @@ interface Stat {
 }
 
 interface Props {
-  stats: ReadonlyArray<Stat>;
+  stats: readonly Stat[];
   class?: string;
 }
 
@@ -40,16 +37,16 @@ const row = {
 ---
 
 <Card class={cn("overflow-hidden", className)} feature>
-  <dl class={cn("divide-border grid divide-y", row[turn])}>
+  <dl class={cn("grid divide-y divide-border", row[turn])}>
     {
       stats.map((stat) => (
         <div class="p-6">
           <dt class="sr-only">{stat.label}</dt>
           <dd>
-            <span class="stat block">{stat.value}</span>
-            <span class="spec-label text-foreground mt-2 block">{stat.label}</span>
+            <span class="block stat">{stat.value}</span>
+            <span class="mt-2 block spec-label text-foreground">{stat.label}</span>
             {stat.description !== undefined && (
-              <span class="text-small text-body mt-2 block">{stat.description}</span>
+              <span class="mt-2 block text-small text-body">{stat.description}</span>
             )}
           </dd>
         </div>

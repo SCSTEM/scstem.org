@@ -14,10 +14,10 @@ interface Props extends Omit<HTMLAttributes<"label">, "class"> {
   class?: string;
 }
 
-const { for: htmlFor, required = false, class: className, ...rest } = Astro.props;
+const { for: forId, required = false, class: className, ...rest } = Astro.props;
 ---
 
-<label class={cn("text-small font-medium text-foreground", className)} for={htmlFor} {...rest}>
+<label class={cn("text-small font-medium text-foreground", className)} for={forId} {...rest}>
   <slot />
   {
     required && (

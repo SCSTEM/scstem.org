@@ -1,20 +1,17 @@
-/* oxlint-disable eslint/no-await-in-loop -- six cards, run by hand; sequential keeps one decoded
-   bitmap in memory at a time and the log readable. */
 /**
  * Renders the social cards (plan/10 §3, DESIGN.md §7): one template — photograph, scrim, eyebrow,
- * Orbitron title, lockup — at 1200x630, in the six variants the site links to.
+ * Orbitron title, lockup — at 1200x630, in the seven variants the site links to.
  *
  * Run by hand, from the repo root, and commit the output. Orbitron has to be a system font first,
  * because librsvg resolves `font-family` through fontconfig and cannot read the woff2 the site
  * ships:
  *
- *     node tools/assets/og-fonts.mjs      # instances the variable woff2 into ~/.fonts
- *     node tools/assets/og-cards.mjs
+ *     node tools/assets/og-fonts.ts      # instances the variable woff2 into ~/.fonts
+ *     node tools/assets/og-cards.ts
  *
  * `docs/adr/0010-og-cards.md` covers why these are committed artifacts rather than a build step.
  */
 import { readFile, writeFile } from "node:fs/promises";
-
 import sharp from "sharp";
 
 const WIDTH = 1200;
@@ -37,7 +34,15 @@ const FONT = "OGOrbitron Bold";
 const LOCKUP = "src/assets/brand/logo-white-full.svg";
 const LOCKUP_WIDTH = 300;
 
-const cards = [
+interface Card {
+  out: string;
+  photo: string;
+  eyebrow: string;
+  title: string;
+  accent: string;
+}
+
+const cards: Card[] = [
   {
     out: "public/og/default.jpg",
     photo: "src/assets/sc2/students.webp",
@@ -89,16 +94,16 @@ const cards = [
   },
 ];
 
-const escape = (text) =>
+const escape = (text: string): string =>
   text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
 /**
  * Orbitron is wide, so a long title has to wrap. 0.62em per character is the measured average
  * advance for this face at these sizes — close enough to break lines that fit the copy column.
  */
-const wrap = (title, size, limit) => {
+const wrap = (title: string, size: number, limit: number): string[] => {
   const perLine = Math.floor(limit / (size * 0.62));
-  const lines = [];
+  const lines: string[] = [];
   let current = "";
   for (const word of title.split(" ")) {
     const candidate = current === "" ? word : `${current} ${word}`;
@@ -116,13 +121,13 @@ const wrap = (title, size, limit) => {
 const PAD = 72;
 const COLUMN = 760;
 
-const overlay = (card) => {
+const overlay = (card: Card): string => {
   const size = card.title.length > 24 ? 58 : 72;
   const lines = wrap(card.title, size, COLUMN);
   const blockHeight = lines.length * size * 1.18;
   const top = (HEIGHT - blockHeight) / 2 + size * 0.9;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${String(WIDTH)}" height="${String(HEIGHT)}">
   <defs>
     <linearGradient id="scrim" x1="0" x2="1" y1="0" y2="0">
       <stop offset="0" stop-color="${color.background}" stop-opacity="1"/>
@@ -130,18 +135,18 @@ const overlay = (card) => {
       <stop offset="1" stop-color="${color.background}" stop-opacity="0.25"/>
     </linearGradient>
   </defs>
-  <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#scrim)"/>
-  <rect x="0" y="0" width="10" height="${HEIGHT}" fill="${card.accent}"/>
-  <text x="${PAD}" y="${top - size * 0.95}" font-family="${FONT}" font-size="22"
+  <rect width="${String(WIDTH)}" height="${String(HEIGHT)}" fill="url(#scrim)"/>
+  <rect x="0" y="0" width="10" height="${String(HEIGHT)}" fill="${card.accent}"/>
+  <text x="${String(PAD)}" y="${String(top - size * 0.95)}" font-family="${FONT}" font-size="22"
         letter-spacing="3" fill="${card.accent}">${escape(card.eyebrow.toUpperCase())}</text>
   ${lines
     .map(
       (line, index) =>
-        `<text x="${PAD}" y="${top + index * size * 1.18}" font-family="${FONT}" ` +
-        `font-size="${size}" fill="${color.foreground}">${escape(line)}</text>`,
+        `<text x="${String(PAD)}" y="${String(top + index * size * 1.18)}" font-family="${FONT}" ` +
+        `font-size="${String(size)}" fill="${color.foreground}">${escape(line)}</text>`,
     )
     .join("\n  ")}
-  <text x="${PAD}" y="${HEIGHT - PAD + 6}" font-family="${FONT}" font-size="20" fill="${color.muted}">scstem.org</text>
+  <text x="${String(PAD)}" y="${String(HEIGHT - PAD + 6)}" font-family="${FONT}" font-size="20" fill="${color.muted}">scstem.org</text>
 </svg>`;
 };
 
@@ -158,11 +163,7 @@ for (const card of cards) {
   const image = await sharp(photo)
     .composite([
       { input: Buffer.from(overlay(card)), top: 0, left: 0 },
-      {
-        input: lockup,
-        top: PAD - 10,
-        left: PAD,
-      },
+      { input: lockup, top: PAD - 10, left: PAD },
     ])
     .jpeg({ quality: QUALITY, mozjpeg: true })
     .toBuffer();

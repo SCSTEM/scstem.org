@@ -87,7 +87,7 @@ export const breakpoint = (name: string): string =>
   required(`--breakpoint-${name}`, theme, "@theme");
 
 /**
- * A `--color-*` token as a program theme remaps it (DESIGN.md §2, D16). Falls back to the base
+ * A `--color-*` token as a program theme remaps it (DESIGN.md §2). Falls back to the base
  * value, so a theme that does not touch a token still resolves.
  */
 export const programColor = (program: string, name: string): string => {
@@ -96,7 +96,7 @@ export const programColor = (program: string, name: string): string => {
 };
 
 /** Program themes declared in the stylesheet, in source order. */
-export const programThemes = (): ReadonlyArray<string> => [
+export const programThemes = (): readonly string[] => [
   ...new Set([...css.matchAll(/\[data-theme="([\w-]+)"]/g)].flatMap((match) => match[1] ?? [])),
 ];
 

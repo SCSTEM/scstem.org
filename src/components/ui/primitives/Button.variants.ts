@@ -38,7 +38,7 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        secondary: "bg-card text-foreground border border-border hover:bg-card-hover",
+        secondary: "border border-border bg-card text-foreground hover:bg-card-hover",
         /** Over photography this gains a translucent card background (DESIGN.md §8). */
         outline: "border border-border text-foreground hover:border-primary/40 hover:bg-card/60",
         ghost: "text-foreground hover:bg-card",

@@ -1,11 +1,12 @@
 # scstem.org
 
-## Project Setup
+The website of the South Central STEM Collective. Astro, deployed by Cloudflare Pages.
 
-1. Install [Mise](https://mise.jdx.dev/)
-2. Run `mise install`
+```sh
+mise install      # pinned node + pnpm
+pnpm install
+pnpm dev          # http://localhost:4321
+pnpm check        # everything CI checks, minus the build
+```
 
-## Development
-
-1. Run `mise dev` to start Astro dev server.
-2. Browse to `http://localhost:4321` to view the site.
+`docs/tooling.md` covers the toolchain; `AGENTS.md` the rules for working in the codebase.

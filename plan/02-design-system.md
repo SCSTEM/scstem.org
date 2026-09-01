@@ -42,6 +42,7 @@
 ### 3. Signature motifs as utilities/components
 
 Implement DESIGN.md §2 "signature motifs" as reusable pieces so pages can't reinvent them:
+
 - `.accent-rule` (2px primary hairline) + hero-bottom full-bleed variant.
 - Key-word emphasis: documented pattern (`<span class="text-primary">` inside headings) — note in styleguide, no component needed.
 - Engineering grid: one `Pattern.astro` background component (§2.3 opacities, `aria-hidden`, heroes/section breaks/feature-pocket floors only — never the page ground).

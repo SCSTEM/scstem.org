@@ -4,7 +4,7 @@ import EventLayout from "@/layouts/EventLayout.astro";
 import { getVisibleEvent } from "@/lib/events";
 
 /**
- * `/programs/frc/kickoff` is `src/content/events/frc-kickoff.md` (D17); `hidden: true` there
+ * `/programs/frc/kickoff` is `src/content/events/frc-kickoff.md`; `hidden: true` there
  * retires it to the FRC page. See `src/pages/openhouse.astro` for why the redirect lives here.
  */
 const event = await getVisibleEvent("frc-kickoff");

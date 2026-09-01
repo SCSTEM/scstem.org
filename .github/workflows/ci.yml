@@ -2,6 +2,8 @@ name: CI
 
 on:
   pull_request:
+  push:
+    branches: [main, staging]
 
 permissions:
   contents: read
@@ -12,50 +14,52 @@ concurrency:
 
 jobs:
   check:
-    name: Check + Build
+    name: Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
 
-      - name: Install mise tools
-        uses: jdx/mise-action@v4
-        with:
-          version: 2026.8.14
-          install: true
-          cache: true
+      # Every step runs even after an earlier one fails, so one PR run reports every kind of
+      # problem. The ESLint matcher turns findings into inline annotations on the PR diff.
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Lint
+        if: ${{ !cancelled() }}
+        run: |
+          echo "::add-matcher::.github/eslint-matcher.json"
+          pnpm lint
+      - name: Format
+        if: ${{ !cancelled() }}
+        run: pnpm fmt:check
+      - name: Unused code and dependencies
+        if: ${{ !cancelled() }}
+        run: pnpm knip
+      - name: Design tokens
+        if: ${{ !cancelled() }}
+        run: pnpm check:tokens
+      - name: Content references
+        if: ${{ !cancelled() }}
+        run: pnpm check:content
 
-      # mise-action's cache covers mise-managed tool binaries (node, pnpm), not
-      # pnpm's content-addressable store, so without this every run re-downloads
-      # the whole tree.
-      - name: Locate pnpm store
-        run: echo "PNPM_STORE=$(pnpm store path --silent)" >>"$GITHUB_ENV"
-
-      - name: Cache pnpm store
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.PNPM_STORE }}
-          key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: pnpm-store-${{ runner.os }}-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile --prefer-offline
-
-      - name: Check (typecheck + lint + format + knip)
-        run: pnpm check
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
 
       - name: Build
         run: pnpm build
 
-      # Needs dist/, so it cannot live in `pnpm check`: uniqueness of titles and descriptions,
-      # and whether an og:image resolves, are only answerable across the whole built site.
-      - name: Verify page metadata
-        run: pnpm run check:meta
+      # Title and description uniqueness, and whether every og:image resolves, are only
+      # answerable across the whole built site.
+      - name: Page metadata
+        run: pnpm check:meta
 
-      # --root-dir is required for the root-relative hrefs Astro emits (/_astro/...);
-      # without it lychee cannot resolve them in local files and errors on every page.
-      # llms.txt is in scope because its links are hand-written paths in src/data/events.ts,
-      # which nothing else would catch drifting from the routes they name.
-      - name: Link check
+      # --root-dir resolves the root-relative hrefs Astro emits. llms.txt is in scope because its
+      # links are hand-written paths that nothing else checks against the routes they name.
+      - name: Links
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
@@ -63,3 +67,36 @@ jobs:
             --root-dir ${{ github.workspace }}/dist
             'dist/**/*.html' 'dist/llms.txt'
           fail: true
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - uses: actions/download-artifact@v6
+        with:
+          name: dist
+          path: dist/
+
+      # lhci is a CI-only tool run through dlx rather than a devDependency: it pulls Lighthouse
+      # and Puppeteer, which nobody needs to develop a page (docs/adr/0007-lighthouse-ci-gate.md).
+      - name: Lighthouse CI
+        run: pnpm dlx @lhci/cli@0.15.1 autorun
+
+      - name: Summarize
+        if: ${{ !cancelled() }}
+        run: node tools/ci/lighthouse-summary.ts >>"$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/reports/

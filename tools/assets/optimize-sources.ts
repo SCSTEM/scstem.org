@@ -1,6 +1,3 @@
-/* oxlint-disable eslint/no-await-in-loop -- deliberately sequential: sharp holds a decoded
-   bitmap per in-flight image, and these sources run to 6000x4000, so encoding them in parallel
-   spikes memory for no wall-clock gain on a script that is run by hand. */
 /**
  * Re-encodes oversized source images in `src/assets/` (plan/09 §2).
  *
@@ -10,17 +7,16 @@
  * than the input*. Downscaling the source caps that and costs nothing visually: no layout on the
  * site is wider than ~1600 CSS px, so 2560px still covers 2x on the widest hero.
  *
- * Run manually, from the repo root, and commit the result:
+ * Run by hand, from the repo root, and commit the result; git history keeps the originals:
  *
- *     node tools/assets/optimize-sources.mjs           # report only
- *     node tools/assets/optimize-sources.mjs --write    # re-encode in place
- *
- * Git history keeps the originals.
+ *     node tools/assets/optimize-sources.ts           # report only
+ *     node tools/assets/optimize-sources.ts --write    # re-encode in place
  */
-import { readdir, stat, writeFile } from "node:fs/promises";
-import { extname, join } from "node:path";
-
+import { stat, writeFile } from "node:fs/promises";
+import { extname } from "node:path";
 import sharp from "sharp";
+
+import { walk } from "../lib/fs.ts";
 
 /** plan/09 §2: max dimension 2560px, quality-tuned WebP/JPEG. */
 const MAX_DIMENSION = 2560;
@@ -36,31 +32,18 @@ const MIN_GAIN = 0.05;
 const ROOT = "src/assets";
 const RASTER = new Set([".webp", ".jpg", ".jpeg", ".png"]);
 
-const walk = async (dir) => {
-  const entries = await readdir(dir, { withFileTypes: true });
-  const nested = await Promise.all(
-    entries.map(async (entry) => {
-      const path = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        return walk(path);
-      }
-      return RASTER.has(extname(entry.name).toLowerCase()) ? [path] : [];
-    }),
-  );
-  return nested.flat();
-};
+const fmt = (bytes: number): string => `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 
 const write = process.argv.includes("--write");
 let touched = 0;
 let savedBytes = 0;
 
-for (const path of (await walk(ROOT)).toSorted()) {
+const paths = (await walk(ROOT, (name) => RASTER.has(extname(name).toLowerCase()))).toSorted();
+
+for (const path of paths) {
   const before = (await stat(path)).size;
   const pipeline = sharp(path).rotate();
   const meta = await pipeline.metadata();
-  if (meta.width === undefined || meta.height === undefined) {
-    continue;
-  }
 
   // metadata() reports pre-EXIF-rotation dimensions; rotate() writes the rotated image, so an
   // orientation of 5-8 swaps the axes of everything logged below.
@@ -103,10 +86,6 @@ for (const path of (await walk(ROOT)).toSorted()) {
   }
   touched += 1;
   savedBytes += before - encoded.length;
-}
-
-function fmt(bytes) {
-  return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 }
 
 console.log(

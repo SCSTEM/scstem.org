@@ -1,16 +1,16 @@
 /**
  * `cn`'s `font-size` class group is a hand-maintained mirror of DESIGN.md §3's type scale. A
  * token missing from it silently loses to any color beside it — the failure only shows up as a
- * wrong size in a browser. This makes the divergence a `pnpm check` failure instead. Run from
- * the repo root.
+ * wrong size in a browser. This makes the divergence a `pnpm check` failure instead.
+ *
+ *     node tools/checks/cn-font-size-group.ts    # from the repo root
  */
 import { readFileSync } from "node:fs";
 
 const css = readFileSync("src/styles/global.css", "utf8");
 const cnSource = readFileSync("src/lib/cn.ts", "utf8");
 
-const themeStart = css.indexOf("@theme");
-if (themeStart === -1) {
+if (!css.includes("@theme")) {
   console.error("tools/checks/cn-font-size-group: no @theme block in src/styles/global.css");
   process.exit(1);
 }
@@ -18,7 +18,7 @@ if (themeStart === -1) {
 /** `--text-<name>` declarations, skipping the `--text-x--line-height` style of sub-property. */
 const sizeTokens = new Set(
   [...css.matchAll(/--text-([\w-]+):/g)]
-    .map((match) => match[1])
+    .flatMap((match) => match[1] ?? [])
     .filter((name) => !name.includes("--")),
 );
 
@@ -26,7 +26,7 @@ const sizeTokens = new Set(
  * The color namespace wins where a name is both a color and a size, so those sizes are reached
  * through a `@utility` instead and belong in the group under that name.
  */
-const utilityAliases = new Map();
+const utilityAliases = new Map<string, string>();
 for (const match of css.matchAll(
   /@utility (text-[\w-]+) \{[^}]*font-size: var\(--text-([\w-]+)\)/g,
 )) {
@@ -36,14 +36,14 @@ for (const match of css.matchAll(
   }
 }
 
-const groupMatch = /"font-size": \[([^\]]*)\]/s.exec(cnSource);
-if (groupMatch?.[1] === undefined) {
+const group = /"font-size": \[([^\]]*)\]/s.exec(cnSource)?.[1];
+if (group === undefined) {
   console.error('tools/checks/cn-font-size-group: no "font-size" class group in src/lib/cn.ts');
   process.exit(1);
 }
-const listed = new Set([...groupMatch[1].matchAll(/"([^"]+)"/g)].flatMap((m) => m[1] ?? []));
+const listed = new Set([...group.matchAll(/"([^"]+)"/g)].flatMap((m) => m[1] ?? []));
 
-const expected = new Set();
+const expected = new Set<string>();
 for (const token of sizeTokens) {
   expected.add(utilityAliases.get(token) ?? `text-${token}`);
 }

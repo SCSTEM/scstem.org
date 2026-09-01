@@ -18,15 +18,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { breadcrumbs } from "@/lib/jsonld";
 
 /**
- * Copy is legacy's, verbatim (D8). The structure is not: DESIGN.md §5 retires the two fixed
- * photo rails that flanked the article in favor of "a single flowing column with photo groupings
- * as interleaved timeline sections", and §8's stat band replaces the bulleted count list.
+ * Copy is legacy's, verbatim. The layout is DESIGN.md §5's single flowing column with photo
+ * groupings as interleaved timeline sections, and §8's stat band.
  */
 
 /**
- * The two groupings the narrative turns on, and the one part of legacy's fourteen hardcoded
- * imports that was ever a decision: the seasons before the shutdown are the FRC origins story,
- * and 2023 onward — the first seasons back, and the first FLL teams — is the next generation.
+ * The two groupings the narrative turns on: the seasons before the shutdown are the FRC origins
+ * story, and 2023 onward — the first seasons back, and the first FLL teams — is the next
+ * generation.
  */
 const NEXT_GENERATION_FROM = 2023;
 
@@ -38,7 +37,6 @@ const teamPhotos = [
 const origins = teamPhotos.filter((entry) => entry.data.year < NEXT_GENERATION_FROM);
 const nextGeneration = teamPhotos.filter((entry) => entry.data.year >= NEXT_GENERATION_FROM);
 
-/** From the legacy list, in its order. The practice bots were a nested bullet under the robots. */
 const biohazardStats = [
   { value: "1", label: "Regional win" },
   { value: "3", label: "Workspaces" },
@@ -107,7 +105,7 @@ const biohazardStats = [
 
     <StatBand class="mt-10" stats={biohazardStats} />
 
-    <p class="measure mt-10">
+    <p class="mt-10 measure">
       This momentum pushed the team forward, but nobody could anticipate what was around the corner.
     </p>
   </Section>

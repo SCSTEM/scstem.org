@@ -1,0 +1,52 @@
+---
+import type { ImageMetadata } from "astro";
+import type { HTMLAttributes } from "astro/types";
+
+import { Image } from "astro:assets";
+
+import Icon from "@/components/ui/primitives/Icon.astro";
+import { PHOTO_QUALITY } from "@/lib/images";
+
+/**
+ * A still in a `media-frame` that links out to a video, with the theme's primary play button
+ * centred over a `background` scrim (DESIGN.md §7). The anchor is the whole frame, so the target
+ * is the full poster and the button is decorative: `label` names the destination for assistive
+ * tech and the poster is `alt=""`.
+ */
+interface Props extends Omit<HTMLAttributes<"a">, "class" | "href" | "aria-label"> {
+  href: string | URL;
+  /** The accessible name of the link, e.g. "Watch our team video on YouTube". */
+  label: string;
+  /** The frame the visitor sees before following the link. */
+  poster: ImageMetadata;
+  class?: string;
+}
+
+const { href, label, poster, class: className, rel = "noopener", ...attrs } = Astro.props;
+---
+
+<a
+  aria-label={label}
+  class:list={["group relative mx-auto block max-w-3xl media-frame", className]}
+  href={href}
+  rel={rel}
+  {...attrs}
+>
+  <Image
+    alt=""
+    class="w-full"
+    loading="lazy"
+    quality={PHOTO_QUALITY}
+    sizes="(min-width: 48rem) 48rem, 92vw"
+    src={poster}
+    width={1024}
+    widths={[640, 840, 1024]}
+  />
+  <span class="absolute inset-0 grid place-items-center bg-background/40">
+    <span
+      class="grid size-16 place-items-center rounded-md bg-primary text-primary-foreground transition-transform duration-(--duration-micro) group-hover:scale-105"
+    >
+      <Icon name="player-play" size={32} />
+    </span>
+  </span>
+</a>

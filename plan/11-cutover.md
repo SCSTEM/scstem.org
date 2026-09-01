@@ -22,7 +22,7 @@
 
 ### 3. Staging soak
 
-- **Land the stack**: merge the top-of-stack PR — gh-stack cascades every unmerged PR below it, bottom-up, into `staging` in one action. Never merge layers individually or hand-sequence; the cascade *is* the merge plan. Full QA on https://staging.scstem.org:
+- **Land the stack**: merge the top-of-stack PR — gh-stack cascades every unmerged PR below it, bottom-up, into `staging` in one action. Never merge layers individually or hand-sequence; the cascade _is_ the merge plan. Full QA on https://staging.scstem.org:
   - Device pass: physical phone (small Android/iPhone), tablet, desktop; keyboard-only pass; screen-reader smoke (VoiceOver/NVDA on nav + form).
   - Lighthouse against staging (real CF serving): budgets hold.
   - Forms with production-mode Turnstile.

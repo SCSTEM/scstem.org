@@ -1,4 +1,4 @@
-# For what neither oxfmt nor Prettier covers (yaml, toml, shell, gitignore-likes).
+# For what Prettier does not format (toml, shell, gitignore-likes).
 root = true
 
 [*]

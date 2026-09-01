@@ -24,10 +24,10 @@ import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
-import Icon from "@/components/ui/primitives/Icon.astro";
 import Separator from "@/components/ui/primitives/Separator.astro";
 import Section from "@/components/ui/Section.astro";
 import SponsorStrip from "@/components/ui/SponsorStrip.astro";
+import VideoLink from "@/components/ui/VideoLink.astro";
 import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { PHOTO_QUALITY } from "@/lib/images";
@@ -48,12 +48,6 @@ const renderAt = async (source: ImageMetadata, width: number) => ({
 
 const acronymArt = await renderAt(firstAcronym, 768);
 const lockupArt = await renderAt(firstLockup, 640);
-
-/**
- * Copy is legacy's, near-verbatim (D8). What changed is structure: the page now has an `h1`, the
- * two hand-markup runs are the tagline and the hero's one emphasized phrase, and the sponsors
- * strip is new — see plan/06-homepage.md for the full list.
- */
 ---
 
 <BaseLayout description={site.description} title="Home">
@@ -172,7 +166,7 @@ const lockupArt = await renderAt(firstLockup, 640);
         <Separator class="my-8" />
 
         <h3>More than robots</h3>
-        <p class="measure mt-3">
+        <p class="mt-3 measure">
           Although the goal is to build a robot, you do not have to be an engineer. Whether you are
           a future rocket scientist or an aspiring artist, there is a place here for you and mentors
           ready to use their real world experience to help you grow.
@@ -268,30 +262,11 @@ const lockupArt = await renderAt(firstLockup, 640);
       Meet our high school team, learn about <span class="italic">FIRST®</span>
     </Fragment>
 
-    <a
-      aria-label="Watch our team video on YouTube"
-      class="media-frame group relative mx-auto block max-w-3xl"
+    <VideoLink
       href={site.urls.teamVideo}
-      rel="noopener"
-    >
-      <Image
-        alt=""
-        class="w-full"
-        loading="lazy"
-        quality={PHOTO_QUALITY}
-        sizes="(min-width: 48rem) 48rem, 92vw"
-        src={teamVideoPoster}
-        width={1024}
-        widths={[640, 840, 1024]}
-      />
-      <span class="bg-background/40 absolute inset-0 grid place-items-center">
-        <span
-          class="bg-primary text-primary-foreground grid size-16 place-items-center rounded-md transition-transform duration-(--duration-micro) group-hover:scale-105"
-        >
-          <Icon name="player-play" size={32} />
-        </span>
-      </span>
-    </a>
+      label="Watch our team video on YouTube"
+      poster={teamVideoPoster}
+    />
   </Section>
 
   <Section atmosphere="ruler">

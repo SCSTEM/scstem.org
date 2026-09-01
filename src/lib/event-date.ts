@@ -1,9 +1,11 @@
+import { site } from "@/data/site";
+
 /**
  * Formats an event's date range from `start`/`end` (DESIGN.md §8's data voice is applied at the
  * call site; this returns plain text). The timestamps are the only source — an event never
  * carries display prose that can go stale against them.
  */
-const ZONE = "America/New_York";
+const ZONE = site.location.timeZone;
 
 const dayFormat = new Intl.DateTimeFormat("en-US", {
   weekday: "long",

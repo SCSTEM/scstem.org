@@ -11,8 +11,7 @@ import { cn } from "@/lib/cn";
 
 /**
  * One sponsor's pocket: the logo on a plate, the name and its tier chip, and — where we have one
- * — the year the partnership started. Replaces legacy's per-level `switch` returning a raw hex
- * that was then applied as an inline `backgroundColor` with a 50% alpha suffix.
+ * — the year the partnership started.
  *
  * The tier chip's tone comes from `Badge`'s tier tones (DESIGN.md §8), keyed by level, so the
  * ranking's colors live with the rest of the token set.
@@ -45,7 +44,7 @@ const { name, level, logo, url, sub, since } = sponsor.data;
   <div class="flex flex-1 flex-col items-center justify-center gap-3 p-6">
     {
       logo === undefined ? (
-        <span class="text-h4 text-foreground text-center font-semibold">{name}</span>
+        <span class="text-center text-h4 font-semibold text-foreground">{name}</span>
       ) : (
         <Image
           alt={`${name} logo`}
@@ -57,15 +56,15 @@ const { name, level, logo, url, sub, since } = sponsor.data;
         />
       )
     }
-    {sub !== undefined && <p class="text-small text-body text-center">{sub}</p>}
+    {sub !== undefined && <p class="text-center text-small text-body">{sub}</p>}
   </div>
 
   <CardFooter class="flex-wrap justify-between">
     <div>
-      <p class="text-foreground font-semibold">{name}</p>
+      <p class="font-semibold text-foreground">{name}</p>
       {
         since !== undefined && (
-          <p class="text-small text-muted mt-1">
+          <p class="mt-1 text-small text-muted">
             Partnering with us since <time datetime={String(since)}>{since}</time>
           </p>
         )

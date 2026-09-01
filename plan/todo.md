@@ -9,7 +9,7 @@ item says what is already in the repository waiting for it.
 - [ ] **Create the Cloudflare Web Analytics site and set `PUBLIC_CF_BEACON_TOKEN`** in the Pages
       project's build environment (production and preview). Until it is set the beacon is not
       injected at all — the snippet skips it on an empty token — so GA4 is the only collector.
-      `docs/analytics.md` has the details. *(D21 is not fully satisfied until this is done.)*
+      `docs/analytics.md` has the details. _(D21 is not fully satisfied until this is done.)_
 - [ ] **GA4 property review.** Data retention (default 14 months; 26 is available), an
       internal-traffic filter if the workshop has a static IP, and unwanted-referral exclusions
       for `paypal.com` and `docs.google.com`.
@@ -17,6 +17,7 @@ item says what is already in the repository waiting for it.
       `get_involved_click`, `donate_click`, `wishlist_click`, `sponsor_packet_download`,
       `outbound_sponsor_click`, `contact_submit`. They fire already; GA4 just does not count them
       as conversions until they are marked.
+
 ## Search engines
 
 - [ ] **Verify `scstem.org` in Google Search Console**, submit
@@ -27,7 +28,7 @@ item says what is already in the repository waiting for it.
       Both validators live on Google infrastructure, which this development environment's network
       policy blocks, so Phase 10 could only assert locally that every block parses, carries
       `@context: https://schema.org`, and has an `@type` — that check is in
-      `tools/checks/verify-meta.mjs` and runs in CI. Google's own eligibility rules are what still
+      `tools/checks/verify-meta.ts` and runs in CI. Google's own eligibility rules are what still
       need a run.
 - [ ] **Check the OG cards in a card debugger** (opengraph.xyz, Facebook's Sharing Debugger,
       LinkedIn's Post Inspector) against the preview deploy. `verify-meta` already proves every
@@ -61,7 +62,7 @@ item says what is already in the repository waiting for it.
 - [ ] **Review the OG cards' photography.** The template is fixed
       (`docs/adr/0010-og-cards.md`); which photograph each section gets is a taste call, and the
       seven currently chosen are the best fit from `src/assets/`, not a considered shoot. Swap a
-      path in `tools/assets/og-cards.mjs` and run `pnpm assets:og`.
+      path in `tools/assets/og-cards.ts` and run `pnpm assets:og`.
 - [ ] **Regenerating the OG cards needs a font step** that CI deliberately does not do:
       `pip install fonttools brotli`, then `pnpm assets:og-fonts` once per machine. Only relevant
       when the cards change.

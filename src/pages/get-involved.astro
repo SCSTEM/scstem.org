@@ -8,10 +8,6 @@ import { site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 /**
- * Legacy's page was the bare Google Form iframe on a patterned background — no heading, no
- * metadata beyond a title, and nothing at all if the embed failed to load. The form itself is
- * unchanged; what it gains is a page around it and a way out of it.
- *
  * The iframe is `loading="lazy"` with its height reserved, so it costs nothing until it scrolls
  * into view and shifts nothing when it arrives.
  */
@@ -50,7 +46,7 @@ const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
       for its own controls, so the wrapper declares light rather than letting a dark page produce
       dark-on-white form fields.
     -->
-    <div class="pocket mt-8 overflow-hidden [color-scheme:light]">
+    <div class="mt-8 overflow-hidden pocket [color-scheme:light]">
       <iframe
         class="h-[1800px] w-full border-0"
         loading="lazy"

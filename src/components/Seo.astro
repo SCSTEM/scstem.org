@@ -9,8 +9,7 @@ import { color, programColor } from "@/lib/tokens";
  * these props straight through — so **`description` being required here is what stops a page
  * from shipping without one.** Omitting it is a type error, not a review catch.
  *
- * No `keywords` meta: legacy carried a 22-term list, and search engines have ignored the signal
- * for years.
+ * No `keywords` meta: search engines have ignored it for years.
  */
 interface Props {
   title: string;
@@ -31,7 +30,7 @@ interface Props {
   /** Defaults to this page's own URL. Set it when two routes serve the same content. */
   canonical?: URL | string | undefined;
   noindex?: boolean | undefined;
-  /** The program theme of the page, so browser chrome follows the action accent (D16). */
+  /** The program theme of the page, so browser chrome follows the action accent. */
   theme?: ProgramTheme | undefined;
 }
 

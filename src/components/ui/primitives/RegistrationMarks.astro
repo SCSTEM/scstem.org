@@ -30,7 +30,7 @@ const corners = [
 <div aria-hidden="true" class={cn("pointer-events-none absolute inset-0", className)}>
   {
     corners.map((corner) => (
-      <svg class:list={["text-primary/35 absolute size-5", corner]} fill="none" viewBox="0 0 24 24">
+      <svg class:list={["absolute size-5 text-primary/35", corner]} fill="none" viewBox="0 0 24 24">
         <path d={BRACKET} stroke="currentColor" stroke-linecap="round" stroke-width="1.5" />
       </svg>
     ))

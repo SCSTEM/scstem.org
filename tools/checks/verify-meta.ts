@@ -8,50 +8,38 @@
  *
  * Redirect pages are skipped: Astro writes them, they carry `noindex`, and none of this applies.
  *
- *     pnpm build && node tools/checks/verify-meta.mjs
+ *     pnpm build && node tools/checks/verify-meta.ts
  */
-import { readdir, readFile, stat } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import { extname, join } from "node:path";
+
+import { walk } from "../lib/fs.ts";
 
 const DIST = "dist";
 /** Google truncates a description around 160 characters and ignores one too short to be useful. */
-const DESCRIPTION_RANGE = [50, 160];
+const DESCRIPTION_MIN = 50;
+const DESCRIPTION_MAX = 160;
 
-const walk = async (dir) => {
-  const entries = await readdir(dir, { withFileTypes: true });
-  const nested = await Promise.all(
-    entries.map(async (entry) => {
-      const path = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        return walk(path);
-      }
-      return extname(entry.name) === ".html" ? [path] : [];
-    }),
-  );
-  return nested.flat();
-};
+/** Every `<meta>`/`<link>` tag on the page, as raw text. */
+const tags = (html: string): string[] =>
+  [...html.matchAll(/<(?:meta|link)\b[^>]*>/gu)].map((match) => match[0]);
 
-/** Every `<meta>`/`<link>` on the page as `{ name|property|rel, content|href }` pairs. */
-const tags = (html) => [...html.matchAll(/<(?:meta|link)\b[^>]*>/gu)].map((match) => match[0]);
-
-const attribute = (tag, name) => {
-  const match = new RegExp(`\\b${name}="([^"]*)"`, "u").exec(tag);
-  return match?.[1];
-};
+const attribute = (tag: string, name: string): string | undefined =>
+  new RegExp(`\\b${name}="([^"]*)"`, "u").exec(tag)?.[1];
 
 /** `<meta name="description">` → its content, for every tag matching one key/value pair. */
-const contentsOf = (html, key, value) =>
+const contentsOf = (html: string, key: string, value: string): string[] =>
   tags(html)
     .filter((tag) => attribute(tag, key) === value)
-    .map((tag) => attribute(tag, "content") ?? attribute(tag, "href"));
+    .flatMap((tag) => attribute(tag, "content") ?? attribute(tag, "href") ?? []);
 
-const count = (html, pattern) => [...html.matchAll(pattern)].length;
+const count = (html: string, pattern: RegExp): number => [...html.matchAll(pattern)].length;
 
 /** `dist/programs/frc/index.html` → `/programs/frc/`. */
-const routeOf = (path) =>
+const routeOf = (path: string): string =>
   `/${path.slice(DIST.length + 1).replace(/(?:^|\/)index\.html$/u, "")}/`.replace("//", "/");
 
-const exists = async (path) => {
+const exists = async (path: string): Promise<boolean> => {
   try {
     await stat(path);
     return true;
@@ -60,28 +48,38 @@ const exists = async (path) => {
   }
 };
 
-const paths = (await walk(DIST)).toSorted();
+/** The two JSON-LD keys asserted below; every other key is opaque here. */
+interface JsonLd {
+  "@context"?: unknown;
+  "@type"?: unknown;
+}
+const isJsonLd = (value: unknown): value is JsonLd =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+const paths = (await walk(DIST, (name) => extname(name) === ".html")).toSorted();
 const pages = await Promise.all(
   paths.map(async (path) => ({ html: await readFile(path, "utf8"), route: routeOf(path) })),
 );
 
-const failures = [];
-const seen = { description: new Map(), title: new Map() };
+const failures: string[] = [];
+const seen = { description: new Map<string, string>(), title: new Map<string, string>() };
 /** og:image checks are deferred so the reads run together rather than one per page. */
-const images = [];
+const images: { image: string; route: string }[] = [];
 
 for (const { html, route } of pages) {
-  const fail = (message) => failures.push(`${route}: ${message}`);
+  const fail = (message: string) => failures.push(`${route}: ${message}`);
 
   if (/<meta[^>]*\bhttp-equiv="refresh"/u.test(html)) {
     continue;
   }
 
-  const titles = [...html.matchAll(/<title[^>]*>([\s\S]*?)<\/title>/gu)].map((match) => match[1]);
-  if (titles.length !== 1) {
+  const titles = [...html.matchAll(/<title[^>]*>([\s\S]*?)<\/title>/gu)].flatMap(
+    (match) => match[1] ?? [],
+  );
+  const [title] = titles;
+  if (title === undefined || titles.length !== 1) {
     fail(`${String(titles.length)} <title> elements, expected exactly 1`);
   } else {
-    const title = titles[0];
     const other = seen.title.get(title);
     if (other !== undefined) {
       fail(`<title> is identical to ${other}'s`);
@@ -90,15 +88,14 @@ for (const { html, route } of pages) {
   }
 
   const descriptions = contentsOf(html, "name", "description");
-  if (descriptions.length !== 1) {
+  const [description] = descriptions;
+  if (description === undefined || descriptions.length !== 1) {
     fail(`${String(descriptions.length)} meta descriptions, expected exactly 1`);
   } else {
-    const description = descriptions[0];
-    const [min, max] = DESCRIPTION_RANGE;
-    if (description.length < min || description.length > max) {
+    if (description.length < DESCRIPTION_MIN || description.length > DESCRIPTION_MAX) {
       fail(
         `meta description is ${String(description.length)} characters, ` +
-          `outside ${String(min)}-${String(max)}`,
+          `outside ${String(DESCRIPTION_MIN)}-${String(DESCRIPTION_MAX)}`,
       );
     }
     const other = seen.description.get(description);
@@ -139,17 +136,21 @@ for (const { html, route } of pages) {
     fail("no JSON-LD");
   }
   for (const [, block] of blocks) {
-    let data;
+    let data: unknown;
     try {
-      data = JSON.parse(block);
+      data = JSON.parse(block ?? "");
     } catch {
       fail("JSON-LD does not parse");
+      continue;
+    }
+    if (!isJsonLd(data)) {
+      fail("JSON-LD is not an object");
       continue;
     }
     if (data["@context"] !== "https://schema.org") {
       fail(`JSON-LD @context is ${String(data["@context"])}, expected https://schema.org`);
     }
-    if (!(data["@type"]?.length > 0)) {
+    if (typeof data["@type"] !== "string" || data["@type"].length === 0) {
       fail("JSON-LD has no @type");
     }
   }

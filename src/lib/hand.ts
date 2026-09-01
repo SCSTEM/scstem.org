@@ -1,6 +1,6 @@
 /**
- * The shared contract of the hand-markup register (DESIGN.md §2, §13), so the devices that draw
- * by hand (ChalkOval, ChalkUnderline, SketchArrow) do not restate it.
+ * The shared contract of the hand-markup register (DESIGN.md §2.12–2.15), so the devices that
+ * draw by hand (ChalkOval, ChalkUnderline, SketchArrow) do not restate it.
  */
 
 /** Every device ships three path variants; two adjacent instances must not share one. */

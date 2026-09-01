@@ -5,13 +5,14 @@
 
 ## Objective
 
-The chrome every page shares, with SEO correctness built in so page phases can't forget it: a `BaseLayout` whose props *force* good metadata, plus rebuilt Navbar/Footer per DESIGN.md.
+The chrome every page shares, with SEO correctness built in so page phases can't forget it: a `BaseLayout` whose props _force_ good metadata, plus rebuilt Navbar/Footer per DESIGN.md.
 
 ## Tasks
 
 ### 1. `src/components/Seo.astro`
 
 Rendered inside `<head>` by BaseLayout. Props:
+
 - `title: string` (required), `description: string` (**required** — compile error if missing), `ogImage?: ImageMetadata | string` (default: site-wide OG image), `ogType?: "website" | "article"`, `canonical?: URL` (default: `Astro.url` against `site`), `noindex?: boolean`.
 - Emits: `<title>` with template `%s | South Central STEM Collective` (bare site title on the homepage), meta description, canonical link, full Open Graph set (`og:title/description/type/url/image` + image dimensions/alt), Twitter card (`summary_large_image`), `theme-color`.
 - **No `keywords` meta** (legacy's 22-keyword list is dropped — obsolete signal).
@@ -19,6 +20,7 @@ Rendered inside `<head>` by BaseLayout. Props:
 ### 2. JSON-LD foundation — `src/lib/jsonld.ts`
 
 Typed builder helpers returning `schema.org` objects, serialized via a tiny `<JsonLd data={...} />` component (`<script type="application/ld+json">` with `JSON.stringify` — set:html safe since data is our own):
+
 - `organization()` — `@type: NGO` (nonprofit): name, alternateName "SC2", url, logo, email, address, `sameAs` socials — all from `src/data/site.ts`. Emitted on every page via BaseLayout.
 - `webSite()` — name + url, homepage only.
 - `breadcrumbs(items)` — used by nested pages (Phases 07/08).
@@ -34,6 +36,7 @@ Typed builder helpers returning `schema.org` objects, serialized via a tiny `<Js
 ### 4. Navbar — `src/components/ui/Navbar.astro` (spec: DESIGN.md §5, D26)
 
 Rebuild (reference `legacy/src/components/Navbar.tsx`, 261 LOC, for link inventory only):
+
 - Semantic `<header><nav aria-label="Main">`; **sticky on all viewports**, condensing slightly after scroll via pure CSS (scroll-driven animation with graceful no-support fallback); `background`/95 bg, bottom hairline.
 - Identity: **full-width color lockup** (`src/assets/brand/logo-color-full.svg`, ~40px) on ≥ md; **square mark alone** on mobile (brand rules: never "SC2" as a name substitute; the full name appears in page content).
 - Links: About / Programs ▾ / Sponsors / Donate + primary "Get involved" button (≥44px target). `aria-current="page"` states.
@@ -108,7 +111,7 @@ Point `src/pages/index.astro` (still placeholder) at BaseLayout so the shell is 
 - **Icons were generated with sharp, not committed by hand.** `apple-touch-icon.png` is flattened
   onto the brand ground (`#262626`) because iOS ignores transparency and would otherwise composite
   it on black.
-- **`exactOptionalPropertyTypes` forced a signature choice.** A layout that *forwards* optional
+- **`exactOptionalPropertyTypes` forced a signature choice.** A layout that _forwards_ optional
   props passes explicit `undefined`, which that flag treats as distinct from an absent prop. The
   receiving props are therefore declared `?: T | undefined` rather than filtering props at each
   call site.

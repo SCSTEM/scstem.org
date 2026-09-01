@@ -28,7 +28,7 @@ interface Props {
   ogType?: "website" | "article" | undefined;
   canonical?: URL | string | undefined;
   noindex?: boolean | undefined;
-  /** Remaps the action accent for a program page (D16). `ProgramLayout` sets this. */
+  /** Remaps the action accent for a program page. `ProgramLayout` sets this. */
   theme?: ProgramTheme | undefined;
 }
 
@@ -65,7 +65,7 @@ const { title, description, ogImage, ogImageAlt, ogType, canonical, noindex, the
        tall viewport. -->
   <body class="flex min-h-dvh flex-col">
     <a
-      class="bg-primary text-primary-foreground sr-only rounded-md px-4 py-2 font-medium no-underline focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60]"
+      class="sr-only rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground no-underline focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60]"
       data-sheet-inert
       href="#main"
     >

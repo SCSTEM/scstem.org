@@ -8,27 +8,26 @@ Pages. **Zero client-side framework runtime** — `.astro` components and plain 
 
 ## Commands
 
-| Command                        | What it does                                                               |
-| ------------------------------ | -------------------------------------------------------------------------- |
-| `mise install && pnpm install` | Set up (mise pins node + pnpm; see `docs/tooling.md`)                      |
-| `pnpm dev`                     | Dev server                                                                 |
-| `pnpm check`                   | Typecheck + lint + format check + knip. **Must pass before every commit.** |
-| `pnpm build`                   | Static build to `dist/`                                                    |
-| `pnpm fmt` / `pnpm lint:fix`   | Write formatting / autofix lint                                            |
+| Command                        | What it does                                                                             |
+| ------------------------------ | ---------------------------------------------------------------------------------------- |
+| `mise install && pnpm install` | Set up (mise pins node + pnpm; see `docs/tooling.md`)                                    |
+| `pnpm dev`                     | Dev server                                                                               |
+| `pnpm check`                   | Typecheck + lint + format check + knip + repo checks. **Must pass before every commit.** |
+| `pnpm build`                   | Static build to `dist/`                                                                  |
+| `pnpm fmt` / `pnpm lint:fix`   | Write formatting / autofix lint                                                          |
 
-`mise run <task>` forwards to the same `package.json` scripts, which are the single source of truth.
+## Toolchain
 
-## Toolchain ownership
+ESLint (typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro` with
+`jsx-a11y-strict`) lints every `.ts`, `.js`, and `.astro` file. Prettier formats everything.
+TypeScript is checked by `astro check` (`src/`, config files) and `tsc` (`functions/`, `tools/`).
+oxlint/oxfmt return when they support `.astro` (`docs/adr/0012-single-toolchain.md`).
 
-| Extensions                       | Linter                                         | Formatter |
-| -------------------------------- | ---------------------------------------------- | --------- |
-| `.ts .js .mjs .cjs .json .jsonc` | oxlint (type-aware, vendored nkzw + anti-slop) | oxfmt     |
-| `.css`                           | — (oxlint has no CSS rules)                    | oxfmt     |
-| `.astro`                         | ESLint (typed, jsx-a11y-strict)                | Prettier  |
-| `.md`                            | —                                              | Prettier  |
+The Claude Code hook in `.claude/hooks/format-lint.sh` formats and lints every file you edit and
+feeds lint failures back to you.
 
-The Claude Code hook in `.claude/hooks/format-lint.sh` runs the right pair on every file you
-edit, and feeds lint failures back to you. Do not reach for the other toolchain by hand.
+Repo-specific checks and asset pipelines are TypeScript scripts under `tools/`, run directly by
+Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script.
 
 ## Architecture
 
@@ -39,6 +38,7 @@ edit, and feeds lint failures back to you. Do not reach for the other toolchain 
 - `src/content/` — markdown content collections (sponsors, events, faq, news, robots, photos).
 - `src/data/site.ts` — org facts, external URLs, calendar and analytics IDs. No hardcoded constants.
 - `functions/` — Cloudflare Pages Functions (form submit, calendar proxy). Own tsconfig.
+- `tools/` — repo checks, asset pipelines, and CI helpers. Own tsconfig.
 - `legacy/` — the old Next.js site. **Reference only; never import from it.**
 
 ## Rules

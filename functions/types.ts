@@ -21,7 +21,7 @@ export interface TurnstileVerificationResponse {
 
 export interface TurnstileResponse {
   challenge_ts: string;
-  "error-codes": Array<string>;
+  "error-codes": string[];
   hostname: string;
   success: boolean;
 }

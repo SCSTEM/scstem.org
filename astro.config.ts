@@ -1,8 +1,7 @@
-import { readFileSync } from "node:fs";
-
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
+import { readFileSync } from "node:fs";
 
 // Loaded through jiti, and this module imports nothing from `astro:*`, so the config can read the
 // same origin everything else derives canonical and OG URLs from.
@@ -12,14 +11,12 @@ const outDir = "./dist";
 
 /**
  * A URL that is both in the sitemap and `noindex` is a "Submitted URL marked 'noindex'" error in
- * Search Console, so the two have to agree — and the page itself is the only honest source of
- * which it is. `/styleguide` sets `noindex` through the `Seo` prop; an event retired with
- * `hidden: true` (D17) becomes a redirect page Astro emits with the same tag. Reading the emitted
- * HTML covers both, and anything else that grows a `noindex`, without a second list to maintain.
+ * Search Console, so the two have to agree, and the emitted page is the only source of which it
+ * is: `/styleguide` sets `noindex` through the `Seo` prop, and a retired event becomes a redirect
+ * page Astro emits with the same tag. Reading the HTML covers both without a second list.
  *
  * Safe to read here: `@astrojs/sitemap` filters in `astro:build:done`, after every page is on
- * disk. `astro:content` is *not* reachable from the config, which is why the events collection
- * cannot be consulted directly.
+ * disk. `astro:content` is not reachable from the config, so the collection cannot be consulted.
  */
 const isIndexable = (page: string): boolean => {
   const { pathname } = new URL(page);
@@ -47,7 +44,7 @@ export default defineConfig({
         default: "1x00000000000000000000AA",
       }),
       /**
-       * Cloudflare Web Analytics' beacon token (D21). Public by design — it ships in the page —
+       * Cloudflare Web Analytics' beacon token. Public by design — it ships in the page —
        * and empty by default, which is how a preview or a fresh clone runs with no beacon at all.
        * The production value is set in the Pages dashboard, beside the Turnstile keys; until it
        * is, GA4 is the only analytics the site has (`docs/analytics.md`).

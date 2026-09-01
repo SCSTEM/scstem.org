@@ -93,25 +93,19 @@ faq:
 `-05:00` in winter. That offset is what makes the date correct for someone reading in another
 timezone, and it feeds the event's structured data.
 
-`description` has a length budget: `tools/checks/verify-meta.mjs` fails the build over 160
-characters, because that is roughly where Google stops printing one, and under 50 because a
-one-liner tells a searcher nothing. It also has to be **unique across the site** — two pages with
-the same description is the same check's other failure. Write it for someone deciding whether to
-click, not as a summary of the page.
+`description` has a length budget: `tools/checks/verify-meta.ts` fails CI over 160 characters,
+because that is roughly where Google stops printing one, and under 50 because a one-liner tells a
+searcher nothing. It also has to be **unique across the site**. Write it for someone deciding
+whether to click, not as a summary of the page.
 
-**An event retires itself once its `end` has passed.** The first deploy after the event ends is
-the one that does it: the page redirects to its parent, and the URL leaves the sitemap and
-`/llms.txt` together. Nothing to remember, and nothing to clean up — dating next season's entry
-forward brings the page straight back.
+**An event retires itself once its `end` has passed.** On the first deploy after the event ends,
+the page redirects to its parent and the URL leaves the sitemap and `/llms.txt`. Dating next
+season's entry forward brings the page straight back.
 
-`hidden: true` is still there, for retiring one _early_ or one that has no `end` at all. An entry
-with no `end` never retires on its own, for the same reason the countdown never calls it passed:
-nothing in the entry says when the event is over, and picking a duration would invent one. That is
-why `end` is worth always setting.
-
-Give every event an `end`. The page counts down to `start`, says "Happening now" from then until
-`end`, and "This event has passed" after it — with no `end` it never reaches the last of those,
-because nothing in the file says when the event is over.
+**Give every event an `end`.** The page counts down to `start`, says "Happening now" from then
+until `end`, and "This event has passed" after it. An entry with no `end` never reaches that last
+state and never retires on its own: nothing in the file says when the event is over, and picking
+a duration would invent one. `hidden: true` is for retiring an event _early_, or one with no `end`.
 
 `heroImage` is optional: without one the page uses a photo of the event's program. With one,
 `heroImageAlt` is required and the build fails without it (`docs/adr/0004`).
@@ -125,16 +119,16 @@ Location is **omitted** for anything at the workspace: it defaults to the addres
 event, which also makes "off-site" visible at a glance.
 
 `faq` lists FAQ slugs to show on the page, in the order given. A slug that does not match a file
-fails `pnpm check` (`tools/checks/content-references.mjs`) — Astro alone only logs it.
+fails `pnpm check` (`tools/checks/content-references.ts`) — Astro alone only logs it.
 
-### Hide an event after it passes
+### Hide an event early
 
 ```md
 hidden: true
 ```
 
 The page stops rendering and sends anyone who lands on it to its parent — `/` for the open house,
-`/programs/frc` for kickoff. Flip it back next season and the page returns unchanged.
+`/programs/frc` for kickoff. Flip it back and the page returns unchanged.
 
 ### Create a new event
 
@@ -200,8 +194,8 @@ different jobs, so they are different fields.
 
 ## News posts
 
-The `news` collection is scaffolded but has no routes yet (that is phase-2 work). Copy
-`src/content/news/template.md`, and leave the template itself as `draft: true`.
+The `news` collection is scaffolded but has no routes yet. Copy `src/content/news/template.md`,
+and leave the template itself as `draft: true`.
 
 ## Where things live
 

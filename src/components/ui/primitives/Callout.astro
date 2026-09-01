@@ -26,7 +26,7 @@ const { reference, side = "left", as: Tag = "p", class: className } = Astro.prop
 
 <Tag
   class={cn(
-    "spec-label flex items-center gap-2 text-muted",
+    "flex items-center gap-2 spec-label text-muted",
     side === "right" && "flex-row-reverse text-right",
     className,
   )}
@@ -36,6 +36,6 @@ const { reference, side = "left", as: Tag = "p", class: className } = Astro.prop
     <line stroke="currentColor" stroke-width="1" x1="3" x2="32" y1="4" y2="4"></line>
   </svg>
   <span>
-    {reference !== undefined && <>{reference} &mdash; </>}<slot />
+    {reference !== undefined && `${reference} — `}<slot />
   </span>
 </Tag>

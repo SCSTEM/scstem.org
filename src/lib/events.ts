@@ -15,11 +15,11 @@ const inService = (entry: CollectionEntry<"events">): boolean =>
   !entry.data.hidden && !hasPassed(entry.data.end);
 
 /**
- * @public Consumed by the sitemap filter (plan/10).
+ * @public Consumed by `/llms.txt`.
  *
  * Every event whose page renders, in no particular order.
  */
-export const getVisibleEvents = async (): Promise<Array<CollectionEntry<"events">>> =>
+export const getVisibleEvents = async (): Promise<CollectionEntry<"events">[]> =>
   (await getCollection("events")).filter(inService);
 
 /**

@@ -5,13 +5,11 @@ import { Image } from "astro:assets";
 
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Carousel from "@/components/ui/primitives/Carousel.astro";
-import { cn } from "@/lib/cn";
 import { PHOTO_QUALITY } from "@/lib/images";
 
 /**
  * A run of team photos as a scroll-snap track, oldest first — the "photo groupings as
- * interleaved timeline sections" the about page is built from (DESIGN.md §5). Replaces the two
- * legacy sidebar rails and their fourteen hardcoded image imports.
+ * interleaved timeline sections" the about page is built from (DESIGN.md §5).
  *
  * The photos are dense and repeating, so they take the plain `radius-lg` treatment of §7 rather
  * than the 2px `media-frame`, which §2.4 reserves for singular feature media.
@@ -21,14 +19,14 @@ type TeamPhoto = CollectionEntry<"frcTeamPhotos"> | CollectionEntry<"fllTeamPhot
 interface Props {
   /** Names the track for assistive tech, so two timelines on a page are distinguishable. */
   label: string;
-  photos: ReadonlyArray<TeamPhoto>;
+  photos: readonly TeamPhoto[];
   class?: string;
 }
 
 const { label, photos, class: className } = Astro.props;
 ---
 
-<Carousel class={cn(className)} itemBasis="42%" label={label}>
+<Carousel class={className} itemBasis="42%" label={label}>
   {
     photos.map(({ data }) => (
       <figure>

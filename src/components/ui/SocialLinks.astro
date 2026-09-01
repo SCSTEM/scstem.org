@@ -1,0 +1,44 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import Button from "@/components/ui/primitives/Button.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import { site, socials } from "@/data/site";
+
+/**
+ * The row of ghost icon buttons for `socials` from `src/data/site.ts`, optionally ending with an
+ * email link of the same shape. Each icon is the sole carrier of meaning, so it carries the
+ * link's label (DESIGN.md §8).
+ */
+interface Props extends Omit<HTMLAttributes<"ul">, "class"> {
+  /** Appends a `mailto:` link for `site.email` after the socials. */
+  email?: boolean;
+  class?: string;
+}
+
+const { email = false, class: className, ...attrs } = Astro.props;
+
+const links = email
+  ? [...socials, { label: `Email ${site.name}`, href: `mailto:${site.email}`, icon: "mail" }]
+  : socials;
+
+const isExternal = (href: string): boolean => href.startsWith("http");
+---
+
+<ul class:list={["flex gap-2", className]} {...attrs}>
+  {
+    links.map((link) => (
+      <li>
+        <Button
+          class="hover:bg-card-hover"
+          href={link.href}
+          rel={isExternal(link.href) ? "noopener" : undefined}
+          size="icon"
+          variant="ghost"
+        >
+          <Icon label={link.label} name={link.icon} size={24} />
+        </Button>
+      </li>
+    ))
+  }
+</ul>

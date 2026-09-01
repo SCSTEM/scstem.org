@@ -71,6 +71,7 @@ Use the content-layer `glob()` loader and the `image()` schema helper so logos/p
 ### 2. `src/data/site.ts`
 
 Typed constants module (single import site for site facts):
+
 - Org: name ("South Central STEM Collective"), short name (SC2), legal/EIN if present in legacy footer, address, contact email, social URLs (from `legacy/src/components/Footer.tsx`).
 - External URLs from `legacy/data/config.ts`: donate, wishlist, sponsor packet, get-involved form.
 - Google Calendar IDs (from `legacy/src/app/calendar/[name]/page.tsx`) keyed by `frc` / `sc2`.
@@ -150,8 +151,8 @@ Add a lint restriction (oxlint `no-restricted-imports` or a small check script i
   Sponsor logos, team photos, the five robot photos, two event heroes and the two robot wordmarks
   live in `src/assets/`. `openhouse-header.webp` went back to `public/image`: nothing references
   it, and Phase 09's prune works from that inventory. The masters were camera-resolution — up to
-  6000px and near-lossless — so `<Image>` derived variants from them that came out *larger than
-  the source* and cost ~22s of sharp time per build. `tools/assets/optimize-sources.mjs`
+  6000px and near-lossless — so `<Image>` derived variants from them that came out _larger than
+  the source_ and cost ~22s of sharp time per build. `tools/assets/optimize-sources.mjs`
   (plan/09 §2, `pnpm assets:optimize`) capped them at 2560px: **17.8 MB saved across 12 files.**
   The full `public/` inventory and prune is still Phase 09's job.
 - The **schema guardrail is review guidance**, not a lint rule (the brief allowed either): the

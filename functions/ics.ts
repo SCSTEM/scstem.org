@@ -1,7 +1,7 @@
 import type { CalendarEvent } from "@/types";
 
 /**
- * Just enough iCalendar to render an agenda from a public Google Calendar feed (D19). Not a
+ * Just enough iCalendar to render an agenda from a public Google Calendar feed. Not a
  * general RFC 5545 implementation: it reads `VEVENT`s, resolves their times, expands the
  * recurrence rules Google actually emits for a team calendar, and stops there.
  *
@@ -17,14 +17,11 @@ const MAX_OCCURRENCES = 5000;
  * Content lines may be folded across several physical lines, continued by a leading space or
  * tab (RFC 5545 §3.1). Unfolding has to happen before anything else is read.
  */
-const unfold = (feed: string): Array<string> => {
-  const lines: Array<string> = [];
+const unfold = (feed: string): string[] => {
+  const lines: string[] = [];
   for (const raw of feed.replaceAll("\r\n", "\n").split("\n")) {
-    if ((raw.startsWith(" ") || raw.startsWith("\t")) && lines.length > 0) {
-      lines[lines.length - 1] += raw.slice(1);
-    } else {
-      lines.push(raw);
-    }
+    const previous = raw.startsWith(" ") || raw.startsWith("\t") ? lines.pop() : undefined;
+    lines.push(previous === undefined ? raw : previous + raw.slice(1));
   }
   return lines;
 };
@@ -139,7 +136,7 @@ const parseMoment = (line: Line): Moment | undefined => {
   );
 
   const allDay = hour === undefined;
-  const zone = line.params["TZID"];
+  const zone = line.params.TZID;
   if (allDay || utc === "Z" || zone === undefined) {
     // A date, an explicit UTC stamp, and a floating time all read as written.
     return { allDay, at: wall, wall, zone: undefined };
@@ -168,15 +165,15 @@ const resolver =
   };
 
 /** Weekday codes in `BYDAY`, indexed to match `Date#getUTCDay`. */
-const DAYS: ReadonlyArray<string> = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
+const DAYS: readonly string[] = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
 
 /** The weekday a `BYDAY` code names, or -1 — no assertion, so an unknown code stays a miss. */
 const dayIndex = (code: string): number => DAYS.indexOf(code);
 
 interface Rule {
   /** `MO`, `TU`, … for weekly; `2TU`, `-1FR`, … for monthly. */
-  byDay: Array<string>;
-  byMonthDay: Array<number>;
+  byDay: string[];
+  byMonthDay: number[];
   count?: number | undefined;
   freq: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
   interval: number;
@@ -225,8 +222,8 @@ const expand = (
   start: number,
   windowEnd: number,
   toInstant: (wall: number) => number,
-): Array<number> => {
-  const occurrences: Array<number> = [];
+): number[] => {
+  const occurrences: number[] = [];
   const first = new Date(start);
   const time = {
     hour: first.getUTCHours(),
@@ -251,7 +248,7 @@ const expand = (
    */
   for (let period = 0; period < MAX_OCCURRENCES; period += 1) {
     const cursor = new Date(start);
-    let dates: Array<number>;
+    let dates: number[];
 
     if (rule.freq === "DAILY") {
       cursor.setUTCDate(cursor.getUTCDate() + period * rule.interval);
@@ -310,7 +307,7 @@ const withTime = (date: number, time: TimeOfDay): number => {
 };
 
 /** The dates a monthly or yearly rule selects inside the month `cursor` starts. */
-const monthDates = (cursor: Date, rule: Rule, first: Date): Array<number> => {
+const monthDates = (cursor: Date, rule: Rule, first: Date): number[] => {
   const year = cursor.getUTCFullYear();
   const month = cursor.getUTCMonth();
   const length = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
@@ -331,7 +328,7 @@ const monthDates = (cursor: Date, rule: Rule, first: Date): Array<number> => {
         return [];
       }
 
-      const matches: Array<number> = [];
+      const matches: number[] = [];
       for (let day = 1; day <= length; day += 1) {
         const at = Date.UTC(year, month, day);
         if (new Date(at).getUTCDay() === weekday) {
@@ -356,7 +353,7 @@ const monthDates = (cursor: Date, rule: Rule, first: Date): Array<number> => {
 interface RawEvent {
   description: string;
   end?: Moment | undefined;
-  excluded: Array<number>;
+  excluded: number[];
   location: string;
   /** Set on an event that overrides one occurrence of its series. */
   recurrenceId?: number | undefined;
@@ -367,8 +364,8 @@ interface RawEvent {
   uid: string;
 }
 
-const parseEvents = (feed: string): Array<RawEvent> => {
-  const events: Array<RawEvent> = [];
+const parseEvents = (feed: string): RawEvent[] => {
+  const events: RawEvent[] = [];
   let current: RawEvent | undefined;
 
   for (const raw of unfold(feed)) {
@@ -454,7 +451,7 @@ const parseEvents = (feed: string): Array<RawEvent> => {
  * @param from Start of the window, epoch milliseconds.
  * @param days How far ahead to look.
  */
-export const upcomingEvents = (feed: string, from: number, days: number): Array<CalendarEvent> => {
+export const upcomingEvents = (feed: string, from: number, days: number): CalendarEvent[] => {
   const until = from + days * 24 * 60 * 60 * 1000;
   const parsed = parseEvents(feed).filter((event) => event.status !== "CANCELLED");
 
@@ -469,7 +466,7 @@ export const upcomingEvents = (feed: string, from: number, days: number): Array<
     ),
   );
 
-  const results: Array<CalendarEvent> = [];
+  const results: CalendarEvent[] = [];
 
   for (const event of parsed) {
     const { start } = event;

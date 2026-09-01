@@ -22,17 +22,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { type Breadcrumb, breadcrumbs, event as eventJsonLd, faqPage } from "@/lib/jsonld";
 
 /**
- * One layout for every seasonal event (D17). `/openhouse` and `/programs/frc/kickoff` used to be
- * a fork of the homepage and a fork of the FRC page; both are now this component reading an
- * `events` entry, so a new season is an edit to one markdown file.
- *
- * Nothing here is specific to either event: the hero, the date, the location, the media links and
- * the questions are all frontmatter, and the long-form copy is the entry's body.
+ * One layout for every seasonal event, so a new season is an edit to one markdown file: the hero,
+ * the date, the location, the media links and the questions are frontmatter, and the long-form
+ * copy is the entry's body.
  */
 interface Props {
   event: CollectionEntry<"events">;
   /** The trail above this page. Home and the page itself are added here. */
-  trail?: ReadonlyArray<Breadcrumb>;
+  trail?: readonly Breadcrumb[];
 }
 
 /** The hero for an event that carries no photo of its own, so a new event needs no image work. */
@@ -55,7 +52,7 @@ const { event, trail = [] } = Astro.props;
 const { data } = event;
 const { Content } = await render(event);
 
-/** `sc2` is the default look and has no `[data-theme]` block (D16). */
+/** `sc2` is the default look and has no `[data-theme]` block. */
 const theme = data.program === "sc2" ? undefined : data.program;
 
 if (data.heroImage !== undefined && data.heroImageAlt === undefined) {
@@ -70,7 +67,7 @@ const hero =
 const faqEntries = data.faq === undefined ? [] : await getEntries(data.faq);
 
 /**
- * The two flat arrays the schema pairs by index (D2). A mismatch would silently drop a link's
+ * The two flat arrays the schema pairs by index. A mismatch would silently drop a link's
  * label, so it fails the build the schema comment promises it fails on.
  */
 const hintLabels = data.hintLabels ?? [];
@@ -185,13 +182,13 @@ const details = [
           {media.map(({ icon, label, url }) => (
             <li>
               <a
-                class="pocket pocket-interactive flex items-center gap-3 px-5 py-4 no-underline"
+                class="flex items-center gap-3 pocket pocket-interactive px-5 py-4 no-underline"
                 href={url}
                 rel="noopener"
               >
-                <Icon class="text-primary-bright shrink-0" name={icon} size={24} />
-                <span class="text-body text-foreground flex-1 font-medium">{label}</span>
-                <Icon class="text-muted shrink-0" name="external-link" size={20} />
+                <Icon class="shrink-0 text-primary-bright" name={icon} size={24} />
+                <span class="flex-1 font-medium text-body text-foreground">{label}</span>
+                <Icon class="shrink-0 text-muted" name="external-link" size={20} />
               </a>
             </li>
           ))}

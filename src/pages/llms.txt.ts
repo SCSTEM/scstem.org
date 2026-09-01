@@ -31,7 +31,7 @@ const absolute = (href: string): string => new URL(href, site.url).href;
  * A section with no entries is omitted rather than rendered as a bare heading — events retire
  * themselves, so "Events" is empty out of season.
  */
-const section = (heading: string, entries: ReadonlyArray<Entry>): string | undefined =>
+const section = (heading: string, entries: readonly Entry[]): string | undefined =>
   entries.length === 0
     ? undefined
     : [

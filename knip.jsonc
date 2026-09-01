@@ -1,32 +1,15 @@
 {
   "$schema": "./node_modules/knip/schema.json",
-  "entry": ["src/pages/**", "functions/**"],
-  "project": ["**/*.{ts,tsx,js,mjs,cjs,astro}"],
-  "ignore": ["legacy/**", "tools/lint/anti-slop/**"],
-
-  // fontconfig's cache tool, called by the one-time OG font setup. Present on any machine
-  // with fontconfig, which is the only kind that can render the cards at all.
+  // Cloudflare Pages Functions are file-routed, which knip has no plugin for.
+  "entry": ["functions/**/*.ts"],
+  "ignore": ["legacy/**"],
+  // fontconfig's cache tool, run by the OG font setup on machines that can render the cards.
   "ignoreBinaries": ["fc-cache"],
-
-  // Referenced only from CSS
+  // Referenced only from CSS.
   "ignoreDependencies": [
-    "tailwindcss",
     "@fontsource-variable/inter",
     "@fontsource-variable/orbitron",
     "@fontsource-variable/source-code-pro",
-    "@fontsource/architects-daughter"
+    "@fontsource/architects-daughter",
   ],
-
-  "rules": {
-    "files": "error",
-    "dependencies": "error",
-    "devDependencies": "error",
-    "optionalPeerDependencies": "error",
-    "unlisted": "error",
-    "binaries": "error",
-    "unresolved": "error",
-    "exports": "error",
-    "types": "error",
-    "duplicates": "error"
-  }
 }

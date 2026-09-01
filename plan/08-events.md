@@ -38,8 +38,8 @@ Extend `docs/content.md`: "Update the open house for a new season" (edit dates/c
 
 ## Acceptance criteria
 
-- [x] Both URLs render from collection data; zero copy hardcoded in the route files; visible-copy parity with legacy pages. *(Deviations listed under Implementation notes.)*
-- [x] Flipping `hidden: true` on an entry removes the page content (redirect) with no code change; flipping back restores it. *(Verified by building both ways; the built page is Astro's meta-refresh stub, which also carries `noindex` and a canonical to the parent. The sitemap still lists a hidden event's URL — that filter is plan/10's, and `getVisibleEvents()` is here for it.)*
+- [x] Both URLs render from collection data; zero copy hardcoded in the route files; visible-copy parity with legacy pages. _(Deviations listed under Implementation notes.)_
+- [x] Flipping `hidden: true` on an entry removes the page content (redirect) with no code change; flipping back restores it. _(Verified by building both ways; the built page is Astro's meta-refresh stub, which also carries `noindex` and a canonical to the parent. The sitemap still lists a hidden event's URL — that filter is plan/10's, and `getVisibleEvents()` is here for it.)_
 - [x] Event + FAQPage JSON-LD validate (Google Rich Results test, manual, once per template). **Validated against the schema.org shapes offline; the Rich Results test itself needs a public URL, so it runs on the preview deploy.** Both objects are emitted and well-formed in the built HTML.
 - [x] Countdown shows correct absolute date without JS; upgrades with JS; handles passed events.
 - [x] Program theming correct (kickoff = frc green).
