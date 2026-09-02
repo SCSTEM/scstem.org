@@ -6,11 +6,4 @@
   "ignore": ["legacy/**", "tools/lint/anti-slop/shared/**"],
   // fontconfig's cache tool, run by the OG font setup on machines that can render the cards.
   "ignoreBinaries": ["fc-cache"],
-  // Referenced only from CSS.
-  "ignoreDependencies": [
-    "@fontsource-variable/inter",
-    "@fontsource-variable/orbitron",
-    "@fontsource-variable/source-code-pro",
-    "@fontsource/architects-daughter",
-  ],
 }

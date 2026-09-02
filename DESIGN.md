@@ -142,7 +142,7 @@ Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 | `small`   | 0.875rem              | 1.5         | Inter 400/500                                                        |
 | `label`   | 0.6875–0.75rem        | 1.4         | Source Code Pro 600, +0.05em tracking, uppercase (spec labels/chips) |
 
-- **Inter ships with its weight axis trimmed to 400–700** and cannot render heavier: the axis this table does not use was 12 KB of critical-path font (`docs/adr/0011-inter-weight-axis.md`). Widening the range is a `pnpm assets:fonts` change, not just a utility class.
+- **Inter ships with its weight axis trimmed to 400–700** and cannot render heavier: the axis this table does not use was 12 KB of critical-path font (`docs/adr/0011-inter-weight-axis.md`). Widening the range means re-instancing the committed file (`docs/adr/0014-vendored-fonts.md`), not just a utility class.
 - Eyebrow labels: Orbitron 500, 12px, uppercase, `+0.08em` tracking, `primary` or `muted` — Orbitron's one all-caps use; SCP `label` is the other sanctioned caps.
 - Prose measure: 65–75ch (`max-w-prose`).
 - Implementation note: `body` names both a color (§2) and a size (this table). Tailwind resolves

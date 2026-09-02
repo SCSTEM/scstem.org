@@ -10,7 +10,7 @@
  */
 import { execFileSync } from "node:child_process";
 
-const SOURCE = "node_modules/@fontsource-variable/orbitron/files/orbitron-latin-wght-normal.woff2";
+const SOURCE = "src/styles/fonts/orbitron-latin-wght-normal.woff2";
 
 execFileSync(
   "python3",

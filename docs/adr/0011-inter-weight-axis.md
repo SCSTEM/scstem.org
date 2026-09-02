@@ -1,6 +1,7 @@
 # 0011 — Inter ships with its weight axis trimmed to 400–700
 
-- **Status:** accepted
+- **Status:** accepted; amended by [0014](0014-vendored-fonts.md), which retires the script and
+  vendors the file
 - **Date:** 2026-09-01
 
 ## Context

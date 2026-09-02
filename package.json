@@ -17,16 +17,11 @@
     "check:content": "node tools/checks/content-references.ts",
     "check:meta": "node tools/checks/verify-meta.ts",
     "assets:optimize": "node tools/assets/optimize-sources.ts",
-    "assets:fonts": "node tools/assets/font-subset.ts",
     "assets:og": "node tools/assets/og-cards.ts",
     "assets:og-fonts": "node tools/assets/og-fonts.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.3",
-    "@fontsource-variable/inter": "5.3.0",
-    "@fontsource-variable/orbitron": "5.3.0",
-    "@fontsource-variable/source-code-pro": "5.3.0",
-    "@fontsource/architects-daughter": "5.3.0",
     "@tailwindcss/vite": "4.3.3",
     "astro": "7.2.6",
     "class-variance-authority": "0.7.1",
