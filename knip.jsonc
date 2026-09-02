@@ -4,6 +4,4 @@
   "entry": ["functions/**/*.ts"],
   // tools/lint/anti-slop/shared is vendored upstream source (see its VENDOR.md).
   "ignore": ["legacy/**", "tools/lint/anti-slop/shared/**"],
-  // fontconfig's cache tool, run by the OG font setup on machines that can render the cards.
-  "ignoreBinaries": ["fc-cache"],
 }

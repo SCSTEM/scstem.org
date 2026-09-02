@@ -1,6 +1,7 @@
 # 0010 — Social cards are committed artifacts from one template
 
-- **Status:** accepted
+- **Status:** accepted; amended by [0015](0015-og-cards-satori.md), which replaces the renderer
+  and removes the font setup step
 - **Date:** 2026-09-01
 
 ## Context

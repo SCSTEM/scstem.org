@@ -17,8 +17,7 @@
     "check:content": "node tools/checks/content-references.ts",
     "check:meta": "node tools/checks/verify-meta.ts",
     "assets:optimize": "node tools/assets/optimize-sources.ts",
-    "assets:og": "node tools/assets/og-cards.ts",
-    "assets:og-fonts": "node tools/assets/og-fonts.ts"
+    "assets:og": "node tools/assets/og-cards.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.3",
@@ -32,6 +31,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@cloudflare/workers-types": "5.20260825.1",
+    "@resvg/resvg-js": "2.6.2",
     "@tabler/icons": "3.46.0",
     "@types/node": "26.3.0",
     "@typescript-eslint/utils": "8.68.0",
@@ -44,6 +44,7 @@
     "prettier": "3.9.6",
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-tailwindcss": "0.8.1",
+    "satori": "0.33.4",
     "typescript": "6.0.3",
     "typescript-eslint": "8.68.0"
   }

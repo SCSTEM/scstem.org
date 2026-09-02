@@ -41,7 +41,6 @@ TypeScript scripts run directly by Node (type stripping, no build step), each be
 | `check:meta`      | Every built page's head: unique title/description, og:image | CI, after build |
 | `assets:optimize` | Downscale and re-encode camera masters in `src/assets/`     | by hand         |
 | `assets:og`       | Render the OG cards in `src/assets/og/`                     | by hand         |
-| `assets:og-fonts` | Register the OG card fonts with fontconfig (one-time)       | by hand         |
 
 Only erasable TypeScript syntax (no enums, namespaces, or parameter properties);
 `tools/tsconfig.json` enforces it.

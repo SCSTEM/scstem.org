@@ -1,17 +1,19 @@
 /**
- * Renders the social cards (plan/10 §3, DESIGN.md §7): one template — photograph, scrim, eyebrow,
- * Orbitron title, lockup — at 1200x630, in the seven variants the site links to.
+ * Renders the social cards (DESIGN.md §7): one template — photograph, scrim, eyebrow, Orbitron
+ * title, lockup — at 1200x630, in the seven variants the site links to.
  *
- * Run by hand, from the repo root, and commit the output. Orbitron has to be a system font first,
- * because librsvg resolves `font-family` through fontconfig and cannot read the woff2 the site
- * ships:
+ * Satori lays the card out and embeds the type from `./fonts/Orbitron-Bold.ttf`, resvg
+ * rasterizes it, and sharp writes the JPEG. Nothing is looked up on the machine, so this runs
+ * anywhere `pnpm install` has. By hand, from the repo root; commit the output:
  *
- *     node tools/assets/og-fonts.ts      # instances the variable woff2 into ~/.fonts
- *     node tools/assets/og-cards.ts
+ *     pnpm assets:og
  *
- * `docs/adr/0010-og-cards.md` covers why these are committed artifacts rather than a build step.
+ * `docs/adr/0010-og-cards.md` covers why these are committed artifacts rather than a build step,
+ * and `docs/adr/0015-og-cards-satori.md` the renderer.
  */
+import { Resvg } from "@resvg/resvg-js";
 import { readFile, writeFile } from "node:fs/promises";
+import satori from "satori";
 import sharp from "sharp";
 
 const WIDTH = 1200;
@@ -29,10 +31,15 @@ const color = {
   fll: "#fb923c",
 };
 
-const FONT = "OGOrbitron Bold";
+/** A static 700 instance from Google Fonts: Satori reads TTF/OTF/WOFF and no variable axis. */
+const FONT_FILE = "tools/assets/fonts/Orbitron-Bold.ttf";
+const FONT = "Orbitron";
 /** The monochrome light lockup, which is the variant a dark ground calls for (DESIGN.md §7). */
 const LOCKUP = "src/assets/brand/logo-white-full.svg";
 const LOCKUP_WIDTH = 300;
+
+const PAD = 72;
+const COLUMN = 760;
 
 interface Card {
   out: string;
@@ -94,80 +101,163 @@ const cards: Card[] = [
   },
 ];
 
-const escape = (text: string): string =>
-  text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+/** The CSS Satori is given; every container declares `display: flex`, as Satori requires. */
+interface Style {
+  position?: "absolute" | "relative";
+  display?: "flex";
+  flexDirection?: "column";
+  justifyContent?: "center";
+  top?: number;
+  left?: number;
+  bottom?: number;
+  width?: number;
+  height?: number;
+  backgroundColor?: string;
+  backgroundImage?: string;
+  color?: string;
+  fontFamily?: string;
+  fontSize?: number;
+  fontWeight?: number;
+  lineHeight?: number;
+  letterSpacing?: number;
+  marginBottom?: number;
+}
 
-/**
- * Orbitron is wide, so a long title has to wrap. 0.62em per character is the measured average
- * advance for this face at these sizes — close enough to break lines that fit the copy column.
- */
-const wrap = (title: string, size: number, limit: number): string[] => {
-  const perLine = Math.floor(limit / (size * 0.62));
-  const lines: string[] = [];
-  let current = "";
-  for (const word of title.split(" ")) {
-    const candidate = current === "" ? word : `${current} ${word}`;
-    if (candidate.length > perLine && current !== "") {
-      lines.push(current);
-      current = word;
-    } else {
-      current = candidate;
-    }
-  }
-  lines.push(current);
-  return lines;
+/** Satori's element shape without a JSX runtime: the two element kinds this template uses. */
+interface Element {
+  type: "div" | "img";
+  props: {
+    style: Style;
+    src?: string;
+    width?: number;
+    height?: number;
+    children?: Element[] | string | undefined;
+  };
+}
+
+const div = (style: Style, children?: Element[] | string): Element => ({
+  type: "div",
+  props: { style, children },
+});
+
+const img = (src: string, style: Style, width: number, height: number): Element => ({
+  type: "img",
+  props: { src, style, width, height },
+});
+
+const dataUri = (mime: string, data: Buffer): string =>
+  `data:${mime};base64,${data.toString("base64")}`;
+
+const rgba = (hex: string, alpha: number): string => {
+  const [r, g, b] = [1, 3, 5].map((i) => Number.parseInt(hex.slice(i, i + 2), 16));
+  return `rgba(${String(r)}, ${String(g)}, ${String(b)}, ${String(alpha)})`;
 };
 
-const PAD = 72;
-const COLUMN = 760;
+const scrim = `linear-gradient(to right, ${rgba(color.background, 1)} 0%, ${rgba(color.background, 0.94)} 50%, ${rgba(color.background, 0.25)} 100%)`;
 
-const overlay = (card: Card): string => {
-  const size = card.title.length > 24 ? 58 : 72;
-  const lines = wrap(card.title, size, COLUMN);
-  const blockHeight = lines.length * size * 1.18;
-  const top = (HEIGHT - blockHeight) / 2 + size * 0.9;
+const font = await readFile(FONT_FILE);
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${String(WIDTH)}" height="${String(HEIGHT)}">
-  <defs>
-    <linearGradient id="scrim" x1="0" x2="1" y1="0" y2="0">
-      <stop offset="0" stop-color="${color.background}" stop-opacity="1"/>
-      <stop offset="0.5" stop-color="${color.background}" stop-opacity="0.94"/>
-      <stop offset="1" stop-color="${color.background}" stop-opacity="0.25"/>
-    </linearGradient>
-  </defs>
-  <rect width="${String(WIDTH)}" height="${String(HEIGHT)}" fill="url(#scrim)"/>
-  <rect x="0" y="0" width="10" height="${String(HEIGHT)}" fill="${card.accent}"/>
-  <text x="${String(PAD)}" y="${String(top - size * 0.95)}" font-family="${FONT}" font-size="22"
-        letter-spacing="3" fill="${card.accent}">${escape(card.eyebrow.toUpperCase())}</text>
-  ${lines
-    .map(
-      (line, index) =>
-        `<text x="${String(PAD)}" y="${String(top + index * size * 1.18)}" font-family="${FONT}" ` +
-        `font-size="${String(size)}" fill="${color.foreground}">${escape(line)}</text>`,
-    )
-    .join("\n  ")}
-  <text x="${String(PAD)}" y="${String(HEIGHT - PAD + 6)}" font-family="${FONT}" font-size="20" fill="${color.muted}">scstem.org</text>
-</svg>`;
-};
-
-const lockup = await sharp(await readFile(LOCKUP))
+const lockupPng = await sharp(await readFile(LOCKUP))
   .resize({ width: LOCKUP_WIDTH })
   .png()
-  .toBuffer();
+  .toBuffer({ resolveWithObject: true });
+const lockup = img(
+  dataUri("image/png", lockupPng.data),
+  { position: "absolute", left: PAD, top: PAD - 10 },
+  lockupPng.info.width,
+  lockupPng.info.height,
+);
 
-for (const card of cards) {
-  const photo = await sharp(card.photo)
+const card = (spec: Card, photo: Buffer): Element => {
+  const size = spec.title.length > 24 ? 58 : 72;
+  return div(
+    {
+      position: "relative",
+      display: "flex",
+      width: WIDTH,
+      height: HEIGHT,
+      backgroundColor: color.background,
+      fontFamily: FONT,
+      fontWeight: 700,
+    },
+    [
+      img(dataUri("image/jpeg", photo), { position: "absolute", left: 0, top: 0 }, WIDTH, HEIGHT),
+      div({
+        position: "absolute",
+        display: "flex",
+        left: 0,
+        top: 0,
+        width: WIDTH,
+        height: HEIGHT,
+        backgroundImage: scrim,
+      }),
+      div({
+        position: "absolute",
+        display: "flex",
+        left: 0,
+        top: 0,
+        width: 10,
+        height: HEIGHT,
+        backgroundColor: spec.accent,
+      }),
+      lockup,
+      div(
+        {
+          position: "absolute",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          left: PAD,
+          top: 0,
+          width: COLUMN,
+          height: HEIGHT,
+        },
+        [
+          div(
+            {
+              display: "flex",
+              fontSize: 22,
+              letterSpacing: 3,
+              color: spec.accent,
+              marginBottom: 6,
+            },
+            spec.eyebrow.toUpperCase(),
+          ),
+          div(
+            { display: "flex", fontSize: size, lineHeight: 1.18, color: color.foreground },
+            spec.title,
+          ),
+        ],
+      ),
+      div(
+        {
+          position: "absolute",
+          display: "flex",
+          left: PAD,
+          bottom: PAD - 12,
+          fontSize: 20,
+          color: color.muted,
+        },
+        "scstem.org",
+      ),
+    ],
+  );
+};
+
+for (const spec of cards) {
+  const photo = await sharp(spec.photo)
     .resize({ width: WIDTH, height: HEIGHT, fit: "cover", position: "attention" })
+    .jpeg({ quality: 90 })
     .toBuffer();
 
-  const image = await sharp(photo)
-    .composite([
-      { input: Buffer.from(overlay(card)), top: 0, left: 0 },
-      { input: lockup, top: PAD - 10, left: PAD },
-    ])
-    .jpeg({ quality: QUALITY, mozjpeg: true })
-    .toBuffer();
+  const svg = await satori(card(spec, photo), {
+    width: WIDTH,
+    height: HEIGHT,
+    fonts: [{ name: FONT, data: font, weight: 700, style: "normal" }],
+  });
+  const png = new Resvg(svg, { fitTo: { mode: "width", value: WIDTH } }).render().asPng();
+  const image = await sharp(png).jpeg({ quality: QUALITY, mozjpeg: true }).toBuffer();
 
-  await writeFile(card.out, image);
-  console.log(`${card.out}  ${(image.length / 1024).toFixed(0)} kB`);
+  await writeFile(spec.out, image);
+  console.log(`${spec.out}  ${(image.length / 1024).toFixed(0)} kB`);
 }
