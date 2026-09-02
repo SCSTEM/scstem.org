@@ -83,10 +83,8 @@ jobs:
           name: dist
           path: dist/
 
-      # lhci is a CI-only tool run through dlx rather than a devDependency: it pulls Lighthouse
-      # and Puppeteer, which nobody needs to develop a page (docs/adr/0007-lighthouse-ci-gate.md).
       - name: Lighthouse CI
-        run: pnpm dlx @lhci/cli@0.15.1 autorun
+        run: pnpm dlx @lhci/cli@0.15.1 autorun --config=tools/ci/lighthouserc.json
 
       - name: Summarize
         if: ${{ !cancelled() }}

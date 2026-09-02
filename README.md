@@ -8,5 +8,3 @@ pnpm install
 pnpm dev          # http://localhost:4321
 pnpm check        # everything CI checks, minus the build
 ```
-
-`docs/tooling.md` covers the toolchain; `AGENTS.md` the rules for working in the codebase.
