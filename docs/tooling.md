@@ -35,12 +35,11 @@ does not expose yet; when it does and `@astrojs/check` widens its peer range, bu
 TypeScript scripts run directly by Node (type stripping, no build step), each behind a
 `package.json` script:
 
-| Script            | Does                                                        | Runs in         |
-| ----------------- | ----------------------------------------------------------- | --------------- |
-| `check:content`   | Every content-collection `reference()` resolves             | `pnpm check`    |
-| `check:meta`      | Every built page's head: unique title/description, og:image | CI, after build |
-| `assets:optimize` | Downscale and re-encode camera masters in `src/assets/`     | by hand         |
-| `assets:og`       | Render the OG cards in `src/assets/og/`                     | by hand         |
+| Script          | Does                                                        | Runs in         |
+| --------------- | ----------------------------------------------------------- | --------------- |
+| `check:content` | Every content-collection `reference()` resolves             | `pnpm check`    |
+| `check:meta`    | Every built page's head: unique title/description, og:image | CI, after build |
+| `assets:og`     | Render the OG cards in `src/assets/og/`                     | by hand         |
 
 Only erasable TypeScript syntax (no enums, namespaces, or parameter properties);
 `tools/tsconfig.json` enforces it.

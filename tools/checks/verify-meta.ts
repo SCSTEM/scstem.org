@@ -11,12 +11,25 @@ import { z } from "astro/zod";
  *
  *     pnpm build && node tools/checks/verify-meta.ts
  */
-import { readFile, stat } from "node:fs/promises";
+import { readdir, readFile, stat } from "node:fs/promises";
 import { extname, join } from "node:path";
 
-import { walk } from "../lib/fs.ts";
-
 const DIST = "dist";
+
+/** Every file under `dir`, recursively, whose name passes `keep`. */
+const walk = async (dir: string, keep: (name: string) => boolean): Promise<string[]> => {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const nested = await Promise.all(
+    entries.map(async (entry) => {
+      const path = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        return walk(path, keep);
+      }
+      return keep(entry.name) ? [path] : [];
+    }),
+  );
+  return nested.flat();
+};
 /** Google truncates a description around 160 characters and ignores one too short to be useful. */
 const DESCRIPTION_MIN = 50;
 const DESCRIPTION_MAX = 160;

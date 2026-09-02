@@ -7,8 +7,8 @@
 
 `plan/09-assets-performance.md` §2 asks every `<Image>` call site to emit "AVIF+WebP formats".
 Phase 09 is also where the sources it would apply to reached their final shape: every raster in
-`src/assets/` is a WebP master, re-encoded by `tools/assets/optimize-sources.ts` at quality 80
-and capped at 2560px.
+`src/assets/` is a WebP master at quality 80, capped at 2560px (prepared as
+[0016](0016-source-images-sharp-cli.md) describes).
 
 Two measurements taken against `src/assets/sc2/competition-1.webp` (2048×1365, 283 KB) decided
 how those call sites are configured.

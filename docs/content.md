@@ -191,6 +191,19 @@ caption: '"Biohazard" - 2026'
 `alt` describes the photo for someone who cannot see it; `caption` is the visible label. They are
 different jobs, so they are different fields.
 
+## Add a photograph
+
+Every photo in `src/assets/` is a WebP master, at most 2560px on its long edge, at quality 80.
+Convert a camera file once, before committing it:
+
+```sh
+pnpm dlx sharp-cli@6.0.0 -i camera.jpg -o src/assets/<domain>/<name>.webp \
+  --autoOrient -f webp -q 80 resize 2560 2560 --fit inside --withoutEnlargement
+```
+
+Nothing enforces this; an unconverted master shows up as a slow build and a large diff
+(`docs/adr/0016`). Logos stay SVG or PNG (see "Add a sponsor").
+
 ## News posts
 
 The `news` collection is scaffolded but has no routes yet. Copy `src/content/news/template.md`,
