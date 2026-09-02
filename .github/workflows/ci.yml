@@ -35,9 +35,6 @@ jobs:
       - name: Unused code and dependencies
         if: ${{ !cancelled() }}
         run: pnpm knip
-      - name: Content references
-        if: ${{ !cancelled() }}
-        run: pnpm check:content
 
   build:
     name: Build

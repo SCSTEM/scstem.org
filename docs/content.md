@@ -118,7 +118,7 @@ Location is **omitted** for anything at the workspace: it defaults to the addres
 event, which also makes "off-site" visible at a glance.
 
 `faq` lists FAQ slugs to show on the page, in the order given. A slug that does not match a file
-fails `pnpm check` (`tools/checks/content-references.ts`) — Astro alone only logs it.
+fails the build: Astro names the entry and field, and the page that lists it stops rendering.
 
 ### Hide an event early
 

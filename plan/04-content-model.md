@@ -109,11 +109,12 @@ Add a lint restriction (oxlint `no-restricted-imports` or a small check script i
 - **`news/template.md` is a real entry with `draft: true`**, not a glob-excluded `_TEMPLATE.md`.
   An excluded template drifts from the schema unnoticed and leaves the collection empty, which
   warns on every build. As an entry it is schema-validated and still never renders.
-- **`tools/checks/content-references.mjs` enforces reference integrity.** Astro reports
-  `Invalid content reference: ... references "x" ... but that entry does not exist` and then exits
-  0, so a typo'd FAQ slug would silently drop that answer from the page that lists it. "A
-  reference resolves" belongs to the collection that declares it, not to each future consumer, so
-  it is a `pnpm check` step rather than something Phase 08 has to remember to throw about.
+- **Reference integrity is Astro's.** This phase added `tools/checks/content-references.ts`
+  because Astro reported `Invalid content reference: ... but that entry does not exist` and then
+  exited 0, silently dropping the answer from the page that listed it. Astro 7 raises the same
+  diagnostic as a build error, so the check was removed: it mirrored the collection dirs and
+  reference fields of `src/content.config.ts` by hand to re-derive a failure the build already
+  has.
 - **All seven schemas are `z.strictObject`.** `z.object` strips unknown keys, so a typo'd field
   name built clean and dropped the value — the one thing `docs/content.md` promises it does not
   do. Bad values already failed; bad field names did not.
