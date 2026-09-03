@@ -94,6 +94,7 @@
   --duration-micro: 150ms; /* hover, focus */
   --duration-ui: 250ms; /* menus, accordions */
   --duration-entrance: 500ms; /* scroll-in entrances */
+  --duration-draw: 1100ms; /* hand-markup strokes drawing on */
   --ease-entrance: cubic-bezier(0, 0, 0.2, 1); /* ease-out */
   --ease-toggle: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
 
@@ -112,11 +113,13 @@
      mean lifts ~5 levels with a spread of ~4, so every contrast pair in DESIGN.md §2 holds. */
   --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='4' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 0.4 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 
-  /* The link underline (DESIGN.md §2.14, §8): one hand-drawn stroke as a 200×8 tile that repeats
-     along the text, so it follows a link across line breaks with no markup. A data URI cannot
+  /* The link underline (DESIGN.md §2.14, §8): one quick pen stroke — nearly straight, a slight
+     bow — as a 400×8 tile that repeats along the text, so it follows a link across line breaks
+     with no markup. The stroke sits at the tile's bottom edge: a background cannot paint below
+     the content box, so this is how the line gets its distance from the text. A data URI cannot
      read `currentcolor`, so the stroke color is baked in and each program theme re-declares the
      tile in its own `primary-bright` — the one place an accent hex appears outside the token. */
-  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='8' viewBox='0 0 200 8'%3E%3Cpath d='M0 5.5C22 3.8 41 6.6 62 5.2S103 3.4 124 5.4 166 6.8 200 5.5' fill='none' stroke='%23facc15' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E");
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8' viewBox='0 0 400 8'%3E%3Cpath d='M0 7.1C110 6.3 270 6.2 400 7' fill='none' stroke='%23facc15' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 /**
@@ -128,7 +131,7 @@
   --color-primary-bright: #3ecf6e;
   --color-primary-foreground: #08240f;
   --color-ring: #3ecf6e;
-  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='8' viewBox='0 0 200 8'%3E%3Cpath d='M0 5.5C22 3.8 41 6.6 62 5.2S103 3.4 124 5.4 166 6.8 200 5.5' fill='none' stroke='%233ecf6e' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E");
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8' viewBox='0 0 400 8'%3E%3Cpath d='M0 7.1C110 6.3 270 6.2 400 7' fill='none' stroke='%233ecf6e' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 [data-theme="fll"] {
@@ -136,7 +139,7 @@
   --color-primary-bright: #fb923c;
   --color-primary-foreground: #241102;
   --color-ring: #fb923c;
-  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='8' viewBox='0 0 200 8'%3E%3Cpath d='M0 5.5C22 3.8 41 6.6 62 5.2S103 3.4 124 5.4 166 6.8 200 5.5' fill='none' stroke='%23fb923c' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E");
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8' viewBox='0 0 400 8'%3E%3Cpath d='M0 7.1C110 6.3 270 6.2 400 7' fill='none' stroke='%23fb923c' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 @layer base {
@@ -211,7 +214,7 @@
     background-image: var(--texture-underline);
     background-repeat: repeat-x;
     background-position: 0 100%;
-    background-size: auto 0.42em;
+    background-size: auto 0.5em;
     transition: color var(--duration-micro) var(--ease-toggle);
   }
 
@@ -430,8 +433,10 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Ambient pool — a small lightness modulation of the ground, anchored to a section's top.
-   One per section, never stacked with another atmosphere device, never behind a photo. */
+/* Ambient pool — a small lightness modulation of the ground, centred on the section's heading
+   and fading out well inside the section on every side: an ellipse centred on the top edge is
+   cut in half by it and leaves a hard line. One per section, never stacked with another
+   atmosphere device, never behind a photo. */
 @utility ambient-pool {
   position: relative;
   isolation: isolate;
@@ -443,7 +448,7 @@
     z-index: -1;
     pointer-events: none;
     background: radial-gradient(
-      ellipse 80% 60% at 50% 0%,
+      ellipse 70% 55% at 50% 30%,
       color-mix(in srgb, var(--color-primary) 9%, transparent),
       transparent 70%
     );
@@ -456,7 +461,7 @@
 @utility ambient-pool-neutral {
   &::before {
     background: radial-gradient(
-      ellipse 80% 60% at 50% 0%,
+      ellipse 70% 55% at 50% 30%,
       color-mix(in srgb, var(--color-foreground) 5%, transparent),
       transparent 70%
     );
@@ -638,9 +643,9 @@
 }
 
 /**
- * Chrome links (DESIGN.md §8): "UI links may drop underline at rest but underline on
- * hover/focus". Both halves live here so a call site cannot ship one without the other. The
- * underline that arrives on hover is the same hand-drawn stroke every link carries.
+ * Chrome links (DESIGN.md §8): nav, footer, card footers. A different layer from copy, so they
+ * never take the hand-drawn stroke — no underline at rest, a straight machined hairline on
+ * hover/focus. Both halves live here so a call site cannot ship one without the other.
  */
 @utility ui-link {
   color: var(--color-foreground);
@@ -649,7 +654,9 @@
   &:hover,
   &:focus-visible {
     color: var(--color-primary-bright);
-    background-image: var(--texture-underline);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
   }
 
   /* The current page in a nav (§9 requires `aria-current="page"` there). */
@@ -691,8 +698,19 @@
  * Paired with `pathLength="100"` on the animated path, so the dash math is in percent and the
  * stroke always ends fully drawn. Hard-coded lengths silently truncate any path longer than
  * the guess.
+ *
+ * The entrance waits for the mark to scroll into view: `BaseLayout` marks every `.draw-on`
+ * `is-pending` and swaps it to `is-drawing` from an IntersectionObserver. Without JavaScript
+ * neither class lands and the stroke is simply drawn.
  */
 @utility draw-on {
   stroke-dasharray: 100;
-  animation: draw-on var(--duration-entrance) var(--ease-entrance) both;
+
+  &.is-pending {
+    stroke-dashoffset: 100;
+  }
+
+  &.is-drawing {
+    animation: draw-on var(--duration-draw) var(--ease-entrance) both;
+  }
 }

@@ -64,7 +64,6 @@ if (image === undefined && icon === undefined) {
 }
 
 const plateIcon = image === undefined ? icon : undefined;
-const hasHeaderRow = plateIcon !== undefined || badge !== undefined;
 ---
 
 <Card
@@ -92,20 +91,19 @@ const hasHeaderRow = plateIcon !== undefined || badge !== undefined;
 
   <CardHeader>
     {
-      hasHeaderRow && (
-        <div class="flex items-start gap-4">
-          {plateIcon !== undefined && (
-            <span class="grid size-9 shrink-0 place-items-center rounded-sm border border-current/40 text-primary-bright">
-              <Icon name={plateIcon} size={20} />
-            </span>
-          )}
-          {badge !== undefined && <Badge class="ml-auto">{badge}</Badge>}
-        </div>
+      plateIcon !== undefined && (
+        <span class="grid size-9 place-items-center rounded-sm border border-current/40 text-primary-bright">
+          <Icon name={plateIcon} size={20} />
+        </span>
       )
     }
-    <CardTitle rule>
-      <slot name="title" />
-    </CardTitle>
+    <div class="flex items-start justify-between gap-4">
+      <CardTitle>
+        <slot name="title" />
+      </CardTitle>
+      {badge !== undefined && <Badge class="mt-1 shrink-0">{badge}</Badge>}
+    </div>
+    <hr class="mt-3 title-rule" />
   </CardHeader>
 
   <CardContent class="flex-1">

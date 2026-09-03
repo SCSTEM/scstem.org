@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 
 import logoLockup from "@/assets/brand/logo-color-full.svg";
 import CardTitle from "@/components/ui/primitives/CardTitle.astro";
+import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import SocialLinks from "@/components/ui/SocialLinks.astro";
 import { nav, programs, site, socials } from "@/data/site";
@@ -75,8 +76,10 @@ const isExternal = (href: string): boolean => href.startsWith("http");
       </nav>
     </div>
 
+    <RulerDivider class="mt-12" />
+
     <TitleBlock
-      class="mt-12"
+      class="mt-6"
       fields={[
         { label: "Organization", value: site.name },
         { label: "Workspace", value: site.location.workspace },

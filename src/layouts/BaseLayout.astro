@@ -77,5 +77,27 @@ const { title, description, ogImage, ogImageAlt, ogType, canonical, noindex, the
     </main>
     <Footer />
     <Analytics />
+    <script>
+      // Hand-markup strokes draw on when they come into view (DESIGN.md §6), not on page load,
+      // where anything below the fold would finish unseen. Marks already in view animate at once.
+      const marks = document.querySelectorAll(".draw-on");
+      if (marks.length > 0 && "IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.replace("is-pending", "is-drawing");
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.5 },
+        );
+        for (const mark of marks) {
+          mark.classList.add("is-pending");
+          observer.observe(mark);
+        }
+      }
+    </script>
   </body>
 </html>
