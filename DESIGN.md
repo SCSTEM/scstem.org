@@ -192,7 +192,7 @@ CSS-only. Motion confirms — it never decorates.
 
 - **Buttons**: `primary` (theme accent fill + its near-black label — on FRC pages that's Hazard Green fill, etc.), `outline` (1px `border`, `foreground` text; over photography gains a translucent `card` background), `ghost`. One primary per view region. Min touch target 44×44px (nav CTA included). `radius-md`.
 - **Links**: in-prose links `primary`-colored **and underlined**; UI links may drop underline at rest but underline on hover/focus. External links: icon at 0.8em + `rel="noopener"`.
-- **Cards**: pocket anatomy per §2. FeatureCard = icon in `radius-sm` accent-tinted square (12% alpha `primary` bg, `primary` icon), Inter 600 title with the 32px accent rule, `body` copy, optional footer link.
+- **Cards**: pocket anatomy per §2. FeatureCard carries **one identity mark**: a photo when it has one, otherwise a Tabler icon on a stamped plate in the spec-chip anatomy (36px square, 1px 40%-alpha `primary` border, `radius-sm`, transparent fill, `primary` icon) — never both, and never a filled tile. Then an Inter 600 title with the 32px accent rule, `body` copy, optional footer link.
 - **Chips/spec labels**: SCP `label` style — uppercase, tracked, 1px 40%-alpha border in the chip's color, transparent bg. Ages ("AGES 9–16"), sponsor tiers (platinum `#CBD5E1`, gold `#FACC15`, silver `#A3A3A3`, bronze `#D08954`), event dates.
 - **Stat band**: SCP 600 numeral in `primary` + Inter caption in `body`, on a pocket (feature moments get the grid floor).
 - **Forms**: visible `Label` above every field; `card` bg inputs, 1px `border`, focus = `ring` 2px; errors in the destructive text token with icon + `aria-describedby`.
