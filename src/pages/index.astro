@@ -133,33 +133,36 @@ const lockupArt = await renderAt(firstLockup, 640);
 
     <div class="grid items-start gap-10 lg:grid-cols-2">
       <div>
-        <!-- The acronym line only reads at desktop widths, so it is a `<source>` swap rather than
-             two images toggled with `hidden`: a hidden `<img>` still downloads. -->
-        <picture>
-          <source
-            height={acronymArt.height}
-            media={`(min-width: ${breakpoint("md")})`}
-            srcset={acronymArt.src}
-            width={acronymArt.width}
-          />
-          <img
-            alt="FIRST® — For Inspiration and Recognition of Science and Technology"
-            class="h-auto w-full max-w-sm"
-            height={lockupArt.height}
-            loading="lazy"
-            src={lockupArt.src}
-            width={lockupArt.width}
-          />
-        </picture>
-
-        <Button
-          class="external-link mt-4 -ml-3"
-          href={site.urls.firstInspires}
-          rel="noopener"
-          variant="link"
-        >
-          <span class="italic">FIRST®</span>
-        </Button>
+        <figure>
+          <!-- The acronym line only reads at desktop widths, so it is a `<source>` swap rather
+               than two images toggled with `hidden`: a hidden `<img>` still downloads. -->
+          <a
+            aria-describedby="first-ref"
+            class="inline-block rounded-sm bg-none"
+            href={site.urls.firstInspires}
+            rel="noopener"
+          >
+            <picture>
+              <source
+                height={acronymArt.height}
+                media={`(min-width: ${breakpoint("md")})`}
+                srcset={acronymArt.src}
+                width={acronymArt.width}
+              />
+              <img
+                alt="FIRST® — For Inspiration and Recognition of Science and Technology"
+                class="h-auto w-full max-w-sm"
+                height={lockupArt.height}
+                loading="lazy"
+                src={lockupArt.src}
+                width={lockupArt.width}
+              />
+            </picture>
+          </a>
+          <Callout as="figcaption" class="mt-3" id="first-ref" reference="REF">
+            firstinspires.org
+          </Callout>
+        </figure>
 
         <Separator class="my-8" />
 
@@ -167,16 +170,12 @@ const lockupArt = await renderAt(firstLockup, 640);
         <p class="mt-3 measure">
           Although the goal is to build a robot, you do not have to be an engineer. Whether you are
           a future rocket scientist or an aspiring artist, there is a place here for you and mentors
-          ready to use their real world experience to help you grow.
+          ready to use their real world experience to help you grow. <span class="italic"
+            >FIRST®</span
+          > calls it <a class="external-link" href={site.urls.moreThanRobots} rel="noopener"
+            >More than Robots</a
+          >.
         </p>
-        <Button
-          class="external-link mt-4 -ml-3"
-          href={site.urls.moreThanRobots}
-          rel="noopener"
-          variant="link"
-        >
-          More Than Robots
-        </Button>
       </div>
 
       <figure>
@@ -280,7 +279,7 @@ const lockupArt = await renderAt(firstLockup, 640);
       </Fragment>
       Ready to join or find out more? We are always looking for new members, mentors, and sponsors! If
       you want to find out how you can get plugged in or are looking for more information, please reach
-      out through our <a href={nav.cta.href}>{nav.cta.label} form</a>.
+      out through our <a class="highlight-swipe" href={nav.cta.href}>{nav.cta.label} form</a>.
       <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
       <Button href={nav.donate.href} size="lg" slot="actions" variant="outline">
         {nav.donate.label}

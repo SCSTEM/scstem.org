@@ -58,7 +58,7 @@ const isExternal = (href: string): boolean => href.startsWith("http");
                   <li>
                     <a
                       class:list={[
-                        "text-small ui-link text-body",
+                        "ui-link text-small text-body",
                         isExternal(link.href) && "external-link",
                       ]}
                       href={link.href}

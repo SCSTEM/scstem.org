@@ -13,22 +13,15 @@ import { cn } from "@/lib/cn";
  * does not exist as far as review is concerned (primitives/README.md). `satisfies` below keeps
  * this list and the recipe map in lockstep.
  */
-export const buttonVariantNames = [
-  "default",
-  "secondary",
-  "outline",
-  "ghost",
-  "link",
-  "pocket",
-] as const;
+export const buttonVariantNames = ["default", "secondary", "outline", "ghost", "pocket"] as const;
 
 type ButtonVariant = (typeof buttonVariantNames)[number];
 
 export const buttonVariants = cva(
   cn(
-    // `no-underline` because the base layer underlines every `<a>`, and this recipe renders as
-    // an anchor whenever a Button gets an `href`. The `link` variant re-adds its underline.
-    "inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap no-underline",
+    // `bg-none` because the base layer draws the link underline on every `<a>` as a background
+    // image, and this recipe renders as an anchor whenever a Button gets an `href`.
+    "inline-flex items-center justify-center gap-2 rounded-md bg-none font-medium whitespace-nowrap",
     "transition-colors duration-(--duration-micro) ease-(--ease-toggle)",
     "disabled:pointer-events-none disabled:opacity-50",
     "aria-disabled:pointer-events-none aria-disabled:opacity-50",
@@ -42,7 +35,6 @@ export const buttonVariants = cva(
         /** Over photography this gains a translucent card background (DESIGN.md §8). */
         outline: "border border-border text-foreground hover:border-primary/40 hover:bg-card/60",
         ghost: "text-foreground hover:bg-card",
-        link: "text-primary-bright underline underline-offset-4 hover:no-underline",
         /**
          * A machined pocket rather than a filled control — for chrome that sits over content
          * (carousel arrows, a dialog's close). Shares the base recipe so the touch target and

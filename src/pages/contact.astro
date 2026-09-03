@@ -3,7 +3,6 @@ import laptop from "@/assets/sc2/laptop.webp";
 import ContactForm from "@/components/ui/ContactForm.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
-import Button from "@/components/ui/primitives/Button.astro";
 import Card from "@/components/ui/primitives/Card.astro";
 import CardContent from "@/components/ui/primitives/CardContent.astro";
 import CardHeader from "@/components/ui/primitives/CardHeader.astro";
@@ -59,14 +58,11 @@ const fields = [
               We are in downtown Chambersburg. Directions, parking, and door details live on the
               wiki.
             </p>
-            <Button
-              class="external-link -ml-3"
-              href={site.urls.directions}
-              rel="noopener"
-              variant="link"
-            >
-              Directions to the workspace
-            </Button>
+            <p class="mt-4">
+              <a class="external-link" href={site.urls.directions} rel="noopener">
+                Directions to the workspace
+              </a>
+            </p>
           </CardContent>
         </Card>
 

@@ -117,7 +117,7 @@ const hasHeaderRow = plateIcon !== undefined || badge !== undefined;
       <CardFooter>
         {/* The stretched pseudo-element makes the pocket clickable without nesting the card's
             content inside the anchor, so the link keeps one short accessible name. */}
-        <a class="text-small font-medium ui-link after:absolute after:inset-0" href={href}>
+        <a class="ui-link text-small font-medium after:absolute after:inset-0" href={href}>
           {cta}
         </a>
         <Icon class="text-primary-bright" name="arrow-right" size={20} />

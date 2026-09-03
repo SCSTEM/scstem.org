@@ -104,12 +104,19 @@
   --breakpoint-3xl: 120rem;
 
   /* --- Material (DESIGN.md §2 surfaces) --------------------------------------------------- */
-  /* The sheet's grain: monochrome turbulence, near-white, with a gamma curve so most of the
-     tile stays transparent and only sparse specks carry alpha — speckle, not a wash. Fractal
-     noise clusters at mid-gray and reads as a uniform lift instead. `stitchTiles` makes the
-     240px tile seamless. Measured over `#262626` the mean lifts ~4 levels with a spread of ~3,
-     so every contrast pair in DESIGN.md §2 still holds. */
-  --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='2' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 0.26 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  /* The sheet's grain: one octave of high-frequency fractal noise, desaturated, near-white,
+     with a steep gamma so only the brightest fraction of each cell carries alpha — film grain,
+     per-pixel and even, with no cell structure to repeat. Lower frequencies or more octaves
+     produce blotches that read as a tiled pattern; `turbulence` produces a web. The 600px
+     seamless tile keeps any repeat below what the eye picks out. Measured over `#262626` the
+     mean lifts ~5 levels with a spread of ~4, so every contrast pair in DESIGN.md §2 holds. */
+  --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='4' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 0.4 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  /* The link underline (DESIGN.md §2.14, §8): one hand-drawn stroke as a 200×8 tile that repeats
+     along the text, so it follows a link across line breaks with no markup. A data URI cannot
+     read `currentcolor`, so the stroke color is baked in and each program theme re-declares the
+     tile in its own `primary-bright` — the one place an accent hex appears outside the token. */
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='8' viewBox='0 0 200 8'%3E%3Cpath d='M0 5.5C22 3.8 41 6.6 62 5.2S103 3.4 124 5.4 166 6.8 200 5.5' fill='none' stroke='%23facc15' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 /**
@@ -121,6 +128,7 @@
   --color-primary-bright: #3ecf6e;
   --color-primary-foreground: #08240f;
   --color-ring: #3ecf6e;
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='8' viewBox='0 0 200 8'%3E%3Cpath d='M0 5.5C22 3.8 41 6.6 62 5.2S103 3.4 124 5.4 166 6.8 200 5.5' fill='none' stroke='%233ecf6e' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 [data-theme="fll"] {
@@ -128,6 +136,7 @@
   --color-primary-bright: #fb923c;
   --color-primary-foreground: #241102;
   --color-ring: #fb923c;
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='8' viewBox='0 0 200 8'%3E%3Cpath d='M0 5.5C22 3.8 41 6.6 62 5.2S103 3.4 124 5.4 166 6.8 200 5.5' fill='none' stroke='%23fb923c' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 @layer base {
@@ -190,19 +199,26 @@
   }
 
   /**
-   * In-prose links are accent-colored and underlined (DESIGN.md §8). Preflight sets
-   * `text-decoration: inherit` on `a`, which resolves to `none` from body — so the line must be
-   * declared here, not only its thickness and offset.
-   *
-   * Not `:where()`: preflight's own `a { text-decoration: inherit }` has specificity 0,0,1, so
-   * zero-specificity here loses to it and the underline disappears. `ui-link` overrides this
-   * anyway — `@utility` lands in the utilities layer, which wins over `@layer base`.
+   * An underline means a link, always, and it is drawn by hand (DESIGN.md §2.14, §8). The
+   * stroke is a repeating background rather than `text-decoration`, which cannot take a custom
+   * shape. Anchors that are not text — a button, a framed image — reset it with `bg-none`.
+   * Preflight sets `text-decoration: inherit` on `a`; the line is switched off here so the two
+   * underlines never stack.
    */
   a {
     color: var(--color-primary-bright);
-    text-decoration-line: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
+    text-decoration-line: none;
+    background-image: var(--texture-underline);
+    background-repeat: repeat-x;
+    background-position: 0 100%;
+    background-size: auto 0.42em;
+    transition: color var(--duration-micro) var(--ease-toggle);
+  }
+
+  /* Hover shades the text and leaves the stroke where it is: a moving underline reads as a
+     glitch, not a confirmation. */
+  a:hover {
+    color: var(--color-foreground);
   }
 
   /* Never removed, on any interactive element (DESIGN.md §9). */
@@ -354,6 +370,13 @@
   position: relative;
   color: var(--color-foreground);
   isolation: isolate;
+
+  /* A featured link (DESIGN.md §2.14: swipe + underline). The swipe is an absolutely positioned
+     pseudo-element, which collapses on an inline that breaks across lines, so the link keeps its
+     few words together instead. */
+  &:is(a) {
+    display: inline-block;
+  }
 
   &::before {
     content: "";
@@ -616,16 +639,17 @@
 
 /**
  * Chrome links (DESIGN.md §8): "UI links may drop underline at rest but underline on
- * hover/focus". Both halves live here so a call site cannot ship one without the other.
+ * hover/focus". Both halves live here so a call site cannot ship one without the other. The
+ * underline that arrives on hover is the same hand-drawn stroke every link carries.
  */
 @utility ui-link {
   color: var(--color-foreground);
-  text-decoration-line: none;
+  background-image: none;
 
   &:hover,
   &:focus-visible {
     color: var(--color-primary-bright);
-    text-decoration-line: underline;
+    background-image: var(--texture-underline);
   }
 
   /* The current page in a nav (§9 requires `aria-current="page"` there). */

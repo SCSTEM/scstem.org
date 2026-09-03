@@ -15,7 +15,6 @@ import Hero from "@/components/ui/Hero.astro";
 import HeroVideo from "@/components/ui/HeroVideo.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
-import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import Section from "@/components/ui/Section.astro";
 import StatBand from "@/components/ui/StatBand.astro";
@@ -82,8 +81,8 @@ const stats = [
     />
 
     <Fragment slot="title">
-      Welcome to the <ChalkUnderline tone="chalk" variant={1}>next generation</ChalkUnderline> of thinkers,
-      engineers, scientists, artists, and dreamers.
+      Welcome to the <span class="highlight-swipe">next generation</span> of thinkers, engineers, scientists,
+      artists, and dreamers.
     </Fragment>
 
     Inspiring students since 2012, Biohazard is south-central Pennsylvania&rsquo;s premiere

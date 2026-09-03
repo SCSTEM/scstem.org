@@ -60,7 +60,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
   <nav aria-label="Main" class="container-page flex items-center gap-4">
     <a
       aria-label={`${site.name} — home`}
-      class="flex shrink-0 items-center py-2 ui-link"
+      class="flex shrink-0 items-center ui-link py-2"
       data-sheet-inert
       href="/"
     >
@@ -115,7 +115,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
                 {link.panel.map((entry) => (
                   <a
                     aria-current={current === entry.href ? "page" : undefined}
-                    class="block rounded-md px-3 py-2 ui-link hover:bg-card-hover"
+                    class="block rounded-md ui-link px-3 py-2 hover:bg-card-hover"
                     href={entry.href}
                   >
                     <span class="block text-small font-medium">{entry.label}</span>
@@ -169,7 +169,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
           <li>
             <a
               aria-current={inSection(link.href) ? "page" : undefined}
-              class="flex min-h-14 items-center text-h4 font-semibold ui-link"
+              class="flex min-h-14 items-center ui-link text-h4 font-semibold"
               href={link.href}
             >
               {link.label}

@@ -458,9 +458,15 @@ const themes = [
         <ChalkOval variant={2}>robots</ChalkOval>. Real <ChalkOval variant={3}>fun</ChalkOval>.
       </p>
 
+      <p class="mt-10 font-display text-h3 font-semibold text-foreground">
+        A heading with a <ChalkUnderline variant={1}>chalk underline</ChalkUnderline>
+      </p>
+
       <p class="mt-10 text-body-lg">
-        Chalk underlines work inline, under a phrase of three words or fewer — building the{" "}
-        <ChalkUnderline variant={1}>future of STEM</ChalkUnderline> in Franklin County.
+        An underline in copy always means a link: <a href="/sponsors">see every sponsor</a>. A link
+        the page wants noticed is a{" "}
+        <a class="highlight-swipe" href="/get-involved">featured link</a>, swipe and stroke
+        together. Swipes and ovals on their own are emphasis, never links.
       </p>
 
       <p class="mt-10 font-display text-h3 font-semibold">
@@ -565,7 +571,7 @@ const themes = [
             <p class="text-small text-muted">Content sits here.</p>
           </CardContent>
           <CardFooter>
-            <Button size="sm" variant="link">A footer link</Button>
+            <a class="ui-link text-small" href="/styleguide">A footer link</a>
           </CardFooter>
         </Card>
         <Card interactive>
@@ -710,7 +716,6 @@ const themes = [
                 <Button variant="secondary">Secondary</Button>
                 <Button variant="outline">Outline</Button>
                 <Button variant="ghost">Ghost</Button>
-                <Button variant="link">Link</Button>
                 <Button size="icon" variant="secondary">
                   <Icon label="Next" name="chevron-right" size={20} />
                 </Button>

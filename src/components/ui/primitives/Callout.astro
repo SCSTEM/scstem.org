@@ -18,10 +18,12 @@ interface Props {
   side?: "left" | "right";
   /** Use `figcaption` only when this is a direct child of a `<figure>`. */
   as?: "p" | "figcaption";
+  /** So a linked figure can name this caption through `aria-describedby`. */
+  id?: string;
   class?: string;
 }
 
-const { reference, side = "left", as: Tag = "p", class: className } = Astro.props;
+const { reference, side = "left", as: Tag = "p", id, class: className } = Astro.props;
 ---
 
 <Tag
@@ -30,6 +32,7 @@ const { reference, side = "left", as: Tag = "p", class: className } = Astro.prop
     side === "right" && "flex-row-reverse text-right",
     className,
   )}
+  id={id}
 >
   <svg aria-hidden="true" class="h-2 w-8 shrink-0" fill="none" viewBox="0 0 32 8">
     <circle cx="1.5" cy="4" fill="currentColor" r="1.5"></circle>
