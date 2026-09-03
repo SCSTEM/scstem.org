@@ -42,7 +42,7 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
 <section
   class={cn(
     "relative section-y",
-    atmosphere === "tint" && "bg-section-tint",
+    atmosphere === "tint" && "bg-section-tint grain",
     atmosphere === "pool" && "ambient-pool",
     atmosphere === "pool-neutral" && "ambient-pool ambient-pool-neutral",
     className,
@@ -54,27 +54,21 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
 
     {
       hasHeader && (
-        <div
-          class:list={[
-            "relative",
-            /* The numeral is 5rem tall (8rem from `md`) and starts 1.5rem above the header, so
-               a header carrying only a title is shorter than the device behind it and the
-               numeral spills into the content below — where §2.6 never puts it. These reserve
-               exactly what is left of it (3.5rem, 6.5rem); a header with an intro already
-               exceeds them. */
-            atmosphere === "numeral" && "min-h-14 md:min-h-26",
-          ]}
-        >
-          {atmosphere === "numeral" && index !== undefined && <GhostNumeral value={index} />}
+        <div>
           {hasEyebrow && (
             <p class="eyebrow text-primary">
               <slot name="eyebrow" />
             </p>
           )}
           {Astro.slots.has("title") && (
-            <Heading class={hasEyebrow ? "mt-2" : undefined}>
-              <slot name="title" />
-            </Heading>
+            /* The numeral wraps the heading alone, so it is bottom-aligned to the title and
+               never reaches an intro below it. */
+            <div class={cn("relative", hasEyebrow && "mt-2")}>
+              {atmosphere === "numeral" && index !== undefined && <GhostNumeral value={index} />}
+              <Heading>
+                <slot name="title" />
+              </Heading>
+            </div>
           )}
           {Astro.slots.has("intro") && (
             <div class="mt-4 measure text-body-lg">

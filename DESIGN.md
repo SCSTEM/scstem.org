@@ -36,6 +36,8 @@ The page is the raised material; cards are **pockets machined into it**. (This i
 | `section-tint` | `#212121` | Full-width alternate section bands                             |
 | `border`       | `#3A3A3A` | Hairlines, card borders, dividers                              |
 
+**Ground grain**: the page ground and the `section-tint` bands carry a fine monochrome grain — sparse near-white speckle from an SVG turbulence tile (`--texture-grain`), with a mean lift of ~4 levels over `#262626` and a spread of ~3. It is what makes the sheet read as a surface rather than a flat hex, and it is material, not illustration: no brushed streaks, no bevels, no lighting gradients. Pockets never take it — their floors stay smooth, so the recess reads against the grain around it. Every contrast pair below is measured on the plain hex and still holds on the grained ground.
+
 **Pocket anatomy (V2, "machined pocket")** — the standard card treatment: `card` fill, 1px `#383838` border, `radius-lg`, and inset edge physics: `box-shadow: inset 0 2px 8px rgb(0 0 0 / 0.55), inset 0 -1px 0 rgb(255 255 255 / 0.05)`.
 **Feature pocket (V2+V3, "drawing pocket")**: the same, plus the engineering grid (§2 motifs) rendered _inside_ the pocket at ~5% opacity — reserved for feature moments (program cards, CTA panels, stat bands) on ≥ md screens; dense card grids and mobile stay plain V2.
 **Hover (interactive pockets)**: pockets don't float — border warms to 40%-alpha `primary`, floor lifts `#171717 → #1A1A1A`, no translate, no glow, no shadow change.
@@ -79,15 +81,15 @@ Rules:
 
 1. **Key-word emphasis**: display headings may emphasize exactly one phrase — either `primary`-colored text or a highlighter swipe (§2.13), never both, never more than one phrase. Link-style underlines never appear in headings.
 2. **Accent hairline**: heroes end with a 2px `primary` rule, full-bleed. Card titles may carry a 32px × 2px `primary` rule beneath.
-3. **Engineering grid** (replaces the legacy circuit-board texture): fine graph-paper grid (~24–28px cell, 1px `#FAFAFA` strokes) at 4–7% opacity, on heroes and section breaks and inside V2+V3 feature-pocket floors — never behind body copy, and **never on the page ground**, where it competes with the pocket grid floors and dulls the recess effect. The ground stays smooth; its life comes from the atmosphere devices below. Optional **dimension-line ticks** (`primary` at ≤50%, SCP annotation) as rare garnish.
+3. **Engineering grid** (replaces the legacy circuit-board texture): fine graph-paper grid (~24–28px cell, 1px `#FAFAFA` strokes) at 4–7% opacity, on heroes and section breaks and inside V2+V3 feature-pocket floors — never behind body copy, and **never on the page ground**, where it competes with the pocket grid floors and dulls the recess effect. The ground's life comes from its grain (surfaces, above) and the atmosphere devices below, not from linework. Optional **dimension-line ticks** (`primary` at ≤50%, SCP annotation) as rare garnish.
 4. **Framed media**: photo collages/feature media get a 2px `primary` border + `radius-lg` — the "team picture frame".
 
 ### Atmosphere layer
 
 Large unmodulated `background` fields read sterile. Between the hero and the footer, every major section boundary carries **exactly one** of these devices (never stacked, never behind photos):
 
-5. **Ambient pools**: one radial gradient anchored to a section's top or its heading — `primary` at 3–6% alpha (or `#FAFAFA` at 2–4% for neutral sections), fading to transparent by ~70%. A small lightness modulation of the ground; text contrast is unaffected. Max one per section.
-6. **Ghost section numerals**: oversized Source Code Pro 600 numerals (`01`, `02`, …) at 5–8% alpha `foreground`, placed behind section headings — the device from the Brand Guidelines' own section pages. Decorative (`aria-hidden`), numbering only top-level page sections, 3–4 per page max.
+5. **Ambient pools**: one radial gradient anchored to a section's top or its heading — `primary` at 8–10% alpha (or `#FAFAFA` at 4–6% for neutral sections), fading to transparent by ~70%. A lightness modulation of the ground that is visible on a calibrated monitor without being nameable; text contrast is unaffected. Max one per section.
+6. **Ghost section numerals**: oversized Source Code Pro 600 numerals (`01`, `02`, …) at 5–8% alpha `foreground`, anchored to the heading's top edge and raised so most of the numeral stands in the section's top padding and its lower part sits behind the heading's first line — the device from the Brand Guidelines' own section pages. It never reaches the copy below the heading. Decorative (`aria-hidden`), numbering only top-level page sections, 3–4 per page max.
 7. **Ruler dividers**: a full-container tick-mark strip (baseline + graduated ticks, `foreground` at ≤18%) as the _strong_ section divider; plain 1px hairlines remain the quiet default.
 8. **Registration marks**: small corner brackets (`primary` at ≤35%, 1.5px stroke, ~20px) on the corners of one feature pocket per view — the drafting-sheet crop-mark garnish. Never on standard cards.
 

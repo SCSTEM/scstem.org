@@ -11,6 +11,8 @@ export default defineConfig(
     "dist/",
     ".astro/",
     "public/",
+    // The browser the chrome-devtools MCP server downloads for local sessions; gitignored.
+    ".browser/",
     // Vendored upstream rule source (tools/lint/anti-slop/VENDOR.md); its glue is linted.
     "tools/lint/anti-slop/rules/",
     "tools/lint/anti-slop/shared/",

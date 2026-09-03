@@ -102,6 +102,14 @@
      Navbar sheet script read it, so the mobile/desktop boundary has one definition. */
   --breakpoint-md: 48rem;
   --breakpoint-3xl: 120rem;
+
+  /* --- Material (DESIGN.md §2 surfaces) --------------------------------------------------- */
+  /* The sheet's grain: monochrome turbulence, near-white, with a gamma curve so most of the
+     tile stays transparent and only sparse specks carry alpha — speckle, not a wash. Fractal
+     noise clusters at mid-gray and reads as a uniform lift instead. `stitchTiles` makes the
+     240px tile seamless. Measured over `#262626` the mean lifts ~4 levels with a spread of ~3,
+     so every contrast pair in DESIGN.md §2 still holds. */
+  --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='2' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 0.26 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 }
 
 /**
@@ -133,6 +141,7 @@
 
   body {
     background-color: var(--color-background);
+    background-image: var(--texture-grain);
     color: var(--color-body);
     font-family: var(--font-sans);
     font-size: var(--text-body);
@@ -250,6 +259,15 @@
  * budget is a review rule, not something CSS can enforce: at most 4 distinct devices per
  * viewport, and one atmosphere device per section boundary.
  */
+
+/**
+ * The sheet's grain on a surface other than the body — the tint bands, which would otherwise
+ * paint a smooth patch over the grained ground. Pockets never take it: their floors are
+ * smooth by design, so the recess reads against the grain around it.
+ */
+@utility grain {
+  background-image: var(--texture-grain);
+}
 
 /* Pocket anatomy V2, "machined pocket" — the standard card. Depth goes down, never up. */
 @utility pocket {
@@ -403,7 +421,7 @@
     pointer-events: none;
     background: radial-gradient(
       ellipse 80% 60% at 50% 0%,
-      color-mix(in srgb, var(--color-primary) 5%, transparent),
+      color-mix(in srgb, var(--color-primary) 9%, transparent),
       transparent 70%
     );
   }
@@ -416,7 +434,7 @@
   &::before {
     background: radial-gradient(
       ellipse 80% 60% at 50% 0%,
-      color-mix(in srgb, var(--color-foreground) 3%, transparent),
+      color-mix(in srgb, var(--color-foreground) 5%, transparent),
       transparent 70%
     );
   }

@@ -4,3 +4,4 @@ dist/
 .browser/
 .lighthouseci/
 pnpm-lock.yaml
+.claude/settings.local.json
