@@ -113,13 +113,15 @@
      mean lifts ~5 levels with a spread of ~4, so every contrast pair in DESIGN.md §2 holds. */
   --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='4' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 0.4 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 
-  /* The link underline (DESIGN.md §2.14, §8): one quick pen stroke — nearly straight, a slight
-     bow — as a 400×8 tile that repeats along the text, so it follows a link across line breaks
-     with no markup. The stroke sits at the tile's bottom edge: a background cannot paint below
-     the content box, so this is how the line gets its distance from the text. A data URI cannot
-     read `currentcolor`, so the stroke color is baked in and each program theme re-declares the
-     tile in its own `primary-bright` — the one place an accent hex appears outside the token. */
-  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8' viewBox='0 0 400 8'%3E%3Cpath d='M0 7.1C110 6.3 270 6.2 400 7' fill='none' stroke='%23facc15' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E");
+  /* The link underline (DESIGN.md §2.14, §8): one quick hand-drawn stroke with a single gentle
+     sag, as a 240×16 tile (12em at the size below) that repeats along the text, so it follows a
+     link across line breaks with no markup and a typical link shows one whole curve. Smooth on
+     purpose: no jitter, no wave — the hand is in the curve. The stroke sits near the tile's
+     bottom edge and the anchor adds a little bottom padding, which is how the line gets its
+     distance from the text: a background cannot paint below the box. A data URI cannot read
+     `currentcolor`, so the stroke color is baked in and each program theme re-declares the tile
+     in its own `primary-bright` — the one place an accent hex appears outside the token. */
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='16' viewBox='0 0 240 16'%3E%3Cpath d='M2 10.4C50 13.6 190 13.4 238 10.4' fill='none' stroke='%23facc15' stroke-width='2.3' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 /**
@@ -131,7 +133,7 @@
   --color-primary-bright: #3ecf6e;
   --color-primary-foreground: #08240f;
   --color-ring: #3ecf6e;
-  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8' viewBox='0 0 400 8'%3E%3Cpath d='M0 7.1C110 6.3 270 6.2 400 7' fill='none' stroke='%233ecf6e' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E");
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='16' viewBox='0 0 240 16'%3E%3Cpath d='M2 10.4C50 13.6 190 13.4 238 10.4' fill='none' stroke='%233ecf6e' stroke-width='2.3' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 [data-theme="fll"] {
@@ -139,7 +141,7 @@
   --color-primary-bright: #fb923c;
   --color-primary-foreground: #241102;
   --color-ring: #fb923c;
-  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8' viewBox='0 0 400 8'%3E%3Cpath d='M0 7.1C110 6.3 270 6.2 400 7' fill='none' stroke='%23fb923c' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E");
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='16' viewBox='0 0 240 16'%3E%3Cpath d='M2 10.4C50 13.6 190 13.4 238 10.4' fill='none' stroke='%23fb923c' stroke-width='2.3' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 @layer base {
@@ -204,7 +206,7 @@
   /**
    * An underline means a link, always, and it is drawn by hand (DESIGN.md §2.14, §8). The
    * stroke is a repeating background rather than `text-decoration`, which cannot take a custom
-   * shape. Anchors that are not text — a button, a framed image — reset it with `bg-none`.
+   * shape. Anchors that are not text — a button, a framed image — reset it with `bg-none pb-0`.
    * Preflight sets `text-decoration: inherit` on `a`; the line is switched off here so the two
    * underlines never stack.
    */
@@ -214,7 +216,8 @@
     background-image: var(--texture-underline);
     background-repeat: repeat-x;
     background-position: 0 100%;
-    background-size: auto 0.5em;
+    background-size: auto 0.8em;
+    padding-bottom: 0.1em;
     transition: color var(--duration-micro) var(--ease-toggle);
   }
 
@@ -479,8 +482,8 @@
 
 /**
  * The shared stroke contract for the hand-markup register (DESIGN.md §2.12–2.15): 2.5px
- * round-capped `currentColor`, with `non-scaling-stroke` so the weight stays even when the SVG is stretched
- * non-uniformly over a word. Applied to the `<svg>`; the paths carry only their `d` and
+ * round-capped `currentColor`, with `non-scaling-stroke` so the weight stays even when the SVG is
+ * stretched non-uniformly over a word. Applied to the `<svg>`; the paths carry only their `d` and
  * `pathLength`, so a change to the hand's weight is one edit rather than one per device.
  */
 @utility hand-stroke {
@@ -650,6 +653,7 @@
 @utility ui-link {
   color: var(--color-foreground);
   background-image: none;
+  padding-bottom: 0;
 
   &:hover,
   &:focus-visible {

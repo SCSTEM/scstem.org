@@ -19,9 +19,10 @@ type ButtonVariant = (typeof buttonVariantNames)[number];
 
 export const buttonVariants = cva(
   cn(
-    // `bg-none` because the base layer draws the link underline on every `<a>` as a background
-    // image, and this recipe renders as an anchor whenever a Button gets an `href`.
-    "inline-flex items-center justify-center gap-2 rounded-md bg-none font-medium whitespace-nowrap",
+    // `bg-none pb-0` because the base layer draws the link underline on every `<a>` as a
+    // background image over a little bottom padding, and this recipe renders as an anchor
+    // whenever a Button gets an `href`.
+    "inline-flex items-center justify-center gap-2 rounded-md bg-none pb-0 font-medium whitespace-nowrap",
     "transition-colors duration-(--duration-micro) ease-(--ease-toggle)",
     "disabled:pointer-events-none disabled:opacity-50",
     "aria-disabled:pointer-events-none aria-disabled:opacity-50",
