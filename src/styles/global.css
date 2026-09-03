@@ -114,14 +114,15 @@
   --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='4' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 0.4 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 
   /* The link underline (DESIGN.md §2.14, §8): one quick hand-drawn stroke with a single gentle
-     sag, as a 240×16 tile (12em at the size below) that repeats along the text, so it follows a
-     link across line breaks with no markup and a typical link shows one whole curve. Smooth on
-     purpose: no jitter, no wave — the hand is in the curve. The stroke sits near the tile's
-     bottom edge and the anchor adds a little bottom padding, which is how the line gets its
-     distance from the text: a background cannot paint below the box. A data URI cannot read
+     sag. The SVG has no intrinsic size and `preserveAspectRatio='none'`, so `background-size:
+     100%` stretches one curve to the link's width — and, with `box-decoration-break: clone`, to
+     each line of a wrapped link — while `non-scaling-stroke` keeps the line 2.3px at any width.
+     One curve per line, so there is never a seam where a repeating tile would meet itself. The
+     curve keeps clear of descenders: its ends sit 0.16em below the box (the anchor's bottom
+     padding) and it sags away from the text, never toward it. A data URI cannot read
      `currentcolor`, so the stroke color is baked in and each program theme re-declares the tile
      in its own `primary-bright` — the one place an accent hex appears outside the token. */
-  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='16' viewBox='0 0 240 16'%3E%3Cpath d='M2 10.4C50 13.6 190 13.4 238 10.4' fill='none' stroke='%23facc15' stroke-width='2.3' stroke-linecap='round'/%3E%3C/svg%3E");
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%23facc15' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
 
 /**
@@ -133,7 +134,7 @@
   --color-primary-bright: #3ecf6e;
   --color-primary-foreground: #08240f;
   --color-ring: #3ecf6e;
-  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='16' viewBox='0 0 240 16'%3E%3Cpath d='M2 10.4C50 13.6 190 13.4 238 10.4' fill='none' stroke='%233ecf6e' stroke-width='2.3' stroke-linecap='round'/%3E%3C/svg%3E");
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%233ecf6e' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
 
 [data-theme="fll"] {
@@ -141,7 +142,7 @@
   --color-primary-bright: #fb923c;
   --color-primary-foreground: #241102;
   --color-ring: #fb923c;
-  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='16' viewBox='0 0 240 16'%3E%3Cpath d='M2 10.4C50 13.6 190 13.4 238 10.4' fill='none' stroke='%23fb923c' stroke-width='2.3' stroke-linecap='round'/%3E%3C/svg%3E");
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%23fb923c' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
 
 @layer base {
@@ -214,10 +215,11 @@
     color: var(--color-primary-bright);
     text-decoration-line: none;
     background-image: var(--texture-underline);
-    background-repeat: repeat-x;
+    background-repeat: no-repeat;
     background-position: 0 100%;
-    background-size: auto 0.8em;
-    padding-bottom: 0.1em;
+    background-size: 100% 0.8em;
+    padding-bottom: 0.16em;
+    box-decoration-break: clone;
     transition: color var(--duration-micro) var(--ease-toggle);
   }
 
