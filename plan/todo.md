@@ -1,8 +1,37 @@
 # Owner tasks
 
-Work that Phases 09 and 10 set up but could not finish, because it needs an account, a dashboard,
-or a URL that is actually reachable. Everything here is a deliberate gap, not an oversight — each
-item says what is already in the repository waiting for it.
+Work that Phases 09 through 11 set up but could not finish, because it needs an account, a
+dashboard, or a URL that is actually reachable. Everything here is a deliberate gap, not an
+oversight — each item says what is already in the repository waiting for it.
+
+## Cutover
+
+The order is `plan/11-cutover.md` §2–§6; these are the steps only an owner can take.
+
+- [ ] **Three copy differences to decide on**, found in the Phase 11 parity pass and logged in no
+      earlier phase: the homepage hero reads "Robots are in Franklin County. So are we." where
+      legacy read "Robots are cool. So are we."; the Programs panel lost legacy's two program
+      taglines; the footer lost its sponsor logos and "Special thanks to our sponsors for powering
+      our mission." Each is one edit to keep or revert. `/programs/fll` is also worth a read: legacy
+      had a placeholder there, so its copy is the only page written fresh rather than ported.
+- [ ] **Cloudflare Pages build settings**, applied to a preview deploy of the top stack branch
+      first: build command `pnpm build`, output directory `dist` (was `build`), and a Node/pnpm
+      pin matching `mise.toml` if Pages does not read it. Environment: `PUBLIC_TURNSTILE_SITE_KEY`
+      (real key for production), `PUBLIC_CF_BEACON_TOKEN`, and the Function secrets `TS_SECRET_KEY`
+      and `SLACK_FORM_POST_GENERIC` still bound. `docs/tooling.md` lists all four.
+- [ ] **Land the stack**: merge the top-of-stack PR so the cascade lands everything in `staging`.
+      Never merge a layer on its own (D23).
+- [ ] **Staging soak** on https://staging.scstem.org: phone, tablet, desktop; keyboard-only pass;
+      screen-reader smoke on the nav and the contact form; Lighthouse against real Cloudflare
+      serving; the contact form end to end with production Turnstile (a Slack message arrives);
+      both calendars live; GA4 DebugView confirming staging does **not** report. Then sign off.
+- [ ] **Launch**: merge `staging` into `main`, spot-check pages, redirects, the form, calendars,
+      and GA4 Realtime. Submit the sitemap to Search Console and Bing; run the Rich Results test
+      and a card debugger on production URLs (the items under Search engines below).
+- [ ] **Post-launch watch, two weeks**: Search Console coverage and 404 reports (add `_redirects`
+      entries for any missed URL), GA4 continuity against the pre-launch baseline, Function error
+      rates in the Cloudflare dashboard. Record the baselines in `docs/analytics.md`.
+- [ ] **Decide where `plan/` lives** once launched: it stays as history, or moves under `docs/`.
 
 ## Analytics
 
