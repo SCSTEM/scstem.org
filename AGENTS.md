@@ -40,7 +40,6 @@ Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script
 - `src/data/site.ts` — org facts, external URLs, calendar and analytics IDs. No hardcoded constants.
 - `functions/` — Cloudflare Pages Functions (form submit, calendar proxy). Own tsconfig.
 - `tools/` — repo checks, asset pipelines, and CI helpers. Own tsconfig.
-- `legacy/` — the old Next.js site. **Reference only; never import from it.**
 
 ## Rules
 

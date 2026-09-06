@@ -7,7 +7,6 @@ import antiSlop from "./tools/lint/anti-slop/index.ts";
 
 export default defineConfig(
   globalIgnores([
-    "legacy/",
     "dist/",
     ".astro/",
     "public/",
@@ -49,10 +48,6 @@ export default defineConfig(
             { name: "classnames", message: "Use `cn` from `@/lib/cn` (AGENTS.md)." },
             { name: "clsx", message: "Use `cn` from `@/lib/cn` (AGENTS.md)." },
             { name: "tailwind-merge", message: "Use `cn` from `@/lib/cn` (AGENTS.md)." },
-          ],
-          // `**`, not `*`: a single star matches one path segment and lets deep imports through.
-          patterns: [
-            { group: ["legacy/**", "**/legacy/**"], message: "legacy/ is reference only." },
           ],
         },
       ],
