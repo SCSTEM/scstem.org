@@ -3,6 +3,8 @@
   // Cloudflare Pages Functions are file-routed, which knip has no plugin for; Lighthouse CI
   // starts tools/ci/serve.ts from lighthouserc.json, which knip does not read.
   "entry": ["functions/**/*.ts", "tools/ci/serve.ts"],
+  // serve.ts shells out to the system openssl for its certificate; it is not an npm binary.
+  "ignoreBinaries": ["openssl"],
   // tools/lint/anti-slop/shared is vendored upstream source (see its VENDOR.md).
   "ignore": ["legacy/**", "tools/lint/anti-slop/shared/**"],
 }
