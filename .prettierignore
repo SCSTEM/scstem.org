@@ -1,14 +1,7 @@
-# Prettier is invoked against an explicit `**/*.{astro,md}` glob (see package.json),
-# because a blanket `*` ignore prunes directories and cannot be undone per-file.
-# oxfmt owns every other extension — see docs/tooling.md.
-legacy/**
-dist/**
-.astro/**
-node_modules/**
-tools/lint/anti-slop/**
-
-# Hand-formatted markdown: tables, checkboxes, and line breaks here are deliberate.
-plan/**
-docs/adr/**
-DESIGN.md
-.browser/**
+legacy/
+dist/
+.astro/
+.browser/
+.lighthouseci/
+pnpm-lock.yaml
+.claude/settings.local.json

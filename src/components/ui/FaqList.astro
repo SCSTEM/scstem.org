@@ -12,7 +12,7 @@ import AccordionItem from "@/components/ui/primitives/AccordionItem.astro";
  * exclusive-open — so it is a prop here rather than something `Accordion` could push down.
  */
 interface Props {
-  entries: ReadonlyArray<CollectionEntry<"faq">>;
+  entries: readonly CollectionEntry<"faq">[];
   name?: string;
   class?: string;
 }

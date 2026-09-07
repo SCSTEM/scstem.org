@@ -28,7 +28,7 @@ interface Props {
   ogType?: "website" | "article" | undefined;
   canonical?: URL | string | undefined;
   noindex?: boolean | undefined;
-  /** Remaps the action accent for a program page (D16). `ProgramLayout` sets this. */
+  /** Remaps the action accent for a program page. `ProgramLayout` sets this. */
   theme?: ProgramTheme | undefined;
 }
 
@@ -65,7 +65,7 @@ const { title, description, ogImage, ogImageAlt, ogType, canonical, noindex, the
        tall viewport. -->
   <body class="flex min-h-dvh flex-col">
     <a
-      class="bg-primary text-primary-foreground sr-only rounded-md px-4 py-2 font-medium no-underline focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60]"
+      class="sr-only rounded-md bg-primary bg-none px-4 py-2 font-medium text-primary-foreground focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60]"
       data-sheet-inert
       href="#main"
     >
@@ -77,5 +77,27 @@ const { title, description, ogImage, ogImageAlt, ogType, canonical, noindex, the
     </main>
     <Footer />
     <Analytics />
+    <script>
+      // Hand-markup strokes draw on when they come into view (DESIGN.md §6), not on page load,
+      // where anything below the fold would finish unseen. Marks already in view animate at once.
+      const marks = document.querySelectorAll(".draw-on");
+      if (marks.length > 0 && "IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.replace("is-pending", "is-drawing");
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.5 },
+        );
+        for (const mark of marks) {
+          mark.classList.add("is-pending");
+          observer.observe(mark);
+        }
+      }
+    </script>
   </body>
 </html>

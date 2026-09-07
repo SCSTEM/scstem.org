@@ -3,8 +3,8 @@ import { cn } from "@/lib/cn";
 import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
 
 /**
- * A hand-drawn underline (DESIGN.md §2.14). Two uses: beneath a heading, and **inline within a
- * sentence** under a key phrase of three words or fewer — the sanctioned in-prose emphasis.
+ * A hand-drawn underline beneath a heading or display phrase (DESIGN.md §2.14). Never inside
+ * body copy: there an underline means a link, and links draw their own stroke.
  *
  * Deliberately distinct from `title-rule`, the machined 32px card rule, which stays perfectly
  * straight. Machined versus hand is a contrast the system relies on; never blend the two.

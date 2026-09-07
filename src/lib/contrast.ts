@@ -7,7 +7,7 @@
 export const AA_NORMAL = 4.5;
 export const AAA_NORMAL = 7;
 
-const channels = (hex: string): ReadonlyArray<number> => {
+const channels = (hex: string): readonly number[] => {
   const digits = hex.replace("#", "");
   return [0, 2, 4].map((offset) => Number.parseInt(digits.slice(offset, offset + 2), 16));
 };

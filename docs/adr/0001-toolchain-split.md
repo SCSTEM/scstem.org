@@ -1,6 +1,6 @@
 # 0001 — Split the lint/format toolchain between oxc and ESLint/Prettier
 
-- **Status:** accepted
+- **Status:** superseded by [0012](0012-single-toolchain.md)
 - **Date:** 2026-08-28
 - **Decision reference:** D12, D24 (`plan/00-overview.md`)
 
@@ -14,11 +14,11 @@ a typed linter for their frontmatter and an accessibility ruleset for their mark
 
 Split ownership by extension, with no overlap:
 
-| Extensions | Linter | Formatter |
-| --- | --- | --- |
-| `.ts .js .mjs .cjs .json .jsonc .css` | oxlint (`typeAware`, `typeCheck`, vendored anti-slop) | oxfmt |
-| `.astro` | ESLint (`strictTypeChecked` + `eslint-plugin-astro` `jsx-a11y-strict`) | Prettier |
-| `.md` | — | Prettier |
+| Extensions                            | Linter                                                                 | Formatter |
+| ------------------------------------- | ---------------------------------------------------------------------- | --------- |
+| `.ts .js .mjs .cjs .json .jsonc .css` | oxlint (`typeAware`, `typeCheck`, vendored anti-slop)                  | oxfmt     |
+| `.astro`                              | ESLint (`strictTypeChecked` + `eslint-plugin-astro` `jsx-a11y-strict`) | Prettier  |
+| `.md`                                 | —                                                                      | Prettier  |
 
 Import sorting is enabled on both halves — oxfmt's `sortImports` and
 `eslint-plugin-perfectionist`'s `sort-imports` for `.astro` frontmatter — so the whole repo is

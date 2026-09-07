@@ -14,9 +14,13 @@ import { cn } from "@/lib/cn";
 import { PHOTO_QUALITY } from "@/lib/images";
 
 /**
- * The card the section grids are built from (DESIGN.md §8): an accent-tinted icon tile, a title
- * over the machined 32px rule, body copy, and an optional footer link whose hit area covers the
- * whole pocket. Replaces `legacy/src/components/cards/FeatureCard.tsx`.
+ * The card the section grids are built from (DESIGN.md §8): a photo or a stamped icon plate, a
+ * title over the machined 32px rule, body copy, and an optional footer link whose hit area covers
+ * the whole pocket.
+ *
+ * A card carries one identity mark, not two. With a photo the photo is the identity and the icon
+ * is not rendered; without one the icon stands in as a plate in the spec-chip anatomy — 1px
+ * 40%-alpha border, `radius-sm`, transparent fill — so the header row speaks one register.
  *
  * The photo is inset rather than bled to the pocket's top edge: a full-width image would cover
  * the inset shadow that makes the card read as machined *into* the page (§2).
@@ -24,8 +28,8 @@ import { PHOTO_QUALITY } from "@/lib/images";
  * Slots: `title` (so a title carrying markup still works) and the default body.
  */
 interface Props {
-  /** Tabler icon name for the tile. */
-  icon: string;
+  /** Tabler icon name for the plate. Ignored when the card has an `image`. */
+  icon?: string;
   image?: ImageMetadata;
   /** Required alongside `image`. */
   imageAlt?: string;
@@ -54,6 +58,12 @@ const {
 if (image !== undefined && imageAlt === undefined) {
   throw new Error("FeatureCard: an `image` needs an `imageAlt`.");
 }
+
+if (image === undefined && icon === undefined) {
+  throw new Error("FeatureCard: a card needs an `image` or an `icon`.");
+}
+
+const plateIcon = image === undefined ? icon : undefined;
 ---
 
 <Card
@@ -73,24 +83,27 @@ if (image !== undefined && imageAlt === undefined) {
           sizes="(min-width: 64rem) 30rem, (min-width: 48rem) 45vw, 92vw"
           src={image}
           width={900}
-          widths={[400, 640, 768, 900]}
+          widths={[400, 672, 768, 900]}
         />
       </div>
     )
   }
 
   <CardHeader>
+    {
+      plateIcon !== undefined && (
+        <span class="grid size-9 place-items-center rounded-sm border border-current/40 text-primary-bright">
+          <Icon name={plateIcon} size={20} />
+        </span>
+      )
+    }
     <div class="flex items-start justify-between gap-4">
-      <span
-        class="bg-primary/12 text-primary-bright grid size-12 shrink-0 place-items-center rounded-sm"
-      >
-        <Icon name={icon} size={24} />
-      </span>
-      {badge !== undefined && <Badge>{badge}</Badge>}
+      <CardTitle>
+        <slot name="title" />
+      </CardTitle>
+      {badge !== undefined && <Badge class="mt-1 shrink-0">{badge}</Badge>}
     </div>
-    <CardTitle rule>
-      <slot name="title" />
-    </CardTitle>
+    <hr class="mt-3 title-rule" />
   </CardHeader>
 
   <CardContent class="flex-1">

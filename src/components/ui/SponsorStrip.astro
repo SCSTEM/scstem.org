@@ -35,7 +35,7 @@ const renderHeight = (logo: ImageMetadata): number => Math.min(96, logo.height);
       return (
         <li>
           <Tag
-            class="ui-link block"
+            class="block ui-link"
             data-track={data.url === undefined ? undefined : "outbound_sponsor_click"}
             href={data.url}
             rel={data.url === undefined ? undefined : "sponsored noopener"}

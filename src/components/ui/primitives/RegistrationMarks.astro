@@ -4,7 +4,8 @@ import { cn } from "@/lib/cn";
 /**
  * Drafting-sheet crop marks (DESIGN.md §2.8): corner brackets on **one** feature pocket per
  * view. Never on standard cards — they stop reading as registration and start reading as
- * decoration. Expects a `relative` parent.
+ * decoration. Set in from the pocket's edge rather than on it — on the corners they read as part of
+ * the border; inside, they frame the content. Expects a `relative` parent.
  */
 interface Props {
   class?: string;
@@ -27,10 +28,10 @@ const corners = [
 ] as const;
 ---
 
-<div aria-hidden="true" class={cn("pointer-events-none absolute inset-0", className)}>
+<div aria-hidden="true" class={cn("pointer-events-none absolute inset-3", className)}>
   {
     corners.map((corner) => (
-      <svg class:list={["text-primary/35 absolute size-5", corner]} fill="none" viewBox="0 0 24 24">
+      <svg class:list={["absolute size-5 text-primary/35", corner]} fill="none" viewBox="0 0 24 24">
         <path d={BRACKET} stroke="currentColor" stroke-linecap="round" stroke-width="1.5" />
       </svg>
     ))

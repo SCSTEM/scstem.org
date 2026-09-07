@@ -1,12 +1,10 @@
-import { upcomingEvents } from "@/ics";
 import type { CalendarEvent } from "@/types";
 
+import { upcomingEvents } from "@/ics";
+
 /**
- * A branded agenda needs the calendar's events as data, not as a Google iframe (D19) — so this
- * fetches the public ICS feed server-side and hands the page JSON.
- *
- * Doing it here rather than in the browser is what makes the feature possible at all: the feed
- * sends no CORS headers, so a page cannot read it directly.
+ * Fetches the public ICS feed server-side and hands the page JSON. The feed sends no CORS
+ * headers, so a page cannot read it directly.
  */
 
 /**
@@ -33,7 +31,7 @@ const MAX_AGE = 900;
 
 /** What `/api/calendar/<name>` answers with, either way. */
 interface CalendarResponse {
-  events?: Array<CalendarEvent>;
+  events?: CalendarEvent[];
   message?: string;
 }
 

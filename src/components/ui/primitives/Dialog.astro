@@ -5,9 +5,9 @@ import Button from "./Button.astro";
 import Icon from "./Icon.astro";
 
 /**
- * A modal on native `<dialog>` — rung 3 of the interactivity ladder, and the reason legacy's
- * 280-line `Modal.tsx` does not come back. The browser supplies the focus trap, Esc handling,
- * inert background, and top-layer stacking; the script below only wires triggers.
+ * A modal on native `<dialog>` — rung 3 of the interactivity ladder. The browser supplies the
+ * focus trap, Esc handling, inert background, and top-layer stacking; the script below only
+ * wires triggers.
  *
  * Open it from anywhere with `data-dialog-open="<id>"`; close from inside with
  * `data-dialog-close`. Without JavaScript the dialog stays closed and its trigger does nothing,
@@ -25,7 +25,7 @@ const { id, title, class: className } = Astro.props;
 <dialog
   aria-labelledby={`${id}-title`}
   class={cn(
-    "pocket m-auto w-[calc(100%-2rem)] max-w-lg p-0 text-body",
+    "m-auto w-[calc(100%-2rem)] max-w-lg pocket p-0 text-body",
     "backdrop:bg-black/70",
     className,
   )}

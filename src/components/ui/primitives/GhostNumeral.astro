@@ -5,6 +5,11 @@ import { cn } from "@/lib/cn";
  * Oversized section numerals behind a heading (DESIGN.md §2.6) — the device from the Brand
  * Guidelines' own section pages. Decorative: numbers only top-level page sections, 3–4 per
  * page at most, and never a substitute for a real heading.
+ *
+ * Anchored to the top of a `relative` wrapper around the heading and shifted up by most of its
+ * height, so the numeral rises into the section's top padding and its lower part sits behind
+ * the heading's first line. It never reaches the copy below the heading — the one place §2.6
+ * forbids it — for a one-line or a two-line title.
  */
 interface Props {
   /** Rendered zero-padded, as the drawing-sheet convention: 1 becomes `01`. */
@@ -18,7 +23,7 @@ const { value, class: className } = Astro.props;
 <span
   aria-hidden="true"
   class={cn(
-    "pointer-events-none absolute -top-6 left-0 -z-10 font-mono font-semibold text-foreground/[0.06] select-none",
+    "pointer-events-none absolute top-0 -left-1 -z-10 -translate-y-[60%] font-mono font-semibold text-foreground/[0.06] select-none",
     "text-[5rem] leading-none md:text-[8rem]",
     className,
   )}

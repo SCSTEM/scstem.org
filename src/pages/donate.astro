@@ -13,12 +13,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { breadcrumbs } from "@/lib/jsonld";
 
 /**
- * Copy is legacy's, verbatim (D8). What changed is the color story: legacy gave each of the five
- * cards a different accent — green, blue, orange, red, yellow — and two of them a differently
- * colored button. DESIGN.md §2 allows one action accent per view, so every card here is the
- * page's `primary` and the ranking is carried by order and content instead.
- *
- * The addresses and the EIN set in the data voice (§3): they are spec values, not prose.
+ * Copy is legacy's, verbatim. DESIGN.md §2 allows one action accent per view, so every card is
+ * the page's `primary` and the ranking is carried by order and content. The addresses and the
+ * EIN set in the data voice (§3): they are spec values, not prose.
  */
 const mailingAddress = [
   "South Central STEM Collective",
@@ -55,10 +52,10 @@ const mailingAddress = [
         <p>
           We accept checks mailed to our workspace or delivered in person at our community events.
         </p>
-        <p class="text-foreground mt-4 font-semibold">Make checks payable to:</p>
-        <p class="text-body font-mono">{site.name}</p>
-        <p class="text-foreground mt-4 font-semibold">Mailing address:</p>
-        <address class="text-body font-mono not-italic">
+        <p class="mt-4 font-semibold text-foreground">Make checks payable to:</p>
+        <p class="font-mono text-body">{site.name}</p>
+        <p class="mt-4 font-semibold text-foreground">Mailing address:</p>
+        <address class="font-mono text-body not-italic">
           {mailingAddress.map((line) => <span class="block">{line}</span>)}
         </address>
       </FeatureCard>
@@ -82,8 +79,8 @@ const mailingAddress = [
         <dl class="mt-4">
           <dt class="spec-label text-muted">Name</dt>
           <dd class="text-body">{site.name}</dd>
-          <dt class="spec-label text-muted mt-3">EIN</dt>
-          <dd class="text-body font-mono">86-2328794</dd>
+          <dt class="mt-3 spec-label text-muted">EIN</dt>
+          <dd class="font-mono text-body">{site.ein}</dd>
         </dl>
         <p class="mt-4">Please reach out if we are not appearing in your fund&rsquo;s database.</p>
       </FeatureCard>

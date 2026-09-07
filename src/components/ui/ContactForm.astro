@@ -11,19 +11,18 @@ import { site } from "@/data/site";
 import { cn } from "@/lib/cn";
 
 /**
- * The form behind `/api/form/submit`, rebuilt on the primitives and a single vanilla script —
- * react-hook-form, valibot, and `@marsidev/react-turnstile` have no successors here (D3).
+ * The form behind `/api/form/submit`.
  *
  * Validation is the browser's own Constraint Validation API: the fields carry native attributes,
  * and the script only borrows the messages so they can render in the system's own error style
  * instead of a native bubble. Turnstile renders explicitly into its container once its API
- * arrives, so the widget is never a React component's side effect.
+ * arrives.
  */
 interface Props {
   /**
-   * Which form this is, echoed into the Slack message the function posts. Legacy sent
-   * "Contact Us" from `/contact` and "Sponsor Question" from `/donate`; keep those strings so
-   * the two funnels stay distinguishable on the receiving end.
+   * Which form this is, echoed into the Slack message the function posts. `/contact` sends
+   * "Contact Us" and `/donate` sends "Sponsor Question"; the receiving end tells the funnels
+   * apart by these strings.
    */
   name: string;
   class?: string;
@@ -83,7 +82,7 @@ const fields = [
 
   <div class="flex flex-wrap items-center justify-between gap-4">
     <p
-      class="text-small data-[state=error]:text-destructive-bright data-[state=ok]:text-primary-bright flex items-center gap-1.5 empty:hidden"
+      class="flex items-center gap-1.5 text-small empty:hidden data-[state=error]:text-destructive-bright data-[state=ok]:text-primary-bright"
       data-form-status
       role="status"
     >

@@ -4,9 +4,7 @@ import { cn } from "@/lib/cn";
 import Icon from "./Icon.astro";
 
 /**
- * One disclosure, built on `<details>`/`<summary>` (DESIGN.md-compatible zero-JS: rung 1 of the
- * interactivity ladder). Replaces the HeroUI accordion the legacy FAQ used.
- *
+ * One disclosure, built on `<details>`/`<summary>` (rung 1 of the README's interactivity ladder).
  * The chevron rotates on open via CSS. Keyboard behavior — Enter and Space — is the browser's.
  */
 interface Props {
@@ -39,7 +37,7 @@ const { question, name, open = false, class: className } = Astro.props;
       size={20}
     />
   </summary>
-  <div class="measure text-body pb-4">
+  <div class="measure pb-4 text-body">
     <slot />
   </div>
 </details>

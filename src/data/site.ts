@@ -1,6 +1,5 @@
 /**
- * Every fact about the organization that is not page content, in one place. Replaces
- * `legacy/data/config.ts` and the constants that were scattered through legacy pages.
+ * Every fact about the organization that is not page content, in one place.
  *
  * Rule of thumb: if it belongs in prose or would change per season, it belongs in
  * `src/content/`; if it is an identifier, a URL, or an org fact, it belongs here.
@@ -16,6 +15,8 @@ export const site = {
   /** The 501(c)(3) line, as it appears in the footer and structured data. */
   legal:
     "SC2 is 501(c)(3) non-profit focused on providing STEM opportunities for students in and around Franklin County PA.",
+  /** Employer Identification Number — what a donor's giving fund looks the organization up by. */
+  ein: "86-2328794",
 
   description:
     "The South Central STEM Collective is a non-profit organization focused on building the future of STEM, right here in Franklin County, Pennsylvania.",
@@ -77,7 +78,7 @@ export const site = {
     github: "https://go.scstem.tech/github",
   },
 
-  /** External destinations, from `legacy/data/config.ts`. */
+  /** External destinations. */
   urls: {
     donate: "https://www.paypal.com/US/fundraiser/charity/4486755",
     wishlist: "https://wiki.scstem.org/donations/wishlist",
@@ -94,7 +95,7 @@ export const site = {
     teamVideo: "https://youtu.be/147CgudTur8",
   },
 
-  /** Public Google Calendar IDs, from `legacy/src/app/calendar/[name]/page.tsx`. */
+  /** Public Google Calendar IDs. `functions/api/calendar/[name].ts` mirrors them verbatim. */
   calendars: {
     frc: "Y19hYjljNWJlYTEwODgyYzAxYTAxOGNiZDUxYWIyMzcwYmY4NDk5NDZiZTRlMjUzNTAwZmZmMWQxMGZkY2M4NjFhQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20",
     sc2: "Y19wcDlkOXRrbGRrbThmdXZtcjMyZTBwZTgxc0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
@@ -102,7 +103,7 @@ export const site = {
 
   analytics: {
     /**
-     * GA4, loaded by `Analytics.astro` as a plain gtag snippet after `load` (D21). Cloudflare
+     * GA4, loaded by `Analytics.astro` as a plain gtag snippet after `load`. Cloudflare
      * Web Analytics' token is not here: it has no value to commit yet, so it comes through
      * `PUBLIC_CF_BEACON_TOKEN` in `astro.config.ts`'s env schema, set in the Pages dashboard.
      */
@@ -110,7 +111,7 @@ export const site = {
   },
 } as const;
 
-/** A program's facts. Flat, like the content schemas (D2). */
+/** A program's facts. Flat, like the content schemas. */
 interface Program {
   ages?: string;
   href: string;
@@ -120,17 +121,17 @@ interface Program {
 }
 
 /**
- * The programs the site is organized around; the key doubles as the theme name (D16) and is the
+ * The programs the site is organized around; the key doubles as the theme name and is the
  * `program` enum in `src/content.config.ts`. Typed as a total record over `ProgramKey`, so a
  * program accepted by the schema but missing here is a compile error rather than an `undefined`
  * that surfaces as a runtime throw on a page.
  */
 export const PROGRAM_KEYS = ["sc2", "frc", "fll"] as const;
 
-/** @public Consumed by the app shell and program pages from Phase 05 onward. */
+/** @public */
 export type ProgramKey = (typeof PROGRAM_KEYS)[number];
 
-/** @public Consumed by the app shell and program pages from Phase 05 onward. */
+/** @public */
 export const programs = {
   /** The org-wide program: events and pages that are not FRC- or FLL-specific. */
   sc2: {
@@ -154,9 +155,9 @@ export const programs = {
 } as const satisfies Record<ProgramKey, Program>;
 
 /**
- * @public Consumed by the layouts and `Seo` from Phase 05 onward.
+ * @public
  *
- * A program that carries a `[data-theme]` block in `global.css` (D16); the org-wide `sc2` look
+ * A program that carries a `[data-theme]` block in `global.css`; the org-wide `sc2` look
  * is the default and has none.
  */
 export type ProgramTheme = Exclude<ProgramKey, "sc2">;
@@ -174,14 +175,14 @@ interface PanelLink extends Route {
 
 export interface NavLink extends Route {
   /** Disclosure panel this entry opens in the header, in addition to being a link. */
-  readonly panel?: ReadonlyArray<PanelLink>;
+  readonly panel?: readonly PanelLink[];
   /**
    * Which chrome shows this entry, and how. The desktop header and the mobile sheet carry
    * deliberately different sets (DESIGN.md §5) — Donate is a header link (`header`) and a
    * pinned sheet button (`sheet-cta`), Calendar lives in the desktop Programs panel and at
    * sheet top level — so the split is data, not a discrepancy between two hand-written lists.
    */
-  readonly surfaces: ReadonlyArray<"header" | "sheet" | "sheet-cta">;
+  readonly surfaces: readonly ("header" | "sheet" | "sheet-cta")[];
 }
 
 /**
@@ -227,11 +228,11 @@ export const nav = {
   calendar: Route;
   cta: Route;
   donate: Route;
-  primary: ReadonlyArray<NavLink>;
+  primary: readonly NavLink[];
   sponsors: Route;
 };
 
-/** @public Consumed by the footer and the app shell. */
+/** @public Consumed by `SocialLinks` and the footer's link columns. */
 export const socials = [
   { label: "Facebook", href: site.social.facebook, icon: "brand-facebook" },
   { label: "LinkedIn", href: site.social.linkedin, icon: "brand-linkedin" },

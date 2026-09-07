@@ -8,27 +8,27 @@ Pages. **Zero client-side framework runtime** — `.astro` components and plain 
 
 ## Commands
 
-| Command                        | What it does                                                               |
-| ------------------------------ | -------------------------------------------------------------------------- |
-| `mise install && pnpm install` | Set up (mise pins node + pnpm; see `docs/tooling.md`)                      |
-| `pnpm dev`                     | Dev server                                                                 |
-| `pnpm check`                   | Typecheck + lint + format check + knip. **Must pass before every commit.** |
-| `pnpm build`                   | Static build to `dist/`                                                    |
-| `pnpm fmt` / `pnpm lint:fix`   | Write formatting / autofix lint                                            |
+| Command                        | What it does                                                                             |
+| ------------------------------ | ---------------------------------------------------------------------------------------- |
+| `mise install && pnpm install` | Set up (mise pins node + pnpm; see `docs/tooling.md`)                                    |
+| `pnpm dev`                     | Dev server                                                                               |
+| `pnpm check`                   | Typecheck + lint + format check + knip + repo checks. **Must pass before every commit.** |
+| `pnpm build`                   | Static build to `dist/`                                                                  |
+| `pnpm fmt` / `pnpm lint:fix`   | Write formatting / autofix lint                                                          |
 
-`mise run <task>` forwards to the same `package.json` scripts, which are the single source of truth.
+## Toolchain
 
-## Toolchain ownership
+ESLint (typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro` with
+`jsx-a11y-strict`, the vendored anti-slop rules in `tools/lint/`) lints every `.ts`, `.js`, and
+`.astro` file. Prettier formats everything (`docs/adr/0012-single-toolchain.md`).
+TypeScript 6 throughout: `astro check` covers `src/` and the config files, `tsc` covers
+`functions/` and `tools/`.
 
-| Extensions                       | Linter                                         | Formatter |
-| -------------------------------- | ---------------------------------------------- | --------- |
-| `.ts .js .mjs .cjs .json .jsonc` | oxlint (type-aware, vendored nkzw + anti-slop) | oxfmt     |
-| `.css`                           | — (oxlint has no CSS rules)                    | oxfmt     |
-| `.astro`                         | ESLint (typed, jsx-a11y-strict)                | Prettier  |
-| `.md`                            | —                                              | Prettier  |
+The Claude Code hook in `.claude/hooks/format-lint.sh` formats and lints every file you edit and
+feeds lint failures back to you.
 
-The Claude Code hook in `.claude/hooks/format-lint.sh` runs the right pair on every file you
-edit, and feeds lint failures back to you. Do not reach for the other toolchain by hand.
+Repo-specific checks and asset pipelines are TypeScript scripts under `tools/`, run directly by
+Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script.
 
 ## Architecture
 
@@ -39,12 +39,17 @@ edit, and feeds lint failures back to you. Do not reach for the other toolchain 
 - `src/content/` — markdown content collections (sponsors, events, faq, news, robots, photos).
 - `src/data/site.ts` — org facts, external URLs, calendar and analytics IDs. No hardcoded constants.
 - `functions/` — Cloudflare Pages Functions (form submit, calendar proxy). Own tsconfig.
+- `tools/` — repo checks, asset pipelines, and CI helpers. Own tsconfig.
 - `legacy/` — the old Next.js site. **Reference only; never import from it.**
 
 ## Rules
 
 - `cn` comes from `@/lib/cn` only — a `cnfast` merge configured with the DESIGN.md §3 type scale
   (see the docstring). `clsx`, `classnames`, `tailwind-merge` are banned imports.
+- The `font-size` group in `src/lib/cn.ts` mirrors the `--text-*` tokens in `src/styles/global.css`
+  by hand. Adding, renaming, or removing a size token means the same edit in both files, in the
+  same commit; nothing checks them, and a missing entry shows up only as a wrong size in the
+  browser.
 - No new dependencies without an ADR in `docs/adr/`.
 - No client-side frameworks, no framework islands.
 - Content changes go in `src/content/` — see `docs/content.md`. **Never inline a content array

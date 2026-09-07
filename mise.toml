@@ -5,17 +5,18 @@ npm.package_manager = "pnpm"
 
 [tools]
 node = "26.7.0"
-pnpm = "11.22.0"
+pnpm = "11.24.0"
 
 "npm:@puppeteer/browsers" = "3.2.1"
-"npm:chrome-devtools-mcp" = "1.7.0"
+"npm:chrome-devtools-mcp" = "1.8.0"
 
 [env]
 _.path = ["{{config_root}}/node_modules/.bin"]
 ASTRO_TELEMETRY_DISABLED = "1"
 
+# Chrome for the chrome-devtools MCP server (.mcp.json).
 [tasks."install:chrome"]
-description = "Install Chrome for Testing"
+description = "Install Chrome for Testing into .browser/"
 depends = ["clean:chrome"]
 run = """
 bin=$(browsers install chrome@stable --path="$MISE_PROJECT_ROOT/.browser" | tail -n1 | awk '{print $2}')
@@ -27,47 +28,3 @@ echo "Chrome linked: .browser/chrome/chrome -> $bin"
 [tasks."clean:chrome"]
 description = "Remove the installed Chrome for Testing"
 run = "rm -rf .browser/chrome"
-
-[tasks.install]
-run = "pnpm install"
-description = "Install dependencies"
-
-[tasks.dev]
-run = "pnpm run dev"
-description = "Start the Astro dev server"
-
-[tasks.build]
-run = "pnpm run build"
-description = "Build the static site to dist/"
-
-[tasks.preview]
-run = "pnpm run preview"
-description = "Serve the built site locally"
-
-[tasks.check]
-run = "pnpm run check"
-description = "Typecheck + lint + format check + knip"
-
-[tasks.typecheck]
-run = "pnpm run typecheck"
-description = "astro check"
-
-[tasks.lint]
-run = "pnpm run lint"
-description = "oxlint + eslint"
-
-[tasks."lint:fix"]
-run = "pnpm run lint:fix"
-description = "oxlint + eslint with autofix"
-
-[tasks.fmt]
-run = "pnpm run fmt"
-description = "oxfmt + prettier, writing changes"
-
-[tasks."fmt:check"]
-run = "pnpm run fmt:check"
-description = "oxfmt + prettier in check mode"
-
-[tasks.knip]
-run = "pnpm run knip"
-description = "Find unused files, exports, and dependencies"

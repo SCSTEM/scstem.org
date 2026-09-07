@@ -30,7 +30,7 @@ const { fields, orientation = "strip", class: className } = Astro.props;
 
 <dl
   class={cn(
-    "border-border divide-border grid grid-cols-1 divide-y border",
+    "grid grid-cols-1 divide-y divide-border border border-border",
     orientation === "strip" &&
       "md:auto-cols-fr md:grid-flow-col md:grid-cols-none md:divide-x md:divide-y-0",
     className,
@@ -40,7 +40,7 @@ const { fields, orientation = "strip", class: className } = Astro.props;
     fields.map((field) => (
       <div class="px-4 py-3">
         <dt class="spec-label text-muted">{field.label}</dt>
-        <dd class:list={["text-small text-body mt-1", field.mono === true && "font-mono"]}>
+        <dd class:list={["mt-1 text-small text-body", field.mono === true && "font-mono"]}>
           {field.href === undefined ? field.value : <a href={field.href}>{field.value}</a>}
         </dd>
       </div>

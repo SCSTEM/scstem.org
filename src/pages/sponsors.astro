@@ -17,10 +17,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { breadcrumbs } from "@/lib/jsonld";
 
 /**
- * Hero copy is legacy's, verbatim (D8). The single flat wall of cards becomes one group per
- * level, strongest first, because the tier is the page's whole information hierarchy — and
- * former sponsors, which legacy dropped from the page entirely, get a name-only acknowledgment
- * out of the same collection (`active: false`, plan/07 Group A).
+ * One group per level, strongest first, because the tier is the page's whole information
+ * hierarchy. Former sponsors (`active: false`) get a name-only acknowledgment from the same
+ * collection.
  */
 const sponsors = await getCollection("sponsors");
 
@@ -34,7 +33,7 @@ const past = sponsors
   .filter((entry) => !entry.data.active)
   .toSorted((a, b) => a.data.name.localeCompare(b.data.name));
 
-/** Hero copy, legacy's verbatim (D8) — too long to double as the meta description below. */
+/** Hero copy — too long to double as the meta description below. */
 const intro =
   "We are proud to partner organizations and individuals who want to join us in building the future. This strong support enables our mentors, volunteers, and parents to focus on what really matters.";
 ---
@@ -87,7 +86,7 @@ const intro =
         <Fragment slot="intro">
           Organizations whose support carried us through earlier seasons.
         </Fragment>
-        <ul class="text-body-lg text-foreground flex flex-wrap gap-x-10 gap-y-3">
+        <ul class="flex flex-wrap gap-x-10 gap-y-3 text-body-lg text-foreground">
           {past.map((sponsor) => (
             <li>{sponsor.data.name}</li>
           ))}
@@ -115,10 +114,10 @@ const intro =
       </Button>
     </CtaBanner>
 
-    <p class="text-muted mt-8 flex flex-wrap items-center justify-center gap-2">
+    <p class="mt-8 flex flex-wrap items-center justify-center gap-2 text-muted">
       Rather just talk it through?
       <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={2} />
-      <a class="font-hand text-primary-bright text-xl" href="/contact">Become a sponsor</a>
+      <a class="font-hand text-xl text-primary-bright" href="/contact">Become a sponsor</a>
     </p>
   </Section>
 </BaseLayout>

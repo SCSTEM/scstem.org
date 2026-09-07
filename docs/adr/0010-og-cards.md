@@ -1,6 +1,7 @@
 # 0010 — Social cards are committed artifacts from one template
 
-- **Status:** accepted
+- **Status:** accepted; amended by [0015](0015-og-cards-satori.md), which replaces the renderer
+  and removes the font setup step
 - **Date:** 2026-09-01
 
 ## Context
@@ -21,7 +22,7 @@ seven files that change when the photography or the section list changes, which 
 
 ## Decision
 
-`tools/assets/og-cards.mjs` renders all seven cards from one template and is **run by hand**;
+`tools/assets/og-cards.ts` renders all seven cards from one template and is **run by hand**;
 the output is committed. `pnpm assets:og-fonts` is the one-time font step, and
 `pnpm assets:og` renders.
 
@@ -53,5 +54,5 @@ the output is committed. `pnpm assets:og-fonts` is the one-time font step, and
   it and neither runs in CI.
 - A new section wants a new card: add it to the `cards` list, run `pnpm assets:og`, and pass it
   as `ogImage` with an `ogImageAlt` — `Seo` throws at build without the alt.
-- `tools/checks/verify-meta.mjs` asserts every page's `og:image` is absolute and resolves to a
+- `tools/checks/verify-meta.ts` asserts every page's `og:image` is absolute and resolves to a
   built file, so a card that is renamed and not rewired fails CI rather than a card debugger.

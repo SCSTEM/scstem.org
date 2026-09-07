@@ -19,12 +19,10 @@ import { PHOTO_QUALITY } from "@/lib/images";
 import { breadcrumbs } from "@/lib/jsonld";
 
 /**
- * Legacy's page was a placeholder — "This page is under construction" over a photo — so unlike
- * the rest of Phase 07 this one has no copy to port. What is written here is limited to what the
- * site can stand behind: what the program is (the description already running on the homepage),
- * the three parts of a season as FIRST defines them, and the teams our own content collection
- * knows about. Anything season-specific — dates, fees, meeting nights — routes to the calendar
- * and the get-involved form rather than being stated here.
+ * The copy is limited to what the site can stand behind: what the program is, the three parts
+ * of a season as FIRST defines them, and the teams the content collection knows about. Anything
+ * season-specific — dates, fees, meeting nights — routes to the calendar and the get-involved
+ * form rather than being stated here.
  */
 const teamPhotos = (await getCollection("fllTeamPhotos")).toSorted(
   (a, b) => b.data.year - a.data.year,
@@ -142,7 +140,7 @@ const latest = teamPhotos[0];
     )
   }
 
-  <Section>
+  <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Start here</Fragment>
       No experience needed, and no LEGO® collection required — the robots, the tools, and the mentors

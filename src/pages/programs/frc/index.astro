@@ -15,21 +15,16 @@ import Hero from "@/components/ui/Hero.astro";
 import HeroVideo from "@/components/ui/HeroVideo.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
-import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import Section from "@/components/ui/Section.astro";
 import StatBand from "@/components/ui/StatBand.astro";
+import VideoLink from "@/components/ui/VideoLink.astro";
 import { nav, programs, site } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
 import { PHOTO_QUALITY } from "@/lib/images";
 import { breadcrumbs } from "@/lib/jsonld";
 
-/**
- * Copy is legacy's, verbatim (D8), with one correction: legacy's h1 read "engineers scientists".
- *
- * The two `react-scroll-parallax` banners between here and the robots page become one framed
- * media link: DESIGN.md §6 has no parallax in it, and the banners were a link's only content.
- */
+/** Copy is legacy's, verbatim. */
 const stats = [
   {
     value: "12+ years",
@@ -76,7 +71,7 @@ const stats = [
       webm={site.heroVideo.webm}
     />
 
-    {/* The eyebrow is the slot above the `h1`; its type rules simply do not apply to an image. */}
+    <!-- The eyebrow is the slot above the `h1`; its type rules simply do not apply to an image. -->
     <Image
       alt={`${programs.frc.teamName}, FIRST Robotics Competition team 4050`}
       class="h-auto w-56 md:w-72"
@@ -86,8 +81,8 @@ const stats = [
     />
 
     <Fragment slot="title">
-      Welcome to the <ChalkUnderline tone="chalk" variant={1}>next generation</ChalkUnderline> of thinkers,
-      engineers, scientists, artists, and dreamers.
+      Welcome to the <span class="highlight-swipe">next generation</span> of thinkers, engineers, scientists,
+      artists, and dreamers.
     </Fragment>
 
     Inspiring students since 2012, Biohazard is south-central Pennsylvania&rsquo;s premiere
@@ -137,7 +132,7 @@ const stats = [
   <Section atmosphere="pool">
     <Fragment slot="title">Check out our robots</Fragment>
 
-    <a class="media-frame group relative block" href="/programs/frc/robots">
+    <a class="group relative block media-frame" href="/programs/frc/robots">
       <Image
         alt="Troubleclef, Biohazard's 2024 robot, on the competition field"
         class="w-full"
@@ -157,7 +152,7 @@ const stats = [
         widths={[160, 320]}
       />
       <span
-        class="bg-background/70 text-foreground group-hover:text-primary-bright absolute top-4 left-4 inline-flex items-center gap-2 rounded-md px-4 py-2 font-medium transition-colors duration-(--duration-micro)"
+        class="absolute top-4 left-4 inline-flex items-center gap-2 rounded-md bg-background/70 px-4 py-2 font-medium text-foreground transition-colors duration-(--duration-micro) group-hover:text-primary-bright"
       >
         Every robot since 2019
         <Icon name="arrow-right" size={20} />
@@ -171,33 +166,14 @@ const stats = [
       Meet the team, learn about <span class="italic">FIRST®</span>
     </Fragment>
 
-    <a
-      aria-label="Watch our team video on YouTube"
-      class="media-frame group relative mx-auto block max-w-3xl"
+    <VideoLink
       href={site.urls.teamVideo}
-      rel="noopener"
-    >
-      <Image
-        alt=""
-        class="w-full"
-        loading="lazy"
-        quality={PHOTO_QUALITY}
-        sizes="(min-width: 48rem) 48rem, 92vw"
-        src={collage}
-        width={1024}
-        widths={[640, 840, 1024]}
-      />
-      <span class="bg-background/40 absolute inset-0 grid place-items-center">
-        <span
-          class="bg-primary text-primary-foreground grid size-16 place-items-center rounded-md transition-transform duration-(--duration-micro) group-hover:scale-105"
-        >
-          <Icon name="player-play" size={32} />
-        </span>
-      </span>
-    </a>
+      label="Watch our team video on YouTube"
+      poster={collage}
+    />
   </Section>
 
-  <Section>
+  <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Take us to the next level</Fragment>
       Build season starts every January and runs six weeks. Students, mentors, and sponsors all have a

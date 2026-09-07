@@ -9,11 +9,7 @@
  * `dist/llms.txt` alongside the HTML.
  */
 /** Entry id to the path of the route that renders it. */
-interface EventRoutes {
-  readonly [id: string]: string;
-}
-
-export const eventRoutes: EventRoutes = {
-  openhouse: "/openhouse",
-  "frc-kickoff": "/programs/frc/kickoff",
-};
+export const eventRoutes: ReadonlyMap<string, string> = new Map([
+  ["openhouse", "/openhouse"],
+  ["frc-kickoff", "/programs/frc/kickoff"],
+]);

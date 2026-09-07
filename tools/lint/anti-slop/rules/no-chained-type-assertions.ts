@@ -1,5 +1,5 @@
-import { defineRule } from "@oxlint/plugins";
-import type { ESTree } from "@oxlint/plugins";
+import { defineRule } from "../compat.ts";
+import type { ESTree } from "../compat.ts";
 
 type TypeAssertionExpression = ESTree.TSAsExpression | ESTree.TSTypeAssertion;
 
@@ -26,7 +26,7 @@ function isConstAssertion(node: TypeAssertionExpression): boolean {
 
 function isOutermostAssertionInChain(node: TypeAssertionExpression): boolean {
   let current: ESTree.Expression = node;
-  let parent = node.parent;
+  let parent = node.parent as ESTree.Node;
 
   while (parent.type === "ParenthesizedExpression" && parent.expression === current) {
     current = parent;

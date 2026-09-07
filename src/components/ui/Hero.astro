@@ -22,18 +22,16 @@ const { class: className } = Astro.props;
 <section class={cn("relative", className)}>
   <div class="hero-media relative aspect-3/2 md:absolute md:inset-0 md:aspect-auto">
     <slot name="media" />
-    {
-      /* DESIGN.md §7: opaque at the text edge, ~20% at the far one. The desktop stops are placed
-        so the opaque band spans the copy column instead of ending halfway through it. */
-    }
+    <!-- DESIGN.md §7: opaque at the text edge, ~20% at the far one. The desktop stops are placed
+         so the opaque band spans the copy column instead of ending halfway through it. -->
     <div
       aria-hidden="true"
-      class="to-background md:from-background md:via-background/75 md:to-background/20 absolute inset-0 bg-linear-to-b from-transparent from-45% md:bg-linear-to-r md:from-35% md:via-65%"
+      class="absolute inset-0 bg-linear-to-b from-transparent from-45% to-background md:bg-linear-to-r md:from-background md:from-35% md:via-background/75 md:via-65% md:to-background/20"
     >
     </div>
   </div>
 
-  <div class="container-page section-y relative md:flex md:min-h-[30rem] md:items-center">
+  <div class="relative container-page section-y md:flex md:min-h-[30rem] md:items-center">
     <div class="max-w-2xl">
       {
         Astro.slots.has("eyebrow") && (
@@ -42,10 +40,10 @@ const { class: className } = Astro.props;
           </p>
         )
       }
-      <h1 class="text-display mt-3">
+      <h1 class="mt-3 text-display">
         <slot name="title" />
       </h1>
-      <div class="measure text-body-lg text-foreground mt-5">
+      <div class="mt-5 measure text-body-lg text-foreground">
         <slot />
       </div>
       {

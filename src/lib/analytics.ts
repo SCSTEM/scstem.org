@@ -1,11 +1,7 @@
 /**
  * The DOM contract between `Analytics.astro` and the scripts that report an event it cannot see
- * for itself (D21, taxonomy in `docs/analytics.md`).
- *
- * Most of the taxonomy is link clicks, which the analytics listener recognizes by destination —
- * nothing to annotate, nothing to keep in step with a moved route. A form submission has no
- * destination and no click, so it is dispatched instead: one custom event, one name, imported by
- * both ends rather than typed twice.
+ * for itself (taxonomy in `docs/analytics.md`). Link clicks are recognized by destination; a form
+ * submission has no destination, so it dispatches this event instead.
  */
 export const TRACK_EVENT = "sc2:track";
 

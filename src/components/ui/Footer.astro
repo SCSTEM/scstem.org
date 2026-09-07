@@ -2,18 +2,16 @@
 import { Image } from "astro:assets";
 
 import logoLockup from "@/assets/brand/logo-color-full.svg";
-import Button from "@/components/ui/primitives/Button.astro";
 import CardTitle from "@/components/ui/primitives/CardTitle.astro";
-import Icon from "@/components/ui/primitives/Icon.astro";
+import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import SocialLinks from "@/components/ui/SocialLinks.astro";
 import { nav, programs, site, socials } from "@/data/site";
 
 /**
  * Site footer, styled as a recessed `card` band (DESIGN.md §2) and carrying the full-width color
  * lockup — never a grayscale logo. The title block sits at the bottom, which is where a drawing
  * sheet puts its identity strip (§2.9).
- *
- * Content inventory comes from `legacy/src/components/Footer.tsx`; the copy is verbatim.
  */
 const year = new Date().getFullYear();
 
@@ -37,38 +35,16 @@ const sections = [
   { title: "Find us online", links: socials },
 ] as const;
 
-/** The icon row: the socials plus email, which is the same shape. */
-const iconLinks = [
-  ...socials,
-  { label: `Email ${site.name}`, href: `mailto:${site.email}`, icon: "mail" },
-] as const;
-
 const isExternal = (href: string): boolean => href.startsWith("http");
 ---
 
-<footer class="bg-card mt-24">
+<footer class="mt-24 bg-card">
   <div class="container-page py-12">
     <div class="flex flex-col gap-10 md:flex-row md:justify-between">
       <div class="max-w-xs">
         <Image alt={site.name} class="h-auto w-full max-w-[16rem]" src={logoLockup} />
-        <p class="text-small mt-4">{site.legal}</p>
-        <ul class="mt-6 flex gap-2">
-          {
-            iconLinks.map((link) => (
-              <li>
-                <Button
-                  class="hover:bg-card-hover"
-                  href={link.href}
-                  rel={isExternal(link.href) ? "noopener" : undefined}
-                  size="icon"
-                  variant="ghost"
-                >
-                  <Icon label={link.label} name={link.icon} size={24} />
-                </Button>
-              </li>
-            ))
-          }
-        </ul>
+        <p class="mt-4 text-small">{site.legal}</p>
+        <SocialLinks class="mt-6" email />
       </div>
 
       <nav aria-label="Footer" class="grid grid-cols-2 gap-8 md:grid-cols-3">
@@ -100,8 +76,10 @@ const isExternal = (href: string): boolean => href.startsWith("http");
       </nav>
     </div>
 
+    <RulerDivider class="mt-12" />
+
     <TitleBlock
-      class="mt-12"
+      class="mt-6"
       fields={[
         { label: "Organization", value: site.name },
         { label: "Workspace", value: site.location.workspace },

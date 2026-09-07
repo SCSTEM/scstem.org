@@ -18,17 +18,18 @@ The homepage rebuilt to the approved DESIGN.md/mockups with existing marketing c
 ### 1. Composed components (in `src/components/ui/`)
 
 Built from primitives; these are the reusable section vocabulary for all later pages:
-- `Hero.astro` — full-bleed hero with media slot (video or image), heading, subhead, CTA group. Video handling per D20: `<video muted loop playsinline preload="none" poster>` with the existing MP4/WebM sources *for now* (re-encode lands in Phase 09 — structure the component so only the source files change), poster shown until user interaction/in-view, `prefers-reduced-motion` → poster only.
+
+- `Hero.astro` — full-bleed hero with media slot (video or image), heading, subhead, CTA group. Video handling per D20: `<video muted loop playsinline preload="none" poster>` with the existing MP4/WebM sources _for now_ (re-encode lands in Phase 09 — structure the component so only the source files change), poster shown until user interaction/in-view, `prefers-reduced-motion` → poster only.
 - `Section.astro` — consistent vertical rhythm wrapper (replaces `legacy/src/components/page/Section.tsx`), optional heading/eyebrow/intro slots.
 - `FeatureCard.astro` / `FeatureGrid.astro` — replaces `legacy/src/components/cards/FeatureCard.tsx`; used for program cards and join cards.
 - `SponsorStrip.astro` — pulls **active** sponsors from the `sponsors` collection, ordered by level; logos via astro:assets with fixed dimensions (no CLS); links out with `rel="sponsored noopener"`.
 - `CtaBanner.astro` — the "get involved / donate" band.
-- Page-local data (program cards, join cards) lives as a typed const in the page frontmatter — fine for layout-coupled copy (D18 note: collections are for *repeating, editor-owned* content).
+- Page-local data (program cards, join cards) lives as a typed const in the page frontmatter — fine for layout-coupled copy (D18 note: collections are for _repeating, editor-owned_ content).
 
 ### 2. Assemble `src/pages/index.astro`
 
 - BaseLayout with title = site name, homepage description (port legacy meta description), `webSite()` JSON-LD added.
-- Sections per legacy content order unless DESIGN.md argues otherwise: hero → programs → sponsors → join/CTA. The `/openhouse` fork is *not* consulted (Phase 08 handles events).
+- Sections per legacy content order unless DESIGN.md argues otherwise: hero → programs → sponsors → join/CTA. The `/openhouse` fork is _not_ consulted (Phase 08 handles events).
 - LCP element (hero poster/heading) must not depend on JS; hero image/poster gets `fetchpriority="high"` + eager loading; everything below the fold lazy.
 
 ### 3. Conformance review (the gate)
@@ -74,7 +75,7 @@ Built from primitives; these are the reusable section vocabulary for all later p
   numerals 01–03 on the three narrative sections, a tint band on the FIRST interlude, an ambient
   pool on the video, a ruler divider before the sponsors, and registration marks (§2.8, itself a
   listed device) on the closing pocket.
-- **The hero emphasizes one phrase, not two.** Legacy highlighted "Robots" *and* underlined "So
+- **The hero emphasizes one phrase, not two.** Legacy highlighted "Robots" _and_ underlined "So
   are we."; §2.1 permits exactly one. The swipe stays on "Robots", and the hand-markup budget goes
   to the sanctioned tagline in the CTA band — "Real ⬭Skills⬭. Real ⬭Robots⬭. Real ⬭Fun⬭.", three
   chalk ovals, no two sharing a variant.

@@ -8,13 +8,22 @@ import { site, socials } from "@/data/site";
  */
 
 /** What a schema.org property is allowed to hold — the concrete contract, not `unknown`. */
-type JsonLdValue = string | number | boolean | JsonLdObject | ReadonlyArray<JsonLdValue>;
+type JsonLdValue = string | number | boolean | JsonLdObject | readonly JsonLdValue[];
 
 export interface JsonLdObject {
   readonly "@context"?: string;
   readonly "@type": string;
   readonly [key: string]: JsonLdValue | undefined;
 }
+
+/** The workshop's address, the only one known part by part. */
+const workspaceAddress = {
+  "@type": "PostalAddress",
+  streetAddress: site.location.workspace,
+  addressLocality: site.location.locality,
+  addressRegion: site.location.region,
+  addressCountry: site.location.country,
+} as const;
 
 /**
  * The organization, emitted on every page by BaseLayout. `NGO` rather than `Organization`: it is
@@ -29,13 +38,7 @@ export const organization: JsonLdObject = {
   logo: `${site.url}${site.icons.png512}`,
   email: site.email,
   description: site.description,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: site.location.workspace,
-    addressLocality: site.location.locality,
-    addressRegion: site.location.region,
-    addressCountry: site.location.country,
-  },
+  address: workspaceAddress,
   areaServed: site.location.areaServed,
   sameAs: socials.map((social) => social.href),
 };
@@ -48,7 +51,7 @@ export const webSite: JsonLdObject = {
   url: site.url,
 };
 
-/** @public Consumed by the nested pages that arrive in Phases 07-08. */
+/** @public */
 export interface Breadcrumb {
   readonly name: string;
   /** Site-root-relative, e.g. `/programs/frc`. */
@@ -56,12 +59,12 @@ export interface Breadcrumb {
 }
 
 /**
- * @public Consumed by the nested pages that arrive in Phases 07-08.
+ * @public
  *
  * Breadcrumbs for a nested page. Pass the full trail including the current page; the home link
  * is added automatically, since every trail starts there.
  */
-export const breadcrumbs = (trail: ReadonlyArray<Breadcrumb>): JsonLdObject => ({
+export const breadcrumbs = (trail: readonly Breadcrumb[]): JsonLdObject => ({
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [{ name: "Home", path: "/" }, ...trail].map((crumb, index) => ({
@@ -119,15 +122,7 @@ export const event = ({
      * Only the workspace's address is known part by part; an off-site event carries one free-text
      * line, and schema.org takes either for `address`.
      */
-    address:
-      locationAddress ??
-      ({
-        "@type": "PostalAddress",
-        streetAddress: site.location.workspace,
-        addressLocality: site.location.locality,
-        addressRegion: site.location.region,
-        addressCountry: site.location.country,
-      } as const),
+    address: locationAddress ?? workspaceAddress,
   },
   organizer: {
     "@type": "NGO",
@@ -152,7 +147,7 @@ export const event = ({
  * Google's FAQ documentation permits.
  */
 export const faqPage = (
-  entries: ReadonlyArray<{ readonly answer: string; readonly question: string }>,
+  entries: readonly { readonly answer: string; readonly question: string }[],
 ): JsonLdObject => ({
   "@context": "https://schema.org",
   "@type": "FAQPage",

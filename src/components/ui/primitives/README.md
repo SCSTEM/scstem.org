@@ -32,8 +32,7 @@ native `<dialog>` brings its own focus trap, Esc handling and inert background; 
 brings Enter/Space.
 
 **Polymorphism instead of `asChild`.** Where shadcn passes behavior down with `asChild`, these
-take an `as` prop, or infer the element — `Button` renders an `<a>` when given `href`. That is
-why legacy's separate `LinkButton` is gone.
+take an `as` prop, or infer the element — `Button` renders an `<a>` when given `href`.
 
 **Types.** Each primitive declares a local `Props` interface extending the right
 `HTMLAttributes<"element">` from `astro/types`, with `class` omitted so `cn()` owns merging.
@@ -49,11 +48,11 @@ namespace first, so:
 
 Relatedly, `@/lib/cn` is a _configured_ merge, not a re-export: it registers the DESIGN.md §3
 type scale as the font-size conflict group. Without that, `cn()` treats every `text-*` class as
-one group and silently drops all but the last — which is how a primary button's label first
-ended up body-gray on Safety Yellow. **A new size token means one more entry in `cn.ts`.**
+one group and silently drops all but the last. **A new size token means one more entry in
+`cn.ts`**; nothing checks the two agree, so add both in the same change.
 
 ## Registering a new primitive
 
-`/styleguide` is the visual-review artifact for the Phase 06 gate and the contract for these
-components. A primitive that is not on it does not exist as far as review is concerned: add it
-in all its variants, sizes, and states, under the default theme and both program themes.
+`/styleguide` is the contract for these components. A primitive that is not on it does not exist
+as far as review is concerned: add it in all its variants, sizes, and states, under the default
+theme and both program themes.

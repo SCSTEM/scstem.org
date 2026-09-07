@@ -7,8 +7,8 @@
 
 `plan/09-assets-performance.md` §2 asks every `<Image>` call site to emit "AVIF+WebP formats".
 Phase 09 is also where the sources it would apply to reached their final shape: every raster in
-`src/assets/` is a WebP master, re-encoded by `tools/assets/optimize-sources.mjs` at quality 80
-and capped at 2560px.
+`src/assets/` is a WebP master at quality 80, capped at 2560px (prepared as
+[0016](0016-source-images-sharp-cli.md) describes).
 
 Two measurements taken against `src/assets/sc2/competition-1.webp` (2048×1365, 283 KB) decided
 how those call sites are configured.
@@ -16,13 +16,13 @@ how those call sites are configured.
 **AVIF costs 40× the encode time for a saving WebP already matches.** Sharp, encoding a 1920px
 variant on the build machine:
 
-| format | quality | effort | size | time |
-| ------ | ------- | ------ | ---- | ---- |
-| WebP | 80 | — | 268 KB | 0.37 s |
-| WebP | 70 | — | 211 KB | 0.28 s |
-| AVIF | 55 | 4 (sharp default) | 173 KB | 11.4 s |
-| AVIF | 55 | 2 | 188 KB | 1.8 s |
-| AVIF | 55 | 0 | 205 KB | 0.36 s |
+| format | quality | effort            | size   | time   |
+| ------ | ------- | ----------------- | ------ | ------ |
+| WebP   | 80      | —                 | 268 KB | 0.37 s |
+| WebP   | 70      | —                 | 211 KB | 0.28 s |
+| AVIF   | 55      | 4 (sharp default) | 173 KB | 11.4 s |
+| AVIF   | 55      | 2                 | 188 KB | 1.8 s  |
+| AVIF   | 55      | 0                 | 205 KB | 0.36 s |
 
 AVIF only beats WebP at an effort level that costs eleven seconds per variant. The build emits
 172 variants; at sharp's default effort that is roughly half an hour added to every build and
@@ -40,7 +40,7 @@ this phase:
 
 Those are the widest steps: a re-compression of an already-lossy q80 file at q80, which adds
 generation loss and bytes at the same time. Separately, Astro fills the `src` attribute — the
-fallback for a client that ignores `srcset` — from the source's *intrinsic* size whenever no
+fallback for a client that ignores `srcset` — from the source's _intrinsic_ size whenever no
 `width` prop is given, so a 2560px master produced a 436 KB variant that no page ever displays.
 
 ## Decision

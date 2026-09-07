@@ -14,12 +14,12 @@ variable (12.1 KB) — from `src/styles/fonts.ts`, to shorten the flash of fallb
 Phase 09's head audit measured what that costs. Lighthouse, mobile preset, simulated throttling
 (1.6 Mbps, 150 ms RTT), one run per configuration:
 
-| URL | | FCP | LCP | CLS | Perf |
-| --- | --- | ---: | ---: | ---: | ---: |
-| `/programs/frc/robots/` | with preloads | 1054 ms | 2028 ms | 0.000 | 99 |
-| `/programs/frc/robots/` | without | **766 ms** | **1366 ms** | 0.000 | 100 |
-| `/sponsors/` | with preloads | 1062 ms | 1958 ms | 0.000 | 99 |
-| `/sponsors/` | without | **754 ms** | **1129 ms** | 0.000 | 100 |
+| URL                     |               |        FCP |         LCP |   CLS | Perf |
+| ----------------------- | ------------- | ---------: | ----------: | ----: | ---: |
+| `/programs/frc/robots/` | with preloads |    1054 ms |     2028 ms | 0.000 |   99 |
+| `/programs/frc/robots/` | without       | **766 ms** | **1366 ms** | 0.000 |  100 |
+| `/sponsors/`            | with preloads |    1062 ms |     1958 ms | 0.000 |   99 |
+| `/sponsors/`            | without       | **754 ms** | **1129 ms** | 0.000 |  100 |
 
 A preload is a High-priority request issued from `<head>`, ahead of the render-blocking
 stylesheet and well ahead of the hero `<img>` the browser finds later in the body. On a link that

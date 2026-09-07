@@ -1,4 +1,5 @@
 import type { GenericFormRequest } from "@/types";
+
 import { res, validateTurnstile } from "@/util";
 
 export const onRequestPost: PagesFunction<{

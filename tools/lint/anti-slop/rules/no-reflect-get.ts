@@ -1,4 +1,4 @@
-import { defineRule } from "@oxlint/plugins";
+import { defineRule } from "../compat.ts";
 
 import { isGlobalReflectMethodCall } from "../shared/reflect-method.ts";
 
@@ -18,7 +18,7 @@ export const noReflectGetRule = defineRule({
   createOnce(context) {
     return {
       CallExpression(node) {
-        if (node.callee.type === "Super" || node.callee.type === "V8IntrinsicExpression") return;
+        if (node.callee.type === "Super") return;
         if (isGlobalReflectMethodCall(context.sourceCode, node.callee, "get")) {
           context.report({ node, messageId: "reflectGet" });
         }

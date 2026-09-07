@@ -87,7 +87,7 @@ Each of these is a task for the project owner, not unfinished work; `plan/todo.m
 **Two gaps closed during review**, both by the project owner's decision:
 
 - **The JS budget excludes analytics.** `plan/00-overview.md` budgeted "< 35 KB gzipped per page
-  *including* analytics", which `gtag.js` cannot fit alone. The overview now reads "first-party",
+  _including_ analytics", which `gtag.js` cannot fit alone. The overview now reads "first-party",
   and `docs/analytics.md` states what the Lighthouse gate does and does not measure.
 - **Events retire on date**, rather than waiting for someone to set `hidden: true`. See below.
 

@@ -2,6 +2,7 @@
 import type { ImageMetadata } from "astro";
 
 import { type ProgramTheme, site } from "@/data/site";
+import { isImageMetadata } from "@/lib/images";
 import { color, programColor } from "@/lib/tokens";
 
 /**
@@ -9,8 +10,7 @@ import { color, programColor } from "@/lib/tokens";
  * these props straight through — so **`description` being required here is what stops a page
  * from shipping without one.** Omitting it is a type error, not a review catch.
  *
- * No `keywords` meta: legacy carried a 22-term list, and search engines have ignored the signal
- * for years.
+ * No `keywords` meta: search engines have ignored it for years.
  */
 interface Props {
   title: string;
@@ -31,7 +31,7 @@ interface Props {
   /** Defaults to this page's own URL. Set it when two routes serve the same content. */
   canonical?: URL | string | undefined;
   noindex?: boolean | undefined;
-  /** The program theme of the page, so browser chrome follows the action accent (D16). */
+  /** The program theme of the page, so browser chrome follows the action accent. */
   theme?: ProgramTheme | undefined;
 }
 
@@ -52,12 +52,11 @@ const fullTitle = isHome ? site.name : site.titleTemplate.replace("%s", title);
 
 const canonicalUrl = new URL(canonical ?? Astro.url.pathname, site.url);
 
-const imageUrl = new URL(typeof ogImage === "string" ? ogImage : ogImage.src, site.url);
+const imageUrl = new URL(isImageMetadata(ogImage) ? ogImage.src : ogImage, site.url);
 
 /** Dimensions are known for an imported asset and for the site default; alt only when given. */
 const isDefaultImage = ogImage === site.ogImage.path;
-const imageSize =
-  typeof ogImage === "string" ? (isDefaultImage ? site.ogImage : undefined) : ogImage;
+const imageSize = isImageMetadata(ogImage) ? ogImage : isDefaultImage ? site.ogImage : undefined;
 const imageAlt = ogImageAlt ?? (isDefaultImage ? site.ogImage.alt : undefined);
 
 if (imageAlt === undefined) {

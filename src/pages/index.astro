@@ -24,10 +24,10 @@ import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
-import Icon from "@/components/ui/primitives/Icon.astro";
 import Separator from "@/components/ui/primitives/Separator.astro";
 import Section from "@/components/ui/Section.astro";
 import SponsorStrip from "@/components/ui/SponsorStrip.astro";
+import VideoLink from "@/components/ui/VideoLink.astro";
 import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { PHOTO_QUALITY } from "@/lib/images";
@@ -48,12 +48,6 @@ const renderAt = async (source: ImageMetadata, width: number) => ({
 
 const acronymArt = await renderAt(firstAcronym, 768);
 const lockupArt = await renderAt(firstLockup, 640);
-
-/**
- * Copy is legacy's, near-verbatim (D8). What changed is structure: the page now has an `h1`, the
- * two hand-markup runs are the tagline and the hero's one emphasized phrase, and the sponsors
- * strip is new — see plan/06-homepage.md for the full list.
- */
 ---
 
 <BaseLayout description={site.description} title="Home">
@@ -99,7 +93,6 @@ const lockupArt = await renderAt(firstLockup, 640);
         cta={`Explore ${programs.fll.name}`}
         feature
         href={programs.fll.href}
-        icon="lego"
         image={fllRobots}
         imageAlt="LEGO® robots built by South Central STEM Collective students"
       >
@@ -114,7 +107,6 @@ const lockupArt = await renderAt(firstLockup, 640);
         cta={`Explore ${programs.frc.name}`}
         feature
         href={programs.frc.href}
-        icon="robot-face"
         image={driveTeam}
         imageAlt={`Team 4050 ${programs.frc.teamName}'s drive team standing with their robot at competition`}
       >
@@ -141,50 +133,49 @@ const lockupArt = await renderAt(firstLockup, 640);
 
     <div class="grid items-start gap-10 lg:grid-cols-2">
       <div>
-        <!-- The acronym line only reads at desktop widths, so it is a `<source>` swap rather than
-             two images toggled with `hidden`: a hidden `<img>` still downloads. -->
-        <picture>
-          <source
-            height={acronymArt.height}
-            media={`(min-width: ${breakpoint("md")})`}
-            srcset={acronymArt.src}
-            width={acronymArt.width}
-          />
-          <img
-            alt="FIRST® — For Inspiration and Recognition of Science and Technology"
-            class="h-auto w-full max-w-sm"
-            height={lockupArt.height}
-            loading="lazy"
-            src={lockupArt.src}
-            width={lockupArt.width}
-          />
-        </picture>
-
-        <Button
-          class="external-link mt-4 -ml-3"
-          href={site.urls.firstInspires}
-          rel="noopener"
-          variant="link"
-        >
-          <span class="italic">FIRST®</span>
-        </Button>
+        <figure>
+          <!-- The acronym line only reads at desktop widths, so it is a `<source>` swap rather
+               than two images toggled with `hidden`: a hidden `<img>` still downloads. -->
+          <a
+            aria-describedby="first-ref"
+            class="inline-block rounded-sm bg-none"
+            href={site.urls.firstInspires}
+            rel="noopener"
+          >
+            <picture>
+              <source
+                height={acronymArt.height}
+                media={`(min-width: ${breakpoint("md")})`}
+                srcset={acronymArt.src}
+                width={acronymArt.width}
+              />
+              <img
+                alt="FIRST® — For Inspiration and Recognition of Science and Technology"
+                class="h-auto w-full max-w-sm"
+                height={lockupArt.height}
+                loading="lazy"
+                src={lockupArt.src}
+                width={lockupArt.width}
+              />
+            </picture>
+          </a>
+          <Callout as="figcaption" class="mt-3" id="first-ref" reference="REF">
+            firstinspires.org
+          </Callout>
+        </figure>
 
         <Separator class="my-8" />
 
         <h3>More than robots</h3>
-        <p class="measure mt-3">
+        <p class="mt-3 measure">
           Although the goal is to build a robot, you do not have to be an engineer. Whether you are
           a future rocket scientist or an aspiring artist, there is a place here for you and mentors
-          ready to use their real world experience to help you grow.
+          ready to use their real world experience to help you grow. <span class="italic"
+            >FIRST®</span
+          > calls it <a class="external-link" href={site.urls.moreThanRobots} rel="noopener"
+            >More than Robots</a
+          >.
         </p>
-        <Button
-          class="external-link mt-4 -ml-3"
-          href={site.urls.moreThanRobots}
-          rel="noopener"
-          variant="link"
-        >
-          More Than Robots
-        </Button>
       </div>
 
       <figure>
@@ -211,18 +202,13 @@ const lockupArt = await renderAt(firstLockup, 640);
     <Fragment slot="title">Why join?</Fragment>
 
     <FeatureGrid columns="2+3">
-      <FeatureCard
-        icon="tool"
-        image={handsOn}
-        imageAlt="A student and mentor get hands-on with a robot"
-      >
+      <FeatureCard image={handsOn} imageAlt="A student and mentor get hands-on with a robot">
         <Fragment slot="title">Learn real-world skills</Fragment>
         Get hands on with tools and technology under the supervision of experts in their fields in everything
         from engineering to marketing. Learn not only how the tools work, but how to use them effectively.
       </FeatureCard>
 
       <FeatureCard
-        icon="presentation"
         image={leadership}
         imageAlt="Two students referencing a whiteboard during a planning meeting"
       >
@@ -231,18 +217,14 @@ const lockupArt = await renderAt(firstLockup, 640);
         Learn how to make decisions as a team and take leadership in your area of expertise.
       </FeatureCard>
 
-      <FeatureCard icon="books" image={competition} imageAlt="Team members cheering at competition">
+      <FeatureCard image={competition} imageAlt="Team members cheering at competition">
         <Fragment slot="title">Education through competition</Fragment>
         Prepare to compete against teams from around the world with a limited time-frame, tight budget,
         and a complex challenge. Learn how to work under pressure and build reliable systems that can
         handle intense competition.
       </FeatureCard>
 
-      <FeatureCard
-        icon="school"
-        image={award}
-        imageAlt="Team members receiving an award at competition"
-      >
+      <FeatureCard image={award} imageAlt="Team members receiving an award at competition">
         <Fragment slot="title">Scholarships and career opportunities</Fragment>
         Being a member of a <span class="italic">FIRST®</span> team is more than just building robots
         and learning about STEM. It opens doors to scholarship and career opportunities that you cannot
@@ -251,7 +233,6 @@ const lockupArt = await renderAt(firstLockup, 640);
       </FeatureCard>
 
       <FeatureCard
-        icon="mood-smile"
         image={dean}
         imageAlt="Team members sharing a moment with Dean Kamen, the founder of FIRST®"
       >
@@ -268,30 +249,11 @@ const lockupArt = await renderAt(firstLockup, 640);
       Meet our high school team, learn about <span class="italic">FIRST®</span>
     </Fragment>
 
-    <a
-      aria-label="Watch our team video on YouTube"
-      class="media-frame group relative mx-auto block max-w-3xl"
+    <VideoLink
       href={site.urls.teamVideo}
-      rel="noopener"
-    >
-      <Image
-        alt=""
-        class="w-full"
-        loading="lazy"
-        quality={PHOTO_QUALITY}
-        sizes="(min-width: 48rem) 48rem, 92vw"
-        src={teamVideoPoster}
-        width={1024}
-        widths={[640, 840, 1024]}
-      />
-      <span class="bg-background/40 absolute inset-0 grid place-items-center">
-        <span
-          class="bg-primary text-primary-foreground grid size-16 place-items-center rounded-md transition-transform duration-(--duration-micro) group-hover:scale-105"
-        >
-          <Icon name="player-play" size={32} />
-        </span>
-      </span>
-    </a>
+      label="Watch our team video on YouTube"
+      poster={teamVideoPoster}
+    />
   </Section>
 
   <Section atmosphere="ruler">
@@ -317,7 +279,7 @@ const lockupArt = await renderAt(firstLockup, 640);
       </Fragment>
       Ready to join or find out more? We are always looking for new members, mentors, and sponsors! If
       you want to find out how you can get plugged in or are looking for more information, please reach
-      out through our <a href={nav.cta.href}>{nav.cta.label} form</a>.
+      out through our <a class="highlight-swipe" href={nav.cta.href}>{nav.cta.label} form</a>.
       <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
       <Button href={nav.donate.href} size="lg" slot="actions" variant="outline">
         {nav.donate.label}

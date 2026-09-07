@@ -1,6 +1,6 @@
+import { defineCollection, reference, type SchemaContext } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
-import { defineCollection, reference, type SchemaContext } from "astro:content";
 
 import { PROGRAM_KEYS } from "@/data/site";
 
@@ -8,16 +8,15 @@ import { PROGRAM_KEYS } from "@/data/site";
  * Every maintainable fact about this site lives in `src/content/` as markdown with validated
  * frontmatter. Editing content means editing one small file — see `docs/content.md`.
  *
- * Schemas stay deliberately **flat** (D2): strings, enums, booleans, dates, numbers, and image
+ * Schemas stay deliberately **flat**: strings, enums, booleans, dates, numbers, and image
  * paths. No nested objects beyond one level, no discriminated unions. That is what keeps a
  * git-backed CMS (Keystatic and friends) a later addition rather than a restructuring, and it
  * is why `location` below is two flat fields instead of an object. Schema changes need an ADR.
  */
 
 /**
- * Legacy's `SponsorLevel`, preserved exactly (`legacy/data/sponsors.ts`). Declaration order is
- * also display order, so anything listing sponsors sorts by index here rather than restating the
- * ranking.
+ * Declaration order is display order, so anything listing sponsors sorts by index here rather
+ * than restating the ranking.
  */
 export const SPONSOR_LEVELS = ["Platinum", "Gold", "Silver", "Bronze", "Friend"] as const;
 
@@ -72,7 +71,7 @@ const events = defineCollection({
       ctaHref: z.string(),
       registrationUrl: z.url().optional(),
       /**
-       * Season teaser videos, and this year's game hints, as flat parallel arrays (D2 — no
+       * Season teaser videos, and this year's game hints, as flat parallel arrays (no
        * nested objects). `hintLabels[i]` names `hintUrls[i]`; a length mismatch fails the build.
        */
       teaserUrls: z.array(z.url()).optional(),
@@ -98,7 +97,7 @@ const faq = defineCollection({
 });
 
 /**
- * Scaffolded now so Phase 12 needs no code (D18). `template.md` is a real entry carrying
+ * No routes yet. `template.md` is a real entry carrying
  * `draft: true`, deliberately: an excluded-by-glob template drifts from the schema silently and
  * leaves the collection empty, which warns on every build. As an entry it is schema-validated
  * and still never renders.
@@ -121,8 +120,8 @@ const frcRobots = defineCollection({
     z.strictObject({
       year: z.number().int(),
       /**
-       * Overrides `year` in display copy where a robot spans two seasons — Robo Fett was
-       * "2020-2021" on the legacy page. `year` stays the sort key.
+       * Overrides `year` in display copy where a robot spans two seasons ("2020-2021"). `year`
+       * stays the sort key.
        */
       yearLabel: z.string().optional(),
       name: z.string(),
@@ -136,7 +135,7 @@ const frcRobots = defineCollection({
     }),
 });
 
-/** FRC and FLL team photos are the same shape; the split is by directory (D18). */
+/** FRC and FLL team photos are the same shape; the split is by directory. */
 const teamPhotoSchema = ({ image }: SchemaContext) =>
   z.strictObject({
     year: z.number().int(),
@@ -156,8 +155,8 @@ const fllTeamPhotos = defineCollection({
 });
 
 /**
- * Collection *names* avoid slashes even though the content nests under `frc/` and `fll/` on disk
- * (D18): Astro writes each collection's editor JSON schema to
+ * Collection *names* avoid slashes even though the content nests under `frc/` and `fll/` on
+ * disk: Astro writes each collection's editor JSON schema to
  * `.astro/collections/<name>.schema.json` without creating intermediate directories, so a name
  * like `frc/robots` warns on every build and silently loses frontmatter autocomplete.
  */

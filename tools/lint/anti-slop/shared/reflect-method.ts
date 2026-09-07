@@ -1,4 +1,4 @@
-import type { ESTree, Scope, SourceCode, Variable } from "@oxlint/plugins";
+import type { ESTree, Scope, SourceCode, Variable } from "../compat.ts";
 
 function resolveVariable(
   sourceCode: SourceCode,

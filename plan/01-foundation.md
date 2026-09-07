@@ -29,7 +29,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
   ```yaml
   minimumReleaseAge: 10080 # 7 days, supply-chain cooldown
   allowBuilds:
-    sharp: true    # astro:assets image processing
+    sharp: true # astro:assets image processing
     esbuild: true
   ```
   Add `minimumReleaseAgeExclude` entries only when a specific fix is needed; comment why.
@@ -79,7 +79,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
     "fmt": "oxfmt && prettier --write .",
     "fmt:check": "oxfmt --check && prettier --check .",
     "knip": "knip",
-    "check": "pnpm run typecheck && pnpm run lint && pnpm run fmt:check && pnpm run knip"
+    "check": "pnpm run typecheck && pnpm run lint && pnpm run fmt:check && pnpm run knip",
   }
   ```
 - `docs/adr/0001-toolchain-split.md`: record D24 and the exact oxc-Astro migration seam — "when oxlint/oxfmt ship Astro support: delete `eslint.config.ts`, Prettier config + plugins and their devDependencies; remove `.astro`/`.md` from oxfmt ignores; move anti-slop ESLint registration (if any) back to jsPlugins-only; update hook script and `docs/tooling.md` ownership table."
@@ -108,7 +108,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
   3. `pnpm check`.
   4. `pnpm build`.
   5. Link check over output: `lycheeverse/lychee-action` in `--offline` mode against `dist/` (internal links + anchors).
-  All steps blocking. (Lighthouse workflow arrives in Phase 09.)
+     All steps blocking. (Lighthouse workflow arrives in Phase 09.)
 - Do NOT touch Cloudflare Pages settings yet (Phase 11).
 
 ## Acceptance criteria

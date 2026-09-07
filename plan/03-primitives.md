@@ -5,7 +5,7 @@
 
 ## Objective
 
-`src/components/ui/primitives/` — low-level, zero-JS-by-default, shadcn-*convention* Astro components — plus the repo agent skill that codifies how to port any shadcn component to Astro later. `src/components/ui/` (composed components) is populated in Phases 05–08 as pages need them; this phase only establishes the primitive layer.
+`src/components/ui/primitives/` — low-level, zero-JS-by-default, shadcn-_convention_ Astro components — plus the repo agent skill that codifies how to port any shadcn component to Astro later. `src/components/ui/` (composed components) is populated in Phases 05–08 as pages need them; this phase only establishes the primitive layer.
 
 ## Conventions (write these into `src/components/ui/primitives/README.md`)
 
@@ -21,18 +21,18 @@
 
 Only what the site actually needs (verified against legacy usage). For each, follow shadcn's anatomy/naming, styled with Phase 02 tokens:
 
-| Primitive | Notes / replaces |
-|---|---|
-| `Button` | variants: default/secondary/outline/ghost/link; sizes sm/md/lg/icon; renders `<a>` with `href`. Replaces HeroUI Button, `LinkButton`, `legacy/src/components/shadcn/ui/button.tsx`. |
-| `Card` (+ Header/Title/Description/Content/Footer sub-parts as named slots or subcomponents) | Base for FeatureCard/SponsorCard later. |
-| `Badge` | sponsor levels, program tags. |
-| `Input`, `Textarea`, `Label`, `FieldError` | native elements + token styling; visible labels per DESIGN.md. Replaces `legacy/src/components/forms/fields/*`. |
-| `Separator` | |
-| `Accordion` | native `<details>/<summary>` + CSS; grouped via `name` attribute for exclusive-open. Replaces HeroUI accordion usage (FAQ). |
-| `Dialog` | native `<dialog>` + ~15-line inline script for open/close triggers. Replaces `Modal.tsx` (280 LOC). |
-| `Carousel` | CSS scroll-snap track + optional small script for prev/next buttons and dots; touch = native scrolling. Replaces all three legacy carousels (`Carousel`, `ManualCarousel`, `shadcn/ui/carousel`). |
-| `Icon` | via `astro-icon` + `@iconify-json/tabler` (build-time inlined SVG, zero runtime). Replaces `@tabler/icons-react`/`lucide-react`. |
-| `Skeleton`/`Spinner` | only if a page needs one (calendar loading state does). |
+| Primitive                                                                                    | Notes / replaces                                                                                                                                                                                  |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`                                                                                     | variants: default/secondary/outline/ghost/link; sizes sm/md/lg/icon; renders `<a>` with `href`. Replaces HeroUI Button, `LinkButton`, `legacy/src/components/shadcn/ui/button.tsx`.               |
+| `Card` (+ Header/Title/Description/Content/Footer sub-parts as named slots or subcomponents) | Base for FeatureCard/SponsorCard later.                                                                                                                                                           |
+| `Badge`                                                                                      | sponsor levels, program tags.                                                                                                                                                                     |
+| `Input`, `Textarea`, `Label`, `FieldError`                                                   | native elements + token styling; visible labels per DESIGN.md. Replaces `legacy/src/components/forms/fields/*`.                                                                                   |
+| `Separator`                                                                                  |                                                                                                                                                                                                   |
+| `Accordion`                                                                                  | native `<details>/<summary>` + CSS; grouped via `name` attribute for exclusive-open. Replaces HeroUI accordion usage (FAQ).                                                                       |
+| `Dialog`                                                                                     | native `<dialog>` + ~15-line inline script for open/close triggers. Replaces `Modal.tsx` (280 LOC).                                                                                               |
+| `Carousel`                                                                                   | CSS scroll-snap track + optional small script for prev/next buttons and dots; touch = native scrolling. Replaces all three legacy carousels (`Carousel`, `ManualCarousel`, `shadcn/ui/carousel`). |
+| `Icon`                                                                                       | via `astro-icon` + `@iconify-json/tabler` (build-time inlined SVG, zero runtime). Replaces `@tabler/icons-react`/`lucide-react`.                                                                  |
+| `Skeleton`/`Spinner`                                                                         | only if a page needs one (calendar loading state does).                                                                                                                                           |
 
 Dependencies added this phase: `class-variance-authority`, `astro-icon`, `@iconify-json/tabler`. Nothing else.
 
@@ -76,7 +76,7 @@ Both were silent, and both would have spread through every page had they not bee
 
 - **`cn` comes from `@/lib/cn`, not `cnfast` directly.** Phase 01 correctly deleted `src/lib/cn.ts`
   when it was a bare `export { cn } from "cnfast"` — there was nothing there. This phase needs a
-  *configured* merge, and `cnfast` exposes no global configuration hook: `cn` is the unconfigured
+  _configured_ merge, and `cnfast` exposes no global configuration hook: `cn` is the unconfigured
   default and `createCn(config)` returns a new function, so the configuration has to live in a
   module that components import. The file is back for that reason alone, and its docstring says so.
   Without it, `cn("text-primary-foreground", "text-copy")` collapses to one class and every primary

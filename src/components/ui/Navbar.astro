@@ -8,7 +8,7 @@ import { cn } from "@/lib/cn";
 import { breakpoint } from "@/lib/tokens";
 
 /**
- * Site header (DESIGN.md §5, D26). Sticky on all viewports, condensing after scroll in pure CSS.
+ * Site header (DESIGN.md §5). Sticky on all viewports, condensing after scroll in pure CSS.
  *
  * Identity is the **real lockup**, never a rebuilt gear plus the name in Inter: the full-width
  * color lockup on ≥ md, the square mark alone on mobile. Brand rules forbid substituting "SC2"
@@ -42,7 +42,7 @@ const onSurface =
   (link: { readonly surfaces: readonly string[] }): boolean =>
     link.surfaces.includes(surface);
 
-const headerLinks: ReadonlyArray<NavLink> = nav.primary.filter(onSurface("header"));
+const headerLinks: readonly NavLink[] = nav.primary.filter(onSurface("header"));
 const sheetLinks = nav.primary.filter(onSurface("sheet"));
 const sheetCtas = nav.primary.filter(onSurface("sheet-cta"));
 
@@ -60,7 +60,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
   <nav aria-label="Main" class="container-page flex items-center gap-4">
     <a
       aria-label={`${site.name} — home`}
-      class="ui-link flex shrink-0 items-center py-2"
+      class="flex shrink-0 items-center ui-link py-2"
       data-sheet-inert
       href="/"
     >
@@ -100,7 +100,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
                 </a>
                 <button
                   aria-label={`Show ${link.label.toLowerCase()}`}
-                  class="text-foreground hover:text-primary-bright grid size-9 place-items-center rounded-md"
+                  class="grid size-9 place-items-center rounded-md text-foreground hover:text-primary-bright"
                   popovertarget={`${link.label.toLowerCase()}-panel`}
                   type="button"
                 >
@@ -108,18 +108,18 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
                 </button>
               </span>
               <div
-                class="pocket absolute top-full left-0 m-0 w-64 p-2"
+                class="absolute top-full left-0 m-0 w-64 pocket p-2"
                 id={`${link.label.toLowerCase()}-panel`}
                 popover
               >
                 {link.panel.map((entry) => (
                   <a
                     aria-current={current === entry.href ? "page" : undefined}
-                    class="ui-link hover:bg-card-hover block rounded-md px-3 py-2"
+                    class="block rounded-md ui-link px-3 py-2 hover:bg-card-hover"
                     href={entry.href}
                   >
-                    <span class="text-small block font-medium">{entry.label}</span>
-                    <span class="text-small text-muted block">{entry.name}</span>
+                    <span class="block text-small font-medium">{entry.label}</span>
+                    <span class="block text-small text-muted">{entry.name}</span>
                   </a>
                 ))}
               </div>
@@ -155,21 +155,21 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
 </header>
 
 <!--
-  Full-height sheet (D26). Nothing is more than two taps away. Opaque, so the page behind it is
-  marked `inert` while it is open rather than left in the tab order.
+  Full-height sheet (DESIGN.md §5). Nothing is more than two taps away. Opaque, so the page
+  behind it is marked `inert` while it is open rather than left in the tab order.
 -->
-<div class="bg-background fixed inset-0 z-40 md:hidden" data-menu-sheet hidden id="mobile-menu">
+<div class="fixed inset-0 z-40 bg-background md:hidden" data-menu-sheet hidden id="mobile-menu">
   <nav
     aria-label="Mobile"
     class="flex h-full flex-col overflow-y-auto px-4 pt-20 pb-[env(safe-area-inset-bottom)]"
   >
-    <ul class="divide-border flex flex-col divide-y">
+    <ul class="flex flex-col divide-y divide-border">
       {
         sheetLinks.map((link) => (
           <li>
             <a
               aria-current={inSection(link.href) ? "page" : undefined}
-              class="ui-link text-h4 flex min-h-14 items-center font-semibold"
+              class="flex min-h-14 items-center ui-link text-h4 font-semibold"
               href={link.href}
             >
               {link.label}

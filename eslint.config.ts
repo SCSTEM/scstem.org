@@ -1,77 +1,90 @@
-import { parseForESLint } from "astro-eslint-parser";
-import { configs as astroConfigs } from "eslint-plugin-astro";
+import astro from "eslint-plugin-astro";
 import perfectionist from "eslint-plugin-perfectionist";
 import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
+import antiSlop from "./tools/lint/anti-slop/index.ts";
+
 export default defineConfig(
-  // Every block below is scoped to `**/*.astro`, so ESLint never reaches the
-  // extensions oxlint owns. A blanket `ignores: ["**/*"]` cannot be used here:
-  // it prunes directories, and unignoring files inside them does not bring them back.
-  globalIgnores(["legacy/**", "dist/**", ".astro/**", "node_modules/**", "public/**"]),
-  astroConfigs.recommended,
-  astroConfigs["jsx-a11y-strict"],
+  globalIgnores([
+    "legacy/",
+    "dist/",
+    ".astro/",
+    "public/",
+    // The browser the chrome-devtools MCP server downloads for local sessions; gitignored.
+    ".browser/",
+    // Vendored upstream rule source (tools/lint/anti-slop/VENDOR.md); its glue is linted.
+    "tools/lint/anti-slop/rules/",
+    "tools/lint/anti-slop/shared/",
+  ]),
   {
-    extends: [tseslint.configs.strictTypeChecked],
-    files: ["**/*.astro"],
+    files: ["**/*.{ts,mts,js,mjs,astro}"],
+    extends: [tseslint.configs.strictTypeChecked, tseslint.configs.stylisticTypeChecked],
     languageOptions: {
-      // strictTypeChecked would install the TS parser directly, which cannot read
-      // `.astro`. The Astro parser stays outermost and delegates frontmatter to it.
-      parser: { parseForESLint },
-      parserOptions: {
-        extraFileExtensions: [".astro"],
-        parser: tseslint.parser,
-        // astro-eslint-parser does not implement projectService; it maps to `project`.
-        project: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
+      parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
     },
-    plugins: { perfectionist },
+    plugins: { "anti-slop": antiSlop, perfectionist },
     rules: {
-      // Mirrors oxfmt's sortImports so the whole repo is sorted the same way.
-      "perfectionist/sort-imports": "error",
-      // Restated from .oxlintrc.json, which ignores `**/*.astro`. ESLint is the only linter
-      // that reads this extension, so without this the ban is off in the file type the site
-      // is built from.
+      "anti-slop/no-chained-type-assertions": "error",
+      "anti-slop/no-conditional-empty-object-spread": "error",
+      "anti-slop/no-known-value-widening": "error",
+      "anti-slop/no-module-mocking": "error",
+      "anti-slop/no-object-parameters": "error",
+      "anti-slop/no-reflect-apply": "error",
+      "anti-slop/no-reflect-get": "error",
+      // A type guard from `unknown` is the boundary parser the rule asks for.
+      "anti-slop/no-runtime-typeof": ["error", { allowInTypeGuards: true }],
+      "anti-slop/no-shape-in-symbol-names": "error",
+      "anti-slop/no-unknown-parameters": "error",
+      "anti-slop/no-unknown-returns": "error",
+      "anti-slop/no-unknown-type-aliases": "error",
+      "anti-slop/no-unsafe-dictionary-type": "error",
+      "anti-slop/no-widen-then-assert": "error",
+      "anti-slop/require-safety-comment-for-type-assertion": "error",
+      "no-console": "error",
       "no-restricted-imports": [
         "error",
         {
+          paths: [
+            { name: "classnames", message: "Use `cn` from `@/lib/cn` (AGENTS.md)." },
+            { name: "clsx", message: "Use `cn` from `@/lib/cn` (AGENTS.md)." },
+            { name: "tailwind-merge", message: "Use `cn` from `@/lib/cn` (AGENTS.md)." },
+          ],
+          // `**`, not `*`: a single star matches one path segment and lets deep imports through.
           patterns: [
-            {
-              // `**`, not `*`: a single star matches one path segment, so `legacy/*` let
-              // `legacy/data/config` and every deep relative path through.
-              group: ["legacy/**", "**/legacy/**"],
-              message: "legacy/ is reference only — never import from it (plan/00-overview.md)",
-            },
+            { group: ["legacy/**", "**/legacy/**"], message: "legacy/ is reference only." },
           ],
         },
       ],
-
-      /**
-       * astro-eslint-parser does not type the JSX-like expressions in an Astro *template*, so
-       * every `items.map(() => <El />)` resolves as `error` and trips this rule. It is a gap in
-       * the parser, not unsafety in the code: frontmatter — the part that holds real logic — is
-       * fully typed, and `astro check` type-checks templates properly.
-       *
-       * Sibling rules in this family (no-unsafe-assignment/-call/-member-access) may need the
-       * same treatment as templates grow; add them here with the same reasoning, never blanket
-       * off the whole family. See docs/adr/0001-toolchain-split.md.
-       */
+      "perfectionist/sort-imports": "error",
+    },
+  },
+  {
+    // A Worker's console is its log stream; a CLI script's console is how it reports.
+    files: ["functions/**", "tools/**"],
+    rules: { "no-console": "off" },
+  },
+  {
+    files: ["**/*.astro"],
+    extends: [astro.configs.recommended, astro.configs["jsx-a11y-strict"]],
+    languageOptions: {
+      parserOptions: {
+        extraFileExtensions: [".astro"],
+        parser: tseslint.parser,
+        // astro-eslint-parser does not implement projectService.
+        project: true,
+        projectService: false,
+      },
+    },
+    rules: {
+      // The parser does not type expressions in the template, so every `items.map(() => <El />)`
+      // resolves as `error`. Frontmatter is fully typed and `astro check` covers the template.
       "@typescript-eslint/no-unsafe-return": "off",
-      /**
-       * A `return` in Astro frontmatter — how a page short-circuits into a redirect or a 404 —
-       * has no enclosing function node in the parser's AST, and this rule asserts one exists:
-       * `Non-null Assertion Failed: Expected node to have a parent`, a crash rather than a
-       * finding. It cannot inspect the construct it exists to check, so it is off for `.astro`.
-       */
+      // A `return` in frontmatter (redirect, 404) has no enclosing function in the parser's AST,
+      // which crashes this rule.
       "@typescript-eslint/no-misused-promises": "off",
-      /**
-       * A keyboard-reachable scroll container is a real pattern: an `overflow` region is not
-       * focusable by default, so without `tabindex="0"` its content is unreachable by keyboard
-       * (WCAG 2.2 SC 2.1.1). `role="region"` with an accessible name is how that container is
-       * named; the rule only allows `tabpanel` out of the box. Scoped to that one role — every
-       * other non-interactive element keeps the error.
-       */
+      // A keyboard-reachable scroll container needs `tabindex="0"` (WCAG 2.2 SC 2.1.1) and is
+      // named with `role="region"`; the rule only allows `tabpanel` by default.
       "astro/jsx-a11y/no-noninteractive-tabindex": [
         "error",
         { roles: ["tabpanel", "region"], tags: [] },

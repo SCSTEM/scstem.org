@@ -1,5 +1,5 @@
-import { defineRule } from "@oxlint/plugins";
-import type { ESTree } from "@oxlint/plugins";
+import { defineRule } from "../compat.ts";
+import type { ESTree } from "../compat.ts";
 
 function unwrapParentheses(node: ESTree.Expression): ESTree.Expression {
   let current = node;

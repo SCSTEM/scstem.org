@@ -16,9 +16,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { breadcrumbs } from "@/lib/jsonld";
 
 /**
- * The hub the header's Programs disclosure points at (D26): it is the tap target on touch and
- * the whole path with JavaScript off, so it has to stand on its own rather than duplicate the
- * dropdown. No legacy counterpart — the copy here is new.
+ * The hub the header's Programs disclosure points at: it is the tap target on touch and the
+ * whole path with JavaScript off, so it has to stand on its own rather than duplicate the
+ * dropdown.
  */
 ---
 
@@ -52,7 +52,6 @@ import { breadcrumbs } from "@/lib/jsonld";
         cta={`Explore ${programs.fll.name}`}
         feature
         href={programs.fll.href}
-        icon="lego"
         image={fllRobots}
         imageAlt="LEGO® robots built by South Central STEM Collective students"
       >
@@ -72,7 +71,6 @@ import { breadcrumbs } from "@/lib/jsonld";
         cta={`Explore ${programs.frc.name}`}
         feature
         href={programs.frc.href}
-        icon="robot-face"
         image={driveTeam}
         imageAlt={`Team 4050 ${programs.frc.teamName}'s drive team standing with their robot at competition`}
       >
@@ -115,7 +113,7 @@ import { breadcrumbs } from "@/lib/jsonld";
     </FeatureGrid>
   </Section>
 
-  <Section>
+  <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Still deciding which one?</Fragment>
       Tell us the student&rsquo;s age and what they are into, and we will point you at the right team.

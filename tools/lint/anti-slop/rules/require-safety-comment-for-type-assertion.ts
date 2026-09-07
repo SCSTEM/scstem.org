@@ -1,6 +1,6 @@
-import { defineRule } from "@oxlint/plugins";
+import { defineRule } from "../compat.ts";
 
-import type { ESTree, SourceCode } from "@oxlint/plugins";
+import type { ESTree, SourceCode } from "../compat.ts";
 
 type TypeAssertion = ESTree.TSAsExpression | ESTree.TSTypeAssertion;
 
@@ -26,7 +26,7 @@ function hasSafetyComment(sourceCode: SourceCode, node: TypeAssertion): boolean 
     if (
       sourceCode
         .getCommentsBefore(current)
-        .some((comment) => comment.end <= node.start && /\bSAFETY\s*:/u.test(comment.value))
+        .some((comment) => comment.range[1] <= node.range[0] && /\bSAFETY\s*:/u.test(comment.value))
     ) {
       return true;
     }

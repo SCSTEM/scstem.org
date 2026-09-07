@@ -10,7 +10,7 @@
  * doc, the doc wins (DESIGN.md §11). `/styleguide` renders every pair's computed contrast ratio
  * and fails visibly when one drops below its floor.
  *
- * Dark is the only theme today (D15). Base tokens live on `:root` with dark values as the
+ * Dark is the only theme today. Base tokens live on `:root` with dark values as the
  * defaults, so a light theme is a `[data-theme="light"]` block that re-declares them — a token
  * addition, not a refactor. That block would land right after the program themes below.
  */
@@ -44,8 +44,7 @@
   --color-info-bright: #60a5fa;
   --color-info-foreground: #171717;
 
-  /* Errors. Added in Phase 02 under DESIGN.md §11: §8 requires a destructive text token but
-     the doc named no value. Follows the same pair law. */
+  /* Errors. DESIGN.md §8 names the role; the values follow the same pair law. */
   --color-destructive: #db262f;
   --color-destructive-bright: #fca5a5;
   --color-destructive-foreground: #fafafa;
@@ -95,6 +94,7 @@
   --duration-micro: 150ms; /* hover, focus */
   --duration-ui: 250ms; /* menus, accordions */
   --duration-entrance: 500ms; /* scroll-in entrances */
+  --duration-draw: 1100ms; /* hand-markup strokes drawing on */
   --ease-entrance: cubic-bezier(0, 0, 0.2, 1); /* ease-out */
   --ease-toggle: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
 
@@ -103,10 +103,30 @@
      Navbar sheet script read it, so the mobile/desktop boundary has one definition. */
   --breakpoint-md: 48rem;
   --breakpoint-3xl: 120rem;
+
+  /* --- Material (DESIGN.md §2 surfaces) --------------------------------------------------- */
+  /* The sheet's grain: one octave of high-frequency fractal noise, desaturated, near-white,
+     with a steep gamma so only the brightest fraction of each cell carries alpha — film grain,
+     per-pixel and even, with no cell structure to repeat. Lower frequencies or more octaves
+     produce blotches that read as a tiled pattern; `turbulence` produces a web. The 600px
+     seamless tile keeps any repeat below what the eye picks out. Measured over `#262626` the
+     mean lifts ~5 levels with a spread of ~4, so every contrast pair in DESIGN.md §2 holds. */
+  --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='4' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 0.4 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  /* The link underline (DESIGN.md §2.14, §8): one quick hand-drawn stroke with a single gentle
+     sag. The SVG has no intrinsic size and `preserveAspectRatio='none'`, so `background-size:
+     100%` stretches one curve to the link's width — and, with `box-decoration-break: clone`, to
+     each line of a wrapped link — while `non-scaling-stroke` keeps the line 2.3px at any width.
+     One curve per line, so there is never a seam where a repeating tile would meet itself. The
+     curve keeps clear of descenders: its ends sit 0.16em below the box (the anchor's bottom
+     padding) and it sags away from the text, never toward it. A data URI cannot read
+     `currentcolor`, so the stroke color is baked in and each program theme re-declares the tile
+     in its own `primary-bright` — the one place an accent hex appears outside the token. */
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%23facc15' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
 
 /**
- * Program themes (DESIGN.md §2, D16). A program page is the same site wearing team colors:
+ * Program themes (DESIGN.md §2). A program page is the same site wearing team colors:
  * these blocks remap the action accent and nothing else. Adding a program is one block.
  */
 [data-theme="frc"] {
@@ -114,6 +134,7 @@
   --color-primary-bright: #3ecf6e;
   --color-primary-foreground: #08240f;
   --color-ring: #3ecf6e;
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%233ecf6e' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
 
 [data-theme="fll"] {
@@ -121,6 +142,7 @@
   --color-primary-bright: #fb923c;
   --color-primary-foreground: #241102;
   --color-ring: #fb923c;
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%23fb923c' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
 
 @layer base {
@@ -134,6 +156,7 @@
 
   body {
     background-color: var(--color-background);
+    background-image: var(--texture-grain);
     color: var(--color-body);
     font-family: var(--font-sans);
     font-size: var(--text-body);
@@ -182,19 +205,28 @@
   }
 
   /**
-   * In-prose links are accent-colored and underlined (DESIGN.md §8). Preflight sets
-   * `text-decoration: inherit` on `a`, which resolves to `none` from body — so the line must be
-   * declared here, not only its thickness and offset.
-   *
-   * Not `:where()`: preflight's own `a { text-decoration: inherit }` has specificity 0,0,1, so
-   * zero-specificity here loses to it and the underline disappears. `ui-link` overrides this
-   * anyway — `@utility` lands in the utilities layer, which wins over `@layer base`.
+   * An underline means a link, always, and it is drawn by hand (DESIGN.md §2.14, §8). The
+   * stroke is a repeating background rather than `text-decoration`, which cannot take a custom
+   * shape. Anchors that are not text — a button, a framed image — reset it with `bg-none pb-0`.
+   * Preflight sets `text-decoration: inherit` on `a`; the line is switched off here so the two
+   * underlines never stack.
    */
   a {
     color: var(--color-primary-bright);
-    text-decoration-line: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
+    text-decoration-line: none;
+    background-image: var(--texture-underline);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 0.8em;
+    padding-bottom: 0.16em;
+    box-decoration-break: clone;
+    transition: color var(--duration-micro) var(--ease-toggle);
+  }
+
+  /* Hover shades the text and leaves the stroke where it is: a moving underline reads as a
+     glitch, not a confirmation. */
+  a:hover {
+    color: var(--color-foreground);
   }
 
   /* Never removed, on any interactive element (DESIGN.md §9). */
@@ -252,6 +284,15 @@
  * viewport, and one atmosphere device per section boundary.
  */
 
+/**
+ * The sheet's grain on a surface other than the body — the tint bands, which would otherwise
+ * paint a smooth patch over the grained ground. Pockets never take it: their floors are
+ * smooth by design, so the recess reads against the grain around it.
+ */
+@utility grain {
+  background-image: var(--texture-grain);
+}
+
 /* Pocket anatomy V2, "machined pocket" — the standard card. Depth goes down, never up. */
 @utility pocket {
   background-color: var(--color-card);
@@ -280,7 +321,7 @@
  * The engineering grid (DESIGN.md §2.3). One definition, two consumers: `pocket-feature` below
  * and `Pattern.astro`. Cell size and stroke alpha are custom properties, and the stroke reads
  * `--color-foreground` rather than a literal hex — so the grid follows a future light theme's
- * token set instead of needing a component edit (D15). Not `currentcolor`: this utility lands on
+ * token set instead of needing a component edit. Not `currentcolor`: this utility lands on
  * elements that also hold text, and the linework must not be tied to the copy's color.
  */
 @utility engineering-grid {
@@ -338,6 +379,13 @@
   color: var(--color-foreground);
   isolation: isolate;
 
+  /* A featured link (DESIGN.md §2.14: swipe + underline). The swipe is an absolutely positioned
+     pseudo-element, which collapses on an inline that breaks across lines, so the link keeps its
+     few words together instead. */
+  &:is(a) {
+    display: inline-block;
+  }
+
   &::before {
     content: "";
     position: absolute;
@@ -390,8 +438,10 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Ambient pool — a small lightness modulation of the ground, anchored to a section's top.
-   One per section, never stacked with another atmosphere device, never behind a photo. */
+/* Ambient pool — a small lightness modulation of the ground, centred on the section's heading
+   and fading out well inside the section on every side: an ellipse centred on the top edge is
+   cut in half by it and leaves a hard line. One per section, never stacked with another
+   atmosphere device, never behind a photo. */
 @utility ambient-pool {
   position: relative;
   isolation: isolate;
@@ -403,8 +453,8 @@
     z-index: -1;
     pointer-events: none;
     background: radial-gradient(
-      ellipse 80% 60% at 50% 0%,
-      color-mix(in srgb, var(--color-primary) 5%, transparent),
+      ellipse 70% 55% at 50% 30%,
+      color-mix(in srgb, var(--color-primary) 9%, transparent),
       transparent 70%
     );
   }
@@ -416,8 +466,8 @@
 @utility ambient-pool-neutral {
   &::before {
     background: radial-gradient(
-      ellipse 80% 60% at 50% 0%,
-      color-mix(in srgb, var(--color-foreground) 3%, transparent),
+      ellipse 70% 55% at 50% 30%,
+      color-mix(in srgb, var(--color-foreground) 5%, transparent),
       transparent 70%
     );
   }
@@ -433,9 +483,9 @@
 }
 
 /**
- * The shared stroke contract for the hand-markup register (DESIGN.md §13): 2.5px round-capped
- * `currentColor`, with `non-scaling-stroke` so the weight stays even when the SVG is stretched
- * non-uniformly over a word. Applied to the `<svg>`; the paths carry only their `d` and
+ * The shared stroke contract for the hand-markup register (DESIGN.md §2.12–2.15): 2.5px
+ * round-capped `currentColor`, with `non-scaling-stroke` so the weight stays even when the SVG is
+ * stretched non-uniformly over a word. Applied to the `<svg>`; the paths carry only their `d` and
  * `pathLength`, so a change to the hand's weight is one edit rather than one per device.
  */
 @utility hand-stroke {
@@ -598,17 +648,21 @@
 }
 
 /**
- * Chrome links (DESIGN.md §8): "UI links may drop underline at rest but underline on
- * hover/focus". Both halves live here so a call site cannot ship one without the other.
+ * Chrome links (DESIGN.md §8): nav, footer, card footers. A different layer from copy, so they
+ * never take the hand-drawn stroke — no underline at rest, a straight machined hairline on
+ * hover/focus. Both halves live here so a call site cannot ship one without the other.
  */
 @utility ui-link {
   color: var(--color-foreground);
-  text-decoration-line: none;
+  background-image: none;
+  padding-bottom: 0;
 
   &:hover,
   &:focus-visible {
     color: var(--color-primary-bright);
     text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
   }
 
   /* The current page in a nav (§9 requires `aria-current="page"` there). */
@@ -650,8 +704,19 @@
  * Paired with `pathLength="100"` on the animated path, so the dash math is in percent and the
  * stroke always ends fully drawn. Hard-coded lengths silently truncate any path longer than
  * the guess.
+ *
+ * The entrance waits for the mark to scroll into view: `BaseLayout` marks every `.draw-on`
+ * `is-pending` and swaps it to `is-drawing` from an IntersectionObserver. Without JavaScript
+ * neither class lands and the stroke is simply drawn.
  */
 @utility draw-on {
   stroke-dasharray: 100;
-  animation: draw-on var(--duration-entrance) var(--ease-entrance) both;
+
+  &.is-pending {
+    stroke-dashoffset: 100;
+  }
+
+  &.is-drawing {
+    animation: draw-on var(--duration-draw) var(--ease-entrance) both;
+  }
 }

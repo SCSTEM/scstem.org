@@ -9,9 +9,8 @@
       "@/*": ["./*"]
     },
     "noEmit": true,
-    // Mirrors the root tsconfig's additions over astro/tsconfigs/strictest. The
-    // Workers runtime cannot use that base (it pulls in DOM and Astro types), so
-    // the flags are restated rather than extended.
+    // The Workers runtime cannot use astro/tsconfigs/strictest (DOM and Astro types), so the
+    // same strictness is restated.
     "strict": true,
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,

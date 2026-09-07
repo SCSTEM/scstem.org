@@ -1,6 +1,7 @@
 # 0011 — Inter ships with its weight axis trimmed to 400–700
 
-- **Status:** accepted
+- **Status:** accepted; amended by [0014](0014-vendored-fonts.md), which retires the script and
+  vendors the file
 - **Date:** 2026-09-01
 
 ## Context
@@ -18,16 +19,16 @@ render.
 
 Measured, instancing each variable face down to the range its role actually spans:
 
-| Face | Shipped | Trimmed | Saving | Range |
-| --- | ---: | ---: | ---: | --- |
-| Inter latin | 47.1 KB | **35.2 KB** | 11.9 KB | 400–700 |
-| Inter latin-ext | 83.1 KB | **57.9 KB** | 25.2 KB | 400–700 |
-| Source Code Pro latin | 21.5 KB | 18.3 KB | 3.2 KB | 400–600 |
-| Orbitron latin | 11.5 KB | 10.8 KB | 0.7 KB | 500–700 |
+| Face                  | Shipped |     Trimmed |  Saving | Range   |
+| --------------------- | ------: | ----------: | ------: | ------- |
+| Inter latin           | 47.1 KB | **35.2 KB** | 11.9 KB | 400–700 |
+| Inter latin-ext       | 83.1 KB | **57.9 KB** | 25.2 KB | 400–700 |
+| Source Code Pro latin | 21.5 KB |     18.3 KB |  3.2 KB | 400–600 |
+| Orbitron latin        | 11.5 KB |     10.8 KB |  0.7 KB | 500–700 |
 
 ## Decision
 
-Instance **Inter only**, to `wght 400 700`, with `tools/assets/font-subset.mjs`
+Instance **Inter only**, to `wght 400 700`, with `tools/assets/font-subset.ts`
 (`pnpm assets:fonts`). Output is committed to `src/styles/fonts/` and `fonts.css` points at it;
 the `@font-face` range is declared `400 700` to match, so the browser is told what the file can
 actually do.
