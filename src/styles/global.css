@@ -1,10 +1,6 @@
 @import "tailwindcss";
 @import "./fonts.css";
 
-/* legacy/ is checked in and reference-only, so Tailwind's automatic source
-   detection would otherwise emit utilities for the retired Next.js site. */
-@source not "../../legacy";
-
 /**
  * The token set from DESIGN.md. Values here are normative-by-copy: if one disagrees with the
  * doc, the doc wins (DESIGN.md §11). `/styleguide` renders every pair's computed contrast ratio

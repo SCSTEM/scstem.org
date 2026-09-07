@@ -6,5 +6,5 @@
   // serve.ts shells out to the system openssl for its certificate; it is not an npm binary.
   "ignoreBinaries": ["openssl"],
   // tools/lint/anti-slop/shared is vendored upstream source (see its VENDOR.md).
-  "ignore": ["legacy/**", "tools/lint/anti-slop/shared/**"],
+  "ignore": ["tools/lint/anti-slop/shared/**"],
 }
