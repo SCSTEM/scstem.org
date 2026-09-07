@@ -83,9 +83,11 @@ jobs:
       - name: Lighthouse CI
         run: pnpm dlx @lhci/cli@0.15.1 autorun --config=tools/ci/lighthouserc.json
 
+      # Into the log as well as the summary, so the waterfall behind a failed LCP assertion is
+      # readable from the API without downloading the report artifact.
       - name: Summarize
         if: ${{ !cancelled() }}
-        run: node tools/ci/lighthouse-summary.ts >>"$GITHUB_STEP_SUMMARY"
+        run: node tools/ci/lighthouse-summary.ts | tee -a "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v5
         if: ${{ !cancelled() }}
