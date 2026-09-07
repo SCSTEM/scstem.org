@@ -74,12 +74,12 @@ item says what is already in the repository waiting for it.
       redirect stub out of season and the list uses `/about/` instead. When a live event exists and
       you want its shape budgeted, add its URL to `lighthouserc.json` — and take it out again when
       the season ends.
-- [ ] **Watch item, not an open problem: the LCP budget is met, tightest median 1807 ms against
-      2000 ms.** This was a real failure and is closed — trimming Inter's weight axis
-      (`docs/adr/0011-inter-weight-axis.md`) took 12 KB off the critical path and collapsed a
-      bimodal distribution that had two pages running over budget. Every run on every budgeted URL
-      is now under 2000 ms, and `lighthouserc.json` asserts on the median rather than the best run.
-      If CI ever goes red here, the levers left are Source Code Pro (22 KB, owns the numerals and
-      spec labels) and Orbitron (11 KB, the display voice). Both are DESIGN.md §3 decisions, and
-      axis-trimming them was measured at 3.2 KB and 0.7 KB — so cutting a face outright is the only
-      meaningful move remaining.
+- [ ] **Watch item, not an open problem: the LCP budget is met, tightest median 1577 ms against
+      2000 ms.** The gate had been red on every CI run since Phase 09: the runner's Chrome 152
+      fetches below-the-fold images during the initial load where Chrome 141 did not, and
+      `astro preview`'s HTTP/1.1 was costing 450 ms of simulated handshakes that Cloudflare's
+      HTTP/2 never pays. Closed by measuring over HTTP/2 (`docs/adr/0018-lighthouse-over-http2.md`),
+      subsetting the fonts (`docs/adr/0017-font-subset.md`), and a 672px image ladder step. If CI
+      goes red here again, the job log now prints each URL's LCP element, phases, and request
+      waterfall; start there. The levers left on the fonts are the Source Code Pro and Orbitron
+      weight axes, measured at 3.2 KB and 0.7 KB.

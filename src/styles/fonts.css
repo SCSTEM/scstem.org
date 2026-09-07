@@ -1,11 +1,14 @@
 /**
- * Self-hosted faces, latin subsets only (DESIGN.md §3). The files live in `./fonts/` with their
- * OFL licenses, vendored from the Google Fonts builds that fontsource 5.3.0 packaged; Vite
- * fingerprints each one. Unicode ranges are fontsource's for the same builds
- * (`docs/adr/0014-vendored-fonts.md`).
+ * Self-hosted faces (DESIGN.md §3). The files live in `./fonts/` with their OFL licenses,
+ * vendored from the Google Fonts builds that fontsource 5.3.0 packaged
+ * (`docs/adr/0014-vendored-fonts.md`); Vite fingerprints each one.
  *
- * Inter's weight axis is trimmed to 400–700, the range the design sanctions — 47.1 KB of
- * critical-path font becomes 35.2 KB (`docs/adr/0011-inter-weight-axis.md`).
+ * The four latin faces are subset to the characters English copy uses — printable ASCII, the
+ * Latin-1 supplement, general punctuation, €, ™, − — and each `unicode-range` below states
+ * exactly that set, so the browser fetches a face only for text it can render
+ * (`docs/adr/0017-font-subset.md`). Inter's weight axis is trimmed to 400–700, the range
+ * the design sanctions (`docs/adr/0011-inter-weight-axis.md`). Inter's latin-ext face keeps
+ * fontsource's range: it is fetched only for a character outside the latin set.
  */
 
 /* Inter — UI and body. */
@@ -15,9 +18,7 @@
   font-display: swap;
   font-weight: 400 700;
   src: url("./fonts/inter-latin-wght-400-700.woff2") format("woff2-variations");
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2010-2027, U+2030-203A, U+20AC, U+2122, U+2212;
 }
 @font-face {
   font-family: "Inter";
@@ -38,9 +39,7 @@
   font-display: swap;
   font-weight: 400 900;
   src: url("./fonts/orbitron-latin-wght-normal.woff2") format("woff2-variations");
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2010-2027, U+2030-203A, U+20AC, U+2122, U+2212;
 }
 
 /* Source Code Pro — the data voice: numerals, stats, spec labels. */
@@ -50,9 +49,7 @@
   font-display: swap;
   font-weight: 200 900;
   src: url("./fonts/source-code-pro-latin-wght-normal.woff2") format("woff2-variations");
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2010-2027, U+2030-203A, U+20AC, U+2122, U+2212;
 }
 
 /**
@@ -65,7 +62,5 @@
   font-display: swap;
   font-weight: 400;
   src: url("./fonts/architects-daughter-latin-400-normal.woff2") format("woff2");
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
-    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2010-2027, U+2030-203A, U+20AC, U+2122, U+2212;
 }

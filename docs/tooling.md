@@ -40,6 +40,9 @@ TypeScript scripts run directly by Node (type stripping, no build step), each be
 | `check:meta` | Every built page's head: unique title/description, og:image | CI, after build |
 | `assets:og`  | Render the OG cards in `src/assets/og/`                     | by hand         |
 
+Two more under `tools/ci/` have no script because Lighthouse CI runs them: `serve.ts` serves
+`dist/` over HTTP/2 and TLS for the audit, and `lighthouse-summary.ts` writes the job summary.
+
 Only erasable TypeScript syntax (no enums, namespaces, or parameter properties);
 `tools/tsconfig.json` enforces it.
 
@@ -72,9 +75,11 @@ and pushes to `main` and `staging`, in three jobs:
 - **Check**: typecheck, lint, format, knip, and the repo checks as separate steps, all of which
   run even when an earlier one fails. ESLint findings become inline annotations on the PR.
 - **Build**: `pnpm build`, `check:meta`, and an offline link check over `dist/` (lychee).
-- **Lighthouse**: `@lhci/cli` via `pnpm dlx` against `astro preview` serving the build artifact
-  (`docs/adr/0007`), three runs per URL over six page shapes. Median scores per URL and every
-  failed assertion go to the job summary; full reports upload as an artifact.
+- **Lighthouse**: `@lhci/cli` via `pnpm dlx` (`docs/adr/0007`) against `tools/ci/serve.ts`, which
+  serves the build artifact over HTTP/2 and TLS the way Cloudflare does (`docs/adr/0018`), three
+  runs per URL over six page shapes. The job summary and the log carry the median scores per URL,
+  every failed assertion, and for each URL the LCP element, its phases, and the request waterfall;
+  full reports upload as an artifact.
 
 ### Performance budgets
 
@@ -92,11 +97,12 @@ and pushes to `main` and `staging`, in three jobs:
 | Script transfer size     | < 35 KB   |
 | Total page transfer size | < 1 MB    |
 
-Mobile emulation with simulated throttling, so transfer size dominates. `astro preview` gzips,
-which keeps the measurement comparable to Cloudflare. Locally:
+Mobile emulation with simulated throttling, so transfer size and request count dominate, and the
+simulation follows the protocol it observes: HTTP/2 with gzip, as served. Locally (`openssl` on
+the path for the self-signed certificate):
 
 ```sh
 pnpm build
-pnpm dlx @lhci/cli@0.15.1 autorun
-pnpm exec astro preview stop   # the preview server outlives lhci
+pnpm dlx @lhci/cli@0.15.1 autorun --config=tools/ci/lighthouserc.json
+node tools/ci/lighthouse-summary.ts
 ```

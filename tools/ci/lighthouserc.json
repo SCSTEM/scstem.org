@@ -2,16 +2,16 @@
   "ci": {
     "collect": {
       "numberOfRuns": 3,
-      "settings": { "chromeFlags": "--no-sandbox" },
-      "startServerCommand": "pnpm exec astro preview --port 4321",
-      "startServerReadyPattern": "localhost:4321",
+      "settings": { "chromeFlags": "--no-sandbox --ignore-certificate-errors" },
+      "startServerCommand": "node tools/ci/serve.ts",
+      "startServerReadyPattern": "https://localhost:4321",
       "url": [
-        "http://localhost:4321/",
-        "http://localhost:4321/programs/frc/",
-        "http://localhost:4321/programs/frc/robots/",
-        "http://localhost:4321/sponsors/",
-        "http://localhost:4321/about/",
-        "http://localhost:4321/contact/"
+        "https://localhost:4321/",
+        "https://localhost:4321/programs/frc/",
+        "https://localhost:4321/programs/frc/robots/",
+        "https://localhost:4321/sponsors/",
+        "https://localhost:4321/about/",
+        "https://localhost:4321/contact/"
       ]
     },
     "assert": {
