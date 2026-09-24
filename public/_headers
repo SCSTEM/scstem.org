@@ -6,3 +6,7 @@ https://*scstem-org.pages.dev/*
 
 https://staging.scstem.org/*
   X-Robots-Tag: noindex
+
+# Astro fingerprints every file under /_astro/, so a changed file gets a new URL.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

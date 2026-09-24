@@ -64,21 +64,33 @@ const unescapeText = (value: string): string =>
     .replaceAll(String.raw`\;`, ";")
     .replaceAll(String.raw`\\`, "\\");
 
+/** One formatter per zone for the isolate's lifetime; constructing one is the costly part. */
+const formatters = new Map<string, Intl.DateTimeFormat>();
+
+const zoneFormatter = (timeZone: string): Intl.DateTimeFormat => {
+  let formatter = formatters.get(timeZone);
+  if (formatter === undefined) {
+    formatter = new Intl.DateTimeFormat("en-US", {
+      day: "2-digit",
+      hour: "2-digit",
+      hour12: false,
+      minute: "2-digit",
+      month: "2-digit",
+      second: "2-digit",
+      timeZone,
+      year: "numeric",
+    });
+    formatters.set(timeZone, formatter);
+  }
+  return formatter;
+};
+
 /**
  * A named zone's UTC offset in milliseconds at a given instant. Workers ship full ICU, so the
  * zone database is the runtime's rather than a table this would have to keep current.
  */
 const zoneOffset = (instant: number, timeZone: string): number => {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    day: "2-digit",
-    hour: "2-digit",
-    hour12: false,
-    minute: "2-digit",
-    month: "2-digit",
-    second: "2-digit",
-    timeZone,
-    year: "numeric",
-  }).formatToParts(new Date(instant));
+  const parts = zoneFormatter(timeZone).formatToParts(new Date(instant));
 
   const field = (type: string): number => Number(parts.find((part) => part.type === type)?.value);
   // `hour12: false` renders midnight as 24 in some ICU versions; both mean the same instant.
@@ -353,7 +365,7 @@ const monthDates = (cursor: Date, rule: Rule, first: Date): number[] => {
 interface RawEvent {
   description: string;
   end?: Moment | undefined;
-  excluded: number[];
+  excluded: Set<number>;
   location: string;
   /** Set on an event that overrides one occurrence of its series. */
   recurrenceId?: number | undefined;
@@ -370,7 +382,14 @@ const parseEvents = (feed: string): RawEvent[] => {
 
   for (const raw of unfold(feed)) {
     if (raw === "BEGIN:VEVENT") {
-      current = { description: "", excluded: [], location: "", status: "", summary: "", uid: "" };
+      current = {
+        description: "",
+        excluded: new Set(),
+        location: "",
+        status: "",
+        summary: "",
+        uid: "",
+      };
       continue;
     }
     if (raw === "END:VEVENT") {
@@ -430,7 +449,7 @@ const parseEvents = (feed: string): RawEvent[] => {
         for (const value of line.value.split(",")) {
           const moment = parseMoment({ ...line, value });
           if (moment !== undefined) {
-            current.excluded.push(moment.at);
+            current.excluded.add(moment.at);
           }
         }
         break;
@@ -486,7 +505,7 @@ export const upcomingEvents = (feed: string, from: number, days: number): Calend
 
       // Compared as instants: an EXDATE or RECURRENCE-ID may be stamped in UTC even where the
       // series it modifies is written in a named zone.
-      if (event.excluded.includes(at) || overridden.has(`${event.uid}:${String(at)}`)) {
+      if (event.excluded.has(at) || overridden.has(`${event.uid}:${String(at)}`)) {
         continue;
       }
       // An event that started earlier today but has not finished is still upcoming.

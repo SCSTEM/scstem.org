@@ -59,12 +59,17 @@ const state = hasPassed(end) ? "passed" : Date.now() >= start.getTime() ? "live"
     const remaining = node.querySelector<HTMLElement>("[data-countdown-remaining]");
     if (Number.isNaN(start) || Number.isNaN(end) || remaining === null) continue;
 
+    const labels = node.querySelectorAll<HTMLElement>("[data-state]");
+    let timer: ReturnType<typeof setInterval> | undefined;
+
     const tick = (): void => {
       const now = Date.now();
       const state = now >= end ? "passed" : now >= start ? "live" : "upcoming";
-      for (const label of node.querySelectorAll<HTMLElement>("[data-state]")) {
+      for (const label of labels) {
         label.hidden = label.dataset.state !== state;
       }
+      // "passed" is final; nothing changes after it.
+      if (state === "passed") clearInterval(timer);
 
       remaining.hidden = state !== "upcoming";
       if (state !== "upcoming") return;
@@ -78,6 +83,6 @@ const state = hasPassed(end) ? "passed" : Date.now() >= start.getTime() ? "live"
     };
 
     tick();
-    setInterval(tick, 1000);
+    if (Date.now() < end) timer = setInterval(tick, 1000);
   }
 </script>

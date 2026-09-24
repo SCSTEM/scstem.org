@@ -42,7 +42,7 @@ before landing this — `src/content/` and `src/pages/` hold marketing copy, spo
 history, a published FAQ, and a public event's published schedule. Rosters, meeting notes, and
 anything else internal live on the wiki, off this domain, and must stay there.
 
-`_headers` keeps only the three preview/staging `X-Robots-Tag: noindex` rules, so a
+The only `X-Robots-Tag` rules in `_headers` are the three preview/staging `noindex` ones, so a
 `*.pages.dev` or `staging.scstem.org` copy of the site never competes with production.
 
 ## Alternatives considered

@@ -144,6 +144,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
       aria-expanded="false"
       aria-label="Open menu"
       class="ml-auto md:hidden"
+      data-md={breakpoint("md")}
       data-menu-toggle
       size="icon"
       variant="ghost"
@@ -272,10 +273,9 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
     /**
      * Both the sheet and its toggle are `md:hidden`, so crossing the breakpoint while open would
      * otherwise leave the page scroll-locked and inert with no visible control to undo it. The
-     * boundary is read from the emitted `--breakpoint-md` token so it cannot drift from the CSS.
+     * boundary comes from the `--breakpoint-md` token at build time, via `data-md`.
      */
-    const md = getComputedStyle(document.documentElement).getPropertyValue("--breakpoint-md");
-    const desktop = window.matchMedia(`(min-width: ${md.trim() || "48rem"})`);
+    const desktop = window.matchMedia(`(min-width: ${toggle.dataset.md ?? "48rem"})`);
     desktop.addEventListener("change", (event) => {
       if (event.matches) setOpen(false);
     });

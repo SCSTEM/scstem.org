@@ -110,7 +110,12 @@ server.on("stream", (stream: ServerHttp2Stream, headers: IncomingHttpHeaders) =>
   const response = new Map<string, string>([
     [":status", String(status)],
     ["content-type", TYPES.get(extension) ?? "application/octet-stream"],
-    ["cache-control", "public, max-age=0, must-revalidate"],
+    [
+      "cache-control",
+      pathname.startsWith("/_astro/")
+        ? "public, max-age=31536000, immutable"
+        : "public, max-age=0, must-revalidate",
+    ],
   ]);
   if (COMPRESSIBLE.has(extension)) {
     body = gzipSync(body);
