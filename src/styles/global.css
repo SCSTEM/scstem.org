@@ -386,10 +386,16 @@
     position: absolute;
     inset: 0.08em -0.12em 0.06em -0.12em;
     z-index: -1;
-    /* 25% keeps white-on-swipe at AAA (7.7:1 on the ground); verified on /styleguide. */
+    /* Body size: 25% keeps white-on-swipe at AAA (7.6:1 on the ground); verified on /styleguide. */
     background-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
     border-radius: 2px;
     transform: rotate(-0.8deg);
+  }
+
+  /* Display size (DESIGN.md §2.13): inside an h1 or h2 the bar is AA-large, and 35% reads as the
+     accent rather than mud (white-on-swipe 5.9:1 on the ground); verified on /styleguide. */
+  :where(h1, h2, .text-display, .text-h1, .text-h2) &::before {
+    background-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
   }
 }
 

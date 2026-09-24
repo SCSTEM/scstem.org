@@ -100,16 +100,24 @@ export const programThemes = (): readonly string[] => [
   ...new Set([...css.matchAll(/\[data-theme="([\w-]+)"]/g)].flatMap((match) => match[1] ?? [])),
 ];
 
-/**
- * The highlighter swipe's alpha (DESIGN.md §2.13), read from `@utility highlight-swipe` so the
- * ratio the styleguide prints is measured against the percentage the stylesheet applies.
- */
-export const swipeAlpha = (): number => {
-  const body = blockAfter("@utility highlight-swipe");
-  const match = /color-mix\(in srgb, var\(--color-primary\) (\d+)%/.exec(body ?? "");
+const swipePercent = (block: string | undefined, where: string): number => {
+  const match = /color-mix\(in srgb, var\(--color-primary\) (\d+)%/.exec(block ?? "");
   const percent = match?.[1];
   if (percent === undefined) {
-    throw new Error("could not read the swipe alpha from @utility highlight-swipe");
+    throw new Error(`could not read the swipe alpha from ${where}`);
   }
   return Number(percent) / 100;
 };
+
+/** The nested rule inside `@utility highlight-swipe` that sets the display-size alpha. */
+const DISPLAY_SWIPE_RULE = ":where(h1, h2, .text-display, .text-h1, .text-h2) &::before";
+
+/**
+ * The highlighter swipe's two alphas (DESIGN.md §2.13), read from `@utility highlight-swipe` so
+ * the ratios the styleguide prints are measured against the percentages the stylesheet applies:
+ * `body` is the utility's own `::before`, `display` the override inside an h1 or h2.
+ */
+export const swipeAlpha = () => ({
+  body: swipePercent(blockAfter("@utility highlight-swipe"), "@utility highlight-swipe"),
+  display: swipePercent(blockAfter(DISPLAY_SWIPE_RULE), DISPLAY_SWIPE_RULE),
+});

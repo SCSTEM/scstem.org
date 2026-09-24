@@ -13,6 +13,10 @@ import { cn } from "@/lib/cn";
  * One sponsor's pocket: the logo on a plate, the name and its tier chip, and — where we have one
  * — the year the partnership started.
  *
+ * `layout="feature"` is the pocket for a sponsor that has its tier to itself: a full-width row
+ * that sets the logo and the text side by side from `md` up, on the drawing-pocket floor
+ * (DESIGN.md §2), so a lone sponsor fills its row instead of a third of it.
+ *
  * The tier chip's tone comes from `Badge`'s tier tones (DESIGN.md §8), keyed by level, so the
  * ranking's colors live with the rest of the token set.
  */
@@ -33,22 +37,34 @@ const tones = {
 
 interface Props {
   sponsor: CollectionEntry<"sponsors">;
+  layout?: "stack" | "feature";
   class?: string;
 }
 
-const { sponsor, class: className } = Astro.props;
+const { sponsor, layout = "stack", class: className } = Astro.props;
+const featured = layout === "feature";
 const { name, level, logo, url, sub, since } = sponsor.data;
 ---
 
-<Card as="li" class={cn("relative flex flex-col", className)} interactive={url !== undefined}>
-  <div class="flex flex-1 flex-col items-center justify-center gap-3 p-6">
+<Card
+  as="li"
+  class={cn("relative flex flex-col", featured && "md:flex-row", className)}
+  feature={featured}
+  interactive={url !== undefined}
+>
+  <div
+    class={cn(
+      "flex flex-1 flex-col items-center justify-center gap-3 p-6",
+      featured && "md:px-10 md:py-12",
+    )}
+  >
     {
       logo === undefined ? (
         <span class="text-center text-h4 font-semibold text-foreground">{name}</span>
       ) : (
         <Image
           alt={`${name} logo`}
-          class="h-20 w-full max-w-56 object-contain"
+          class={cn("h-20 w-full max-w-56 object-contain", featured && "md:h-28 md:max-w-80")}
           loading="lazy"
           src={logo}
           width={448}
@@ -59,9 +75,15 @@ const { name, level, logo, url, sub, since } = sponsor.data;
     {sub !== undefined && <p class="text-center text-small text-body">{sub}</p>}
   </div>
 
-  <CardFooter class="flex-wrap justify-between">
+  <CardFooter
+    class={cn(
+      "flex-wrap justify-between",
+      featured &&
+        "md:w-2/5 md:flex-col md:flex-nowrap md:items-start md:justify-center md:gap-5 md:border-t-0 md:border-l md:px-8",
+    )}
+  >
     <div>
-      <p class="font-semibold text-foreground">{name}</p>
+      <p class={cn("font-semibold text-foreground", featured && "md:text-h4")}>{name}</p>
       {
         since !== undefined && (
           <p class="mt-1 text-small text-muted">

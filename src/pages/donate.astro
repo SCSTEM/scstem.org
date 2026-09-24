@@ -7,6 +7,7 @@ import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
+import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -41,6 +42,10 @@ const mailingAddress = [
 
     Donations keep the tools sharp, the workspace open, and registration paid for every student who
     walks in. Here is every way to give.
+
+    <Button class="external-link" href={site.urls.donate} rel="noopener" size="lg" slot="actions">
+      Donate through PayPal
+    </Button>
   </Hero>
 
   <Section atmosphere="numeral" index={1}>
@@ -62,7 +67,7 @@ const mailingAddress = [
 
       <FeatureCard
         badge="via PayPal"
-        cta="Donate through PayPal"
+        cta="Open PayPal Giving Fund"
         href={site.urls.donate}
         icon="wallet"
       >

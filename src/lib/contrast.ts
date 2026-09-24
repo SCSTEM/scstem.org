@@ -3,7 +3,11 @@
  * build time (DESIGN.md §9). Kept dependency-free so a token change re-verifies on `pnpm build`.
  */
 
-/** Floors from DESIGN.md §9: AAA for anything longer than a caption, AA everywhere else. */
+/**
+ * Floors from DESIGN.md §9: AAA for anything longer than a caption, AA everywhere else, and
+ * AA-large for display-size text (the h1/h2 highlighter swipe, §2.13).
+ */
+export const AA_LARGE = 3;
 export const AA_NORMAL = 4.5;
 export const AAA_NORMAL = 7;
 

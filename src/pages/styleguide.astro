@@ -31,7 +31,7 @@ import Textarea from "@/components/ui/primitives/Textarea.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import { site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { AA_NORMAL, AAA_NORMAL, blend, contrastRatio, formatRatio } from "@/lib/contrast";
+import { AA_LARGE, AA_NORMAL, AAA_NORMAL, blend, contrastRatio, formatRatio } from "@/lib/contrast";
 import { color, duration, programColor, programThemes, radius, swipeAlpha } from "@/lib/tokens";
 
 /**
@@ -140,19 +140,36 @@ for (const pair of fillPairs) {
   }
 }
 
-/** DESIGN.md §2.13 asks for this one by name: white key words sit on a translucent swipe. */
+/**
+ * DESIGN.md §2.13 asks for this one by name: white key words sit on a translucent swipe. The
+ * body-size alpha holds AAA and the display-size (h1/h2) alpha holds AA-large, in every theme,
+ * because the swipe is the theme's `primary`.
+ */
 const SWIPE_ALPHA = swipeAlpha();
-const swipeOnGround = blend(color("primary"), BACKGROUND, SWIPE_ALPHA);
-const swipeOnCard = blend(color("primary"), CARD, SWIPE_ALPHA);
-const swipeRatio = Math.min(
-  contrastRatio(color("foreground"), swipeOnGround),
-  contrastRatio(color("foreground"), swipeOnCard),
-);
+const swipeOnGround = blend(color("primary"), BACKGROUND, SWIPE_ALPHA.body);
+const swipeOnCard = blend(color("primary"), CARD, SWIPE_ALPHA.body);
+const displaySwipeOnGround = blend(color("primary"), BACKGROUND, SWIPE_ALPHA.display);
 
-if (swipeRatio < AAA_NORMAL) {
-  failures.push(
-    `highlighter swipe at ${String(SWIPE_ALPHA * 100)}% alpha leaves white text at ${formatRatio(swipeRatio)}, below AAA`,
-  );
+const swipeChecks = [
+  { size: "body", alpha: SWIPE_ALPHA.body, floor: AAA_NORMAL, floorName: "AAA" },
+  { size: "display", alpha: SWIPE_ALPHA.display, floor: AA_LARGE, floorName: "AA-large" },
+];
+
+for (const primary of [
+  color("primary"),
+  ...programThemes().map((program) => programColor(program, "primary")),
+]) {
+  for (const check of swipeChecks) {
+    for (const surface of [BACKGROUND, CARD]) {
+      const swipe = blend(primary, surface, check.alpha);
+      const ratio = contrastRatio(color("foreground"), swipe);
+      if (ratio < check.floor) {
+        failures.push(
+          `${check.size} highlighter swipe (${primary} at ${String(check.alpha * 100)}%) on ${surface} leaves white text at ${formatRatio(ratio)}, below ${check.floorName}`,
+        );
+      }
+    }
+  }
 }
 
 for (const tier of tiers) {
@@ -476,11 +493,22 @@ const themes = [
         Or <span class="text-primary-bright">accent-colored text</span> — never both
       </p>
       <p class="mt-3 font-mono text-small text-muted">
-        Swipe at {SWIPE_ALPHA * 100}% alpha &middot; white on {swipeOnGround} ={" "}
+        Body swipe at {SWIPE_ALPHA.body * 100}% alpha &middot; white on {swipeOnGround} ={" "}
         {formatRatio(contrastRatio(color("foreground"), swipeOnGround))} &middot; on {swipeOnCard} ={
           " "
         }
         {formatRatio(contrastRatio(color("foreground"), swipeOnCard))}
+      </p>
+
+      <p class="mt-10 font-display text-h2 font-bold text-foreground">
+        A display heading with a <span class="highlight-swipe">swipe</span>
+      </p>
+      <p class="mt-3 font-mono text-small text-muted">
+        Display swipe (h1, h2, display sizes) at {SWIPE_ALPHA.display * 100}% alpha &middot; white
+        on{" "}
+        {displaySwipeOnGround} = {
+          formatRatio(contrastRatio(color("foreground"), displaySwipeOnGround))
+        }
       </p>
 
       <div class="mt-12 flex items-start gap-2">

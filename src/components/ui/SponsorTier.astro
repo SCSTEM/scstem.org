@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import SponsorCard from "@/components/ui/SponsorCard.astro";
+import { cn } from "@/lib/cn";
+
+/**
+ * One sponsor level: its heading and its pockets. The column count follows the number of
+ * sponsors, so no tier leaves a mostly-empty row (DESIGN.md §5: "No orphan rows"). A lone sponsor
+ * takes the full-width feature pocket; two and four sit in pairs; three share one row; five and
+ * up fall back to the three-column grid.
+ */
+interface Props {
+  level: CollectionEntry<"sponsors">["data"]["level"];
+  sponsors: readonly CollectionEntry<"sponsors">[];
+}
+
+const { level, sponsors } = Astro.props;
+
+const pairs = "grid gap-6 sm:grid-cols-2";
+const layouts = {
+  1: "grid",
+  2: pairs,
+  3: "grid gap-6 md:grid-cols-3",
+  4: pairs,
+} as const;
+
+const count = sponsors.length;
+const grid =
+  count === 1 || count === 2 || count === 3 || count === 4
+    ? layouts[count]
+    : "grid gap-6 sm:grid-cols-2 lg:grid-cols-3";
+---
+
+<div>
+  <h3>{level}</h3>
+  <ul class={cn("mt-6", grid)}>
+    {
+      sponsors.map((sponsor) => (
+        <SponsorCard layout={count === 1 ? "feature" : "stack"} sponsor={sponsor} />
+      ))
+    }
+  </ul>
+</div>
