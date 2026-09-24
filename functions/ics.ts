@@ -55,14 +55,14 @@ const parseLine = (line: string): Line | undefined => {
   return { name: name.toUpperCase(), params, value: line.slice(colon + 1) };
 };
 
-/** TEXT values escape commas, semicolons, backslashes, and newlines (RFC 5545 §3.3.11). */
+/**
+ * TEXT values escape commas, semicolons, backslashes, and newlines (RFC 5545 §3.3.11). One pass,
+ * so an escaped backslash is never re-read as the start of the next escape.
+ */
 const unescapeText = (value: string): string =>
-  value
-    .replaceAll(String.raw`\n`, "\n")
-    .replaceAll(String.raw`\N`, "\n")
-    .replaceAll(String.raw`\,`, ",")
-    .replaceAll(String.raw`\;`, ";")
-    .replaceAll(String.raw`\\`, "\\");
+  value.replaceAll(/\\([\\;,nN])/g, (_, escaped: string) =>
+    escaped === "n" || escaped === "N" ? "\n" : escaped,
+  );
 
 /** One formatter per zone for the isolate's lifetime; constructing one is the costly part. */
 const formatters = new Map<string, Intl.DateTimeFormat>();
@@ -130,8 +130,12 @@ interface Moment {
   zone: string | undefined;
 }
 
-/** `20260107T183000Z`, `20260107T183000`, or `20260107`. */
-const parseMoment = (line: Line): Moment | undefined => {
+/**
+ * `20260107T183000Z`, `20260107T183000`, or `20260107`. A bare date is a day on the calendar's
+ * own wall, not a UTC one, so it resolves as midnight in `dateZone`: read as UTC midnight, an
+ * all-day event would format as the evening before anywhere west of Greenwich.
+ */
+const parseMoment = (line: Line, dateZone: string): Moment | undefined => {
   const match = /^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})(Z)?)?$/.exec(line.value);
   if (match === null) {
     return undefined;
@@ -148,9 +152,9 @@ const parseMoment = (line: Line): Moment | undefined => {
   );
 
   const allDay = hour === undefined;
-  const zone = line.params.TZID;
-  if (allDay || utc === "Z" || zone === undefined) {
-    // A date, an explicit UTC stamp, and a floating time all read as written.
+  const zone = allDay ? dateZone : line.params.TZID;
+  if (utc === "Z" || zone === undefined) {
+    // An explicit UTC stamp and a floating time read as written.
     return { allDay, at: wall, wall, zone: undefined };
   }
 
@@ -176,7 +180,7 @@ const resolver =
     }
   };
 
-/** Weekday codes in `BYDAY`, indexed to match `Date#getUTCDay`. */
+/** Weekday codes in `BYDAY` and `WKST`, indexed to match `Date#getUTCDay`. */
 const DAYS: readonly string[] = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
 
 /** The weekday a `BYDAY` code names, or -1 — no assertion, so an unknown code stays a miss. */
@@ -190,9 +194,11 @@ interface Rule {
   freq: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
   interval: number;
   until?: number | undefined;
+  /** The weekday a week starts on, as a `DAYS` index; RFC 5545 defaults it to Monday. */
+  weekStart: number;
 }
 
-const parseRule = (value: string): Rule | undefined => {
+const parseRule = (value: string, dateZone: string): Rule | undefined => {
   const parts = new Map(
     value.split(";").map((part) => {
       const equals = part.indexOf("=");
@@ -209,6 +215,7 @@ const parseRule = (value: string): Rule | undefined => {
   const count = parts.get("COUNT");
   const byDay = parts.get("BYDAY");
   const byMonthDay = parts.get("BYMONTHDAY");
+  const weekStart = dayIndex(parts.get("WKST") ?? "MO");
 
   return {
     byDay: byDay === undefined ? [] : byDay.split(","),
@@ -220,7 +227,8 @@ const parseRule = (value: string): Rule | undefined => {
     until:
       until === undefined
         ? undefined
-        : parseMoment({ name: "UNTIL", params: {}, value: until })?.at,
+        : parseMoment({ name: "UNTIL", params: {}, value: until }, dateZone)?.at,
+    weekStart: weekStart === -1 ? 1 : weekStart,
   };
 };
 
@@ -266,8 +274,10 @@ const expand = (
       cursor.setUTCDate(cursor.getUTCDate() + period * rule.interval);
       dates = [cursor.getTime()];
     } else if (rule.freq === "WEEKLY") {
-      // Step to the week's Sunday, then take the requested weekdays inside it.
-      cursor.setUTCDate(cursor.getUTCDate() - cursor.getUTCDay() + period * 7 * rule.interval);
+      // Step to the first day of the start's week (`WKST`), then take the requested weekdays
+      // inside it. Which week a day falls in decides which weeks an INTERVAL > 1 rule skips.
+      const intoWeek = (cursor.getUTCDay() - rule.weekStart + 7) % 7;
+      cursor.setUTCDate(cursor.getUTCDate() - intoWeek + period * 7 * rule.interval);
       const week = dayCodes.size > 0 ? [...dayCodes] : [DAYS[first.getUTCDay()] ?? "SU"];
       dates = week.flatMap((code) => {
         const index = dayIndex(code);
@@ -275,7 +285,7 @@ const expand = (
           return [];
         }
         const day = new Date(cursor);
-        day.setUTCDate(day.getUTCDate() + index);
+        day.setUTCDate(day.getUTCDate() + ((index - rule.weekStart + 7) % 7));
         return day.getTime() < start ? [] : [day.getTime()];
       });
     } else {
@@ -376,7 +386,7 @@ interface RawEvent {
   uid: string;
 }
 
-const parseEvents = (feed: string): RawEvent[] => {
+const parseEvents = (feed: string, dateZone: string): RawEvent[] => {
   const events: RawEvent[] = [];
   let current: RawEvent | undefined;
 
@@ -430,24 +440,24 @@ const parseEvents = (feed: string): RawEvent[] => {
         break;
       }
       case "DTSTART": {
-        current.start = parseMoment(line);
+        current.start = parseMoment(line, dateZone);
         break;
       }
       case "DTEND": {
-        current.end = parseMoment(line);
+        current.end = parseMoment(line, dateZone);
         break;
       }
       case "RRULE": {
-        current.rule = parseRule(line.value);
+        current.rule = parseRule(line.value, dateZone);
         break;
       }
       case "RECURRENCE-ID": {
-        current.recurrenceId = parseMoment(line)?.at;
+        current.recurrenceId = parseMoment(line, dateZone)?.at;
         break;
       }
       case "EXDATE": {
         for (const value of line.value.split(",")) {
-          const moment = parseMoment({ ...line, value });
+          const moment = parseMoment({ ...line, value }, dateZone);
           if (moment !== undefined) {
             current.excluded.add(moment.at);
           }
@@ -469,15 +479,22 @@ const parseEvents = (feed: string): RawEvent[] => {
  * @param feed The raw `.ics` body.
  * @param from Start of the window, epoch milliseconds.
  * @param days How far ahead to look.
+ * @param timeZone The zone the agenda is shown in, which all-day dates are days of.
  */
-export const upcomingEvents = (feed: string, from: number, days: number): CalendarEvent[] => {
+export const upcomingEvents = (
+  feed: string,
+  from: number,
+  days: number,
+  timeZone: string,
+): CalendarEvent[] => {
   const until = from + days * 24 * 60 * 60 * 1000;
-  const parsed = parseEvents(feed).filter((event) => event.status !== "CANCELLED");
+  const parsed = parseEvents(feed, timeZone);
 
   /**
    * An event carrying `RECURRENCE-ID` replaces one occurrence of its series — a moved or edited
    * instance. Keying overrides by uid and instant lets the series skip the occurrences that have
-   * one, so a rescheduled meeting appears once, at its new time.
+   * one, so a rescheduled meeting appears once, at its new time — and a cancelled one, which
+   * is itself left out below, not at all.
    */
   const overridden = new Set(
     parsed.flatMap((event) =>
@@ -489,7 +506,7 @@ export const upcomingEvents = (feed: string, from: number, days: number): Calend
 
   for (const event of parsed) {
     const { start } = event;
-    if (start === undefined) {
+    if (start === undefined || event.status === "CANCELLED") {
       continue;
     }
 

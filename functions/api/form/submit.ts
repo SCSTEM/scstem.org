@@ -2,18 +2,36 @@ import type { GenericFormRequest } from "@/types";
 
 import { res, validateTurnstile } from "@/util";
 
+/**
+ * Both secrets are required: without `TS_SECRET_KEY` the challenge cannot be verified, and
+ * without `SLACK_FORM_POST_GENERIC` a submission has nowhere to go. Either missing is an error
+ * answer, never a "received" one. Local development sets them in `.dev.vars` (`docs/tooling.md`).
+ */
 export const onRequestPost: PagesFunction<{
-  SLACK_FORM_POST_GENERIC: string;
-  TS_SECRET_KEY: string;
+  SLACK_FORM_POST_GENERIC?: string;
+  TS_SECRET_KEY?: string;
 }> = async ({ env, request }) => {
-  const data = await request.json<GenericFormRequest>();
+  if (!env.TS_SECRET_KEY || !env.SLACK_FORM_POST_GENERIC) {
+    return res(
+      {
+        error: "Form secrets are not configured",
+        message: "The form is not accepting submissions right now",
+        success: false,
+      },
+      500,
+    );
+  }
 
-  // Falls back to Turnstile's documented always-passes test key for local dev without a secret.
-  const key = env.TS_SECRET_KEY || "1x0000000000000000000000000000000AA";
+  let data: GenericFormRequest;
+  try {
+    data = await request.json<GenericFormRequest>();
+  } catch {
+    return res({ message: "Request body is not valid JSON", success: false }, 400);
+  }
 
   try {
     const ts = await validateTurnstile(
-      key,
+      env.TS_SECRET_KEY,
       data.turnstileToken,
       request.headers.get("CF-Connecting-IP"),
     );
@@ -29,16 +47,25 @@ export const onRequestPost: PagesFunction<{
       );
     }
 
-    if (env.SLACK_FORM_POST_GENERIC) {
-      await fetch(env.SLACK_FORM_POST_GENERIC, {
-        body: JSON.stringify({
-          email: data.email ?? "",
-          form: data.form,
-          message: data.message ?? "",
-          name: data.name ?? "",
-        }),
-        method: "POST",
-      });
+    const posted = await fetch(env.SLACK_FORM_POST_GENERIC, {
+      body: JSON.stringify({
+        email: data.email ?? "",
+        form: data.form,
+        message: data.message ?? "",
+        name: data.name ?? "",
+      }),
+      method: "POST",
+    });
+
+    if (!posted.ok) {
+      return res(
+        {
+          error: `Slack webhook returned ${String(posted.status)}`,
+          message: "Error handling submission",
+          success: false,
+        },
+        502,
+      );
     }
 
     return res({ message: "Submission received", result: data, success: true }, 200);

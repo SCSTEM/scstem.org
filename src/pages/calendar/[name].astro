@@ -68,10 +68,11 @@ const { calendar, name } = Astro.props;
 
 /**
  * Google's own view of the same calendar — where "add to my calendar" lives, and the one place a
- * reader can go if the agenda below fails for any reason.
+ * reader can go if the agenda below fails for any reason. The embed's `src` is the calendar's
+ * address, which the base64 id encodes.
  */
 const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(
-  calendar.googleId,
+  atob(calendar.googleId),
 )}&ctz=${encodeURIComponent(site.location.timeZone)}`;
 ---
 
@@ -135,10 +136,7 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
     return node;
   };
 
-  /**
-   * A machine-readable date beside the human one. `datetime` is the feed's own
-   * timestamp, so it carries the offset and needs no reformatting.
-   */
+  /** A machine-readable date or instant beside the human one. */
   const stamp = (className: string, text: string, datetime: string): HTMLElement => {
     const node = element("time", className, text);
     node.setAttribute("datetime", datetime);
@@ -158,6 +156,13 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
       month: "long",
       timeZone,
       weekday: "long",
+      year: "numeric",
+    });
+    // en-CA formats a date as YYYY-MM-DD, the form `datetime` takes for a day.
+    const isoDayFormat = new Intl.DateTimeFormat("en-CA", {
+      day: "2-digit",
+      month: "2-digit",
+      timeZone,
       year: "numeric",
     });
     const timeFormat = new Intl.DateTimeFormat("en-US", {
@@ -190,12 +195,14 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
       let entries: HTMLElement | undefined;
 
       for (const event of events) {
-        const label = dayFormat.format(new Date(event.start));
+        const start = new Date(event.start);
+        const label = dayFormat.format(start);
+        const isoDay = isoDayFormat.format(start);
         if (label !== day || entries === undefined) {
           day = label;
           const group = document.createElement("li");
           const heading = element("h3", "spec-label text-primary-bright");
-          heading.append(stamp("", label, event.start.slice(0, 10)));
+          heading.append(stamp("", label, isoDay));
           group.append(heading);
           entries = element("ul", "mt-4 flex flex-col gap-3");
           group.append(entries);
@@ -208,7 +215,7 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
             "text-small text-muted font-mono block sm:pt-0.5",
             when(event),
             // An all-day entry has no clock, so its `datetime` is the day alone.
-            event.allDay ? event.start.slice(0, 10) : event.start,
+            event.allDay ? isoDay : event.start,
           ),
         );
 

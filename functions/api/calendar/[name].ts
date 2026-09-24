@@ -9,13 +9,19 @@ import { res } from "@/util";
 /**
  * Mirrors `site.calendars` in `src/data/site.ts` — Pages Functions are bundled separately and
  * cannot import from `src/`, so the two ids are duplicated verbatim rather than transformed,
- * which keeps them diffable against their source. These are the base64 form Google's embed URL
- * uses; the ICS endpoint wants the address inside.
+ * which keeps them diffable against their source. These are the base64 form Google's share links
+ * use; the ICS endpoint wants the address inside.
  */
 const CALENDARS = {
   frc: "Y19hYjljNWJlYTEwODgyYzAxYTAxOGNiZDUxYWIyMzcwYmY4NDk5NDZiZTRlMjUzNTAwZmZmMWQxMGZkY2M4NjFhQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20",
   sc2: "Y19wcDlkOXRrbGRrbThmdXZtcjMyZTBwZTgxc0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
 };
+
+/**
+ * Mirrors `site.location.timeZone`, the zone the agenda page formats in. All-day dates resolve to
+ * midnight here, so the page files them under their own day.
+ */
+const TIME_ZONE = "America/New_York";
 
 type CalendarName = keyof typeof CALENDARS;
 
@@ -58,7 +64,7 @@ export const onRequestGet: PagesFunction<unknown, "name"> = async ({
       return res({ message: `Calendar feed returned ${String(upstream.status)}` }, 502, NO_STORE);
     }
 
-    const events = upcomingEvents(await upstream.text(), Date.now(), WINDOW_DAYS);
+    const events = upcomingEvents(await upstream.text(), Date.now(), WINDOW_DAYS, TIME_ZONE);
     const response = res({ events }, 200, {
       "Cache-Control": `public, max-age=${String(MAX_AGE)}`,
     });

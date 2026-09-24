@@ -64,8 +64,17 @@ the agent. It exits 0 when `node_modules` is missing.
 The public ones are declared in `astro.config.ts`'s `env.schema` and imported from
 `astro:env/client`. `PUBLIC_TURNSTILE_SITE_KEY` defaults to Cloudflare's always-passes test key
 and `PUBLIC_CF_BEACON_TOKEN` to empty (no beacon), so a fresh clone and every preview deploy work
-with no setup; production sets both in the Pages dashboard. `functions/api/form/submit.ts` carries
-the matching test secret so the form round-trips locally.
+with no setup; production sets both in the Pages dashboard.
+
+The Function secrets have no defaults: `functions/api/form/submit.ts` answers an error when either
+is unset, so a deploy missing one never tells a visitor their message arrived. To run the Function
+locally (`wrangler pages dev`), put them in a git-ignored `.dev.vars` at the repo root, with
+Turnstile's always-passes test secret matching the test site key:
+
+```sh
+TS_SECRET_KEY=1x0000000000000000000000000000000AA
+SLACK_FORM_POST_GENERIC=https://hooks.slack.com/triggers/…
+```
 
 ## CI
 
