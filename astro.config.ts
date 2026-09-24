@@ -59,6 +59,41 @@ const redirectStubs = (): AstroIntegration => ({
   },
 });
 
+/**
+ * Two ink bands never touch (DESIGN.md §2): a band is the drafting table, and two tables side by
+ * side read as one slab with a seam. `Section`, `Hero` and the footer each declare their surface
+ * in `data-surface`, so a page's surfaces can be read in document order off the emitted HTML —
+ * the one place the final sequence is known, conditional sections included. The build fails on
+ * the first page where two `band` surfaces are consecutive; the footer is a band, so that also
+ * catches a page whose last section is one.
+ */
+const bandsNeverTouch = (): AstroIntegration => ({
+  name: "bands-never-touch",
+  hooks: {
+    "astro:build:done": ({ dir, pages }) => {
+      const touching = pages.flatMap(({ pathname }) => {
+        const page = new URL(`${pathname}index.html`, dir);
+        if (!existsSync(page)) {
+          return [];
+        }
+        const surfaces = [
+          ...readFileSync(page, "utf8").matchAll(/\bdata-surface="([a-z]+)"/gu),
+        ].map((match) => match[1]);
+        return surfaces.some(
+          (surface, index) => surface === "band" && surfaces[index + 1] === "band",
+        )
+          ? [`/${pathname}`]
+          : [];
+      });
+      if (touching.length > 0) {
+        throw new Error(
+          `Two band surfaces touch on ${touching.join(", ")} — put a sheet section between them (DESIGN.md §2).`,
+        );
+      }
+    },
+  },
+});
+
 export default defineConfig({
   /**
    * Typed environment, so a page reads a variable rather than an untyped `import.meta.env`
@@ -91,7 +126,7 @@ export default defineConfig({
       }),
     },
   },
-  integrations: [sitemap({ filter: isIndexable }), redirectStubs()],
+  integrations: [sitemap({ filter: isIndexable }), redirectStubs(), bandsNeverTouch()],
   outDir,
   output: "static",
   site: site.url,

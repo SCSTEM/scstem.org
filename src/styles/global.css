@@ -15,12 +15,24 @@
   /* The page is raised material; cards are pockets machined into it. Cards are *darker*. */
   --color-background: #262626;
   --color-card: #171717;
-  --color-section-tint: #212121;
   --color-border: #3a3a3a;
   /* Pocket walls read one step brighter than a plain divider. */
   --color-pocket-border: #383838;
-  /* Interactive pocket hover: the floor lifts one step, nothing translates or glows. */
-  --color-card-hover: #1a1a1a;
+  /* Interactive pocket hover: the floor lifts a visible step, nothing translates or glows. */
+  --color-card-hover: #1f1f1f;
+
+  /* The drafting table: full-width ink bands the sheet alternates with, and the footer. */
+  --color-band: #121212;
+  /* Cards laid on the table are raised plates, lighter than the ink around them. */
+  --color-plate: #232323;
+  --color-plate-border: #333333;
+  --color-plate-hover: #2a2a2a;
+  /* A keycap control's face when it is not the accent: one step above the ground. */
+  --color-sheet: #2e2e2e;
+  /* Control boundary: ≥ 3:1 against the ground, the band, and a plate (WCAG 1.4.11). */
+  --color-control-edge: #737373;
+  /* Drafted shadow ink: zero-blur offsets, down-right only (DESIGN.md §4). */
+  --color-ink: #0c0c0c;
 
   /* --- Text ramp (DESIGN.md §2) ----------------------------------------------------------- */
   --color-foreground: #fafafa; /* 14.5:1 on background — headings, nav, emphasis */
@@ -85,6 +97,23 @@
   --radius-sm: 4px; /* chips, spec labels, badges */
   --radius-md: 8px; /* every control: buttons, inputs, icon tiles */
   --radius-lg: 12px; /* every cut feature: pockets, panels, framed media */
+
+  /* --- Elevation: drafted, not rendered (DESIGN.md §4) ----------------------------------- */
+  /* Depth is drawn the way a draftsman draws it — hard offsets in shadow ink — or cut: the
+     pocket's inset walls. The plate's contact shadow is the one soft shadow, and only a plate
+     (or a print laid on the band) takes it. */
+  --shadow-pocket:
+    inset 0 3px 12px rgb(0 0 0 / 0.75), inset 0 1px 0 rgb(0 0 0 / 0.9),
+    0 1px 0 rgb(255 255 255 / 0.07);
+  --shadow-contact: 0 1px 0 rgb(0 0 0 / 0.9), 0 12px 24px -8px rgb(0 0 0 / 0.8);
+  --shadow-plate:
+    inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 1px rgb(255 255 255 / 0.06),
+    var(--shadow-contact);
+  --shadow-drafted-1: 3px 3px 0 0 var(--color-ink);
+  --shadow-drafted-2: 6px 6px 0 0 var(--color-ink);
+  --shadow-press: 1px 1px 0 0 var(--color-ink);
+  /* The footer table's top edge: a hairline highlight where the sheet ends. */
+  --shadow-table-edge: inset 0 1px 0 rgb(255 255 255 / 0.06);
 
   /* --- Motion (DESIGN.md §6) -------------------------------------------------------------- */
   --duration-micro: 150ms; /* hover, focus */
@@ -281,26 +310,28 @@
  */
 
 /**
- * The sheet's grain on a surface other than the body — the tint bands, which would otherwise
- * paint a smooth patch over the grained ground. Pockets never take it: their floors are
- * smooth by design, so the recess reads against the grain around it.
+ * The sheet's grain on a surface other than the body, which would otherwise paint a smooth patch
+ * over the grained ground. Pockets and bands never take it: a pocket floor is smooth so the
+ * recess reads against the grain around it, and the band is ink, not metal.
  */
 @utility grain {
   background-image: var(--texture-grain);
 }
 
-/* Pocket anatomy V2, "machined pocket" — the standard card. Depth goes down, never up. */
+/**
+ * Pocket anatomy V2, "machined pocket" — the standard card. On the ground it is cut into the
+ * sheet: darker floor, inset walls, a lit lower lip. Inside a `band` the same element is a plate
+ * laid on the table instead (the `band` utility below) — cut into metal, laid on the table.
+ */
 @utility pocket {
   background-color: var(--color-card);
   border: 1px solid var(--color-pocket-border);
   border-radius: var(--radius-lg);
-  box-shadow:
-    inset 0 2px 8px rgb(0 0 0 / 0.55),
-    inset 0 -1px 0 rgb(255 255 255 / 0.05);
+  box-shadow: var(--shadow-pocket);
 }
 
-/* Interactive pockets: the border warms and the floor lifts one step. Nothing translates,
-   nothing glows, the shadow does not change. */
+/* Interactive pockets: the border warms to 60% primary and the floor lifts a visible step.
+   Nothing translates, nothing glows, the shadow does not change. */
 @utility pocket-interactive {
   transition:
     background-color var(--duration-micro) var(--ease-toggle),
@@ -309,7 +340,7 @@
   &:hover,
   &:focus-within {
     background-color: var(--color-card-hover);
-    border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+    border-color: color-mix(in srgb, var(--color-primary) 60%, transparent);
   }
 }
 
@@ -338,6 +369,101 @@
   }
 }
 
+/**
+ * The drafting grid (DESIGN.md §2.3): the engineering grid at blueprint strength, in two weights —
+ * a 26px minor cell at 4% and a 130px (5 × minor) major cell at 8%, the line-weight hierarchy of
+ * a real drawing sheet. For surfaces that are not the page ground: the band's table and the copy
+ * side of a photo hero. The caller feathers it with a mask so it never ends on a hard edge.
+ */
+@utility drafting-grid {
+  --grid-minor: color-mix(in srgb, var(--color-foreground) 4%, transparent);
+  --grid-major: color-mix(in srgb, var(--color-foreground) 8%, transparent);
+
+  background-image:
+    linear-gradient(to right, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-minor) 1px, transparent 1px);
+  background-size:
+    130px 130px,
+    130px 130px,
+    26px 26px,
+    26px 26px;
+
+  @supports not (color: color-mix(in srgb, red, red)) {
+    background-image: none;
+  }
+}
+
+/**
+ * The ink band — the drafting table the sheet lies on (DESIGN.md §2 surfaces). A full-width
+ * section surface with a 30% primary top edge, the accent edge vignette (primary at 9%, gone by
+ * 12% in from each side), and the drafting grid feathered out with a radial mask. It is the one
+ * atmosphere device for its boundary, so it carries no pool or numeral.
+ *
+ * On the table the physics invert: a `pocket` inside a band is a raised plate — lighter floor,
+ * hairline top highlight, contact shadow — and framed media takes the contact shadow in place
+ * of the drafted edge, which ink on ink would not show.
+ */
+@utility band {
+  --band-vignette: color-mix(in srgb, var(--color-primary) 9%, transparent);
+
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-band);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-primary) 30%, transparent),
+    inset 0 -1px 0 rgb(255 255 255 / 0.05);
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  &::before {
+    background: linear-gradient(
+      to right,
+      var(--band-vignette),
+      transparent 12%,
+      transparent 88%,
+      var(--band-vignette)
+    );
+  }
+
+  &::after {
+    @apply drafting-grid;
+
+    background-position: center top;
+    mask-image: radial-gradient(ellipse 85% 90% at 50% 45%, black 35%, transparent 100%);
+  }
+
+  & .pocket {
+    background-color: var(--color-plate);
+    border-color: var(--color-plate-border);
+    box-shadow: var(--shadow-plate);
+  }
+
+  & .pocket-interactive:is(:hover, :focus-within) {
+    background-color: var(--color-plate-hover);
+    border-color: color-mix(in srgb, var(--color-primary) 60%, transparent);
+  }
+
+  & .media-frame {
+    box-shadow: var(--shadow-contact);
+  }
+}
+
+/* The drafting grid over the copy side of a photo hero, fading out before the photo's subject. */
+@utility hero-grid {
+  @apply drafting-grid;
+
+  mask-image: linear-gradient(to right, black, black 35%, transparent 70%);
+}
+
 /* Feature pocket V2+V3, "drawing pocket" — the grid is *inside* the pocket, and only on
    screens wide enough for it to read. Dense card grids and mobile stay plain V2. */
 @utility pocket-feature {
@@ -360,11 +486,49 @@
   width: 32px;
 }
 
-/* The "team picture frame" for photo collages and feature media. */
+/* The "team picture frame" for photo collages and feature media: a print mounted on the sheet
+   with a 6px drafted edge. On a band it takes the contact shadow instead (`band` above). */
 @utility media-frame {
   border: 2px solid var(--color-primary);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: var(--shadow-drafted-2);
+}
+
+/**
+ * A keycap (DESIGN.md §4, §6, §8): a control that stands on a 3px drafted offset, lifts 1px on
+ * hover, and presses flat on `:active` — motion that confirms the press. Under reduced motion the
+ * face stays put and only the offset changes, so every state still reads.
+ *
+ * The edge is `--keycap-edge`, shadow ink when unset; `keycap-accent` tints it with the theme
+ * primary. It is declared on the element, not in `@theme`, so it resolves against the program
+ * theme the control sits in rather than the root's.
+ */
+@utility keycap {
+  box-shadow: 3px 3px 0 0 var(--keycap-edge, var(--color-ink));
+  transition-property: color, background-color, border-color, box-shadow, translate;
+
+  &:hover {
+    translate: -1px -1px;
+    box-shadow: 4px 4px 0 0 var(--keycap-edge, var(--color-ink));
+  }
+
+  &:active {
+    translate: 2px 2px;
+    box-shadow: var(--shadow-press);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover,
+    &:active {
+      translate: none;
+    }
+  }
+}
+
+/* Modifier for `keycap`: the accent keycap's edge, the theme primary sunk into shadow ink. */
+@utility keycap-accent {
+  --keycap-edge: color-mix(in srgb, var(--color-primary) 35%, var(--color-ink));
 }
 
 /* Highlighter swipe: a skewed translucent marker stroke behind white key words. A heading
@@ -467,8 +631,8 @@
 
 /**
  * Section rhythm (DESIGN.md §4) — consistent on every section, and never doubled. Two sections
- * on the same ground share one padding at their boundary: the second drops its top. A tint band
- * is a surface of its own, so its edge keeps the padding on both sides.
+ * on the same ground share one padding at their boundary: the second drops its top. A band is a
+ * surface of its own, so its edge keeps the padding on both sides.
  */
 @utility section-y {
   padding-block: 4rem;
@@ -477,7 +641,7 @@
     padding-block: 6rem;
   }
 
-  &:not(.bg-section-tint):is(.section-y:not(.bg-section-tint) + *) {
+  &:not(.band):is(.section-y:not(.band) + *) {
     padding-top: 0;
   }
 }

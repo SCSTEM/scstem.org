@@ -5,7 +5,8 @@ import { cn } from "@/lib/cn";
 
 /**
  * A pocket machined into the page (DESIGN.md §2). Cards are *darker* than the ground — the
- * opposite of the elevated-lighter-card dark UI this site deliberately avoids.
+ * opposite of the elevated-lighter-card dark UI this site deliberately avoids. Inside a band the
+ * same card is a raised plate; the `band` utility makes that switch, so no prop does.
  *
  * Sub-parts are separate components (`CardHeader`, `CardTitle`, …) rather than named slots, so
  * a caller can compose them freely, as in shadcn.

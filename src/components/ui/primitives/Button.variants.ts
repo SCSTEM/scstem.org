@@ -23,7 +23,9 @@ export const buttonVariants = cva(
     // background image over a little bottom padding, and this recipe renders as an anchor
     // whenever a Button gets an `href`.
     "inline-flex items-center justify-center gap-2 rounded-md bg-none pb-0 font-medium whitespace-nowrap",
-    "transition-colors duration-(--duration-micro) ease-(--ease-toggle)",
+    // Duration and easing only: each variant names the properties it animates, because the
+    // keycaps also move their face and offset.
+    "duration-(--duration-micro) ease-(--ease-toggle)",
     "disabled:pointer-events-none disabled:opacity-50",
     "aria-disabled:pointer-events-none aria-disabled:opacity-50",
   ),
@@ -31,11 +33,19 @@ export const buttonVariants = cva(
     defaultVariants: { variant: "default", size: "md" },
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        secondary: "border border-border bg-card text-foreground hover:bg-card-hover",
-        /** Over photography this gains a translucent card background (DESIGN.md §8). */
-        outline: "border border-border text-foreground hover:border-primary/40 hover:bg-card/60",
-        ghost: "text-foreground hover:bg-card",
+        /**
+         * The accent keycap (DESIGN.md §8): the fill never dims on hover — the control lifts off
+         * its drafted edge instead, and presses flat when clicked.
+         */
+        default: "keycap bg-primary text-primary-foreground keycap-accent",
+        secondary:
+          "border border-border bg-card text-foreground transition-colors hover:bg-card-hover",
+        /**
+         * A neutral keycap: an opaque sheet face, so it reads the same over photography, with an
+         * edge at ≥ 3:1 against every surface it sits on. Hover warms the edge to the accent.
+         */
+        outline: "keycap border border-control-edge bg-sheet text-foreground hover:border-primary",
+        ghost: "text-foreground transition-colors hover:bg-card",
         /**
          * A machined pocket rather than a filled control — for chrome that sits over content
          * (carousel arrows, a dialog's close). Shares the base recipe so the touch target and

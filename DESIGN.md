@@ -27,22 +27,27 @@ Dark-only for now. All component color comes from **semantic tokens** — raw he
 
 Safety Yellow `#FACC15` · Science Blue `#3B82F6` · Foundation Gray `#4B5563` · Black `#171717` · White `#FAFAFA` · Hazard Green `#16A34A` · Danger Orange `#F97316` · Background Black `#262626`.
 
-### Surfaces — the recessed system
+### Surfaces — cut into metal, laid on the table
 
-The page is the raised material; cards are **pockets machined into it**. (This is the _opposite_ of the default elevated-lighter-card dark UI — deliberately.)
+The page is the raised material; cards are **pockets machined into it**. (This is the _opposite_ of the default elevated-lighter-card dark UI — deliberately.) Page-scale contrast comes from alternation: the grained ground is the _sheet_, and full-width **ink bands** are the _drafting table_ it lies on. The physics invert on the table: a card on a band is a **raised plate** laid on it. One rule, two contexts — **recessed on the ground, raised on the band.**
 
-| Token          | Value     | Use                                                            |
-| -------------- | --------- | -------------------------------------------------------------- |
-| `background`   | `#262626` | Page ground (brand Background Black)                           |
-| `card`         | `#171717` | Pockets: cards, panels, form fields, footer band (brand Black) |
-| `section-tint` | `#212121` | Full-width alternate section bands                             |
-| `border`       | `#3A3A3A` | Hairlines, card borders, dividers                              |
+| Token          | Value     | Use                                                                |
+| -------------- | --------- | ------------------------------------------------------------------ |
+| `background`   | `#262626` | Page ground — the sheet (brand Background Black)                   |
+| `card`         | `#171717` | Pockets on the ground: cards, panels, form fields (brand Black)    |
+| `band`         | `#121212` | Ink bands — the drafting table — and the footer                    |
+| `plate`        | `#232323` | Pockets inside a band: raised plates (`plate-border` `#333333`)    |
+| `sheet`        | `#2E2E2E` | The neutral keycap's face (§8)                                     |
+| `border`       | `#3A3A3A` | Hairlines, card borders, dividers                                  |
+| `control-edge` | `#737373` | Control boundaries: ≥ 3:1 on ground (3.2), band (3.9), plate (3.3) |
+| `ink`          | `#0C0C0C` | Drafted shadow ink (§4) — never a fill                             |
 
-**Ground grain**: the page ground and the `section-tint` bands carry a fine monochrome grain — even, per-pixel film grain from a 600px seamless SVG noise tile (`--texture-grain`), with a mean lift of ~5 levels over `#262626` and a spread of ~4. It must never show a cell structure or a visible repeat — if a pattern can be picked out, the frequency is too low or the tile too small. It is what makes the sheet read as a surface rather than a flat hex, and it is material, not illustration: no brushed streaks, no bevels, no lighting gradients. Pockets never take it — their floors stay smooth, so the recess reads against the grain around it. Every contrast pair below is measured on the plain hex and still holds on the grained ground.
+**Ground grain**: the page ground carries a fine monochrome grain — even, per-pixel film grain from a 600px seamless SVG noise tile (`--texture-grain`), with a mean lift of ~5 levels over `#262626` and a spread of ~4. It must never show a cell structure or a visible repeat — if a pattern can be picked out, the frequency is too low or the tile too small. It is what makes the sheet read as a surface rather than a flat hex, and it is material, not illustration: no brushed streaks, no bevels, no lighting gradients. Pockets never take it — their floors stay smooth, so the recess reads against the grain around it — and neither do bands, which are ink, not metal. Every contrast pair below is measured on the plain hex and still holds on the grained ground.
 
-**Pocket anatomy (V2, "machined pocket")** — the standard card treatment: `card` fill, 1px `#383838` border, `radius-lg`, and inset edge physics: `box-shadow: inset 0 2px 8px rgb(0 0 0 / 0.55), inset 0 -1px 0 rgb(255 255 255 / 0.05)`.
+**Pocket anatomy (V2, "machined pocket")** — the standard card treatment: `card` fill, 1px `#383838` border, `radius-lg`, and inset edge physics cut deep enough to read against a plate elsewhere on the page (`--shadow-pocket`): `inset 0 3px 12px rgb(0 0 0 / 0.75), inset 0 1px 0 rgb(0 0 0 / 0.9), 0 1px 0 rgb(255 255 255 / 0.07)` — a dark upper wall and a lit lower lip.
+**Plate anatomy (a pocket inside a band)**: the same element, laid on the table — `plate` fill, 1px `plate-border`, `radius-lg`, a hairline top highlight with the legacy site's inset card edge, and a contact shadow (`--shadow-plate`: `inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 1px rgb(255 255 255 / 0.06), 0 1px 0 rgb(0 0 0 / 0.9), 0 12px 24px -8px rgb(0 0 0 / 0.8)`). Components never choose: a pocket becomes a plate by being inside a band.
 **Feature pocket (V2+V3, "drawing pocket")**: the same, plus the engineering grid (§2 motifs) rendered _inside_ the pocket at ~5% opacity — reserved for feature moments (program cards, CTA panels, stat bands) on ≥ md screens; dense card grids and mobile stay plain V2.
-**Hover (interactive pockets)**: pockets don't float — border warms to 40%-alpha `primary`, floor lifts `#171717 → #1A1A1A`, no translate, no glow, no shadow change.
+**Hover (interactive pockets)**: pockets don't float — border warms to 60%-alpha `primary`, floor lifts a visible step (`#171717 → #1F1F1F` on the ground, `#232323 → #2A2A2A` on a plate), and a card's footer arrow nudges 2px (reduced motion: no nudge). No translate of the card, no glow, no shadow change.
 
 ### Text
 
@@ -53,6 +58,8 @@ The page is the raised material; cards are **pockets machined into it**. (This i
 | `muted`      | `#A3A3A3` | ≈6.0:1 (AA)           | Captions, meta, labels only — never paragraphs |
 
 Rule: **AAA (≥7:1) for anything longer than a caption.** `muted` is the floor; nothing text-bearing goes dimmer.
+
+On the band and plate the ramp holds with room: `body` 12.6:1 on `band` and 10.6:1 on `plate`; `muted` 7.4:1 and 6.2:1. Where a major and a minor grid line cross inside a band (`#2E2E2E`, the worst point copy can land on) `body` is 9.1:1 and `muted` 5.3:1. `/styleguide` gates every text token on all five surfaces.
 
 ### Accents — the fill-vs-text law
 
@@ -83,12 +90,14 @@ Rules:
 
 1. **Key-word emphasis**: display headings may emphasize exactly one phrase — either `primary`-colored text or a highlighter swipe (§2.13), never both, never more than one phrase. Link-style underlines never appear in headings.
 2. **Accent hairline**: heroes end with a 2px `primary` rule, full-bleed. Card titles may carry a 32px × 2px `primary` rule beneath.
-3. **Engineering grid** (replaces the legacy circuit-board texture): fine graph-paper grid (~24–28px cell, 1px `#FAFAFA` strokes) at 4–7% opacity, on heroes and section breaks and inside V2+V3 feature-pocket floors — never behind body copy, and **never on the page ground**, where it competes with the pocket grid floors and dulls the recess effect. The ground's life comes from its grain (surfaces, above) and the atmosphere devices below, not from linework. Optional **dimension-line ticks** (`primary` at ≤50%, SCP annotation) as rare garnish.
-4. **Framed media**: photo collages/feature media get a 2px `primary` border + `radius-lg` — the "team picture frame".
+3. **Engineering grid** (replaces the legacy circuit-board texture): fine graph-paper grid (~24–28px cell, 1px `#FAFAFA` strokes) at 4–7% opacity, on heroes and section breaks and inside V2+V3 feature-pocket floors — never behind body copy on the ground, and **never on the bare page ground**, where it competes with the pocket grid floors and dulls the recess effect. The ground's life comes from its grain (surfaces, above) and the atmosphere devices below, not from linework. **The drafting grid** is the same grid at blueprint strength, in two weights — a 26px minor cell at 4% and a 130px (5 × minor) major cell at 8%, the line-weight hierarchy of a real drawing — feathered out with a mask so it never ends on a hard edge. It has exactly two homes, and in both it may sit behind copy: **inside a band** (radial feather) and **over the copy side of a photo hero** from `md` up (feathered out by 70% of the width, before the photo's subject). The alphas are the ceiling: `muted` holds 5.3:1 on the worst line crossing, and a stronger grid breaks that. Optional **dimension-line ticks** (`primary` at ≤50%, SCP annotation) as rare garnish.
+4. **Framed media**: photo collages/feature media get a 2px `primary` border + `radius-lg` — the "team picture frame" — mounted on the sheet with a 6px **drafted edge** (`--shadow-drafted-2`, §4). On a band, where ink on ink would not show, the print takes the plate's contact shadow instead.
 
 ### Atmosphere layer
 
 Large unmodulated `background` fields read sterile. Between the hero and the footer, every major section boundary carries **exactly one** of these devices (never stacked, never behind photos):
+
+**Ink bands** (`Section atmosphere="band"`): the drafting table — a full-width `band` surface with a 1px `primary`/30% top edge, a 1px white/5% bottom edge, the accent **edge vignette** (`primary` at 9%, gone 12% in from each side — part of the band's anatomy, never a free device), and the drafting grid (§2.3). A band is the one device for its boundary: it carries no pool, numeral, or ruler. **Two bands never touch** — two tables side by side read as one slab with a seam — and the footer is a band, so a page never ends on one. The build enforces both: every `Section`, the `Hero` and the footer declare their surface, and a page where two bands are consecutive fails.
 
 5. **Ambient pools**: one radial gradient centred on a section's heading — `primary` at 8–10% alpha (or `#FAFAFA` at 4–6% for neutral sections), fading to transparent by ~70% and well inside the section on every side. Never anchored to the section's top edge: an ellipse cut in half by the boundary leaves a hard line. A lightness modulation of the ground that is visible on a calibrated monitor without being nameable; text contrast is unaffected. Max one per section.
 6. **Ghost section numerals**: oversized Source Code Pro 600 numerals (`01`, `02`, …) at 5–8% alpha `foreground`, anchored to the heading's top edge and raised so most of the numeral stands in the section's top padding and its lower part sits behind the heading's first line — the device from the Brand Guidelines' own section pages. It never reaches the copy below the heading. Decorative (`aria-hidden`), numbering only top-level page sections, 3–4 per page max.
@@ -100,7 +109,7 @@ Large unmodulated `background` fields read sterile. Between the hero and the foo
 The blueprint devices printed _onto_ the sheet. Each appears at most once per page unless noted:
 
 9. **Title block**: the engineering-drawing identity strip — bordered compartments, each an SCP uppercase label (`PROJECT:` / `ORGANIZATION:` / `URL:` …) over an Inter (or SCP for URLs/codes) value, 1px `border` dividers. Its home is the footer bottom (the drawing sheet's corner), horizontal strip ≥ md, stacked on mobile; contact/event pages may use the boxed stack as an info card.
-10. **Scribed lineart**: the wireframe gear-bulb (and sibling blueprint drawings) as large, faint decorative art — stroke-only, `foreground` or `primary`, 4–6% opacity, on `card` bands (footer, feature panels), never behind body copy. Obtain the real vector from the merch/brand source files into `src/assets/brand/` (the mockups use a drawn approximation).
+10. **Scribed lineart**: the wireframe gear-bulb (and sibling blueprint drawings) as large, faint decorative art — stroke-only, `foreground` or `primary`, 4–6% opacity, on the footer and feature panels, never behind body copy. Obtain the real vector from the merch/brand source files into `src/assets/brand/` (the mockups use a drawn approximation).
 11. **Labeled callouts**: leader line (1px, dot or arrow terminus) + SCP label — figure captions under framed media ("FIG. 01 — BIOHAZARD, 2023 SEASON"), detail annotations on heroes ("DETAIL A" style). `muted` color; captions may double as the image's visible credit.
 
 ### Hand markup register (the human layer)
@@ -118,7 +127,7 @@ Motion note (§6 applies): hand-markup strokes _draw on_ as their entrance (stro
 
 **Register budget**: across all machined, scribed, and hand-markup devices (grid, ticks, ruler, numerals, pools, marks, title block, lineart, callouts, ovals, swipes, underlines, arrows), a viewport shows **at most 4 distinct devices**. If a new one enters a view, another leaves. Link underlines are affordance, not atmosphere, and do not count.
 
-Restraint rule: these are atmosphere, not decoration — if a device is noticeable before the content is, it's too loud. `section-tint` bands (§2 surfaces) count as a device for their boundary.
+Restraint rule: these are atmosphere, not decoration — if a device is noticeable before the content is, it's too loud. A band counts as the one device for its boundary.
 
 ## 3. Typography
 
@@ -157,9 +166,9 @@ Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 ## 4. Spacing, radius, elevation
 
 - **Spacing**: 4px base scale. Component-internal 8–24px; between-component 24–48px.
-- **Section rhythm**: `py-16` (mobile) / `py-24` (≥ md), consistent on every section, and never doubled: two sections on the same ground share one padding at their boundary, and no component margin (the footer included) adds to a section's padding. A tint band keeps its padding on both sides of its edge.
+- **Section rhythm**: `py-16` (mobile) / `py-24` (≥ md), consistent on every section, and never doubled: two sections on the same ground share one padding at their boundary, and no component margin (the footer included) adds to a section's padding. A band keeps its padding on both sides of its edge.
 - **Radius — one end-mill**: three values, unified to the machining story. `radius-sm` **4px** (chips, spec labels, badges — stamped plates), `radius-md` **8px** (all controls: buttons, inputs, icon tiles), `radius-lg` **12px** (every cut feature: pockets, panels, framed media — one tool radius for everything machined). Nothing else; `16px` and pill radii are retired.
-- **Elevation**: there is none — depth goes _down_, not up (§2 pocket anatomy). No drop shadows anywhere; the inset pocket shadows are the only shadows in the system.
+- **Elevation — drafted, not rendered**: depth is drawn the way a draftsman draws it, or cut. Pockets on the ground go _down_ (§2 pocket anatomy). What rises is drawn with **zero-blur offsets in `ink`, down-right only**: `--shadow-drafted-1` (3px, a keycap at rest), `--shadow-drafted-2` (6px, framed media), `--shadow-press` (1px, a pressed keycap). The plate's contact shadow (§2) is the one soft shadow, and only a plate — or a print laid on a band — takes it. Blurred drop shadows and glows stay banned everywhere else; a pocket on the ground never rises. The stacked pad of sheets (a plate on two offset sheet outlines) is not part of the system: the closing CTA sits on the ground, where it is cut, not raised.
 
 ## 5. Layout & navigation
 
@@ -167,7 +176,7 @@ Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 - Grids: 1-col → 2-col (≥ md) → 3-col (≥ lg). **No orphan rows**: plan the math (5 cards = intentional 2+3).
 - Where the item count is data rather than a design choice (a sponsor tier), the column count follows the count: a lone item takes a **full-width feature row** (feature pocket, logo and text side by side ≥ md), two and four sit in pairs, three share one row, five and up use the 3-col grid. A row is never mostly empty.
 - Breakpoints: Tailwind defaults + `3xl` = 120rem. Design mobile-first at 360px.
-- **Header (sticky)**: sticky on all viewports, condensing slightly after scroll (pure CSS); `background`/95 with blur fallback, bottom hairline. Desktop: the **full-width color lockup** (`logo-color-full.svg`, ~40px) — the wordmark _is_ the identity — then About / Programs ▾ / Sponsors / Donate + primary "Get involved" button. Mobile: the **square mark alone** (brand rules forbid subbing "SC2"; the full name must appear in page content — hero/footer satisfy this).
+- **Header (sticky)**: sticky on all viewports, condensing slightly after scroll (pure CSS); `background`/95 with blur fallback, bottom hairline. Desktop: the **Light full-width lockup** (`logo-white-full.svg`, 40px tall — the file is cropped tight, so it fills the height the padded color file only half-filled) — the wordmark _is_ the identity — then About / Programs ▾ / Sponsors / Donate + primary "Get involved" button. Mobile: the **square mark alone** (brand rules forbid subbing "SC2"; the full name must appear in page content — hero/footer satisfy this).
 - **Programs**: desktop hover/focus dropdown (FLL, FRC, Robots, Calendar) whose click/tap target is a real **`/programs` hub page** — zero-JS fallback and the mobile path. Never hover-only.
 - **Mobile menu**: full-height sheet; ≥48px rows (About, Programs, Sponsors, Donate, Calendar); "Get involved" and "Donate" as large buttons pinned at the bottom; Esc/backdrop closes; `aria-expanded` wired. Nothing is more than two taps away.
 - The about page: single flowing column (prose measure) with photo groupings as interleaved timeline sections.
@@ -177,6 +186,7 @@ Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 CSS-only. Motion confirms — it never decorates.
 
 - Durations: 150ms (hover/focus), 250ms (menus, accordions), 500ms (scroll-in entrances). `ease-out` entrances, `ease-in-out` toggles.
+- **Keycaps** (§8): hover lifts the face 1px up-left as its offset grows to 4px; `:active` presses it 2px down-right onto a 1px offset. 150ms `ease-in-out`, `translate` and `box-shadow` only. Reduced motion keeps the offsets and drops the translate, so every state still reads. A card's footer arrow nudges 2px on hover under the same rule.
 - Only `opacity` and `transform` animate.
 - Scroll entrances: single fade-up (8px), once; CSS scroll-driven animations with content-visible-by-default fallback.
 - Hero video: `preload="none"`, poster-first, plays in-view; `prefers-reduced-motion` disables video autoplay and all entrances. No parallax anywhere.
@@ -189,15 +199,15 @@ CSS-only. Motion confirms — it never decorates.
 - Photo treatment: `radius-lg` framed in sections; full-bleed only in heroes. Consistent warm/neutral grading.
 - Every image: honest `alt`; decorative pattern/grid SVGs `aria-hidden` with `alt=""`.
 - OG images (1200×630): photo + scrim + Orbitron title + lockup; one template, per-section variants.
-- **Logo usage** (Brand Guidelines): color lockup on light _and_ dark; dark/light monochrome variants per background; never recolor, never set the name in another font as a substitute for the lockup where the lockup fits.
+- **Logo usage** (Brand Guidelines p.4–5): on dark chrome — the header ≥ md and the footer — the **Light full-width lockup** (`logo-white-full.svg`); the color lockup's Foundation Gray wordmark measures 2.0:1 on the header and 2.4:1 on the footer, too faint for the organization's own name. The color lockup is for light grounds and large sizes. The **color square mark** stays on mobile and in the favicon — its gear carries no text. Never recolor, never set the name in another font as a substitute for the lockup where the lockup fits.
 
 ## 8. Components tone
 
-- **Buttons**: `primary` (theme accent fill + its near-black label — on FRC pages that's Hazard Green fill, etc.), `outline` (1px `border`, `foreground` text; over photography gains a translucent `card` background), `ghost`. One primary per view region. Min touch target 44×44px (nav CTA included). `radius-md`.
+- **Buttons are keycaps** (§4, §6): `primary` — theme accent fill + its near-black label (on FRC pages that's Hazard Green fill, etc.) standing on a 3px drafted edge in the accent sunk into `ink` (primary 35%); hover lifts, `:active` presses, and the fill never dims. `outline` — the neutral keycap: opaque `sheet` face, 1px `control-edge` border (≥ 3:1 on every surface, so it holds its own beside a solid primary and over photography), `foreground` text, an `ink` drafted edge; hover warms the border to `primary`. `ghost` and `secondary` stay flat. One primary per view region. Min touch target 44×44px (nav CTA included). `radius-md`. A hero's actions stack full-width below `sm`, so a wrapped pair never shows two widths.
 - **Links**: three forms and no fourth. _In copy_: `primary`-colored with the hand underline (§2.14); a featured link adds the swipe. _In chrome_ (nav, footer, card footers): `ui-link` — `foreground`, no underline at rest, a straight 1px machined hairline on hover/focus. Chrome is a different layer from copy and never takes the hand stroke. _As a reference_: a linked logo or figure with a `Callout` beneath naming the destination (`REF — firstinspires.org`). A link that is an action is a button, not a link; the standalone underlined-text button is retired. External links: icon at 0.8em + `rel="noopener"`.
 - **Cards**: pocket anatomy per §2. FeatureCard carries **one identity mark**: a photo when it has one, otherwise a Tabler icon on a stamped plate in the spec-chip anatomy (36px square, 1px 40%-alpha `primary` border, `radius-sm`, transparent fill, `primary` icon) — never both, and never a filled tile. Then an Inter 600 title with its spec chip on the same line (a row holding only a chip is a wasted row), the 32px accent rule, `body` copy, optional footer link.
 - **Chips/spec labels**: SCP `label` style — uppercase, tracked, 1px 40%-alpha border in the chip's color, transparent bg. Ages ("AGES 9–16"), sponsor tiers (platinum `#CBD5E1`, gold `#FACC15`, silver `#A3A3A3`, bronze `#D08954`), event dates.
-- **Stat band**: SCP 600 numeral in `primary` + Inter caption in `body`, on a pocket (feature moments get the grid floor).
+- **Stat band**: SCP 600 numeral in `primary` + Inter caption in `body`, on a pocket (feature moments get the grid floor) — a plate when it sits in a band.
 - **Forms**: visible `Label` above every field; `card` bg inputs, 1px `border`, focus = `ring` 2px; errors in the destructive text token with icon + `aria-describedby`.
 - **Icons**: Tabler, outline, 2px stroke, 20/24/32. Always with text or `aria-label`. No emoji as UI.
 - **Long-form prose** (pages carrying an argument rather than a grid — about, news, an event body): one flowing column at prose measure. Lists take `primary` markers, `body` text, and one level of nesting at most. Blockquotes take a 2px `primary` rule on the leading edge and `body-lg` `foreground` text, with the attribution beneath in `muted` `small` — no quote glyphs, no italics; the rule is the signal. Paragraph rhythm 1rem, with 2rem above a heading that follows copy.
@@ -213,24 +223,26 @@ CSS-only. Motion confirms — it never decorates.
 
 ## 10. Do / Don't
 
-| Don't                                                                     | Do                                                                                                |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Elevated lighter-than-page cards (the stock AI dark-UI look)              | Pockets: darker cards machined _into_ the page (§2)                                               |
-| Bare, unmodulated `#262626` voids between sections                        | One atmosphere device per boundary: ambient pool, ghost numeral, ruler divider, or tint band (§2) |
-| Circuit-board wallpaper                                                   | Engineering grid + dimension ticks, ≤7%, heroes/section breaks only                               |
-| Yellow words, yellow underlines, and blue links competing in one viewport | One action accent per view; blue only in its informational role                                   |
-| Orange button on the green FRC page                                       | The page theme's primary pair                                                                     |
-| Hero copy on a busy photo behind a thin scrim on mobile                   | Text on solid ground below the photo (§7)                                                         |
-| Body copy in `#A3A3A3` or dimmer                                          | `body #D4D4D4` minimum; muted is captions-only                                                    |
-| Orbitron paragraphs, tiny Orbitron labels, Orbitron stats                 | Orbitron = h1–h3 + eyebrows; **SCP owns numbers and spec labels**                                 |
-| "SC2" in a heading; "Scstem" in prose                                     | Full name (capitalized STEM); SC2 only in prose with the full name present                        |
-| Faking the logo: gear SVG + name in Inter                                 | Real lockup assets: full-width on desktop chrome, square mark on mobile                           |
-| Filled dark-on-dark tier pills                                            | SCP outline chips per §8                                                                          |
-| Pill-shaped UI (`border-radius: 999px` capsules)                          | Radius tokens only; circled words are hand-drawn chalk ovals (§2.12)                              |
-| 5 cards centered as 3+2 with a floating orphan                            | Grid math planned: intentional 2+3                                                                |
-| Drop shadows, glows, hover-lift on pockets                                | Border warms + floor lifts one step; depth only goes down                                         |
-| `alt="image"` / missing alt                                               | Descriptive alt or explicit `alt=""`                                                              |
-| Generic hero copy ("Empowering the future…")                              | Specific, local, human                                                                            |
+| Don't                                                                      | Do                                                                                               |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Elevated lighter-than-page cards on the ground (the stock AI dark-UI look) | Pockets on the ground; a lighter plate only where it lies on a darker band (§2)                  |
+| Bare, unmodulated `#262626` voids between sections                         | One atmosphere device per boundary: ambient pool, ghost numeral, ruler divider, or ink band (§2) |
+| Circuit-board wallpaper                                                    | Engineering grid + dimension ticks, ≤7%; the two-weight drafting grid only in bands and heroes   |
+| Yellow words, yellow underlines, and blue links competing in one viewport  | One action accent per view; blue only in its informational role                                  |
+| Orange button on the green FRC page                                        | The page theme's primary pair                                                                    |
+| Hero copy on a busy photo behind a thin scrim on mobile                    | Text on solid ground below the photo (§7)                                                        |
+| Body copy in `#A3A3A3` or dimmer                                           | `body #D4D4D4` minimum; muted is captions-only                                                   |
+| Orbitron paragraphs, tiny Orbitron labels, Orbitron stats                  | Orbitron = h1–h3 + eyebrows; **SCP owns numbers and spec labels**                                |
+| "SC2" in a heading; "Scstem" in prose                                      | Full name (capitalized STEM); SC2 only in prose with the full name present                       |
+| Faking the logo: gear SVG + name in Inter                                  | Real lockup assets: full-width on desktop chrome, square mark on mobile                          |
+| Filled dark-on-dark tier pills                                             | SCP outline chips per §8                                                                         |
+| Pill-shaped UI (`border-radius: 999px` capsules)                           | Radius tokens only; circled words are hand-drawn chalk ovals (§2.12)                             |
+| 5 cards centered as 3+2 with a floating orphan                             | Grid math planned: intentional 2+3                                                               |
+| Blurred shadows and glows; lifting a _pocket_                              | Drafted zero-blur offsets on controls and framed media; plates only on a band                    |
+| Two bands touching; a band carrying a second device                        | A sheet section between bands; the band is its boundary's one device                             |
+| A button that dims on hover                                                | A keycap that lifts, then presses                                                                |
+| `alt="image"` / missing alt                                                | Descriptive alt or explicit `alt=""`                                                             |
+| Generic hero copy ("Empowering the future…")                               | Specific, local, human                                                                           |
 
 ## 11. Change process
 

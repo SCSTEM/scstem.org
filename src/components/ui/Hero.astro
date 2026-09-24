@@ -11,6 +11,9 @@ import { eyebrowClass } from "@/lib/eyebrow";
  * fades into the page (§7 — "never gamble on scrims at small sizes"); from `md` up the photo
  * fills the hero and the copy sits on a scrim built from `background`.
  *
+ * From `md` up the drafting grid (§2.3) reads over the copy side of the scrim and feathers out
+ * before the photo's subject.
+ *
  * Without `media` it is the compact header: the same copy on the ground, at `h1` size rather than
  * `display`, for a page whose content has to start above the fold. Both end on the accent rule
  * (§2.2).
@@ -28,7 +31,7 @@ const hasMedia = Astro.slots.has("media");
 const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow") : undefined;
 ---
 
-<section class={cn("relative", className)}>
+<section class={cn("relative", className)} data-surface="sheet">
   {
     hasMedia && (
       <div class="hero-media relative aspect-3/2 md:absolute md:inset-0 md:aspect-auto">
@@ -37,8 +40,9 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
             placed so the opaque band spans the copy column instead of ending halfway through it. */}
         <div
           aria-hidden="true"
-          class="absolute inset-0 bg-linear-to-b from-transparent from-45% to-background md:bg-linear-to-r md:from-background md:from-35% md:via-background/75 md:via-65% md:to-background/20"
+          class="absolute inset-0 bg-linear-to-b from-transparent from-45% to-background md:bg-linear-to-r md:from-background md:from-35% md:via-background/75 md:via-65% md:to-background/20 md:opacity-92"
         />
+        <div aria-hidden="true" class="absolute inset-0 hidden hero-grid md:block" />
       </div>
     )
   }
@@ -67,7 +71,9 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
       </div>
       {
         Astro.slots.has("actions") && (
-          <div class="mt-8 flex flex-wrap gap-3">
+          /* One column of full-width buttons below `sm`, so a wrapped pair never stacks at two
+             different widths. */
+          <div class="mt-8 grid gap-3 sm:flex sm:flex-wrap">
             <slot name="actions" />
           </div>
         )

@@ -68,7 +68,7 @@ const plateIcon = image === undefined ? icon : undefined;
 
 <Card
   as="article"
-  class={cn("relative flex flex-col", className)}
+  class={cn("relative flex flex-col", href !== undefined && "group", className)}
   feature={feature}
   interactive={href !== undefined}
 >
@@ -128,7 +128,12 @@ const plateIcon = image === undefined ? icon : undefined;
         <a class="ui-link text-small font-medium after:absolute after:inset-0" href={href}>
           {cta}
         </a>
-        <Icon class="text-primary-bright" name="arrow-right" size={20} />
+        {/* The arrow nudges 2px with the pocket's hover: the card is a link, and says so. */}
+        <Icon
+          class="text-primary-bright transition-transform duration-(--duration-micro) ease-(--ease-toggle) motion-safe:group-focus-within:translate-x-0.5 motion-safe:group-hover:translate-x-0.5"
+          name="arrow-right"
+          size={20}
+        />
       </CardFooter>
     )
   }

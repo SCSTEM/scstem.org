@@ -45,6 +45,23 @@ import { color, duration, programColor, programThemes, radius, swipeAlpha } from
 
 const BACKGROUND = color("background");
 const CARD = color("card");
+const BAND = color("band");
+const PLATE = color("plate");
+
+/**
+ * The darkest-to-lightest point copy can land on inside a band: a major (8%) and a minor (4%)
+ * grid line crossing, which is where `muted` is closest to its floor (DESIGN.md §2.3).
+ */
+const GRID_CROSSING = blend(color("foreground"), blend(color("foreground"), BAND, 0.08), 0.04);
+
+/** Every surface text sits on, so each text token is gated on all of them. */
+const textSurfaces = [
+  { name: "background", value: BACKGROUND },
+  { name: "card", value: CARD },
+  { name: "band", value: BAND },
+  { name: "plate", value: PLATE },
+  { name: "band grid crossing", value: GRID_CROSSING },
+] as const;
 
 interface TextToken {
   name: string;
@@ -94,23 +111,46 @@ const tiers = ["platinum", "gold", "silver", "bronze"].map((name) => ({
 
 const surfaces = [
   { name: "background", use: "Page ground" },
-  { name: "card", use: "Pockets: cards, panels, fields, footer" },
-  { name: "section-tint", use: "Full-width alternate section bands" },
+  { name: "card", use: "Pockets cut into the ground; form fields" },
+  { name: "band", use: "Ink bands — the drafting table — and the footer" },
+  { name: "plate", use: "Pockets inside a band: raised plates" },
+  { name: "sheet", use: "The neutral keycap's face" },
   { name: "border", use: "Hairlines, dividers" },
   { name: "pocket-border", use: "Pocket walls" },
+  { name: "plate-border", use: "Plate edges" },
+  { name: "control-edge", use: "Control boundaries, ≥ 3:1 on every surface" },
+  { name: "ink", use: "Drafted shadow ink" },
 ].map((surface) => ({ ...surface, value: color(surface.name) }));
+
+/** The neutral keycap's edge is the control's boundary (WCAG 1.4.11): 3:1 on every surface. */
+const controlEdge = color("control-edge");
+const edgeSurfaces = [BACKGROUND, CARD, BAND, PLATE];
 
 /** Every pair that must hold, checked at build time. */
 const failures: string[] = [];
 
+/**
+ * The grid crossing is a sliver of line, not a surface a paragraph fills, so it holds every
+ * token to AA rather than to the token's own floor; the plain band and plate hold the full floor.
+ */
 for (const token of textTokens) {
-  for (const surface of [BACKGROUND, CARD]) {
-    const ratio = contrastRatio(color(token.name), surface);
-    if (ratio < token.floor) {
+  for (const surface of textSurfaces) {
+    const floor = surface.value === GRID_CROSSING ? AA_NORMAL : token.floor;
+    const ratio = contrastRatio(color(token.name), surface.value);
+    if (ratio < floor) {
       failures.push(
-        `${token.name} (${color(token.name)}) on ${surface} is ${formatRatio(ratio)}, below its ${String(token.floor)}:1 floor`,
+        `${token.name} (${color(token.name)}) on ${surface.name} ${surface.value} is ${formatRatio(ratio)}, below its ${String(floor)}:1 floor`,
       );
     }
+  }
+}
+
+for (const surface of edgeSurfaces) {
+  const ratio = contrastRatio(controlEdge, surface);
+  if (ratio < AA_LARGE) {
+    failures.push(
+      `control-edge (${controlEdge}) on ${surface} is ${formatRatio(ratio)}, below the 3:1 boundary floor`,
+    );
   }
 }
 
@@ -121,7 +161,7 @@ for (const token of textTokens) {
  */
 for (const program of programThemes()) {
   const value = programColor(program, "primary-bright");
-  for (const surface of [BACKGROUND, CARD]) {
+  for (const surface of [BACKGROUND, CARD, BAND, PLATE]) {
     const ratio = contrastRatio(value, surface);
     if (ratio < AA_NORMAL) {
       failures.push(
@@ -213,6 +253,17 @@ const durations = [
 const buttonSizes = ["sm", "md", "lg"] as const;
 
 /**
+ * The keycap's three states, frozen so they can be compared side by side. The offsets restate the
+ * `keycap` utility's; the edge reads `--keycap-edge`, so the accent face shows its tinted edge.
+ */
+const keycapEdge = "var(--keycap-edge, var(--color-ink))";
+const keycapStates = [
+  { name: "Rest", style: `box-shadow: 3px 3px 0 0 ${keycapEdge}` },
+  { name: "Hover", style: `translate: -1px -1px; box-shadow: 4px 4px 0 0 ${keycapEdge}` },
+  { name: "Active", style: "translate: 2px 2px; box-shadow: var(--shadow-press)" },
+];
+
+/**
  * DESIGN.md §2 tabulates each accent's text-on-dark ratio. Rendering the measured value here
  * keeps that table checkable: accents are AA-scoped (links, focus, key words — never long copy),
  * so a value below 7:1 is in-bounds, but a value below 4.5:1 fails the gate above. The list is
@@ -250,8 +301,9 @@ const themes = [
       <GhostNumeral value={1} />
       <h2>Surfaces</h2>
       <p class="mt-3 measure">
-        The page is raised material; cards are pockets machined into it. Cards are{" "}
-        <em>darker</em> than the page — the opposite of the default elevated-card dark UI.
+        Cut into metal, laid on the table. The page is raised material and cards are pockets
+        machined into it — <em>darker</em> than the page. Ink bands are the drafting table the sheet lies
+        on, and a card on the table is a raised plate.
       </p>
       <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {
@@ -281,8 +333,8 @@ const themes = [
         <div class="pocket pocket-interactive p-6">
           <h4>V2 — interactive</h4>
           <p class="mt-2 text-small">
-            Hover or focus this card: the border warms to 40% primary and the floor lifts one step.
-            No translate, no glow, no shadow change.
+            Hover or focus this card: the border warms to 60% primary and the floor lifts a visible
+            step. No translate, no glow, no shadow change.
           </p>
         </div>
         <div class="relative pocket pocket-feature p-6">
@@ -292,6 +344,40 @@ const themes = [
             Feature moments only, ≥ md screens: the engineering grid renders inside the pocket
             floor. Registration marks are on this one card.
           </p>
+        </div>
+      </div>
+
+      <h3 class="mt-12">Ink band — the drafting table</h3>
+      <p class="mt-3 measure">
+        <code class="font-mono text-foreground">Section atmosphere="band"</code>: ink, a 30% primary
+        top edge, the accent edge vignette, and the two-weight drafting grid feathered out at its
+        edges. The same pockets inside it are raised plates. On a page it is full-bleed, carries no
+        other device, and never touches another band or the footer — the build fails if it does.
+      </p>
+      <div class="band mt-6 overflow-hidden rounded-lg px-6 py-10 md:px-10">
+        <p class="measure">
+          Body copy on the band, over the grid. The worst line crossing still holds{" "}
+          <code class="font-mono text-foreground">muted</code> at AA.
+        </p>
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
+          <div class="pocket p-6">
+            <h4>Plate</h4>
+            <p class="mt-2 text-small">
+              <code class="font-mono">plate</code> floor, <code class="font-mono">plate-border</code
+              >, a hairline top highlight, and the contact shadow.
+            </p>
+          </div>
+          <div class="pocket pocket-interactive p-6">
+            <h4>Plate — interactive</h4>
+            <p class="mt-2 text-small">
+              Hover or focus: the floor lifts to <code class="font-mono">plate-hover</code> and the border
+              warms to 60% primary.
+            </p>
+          </div>
+          <div class="pocket pocket-feature p-6">
+            <h4>Plate — feature</h4>
+            <p class="mt-2 text-small text-muted">A caption in muted, on a plate over the band.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -307,13 +393,15 @@ const themes = [
         dimmer.
       </p>
       <div class="mt-8 overflow-x-auto">
-        <table class="w-full min-w-[42rem] border-collapse text-small">
+        <table class="w-full min-w-[52rem] border-collapse text-small">
           <thead>
             <tr class="border-b border-border text-left">
               <th class="py-2 spec-label text-muted">Token</th>
               <th class="py-2 spec-label text-muted">Value</th>
               <th class="py-2 spec-label text-muted">On background</th>
               <th class="py-2 spec-label text-muted">On card</th>
+              <th class="py-2 spec-label text-muted">On band</th>
+              <th class="py-2 spec-label text-muted">On plate</th>
               <th class="py-2 spec-label text-muted">Floor</th>
               <th class="py-2 spec-label text-muted">Use</th>
             </tr>
@@ -324,6 +412,8 @@ const themes = [
                 const value = color(token.name);
                 const onBackground = contrastRatio(value, BACKGROUND);
                 const onCard = contrastRatio(value, CARD);
+                const onBand = contrastRatio(value, BAND);
+                const onPlate = contrastRatio(value, PLATE);
                 return (
                   <tr class="border-b border-border/60">
                     <td class="py-3">
@@ -332,6 +422,8 @@ const themes = [
                     <td class="py-3 font-mono text-muted">{value}</td>
                     <td class="py-3 font-mono">{formatRatio(onBackground)}</td>
                     <td class="py-3 font-mono">{formatRatio(onCard)}</td>
+                    <td class="py-3 font-mono">{formatRatio(onBand)}</td>
+                    <td class="py-3 font-mono">{formatRatio(onPlate)}</td>
                     <td class="py-3 font-mono text-muted">{token.floor}:1</td>
                     <td class="py-3">{token.use}</td>
                   </tr>
@@ -341,6 +433,14 @@ const themes = [
           </tbody>
         </table>
       </div>
+      <p class="mt-4 font-mono text-small text-muted">
+        Worst band grid crossing {GRID_CROSSING} &middot; body{" "}
+        {formatRatio(contrastRatio(color("body"), GRID_CROSSING))} &middot; muted{" "}
+        {formatRatio(contrastRatio(color("muted"), GRID_CROSSING))} &middot; control-edge on background
+        {formatRatio(contrastRatio(controlEdge, BACKGROUND))}, band{" "}
+        {formatRatio(contrastRatio(controlEdge, BAND))}, plate{" "}
+        {formatRatio(contrastRatio(controlEdge, PLATE))}
+      </p>
     </section>
 
     <RulerDivider />
@@ -414,8 +514,9 @@ const themes = [
       <GhostNumeral value={5} />
       <h2>Radius &amp; motion</h2>
       <p class="mt-3 measure">
-        One end-mill: three radii, nothing else. There is no elevation — depth goes down, not up, so
-        the inset pocket shadows are the only shadows in the system.
+        One end-mill: three radii, nothing else. Elevation is drafted, not rendered: zero-blur
+        offsets in shadow ink, down-right only. The plate's contact shadow is the one soft shadow,
+        and only a plate or a print on the band takes it.
       </p>
       <div class="mt-8 grid gap-4 sm:grid-cols-3">
         {
@@ -432,6 +533,34 @@ const themes = [
           ))
         }
       </div>
+      <h3 class="mt-12">Keycaps</h3>
+      <p class="mt-3 measure">
+        Buttons stand on a 3px drafted edge, lift 1px on hover, and press flat on{" "}
+        <code class="font-mono">:active</code> — a 150ms confirmation. The fill never dims. Under reduced
+        motion only the edge changes. The states below are frozen; the live buttons in Primitives respond.
+      </p>
+      <div class="mt-6 flex flex-wrap items-center gap-6">
+        {
+          keycapStates.map((state) => (
+            <figure class="flex flex-col items-start gap-3">
+              <span
+                class="inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground keycap-accent"
+                style={state.style}
+              >
+                Get involved
+              </span>
+              <span
+                class="inline-flex h-11 items-center rounded-md border border-control-edge bg-sheet px-5 font-medium text-foreground"
+                style={state.style}
+              >
+                Donate
+              </span>
+              <figcaption class="spec-label text-muted">{state.name}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+
       <dl class="mt-8 grid gap-4 sm:grid-cols-3">
         {
           durations.map((entry) => (
@@ -459,8 +588,8 @@ const themes = [
         <Pattern placement="hero" ticks />
         <p class="relative eyebrow text-primary-bright">Engineering grid + ticks</p>
         <p class="relative mt-2 max-w-md text-small">
-          Heroes and section breaks only, never on the page ground and never behind body copy. This
-          panel also carries one ambient pool.
+          Heroes, section breaks, and bands only — never on the bare page ground. This panel also
+          carries one ambient pool.
         </p>
       </div>
 
@@ -519,7 +648,7 @@ const themes = [
       <figure class="mt-12">
         <div class="aspect-video media-frame bg-card-hover"></div>
         <Callout as="figcaption" class="mt-3" reference="FIG. 01">
-          Framed media, 2px primary border
+          Framed media: 2px primary border, 6px drafted edge
         </Callout>
       </figure>
 
@@ -606,7 +735,7 @@ const themes = [
           <CardHeader>
             <CardTitle>Interactive</CardTitle>
             <CardDescription>
-              Hover or focus: the border warms, the floor lifts one step, nothing moves.
+              Hover or focus: the border warms, the floor lifts a visible step, nothing moves.
             </CardDescription>
           </CardHeader>
         </Card>

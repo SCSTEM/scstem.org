@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 
-import logoLockup from "@/assets/brand/logo-color-full.svg";
+import logoLockup from "@/assets/brand/logo-white-full.svg";
 import CardTitle from "@/components/ui/primitives/CardTitle.astro";
 import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
@@ -10,9 +10,12 @@ import { nav, programs, site, socials } from "@/data/site";
 import { isExternal } from "@/lib/links";
 
 /**
- * Site footer, styled as a recessed `card` band (DESIGN.md §2) and carrying the full-width color
- * lockup — never a grayscale logo. The title block sits at the bottom, which is where a drawing
- * sheet puts its identity strip (§2.9).
+ * Site footer: the drafting table the whole sheet lies on — the `band` ink with a hairline top
+ * highlight, and no grid, since the title block is its linework (DESIGN.md §2). It carries the
+ * brand's Light full-width lockup, the variant for dark grounds (§7). The title block sits at the
+ * bottom, which is where a drawing sheet puts its identity strip (§2.9).
+ *
+ * It declares itself a band surface, so the build fails a page whose last section is one.
  */
 const year = new Date().getFullYear();
 
@@ -37,7 +40,7 @@ const sections = [
 ] as const;
 ---
 
-<footer class="bg-card">
+<footer class="bg-band shadow-table-edge" data-surface="band">
   <div class="container-page py-12">
     <div class="flex flex-col gap-10 md:flex-row md:justify-between">
       <div class="max-w-xs">

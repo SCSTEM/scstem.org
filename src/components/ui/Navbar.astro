@@ -1,6 +1,6 @@
 ---
-import logoLockup from "@/assets/brand/logo-color-full.svg";
 import logoMark from "@/assets/brand/logo-color.svg";
+import logoLockup from "@/assets/brand/logo-white-full.svg";
 import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import { nav, type NavLink, site } from "@/data/site";
@@ -10,8 +10,9 @@ import { breakpoint } from "@/lib/tokens";
 /**
  * Site header (DESIGN.md §5). Sticky on all viewports, condensing after scroll in pure CSS.
  *
- * Identity is the **real lockup**, never a rebuilt gear plus the name in Inter: the full-width
- * color lockup on ≥ md, the square mark alone on mobile. Brand rules forbid substituting "SC2"
+ * Identity is the **real lockup**, never a rebuilt gear plus the name in Inter: the brand's Light
+ * full-width lockup on ≥ md (the variant for dark grounds — the color lockup's gray wordmark is
+ * 2:1 on this header), the color square mark alone on mobile. Brand rules forbid substituting "SC2"
  * for the name, and the full name appears in page content (hero and footer) to satisfy them.
  *
  * The Programs entry is a real link to `/programs` with a disclosure *in addition* — never
