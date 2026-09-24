@@ -1,6 +1,4 @@
 ---
-import fllRobots from "@/assets/fll/lego-robots.webp";
-import driveTeam from "@/assets/frc/frc-driveteam.webp";
 import ogPrograms from "@/assets/og/programs.jpg";
 import handsOn from "@/assets/sc2/hands-on-1.webp";
 import JsonLd from "@/components/JsonLd.astro";
@@ -10,6 +8,7 @@ import FeatureGrid from "@/components/ui/FeatureGrid.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
+import ProgramCard from "@/components/ui/ProgramCard.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -23,12 +22,12 @@ import { breadcrumbs } from "@/lib/jsonld";
 ---
 
 <BaseLayout
-  description="FIRST LEGO League for ages 9–16 and FIRST Robotics Competition for ages 14–18, run out of one workshop in downtown Chambersburg."
+  description={`${programs.fll.name} for ages ${programs.fll.ages} and ${programs.frc.name} for ages ${programs.frc.ages}, run out of one workshop in downtown Chambersburg.`}
   ogImage={ogPrograms}
   ogImageAlt="The South Central STEM Collective logo over students working in the workshop, captioned “Our programs”"
   title="Programs"
 >
-  <JsonLd data={breadcrumbs([{ name: "Programs", path: "/programs" }])} slot="head" />
+  <JsonLd data={breadcrumbs([{ name: nav.programs.label, path: nav.programs.href }])} slot="head" />
 
   <Hero>
     <HeroImage
@@ -47,15 +46,7 @@ import { breadcrumbs } from "@/lib/jsonld";
     <Fragment slot="title">Pick where to start</Fragment>
 
     <FeatureGrid columns={2}>
-      <FeatureCard
-        badge={`Ages ${programs.fll.ages}`}
-        cta={`Explore ${programs.fll.name}`}
-        feature
-        href={programs.fll.href}
-        image={fllRobots}
-        imageAlt="LEGO® robots built by South Central STEM Collective students"
-      >
-        <Fragment slot="title"><span class="italic">FIRST®</span> LEGO® League</Fragment>
+      <ProgramCard program="fll">
         <p>
           Small teams design a LEGO® robot to run missions on a themed table, research a real
           problem, and present what they found. It is the shortest route from &ldquo;I like building
@@ -64,27 +55,19 @@ import { breadcrumbs } from "@/lib/jsonld";
         <p class="mt-3">
           Seasons run through the school year, and no experience is expected on day one.
         </p>
-      </FeatureCard>
+      </ProgramCard>
 
-      <FeatureCard
-        badge={`Ages ${programs.frc.ages}`}
-        cta={`Explore ${programs.frc.name}`}
-        feature
-        href={programs.frc.href}
-        image={driveTeam}
-        imageAlt={`Team 4050 ${programs.frc.teamName}'s drive team standing with their robot at competition`}
-      >
-        <Fragment slot="title"><span class="italic">FIRST®</span> Robotics Competition</Fragment>
+      <ProgramCard program="frc">
         <p>
-          Team 4050 &mdash; {programs.frc.teamName} &mdash; builds a 120-pound robot in six weeks and
-          takes it to regional competitions. Students run the design, the fabrication, the code, the money,
-          and the brand, with mentors who do this for a living.
+          Team {programs.frc.teamNumber} &mdash; {programs.frc.teamName} &mdash; builds a 120-pound robot
+          in six weeks and takes it to regional competitions. Students run the design, the fabrication,
+          the code, the money, and the brand, with mentors who do this for a living.
         </p>
         <p class="mt-3">
           Competing since 2012, with nine competition robots behind us and the next one starting
           every January.
         </p>
-      </FeatureCard>
+      </ProgramCard>
     </FeatureGrid>
   </Section>
 
@@ -95,7 +78,7 @@ import { breadcrumbs } from "@/lib/jsonld";
     </Fragment>
 
     <FeatureGrid columns={3}>
-      <FeatureCard cta="See the robots" href="/programs/frc/robots" icon="robot-face">
+      <FeatureCard cta="See the robots" href={nav.robots.href} icon="robot-face">
         <Fragment slot="title">Our robots</Fragment>
         Every competition robot since 2019 — what it did, what it won, and what we learned building it.
       </FeatureCard>
@@ -119,7 +102,9 @@ import { breadcrumbs } from "@/lib/jsonld";
       Tell us the student&rsquo;s age and what they are into, and we will point you at the right team.
       Parents and prospective mentors are just as welcome to ask.
       <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
-      <Button href="/contact" size="lg" slot="actions" variant="outline">Ask a question</Button>
+      <Button href={nav.contact.href} size="lg" slot="actions" variant="outline"
+        >Ask a question</Button
+      >
     </CtaBanner>
   </Section>
 </BaseLayout>

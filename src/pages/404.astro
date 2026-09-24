@@ -1,9 +1,11 @@
 ---
+import Hero from "@/components/ui/Hero.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Card from "@/components/ui/primitives/Card.astro";
 import CardDescription from "@/components/ui/primitives/CardDescription.astro";
 import CardHeader from "@/components/ui/primitives/CardHeader.astro";
 import CardTitle from "@/components/ui/primitives/CardTitle.astro";
+import Section from "@/components/ui/Section.astro";
 import { nav } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
@@ -13,33 +15,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
  * headed.
  */
 
-/** Titles come from the nav inventory; a destination it no longer carries fails the build. */
-const navTitle = (href: string): string => {
-  const link = nav.primary.find((entry) => entry.href === href);
-  if (link === undefined) {
-    throw new Error(`404 destinations: ${href} is not in nav.primary`);
-  }
-  return link.label;
-};
-
+/** Titles and hrefs are the nav inventory's, so a renamed or moved route follows here. */
 const destinations = [
-  {
-    href: "/programs",
-    title: navTitle("/programs"),
-    description: "FIRST LEGO League and FIRST Robotics Competition.",
-  },
-  {
-    href: "/about",
-    title: navTitle("/about"),
-    description: "Who we are and what we have built since 2013.",
-  },
-  {
-    href: "/sponsors",
-    title: navTitle("/sponsors"),
-    description: "The businesses that make this possible.",
-  },
-  /** Contact is not a nav route, so its title is its own. */
-  { href: "/contact", title: "Contact", description: "Ask us anything — we answer." },
+  { ...nav.programs, description: "FIRST LEGO League and FIRST Robotics Competition." },
+  { ...nav.about, description: "Who we are and what we have built since 2013." },
+  { ...nav.sponsors, description: "The businesses that make this possible." },
+  { ...nav.contact, description: "Ask us anything — we answer." },
 ];
 ---
 
@@ -48,14 +29,15 @@ const destinations = [
   noindex
   title="Page not found"
 >
-  <section class="ambient-pool container-page section-y">
-    <p class="eyebrow text-primary">Error 404</p>
-    <h1 class="mt-2">We can't find that page</h1>
-    <p class="mt-4 measure text-body-lg">
-      It may have moved, or the link may be out of date. Try one of these instead.
-    </p>
+  <Hero>
+    <Fragment slot="eyebrow">Error 404</Fragment>
+    <Fragment slot="title">We can't find that page</Fragment>
 
-    <div class="mt-10 grid gap-4 sm:grid-cols-2">
+    <p>It may have moved, or the link may be out of date. Try one of these instead.</p>
+  </Hero>
+
+  <Section atmosphere="pool">
+    <div class="grid gap-4 sm:grid-cols-2">
       {
         destinations.map((destination) => (
           <Card as="article" interactive>
@@ -63,7 +45,7 @@ const destinations = [
               {/* `h2`: the page's only other heading is its `h1`, and the default `h3` skips a level. */}
               <CardTitle as="h2">
                 <a class="ui-link" href={destination.href}>
-                  {destination.title}
+                  {destination.label}
                 </a>
               </CardTitle>
               <CardDescription>{destination.description}</CardDescription>
@@ -77,5 +59,5 @@ const destinations = [
       <Button href="/">Back to the homepage</Button>
       <Button href={nav.cta.href} variant="outline">{nav.cta.label}</Button>
     </div>
-  </section>
+  </Section>
 </BaseLayout>

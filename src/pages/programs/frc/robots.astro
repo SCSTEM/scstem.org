@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
 
 import pits from "@/assets/frc/robots/2021-robot-pits.webp";
@@ -10,11 +9,11 @@ import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
+import RobotFigure from "@/components/ui/RobotFigure.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, programs } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
-import { PHOTO_QUALITY } from "@/lib/images";
-import { breadcrumbs } from "@/lib/jsonld";
+import { breadcrumbs, programTrail } from "@/lib/jsonld";
 
 /**
  * The `frcRobots` collection, newest first, as a list rather than a carousel: one that hides five
@@ -35,11 +34,7 @@ const robots = await Promise.all(
   title="Our robots"
 >
   <JsonLd
-    data={breadcrumbs([
-      { name: "Programs", path: "/programs" },
-      { name: programs.frc.name, path: programs.frc.href },
-      { name: "Robots", path: "/programs/frc/robots" },
-    ])}
+    data={breadcrumbs(programTrail("frc", { name: nav.robots.label, path: nav.robots.href }))}
     slot="head"
   />
 
@@ -57,9 +52,7 @@ const robots = await Promise.all(
     machine Biohazard has taken to competition since 2019.
   </Hero>
 
-  <Section atmosphere="pool">
-    <h2 class="sr-only">Competition robots, newest first</h2>
-
+  <Section atmosphere="pool" srTitle="Competition robots, newest first">
     <div class="flex flex-col gap-20 md:gap-28">
       {
         robots.map(({ Content, data }, index) => (
@@ -75,28 +68,13 @@ const robots = await Promise.all(
               {data.image === undefined ? (
                 <p class="pocket px-5 py-4 spec-label text-muted">{data.imageAlt}</p>
               ) : (
-                <div class="relative media-frame">
-                  <Image
-                    alt={data.imageAlt}
-                    class="w-full"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    quality={PHOTO_QUALITY}
-                    sizes="(min-width: 64rem) 34rem, 92vw"
-                    src={data.image}
-                    width={1120}
-                    widths={[560, 672, 840, 1120]}
-                  />
-                  {data.logo !== undefined && (
-                    <Image
-                      alt=""
-                      class="absolute right-4 bottom-4 w-1/4"
-                      loading="lazy"
-                      src={data.logo}
-                      width={280}
-                      widths={[140, 280]}
-                    />
-                  )}
-                </div>
+                <RobotFigure
+                  image={data.image}
+                  imageAlt={data.imageAlt}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  logo={data.logo}
+                  span="half"
+                />
               )}
             </div>
 

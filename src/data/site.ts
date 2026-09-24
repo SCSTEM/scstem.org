@@ -5,6 +5,9 @@
  * `src/content/`; if it is an identifier, a URL, or an org fact, it belongs here.
  */
 
+/** The workspace's street line, which is also its mailing address. */
+const workspaceStreet = "20 South Main Street";
+
 export const site = {
   /** Never abbreviated in headings, and `STEM` is always capitalized (DESIGN.md §1). */
   name: "South Central STEM Collective",
@@ -62,9 +65,12 @@ export const site = {
   location: {
     /** How the workspace is named where a venue needs a name — an event's location, chiefly. */
     name: "South Central STEM Collective Workspace",
-    workspace: "20 South Main Street, Downtown Chambersburg",
+    workspace: `${workspaceStreet}, Downtown Chambersburg`,
+    /** The street line alone, as a postal address takes it. */
+    street: workspaceStreet,
     locality: "Chambersburg",
     region: "PA",
+    postalCode: "17201",
     country: "US",
     /** The service area, as used in copy and structured data. */
     areaServed: "Franklin County, Pennsylvania",
@@ -118,6 +124,8 @@ interface Program {
   name: string;
   shortName: string;
   teamName?: string;
+  /** The team's FIRST-issued number. */
+  teamNumber?: number;
 }
 
 /**
@@ -143,6 +151,7 @@ export const programs = {
     name: "FIRST Robotics Competition",
     shortName: "FRC",
     teamName: "Biohazard",
+    teamNumber: 4050,
     ages: "14–18",
     href: "/programs/frc",
   },
@@ -193,12 +202,16 @@ export interface NavLink extends Route {
 const calendar = { label: "Calendar", href: "/calendar/sc2" } as const;
 const donate = { label: "Donate", href: "/donate" } as const;
 const sponsors = { label: "Sponsors", href: "/sponsors" } as const;
+const about = { label: "About", href: "/about" } as const;
+const programsHub = { label: "Programs", href: programs.sc2.href } as const;
+const robots = { label: "Robots", href: `${programs.frc.href}/robots` } as const;
+const contact = { label: "Contact", href: "/contact" } as const;
 
 /** The Programs disclosure in the desktop header. */
 const programsPanel = [
   { label: programs.fll.shortName, href: programs.fll.href, name: programs.fll.name },
   { label: programs.frc.shortName, href: programs.frc.href, name: programs.frc.name },
-  { label: "Robots", href: "/programs/frc/robots", name: "Our competition robots" },
+  { ...robots, name: "Our competition robots" },
   { ...calendar, name: "Upcoming events" },
 ] as const;
 
@@ -211,24 +224,32 @@ const programsPanel = [
  */
 export const nav = {
   primary: [
-    { label: "About", href: "/about", surfaces: ["header", "sheet"] },
-    { label: "Programs", href: "/programs", surfaces: ["header", "sheet"], panel: programsPanel },
+    { ...about, surfaces: ["header", "sheet"] },
+    { ...programsHub, surfaces: ["header", "sheet"], panel: programsPanel },
     { ...sponsors, surfaces: ["header", "sheet"] },
     { ...calendar, surfaces: ["sheet"] },
     { ...donate, surfaces: ["header", "sheet-cta"] },
   ],
 
+  about,
   calendar,
+  contact,
   donate,
+  programs: programsHub,
+  robots,
   sponsors,
 
   /** The primary call to action, in the header and at the foot of the mobile sheet. */
   cta: { label: "Get involved", href: "/get-involved" },
 } as const satisfies {
+  about: Route;
   calendar: Route;
+  contact: Route;
   cta: Route;
   donate: Route;
   primary: readonly NavLink[];
+  programs: Route;
+  robots: Route;
   sponsors: Route;
 };
 

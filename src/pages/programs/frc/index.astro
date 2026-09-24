@@ -1,11 +1,10 @@
 ---
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 
 import collage from "@/assets/events/morethanrobots.webp";
 import biohazardLockup from "@/assets/frc/biohazard-lockup.svg";
 import heroVideoPoster from "@/assets/frc/hero-video-poster.webp";
-import robotField from "@/assets/frc/robots/2024-robot-field.webp";
-import troubleclefLogo from "@/assets/frc/robots/2024-troubleclef-logo.webp";
 import ogFrc from "@/assets/og/frc.jpg";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
@@ -16,13 +15,21 @@ import HeroVideo from "@/components/ui/HeroVideo.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
+import RobotFigure from "@/components/ui/RobotFigure.astro";
 import Section from "@/components/ui/Section.astro";
 import StatBand from "@/components/ui/StatBand.astro";
 import VideoLink from "@/components/ui/VideoLink.astro";
 import { nav, programs, site } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
-import { PHOTO_QUALITY } from "@/lib/images";
-import { breadcrumbs } from "@/lib/jsonld";
+import { breadcrumbs, programTrail } from "@/lib/jsonld";
+
+/** The newest season whose robot has been photographed, featured under "Check out our robots". */
+const featured = (await getCollection("frcRobots"))
+  .toSorted((a, b) => b.data.year - a.data.year)
+  .find((entry) => entry.data.image !== undefined)?.data;
+if (featured?.image === undefined) {
+  throw new Error("frcRobots: no entry has an image to feature on the FRC page.");
+}
 
 /** Copy is legacy's, verbatim. */
 const stats = [
@@ -48,19 +55,13 @@ const stats = [
 ---
 
 <ProgramLayout
-  description="Team 4050 Biohazard has been south-central Pennsylvania's FIRST Robotics Competition team since 2012 — nine robots, ten-plus mentors, and room for you."
+  description={`Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName} has been south-central Pennsylvania's FIRST Robotics Competition team since 2012 — nine robots, ten-plus mentors, and room for you.`}
   ogImage={ogFrc}
   ogImageAlt="The South Central STEM Collective logo over the Biohazard drive team at competition, captioned “FIRST Robotics Competition”"
   program="frc"
   title="Biohazard — FIRST Robotics Competition"
 >
-  <JsonLd
-    data={breadcrumbs([
-      { name: "Programs", path: "/programs" },
-      { name: programs.frc.name, path: programs.frc.href },
-    ])}
-    slot="head"
-  />
+  <JsonLd data={breadcrumbs(programTrail("frc"))} slot="head" />
 
   <Hero>
     <HeroVideo
@@ -71,12 +72,11 @@ const stats = [
       webm={site.heroVideo.webm}
     />
 
-    <!-- The eyebrow is the slot above the `h1`; its type rules simply do not apply to an image. -->
     <Image
-      alt={`${programs.frc.teamName}, FIRST Robotics Competition team 4050`}
+      alt={`${programs.frc.teamName}, FIRST Robotics Competition team ${String(programs.frc.teamNumber)}`}
       class="h-auto w-56 md:w-72"
       loading="eager"
-      slot="eyebrow"
+      slot="logo"
       src={biohazardLockup}
     />
 
@@ -132,33 +132,23 @@ const stats = [
   <Section atmosphere="pool">
     <Fragment slot="title">Check out our robots</Fragment>
 
-    <a class="group relative block media-frame" href="/programs/frc/robots">
-      <Image
-        alt="Troubleclef, Biohazard's 2024 robot, on the competition field"
-        class="w-full"
-        loading="lazy"
-        quality={PHOTO_QUALITY}
-        sizes="(min-width: 72rem) 68rem, 92vw"
-        src={robotField}
-        width={1440}
-        widths={[720, 1080, 1440]}
-      />
-      <Image
-        alt=""
-        class="absolute right-4 bottom-4 w-24 md:right-8 md:bottom-8 md:w-40"
-        loading="lazy"
-        src={troubleclefLogo}
-        width={320}
-        widths={[160, 320]}
-      />
+    <RobotFigure
+      href={nav.robots.href}
+      image={featured.image}
+      imageAlt={featured.imageAlt}
+      logo={featured.logo}
+      span="full"
+    >
       <span
         class="absolute top-4 left-4 inline-flex items-center gap-2 rounded-md bg-background/70 px-4 py-2 font-medium text-foreground transition-colors duration-(--duration-micro) group-hover:text-primary-bright"
       >
         Every robot since 2019
         <Icon name="arrow-right" size={20} />
       </span>
-    </a>
-    <Callout class="mt-3" reference="FIG. 01">Troubleclef, 2024 season</Callout>
+    </RobotFigure>
+    <Callout class="mt-3" reference="FIG. 01">
+      {featured.name}, {featured.yearLabel ?? featured.year} season
+    </Callout>
   </Section>
 
   <Section atmosphere="tint">

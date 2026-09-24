@@ -18,9 +18,9 @@ import { breadcrumbs } from "@/lib/jsonld";
  * EIN set in the data voice (§3): they are spec values, not prose.
  */
 const mailingAddress = [
-  "South Central STEM Collective",
-  "20 South Main Street",
-  "Chambersburg, PA 17201",
+  site.name,
+  site.location.street,
+  `${site.location.locality}, ${site.location.region} ${site.location.postalCode}`,
 ];
 ---
 

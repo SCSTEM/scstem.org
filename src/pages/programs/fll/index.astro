@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
-import fllRobots from "@/assets/fll/lego-robots.webp";
 import ogFll from "@/assets/og/fll.jpg";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
@@ -13,10 +12,11 @@ import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Section from "@/components/ui/Section.astro";
+import { programPhotos } from "@/data/programPhotos";
 import { nav, programs, site } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
 import { PHOTO_QUALITY } from "@/lib/images";
-import { breadcrumbs } from "@/lib/jsonld";
+import { breadcrumbs, programTrail } from "@/lib/jsonld";
 
 /**
  * The copy is limited to what the site can stand behind: what the program is, the three parts
@@ -31,26 +31,16 @@ const latest = teamPhotos[0];
 ---
 
 <ProgramLayout
-  description="FIRST LEGO League at the South Central STEM Collective: teams of 9- to 16-year-olds build a LEGO robot, research a real problem, and take both to competition."
+  description={`${programs.fll.name} at the ${site.name}: teams of ${programs.fll.ages}-year-olds build a LEGO robot, research a real problem, and take both to competition.`}
   ogImage={ogFll}
   ogImageAlt="The South Central STEM Collective logo over a student-built LEGO robot, captioned “FIRST LEGO League”"
   program="fll"
   title="FIRST LEGO League"
 >
-  <JsonLd
-    data={breadcrumbs([
-      { name: "Programs", path: "/programs" },
-      { name: programs.fll.name, path: programs.fll.href },
-    ])}
-    slot="head"
-  />
+  <JsonLd data={breadcrumbs(programTrail("fll"))} slot="head" />
 
   <Hero>
-    <HeroImage
-      alt="LEGO® robots built by South Central STEM Collective students"
-      slot="media"
-      src={fllRobots}
-    />
+    <HeroImage alt={programPhotos.fll.alt} slot="media" src={programPhotos.fll.image} />
 
     <Fragment slot="eyebrow">Ages {programs.fll.ages}</Fragment>
 

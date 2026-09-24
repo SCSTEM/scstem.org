@@ -4,7 +4,6 @@ import { getCollection } from "astro:content";
 
 import sc2Logo from "@/assets/brand/logo-color.svg";
 import biohazardLogo from "@/assets/frc/biohazard-logo.svg";
-import students from "@/assets/sc2/students.webp";
 import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import Hero from "@/components/ui/Hero.astro";
@@ -13,6 +12,7 @@ import PhotoTimeline from "@/components/ui/PhotoTimeline.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
 import StatBand from "@/components/ui/StatBand.astro";
+import { programPhotos } from "@/data/programPhotos";
 import { nav } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { breadcrumbs } from "@/lib/jsonld";
@@ -29,10 +29,11 @@ import { breadcrumbs } from "@/lib/jsonld";
  */
 const NEXT_GENERATION_FROM = 2023;
 
-const teamPhotos = [
-  ...(await getCollection("frcTeamPhotos")),
-  ...(await getCollection("fllTeamPhotos")),
-].toSorted((a, b) => a.data.year - b.data.year);
+const teamPhotos = (
+  await Promise.all([getCollection("frcTeamPhotos"), getCollection("fllTeamPhotos")])
+)
+  .flat()
+  .toSorted((a, b) => a.data.year - b.data.year);
 
 const origins = teamPhotos.filter((entry) => entry.data.year < NEXT_GENERATION_FROM);
 const nextGeneration = teamPhotos.filter((entry) => entry.data.year >= NEXT_GENERATION_FROM);
@@ -50,14 +51,10 @@ const biohazardStats = [
   description="How a 4-H robotics club founded in 2012 became a 501(c)(3) making STEM accessible across Franklin County, Pennsylvania."
   title="About"
 >
-  <JsonLd data={breadcrumbs([{ name: "About", path: "/about" }])} slot="head" />
+  <JsonLd data={breadcrumbs([{ name: nav.about.label, path: nav.about.href }])} slot="head" />
 
   <Hero>
-    <HeroImage
-      alt="South Central STEM Collective students at work in the Chambersburg workspace"
-      slot="media"
-      src={students}
-    />
+    <HeroImage alt={programPhotos.sc2.alt} slot="media" src={programPhotos.sc2.image} />
 
     <Fragment slot="title">About us</Fragment>
 
@@ -263,9 +260,9 @@ const biohazardStats = [
       <Fragment slot="title">What&rsquo;s next?</Fragment>
       That&rsquo;s the story of SC2, but what about you? Whether you are a student, parent, industry professional,
       business owner, educator, explorer, or dreamer, we would love to hear from you. Feel free to <a
-        href="/contact">get in touch</a
+        href={nav.contact.href}>get in touch</a
       >, we are looking forward to hearing from you.
-      <Button href="/contact" size="lg" slot="actions">Contact us</Button>
+      <Button href={nav.contact.href} size="lg" slot="actions">Contact us</Button>
       <Button href={nav.cta.href} size="lg" slot="actions" variant="outline">
         {nav.cta.label}
       </Button>

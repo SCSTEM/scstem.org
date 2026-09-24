@@ -29,15 +29,14 @@ const { stats, class: className } = Astro.props;
  * cell of every row after the first) and satisfies "no orphan rows" (DESIGN.md §5) by never
  * having a second row at all. A short band can turn at `sm`; a long one needs the full container.
  */
-const turn = stats.length <= 3 ? "sm" : "lg";
-const row = {
-  sm: "sm:grid-flow-col sm:auto-cols-fr sm:divide-x sm:divide-y-0",
-  lg: "lg:grid-flow-col lg:auto-cols-fr lg:divide-x lg:divide-y-0",
-} as const;
+const row =
+  stats.length <= 3
+    ? "sm:grid-flow-col sm:auto-cols-fr sm:divide-x sm:divide-y-0"
+    : "lg:grid-flow-col lg:auto-cols-fr lg:divide-x lg:divide-y-0";
 ---
 
 <Card class={cn("overflow-hidden", className)} feature>
-  <dl class={cn("grid divide-y divide-border", row[turn])}>
+  <dl class={cn("grid divide-y divide-border", row)}>
     {
       stats.map((stat) => (
         <div class="p-6">

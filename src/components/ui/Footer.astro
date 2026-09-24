@@ -7,6 +7,7 @@ import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import SocialLinks from "@/components/ui/SocialLinks.astro";
 import { nav, programs, site, socials } from "@/data/site";
+import { isExternal } from "@/lib/links";
 
 /**
  * Site footer, styled as a recessed `card` band (DESIGN.md §2) and carrying the full-width color
@@ -34,8 +35,6 @@ const sections = [
   },
   { title: "Find us online", links: socials },
 ] as const;
-
-const isExternal = (href: string): boolean => href.startsWith("http");
 ---
 
 <footer class="mt-24 bg-card">

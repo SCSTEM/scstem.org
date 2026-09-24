@@ -78,6 +78,29 @@ const seen = { description: new Map<string, string>(), title: new Map<string, st
 /** og:image checks are deferred so the reads run together rather than one per page. */
 const images: { image: string; route: string }[] = [];
 
+/**
+ * A head field every page carries exactly once and no two pages share. Returns the page's value,
+ * or `undefined` when the page carries the field zero or several times.
+ */
+const unique = (
+  route: string,
+  field: keyof typeof seen,
+  values: readonly string[],
+  noun: { one: string; many: string },
+): string | undefined => {
+  const [value] = values;
+  if (value === undefined || values.length !== 1) {
+    failures.push(`${route}: ${String(values.length)} ${noun.many}, expected exactly 1`);
+    return undefined;
+  }
+  const other = seen[field].get(value);
+  if (other !== undefined) {
+    failures.push(`${route}: ${noun.one} is identical to ${other}'s`);
+  }
+  seen[field].set(value, route);
+  return value;
+};
+
 for (const { html, route } of pages) {
   const fail = (message: string) => failures.push(`${route}: ${message}`);
 
@@ -88,33 +111,20 @@ for (const { html, route } of pages) {
   const titles = [...html.matchAll(/<title[^>]*>([\s\S]*?)<\/title>/gu)].flatMap(
     (match) => match[1] ?? [],
   );
-  const [title] = titles;
-  if (title === undefined || titles.length !== 1) {
-    fail(`${String(titles.length)} <title> elements, expected exactly 1`);
-  } else {
-    const other = seen.title.get(title);
-    if (other !== undefined) {
-      fail(`<title> is identical to ${other}'s`);
-    }
-    seen.title.set(title, route);
-  }
+  unique(route, "title", titles, { many: "<title> elements", one: "<title>" });
 
-  const descriptions = contentsOf(html, "name", "description");
-  const [description] = descriptions;
-  if (description === undefined || descriptions.length !== 1) {
-    fail(`${String(descriptions.length)} meta descriptions, expected exactly 1`);
-  } else {
-    if (description.length < DESCRIPTION_MIN || description.length > DESCRIPTION_MAX) {
-      fail(
-        `meta description is ${String(description.length)} characters, ` +
-          `outside ${String(DESCRIPTION_MIN)}-${String(DESCRIPTION_MAX)}`,
-      );
-    }
-    const other = seen.description.get(description);
-    if (other !== undefined) {
-      fail(`meta description is identical to ${other}'s`);
-    }
-    seen.description.set(description, route);
+  const description = unique(route, "description", contentsOf(html, "name", "description"), {
+    many: "meta descriptions",
+    one: "meta description",
+  });
+  if (
+    description !== undefined &&
+    (description.length < DESCRIPTION_MIN || description.length > DESCRIPTION_MAX)
+  ) {
+    fail(
+      `meta description is ${String(description.length)} characters, ` +
+        `outside ${String(DESCRIPTION_MIN)}-${String(DESCRIPTION_MAX)}`,
+    );
   }
 
   const canonicals = count(html, /<link\b[^>]*\brel="canonical"/gu);

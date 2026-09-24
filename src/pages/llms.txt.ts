@@ -74,11 +74,11 @@ export const GET: APIRoute = async () => {
       {
         title: programs.frc.name,
         href: programs.frc.href,
-        description: `Ages ${programs.frc.ages}. Team 4050 ${programs.frc.teamName}, competing since 2012.`,
+        description: `Ages ${programs.frc.ages}. Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName}, competing since 2012.`,
       },
       {
         title: "Competition robots",
-        href: "/programs/frc/robots",
+        href: nav.robots.href,
         description:
           "Every robot Biohazard has built, with the game it played and the awards it won.",
       },
@@ -91,8 +91,8 @@ export const GET: APIRoute = async () => {
           "How a student, parent, mentor, or volunteer joins — and the form that starts it.",
       },
       {
-        title: "About",
-        href: "/about",
+        title: nav.about.label,
+        href: nav.about.href,
         description:
           "Who the organization is, how it started, and how its programs are structured.",
       },
@@ -130,8 +130,8 @@ export const GET: APIRoute = async () => {
     ),
     section("Contact", [
       {
-        title: "Contact",
-        href: "/contact",
+        title: nav.contact.label,
+        href: nav.contact.href,
         description: `Message form, workspace address, and directions. Email: ${site.email}`,
       },
     ]),

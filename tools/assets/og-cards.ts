@@ -16,8 +16,9 @@ import { readFile, writeFile } from "node:fs/promises";
 import satori from "satori";
 import sharp from "sharp";
 
-const WIDTH = 1200;
-const HEIGHT = 630;
+import { nav, programs, site } from "../../src/data/site.ts";
+
+const { width: WIDTH, height: HEIGHT } = site.ogImage;
 /** JPEG, not PNG: a photographic card is ~5x smaller, and no scraper has ever wanted otherwise. */
 const QUALITY = 82;
 
@@ -51,10 +52,10 @@ interface Card {
 
 const cards: Card[] = [
   {
-    out: "public/og/default.jpg",
+    out: `public${site.ogImage.path}`,
     photo: "src/assets/sc2/students.webp",
-    eyebrow: "Franklin County, Pennsylvania",
-    title: "South Central STEM Collective",
+    eyebrow: site.location.areaServed,
+    title: site.name,
     accent: color.primary,
   },
   {
@@ -67,22 +68,22 @@ const cards: Card[] = [
   {
     out: "src/assets/og/frc.jpg",
     photo: "src/assets/frc/frc-driveteam.webp",
-    eyebrow: "Team 4050 Biohazard",
-    title: "FIRST Robotics Competition",
+    eyebrow: `Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName}`,
+    title: programs.frc.name,
     accent: color.frc,
   },
   {
     out: "src/assets/og/fll.jpg",
     photo: "src/assets/fll/lego-robots.webp",
-    eyebrow: "Ages 9 to 16",
-    title: "FIRST LEGO League",
+    eyebrow: `Ages ${programs.fll.ages.replace("–", " to ")}`,
+    title: programs.fll.name,
     accent: color.fll,
   },
   {
     out: "src/assets/og/sponsors.jpg",
     photo: "src/assets/sc2/parts-notes.webp",
     eyebrow: "Partners in building the future",
-    title: "Sponsors",
+    title: nav.sponsors.label,
     accent: color.primary,
   },
   {
@@ -96,7 +97,7 @@ const cards: Card[] = [
     out: "src/assets/og/donate.jpg",
     photo: "src/assets/sc2/drill-bits.webp",
     eyebrow: "501(c)(3) nonprofit",
-    title: "Donate",
+    title: nav.donate.label,
     accent: color.primary,
   },
 ];
@@ -238,7 +239,7 @@ const card = (spec: Card, photo: Buffer): Element => {
           fontSize: 20,
           color: color.muted,
         },
-        "scstem.org",
+        new URL(site.url).host,
       ),
     ],
   );

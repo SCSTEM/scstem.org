@@ -11,19 +11,18 @@ import { cn } from "@/lib/cn";
  * Slots: `title` (wrapped in the heading), the default body copy, and `actions`.
  */
 interface Props {
-  headingLevel?: "h2" | "h3";
   class?: string;
 }
 
-const { headingLevel: Heading = "h2", class: className } = Astro.props;
+const { class: className } = Astro.props;
 ---
 
 <Card class={cn("relative", className)} feature>
   <RegistrationMarks />
   <CardContent class="px-6 pt-12 pb-12 text-center md:px-12">
-    <Heading>
+    <h2>
       <slot name="title" />
-    </Heading>
+    </h2>
     <div class="mx-auto mt-5 measure text-body-lg">
       <slot />
     </div>

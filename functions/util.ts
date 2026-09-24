@@ -1,14 +1,25 @@
-import type { APIResponse, TurnstileResponse, TurnstileVerificationResponse } from "@/types";
+import type {
+  APIResponse,
+  CalendarResponse,
+  TurnstileResponse,
+  TurnstileVerificationResponse,
+} from "@/types";
 
-export const res = (apiResponse: APIResponse, status: number): Response => {
-  if (!apiResponse.success && apiResponse.error) {
-    console.error(apiResponse.error);
+/**
+ * A JSON response from any endpoint. `headers` are added to the content type. A failed
+ * `APIResponse` that carries an error also logs it, so it reaches the Functions log.
+ */
+export const res = (
+  body: APIResponse | CalendarResponse,
+  status: number,
+  headers: Record<string, string> = {},
+): Response => {
+  if ("success" in body && !body.success && body.error) {
+    console.error(body.error);
   }
 
-  return new Response(JSON.stringify(apiResponse), {
-    headers: {
-      "Content-Type": "application/json",
-    },
+  return new Response(JSON.stringify(body), {
+    headers: { ...headers, "Content-Type": "application/json" },
     status,
   });
 };

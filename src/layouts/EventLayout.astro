@@ -1,12 +1,7 @@
 ---
-import type { ImageMetadata } from "astro";
-
 import { type CollectionEntry, getEntries, render } from "astro:content";
 
-import fllHero from "@/assets/fll/lego-robots.webp";
-import frcHero from "@/assets/frc/frc-driveteam.webp";
 import ogEvents from "@/assets/og/events.jpg";
-import sc2Hero from "@/assets/sc2/students.webp";
 import JsonLd from "@/components/JsonLd.astro";
 import Countdown from "@/components/ui/Countdown.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
@@ -17,7 +12,8 @@ import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import Section from "@/components/ui/Section.astro";
-import { type ProgramKey, nav, programs, site } from "@/data/site";
+import { programPhotos } from "@/data/programPhotos";
+import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { type Breadcrumb, breadcrumbs, event as eventJsonLd, faqPage } from "@/lib/jsonld";
 
@@ -32,22 +28,6 @@ interface Props {
   trail?: readonly Breadcrumb[];
 }
 
-/** The hero for an event that carries no photo of its own, so a new event needs no image work. */
-const programHeroes = {
-  sc2: {
-    src: sc2Hero,
-    alt: "South Central STEM Collective students at work in the Chambersburg workspace",
-  },
-  frc: {
-    src: frcHero,
-    alt: `Team 4050 ${programs.frc.teamName}'s drive team standing with their robot at competition`,
-  },
-  fll: {
-    src: fllHero,
-    alt: "LEGO® robots built by South Central STEM Collective students",
-  },
-} as const satisfies Record<ProgramKey, { src: ImageMetadata; alt: string }>;
-
 const { event, trail = [] } = Astro.props;
 const { data } = event;
 const { Content } = await render(event);
@@ -59,10 +39,11 @@ if (data.heroImage !== undefined && data.heroImageAlt === undefined) {
   throw new Error(`events/${event.id}: an entry with a heroImage must also set heroImageAlt.`);
 }
 
+/** An event that carries no photo of its own takes its program's, so a new event needs no image work. */
 const hero =
   data.heroImage !== undefined && data.heroImageAlt !== undefined
     ? { src: data.heroImage, alt: data.heroImageAlt }
-    : programHeroes[data.program];
+    : { src: programPhotos[data.program].image, alt: programPhotos[data.program].alt };
 
 const faqEntries = data.faq === undefined ? [] : await getEntries(data.faq);
 
@@ -158,9 +139,7 @@ const details = [
     }
   </Hero>
 
-  <Section atmosphere="pool">
-    <h2 class="sr-only">When and where</h2>
-
+  <Section atmosphere="pool" srTitle="When and where">
     <div class="grid gap-6 md:grid-cols-2 md:items-start">
       <Countdown end={data.end} start={data.start} />
       <TitleBlock fields={details} orientation="stack" />

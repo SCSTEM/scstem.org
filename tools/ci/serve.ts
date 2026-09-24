@@ -102,11 +102,29 @@ const resolve = (pathname: string) => {
 
 const server = createSecureServer({ ...certificate(), allowHTTP1: true });
 
+/**
+ * Each file's body as it goes on the wire, read and compressed once: `dist/` is a finished build
+ * and does not change while this runs, and a Lighthouse run requests the same files many times.
+ */
+const bodies = new Map<string, Buffer>();
+
+const bodyOf = (path: string): Buffer => {
+  let body = bodies.get(path);
+  if (body === undefined) {
+    body = readFileSync(path);
+    if (COMPRESSIBLE.has(extname(path))) {
+      body = gzipSync(body);
+    }
+    bodies.set(path, body);
+  }
+  return body;
+};
+
 server.on("stream", (stream: ServerHttp2Stream, headers: IncomingHttpHeaders) => {
   const pathname = new URL(headers[":path"] ?? "/", `https://localhost:${String(PORT)}`).pathname;
   const { path, status } = resolve(pathname);
   const extension = extname(path);
-  let body = readFileSync(path);
+  const body = bodyOf(path);
   const response = new Map<string, string>([
     [":status", String(status)],
     ["content-type", TYPES.get(extension) ?? "application/octet-stream"],
@@ -118,7 +136,6 @@ server.on("stream", (stream: ServerHttp2Stream, headers: IncomingHttpHeaders) =>
     ],
   ]);
   if (COMPRESSIBLE.has(extension)) {
-    body = gzipSync(body);
     response.set("content-encoding", "gzip");
   }
   response.set("content-length", String(body.length));

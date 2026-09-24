@@ -355,10 +355,9 @@
 
 /* The 32px rule under a card title. Machined: perfectly straight, unlike a chalk underline. */
 @utility title-rule {
+  @apply accent-rule;
+
   width: 32px;
-  height: 2px;
-  background-color: var(--color-primary);
-  border: 0;
 }
 
 /* The "team picture frame" for photo collages and feature media. */
@@ -439,6 +438,8 @@
    cut in half by it and leaves a hard line. One per section, never stacked with another
    atmosphere device, never behind a photo. */
 @utility ambient-pool {
+  --pool-tint: color-mix(in srgb, var(--color-primary) 9%, transparent);
+
   position: relative;
   isolation: isolate;
 
@@ -448,25 +449,14 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: radial-gradient(
-      ellipse 70% 55% at 50% 30%,
-      color-mix(in srgb, var(--color-primary) 9%, transparent),
-      transparent 70%
-    );
+    background: radial-gradient(ellipse 70% 55% at 50% 30%, var(--pool-tint), transparent 70%);
   }
 }
 
-/* Modifier for `ambient-pool`, not a peer of it: this only re-declares the gradient, so it
-   must be composed as `ambient-pool ambient-pool-neutral`. Used alone it emits a `::before`
-   with no `content` and renders nothing. */
+/* Modifier for `ambient-pool`, not a peer of it: this only swaps the tint the pool reads, so it
+   must be composed as `ambient-pool ambient-pool-neutral`. Used alone it draws nothing. */
 @utility ambient-pool-neutral {
-  &::before {
-    background: radial-gradient(
-      ellipse 70% 55% at 50% 30%,
-      color-mix(in srgb, var(--color-foreground) 5%, transparent),
-      transparent 70%
-    );
-  }
+  --pool-tint: color-mix(in srgb, var(--color-foreground) 5%, transparent);
 }
 
 /* Section rhythm (DESIGN.md §4) — consistent on every section. */
@@ -521,7 +511,7 @@
  * Includes `measure`, so the two are never composed together.
  */
 @utility prose-copy {
-  max-width: 70ch;
+  @apply measure;
 
   & :is(p, ul, ol, blockquote) {
     margin-block: 1rem;

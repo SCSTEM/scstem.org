@@ -12,27 +12,29 @@ import { cn } from "@/lib/cn";
  *
  * Slots: `eyebrow`, `title` (wrapped in the heading), `intro`, and the default body. They are
  * slots rather than string props so a heading can carry markup, e.g. an italic FIRST®.
+ *
+ * `srTitle` is the heading for a section whose body speaks for itself on screen: a visually
+ * hidden `h2` that keeps the page outline whole. It takes no header space, and a section passes
+ * it or a `title` slot, not both.
  */
 interface Props {
   atmosphere?: "none" | "numeral" | "pool" | "pool-neutral" | "ruler" | "tint";
   /** The ghost numeral's value. Required by, and only read with, `atmosphere="numeral"`. */
   index?: number;
-  /** Drops to `h3` for a section nested under another section's heading. */
-  headingLevel?: "h2" | "h3";
+  /** A visually hidden heading, in place of the `title` slot. */
+  srTitle?: string;
   id?: string;
   class?: string;
 }
 
-const {
-  atmosphere = "none",
-  index,
-  headingLevel: Heading = "h2",
-  id,
-  class: className,
-} = Astro.props;
+const { atmosphere = "none", index, srTitle, id, class: className } = Astro.props;
 
 if (atmosphere === "numeral" && index === undefined) {
   throw new Error('Section: atmosphere="numeral" needs an `index` for the numeral to show.');
+}
+
+if (srTitle !== undefined && Astro.slots.has("title")) {
+  throw new Error("Section: pass `srTitle` or a `title` slot, not both.");
 }
 
 const hasEyebrow = Astro.slots.has("eyebrow");
@@ -52,6 +54,8 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
   <div class="container-page">
     {atmosphere === "ruler" && <RulerDivider class="mb-12" />}
 
+    {srTitle !== undefined && <h2 class="sr-only">{srTitle}</h2>}
+
     {
       hasHeader && (
         <div>
@@ -65,9 +69,9 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
                never reaches an intro below it. */
             <div class={cn("relative", hasEyebrow && "mt-2")}>
               {atmosphere === "numeral" && index !== undefined && <GhostNumeral value={index} />}
-              <Heading>
+              <h2>
                 <slot name="title" />
-              </Heading>
+              </h2>
             </div>
           )}
           {Astro.slots.has("intro") && (

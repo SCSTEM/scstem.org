@@ -38,3 +38,9 @@ export interface CalendarEvent {
   start: string;
   title: string;
 }
+
+/** What `/api/calendar/<name>` answers with, either way. */
+export interface CalendarResponse {
+  events?: CalendarEvent[];
+  message?: string;
+}

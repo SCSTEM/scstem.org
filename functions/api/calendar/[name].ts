@@ -1,6 +1,5 @@
-import type { CalendarEvent } from "@/types";
-
 import { upcomingEvents } from "@/ics";
+import { res } from "@/util";
 
 /**
  * Fetches the public ICS feed server-side and hands the page JSON. The feed sends no CORS
@@ -29,20 +28,8 @@ const WINDOW_DAYS = 90;
 /** Fifteen minutes: a schedule change should surface the same day, not the same minute. */
 const MAX_AGE = 900;
 
-/** What `/api/calendar/<name>` answers with, either way. */
-interface CalendarResponse {
-  events?: CalendarEvent[];
-  message?: string;
-}
-
-const json = (body: CalendarResponse, status: number, cacheable: boolean): Response =>
-  new Response(JSON.stringify(body), {
-    headers: {
-      "Cache-Control": cacheable ? `public, max-age=${String(MAX_AGE)}` : "no-store",
-      "Content-Type": "application/json",
-    },
-    status,
-  });
+/** An error answer is never cached; only a parsed feed is. */
+const NO_STORE = { "Cache-Control": "no-store" };
 
 export const onRequestGet: PagesFunction<unknown, "name"> = async ({
   params,
@@ -51,7 +38,7 @@ export const onRequestGet: PagesFunction<unknown, "name"> = async ({
 }) => {
   const name = Array.isArray(params.name) ? params.name[0] : params.name;
   if (!isCalendarName(name)) {
-    return json({ message: "Unknown calendar" }, 404, false);
+    return res({ message: "Unknown calendar" }, 404, NO_STORE);
   }
 
   // Cloudflare's edge cache, keyed on the request, so one fetch of the feed serves every visitor
@@ -68,15 +55,17 @@ export const onRequestGet: PagesFunction<unknown, "name"> = async ({
   try {
     const upstream = await fetch(feed, { cf: { cacheTtl: MAX_AGE } });
     if (!upstream.ok) {
-      return json({ message: `Calendar feed returned ${String(upstream.status)}` }, 502, false);
+      return res({ message: `Calendar feed returned ${String(upstream.status)}` }, 502, NO_STORE);
     }
 
     const events = upcomingEvents(await upstream.text(), Date.now(), WINDOW_DAYS);
-    const response = json({ events }, 200, true);
+    const response = res({ events }, 200, {
+      "Cache-Control": `public, max-age=${String(MAX_AGE)}`,
+    });
     waitUntil(cache.put(request, response.clone()));
     return response;
   } catch (error) {
     console.error(error);
-    return json({ message: "Could not reach the calendar feed" }, 502, false);
+    return res({ message: "Could not reach the calendar feed" }, 502, NO_STORE);
   }
 };

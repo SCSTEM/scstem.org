@@ -1,4 +1,4 @@
-import { site, socials } from "@/data/site";
+import { type ProgramTheme, nav, programs, site, socials } from "@/data/site";
 
 /**
  * Typed builders for the schema.org objects the site emits. Keeping them here rather than inline
@@ -22,6 +22,7 @@ const workspaceAddress = {
   streetAddress: site.location.workspace,
   addressLocality: site.location.locality,
   addressRegion: site.location.region,
+  postalCode: site.location.postalCode,
   addressCountry: site.location.country,
 } as const;
 
@@ -74,6 +75,19 @@ export const breadcrumbs = (trail: readonly Breadcrumb[]): JsonLdObject => ({
     item: new URL(crumb.path, site.url).href,
   })),
 });
+
+/**
+ * The trail to a program's page — Programs, then the program — followed by any pages below it.
+ * Pass the result to `breadcrumbs`, or to `EventLayout`'s `trail`.
+ */
+export const programTrail = (
+  program: ProgramTheme,
+  ...rest: readonly Breadcrumb[]
+): readonly Breadcrumb[] => [
+  { name: nav.programs.label, path: nav.programs.href },
+  { name: programs[program].name, path: programs[program].href },
+  ...rest,
+];
 
 /** @public Consumed by `EventLayout`, which passes an `events` entry's frontmatter through. */
 export interface EventDetails {
