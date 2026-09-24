@@ -35,7 +35,8 @@ const paths = {
 const rotations = { 1: "-1.2deg", 2: "0.9deg", 3: "-0.6deg" } as const;
 ---
 
-<span class={cn("relative inline-block", className)}>
+<!-- The inline margin matches the stroke's overhang, so the oval clears the neighbouring words. -->
+<span class={cn("relative mx-4 inline-block", className)}>
   <slot />
   <svg
     aria-hidden="true"

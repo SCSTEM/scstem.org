@@ -101,7 +101,17 @@ const plateIcon = image === undefined ? icon : undefined;
       <CardTitle>
         <slot name="title" />
       </CardTitle>
-      {badge !== undefined && <Badge class="mt-1 shrink-0">{badge}</Badge>}
+      {
+        /* One title line tall and centred on it, so the chip never sets the row's height and the
+          rule below sits at the same depth whether or not a card has a chip. */
+      }
+      {
+        badge !== undefined && (
+          <span class="flex h-[1lh] shrink-0 items-center text-h4">
+            <Badge>{badge}</Badge>
+          </span>
+        )
+      }
     </div>
     <hr class="mt-3 title-rule" />
   </CardHeader>

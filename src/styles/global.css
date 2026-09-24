@@ -52,7 +52,7 @@
   --color-tier-bronze: #d08954;
 
   /* --- Typography (DESIGN.md §3) ---------------------------------------------------------- */
-  --font-display: "Orbitron", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Orbitron", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "Source Code Pro", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-hand: "Architects Daughter", "Comic Sans MS", cursive;
@@ -160,12 +160,19 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Orbitron owns h1–h3 and stops there (DESIGN.md §3): h4–h6 are Inter. */
+  /**
+   * Orbitron owns h1–h3 and stops there (DESIGN.md §3): h4–h6 are Inter. Orbitron has no italic
+   * and is never set italic, so an italic span in a heading — the FIRST® mark (§1) — stands
+   * upright instead of taking a synthesized oblique. That covers the ®, which Orbitron lacks and
+   * `--font-display` takes from Inter. `CardTitle` sets its h2/h3 in Inter and turns synthesis
+   * back on.
+   */
   h1,
   h2,
   h3 {
     color: var(--color-foreground);
     font-family: var(--font-display);
+    font-synthesis-style: none;
     font-weight: 600;
     text-wrap: balance;
   }
@@ -234,13 +241,6 @@
   ::selection {
     background-color: var(--color-primary);
     color: var(--color-primary-foreground);
-  }
-
-  /* Numerals and dates speak in the data voice wherever they stand alone. */
-  time,
-  data {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
   }
 
   /* Media never overflows its column. `svg` is deliberately excluded: `max-width` is a
@@ -459,12 +459,20 @@
   --pool-tint: color-mix(in srgb, var(--color-foreground) 5%, transparent);
 }
 
-/* Section rhythm (DESIGN.md §4) — consistent on every section. */
+/**
+ * Section rhythm (DESIGN.md §4) — consistent on every section, and never doubled. Two sections
+ * on the same ground share one padding at their boundary: the second drops its top. A tint band
+ * is a surface of its own, so its edge keeps the padding on both sides.
+ */
 @utility section-y {
   padding-block: 4rem;
 
   @media (width >= theme(--breakpoint-md)) {
     padding-block: 6rem;
+  }
+
+  &:not(.bg-section-tint):is(.section-y:not(.bg-section-tint) + *) {
+    padding-top: 0;
   }
 }
 

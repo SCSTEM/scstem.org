@@ -47,6 +47,13 @@ const renderAt = async (source: ImageMetadata, width: number) => ({
 
 const acronymArt = await renderAt(firstAcronym, 768);
 const lockupArt = await renderAt(firstLockup, 640);
+
+/**
+ * Each "Real X." of the tagline holds together, so a line only ever breaks between pairs and an
+ * oval never wraps away from its "Real". Below `sm` the three pairs stack as three lines, spaced
+ * so one line's oval clears the next.
+ */
+const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
 ---
 
 <BaseLayout description={site.description} title="Home">
@@ -258,9 +265,9 @@ const lockupArt = await renderAt(firstLockup, 640);
   <Section>
     <CtaBanner>
       <Fragment slot="title">
-        Real <ChalkOval variant={1}>Skills</ChalkOval>. Real <ChalkOval variant={2}
-          >Robots</ChalkOval
-        >. Real <ChalkOval variant={3}>Fun</ChalkOval>.
+        <span class={taglinePair}>Real <ChalkOval variant={1}>Skills</ChalkOval>.</span>{" "}
+        <span class={taglinePair}>Real <ChalkOval variant={2}>Robots</ChalkOval>.</span>{" "}
+        <span class={taglinePair}>Real <ChalkOval variant={3}>Fun</ChalkOval>.</span>
       </Fragment>
       Ready to join or find out more? We are always looking for new members, mentors, and sponsors! If
       you want to find out how you can get plugged in or are looking for more information, please reach

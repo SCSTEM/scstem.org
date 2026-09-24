@@ -17,6 +17,8 @@ Voice: **energetic, concrete, community-proud.**
 
 **Name usage (from Brand Guidelines):** full name "South Central STEM Collective" with capitalized _STEM_; may break to two lines after "Central". Short name "SC2" (capitalized SC) — **never in headings**, and never on a page where the full name isn't present elsewhere. "SCSTEM" only for domains/handles, never in prose.
 
+**_FIRST®_** is a word mark: italic, with its ®, wherever the font has an italic (Inter copy, card titles). In an Orbitron heading it stands upright, ® included — Orbitron has no italic (§3), so h1–h3 turn off synthesized italic rather than take a faux oblique.
+
 ## 2. Color
 
 Dark-only for now. All component color comes from **semantic tokens** — raw hex values and Tailwind palette classes are banned in components (the logo mark's fixed colors are brand-asset colors, exempt like any other image). Tokens live in `src/styles/global.css` `@theme`; a future light theme is a new token block, not a refactor.
@@ -122,12 +124,12 @@ Restraint rule: these are atmosphere, not decoration — if a device is noticeab
 
 Per Brand Guidelines: Orbitron for page headings/titles (avoid very long or small lines), Inter for body/subheadings, Source Code Pro for monospaced/stylistic elements.
 
-| Role             | Font                    | Weights     | Where                                                                                                                                                             |
-| ---------------- | ----------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Display/headings | **Orbitron** (variable) | 500–700     | h1–h3 and eyebrow labels only. Never below h3 size, never italic, never long lines (≤ ~40 chars/line) — ration the display voice.                                 |
-| UI & body        | **Inter** (variable)    | 400/500/600 | Everything else: body, h4–h6, nav, buttons, forms, captions                                                                                                       |
-| Data voice       | **Source Code Pro**     | 400/600     | **Stats and numerals, countdowns, dates, spec labels** (ages chips, tier badges, "REF" annotations). The spec-sheet register of the build-document metaphor.      |
-| Annotation hand  | **Architects Daughter** | 400         | Hand-markup annotations only (≤5 words): sketch-arrow targets, margin notes, the handwritten link they point at. Never UI chrome, body copy, headings, or labels. |
+| Role             | Font                    | Weights     | Where                                                                                                                                                                              |
+| ---------------- | ----------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Display/headings | **Orbitron** (variable) | 500–700     | h1–h3 and eyebrow labels only. Never below h3 size, never italic, never long lines (≤ ~40 chars/line) — ration the display voice.                                                  |
+| UI & body        | **Inter** (variable)    | 400/500/600 | Everything else: body, h4–h6, nav, buttons, forms, captions                                                                                                                        |
+| Data voice       | **Source Code Pro**     | 400/600     | **Stats and numerals, countdowns, dates, spec labels** (ages chips, tier badges, "REF" annotations) where they stand alone; a year inside a sentence stays in the sentence's font. |
+| Annotation hand  | **Architects Daughter** | 400         | Hand-markup annotations only (≤5 words): sketch-arrow targets, margin notes, the handwritten link they point at. Never UI chrome, body copy, headings, or labels.                  |
 
 Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 
@@ -145,7 +147,7 @@ Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 | `label`   | 0.6875–0.75rem        | 1.4         | Source Code Pro 600, +0.05em tracking, uppercase (spec labels/chips) |
 
 - **Inter ships with its weight axis trimmed to 400–700** and cannot render heavier: the axis this table does not use was 12 KB of critical-path font (`docs/adr/0011-inter-weight-axis.md`). Widening the range means re-instancing the committed file (`docs/adr/0014-vendored-fonts.md`), not just a utility class.
-- Eyebrow labels: Orbitron 500, 12px, uppercase, `+0.08em` tracking, `primary` or `muted` — Orbitron's one all-caps use; SCP `label` is the other sanctioned caps.
+- Eyebrow labels: Orbitron 500, 12px, uppercase, `+0.08em` tracking, `primary-bright` (text on dark, §2) or `muted` — Orbitron's one all-caps use; SCP `label` is the other sanctioned caps. An eyebrow that carries a numeral ("AGES 9–16", "2019 – PRESENT", "ERROR 404") is data, so it takes the SCP `label` style instead, matching the same figures in a chip.
 - Prose measure: 65–75ch (`max-w-prose`).
 - Implementation note: `body` names both a color (§2) and a size (this table). Tailwind resolves
   colors first, so in code `text-body` is the **color** and the **size** utility is `text-copy`.
@@ -155,7 +157,7 @@ Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 ## 4. Spacing, radius, elevation
 
 - **Spacing**: 4px base scale. Component-internal 8–24px; between-component 24–48px.
-- **Section rhythm**: `py-16` (mobile) / `py-24` (≥ md), consistent on every section.
+- **Section rhythm**: `py-16` (mobile) / `py-24` (≥ md), consistent on every section, and never doubled: two sections on the same ground share one padding at their boundary, and no component margin (the footer included) adds to a section's padding. A tint band keeps its padding on both sides of its edge.
 - **Radius — one end-mill**: three values, unified to the machining story. `radius-sm` **4px** (chips, spec labels, badges — stamped plates), `radius-md` **8px** (all controls: buttons, inputs, icon tiles), `radius-lg` **12px** (every cut feature: pockets, panels, framed media — one tool radius for everything machined). Nothing else; `16px` and pill radii are retired.
 - **Elevation**: there is none — depth goes _down_, not up (§2 pocket anatomy). No drop shadows anywhere; the inset pocket shadows are the only shadows in the system.
 
