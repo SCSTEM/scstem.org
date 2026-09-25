@@ -90,7 +90,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
       {
         headerLinks.map((link) =>
           link.panel ? (
-            <div class="relative">
+            <div data-nav-anchor>
               <span class="flex items-center">
                 <a
                   aria-current={inSection(link.href) ? "page" : undefined}
@@ -109,7 +109,8 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
                 </button>
               </span>
               <div
-                class="absolute top-full left-0 m-0 w-64 pocket p-2"
+                class="m-0 w-64 pocket p-2"
+                data-nav-panel
                 id={`${link.label.toLowerCase()}-panel`}
                 popover
               >
@@ -234,6 +235,23 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
     display: block;
   }
 
+  /**
+   * The Programs panel. A popover renders in the top layer, where offsets resolve against the
+   * viewport rather than the header, so it is anchored to its nav item instead. The script below
+   * places it where anchor positioning is unsupported.
+   */
+  [data-nav-anchor] {
+    anchor-name: --nav-panel;
+  }
+
+  [data-nav-panel] {
+    position: fixed;
+    inset: auto;
+    position-anchor: --nav-panel;
+    top: calc(anchor(bottom) + 0.75rem);
+    left: anchor(left);
+  }
+
   /* The scroll lock, likewise: no inline style to leave behind. */
   body:has([data-menu-sheet]:not([hidden])) {
     overflow: hidden;
@@ -241,6 +259,23 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
 </style>
 
 <script>
+  const anchor = document.querySelector("[data-nav-anchor]");
+  const panel = document.querySelector("[data-nav-panel]");
+
+  if (
+    anchor instanceof HTMLElement &&
+    panel instanceof HTMLElement &&
+    !CSS.supports("anchor-name", "--nav-panel")
+  ) {
+    panel.addEventListener("toggle", (event) => {
+      if (event instanceof ToggleEvent && event.newState === "open") {
+        const { bottom, left } = anchor.getBoundingClientRect();
+        panel.style.top = `calc(${String(bottom)}px + 0.75rem)`;
+        panel.style.left = `${String(left)}px`;
+      }
+    });
+  }
+
   const toggle = document.querySelector("[data-menu-toggle]");
   const sheet = document.querySelector("[data-menu-sheet]");
 
