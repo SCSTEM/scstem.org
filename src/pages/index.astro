@@ -82,11 +82,10 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
     <Fragment slot="title">Science, Technology, Engineering, Math, Business, Art, and more</Fragment
     >
     <Fragment slot="intro">
-      The South Central STEM Collective (otherwise known as SC2) was created to serve South Central
-      Pennsylvania as &lsquo;STEM Central&rsquo;; inspiring youth aged 9-18 with hands-on education,
-      competitive robotics teams, and community outreach. With three rapidly growing programs and a
-      team of experienced volunteer mentors, SC2 is the perfect place for students to learn real
-      world skills in a fun and competitive atmosphere.
+      The South Central STEM Collective (SC2) is &lsquo;STEM Central&rsquo; for south-central
+      Pennsylvania: hands-on education, competitive robotics, and community outreach for ages 9–18.
+      Volunteer mentors with real industry experience teach real-world skills in a fun, competitive
+      setting.
     </Fragment>
   </Section>
 
@@ -95,18 +94,14 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
 
     <FeatureGrid columns={2}>
       <ProgramCard program="fll">
-        FLL introduces science, technology, engineering, and math (STEM) to children through fun,
-        exciting hands-on learning. Participants gain real-world problem-solving experiences through
-        a guided, global robotics program, helping today&rsquo;s students and teachers build a
-        better future together.
+        Small teams build and program a LEGO® robot, research a real problem, and present both to
+        judges. It&rsquo;s hands-on STEM for ages 9–16, and no experience is expected.
       </ProgramCard>
 
       <ProgramCard program="frc">
-        Under strict rules and limited time and resources, teams of high school students are
-        challenged to build industrial-size robots to play a difficult field game in alliance with
-        other teams, while also fundraising to meet their goals, designing a team
-        &ldquo;brand,&rdquo; and advancing respect and appreciation for STEM within the local
-        community.
+        High schoolers get six weeks, a rulebook, and a budget to build a 120-pound robot and
+        compete in alliance with other teams. Along the way they raise the money, design the brand,
+        and bring STEM to the community.
       </ProgramCard>
     </FeatureGrid>
   </Section>
@@ -114,13 +109,11 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
   <Section atmosphere="band">
     <Fragment slot="title">Who is <span class="italic">FIRST®</span>?</Fragment>
     <Fragment slot="intro">
-      All of our programs are members of a global organization called <span class="italic"
-        >FIRST®</span
-      >. The mission of <span class="italic">FIRST®</span> is to inspire young people to become leaders
-      in science and technology fields by teaching real-world skills through team work and competition.
-      Each year, a new challenge is presented to teams who, with the help of experienced mentors, must
-      apply their skills to build a functional robot. Once built, the robot is put to the test in a competition
-      setting against teams from around the world.
+      Both of our teams belong to <span class="italic">FIRST®</span>, a global nonprofit that builds
+      science and technology leaders through teamwork and competition. Each year <span
+        class="italic">FIRST®</span
+      > releases a new challenge; teams and their mentors build a robot to meet it, then compete against
+      teams from around the world.
     </Fragment>
 
     <div class="grid items-start gap-10 lg:grid-cols-2">
@@ -160,12 +153,12 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
 
         <h3>More than robots</h3>
         <p class="mt-3 measure">
-          Although the goal is to build a robot, you do not have to be an engineer. Whether you are
-          a future rocket scientist or an aspiring artist, there is a place here for you and mentors
-          ready to use their real world experience to help you grow. <span class="italic"
-            >FIRST®</span
-          > calls it <a class="external-link" href={site.urls.moreThanRobots} rel="noopener"
-            >More than Robots</a
+          The goal is a robot, but you don&rsquo;t have to be an engineer. Future rocket scientist
+          or aspiring artist, there&rsquo;s a place for you here, and a mentor ready to help you
+          grow. <span class="italic">FIRST®</span> calls it <a
+            class="external-link"
+            href={site.urls.moreThanRobots}
+            rel="noopener">More than Robots</a
           >.
         </p>
       </div>
@@ -218,10 +211,8 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
 
       <FeatureCard image={award} imageAlt="Team members receiving an award at competition">
         <Fragment slot="title">Scholarships and career opportunities</Fragment>
-        Being a member of a <span class="italic">FIRST®</span> team is more than just building robots
-        and learning about STEM. It opens doors to scholarship and career opportunities that you cannot
-        get anywhere else. Many of our alumni used the skills developed while students to pursue careers
-        in STEM (and related) fields.
+        A <span class="italic">FIRST®</span> team opens doors to scholarships and careers you can&rsquo;t
+        reach anywhere else. Many of our alumni took the skills they built here into STEM careers.
       </FeatureCard>
 
       <FeatureCard
@@ -229,9 +220,8 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
         imageAlt="Team members sharing a moment with Dean Kamen, the founder of FIRST®"
       >
         <Fragment slot="title">Fun</Fragment>
-        Although we take our work seriously, we also have a lot of fun. Whether it&rsquo;s dancing to
-        the YMCA at competition, playing a game of Kahoot during a meeting, or just hanging out with friends
-        as we work on our robots, we always manage to have a lot of fun.
+        We take the work seriously, not ourselves: dancing the YMCA at competition, Kahoot during meetings,
+        or just hanging out with friends over a robot.
       </FeatureCard>
     </FeatureGrid>
   </Section>
@@ -251,9 +241,8 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
   <Section atmosphere="ruler">
     <Fragment slot="title">Our sponsors</Fragment>
     <Fragment slot="intro">
-      We are proud to partner organizations and individuals who want to join us in building the
-      future. This strong support enables our mentors, volunteers, and parents to focus on what
-      really matters.
+      Local businesses and individuals fund our tools, workspace, and registration fees, so mentors,
+      volunteers, and parents can focus on the students.
     </Fragment>
 
     <SponsorStrip />
@@ -269,9 +258,10 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
         <span class={taglinePair}>Real <ChalkOval variant={2}>Robots</ChalkOval>.</span>{" "}
         <span class={taglinePair}>Real <ChalkOval variant={3}>Fun</ChalkOval>.</span>
       </Fragment>
-      Ready to join or find out more? We are always looking for new members, mentors, and sponsors! If
-      you want to find out how you can get plugged in or are looking for more information, please reach
-      out through our <a class="highlight-swipe" href={nav.cta.href}>{nav.cta.label} form</a>.
+      New members, mentors, and sponsors are always welcome. Tell us who you are through our <a
+        class="highlight-swipe"
+        href={nav.cta.href}>{nav.cta.label} form</a
+      >.
       <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
       <Button href={nav.donate.href} size="lg" slot="actions" variant="outline">
         {nav.donate.label}

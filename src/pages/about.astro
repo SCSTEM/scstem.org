@@ -18,8 +18,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { breadcrumbs } from "@/lib/jsonld";
 
 /**
- * Copy is legacy's, verbatim. The layout is DESIGN.md §5's single flowing column with photo
- * groupings as interleaved timeline sections, and §8's stat band.
+ * The layout is DESIGN.md §5's single flowing column with photo groupings as interleaved
+ * timeline sections, and §8's stat band.
  */
 
 /**
@@ -59,23 +59,20 @@ const biohazardStats = [
     <Fragment slot="title">About us</Fragment>
 
     <p>
-      The South Central STEM Collective (otherwise known as SC2) was created to serve South Central
-      Pennsylvania as &ldquo;STEM Central&rdquo; to inspire youth aged 9-18 through hands-on
-      education, competitive robotics and drone teams, maker spaces, and community outreach.
+      The South Central STEM Collective (SC2) started with one high-school robotics team. Today it
+      makes hands-on STEM, from competitive robotics to community outreach, open to students ages
+      9–18 who are excited about science, engineering, technology, art, and more.
     </p>
     <p class="mt-4">
-      Although still in the early stages, SC2 has big plans to help students excited about science,
-      engineering, technology, art, and more. Whether on the road to a high-school robotics
-      competition or working hard with younger students excited about Lego projects, SC2 is here to
-      help students as they explore their futures.
+      We&rsquo;re still early, and our plans are big. From a high-school regional to a younger
+      student&rsquo;s first LEGO® robot, SC2 helps students explore what comes next.
     </p>
   </Hero>
 
   <Section atmosphere="numeral" index={1}>
     <Fragment slot="title">History</Fragment>
     <Fragment slot="intro">
-      To understand where SC2 is going, it is equally important to understand where SC2 came from.
-      For this reason, it is important to start at the beginning: Biohazard.
+      To know where SC2 is going, start where it came from: Biohazard.
     </Fragment>
 
     <div class="flex flex-col-reverse items-start gap-8 md:flex-row md:gap-12">
@@ -83,13 +80,9 @@ const biohazardStats = [
         <h3>Biohazard</h3>
         <p>
           Biohazard is a <span class="italic">FIRST®</span> Robotics Competition team, formed in 2012
-          by a small group of students and passionate volunteers as a club under the local 4-H program
-          office.
+          by a small group of students and volunteers as a club under the local 4-H program office.
         </p>
-        <p>
-          Between Biohazard&rsquo;s founding in 2012 and the early beginnings of SC2 in 2020, the
-          team continued to grow, learn, and improve.
-        </p>
+        <p>From 2012 to 2020, the team kept growing.</p>
       </div>
 
       <Image
@@ -103,7 +96,7 @@ const biohazardStats = [
     <StatBand class="mt-10" stats={biohazardStats} />
 
     <p class="mt-10 measure">
-      This momentum pushed the team forward, but nobody could anticipate what was around the corner.
+      That momentum carried the team forward. Nobody saw what was around the corner.
     </p>
   </Section>
 
@@ -117,40 +110,32 @@ const biohazardStats = [
 
     <div class="prose-copy">
       <p>
-        2020 was an interesting year for everyone in many different ways. For Biohazard, the year
-        started the same way it always had. An exciting kickoff event in early January, followed by
-        several weeks of robot building. At the end of February, the team made it to their first
-        competition at Myrtle Beach, SC. It was a tough challenge and the team realized that there
-        were several improvements to the robot design that had to take place before their next event
-        in Pittsburgh, PA. Unfortunately, those few weeks between events saw the world change
-        completely. The team never got to compete later that year in 2020 and would not get to
+        For Biohazard, 2020 started like any season: kickoff in early January, weeks of building,
+        and a first competition in Myrtle Beach, SC, at the end of February. The robot needed work
+        before Pittsburgh, and in the weeks between, the world shut down. The team didn&rsquo;t
         return to a regional event until 2022.
       </p>
       <p>
-        With everyone stuck at home, still feeling the itch for competition and realizing the
-        passion the students had, an idea started forming: &ldquo;Why couldn&rsquo;t we break away
-        from 4-H and start our own program?&rdquo; At first glance, this question might seem
-        counterproductive, as the original Biohazard website said, we were proud of our partnership
-        with 4-H:
+        Stuck at home, still itching to compete, and seeing how much the students cared, we started
+        asking: &ldquo;Why couldn&rsquo;t we break away from 4-H and start our own program?&rdquo;
+        That might sound strange. We were proud of our 4-H partnership, as our original website
+        said:
       </p>
       <blockquote>
         The students of Biohazard 4050 are not only members of <span class="italic">FIRST®</span>,
         but are also members of the Franklin County (PA) 4-H Program. Their dual membership gives
         them a unique perspective and opportunities for local service and outreach within their
-        community. The student&rsquo;s dedication to each other and their commitment to their
+        community. The students&rsquo; dedication to each other and their commitment to their
         community is a testimony to their character, service, and leadership skills. The volunteers
         and mentors of Biohazard 4050 are very proud of the students, and honored to be a part of
         their experiences!
         <cite>Biohazard, 2015</cite>
       </blockquote>
       <p>
-        Unfortunately, this partnership left the team feeling like there was a lot of future growth
-        being left on the table. Complicated financial management, fundraising limitations,
-        membership rules, and a leadership/organization structure that could not keep pace with the
-        rapidly developing world of STEM all contributed to the group&rsquo;s desire to take a
-        different path. After many meetings, extensive planning sessions, thorough research, and
-        support from Biohazard&rsquo;s parents and mentors, the South Central STEM Collective was
-        born.
+        But the partnership was holding back growth: complicated finances, fundraising limits,
+        membership rules, and a structure that couldn&rsquo;t keep pace with STEM. After months of
+        planning, with support from Biohazard&rsquo;s parents and mentors, the South Central STEM
+        Collective was born.
       </p>
     </div>
 
@@ -158,14 +143,13 @@ const biohazardStats = [
       <div class="prose-copy">
         <h3>South Central STEM Collective</h3>
         <p>
-          On paper, our mission is very simple: Make STEM opportunities accessible to students of
-          all ages and backgrounds. In practice, this has been a challenge, but we are excited about
-          what the future holds.
+          On paper, our mission is simple: make STEM opportunities accessible to students of all
+          ages and backgrounds. In practice, that&rsquo;s a challenge, and we&rsquo;re excited to
+          meet it.
         </p>
         <p>
-          The task to &ldquo;Make STEM opportunities accessible...&rdquo; comes in a variety of
-          different forms, but our focus is ultimately on the students. To achieve this goal, a very
-          general organization structure was formed:
+          That can take many forms, but the focus is always the students. So we set up a simple
+          three-tier structure:
         </p>
       </div>
 
@@ -203,7 +187,7 @@ const biohazardStats = [
           Students, parents, volunteers, and mentors work directly with their respective clubs
           <ul>
             <li>
-              Activities, competitions, external organizations (i.e.: <span class="italic"
+              Activities, competitions, external organizations (e.g. <span class="italic"
                 >FIRST®</span
               >)
             </li>
@@ -212,10 +196,9 @@ const biohazardStats = [
         </li>
       </ol>
       <p>
-        This three-tier strategy allows our member clubs to operate independent of SC2 while also
-        being able to benefit from the resources SC2 provides. Although subject to change in time,
-        we believe this approach to STEM education has the potential for incredible impact, not
-        constrained by the motivations of another parent organization.
+        This lets member clubs run independently while drawing on SC2&rsquo;s resources. The
+        structure may change, but we believe it can have real impact, free of another parent
+        organization&rsquo;s priorities.
       </p>
     </div>
   </Section>
@@ -231,25 +214,18 @@ const biohazardStats = [
   <Section atmosphere="numeral" index={3}>
     <Fragment slot="title">Future</Fragment>
     <Fragment slot="intro">
-      So what does the future hold? In many ways, the future is really up to the objectives and
-      goals of our member clubs, but our focus has always been the same: <span class="italic"
-        >Serve South Central Pennsylvania as &ldquo;STEM Central&rdquo; to inspire youth aged K-12
-        through hands-on education, competitive robotics and drone teams, maker spaces, and
-        community outreach</span
-      >.
+      So what does the future hold? That depends largely on our member clubs, but the mission stays
+      the same: be south-central Pennsylvania&rsquo;s &ldquo;STEM Central.&rdquo;
     </Fragment>
 
     <div class="prose-copy">
-      <p>
-        It is a long road ahead, but we are excited to get there. Some of our specific goals on the
-        horizon include:
-      </p>
+      <p>It&rsquo;s a long road, and we&rsquo;re excited to travel it. Goals on the horizon:</p>
       <ul>
         <li>Operate and maintain a makerspace</li>
         <li>Secure a permanent location for our workspace, classrooms, and office-space</li>
         <li>
-          Become a staple in our local community, fostering STEM education where it has not been
-          fully explored
+          Become a staple in our community, bringing STEM education where it hasn&rsquo;t reached
+          yet
         </li>
       </ul>
     </div>
@@ -258,10 +234,8 @@ const biohazardStats = [
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">What&rsquo;s next?</Fragment>
-      That&rsquo;s the story of SC2, but what about you? Whether you are a student, parent, industry professional,
-      business owner, educator, explorer, or dreamer, we would love to hear from you. Feel free to <a
-        href={nav.contact.href}>get in touch</a
-      >, we are looking forward to hearing from you.
+      That&rsquo;s our story. Now what&rsquo;s yours? Student, parent, professional, business owner, educator,
+      or dreamer, we&rsquo;d love to hear from you. <a href={nav.contact.href}>Get in touch</a>.
       <Button href={nav.contact.href} size="lg" slot="actions">Contact us</Button>
       <Button href={nav.cta.href} size="lg" slot="actions" variant="outline">
         {nav.cta.label}

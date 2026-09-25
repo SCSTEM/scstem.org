@@ -17,12 +17,12 @@ export const site = {
 
   /** The 501(c)(3) line, as it appears in the footer and structured data. */
   legal:
-    "SC2 is 501(c)(3) non-profit focused on providing STEM opportunities for students in and around Franklin County PA.",
+    "SC2 is a 501(c)(3) non-profit providing STEM opportunities for students in and around Franklin County, PA.",
   /** Employer Identification Number — what a donor's giving fund looks the organization up by. */
   ein: "86-2328794",
 
   description:
-    "The South Central STEM Collective is a non-profit organization focused on building the future of STEM, right here in Franklin County, Pennsylvania.",
+    "The South Central STEM Collective runs FIRST robotics and hands-on STEM programs for ages 9–18 in Franklin County, Pennsylvania.",
   /** `%s` is the page title. The homepage uses the bare site name instead. */
   titleTemplate: "%s | South Central STEM Collective",
 

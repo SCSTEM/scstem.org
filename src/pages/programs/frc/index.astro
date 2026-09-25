@@ -31,25 +31,22 @@ if (featured?.image === undefined) {
   throw new Error("frcRobots: no entry has an image to feature on the FRC page.");
 }
 
-/** Copy is legacy's, verbatim. */
 const stats = [
   {
     value: "12+ years",
     label: "FIRST Robotics Competition",
-    description:
-      "Biohazard has been an active FRC team since 2012 and we are not stopping any time soon.",
+    description: "An FRC team since 2012, and not slowing down.",
   },
   {
     value: "10+ mentors",
     label: "Guiding and teaching",
-    description:
-      "Learn from industry experts in their fields who are ready to help you get to the next level.",
+    description: "Learn from industry experts who are ready to help you grow.",
   },
   {
-    value: "Endless",
-    label: "Opportunities",
+    value: "9 robots",
+    label: "Built and competed",
     description:
-      "Scholarships, hands-on education, and access to an extensive employer, alumni, and community network.",
+      "Each one opens doors: scholarships, hands-on education, and an employer, alumni, and community network.",
   },
 ];
 ---
@@ -84,34 +81,29 @@ const stats = [
       Welcome to the <span class="highlight-swipe">next generation</span>
     </Fragment>
 
-    A team of thinkers, engineers, scientists, artists, and dreamers. Inspiring students since 2012,
-    Biohazard is south-central Pennsylvania&rsquo;s premiere high-school robotics team and we need
-    you to take us to the next level.
+    Thinkers, engineers, scientists, artists, and dreamers. Since 2012, Biohazard has been
+    south-central Pennsylvania&rsquo;s high-school robotics team, and we need you to take it to the
+    next level.
 
     <Button href={nav.cta.href} size="lg" slot="actions">Join the revolution</Button>
   </Hero>
 
   <Section atmosphere="numeral" index={1}>
-    <Fragment slot="title">
-      Join the Biohazard revolution and prepare for the hardest fun you&rsquo;ll ever have.
-    </Fragment>
+    <Fragment slot="title">The hardest fun you&rsquo;ll ever have</Fragment>
     <Fragment slot="intro">
-      <span class="italic">FIRST®</span> Robotics Competition (FRC) is a &ldquo;Sport for the Mind&rdquo;
-      where creativity, determination, and teamwork are the keys to success as we compete with teams from
-      around the world.
+      <span class="italic">FIRST®</span> Robotics Competition (FRC) is a &ldquo;Sport for the Mind&rdquo;:
+      creativity, determination, and teamwork win, against teams from around the world.
     </Fragment>
 
     <FeatureGrid columns={2}>
       <FeatureCard icon="robot-face">
         <Fragment slot="title">Innovation</Fragment>
-        Design and build complex robots to compete in <span class="italic">FIRST®</span>, using
-        real-world skills to build the best robot possible.
+        Design and build competition robots with real-world engineering skills.
       </FeatureCard>
 
       <FeatureCard icon="tool">
         <Fragment slot="title">Hands-on learning</Fragment>
-        Gain valuable experience in engineering, programming, and problem solving that will help you in
-        your future career.
+        Engineering, programming, and problem-solving experience that carries into your career.
       </FeatureCard>
 
       <FeatureCard icon="users-group">
@@ -165,7 +157,7 @@ const stats = [
 
   <Section atmosphere="ruler">
     <CtaBanner>
-      <Fragment slot="title">Take us to the next level</Fragment>
+      <Fragment slot="title">Find your place on the team</Fragment>
       Build season starts every January and runs six weeks. Students, mentors, and sponsors all have a
       place on this team — tell us which one you are.
       <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>

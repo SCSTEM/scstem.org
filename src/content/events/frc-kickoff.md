@@ -4,7 +4,7 @@ program: frc
 start: 2026-01-10T12:00:00-05:00
 end: 2026-01-10T16:00:00-05:00
 subtitle: Join Biohazard as we unveil this year's challenge
-description: Join Biohazard for the 2026 FIRST Robotics Competition kickoff
+description: Watch the 2026 FIRST Robotics Competition game reveal with Biohazard on January 10 at our downtown Chambersburg workspace, and see how build season starts.
 heroImage: ../../assets/events/cheering.webp
 heroImageAlt: Biohazard team members cheering from the stands at competition
 ctaLabel: Watch on FIRST website
@@ -25,39 +25,27 @@ hintLabels:
 **Kickoff.** The game is revealed! Teams watch the live broadcast and receive the game manual to
 start strategizing.
 
-**Build Season - 6 Weeks.** Design, prototype, build, and program the robot to meet the game
+**Build season – 6 weeks.** Design, prototype, build, and program the robot to meet the game
 challenges.
 
-**Competition - March & April.** Compete in regional events, form alliances, and work toward
+**Competition – March & April.** Compete in regional events, form alliances, and work toward
 qualifying for the World Championship.
 
-**Ages 14-18.** High school students work alongside adult mentors from industry to tackle real
+**Ages 14–18.** High school students work alongside adult mentors from industry to tackle real
 engineering challenges.
 
 ## What is _FIRST®_ Robotics Competition?
 
-_FIRST®_ Robotics Competition (FRC) is a high-school program for robotics competition in the same
-way as traditional sports. Creativity, determination, and teamwork are the keys to success as we
-compete with teams from around the world.
-
-**Innovation.** Design and build complex robots to compete in _FIRST®_, using real-world skills to
-build the best robot possible.
-
-**Hands-on Learning.** Gain valuable experience in engineering, programming, and problem solving
-that will help you in your future career.
-
-**Collaboration.** Work closely with a team of students and mentors, who will help turn your ideas
-into reality.
-
-**Fun.** We compete hard, but we also have a lot of fun while doing it. Saturday lunches, team
-picnic, off-season events, and more.
+_FIRST®_ Robotics Competition is a varsity sport for the mind: high-school teams build robots and
+compete against teams from around the world. [Meet Biohazard](/programs/frc) to see what a season
+on the team looks like.
 
 ## Meeting schedule
 
-- 10AM - Parent's meeting & Safety meeting
-- 11AM - Lunch break and prepare for game reveal
-- 12PM - Game reveal live stream beings
-- ~4PM - Meeting Ends
+- 12 PM – Parents' meeting and safety meeting
+- Lunch break and prepare for the game reveal
+- Game reveal live stream begins
+- ~4 PM – Meeting ends
 
 ## Can't make it?
 

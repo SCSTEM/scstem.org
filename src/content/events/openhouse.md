@@ -1,6 +1,6 @@
 ---
 title: Open house
-subtitle: Want to know more about STEM and robots? Join us in downtown Chambersburg to see what we're all about.
+subtitle: See the robots, meet the teams, and find your place in downtown Chambersburg.
 program: sc2
 start: 2026-08-01T13:00:00-04:00
 end: 2026-08-01T16:00:00-04:00
@@ -18,8 +18,7 @@ faq:
   - cant-make-the-open-house
 ---
 
-## Meet the teams, see the robots, and learn more about our programs.
+## Come see what we build
 
-Are you or is someone you know interested in LEGO®, science, technology, engineering, math,
-business, marketing, video production, software development, web design, carpentry, or leadership?
-Find out more and get a chance to speak with our students and mentors at our upcoming open house.
+Into LEGO®, code, video, business, carpentry, or leadership? There's a place for it here. Come see
+the robots and talk with our students and mentors.

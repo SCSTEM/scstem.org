@@ -31,7 +31,7 @@ const latest = teamPhotos[0];
 ---
 
 <ProgramLayout
-  description={`${programs.fll.name} at the ${site.name}: teams of ${programs.fll.ages}-year-olds build a LEGO robot, research a real problem, and take both to competition.`}
+  description={`${programs.fll.name} at the ${site.name}: teams of ${programs.fll.ages}-year-olds build a LEGO® robot, research a real problem, and take both to competition.`}
   ogImage={ogFll}
   ogImageAlt="The South Central STEM Collective logo over a student-built LEGO robot, captioned “FIRST LEGO League”"
   program="fll"
@@ -57,18 +57,11 @@ const latest = teamPhotos[0];
   <Section atmosphere="numeral" index={1}>
     <Fragment slot="title">What the program is</Fragment>
     <Fragment slot="intro">
-      FLL introduces science, technology, engineering, and math (STEM) to children through fun,
-      exciting hands-on learning. Participants gain real-world problem-solving experiences through a
-      guided, global robotics program, helping today&rsquo;s students and teachers build a better
-      future together.
-    </Fragment>
-
-    <p class="measure">
       Every season <span class="italic">FIRST®</span> sets a theme, and teams around the world work the
       same challenge at the same time. Ours meet at the workspace in downtown Chambersburg, alongside
       the high-school <a href={programs.frc.href}>{programs.frc.name}</a> team &mdash; same mentors, same
       tools, smaller robots.
-    </p>
+    </Fragment>
   </Section>
 
   <Section atmosphere="band">
@@ -81,14 +74,14 @@ const latest = teamPhotos[0];
     <FeatureGrid columns={3}>
       <FeatureCard icon="robot-face">
         <Fragment slot="title">The robot game</Fragment>
-        Design, build, and program a LEGO® robot to run missions on a themed table, then send it out alone
-        for a two and a half minute match.
+        Design, build, and program a LEGO® robot to run missions on a themed table, then run it solo in
+        a 2½-minute match.
       </FeatureCard>
 
       <FeatureCard icon="bulb">
         <Fragment slot="title">The innovation project</Fragment>
-        Research a real problem connected to the season&rsquo;s theme, work out a solution, and present
-        it to judges the same way an engineer would to a client.
+        Research a real problem connected to the season&rsquo;s theme, work out a solution, and pitch
+        it to judges the way an engineer pitches a client.
       </FeatureCard>
 
       <FeatureCard icon="users-group">
@@ -134,7 +127,7 @@ const latest = teamPhotos[0];
     <CtaBanner>
       <Fragment slot="title">Start here</Fragment>
       No experience needed, and no LEGO® collection required — the robots, the tools, and the mentors
-      are ours. Tell us your student&rsquo;s age and we will tell you what the next season looks like.
+      are ours. Tell us your student&rsquo;s age and we&rsquo;ll tell you what the next season looks like.
       <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
       <Button
         class="external-link"
