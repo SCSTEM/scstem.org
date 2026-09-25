@@ -4,7 +4,8 @@ https://scstem-org.pages.dev/*
 https://*scstem-org.pages.dev/*
   X-Robots-Tag: noindex
 
-https://staging.scstem.org/*
+# Every subdomain (staging, astro, …) is a preview; only the apex is production.
+https://*.scstem.org/*
   X-Robots-Tag: noindex
 
 # Astro fingerprints every file under /_astro/, so a changed file gets a new URL.
