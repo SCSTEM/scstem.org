@@ -4,8 +4,8 @@ minimum_release_age = "7d"
 npm.package_manager = "pnpm"
 
 [tools]
-node = "26.7.0"
-pnpm = "11.24.0"
+node = "26.9.0"
+pnpm = "12.5.1"
 
 "npm:agent-browser" = "0.38.1"
 
