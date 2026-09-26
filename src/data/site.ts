@@ -124,12 +124,21 @@ export const site = {
   },
 } as const;
 
+/**
+ * A page's site-root-relative path. Pages build to `<path>/index.html`, which Cloudflare Pages
+ * serves at the trailing-slash form and 308-redirects to from the bare one, so an internal link
+ * carries the slash and the type rejects one without it.
+ */
+export type PagePath = "/" | `/${string}/`;
+
 /** A program's facts. Flat, like the content schemas. */
 interface Program {
   ages?: string;
-  href: string;
+  href: PagePath;
   name: string;
   shortName: string;
+  /** The year the team formed. */
+  since?: number;
   teamName?: string;
   /** The team's FIRST-issued number. */
   teamNumber?: number;
@@ -152,21 +161,23 @@ export const programs = {
   sc2: {
     name: "South Central STEM Collective",
     shortName: "SC2",
-    href: "/programs",
+    href: "/programs/",
   },
   frc: {
     name: "FIRST Robotics Competition",
     shortName: "FRC",
     teamName: "Biohazard",
     teamNumber: 4050,
+    /** Formed as a 4-H club, the team is also where the organization's own history starts. */
+    since: 2012,
     ages: "14–18",
-    href: "/programs/frc",
+    href: "/programs/frc/",
   },
   fll: {
     name: "FIRST LEGO League",
     shortName: "FLL",
     ages: "9–16",
-    href: "/programs/fll",
+    href: "/programs/fll/",
   },
 } as const satisfies Record<ProgramKey, Program>;
 
@@ -180,7 +191,7 @@ export type ProgramTheme = Exclude<ProgramKey, "sc2">;
 
 /** A destination and the text that links to it. */
 interface Route {
-  readonly href: string;
+  readonly href: PagePath;
   readonly label: string;
 }
 
@@ -206,13 +217,13 @@ export interface NavLink extends Route {
  * are named here and spread into `primary` below, so a link never has to be found by index or
  * re-typed at the call site.
  */
-const calendar = { label: "Calendar", href: "/calendar/sc2" } as const;
-const donate = { label: "Donate", href: "/donate" } as const;
-const sponsors = { label: "Sponsors", href: "/sponsors" } as const;
-const about = { label: "About", href: "/about" } as const;
+const calendar = { label: "Calendar", href: "/calendar/sc2/" } as const;
+const donate = { label: "Donate", href: "/donate/" } as const;
+const sponsors = { label: "Sponsors", href: "/sponsors/" } as const;
+const about = { label: "About", href: "/about/" } as const;
 const programsHub = { label: "Programs", href: programs.sc2.href } as const;
-const robots = { label: "Robots", href: `${programs.frc.href}/robots` } as const;
-const contact = { label: "Contact", href: "/contact" } as const;
+const robots = { label: "Robots", href: `${programs.frc.href}robots/` } as const;
+const contact = { label: "Contact", href: "/contact/" } as const;
 
 /** The Programs disclosure in the desktop header. */
 const programsPanel = [
@@ -247,7 +258,7 @@ export const nav = {
   sponsors,
 
   /** The primary call to action, in the header and at the foot of the mobile sheet. */
-  cta: { label: "Get involved", href: "/get-involved" },
+  cta: { label: "Get involved", href: "/get-involved/" },
 } as const satisfies {
   about: Route;
   calendar: Route;

@@ -2,21 +2,21 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
-import ogFll from "@/assets/og/fll.jpg";
-import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Section from "@/components/ui/Section.astro";
+import { ogCards } from "@/data/ogCards";
 import { programPhotos } from "@/data/programPhotos";
 import { nav, programs, site } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
 import { PHOTO_QUALITY } from "@/lib/images";
-import { breadcrumbs, programTrail } from "@/lib/jsonld";
+import { programTrail } from "@/lib/jsonld";
 
 /**
  * The copy is limited to what the site can stand behind: what the program is, the three parts
@@ -32,13 +32,11 @@ const latest = teamPhotos[0];
 
 <ProgramLayout
   description={`${programs.fll.name} at the ${site.name}: teams of ${programs.fll.ages}-year-olds build a LEGO® robot, research a real problem, and take both to competition.`}
-  ogImage={ogFll}
-  ogImageAlt="The South Central STEM Collective logo over a student-built LEGO robot, captioned “FIRST LEGO League”"
+  og={ogCards.fll}
   program="fll"
   title="FIRST LEGO League"
+  trail={programTrail("fll")}
 >
-  <JsonLd data={breadcrumbs(programTrail("fll"))} slot="head" />
-
   <Hero>
     <HeroImage alt={programPhotos.fll.alt} slot="media" src={programPhotos.fll.image} />
 
@@ -48,7 +46,7 @@ const latest = teamPhotos[0];
       Where <span class="highlight-swipe">building</span> turns into engineering
     </Fragment>
 
-    <span class="italic">FIRST®</span> LEGO® League is where most of our students start: a small team,
+    <FirstMark /> LEGO® League is where most of our students start: a small team,
     a LEGO® robot, a table full of missions, and a real problem to go solve.
 
     <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
@@ -57,7 +55,7 @@ const latest = teamPhotos[0];
   <Section atmosphere="numeral" index={1}>
     <Fragment slot="title">What the program is</Fragment>
     <Fragment slot="intro">
-      Every season <span class="italic">FIRST®</span> sets a theme, and teams around the world work the
+      Every season <FirstMark /> sets a theme, and teams around the world work the
       same challenge at the same time. Ours meet at the workspace in downtown Chambersburg, alongside
       the high-school <a href={programs.frc.href}>{programs.frc.name}</a> team &mdash; same mentors, same
       tools, smaller robots.
@@ -130,7 +128,7 @@ const latest = teamPhotos[0];
       are ours. Tell us your student&rsquo;s age and we&rsquo;ll tell you what the next season looks like.
       <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
       <Button href={site.urls.firstInspires} size="lg" slot="actions" variant="outline">
-        About FIRST®
+        About <FirstMark />
       </Button>
     </CtaBanner>
   </Section>

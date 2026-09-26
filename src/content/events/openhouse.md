@@ -8,7 +8,7 @@ description: Meet the students and mentors behind SC2's robotics and STEM progra
 heroImage: ../../assets/events/morethanrobots.webp
 heroImageAlt: Collage of photos capturing some of the many ways students can get involved including robot design, photography, video, and more.
 ctaLabel: Get involved
-ctaHref: /get-involved
+ctaHref: /get-involved/
 faq:
   - when-is-the-open-house
   - what-age-to-join

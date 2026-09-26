@@ -1,5 +1,6 @@
 ---
 import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
 import { programPhotos } from "@/data/programPhotos";
 import { type ProgramTheme, programs } from "@/data/site";
 
@@ -26,6 +27,6 @@ const titleRest = program === "fll" ? "LEGO® League" : "Robotics Competition";
   image={photo.image}
   imageAlt={photo.alt}
 >
-  <Fragment slot="title"><span class="italic">FIRST®</span> {titleRest}</Fragment>
+  <Fragment slot="title"><FirstMark /> {titleRest}</Fragment>
   <slot />
 </FeatureCard>

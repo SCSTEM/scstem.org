@@ -2,8 +2,6 @@
 import { getCollection, render } from "astro:content";
 
 import pits from "@/assets/frc/robots/2021-robot-pits.webp";
-import ogFrc from "@/assets/og/frc.jpg";
-import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
@@ -11,9 +9,10 @@ import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import RobotFigure from "@/components/ui/RobotFigure.astro";
 import Section from "@/components/ui/Section.astro";
+import { ogCards } from "@/data/ogCards";
 import { nav, programs } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
-import { breadcrumbs, programTrail } from "@/lib/jsonld";
+import { programTrail } from "@/lib/jsonld";
 
 /** The `frcRobots` collection, newest first, as a list so every robot is in view and indexed. */
 const robots = await Promise.all(
@@ -25,16 +24,11 @@ const robots = await Promise.all(
 
 <ProgramLayout
   description="Every Biohazard competition robot since 2019 — Toxic Silver, Robo Fett, O'Mega, Viper, and Troubleclef — with the games they played and the awards they won."
-  ogImage={ogFrc}
-  ogImageAlt="The South Central STEM Collective logo over the Biohazard drive team at competition, captioned “FIRST Robotics Competition”"
+  og={ogCards.frc}
   program="frc"
   title="Our robots"
+  trail={programTrail("frc", { name: nav.robots.label, path: nav.robots.href })}
 >
-  <JsonLd
-    data={breadcrumbs(programTrail("frc", { name: nav.robots.label, path: nav.robots.href }))}
-    slot="head"
-  />
-
   <Hero>
     <HeroImage
       alt="Biohazard's pit crew working on the robot between matches"

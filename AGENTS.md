@@ -39,7 +39,7 @@ Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script
 - `src/layouts/` — `BaseLayout` (chrome + SEO), `ProgramLayout`, `EventLayout`.
 - `src/components/ui/` — composed, site-level components. `ui/primitives/` — low-level,
   shadcn-convention, zero-JS-by-default.
-- `src/content/` — markdown content collections (sponsors, events, faq, news, robots, photos).
+- `src/content/` — markdown content collections (sponsors, events, faq, robots, photos).
 - `src/data/site.ts` — org facts, external URLs, calendar and analytics IDs. No hardcoded constants.
 - `functions/` — Cloudflare Pages Functions (form submit, calendar proxy). Own tsconfig.
 - `tools/` — repo checks, asset pipelines, and CI helpers. Own tsconfig.

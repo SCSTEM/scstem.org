@@ -1,7 +1,5 @@
 ---
-import ogDonate from "@/assets/og/donate.jpg";
 import drillBits from "@/assets/sc2/drill-bits.webp";
-import JsonLd from "@/components/JsonLd.astro";
 import ContactForm from "@/components/ui/ContactForm.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
@@ -9,9 +7,9 @@ import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
+import { ogCards } from "@/data/ogCards";
 import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { breadcrumbs } from "@/lib/jsonld";
 
 /**
  * DESIGN.md §2 allows one action accent per view, so every card is
@@ -27,12 +25,10 @@ const mailingAddress = [
 
 <BaseLayout
   description="Give by mail, online through PayPal Giving Fund, in kind, or as a corporate sponsor. Every route supports STEM programs in Franklin County."
-  ogImage={ogDonate}
-  ogImageAlt="The South Central STEM Collective logo over a rack of drill bits, captioned “Donate”"
+  og={ogCards.donate}
   title="Donate"
+  trail={[{ name: nav.donate.label, path: nav.donate.href }]}
 >
-  <JsonLd data={breadcrumbs([{ name: nav.donate.label, path: nav.donate.href }])} slot="head" />
-
   <Hero>
     <HeroImage alt="A rack of drill bits on the workshop wall" slot="media" src={drillBits} />
 

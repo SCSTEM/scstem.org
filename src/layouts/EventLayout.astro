@@ -1,7 +1,6 @@
 ---
 import { type CollectionEntry, getEntries, render } from "astro:content";
 
-import ogEvents from "@/assets/og/events.jpg";
 import JsonLd from "@/components/JsonLd.astro";
 import Countdown from "@/components/ui/Countdown.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
@@ -12,11 +11,13 @@ import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import Section from "@/components/ui/Section.astro";
+import { eventRoutes } from "@/data/events";
+import { ogCards } from "@/data/ogCards";
 import { programPhotos } from "@/data/programPhotos";
 import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { type Breadcrumb, breadcrumbs, event as eventJsonLd, faqPage } from "@/lib/jsonld";
-import { absoluteUrl, pageUrl } from "@/lib/links";
+import { type Breadcrumb, event as eventJsonLd, faqPage } from "@/lib/jsonld";
+import { absoluteUrl } from "@/lib/links";
 
 /**
  * One layout for every seasonal event, so a new season is an edit to one markdown file: the hero,
@@ -25,7 +26,10 @@ import { absoluteUrl, pageUrl } from "@/lib/links";
  */
 interface Props {
   event: CollectionEntry<"events">;
-  /** The trail above this page. Home and the page itself are added here. */
+  /**
+   * The trail above this page, below Home; the page itself is appended here. Empty for an event
+   * published at the site root.
+   */
   trail?: readonly Breadcrumb[];
 }
 
@@ -69,7 +73,11 @@ const media = [
   ...hintUrls.map((url, index) => ({ url, label: hintLabels[index] ?? "", icon: "link" })),
 ];
 
-const url = pageUrl(Astro.url.pathname);
+const path = eventRoutes.get(event.id);
+if (path === undefined) {
+  throw new Error(`events/${event.id} has no route in src/data/events.ts.`);
+}
+const url = absoluteUrl(path);
 
 const details = [
   { label: "Location", value: data.locationName ?? site.location.name },
@@ -84,10 +92,10 @@ const details = [
 
 <BaseLayout
   description={data.description}
-  ogImage={ogEvents}
-  ogImageAlt="The South Central STEM Collective logo over a collage of students at work, captioned “Events”"
+  og={ogCards.events}
   theme={theme}
   title={data.title}
+  trail={[...trail, { name: data.title, path }]}
 >
   <Fragment slot="head">
     <JsonLd
@@ -113,11 +121,6 @@ const details = [
             })),
           )}
         />
-      )
-    }
-    {
-      trail.length > 0 && (
-        <JsonLd data={breadcrumbs([...trail, { name: data.title, path: Astro.url.pathname }])} />
       )
     }
   </Fragment>

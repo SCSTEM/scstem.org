@@ -2,8 +2,7 @@
 import type { SeoProps } from "@/lib/seo";
 
 import { site } from "@/data/site";
-import { isImageMetadata } from "@/lib/images";
-import { absoluteUrl, pageUrl } from "@/lib/links";
+import { absoluteUrl } from "@/lib/links";
 import { color, programColor } from "@/lib/tokens";
 
 /**
@@ -13,33 +12,20 @@ import { color, programColor } from "@/lib/tokens";
  */
 type Props = SeoProps;
 
-const {
-  title,
-  description,
-  ogImage = site.ogImage.path,
-  ogImageAlt,
-  noindex = false,
-  theme,
-} = Astro.props;
+const { title, description, og, noindex = false, theme } = Astro.props;
 
 /** The homepage is the site; anywhere else is a page *of* it. */
 const isHome = Astro.url.pathname === "/";
 const fullTitle = isHome ? site.name : site.titleTemplate.replace("%s", title);
 
-const canonicalUrl = pageUrl(Astro.url.pathname);
+/** `trailingSlash: "always"` makes the pathname the trailing-slash form a page is served at. */
+const canonicalUrl = absoluteUrl(Astro.url.pathname);
 
-const imageUrl = absoluteUrl(isImageMetadata(ogImage) ? ogImage.src : ogImage);
-
-/** Dimensions are known for an imported asset and for the site default; alt only when given. */
-const isDefaultImage = ogImage === site.ogImage.path;
-const imageSize = isImageMetadata(ogImage) ? ogImage : isDefaultImage ? site.ogImage : undefined;
-const imageAlt = ogImageAlt ?? (isDefaultImage ? site.ogImage.alt : undefined);
-
-if (imageAlt === undefined) {
-  throw new Error(
-    `${Astro.url.pathname}: a page passing its own ogImage must pass ogImageAlt (og:image:alt).`,
-  );
-}
+const card =
+  og === undefined
+    ? { ...site.ogImage, src: site.ogImage.path }
+    : { alt: og.alt, height: og.image.height, src: og.image.src, width: og.image.width };
+const imageUrl = absoluteUrl(card.src);
 
 /** Browser chrome follows the page's action accent, read from the same tokens the CSS ships. */
 const themeColor = theme === undefined ? color("primary") : programColor(theme, "primary");
@@ -62,15 +48,9 @@ const themeColor = theme === undefined ? color("primary") : programColor(theme, 
 <meta content={site.name} property="og:site_name" />
 <meta content="en_US" property="og:locale" />
 <meta content={imageUrl} property="og:image" />
-<meta content={imageAlt} property="og:image:alt" />
-{
-  imageSize !== undefined && (
-    <>
-      <meta content={String(imageSize.width)} property="og:image:width" />
-      <meta content={String(imageSize.height)} property="og:image:height" />
-    </>
-  )
-}
+<meta content={card.alt} property="og:image:alt" />
+<meta content={String(card.width)} property="og:image:width" />
+<meta content={String(card.height)} property="og:image:height" />
 
 <meta content="summary_large_image" name="twitter:card" />
 <meta content={fullTitle} name="twitter:title" />

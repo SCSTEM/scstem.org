@@ -37,7 +37,7 @@ engineering challenges.
 ## What is _FIRST®_ Robotics Competition?
 
 _FIRST®_ Robotics Competition is a varsity sport for the mind: high-school teams build robots and
-compete against teams from around the world. [Meet Biohazard](/programs/frc) to see what a season
+compete against teams from around the world. [Meet Biohazard](/programs/frc/) to see what a season
 on the team looks like.
 
 ## Meeting schedule
@@ -50,4 +50,4 @@ on the team looks like.
 ## Can't make it?
 
 Interested in joining Biohazard but can't attend kickoff? We'd still love to have you on the team!
-Fill out the [get involved](/get-involved) form and we'll be in touch.
+Fill out the [get involved](/get-involved/) form and we'll be in touch.

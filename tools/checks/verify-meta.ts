@@ -7,7 +7,8 @@ import { z } from "astro/zod";
  * print, or that an `og:image` resolves to a file that exists. Those only become visible in
  * `dist/`, which is why this runs after the build rather than inside `pnpm check`.
  *
- * Redirect pages are skipped: Astro writes them, they carry `noindex`, and none of this applies.
+ * Redirect pages are skipped for the head checks — Astro writes them, they carry `noindex`, and
+ * none of those apply — but not for the link check, since their target is a route of ours.
  *
  *     pnpm build && node tools/checks/verify-meta.ts
  */
@@ -48,6 +49,19 @@ const contentsOf = (html: string, key: string, value: string): string[] =>
     .flatMap((tag) => attribute(tag, "content") ?? attribute(tag, "href") ?? []);
 
 const count = (html: string, pattern: RegExp): number => [...html.matchAll(pattern)].length;
+
+/**
+ * Root-relative hrefs to a page without its trailing slash. Pages build to `<path>/index.html`,
+ * which Cloudflare Pages 308-redirects to from the bare path, so each one costs a round trip. A
+ * path whose last segment has a dot is a file (`/site.webmanifest`, an asset) and is exempt.
+ */
+const slashless = (html: string): string[] => [
+  ...new Set(
+    [...html.matchAll(/\bhref="(\/(?!\/)[^"?#]*)/gu)].flatMap(([, path = ""]) =>
+      path.endsWith("/") || /\.[^/]*$/u.test(path) ? [] : [path],
+    ),
+  ),
+];
 
 /** `dist/programs/frc/index.html` → `/programs/frc/`. */
 const routeOf = (path: string): string =>
@@ -103,6 +117,11 @@ const unique = (
 
 for (const { html, route } of pages) {
   const fail = (message: string) => failures.push(`${route}: ${message}`);
+
+  const unslashed = slashless(html);
+  if (unslashed.length > 0) {
+    fail(`links to a page without its trailing slash: ${unslashed.join(", ")}`);
+  }
 
   if (/<meta[^>]*\bhttp-equiv="refresh"/u.test(html)) {
     continue;

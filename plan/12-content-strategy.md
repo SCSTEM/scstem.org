@@ -13,7 +13,7 @@ Technical SEO (Phases 05/10) makes the site _eligible_ to rank. Content is what 
 - Rewrite page copy against DESIGN.md voice: specific over generic (numbers of students, seasons, awards; real names with permission), one clear next action per page. The overhaul deliberately ported legacy copy verbatim — this is where it gets good.
 - Audit headings as search intents: each page's h1/h2s should answer a question someone actually asks.
 
-### News/updates cadence (`news` collection is already scaffolded)
+### News/updates cadence
 
 - Publish 1–2 posts/month: competition recaps, sponsor spotlights (they'll share/link them — genuine backlinks), season announcements, student stories (with media releases).
 - Add `news` index + detail routes, RSS feed, `Article` JSON-LD, news entries in llms.txt when the collection goes live.

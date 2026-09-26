@@ -1,5 +1,5 @@
 ---
-import type { SeoProps } from "@/lib/seo";
+import type { Placement, SeoProps } from "@/lib/seo";
 
 import Analytics from "@/components/Analytics.astro";
 import JsonLd from "@/components/JsonLd.astro";
@@ -7,7 +7,7 @@ import Seo from "@/components/Seo.astro";
 import Footer from "@/components/ui/Footer.astro";
 import Navbar from "@/components/ui/Navbar.astro";
 import { site } from "@/data/site";
-import { organization } from "@/lib/jsonld";
+import { breadcrumbs, organization } from "@/lib/jsonld";
 import "@/styles/global.css";
 
 /**
@@ -15,13 +15,15 @@ import "@/styles/global.css";
  * each page: `title` and `description` are required, so a page cannot ship without them.
  *
  * The props are `Seo`'s, forwarded to it; `theme` also lands on `<html>` as `data-theme`, which
- * remaps the action accent for a program page.
+ * remaps the action accent for a program page. `trail` is the page's breadcrumb trail, emitted
+ * here so no page hand-writes its own `BreadcrumbList`.
  *
  * Slots: the default slot is the page body; `head` takes per-page structured data.
  */
-type Props = SeoProps;
+type Props = Omit<SeoProps, "noindex"> & Placement;
 
-const { theme } = Astro.props;
+const { trail = [], ...seo } = Astro.props;
+const { theme } = seo;
 ---
 
 <!doctype html>
@@ -31,7 +33,7 @@ const { theme } = Astro.props;
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="dark" name="color-scheme" />
 
-    <Seo {...Astro.props} />
+    <Seo {...seo} />
 
     <link href={site.icons.favicon} rel="icon" sizes="32x32" />
     <link href={site.icons.svg} rel="icon" type="image/svg+xml" />
@@ -39,6 +41,7 @@ const { theme } = Astro.props;
     <link href="/site.webmanifest" rel="manifest" />
 
     <JsonLd data={organization} />
+    {trail.length > 0 && <JsonLd data={breadcrumbs(trail)} />}
     <slot name="head" />
   </head>
   <!-- A flex column so `main` absorbs the slack and the footer band reaches the bottom of a

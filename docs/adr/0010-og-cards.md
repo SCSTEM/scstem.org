@@ -28,8 +28,8 @@ the output is committed. `pnpm assets:og-fonts` is the one-time font step, and
 
 - One default at `public/og/default.jpg` — it is named by `site.ogImage`, which
   `astro.config.ts` loads through jiti and so cannot import an asset.
-- Six section cards in `src/assets/og/`, imported by the pages that pass them to `Seo` as
-  `ogImage`. Importing rather than pathing is what gets `og:image:width`/`height` emitted, since
+- Six section cards in `src/assets/og/`, imported by `src/data/ogCards.ts`, which pairs each with
+  its alt; pages pass an entry to `Seo` as `og`. Importing rather than pathing is what gets `og:image:width`/`height` emitted, since
   `Seo` reads them off the `ImageMetadata`.
 - **JPEG at q82, mozjpeg.** 34–52 KB per card against 456 KB for the PNG it replaces. No scraper
   has ever wanted a photographic card in PNG.
@@ -52,7 +52,7 @@ the output is committed. `pnpm assets:og-fonts` is the one-time font step, and
 
 - Regenerating needs Python with `fonttools` and `brotli`, plus fontconfig. Both scripts document
   it and neither runs in CI.
-- A new section wants a new card: add it to the `cards` list, run `pnpm assets:og`, and pass it
-  as `ogImage` with an `ogImageAlt` — `Seo` throws at build without the alt.
+- A new section wants a new card: add it to the `cards` list, run `pnpm assets:og`, and add it
+  with its alt to `src/data/ogCards.ts` — the `og` prop's type has no way to omit the alt.
 - `tools/checks/verify-meta.ts` asserts every page's `og:image` is absolute and resolves to a
   built file, so a card that is renamed and not rewired fails CI rather than a card debugger.

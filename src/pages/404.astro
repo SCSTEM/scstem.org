@@ -6,7 +6,7 @@ import CardDescription from "@/components/ui/primitives/CardDescription.astro";
 import CardHeader from "@/components/ui/primitives/CardHeader.astro";
 import CardTitle from "@/components/ui/primitives/CardTitle.astro";
 import Section from "@/components/ui/Section.astro";
-import { nav } from "@/data/site";
+import { nav, programs } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 /**
@@ -18,7 +18,10 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 /** Titles and hrefs are the nav inventory's, so a renamed or moved route follows here. */
 const destinations = [
   { ...nav.programs, description: "FIRST LEGO League and FIRST Robotics Competition." },
-  { ...nav.about, description: "Who we are and what we’ve built since 2012." },
+  {
+    ...nav.about,
+    description: `Who we are and what we’ve built since ${String(programs.frc.since)}.`,
+  },
   { ...nav.sponsors, description: "The businesses that make this possible." },
   { ...nav.contact, description: "Ask us anything." },
 ];

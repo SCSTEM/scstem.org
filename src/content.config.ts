@@ -96,24 +96,6 @@ const faq = defineCollection({
   }),
 });
 
-/**
- * No routes yet. `template.md` is a real entry carrying
- * `draft: true`, deliberately: an excluded-by-glob template drifts from the schema silently and
- * leaves the collection empty, which warns on every build. As an entry it is schema-validated
- * and still never renders.
- */
-const news = defineCollection({
-  loader: glob({ base: "src/content/news", pattern: "**/*.md" }),
-  schema: ({ image }) =>
-    z.strictObject({
-      title: z.string(),
-      date: z.date(),
-      description: z.string(),
-      heroImage: image().optional(),
-      draft: z.boolean().default(false),
-    }),
-});
-
 const frcRobots = defineCollection({
   loader: glob({ base: "src/content/frc/robots", pattern: "**/*.md" }),
   schema: ({ image }) =>
@@ -164,7 +146,6 @@ export const collections = {
   sponsors,
   events,
   faq,
-  news,
   frcRobots,
   frcTeamPhotos,
   fllTeamPhotos,

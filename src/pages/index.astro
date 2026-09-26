@@ -17,6 +17,7 @@ import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
@@ -56,7 +57,7 @@ const lockupArt = await renderAt(firstLockup, 640);
 const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
 ---
 
-<BaseLayout description={site.description} title="Home">
+<BaseLayout description={site.description} title="Home" trail={[]}>
   <JsonLd data={webSite} slot="head" />
 
   <Hero>
@@ -107,12 +108,11 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
   </Section>
 
   <Section atmosphere="band">
-    <Fragment slot="title">Who is <span class="italic">FIRST®</span>?</Fragment>
+    <Fragment slot="title">Who is <FirstMark />?</Fragment>
     <Fragment slot="intro">
-      Both of our teams belong to <span class="italic">FIRST®</span>, a global nonprofit that builds
-      science and technology leaders through teamwork and competition. Each year <span
-        class="italic">FIRST®</span
-      > releases a new challenge; teams and their mentors build a robot to meet it, then compete against
+      Both of our teams belong to <FirstMark />, a global nonprofit that builds
+      science and technology leaders through teamwork and competition. Each year <FirstMark /> releases
+      a new challenge; teams and their mentors build a robot to meet it, then compete against
       teams from around the world.
     </Fragment>
 
@@ -155,7 +155,7 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
         <p class="mt-3 measure">
           The goal is a robot, but you don&rsquo;t have to be an engineer. Future rocket scientist
           or aspiring artist, there&rsquo;s a place for you here, and a mentor ready to help you
-          grow. <span class="italic">FIRST®</span> calls it <a
+          grow. <FirstMark /> calls it <a
             class="external-link"
             href={site.urls.moreThanRobots}
             rel="noopener">More than Robots</a
@@ -211,7 +211,7 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
 
       <FeatureCard image={award} imageAlt="Team members receiving an award at competition">
         <Fragment slot="title">Scholarships and career opportunities</Fragment>
-        A <span class="italic">FIRST®</span> team opens doors to scholarships and careers you can&rsquo;t
+        A <FirstMark /> team opens doors to scholarships and careers you can&rsquo;t
         reach anywhere else. Many of our alumni took the skills they built here into STEM careers.
       </FeatureCard>
 
@@ -228,7 +228,7 @@ const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
 
   <Section atmosphere="band">
     <Fragment slot="title">
-      Meet our high school team, learn about <span class="italic">FIRST®</span>
+      Meet our high school team, learn about <FirstMark />
     </Fragment>
 
     <VideoLink

@@ -130,6 +130,13 @@ export default defineConfig({
   outDir,
   output: "static",
   site: site.url,
+  /**
+   * Pages build to `<path>/index.html`, which Cloudflare Pages serves at `<path>/`. Matching that
+   * here makes `Astro.url.pathname` the served form, which canonical URLs are read from. `astro
+   * dev` and `astro preview` answer a bare page path with a 404 where Cloudflare 308-redirects it;
+   * endpoints with an extension (`/llms.txt`, `/site.webmanifest`) are exempt.
+   */
+  trailingSlash: "always",
   vite: {
     plugins: [tailwindcss()],
   },

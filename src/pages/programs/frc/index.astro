@@ -5,11 +5,10 @@ import { getCollection } from "astro:content";
 import collage from "@/assets/events/morethanrobots.webp";
 import biohazardLockup from "@/assets/frc/biohazard-lockup.svg";
 import heroVideoPoster from "@/assets/frc/hero-video-poster.webp";
-import ogFrc from "@/assets/og/frc.jpg";
-import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroVideo from "@/components/ui/HeroVideo.astro";
 import Button from "@/components/ui/primitives/Button.astro";
@@ -19,9 +18,10 @@ import RobotFigure from "@/components/ui/RobotFigure.astro";
 import Section from "@/components/ui/Section.astro";
 import StatBand from "@/components/ui/StatBand.astro";
 import VideoLink from "@/components/ui/VideoLink.astro";
+import { ogCards } from "@/data/ogCards";
 import { nav, programs, site } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
-import { breadcrumbs, programTrail } from "@/lib/jsonld";
+import { programTrail } from "@/lib/jsonld";
 
 /** The newest season whose robot has been photographed, featured under "Check out our robots". */
 const featured = (await getCollection("frcRobots"))
@@ -31,11 +31,14 @@ if (featured?.image === undefined) {
   throw new Error("frcRobots: no entry has an image to feature on the FRC page.");
 }
 
+/** Counted at build time, so the figure advances with the first deploy of each year. */
+const years = new Date().getFullYear() - programs.frc.since;
+
 const stats = [
   {
-    value: "12+ years",
+    value: `${String(years)}+ years`,
     label: "FIRST Robotics Competition",
-    description: "An FRC team since 2012, and not slowing down.",
+    description: `An FRC team since ${String(programs.frc.since)}, and not slowing down.`,
   },
   {
     value: "10+ mentors",
@@ -52,14 +55,12 @@ const stats = [
 ---
 
 <ProgramLayout
-  description={`Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName} has been south-central Pennsylvania's FIRST Robotics Competition team since 2012 — nine robots, ten-plus mentors, and room for you.`}
-  ogImage={ogFrc}
-  ogImageAlt="The South Central STEM Collective logo over the Biohazard drive team at competition, captioned “FIRST Robotics Competition”"
+  description={`Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName} has been south-central Pennsylvania's FIRST Robotics Competition team since ${String(programs.frc.since)} — nine robots, ten-plus mentors, and room for you.`}
+  og={ogCards.frc}
   program="frc"
   title="Biohazard — FIRST Robotics Competition"
+  trail={programTrail("frc")}
 >
-  <JsonLd data={breadcrumbs(programTrail("frc"))} slot="head" />
-
   <Hero>
     <HeroVideo
       alt="The view from Biohazard's driver station, out over a packed competition field"
@@ -81,9 +82,9 @@ const stats = [
       Welcome to the <span class="highlight-swipe">next generation</span>
     </Fragment>
 
-    Thinkers, engineers, scientists, artists, and dreamers. Since 2012, Biohazard has been
-    south-central Pennsylvania&rsquo;s high-school robotics team, and we need you to take it to the
-    next level.
+    Thinkers, engineers, scientists, artists, and dreamers. Since {programs.frc.since}, Biohazard
+    has been south-central Pennsylvania&rsquo;s high-school robotics team, and we need you to take
+    it to the next level.
 
     <Button href={nav.cta.href} size="lg" slot="actions">Join the revolution</Button>
   </Hero>
@@ -91,7 +92,7 @@ const stats = [
   <Section atmosphere="numeral" index={1}>
     <Fragment slot="title">The hardest fun you&rsquo;ll ever have</Fragment>
     <Fragment slot="intro">
-      <span class="italic">FIRST®</span> Robotics Competition (FRC) is a &ldquo;Sport for the Mind&rdquo;:
+      <FirstMark /> Robotics Competition (FRC) is a &ldquo;Sport for the Mind&rdquo;:
       creativity, determination, and teamwork win, against teams from around the world.
     </Fragment>
 
@@ -145,7 +146,7 @@ const stats = [
 
   <Section atmosphere="band">
     <Fragment slot="title">
-      Meet the team, learn about <span class="italic">FIRST®</span>
+      Meet the team, learn about <FirstMark />
     </Fragment>
 
     <VideoLink

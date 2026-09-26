@@ -4,8 +4,8 @@ import { getCollection } from "astro:content";
 
 import sc2Logo from "@/assets/brand/logo-color.svg";
 import biohazardLogo from "@/assets/frc/biohazard-logo.svg";
-import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import PhotoTimeline from "@/components/ui/PhotoTimeline.astro";
@@ -13,9 +13,8 @@ import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
 import StatBand from "@/components/ui/StatBand.astro";
 import { programPhotos } from "@/data/programPhotos";
-import { nav } from "@/data/site";
+import { nav, programs } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { breadcrumbs } from "@/lib/jsonld";
 
 /**
  * The layout is DESIGN.md §5's single flowing column with photo groupings as interleaved
@@ -48,11 +47,10 @@ const biohazardStats = [
 ---
 
 <BaseLayout
-  description="How a 4-H robotics club founded in 2012 became a 501(c)(3) making STEM accessible across Franklin County, Pennsylvania."
+  description={`How a 4-H robotics club founded in ${String(programs.frc.since)} became a 501(c)(3) making STEM accessible across Franklin County, Pennsylvania.`}
   title="About"
+  trail={[{ name: nav.about.label, path: nav.about.href }]}
 >
-  <JsonLd data={breadcrumbs([{ name: nav.about.label, path: nav.about.href }])} slot="head" />
-
   <Hero>
     <HeroImage alt={programPhotos.sc2.alt} slot="media" src={programPhotos.sc2.image} />
 
@@ -79,10 +77,10 @@ const biohazardStats = [
       <div class="prose-copy">
         <h3>Biohazard</h3>
         <p>
-          Biohazard is a <span class="italic">FIRST®</span> Robotics Competition team, formed in 2012
-          by a small group of students and volunteers as a club under the local 4-H program office.
+          Biohazard is a <FirstMark /> Robotics Competition team, formed in {programs.frc.since} by
+          a small group of students and volunteers as a club under the local 4-H program office.
         </p>
-        <p>From 2012 to 2020, the team kept growing.</p>
+        <p>From {programs.frc.since} to 2020, the team kept growing.</p>
       </div>
 
       <Image
@@ -122,7 +120,7 @@ const biohazardStats = [
         said:
       </p>
       <blockquote>
-        The students of Biohazard 4050 are not only members of <span class="italic">FIRST®</span>,
+        The students of Biohazard 4050 are not only members of <FirstMark />,
         but are also members of the Franklin County (PA) 4-H Program. Their dual membership gives
         them a unique perspective and opportunities for local service and outreach within their
         community. The students&rsquo; dedication to each other and their commitment to their
@@ -187,9 +185,7 @@ const biohazardStats = [
           Students, parents, volunteers, and mentors work directly with their respective clubs
           <ul>
             <li>
-              Activities, competitions, external organizations (e.g. <span class="italic"
-                >FIRST®</span
-              >)
+              Activities, competitions, external organizations (e.g. <FirstMark />)
             </li>
             <li>Club-driven fundraising</li>
           </ul>

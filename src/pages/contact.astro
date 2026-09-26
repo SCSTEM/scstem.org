@@ -1,6 +1,5 @@
 ---
 import laptop from "@/assets/sc2/laptop.webp";
-import JsonLd from "@/components/JsonLd.astro";
 import ContactForm from "@/components/ui/ContactForm.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
@@ -13,7 +12,6 @@ import Section from "@/components/ui/Section.astro";
 import SocialLinks from "@/components/ui/SocialLinks.astro";
 import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { breadcrumbs } from "@/lib/jsonld";
 
 /** The sidebar uses the boxed title block DESIGN.md §2.9 sanctions for a contact page. */
 const fields = [
@@ -27,9 +25,8 @@ const fields = [
 <BaseLayout
   description="Questions about a program, a sponsorship, or getting your student started? Send the South Central STEM Collective a message."
   title="Contact"
+  trail={[{ name: nav.contact.label, path: nav.contact.href }]}
 >
-  <JsonLd data={breadcrumbs([{ name: nav.contact.label, path: nav.contact.href }])} slot="head" />
-
   <Hero>
     <HeroImage
       alt="A student working at a laptop in the South Central STEM Collective workspace"

@@ -1,4 +1,4 @@
-import { programs } from "@/data/site";
+import { type PagePath, programs } from "@/data/site";
 
 /**
  * Where each `events` entry is published: entry id to the path of the route that renders it.
@@ -9,7 +9,7 @@ import { programs } from "@/data/site";
  * catches the other direction, a path that stops matching its route, by link-checking
  * `dist/llms.txt` alongside the HTML.
  */
-export const eventRoutes: ReadonlyMap<string, string> = new Map([
-  ["openhouse", "/openhouse"],
-  ["frc-kickoff", `${programs.frc.href}/kickoff`],
+export const eventRoutes: ReadonlyMap<string, PagePath> = new Map<string, PagePath>([
+  ["openhouse", "/openhouse/"],
+  ["frc-kickoff", `${programs.frc.href}kickoff/`],
 ]);

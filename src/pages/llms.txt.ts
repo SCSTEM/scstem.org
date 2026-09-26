@@ -1,9 +1,9 @@
 import type { APIRoute } from "astro";
 
 import { eventRoutes } from "@/data/events";
-import { nav, programs, site } from "@/data/site";
+import { nav, type PagePath, programs, site } from "@/data/site";
 import { getVisibleEvents } from "@/lib/events";
-import { absoluteUrl, pageUrl } from "@/lib/links";
+import { absoluteUrl } from "@/lib/links";
 
 /**
  * The llms.txt convention (https://llmstxt.org): one plain-text map of the site, so an agent
@@ -22,7 +22,7 @@ import { absoluteUrl, pageUrl } from "@/lib/links";
 
 interface Entry {
   readonly description: string;
-  readonly href: string;
+  readonly href: PagePath;
   readonly title: string;
 }
 
@@ -37,7 +37,7 @@ const section = (heading: string, entries: readonly Entry[]): string | undefined
         `## ${heading}`,
         "",
         ...entries.map(
-          ({ title, href, description }) => `- [${title}](${pageUrl(href)}): ${description}`,
+          ({ title, href, description }) => `- [${title}](${absoluteUrl(href)}): ${description}`,
         ),
         "",
       ].join("\n");
@@ -73,7 +73,7 @@ export const GET: APIRoute = async () => {
       {
         title: programs.frc.name,
         href: programs.frc.href,
-        description: `Ages ${programs.frc.ages}. Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName}, competing since 2012.`,
+        description: `Ages ${programs.frc.ages}. Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName}, competing since ${String(programs.frc.since)}.`,
       },
       {
         title: "Competition robots",

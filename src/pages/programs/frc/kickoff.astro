@@ -1,22 +1,18 @@
 ---
-import { programs } from "@/data/site";
 import EventLayout from "@/layouts/EventLayout.astro";
 import { getVisibleEvent } from "@/lib/events";
+import { programTrail } from "@/lib/jsonld";
 
 /**
  * `/programs/frc/kickoff` is `src/content/events/frc-kickoff.md`; `hidden: true` there
- * retires it to the FRC page. See `src/pages/openhouse.astro` for why the redirect lives here.
+ * retires it to the FRC page, the last crumb of its trail. See `src/pages/openhouse.astro` for
+ * why the redirect lives here.
  */
+const trail = programTrail("frc");
 const event = await getVisibleEvent("frc-kickoff");
 if (event === undefined) {
-  return Astro.redirect(programs.frc.href);
+  return Astro.redirect(trail[1].path);
 }
 ---
 
-<EventLayout
-  {event}
-  trail={[
-    { name: "Programs", path: "/programs" },
-    { name: programs.frc.name, path: programs.frc.href },
-  ]}
-/>
+<EventLayout {event} {trail} />

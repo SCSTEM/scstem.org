@@ -160,8 +160,8 @@ one is a review blocker:
 6. **A `Button` with `href` renders an anchor** and inherits base-layer `a` styles; the recipe's
    `no-underline` covers it. Generalize the lesson: whenever a component can render a new element
    type, check it against `@layer base`.
-7. **A custom `ogImage` requires `ogImageAlt`** — `Seo.astro` throws at build without it. Write
-   the alt when you make the image.
+7. **A social card travels with its alt** — each is an `{ image, alt }` entry in
+   `src/data/ogCards.ts`, passed to a layout as `og`, so a card without alt is a type error.
 8. **Comments are rare.** No edit-history narration, no restating the adjacent code, no section
    banners. A comment earns its place only for a non-obvious constraint (see `AGENTS.md`).
 9. **Verify in the real browser.** Drive the chrome-devtools MCP (`.mcp.json`; Chrome lives in

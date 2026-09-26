@@ -29,9 +29,12 @@ interface Props {
 
 const { class: className } = Astro.props;
 
-const current = Astro.url.pathname.replace(/\/$/, "") || "/";
-/** A section is "current" for its children too, so /programs/frc lights up Programs. */
-const inSection = (href: string): boolean => current === href || current.startsWith(`${href}/`);
+const current = Astro.url.pathname;
+/**
+ * A section is "current" for its children too. Page paths end in `/`, so a section's href is a
+ * prefix of every page below it: /programs/frc/ lights up Programs.
+ */
+const inSection = (href: string): boolean => current.startsWith(href);
 
 /**
  * `as const` on the data gives each entry's `surfaces` a literal tuple type, so a direct

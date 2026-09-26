@@ -204,16 +204,11 @@ pnpm dlx sharp-cli@6.0.0 -i camera.jpg -o src/assets/<domain>/<name>.webp \
 Nothing enforces this; an unconverted master shows up as a slow build and a large diff
 (`docs/adr/0016`). Logos stay SVG or PNG (see "Add a sponsor").
 
-## News posts
-
-The `news` collection is scaffolded but has no routes yet. Copy `src/content/news/template.md`,
-and leave the template itself as `draft: true`.
-
 ## Where things live
 
 | What                                                 | Where                           |
 | ---------------------------------------------------- | ------------------------------- |
-| Sponsors, events, FAQ, robots, team photos, news     | `src/content/`                  |
+| Sponsors, events, FAQ, robots, team photos           | `src/content/`                  |
 | Images those files point at                          | `src/assets/`                   |
 | Org facts, external URLs, calendar and analytics IDs | `src/data/site.ts`              |
 | Page structure and copy that is not content          | `src/pages/`, `src/components/` |

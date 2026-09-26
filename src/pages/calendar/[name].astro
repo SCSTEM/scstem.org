@@ -1,14 +1,13 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 
-import JsonLd from "@/components/JsonLd.astro";
 import Hero from "@/components/ui/Hero.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Skeleton from "@/components/ui/primitives/Skeleton.astro";
 import Section from "@/components/ui/Section.astro";
 import { type ProgramTheme, nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { breadcrumbs } from "@/lib/jsonld";
+import { programTrail } from "@/lib/jsonld";
 
 /**
  * Renders our own agenda from JSON that `/api/calendar/[name]` parses out of the public feed
@@ -37,7 +36,7 @@ export const getStaticPaths = (() => {
   const calendars = {
     sc2: {
       googleId: site.calendars.sc2,
-      title: "Calendar",
+      title: nav.calendar.label,
       heading: "What is coming up",
       intro:
         "Build sessions, competitions, and community events across both programs. Times are Eastern.",
@@ -71,6 +70,12 @@ const { calendar, name } = Astro.props;
  * reader can go if the agenda below fails for any reason. The embed's `src` is the calendar's
  * address, which the base64 id encodes.
  */
+/** A program's calendar sits under that program; the organization's is the top-level Calendar. */
+const trail =
+  "theme" in calendar
+    ? programTrail(calendar.theme, { name: calendar.title, path: `/calendar/${name}/` })
+    : [{ name: nav.calendar.label, path: nav.calendar.href }];
+
 const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(
   atob(calendar.googleId),
 )}&ctz=${encodeURIComponent(site.location.timeZone)}`;
@@ -80,9 +85,8 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
   description={calendar.description}
   theme={"theme" in calendar ? calendar.theme : undefined}
   title={calendar.title}
+  trail={trail}
 >
-  <JsonLd data={breadcrumbs([{ name: calendar.title, path: `/calendar/${name}` }])} slot="head" />
-
   <!-- A photographic hero would push the agenda — the only reason anyone opens this page —
        below the fold, so the header is the compact one. -->
   <Hero>

@@ -1,5 +1,5 @@
-import { type ProgramTheme, nav, programs, site, socials } from "@/data/site";
-import { pageUrl } from "@/lib/links";
+import { type PagePath, type ProgramTheme, nav, programs, site, socials } from "@/data/site";
+import { absoluteUrl } from "@/lib/links";
 
 /**
  * Typed builders for the schema.org objects the site emits. Keeping them here rather than inline
@@ -56,15 +56,16 @@ export const webSite: JsonLdObject = {
 /** @public */
 export interface Breadcrumb {
   readonly name: string;
-  /** Site-root-relative, e.g. `/programs/frc`. */
-  readonly path: string;
+  /** Site-root-relative, e.g. `/programs/frc/`. */
+  readonly path: PagePath;
 }
 
 /**
  * @public
  *
- * Breadcrumbs for a nested page. Pass the full trail including the current page; the home link
- * is added automatically, since every trail starts there.
+ * Breadcrumbs for a nested page, emitted by `BaseLayout` from its `trail`. Pass the full trail
+ * including the current page; the home link is added automatically, since every trail starts
+ * there.
  */
 export const breadcrumbs = (trail: readonly Breadcrumb[]): JsonLdObject => ({
   "@context": "https://schema.org",
@@ -73,18 +74,18 @@ export const breadcrumbs = (trail: readonly Breadcrumb[]): JsonLdObject => ({
     "@type": "ListItem",
     position: index + 1,
     name: crumb.name,
-    item: pageUrl(crumb.path),
+    item: absoluteUrl(crumb.path),
   })),
 });
 
 /**
  * The trail to a program's page — Programs, then the program — followed by any pages below it.
- * Pass the result to `breadcrumbs`, or to `EventLayout`'s `trail`.
+ * Pass the result as a layout's `trail`.
  */
 export const programTrail = (
   program: ProgramTheme,
   ...rest: readonly Breadcrumb[]
-): readonly Breadcrumb[] => [
+): readonly [hub: Breadcrumb, program: Breadcrumb, ...rest: Breadcrumb[]] => [
   { name: nav.programs.label, path: nav.programs.href },
   { name: programs[program].name, path: programs[program].href },
   ...rest,

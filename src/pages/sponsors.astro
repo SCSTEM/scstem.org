@@ -1,9 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
-import ogSponsors from "@/assets/og/sponsors.jpg";
 import partsNotes from "@/assets/sc2/parts-notes.webp";
-import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
@@ -12,9 +10,9 @@ import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
 import Section from "@/components/ui/Section.astro";
 import SponsorTier from "@/components/ui/SponsorTier.astro";
 import { SPONSOR_LEVELS } from "@/content.config";
+import { ogCards } from "@/data/ogCards";
 import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { breadcrumbs } from "@/lib/jsonld";
 
 /**
  * One group per level, strongest first, because the tier is the page's whole information
@@ -40,12 +38,10 @@ const intro =
 
 <BaseLayout
   description="The businesses and individuals backing the South Central STEM Collective's robotics and STEM programs, by level, and how your company can join them."
-  ogImage={ogSponsors}
-  ogImageAlt="The South Central STEM Collective logo over a workbench of parts and notes, captioned “Sponsors”"
+  og={ogCards.sponsors}
   title="Sponsors"
+  trail={[{ name: nav.sponsors.label, path: nav.sponsors.href }]}
 >
-  <JsonLd data={breadcrumbs([{ name: nav.sponsors.label, path: nav.sponsors.href }])} slot="head" />
-
   <Hero>
     <HeroImage
       alt="Machined parts and hand-written build notes on the workshop bench"

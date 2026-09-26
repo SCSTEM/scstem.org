@@ -1,13 +1,11 @@
 ---
 import getInvolved from "@/assets/sc2/get-involved.webp";
-import JsonLd from "@/components/JsonLd.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { breadcrumbs } from "@/lib/jsonld";
 
 /**
  * The iframe is `loading="lazy"` with its height reserved, so it costs nothing until it scrolls
@@ -19,9 +17,8 @@ const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
 <BaseLayout
   description="Students, parents, mentors, and volunteers all start here. Tell the South Central STEM Collective who you are and what you’re curious about."
   title="Get involved"
+  trail={[{ name: nav.cta.label, path: nav.cta.href }]}
 >
-  <JsonLd data={breadcrumbs([{ name: nav.cta.label, path: nav.cta.href }])} slot="head" />
-
   <Hero>
     <HeroImage
       alt="Students and mentors working together at a build session"

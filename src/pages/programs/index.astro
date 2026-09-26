@@ -1,18 +1,17 @@
 ---
-import ogPrograms from "@/assets/og/programs.jpg";
 import handsOn from "@/assets/sc2/hands-on-1.webp";
-import JsonLd from "@/components/JsonLd.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FeatureCard from "@/components/ui/FeatureCard.astro";
 import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import ProgramCard from "@/components/ui/ProgramCard.astro";
 import Section from "@/components/ui/Section.astro";
+import { ogCards } from "@/data/ogCards";
 import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { breadcrumbs } from "@/lib/jsonld";
 
 /**
  * The hub the header's Programs disclosure points at: it is the tap target on touch and the
@@ -23,12 +22,10 @@ import { breadcrumbs } from "@/lib/jsonld";
 
 <BaseLayout
   description={`${programs.fll.name} for ages ${programs.fll.ages} and ${programs.frc.name} for ages ${programs.frc.ages}, run out of one workshop in downtown Chambersburg.`}
-  ogImage={ogPrograms}
-  ogImageAlt="The South Central STEM Collective logo over students working in the workshop, captioned “Our programs”"
+  og={ogCards.programs}
   title="Programs"
+  trail={[{ name: nav.programs.label, path: nav.programs.href }]}
 >
-  <JsonLd data={breadcrumbs([{ name: nav.programs.label, path: nav.programs.href }])} slot="head" />
-
   <Hero>
     <HeroImage
       alt="A student and a mentor working on a robot together at the bench"
@@ -38,7 +35,7 @@ import { breadcrumbs } from "@/lib/jsonld";
 
     <Fragment slot="title">Our programs</Fragment>
 
-    Two <span class="italic">FIRST®</span> teams under one roof in downtown Chambersburg. The difference
+    Two <FirstMark /> teams under one roof in downtown Chambersburg. The difference
     is the age you start and the size of the robot you build.
   </Hero>
 
@@ -63,7 +60,9 @@ import { breadcrumbs } from "@/lib/jsonld";
           in six weeks and takes it to regional competitions. Students run the design, the fabrication,
           the code, the money, and the brand, with mentors who do this for a living.
         </p>
-        <p class="mt-3">Competing since 2012: nine robots so far, and a new one every January.</p>
+        <p class="mt-3">
+          Competing since {programs.frc.since}: nine robots so far, and a new one every January.
+        </p>
       </ProgramCard>
     </FeatureGrid>
   </Section>
@@ -87,7 +86,7 @@ import { breadcrumbs } from "@/lib/jsonld";
 
       <FeatureCard cta="Read about FIRST®" href={site.urls.firstInspires} icon="bulb">
         <Fragment slot="title">The wider program</Fragment>
-        Both of our teams belong to <span class="italic">FIRST®</span>, a global organization
+        Both of our teams belong to <FirstMark />, a global organization
         running student robotics from elementary school through high school.
       </FeatureCard>
     </FeatureGrid>
