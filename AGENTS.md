@@ -46,8 +46,9 @@ Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script
 
 ## Rules
 
-- `cn` comes from `@/lib/cn` only — a `cnfast` merge configured with the DESIGN.md §3 type scale
-  (see the docstring). `clsx`, `classnames`, `tailwind-merge` are banned imports.
+- `cn` comes from `@/lib/cn` only — a [`cn`](https://github.com/shadcn-ui/cn) merge configured
+  with the DESIGN.md §3 type scale (see the docstring). `clsx`, `classnames`, `tailwind-merge`
+  are banned imports.
 - The `font-size` group in `src/lib/cn.ts` mirrors the `--text-*` tokens in `src/styles/global.css`
   by hand. Adding, renaming, or removing a size token means the same edit in both files, in the
   same commit; nothing checks them, and a missing entry shows up only as a wrong size in the

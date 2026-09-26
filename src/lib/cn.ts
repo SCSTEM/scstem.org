@@ -1,8 +1,8 @@
-import { createCn } from "cnfast";
+import { createCn } from "cn/config";
 
 /**
- * A `cn` configured for this site's type scale; components import it from here, never from
- * `cnfast` directly.
+ * A `cn` configured for this site's type scale; components import it from here, never from the
+ * `cn` package directly.
  *
  * The merge step knows Tailwind's stock `text-*` sizes but not our semantic ones, so without this
  * group it treats every `text-*` class as one conflict and keeps only the last —
