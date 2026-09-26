@@ -13,6 +13,10 @@ pnpm = "12.5.1"
 _.path = ["{{config_root}}/node_modules/.bin"]
 ASTRO_TELEMETRY_DISABLED = "1"
 
+[tasks.dev]
+description = "Run the development server"
+run = "pn run dev"
+
 [tasks."install:browser"]
 description = "Install Chrome for agent-browser"
 run = """
