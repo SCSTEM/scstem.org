@@ -1,4 +1,5 @@
 import { type ProgramTheme, nav, programs, site, socials } from "@/data/site";
+import { pageUrl } from "@/lib/links";
 
 /**
  * Typed builders for the schema.org objects the site emits. Keeping them here rather than inline
@@ -19,7 +20,7 @@ export interface JsonLdObject {
 /** The workshop's address, the only one known part by part. */
 const workspaceAddress = {
   "@type": "PostalAddress",
-  streetAddress: site.location.workspace,
+  streetAddress: site.location.street,
   addressLocality: site.location.locality,
   addressRegion: site.location.region,
   postalCode: site.location.postalCode,
@@ -41,7 +42,7 @@ export const organization: JsonLdObject = {
   description: site.description,
   address: workspaceAddress,
   areaServed: site.location.areaServed,
-  sameAs: socials.map((social) => social.href),
+  sameAs: socials.map((social) => social.profile),
 };
 
 /** The site itself. Homepage only — repeating it on every page adds nothing. */
@@ -72,7 +73,7 @@ export const breadcrumbs = (trail: readonly Breadcrumb[]): JsonLdObject => ({
     "@type": "ListItem",
     position: index + 1,
     name: crumb.name,
-    item: new URL(crumb.path, site.url).href,
+    item: pageUrl(crumb.path),
   })),
 });
 

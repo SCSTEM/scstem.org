@@ -8,7 +8,7 @@
  *
  * Dark is the only theme today. Base tokens live on `:root` with dark values as the
  * defaults, so a light theme is a `[data-theme="light"]` block that re-declares them — a token
- * addition, not a refactor. That block would land right after the program themes below.
+ * addition, not a refactor.
  */
 @theme {
   /* --- Surfaces: the recessed system (DESIGN.md §2) --------------------------------------- */
@@ -93,7 +93,7 @@
   --text-label--letter-spacing: 0.05em;
 
   /* --- Radius: one end-mill (DESIGN.md §4) ------------------------------------------------ */
-  /* Three values, nothing else. 16px and pill radii are retired. */
+  /* Three values, nothing else. */
   --radius-sm: 4px; /* chips, spec labels, badges */
   --radius-md: 8px; /* every control: buttons, inputs, icon tiles */
   --radius-lg: 12px; /* every cut feature: pockets, panels, framed media */
@@ -310,15 +310,6 @@
  */
 
 /**
- * The sheet's grain on a surface other than the body, which would otherwise paint a smooth patch
- * over the grained ground. Pockets and bands never take it: a pocket floor is smooth so the
- * recess reads against the grain around it, and the band is ink, not metal.
- */
-@utility grain {
-  background-image: var(--texture-grain);
-}
-
-/**
  * Pocket anatomy V2, "machined pocket" — the standard card. On the ground it is cut into the
  * sheet: darker floor, inset walls, a lit lower lip. Inside a `band` the same element is a plate
  * laid on the table instead (the `band` utility below) — cut into metal, laid on the table.
@@ -347,9 +338,9 @@
 /**
  * The engineering grid (DESIGN.md §2.3). One definition, two consumers: `pocket-feature` below
  * and `Pattern.astro`. Cell size and stroke alpha are custom properties, and the stroke reads
- * `--color-foreground` rather than a literal hex — so the grid follows a future light theme's
- * token set instead of needing a component edit. Not `currentcolor`: this utility lands on
- * elements that also hold text, and the linework must not be tied to the copy's color.
+ * `--color-foreground` rather than a literal hex, so the grid follows the theme's tokens. Not
+ * `currentcolor`: this utility lands on elements that also hold text, and the linework must not
+ * be tied to the copy's color.
  */
 @utility engineering-grid {
   --grid-cell: 26px;

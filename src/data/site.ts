@@ -84,6 +84,13 @@ export const site = {
     github: "https://go.scstem.tech/github",
   },
 
+  /** Where the `social` shortlinks resolve — schema.org `sameAs` matches an entity on these. */
+  socialProfiles: {
+    facebook: "https://www.facebook.com/SCSTEM",
+    linkedin: "https://www.linkedin.com/company/scstem/",
+    github: "https://github.com/SCSTEM",
+  },
+
   /** External destinations. */
   urls: {
     donate: "https://www.paypal.com/US/fundraiser/charity/4486755",
@@ -109,9 +116,9 @@ export const site = {
 
   analytics: {
     /**
-     * GA4, loaded by `Analytics.astro` as a plain gtag snippet after `load`. Cloudflare
-     * Web Analytics' token is not here: it has no value to commit yet, so it comes through
-     * `PUBLIC_CF_BEACON_TOKEN` in `astro.config.ts`'s env schema, set in the Pages dashboard.
+     * GA4, loaded by `Analytics.astro` as a plain gtag snippet after `load`. Cloudflare Web
+     * Analytics' token comes through `PUBLIC_CF_BEACON_TOKEN` in `astro.config.ts`'s env schema,
+     * set in the Pages dashboard.
      */
     ga4MeasurementId: "G-3TPD3DLYBR",
   },
@@ -255,7 +262,22 @@ export const nav = {
 
 /** @public Consumed by `SocialLinks` and the footer's link columns. */
 export const socials = [
-  { label: "Facebook", href: site.social.facebook, icon: "brand-facebook" },
-  { label: "LinkedIn", href: site.social.linkedin, icon: "brand-linkedin" },
-  { label: "GitHub", href: site.social.github, icon: "brand-github" },
+  {
+    label: "Facebook",
+    href: site.social.facebook,
+    profile: site.socialProfiles.facebook,
+    icon: "brand-facebook",
+  },
+  {
+    label: "LinkedIn",
+    href: site.social.linkedin,
+    profile: site.socialProfiles.linkedin,
+    icon: "brand-linkedin",
+  },
+  {
+    label: "GitHub",
+    href: site.social.github,
+    profile: site.socialProfiles.github,
+    icon: "brand-github",
+  },
 ] as const;

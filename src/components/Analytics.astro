@@ -42,9 +42,8 @@ if (location.hostname === ${JSON.stringify(hostname)}) {
     window.dataLayer = window.dataLayer || [];
     function gtag() { window.dataLayer.push(arguments); }
 
-    /* Consent Mode v2 defaults, before config, so adding a banner later changes these values
-       rather than this structure. Measurement is granted by default and every advertising
-       signal is denied outright: this property runs no ads. */
+    /* Consent Mode v2 defaults, before config. Measurement is granted by default and every
+       advertising signal is denied outright: this property runs no ads. */
     gtag("consent", "default", {
       ad_storage: "denied",
       ad_user_data: "denied",

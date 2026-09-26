@@ -389,9 +389,12 @@ interface RawEvent {
 const parseEvents = (feed: string, dateZone: string): RawEvent[] => {
   const events: RawEvent[] = [];
   let current: RawEvent | undefined;
+  /** Depth of components nested in the current event (a `VALARM`), whose properties are not its own. */
+  let nested = 0;
 
   for (const raw of unfold(feed)) {
     if (raw === "BEGIN:VEVENT") {
+      nested = 0;
       current = {
         description: "",
         excluded: new Set(),
@@ -410,6 +413,17 @@ const parseEvents = (feed: string, dateZone: string): RawEvent[] => {
       continue;
     }
     if (current === undefined) {
+      continue;
+    }
+    if (raw.startsWith("BEGIN:")) {
+      nested += 1;
+      continue;
+    }
+    if (raw.startsWith("END:")) {
+      nested = Math.max(0, nested - 1);
+      continue;
+    }
+    if (nested > 0) {
       continue;
     }
 
@@ -522,7 +536,10 @@ export const upcomingEvents = (
 
       // Compared as instants: an EXDATE or RECURRENCE-ID may be stamped in UTC even where the
       // series it modifies is written in a named zone.
-      if (event.excluded.has(at) || overridden.has(`${event.uid}:${String(at)}`)) {
+      if (
+        event.excluded.has(at) ||
+        (event.recurrenceId === undefined && overridden.has(`${event.uid}:${String(at)}`))
+      ) {
         continue;
       }
       // An event that started earlier today but has not finished is still upcoming.

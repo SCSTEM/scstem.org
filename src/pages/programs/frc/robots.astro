@@ -15,10 +15,7 @@ import { nav, programs } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
 import { breadcrumbs, programTrail } from "@/lib/jsonld";
 
-/**
- * The `frcRobots` collection, newest first, as a list rather than a carousel: one that hides five
- * of six entries behind arrows is worse for readers and for search.
- */
+/** The `frcRobots` collection, newest first, as a list so every robot is in view and indexed. */
 const robots = await Promise.all(
   (await getCollection("frcRobots"))
     .toSorted((a, b) => b.data.year - a.data.year)

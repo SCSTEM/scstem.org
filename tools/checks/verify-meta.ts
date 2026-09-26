@@ -127,9 +127,12 @@ for (const { html, route } of pages) {
     );
   }
 
+  // A noindex page names no canonical: it would point crawlers at a URL they were told to drop.
+  const noindex = /<meta(?=[^>]*\bname="robots")(?=[^>]*noindex)[^>]*>/u.test(html);
   const canonicals = count(html, /<link\b[^>]*\brel="canonical"/gu);
-  if (canonicals !== 1) {
-    fail(`${String(canonicals)} canonical links, expected exactly 1`);
+  const expected = noindex ? 0 : 1;
+  if (canonicals !== expected) {
+    fail(`${String(canonicals)} canonical links, expected exactly ${String(expected)}`);
   }
 
   const headings = count(html, /<h1\b/gu);

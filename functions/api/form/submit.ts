@@ -2,6 +2,21 @@ import type { GenericFormRequest } from "@/types";
 
 import { res, validateTurnstile } from "@/util";
 
+/** A posted field before it is checked; only a non-blank string passes `isFilled`. */
+type PostedValue = boolean | number | string | null | undefined;
+
+/** The body as posted: the browser's `required` attributes are a courtesy, not a guarantee. */
+interface PostedForm {
+  readonly email?: PostedValue;
+  readonly form?: PostedValue;
+  readonly message?: PostedValue;
+  readonly name?: PostedValue;
+  readonly turnstileToken?: PostedValue;
+}
+
+const isFilled = (value: PostedValue): value is string =>
+  typeof value === "string" && value.trim() !== "";
+
 /**
  * Both secrets are required: without `TS_SECRET_KEY` the challenge cannot be verified, and
  * without `SLACK_FORM_POST_GENERIC` a submission has nowhere to go. Either missing is an error
@@ -22,25 +37,37 @@ export const onRequestPost: PagesFunction<{
     );
   }
 
-  let data: GenericFormRequest;
+  let body: PostedForm | null;
   try {
-    data = await request.json<GenericFormRequest>();
+    body = await request.json<PostedForm | null>();
   } catch {
     return res({ message: "Request body is not valid JSON", success: false }, 400);
   }
 
+  const { email, form, message, name, turnstileToken } = body ?? {};
+  if (
+    !isFilled(email) ||
+    !isFilled(form) ||
+    !isFilled(message) ||
+    !isFilled(name) ||
+    !isFilled(turnstileToken)
+  ) {
+    return res({ message: "Every field is required", success: false }, 400);
+  }
+  const data: GenericFormRequest = { email, form, message, name, turnstileToken };
+
   try {
-    const ts = await validateTurnstile(
+    const challenge = await validateTurnstile(
       env.TS_SECRET_KEY,
-      data.turnstileToken,
+      turnstileToken,
       request.headers.get("CF-Connecting-IP"),
     );
 
-    if (!ts.valid) {
+    if (!challenge.success) {
       return res(
         {
           message: "Challenge verification failed",
-          result: ts.response,
+          result: challenge,
           success: false,
         },
         418,
@@ -48,12 +75,7 @@ export const onRequestPost: PagesFunction<{
     }
 
     const posted = await fetch(env.SLACK_FORM_POST_GENERIC, {
-      body: JSON.stringify({
-        email: data.email ?? "",
-        form: data.form,
-        message: data.message ?? "",
-        name: data.name ?? "",
-      }),
+      body: JSON.stringify({ email, form, message, name }),
       method: "POST",
     });
 

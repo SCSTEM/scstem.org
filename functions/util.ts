@@ -1,9 +1,4 @@
-import type {
-  APIResponse,
-  CalendarResponse,
-  TurnstileResponse,
-  TurnstileVerificationResponse,
-} from "@/types";
+import type { APIResponse, CalendarResponse, TurnstileResponse } from "@/types";
 
 /**
  * A JSON response from any endpoint. `headers` are added to the content type. A failed
@@ -28,7 +23,7 @@ export const validateTurnstile = async (
   secretKey: string,
   response: string,
   ip: string | null,
-): Promise<TurnstileVerificationResponse> => {
+): Promise<TurnstileResponse> => {
   const formData = new FormData();
   formData.append("secret", secretKey);
   formData.append("response", response);
@@ -39,7 +34,5 @@ export const validateTurnstile = async (
 
   const url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
   const result = await fetch(url, { body: formData, method: "POST" });
-  const outcome = await result.json<TurnstileResponse>();
-
-  return { response: outcome, valid: outcome.success };
+  return result.json<TurnstileResponse>();
 };

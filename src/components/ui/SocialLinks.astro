@@ -4,7 +4,6 @@ import type { HTMLAttributes } from "astro/types";
 import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import { site, socials } from "@/data/site";
-import { isExternal } from "@/lib/links";
 
 /**
  * The row of ghost icon buttons for `socials` from `src/data/site.ts`, optionally ending with an
@@ -28,13 +27,7 @@ const links = email
   {
     links.map((link) => (
       <li>
-        <Button
-          class="hover:bg-card-hover"
-          href={link.href}
-          rel={isExternal(link.href) ? "noopener" : undefined}
-          size="icon"
-          variant="ghost"
-        >
+        <Button class="hover:bg-card-hover" href={link.href} size="icon" variant="ghost">
           <Icon label={link.label} name={link.icon} size={24} />
         </Button>
       </li>

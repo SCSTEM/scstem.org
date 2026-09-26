@@ -1,11 +1,13 @@
 ---
 import getInvolved from "@/assets/sc2/get-involved.webp";
+import JsonLd from "@/components/JsonLd.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
-import { site } from "@/data/site";
+import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
 
 /**
  * The iframe is `loading="lazy"` with its height reserved, so it costs nothing until it scrolls
@@ -18,6 +20,8 @@ const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
   description="Students, parents, mentors, and volunteers all start here. Tell the South Central STEM Collective who you are and what you’re curious about."
   title="Get involved"
 >
+  <JsonLd data={breadcrumbs([{ name: nav.cta.label, path: nav.cta.href }])} slot="head" />
+
   <Hero>
     <HeroImage
       alt="Students and mentors working together at a build session"
@@ -38,8 +42,8 @@ const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
       email.
     </Fragment>
 
-    <Button class="external-link" href={site.urls.getInvolvedForm} rel="noopener" variant="outline">
-      Open the form in a new tab
+    <Button href={site.urls.getInvolvedForm} variant="outline">
+      Open the form in Google Forms
     </Button>
 
     <!--
@@ -49,7 +53,7 @@ const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
     -->
     <div class="mt-8 overflow-hidden pocket [color-scheme:light]">
       <iframe
-        class="h-[1800px] w-full border-0"
+        class="h-450 w-full border-0"
         loading="lazy"
         src={embedded}
         title="Get involved with the South Central STEM Collective"></iframe>

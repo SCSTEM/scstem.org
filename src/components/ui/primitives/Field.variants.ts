@@ -5,7 +5,7 @@ import { cn } from "@/lib/cn";
 /**
  * The shared recipe for text controls (DESIGN.md §8): pocket floor, hairline border, accent focus
  * ring. `Input` and `Textarea` differ only in height versus vertical padding, so the invalid,
- * disabled and transition treatment has one definition — a `Select` composes the same recipe.
+ * disabled and transition treatment has one definition.
  */
 export const fieldVariants = cva(
   cn(

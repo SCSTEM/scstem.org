@@ -31,7 +31,7 @@ const mailingAddress = [
   ogImageAlt="The South Central STEM Collective logo over a rack of drill bits, captioned “Donate”"
   title="Donate"
 >
-  <JsonLd data={breadcrumbs([{ name: "Donate", path: "/donate" }])} slot="head" />
+  <JsonLd data={breadcrumbs([{ name: nav.donate.label, path: nav.donate.href }])} slot="head" />
 
   <Hero>
     <HeroImage alt="A rack of drill bits on the workshop wall" slot="media" src={drillBits} />
@@ -43,7 +43,7 @@ const mailingAddress = [
     Donations keep the tools sharp, the workspace open, and registration paid for every student who
     walks in. Here&rsquo;s every way to give.
 
-    <Button class="external-link" href={site.urls.donate} rel="noopener" size="lg" slot="actions">
+    <Button href={site.urls.donate} size="lg" slot="actions">
       Donate through PayPal
     </Button>
   </Hero>

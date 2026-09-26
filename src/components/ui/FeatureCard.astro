@@ -12,6 +12,7 @@ import CardTitle from "@/components/ui/primitives/CardTitle.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import { cn } from "@/lib/cn";
 import { PHOTO_QUALITY } from "@/lib/images";
+import { isExternal } from "@/lib/links";
 
 /**
  * The card the section grids are built from (DESIGN.md §8): a photo or a stamped icon plate, a
@@ -58,6 +59,8 @@ const {
 if (image !== undefined && imageAlt === undefined) {
   throw new Error("FeatureCard: an `image` needs an `imageAlt`.");
 }
+
+const isExternalLink = href !== undefined && isExternal(href);
 
 if (image === undefined && icon === undefined) {
   throw new Error("FeatureCard: a card needs an `image` or an `icon`.");
@@ -125,13 +128,18 @@ const plateIcon = image === undefined ? icon : undefined;
       <CardFooter>
         {/* The stretched pseudo-element makes the pocket clickable without nesting the card's
             content inside the anchor, so the link keeps one short accessible name. */}
-        <a class="ui-link text-small font-medium after:absolute after:inset-0" href={href}>
+        <a
+          class="ui-link text-small font-medium after:absolute after:inset-0"
+          href={href}
+          rel={isExternalLink ? "noopener" : undefined}
+        >
           {cta}
         </a>
-        {/* The arrow nudges 2px with the pocket's hover: the card is a link, and says so. */}
+        {/* The glyph nudges 2px with the pocket's hover: the card is a link, and says so. An
+            off-site link shows the external glyph in place of the arrow (DESIGN.md §8). */}
         <Icon
           class="text-primary-bright transition-transform duration-(--duration-micro) ease-(--ease-toggle) motion-safe:group-focus-within:translate-x-0.5 motion-safe:group-hover:translate-x-0.5"
-          name="arrow-right"
+          name={isExternalLink ? "external-link" : "arrow-right"}
           size={20}
         />
       </CardFooter>

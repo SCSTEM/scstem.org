@@ -3,6 +3,7 @@ import type { APIRoute } from "astro";
 import { eventRoutes } from "@/data/events";
 import { nav, programs, site } from "@/data/site";
 import { getVisibleEvents } from "@/lib/events";
+import { absoluteUrl, pageUrl } from "@/lib/links";
 
 /**
  * The llms.txt convention (https://llmstxt.org): one plain-text map of the site, so an agent
@@ -25,8 +26,6 @@ interface Entry {
   readonly title: string;
 }
 
-const absolute = (href: string): string => new URL(href, site.url).href;
-
 /**
  * A section with no entries is omitted rather than rendered as a bare heading — events retire
  * themselves, so "Events" is empty out of season.
@@ -38,7 +37,7 @@ const section = (heading: string, entries: readonly Entry[]): string | undefined
         `## ${heading}`,
         "",
         ...entries.map(
-          ({ title, href, description }) => `- [${title}](${absolute(href)}): ${description}`,
+          ({ title, href, description }) => `- [${title}](${pageUrl(href)}): ${description}`,
         ),
         "",
       ].join("\n");
@@ -137,7 +136,7 @@ export const GET: APIRoute = async () => {
     ]),
     "## Also",
     "",
-    `- [Sitemap](${absolute("/sitemap-index.xml")}): every indexable page on this site.`,
+    `- [Sitemap](${absoluteUrl("/sitemap-index.xml")}): every indexable page on this site.`,
     `- [Wiki](${site.urls.wiki}): the organization's own documentation, on a separate domain.`,
     "",
   ]

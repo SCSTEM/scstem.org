@@ -44,7 +44,7 @@ const intro =
   ogImageAlt="The South Central STEM Collective logo over a workbench of parts and notes, captioned “Sponsors”"
   title="Sponsors"
 >
-  <JsonLd data={breadcrumbs([{ name: "Sponsors", path: "/sponsors" }])} slot="head" />
+  <JsonLd data={breadcrumbs([{ name: nav.sponsors.label, path: nav.sponsors.href }])} slot="head" />
 
   <Hero>
     <HeroImage
@@ -90,13 +90,7 @@ const intro =
     <CtaBanner>
       <Fragment slot="title">Build the next season with us</Fragment>
       Our packet shows what each level funds and how your company is recognized.
-      <Button
-        class="external-link"
-        href={site.urls.sponsorPacket}
-        rel="noopener"
-        size="lg"
-        slot="actions"
-      >
+      <Button href={site.urls.sponsorPacket} size="lg" slot="actions">
         Sponsorship packet
       </Button>
       <Button href={nav.donate.href} size="lg" slot="actions" variant="outline">
@@ -107,7 +101,7 @@ const intro =
     <p class="mt-8 flex flex-wrap items-center justify-center gap-2 text-muted">
       Rather just talk it through?
       <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={2} />
-      <a class="font-hand text-xl text-primary-bright" href={nav.contact.href}>Become a sponsor</a>
+      <a class="font-hand text-body-lg text-primary-bright" href={nav.contact.href}>Become a sponsor</a>
     </p>
   </Section>
 </BaseLayout>

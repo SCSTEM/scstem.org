@@ -1,5 +1,6 @@
 ---
 import laptop from "@/assets/sc2/laptop.webp";
+import JsonLd from "@/components/JsonLd.astro";
 import ContactForm from "@/components/ui/ContactForm.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
@@ -10,8 +11,9 @@ import CardTitle from "@/components/ui/primitives/CardTitle.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import Section from "@/components/ui/Section.astro";
 import SocialLinks from "@/components/ui/SocialLinks.astro";
-import { site } from "@/data/site";
+import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
 
 /** The sidebar uses the boxed title block DESIGN.md §2.9 sanctions for a contact page. */
 const fields = [
@@ -26,6 +28,8 @@ const fields = [
   description="Questions about a program, a sponsorship, or getting your student started? Send the South Central STEM Collective a message."
   title="Contact"
 >
+  <JsonLd data={breadcrumbs([{ name: nav.contact.label, path: nav.contact.href }])} slot="head" />
+
   <Hero>
     <HeroImage
       alt="A student working at a laptop in the South Central STEM Collective workspace"
@@ -57,7 +61,7 @@ const fields = [
               We&rsquo;re in downtown Chambersburg. Directions, parking, and door details live on
               the wiki.
             </p>
-            <p class="mt-4">
+            <p>
               <a class="external-link" href={site.urls.directions} rel="noopener">
                 Directions to the workspace
               </a>

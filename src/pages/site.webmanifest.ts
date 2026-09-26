@@ -23,11 +23,8 @@ export const GET: APIRoute = () =>
           { src: site.icons.png192, type: "image/png", sizes: "192x192" },
           { src: site.icons.png512, type: "image/png", sizes: "512x512" },
           /**
-           * A separate, padded render. The unpadded mark spans ~88% of its box, so a launcher's
-           * circular mask — which keeps only the central 80%-diameter circle — clipped the outer
-           * stroke and the gear teeth. Reusing the plain icon here was strictly worse than
-           * declaring no maskable icon at all, since without one the browser letterboxes instead
-           * of cropping.
+           * A separate, padded render: the unpadded mark spans ~88% of its box, and a launcher's
+           * circular mask keeps only the central 80%-diameter circle.
            */
           {
             src: site.icons.maskable512,

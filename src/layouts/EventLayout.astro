@@ -16,6 +16,7 @@ import { programPhotos } from "@/data/programPhotos";
 import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { type Breadcrumb, breadcrumbs, event as eventJsonLd, faqPage } from "@/lib/jsonld";
+import { absoluteUrl, pageUrl } from "@/lib/links";
 
 /**
  * One layout for every seasonal event, so a new season is an edit to one markdown file: the hero,
@@ -68,7 +69,7 @@ const media = [
   ...hintUrls.map((url, index) => ({ url, label: hintLabels[index] ?? "", icon: "link" })),
 ];
 
-const pageUrl = new URL(Astro.url.pathname, site.url).href;
+const url = pageUrl(Astro.url.pathname);
 
 const details = [
   { label: "Location", value: data.locationName ?? site.location.name },
@@ -97,8 +98,8 @@ const details = [
         end: data.end,
         locationName: data.locationName,
         locationAddress: data.locationAddress,
-        url: pageUrl,
-        image: new URL(hero.src.src, site.url).href,
+        url,
+        image: absoluteUrl(hero.src.src),
         registrationUrl: data.registrationUrl,
       })}
     />
