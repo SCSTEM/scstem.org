@@ -1,0 +1,20 @@
+[settings]
+lockfile = true
+minimum_release_age = "7d"
+npm.package_manager = "pnpm"
+
+[tools]
+node = "26.7.0"
+pnpm = "11.24.0"
+
+"npm:agent-browser" = "0.38.1"
+
+[env]
+_.path = ["{{config_root}}/node_modules/.bin"]
+ASTRO_TELEMETRY_DISABLED = "1"
+
+[tasks."install:browser"]
+description = "Install Chrome for agent-browser"
+run = """
+if [ "$(uname -s)" = Linux ]; then agent-browser install --with-deps; else agent-browser install; fi
+"""

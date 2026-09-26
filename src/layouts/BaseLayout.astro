@@ -1,0 +1,83 @@
+---
+import type { SeoProps } from "@/lib/seo";
+
+import Analytics from "@/components/Analytics.astro";
+import JsonLd from "@/components/JsonLd.astro";
+import Seo from "@/components/Seo.astro";
+import Footer from "@/components/ui/Footer.astro";
+import Navbar from "@/components/ui/Navbar.astro";
+import { site } from "@/data/site";
+import { organization } from "@/lib/jsonld";
+import "@/styles/global.css";
+
+/**
+ * The chrome every page shares. SEO correctness is built into the signature rather than left to
+ * each page: `title` and `description` are required, so a page cannot ship without them.
+ *
+ * The props are `Seo`'s, forwarded to it; `theme` also lands on `<html>` as `data-theme`, which
+ * remaps the action accent for a program page.
+ *
+ * Slots: the default slot is the page body; `head` takes per-page structured data.
+ */
+type Props = SeoProps;
+
+const { theme } = Astro.props;
+---
+
+<!doctype html>
+<html data-theme={theme} lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="dark" name="color-scheme" />
+
+    <Seo {...Astro.props} />
+
+    <link href={site.icons.favicon} rel="icon" sizes="32x32" />
+    <link href={site.icons.svg} rel="icon" type="image/svg+xml" />
+    <link href={site.icons.appleTouch} rel="apple-touch-icon" />
+    <link href="/site.webmanifest" rel="manifest" />
+
+    <JsonLd data={organization} />
+    <slot name="head" />
+  </head>
+  <!-- A flex column so `main` absorbs the slack and the footer band reaches the bottom of a
+       tall viewport. -->
+  <body class="flex min-h-dvh flex-col">
+    <a
+      class="sr-only rounded-md bg-primary bg-none px-4 py-2 font-medium text-primary-foreground focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60]"
+      data-sheet-inert
+      href="#main"
+    >
+      Skip to content
+    </a>
+    <Navbar />
+    <main class="flex-1" id="main">
+      <slot />
+    </main>
+    <Footer />
+    <Analytics />
+    <script>
+      // Hand-markup strokes draw on when they come into view (DESIGN.md §6), not on page load,
+      // where anything below the fold would finish unseen. Marks already in view animate at once.
+      const marks = document.querySelectorAll(".draw-on");
+      if (marks.length > 0 && "IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.replace("is-pending", "is-drawing");
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.5 },
+        );
+        for (const mark of marks) {
+          mark.classList.add("is-pending");
+          observer.observe(mark);
+        }
+      }
+    </script>
+  </body>
+</html>

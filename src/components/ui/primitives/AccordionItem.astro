@@ -1,0 +1,43 @@
+---
+import { cn } from "@/lib/cn";
+
+import Icon from "./Icon.astro";
+
+/**
+ * One disclosure, built on `<details>`/`<summary>` (rung 1 of the README's interactivity ladder).
+ * The chevron rotates on open via CSS. Keyboard behavior — Enter and Space — is the browser's.
+ */
+interface Props {
+  question: string;
+  /**
+   * Set from the parent group to make items exclusive-open. `| undefined` because `ui/FaqList`
+   * forwards its own optional prop straight through.
+   */
+  name?: string | undefined;
+  open?: boolean;
+  class?: string;
+}
+
+const { question, name, open = false, class: className } = Astro.props;
+---
+
+<details class={cn("group", className)} name={name} open={open}>
+  <summary
+    class={cn(
+      "flex cursor-pointer list-none items-center justify-between gap-4 py-4",
+      "text-h4 font-semibold text-foreground",
+      "hover:text-primary-bright",
+      "transition-colors duration-(--duration-micro) ease-(--ease-toggle)",
+    )}
+  >
+    {question}
+    <Icon
+      class="transition-transform duration-(--duration-ui) ease-(--ease-toggle) group-open:rotate-180"
+      name="chevron-down"
+      size={20}
+    />
+  </summary>
+  <div class="measure pb-4 text-body">
+    <slot />
+  </div>
+</details>

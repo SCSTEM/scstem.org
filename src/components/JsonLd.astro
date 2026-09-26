@@ -1,0 +1,15 @@
+---
+import type { JsonLdObject } from "@/lib/jsonld";
+
+/**
+ * Serializes one structured-data object into the document. The data always comes from
+ * `src/lib/jsonld.ts`, i.e. from us, so `set:html` carries no untrusted input.
+ */
+interface Props {
+  data: JsonLdObject;
+}
+
+const { data } = Astro.props;
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(data)} />

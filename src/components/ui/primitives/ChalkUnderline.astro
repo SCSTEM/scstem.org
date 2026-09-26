@@ -1,0 +1,43 @@
+---
+import { cn } from "@/lib/cn";
+import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
+
+/**
+ * A hand-drawn underline beneath a heading or display phrase (DESIGN.md §2.14). Never inside
+ * body copy: there an underline means a link, and links draw their own stroke.
+ *
+ * Deliberately distinct from `title-rule`, the machined 32px card rule, which stays perfectly
+ * straight. Machined versus hand is a contrast the system relies on; never blend the two.
+ *
+ * Three variants; adjacent instances must differ.
+ */
+interface Props {
+  variant?: HandVariant;
+  tone?: HandTone;
+  class?: string;
+}
+
+const { variant = 1, tone = "pencil", class: className } = Astro.props;
+
+/** Each curve sags differently and overshoots at a different end. */
+const paths = {
+  1: "M2 6C34 2 92 1 148 4c22 1 32 2 30 3",
+  2: "M4 4C40 8 96 9 150 5c18-1 26-2 26-1",
+  3: "M2 5C30 3 70 2 110 3c26 1 50 3 66 5",
+} as const;
+
+const rotations = { 1: "-0.5deg", 2: "0.4deg", 3: "-0.8deg" } as const;
+---
+
+<span class={cn("relative inline-block", className)}>
+  <slot />
+  <svg
+    aria-hidden="true"
+    class:list={[handMarkClass, "absolute -bottom-1.5 left-0 h-2 w-full", handToneClass(tone)]}
+    preserveAspectRatio="none"
+    style={`rotate: ${rotations[variant]}`}
+    viewBox="0 0 180 10"
+  >
+    <path d={paths[variant]} pathLength="100"></path>
+  </svg>
+</span>

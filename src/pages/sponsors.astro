@@ -1,0 +1,113 @@
+---
+import { getCollection } from "astro:content";
+
+import ogSponsors from "@/assets/og/sponsors.jpg";
+import partsNotes from "@/assets/sc2/parts-notes.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
+import Section from "@/components/ui/Section.astro";
+import SponsorTier from "@/components/ui/SponsorTier.astro";
+import { SPONSOR_LEVELS } from "@/content.config";
+import { nav, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
+
+/**
+ * One group per level, strongest first, because the tier is the page's whole information
+ * hierarchy. Former sponsors (`active: false`) get a name-only acknowledgment from the same
+ * collection.
+ */
+const sponsors = await getCollection("sponsors");
+
+/** Declaration order in `SPONSOR_LEVELS` is the ranking, so the grouping never restates it. */
+const groups = SPONSOR_LEVELS.map((level) => ({
+  level,
+  members: sponsors.filter((entry) => entry.data.active && entry.data.level === level),
+})).filter((group) => group.members.length > 0);
+
+const past = sponsors
+  .filter((entry) => !entry.data.active)
+  .toSorted((a, b) => a.data.name.localeCompare(b.data.name));
+
+/** Hero copy — too long to double as the meta description below. */
+const intro =
+  "Local businesses and individuals keep our tools running and our workspace open. Here's who backs this work, and how to join them.";
+---
+
+<BaseLayout
+  description="The businesses and individuals backing the South Central STEM Collective's robotics and STEM programs, by level, and how your company can join them."
+  ogImage={ogSponsors}
+  ogImageAlt="The South Central STEM Collective logo over a workbench of parts and notes, captioned “Sponsors”"
+  title="Sponsors"
+>
+  <JsonLd data={breadcrumbs([{ name: "Sponsors", path: "/sponsors" }])} slot="head" />
+
+  <Hero>
+    <HeroImage
+      alt="Machined parts and hand-written build notes on the workshop bench"
+      slot="media"
+      src={partsNotes}
+    />
+
+    <Fragment slot="title">
+      <span class="highlight-swipe">Sponsors</span> help us build
+    </Fragment>
+
+    {intro}
+
+    <Button href={nav.contact.href} size="lg" slot="actions">Become a sponsor</Button>
+  </Hero>
+
+  <Section atmosphere="numeral" index={1}>
+    <Fragment slot="title">Who backs this work</Fragment>
+
+    <div class="flex flex-col gap-14">
+      {groups.map((group) => <SponsorTier level={group.level} sponsors={group.members} />)}
+    </div>
+  </Section>
+
+  {
+    past.length > 0 && (
+      <Section atmosphere="ruler">
+        <Fragment slot="title">With thanks to</Fragment>
+        <Fragment slot="intro">
+          Organizations whose support carried us through earlier seasons.
+        </Fragment>
+        <ul class="flex flex-wrap gap-x-10 gap-y-3 text-body-lg text-foreground">
+          {past.map((sponsor) => (
+            <li>{sponsor.data.name}</li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">Build the next season with us</Fragment>
+      Our packet shows what each level funds and how your company is recognized.
+      <Button
+        class="external-link"
+        href={site.urls.sponsorPacket}
+        rel="noopener"
+        size="lg"
+        slot="actions"
+      >
+        Sponsorship packet
+      </Button>
+      <Button href={nav.donate.href} size="lg" slot="actions" variant="outline">
+        {nav.donate.label}
+      </Button>
+    </CtaBanner>
+
+    <p class="mt-8 flex flex-wrap items-center justify-center gap-2 text-muted">
+      Rather just talk it through?
+      <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={2} />
+      <a class="font-hand text-xl text-primary-bright" href={nav.contact.href}>Become a sponsor</a>
+    </p>
+  </Section>
+</BaseLayout>

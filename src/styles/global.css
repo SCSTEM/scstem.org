@@ -1,0 +1,886 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+/**
+ * The token set from DESIGN.md. Values here are normative-by-copy: if one disagrees with the
+ * doc, the doc wins (DESIGN.md §11). `/styleguide` renders every pair's computed contrast ratio
+ * and fails visibly when one drops below its floor.
+ *
+ * Dark is the only theme today. Base tokens live on `:root` with dark values as the
+ * defaults, so a light theme is a `[data-theme="light"]` block that re-declares them — a token
+ * addition, not a refactor. That block would land right after the program themes below.
+ */
+@theme {
+  /* --- Surfaces: the recessed system (DESIGN.md §2) --------------------------------------- */
+  /* The page is raised material; cards are pockets machined into it. Cards are *darker*. */
+  --color-background: #262626;
+  --color-card: #171717;
+  --color-border: #3a3a3a;
+  /* Pocket walls read one step brighter than a plain divider. */
+  --color-pocket-border: #383838;
+  /* Interactive pocket hover: the floor lifts a visible step, nothing translates or glows. */
+  --color-card-hover: #1f1f1f;
+
+  /* The drafting table: full-width ink bands the sheet alternates with, and the footer. */
+  --color-band: #121212;
+  /* Cards laid on the table are raised plates, lighter than the ink around them. */
+  --color-plate: #232323;
+  --color-plate-border: #333333;
+  --color-plate-hover: #2a2a2a;
+  /* A keycap control's face when it is not the accent: one step above the ground. */
+  --color-sheet: #2e2e2e;
+  /* Control boundary: ≥ 3:1 against the ground, the band, and a plate (WCAG 1.4.11). */
+  --color-control-edge: #737373;
+  /* Drafted shadow ink: zero-blur offsets, down-right only (DESIGN.md §4). */
+  --color-ink: #0c0c0c;
+
+  /* --- Text ramp (DESIGN.md §2) ----------------------------------------------------------- */
+  --color-foreground: #fafafa; /* 14.5:1 on background — headings, nav, emphasis */
+  --color-body: #d4d4d4; /* 10.2:1 — all reading copy */
+  --color-muted: #a3a3a3; /* 6.0:1 — captions, meta, labels only. Never paragraphs. */
+
+  /* --- Accents: the fill-vs-text law (DESIGN.md §2) --------------------------------------- */
+  /* Every accent is a pair: brand hex for fills with a near-black label, and a brightened
+     variant for text/icons/focus on dark. Safety Yellow is bright enough to be both. */
+  --color-primary: #facc15;
+  --color-primary-bright: #facc15;
+  --color-primary-foreground: #171717;
+  --color-ring: #facc15;
+
+  /* Science Blue — informational only, and the reserved primary of a future light theme. */
+  --color-info: #3b82f6;
+  --color-info-bright: #60a5fa;
+  --color-info-foreground: #171717;
+
+  /* Errors. DESIGN.md §8 names the role; the values follow the same pair law. */
+  --color-destructive: #db262f;
+  --color-destructive-bright: #fca5a5;
+  --color-destructive-foreground: #fafafa;
+
+  /* --- Sponsor tiers (DESIGN.md §8) ------------------------------------------------------- */
+  --color-tier-platinum: #cbd5e1;
+  --color-tier-gold: #facc15;
+  --color-tier-silver: #a3a3a3;
+  --color-tier-bronze: #d08954;
+
+  /* --- Typography (DESIGN.md §3) ---------------------------------------------------------- */
+  --font-display: "Orbitron", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Source Code Pro", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-hand: "Architects Daughter", "Comic Sans MS", cursive;
+
+  /* Fluid between 360px and 1440px viewports. */
+  --text-display: clamp(2.5rem, 1.9167rem + 2.5926vw, 4.25rem);
+  --text-display--line-height: 1.05;
+  --text-h1: clamp(2rem, 1.6667rem + 1.4815vw, 3rem);
+  --text-h1--line-height: 1.1;
+  --text-h2: clamp(1.5rem, 1.25rem + 1.1111vw, 2.25rem);
+  --text-h2--line-height: 1.15;
+  --text-h3: clamp(1.25rem, 1.1667rem + 0.3704vw, 1.5rem);
+  --text-h3--line-height: 1.25;
+  --text-h4: clamp(1.125rem, 1.0833rem + 0.1852vw, 1.25rem);
+  --text-h4--line-height: 1.35;
+  --text-stat: clamp(1.75rem, 1.5833rem + 0.7407vw, 2.25rem);
+  --text-stat--line-height: 1.1;
+  --text-body-lg: clamp(1.0625rem, 1.0208rem + 0.1852vw, 1.1875rem);
+  --text-body-lg--line-height: 1.65;
+  --text-body: clamp(1rem, 0.9792rem + 0.0926vw, 1.0625rem);
+  --text-body--line-height: 1.65;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-label: clamp(0.6875rem, 0.6667rem + 0.0926vw, 0.75rem);
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.05em;
+
+  /* --- Radius: one end-mill (DESIGN.md §4) ------------------------------------------------ */
+  /* Three values, nothing else. 16px and pill radii are retired. */
+  --radius-sm: 4px; /* chips, spec labels, badges */
+  --radius-md: 8px; /* every control: buttons, inputs, icon tiles */
+  --radius-lg: 12px; /* every cut feature: pockets, panels, framed media */
+
+  /* --- Elevation: drafted, not rendered (DESIGN.md §4) ----------------------------------- */
+  /* Depth is drawn the way a draftsman draws it — hard offsets in shadow ink — or cut: the
+     pocket's inset walls. The plate's contact shadow is the one soft shadow, and only a plate
+     (or a print laid on the band) takes it. */
+  --shadow-pocket:
+    inset 0 3px 12px rgb(0 0 0 / 0.75), inset 0 1px 0 rgb(0 0 0 / 0.9),
+    0 1px 0 rgb(255 255 255 / 0.07);
+  --shadow-contact: 0 1px 0 rgb(0 0 0 / 0.9), 0 12px 24px -8px rgb(0 0 0 / 0.8);
+  --shadow-plate:
+    inset 0 1px 0 rgb(255 255 255 / 0.09), inset 0 0 0 1px rgb(255 255 255 / 0.06),
+    var(--shadow-contact);
+  --shadow-drafted-1: 3px 3px 0 0 var(--color-ink);
+  --shadow-drafted-2: 6px 6px 0 0 var(--color-ink);
+  --shadow-press: 1px 1px 0 0 var(--color-ink);
+  /* The footer table's top edge: a hairline highlight where the sheet ends. */
+  --shadow-table-edge: inset 0 1px 0 rgb(255 255 255 / 0.06);
+
+  /* --- Motion (DESIGN.md §6) -------------------------------------------------------------- */
+  --duration-micro: 150ms; /* hover, focus */
+  --duration-ui: 250ms; /* menus, accordions */
+  --duration-entrance: 500ms; /* scroll-in entrances */
+  --duration-draw: 1100ms; /* hand-markup strokes drawing on */
+  --ease-entrance: cubic-bezier(0, 0, 0.2, 1); /* ease-out */
+  --ease-toggle: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
+
+  /* --- Layout ----------------------------------------------------------------------------- */
+  /* Tailwind's default md, declared so it is emitted as a variable: the utilities below and the
+     Navbar sheet script read it, so the mobile/desktop boundary has one definition. */
+  --breakpoint-md: 48rem;
+  --breakpoint-3xl: 120rem;
+
+  /* --- Material (DESIGN.md §2 surfaces) --------------------------------------------------- */
+  /* The sheet's grain: one octave of high-frequency fractal noise, desaturated, near-white,
+     with a steep gamma so only the brightest fraction of each cell carries alpha — film grain,
+     per-pixel and even, with no cell structure to repeat. Lower frequencies or more octaves
+     produce blotches that read as a tiled pattern; `turbulence` produces a web. The 600px
+     seamless tile keeps any repeat below what the eye picks out. Measured over `#262626` the
+     mean lifts ~8 levels with a spread of ~6, so every contrast pair in DESIGN.md §2 holds. */
+  --texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  /* The link underline (DESIGN.md §2.14, §8): one quick hand-drawn stroke with a single gentle
+     sag. The SVG has no intrinsic size and `preserveAspectRatio='none'`, so `background-size:
+     100%` stretches one curve to the link's width — and, with `box-decoration-break: clone`, to
+     each line of a wrapped link — while `non-scaling-stroke` keeps the line 2.3px at any width.
+     One curve per line, so there is never a seam where a repeating tile would meet itself. The
+     curve keeps clear of descenders: its ends sit 0.16em below the box (the anchor's bottom
+     padding) and it sags away from the text, never toward it. A data URI cannot read
+     `currentcolor`, so the stroke color is baked in and each program theme re-declares the tile
+     in its own `primary-bright` — the one place an accent hex appears outside the token. */
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%23facc15' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+
+/**
+ * Program themes (DESIGN.md §2). A program page is the same site wearing team colors:
+ * these blocks remap the action accent and nothing else. Adding a program is one block.
+ */
+[data-theme="frc"] {
+  --color-primary: #16a34a; /* Hazard Green */
+  --color-primary-bright: #3ecf6e;
+  --color-primary-foreground: #08240f;
+  --color-ring: #3ecf6e;
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%233ecf6e' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+
+[data-theme="fll"] {
+  --color-primary: #f97316; /* Danger Orange */
+  --color-primary-bright: #fb923c;
+  --color-primary-foreground: #241102;
+  --color-ring: #fb923c;
+  --texture-underline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%23fb923c' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    background-image: var(--texture-grain);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /**
+   * Orbitron owns h1–h3 and stops there (DESIGN.md §3): h4–h6 are Inter. Orbitron has no italic
+   * and is never set italic, so an italic span in a heading — the FIRST® mark (§1) — stands
+   * upright instead of taking a synthesized oblique. That covers the ®, which Orbitron lacks and
+   * `--font-display` takes from Inter. `CardTitle` sets its h2/h3 in Inter and turns synthesis
+   * back on.
+   */
+  h1,
+  h2,
+  h3 {
+    color: var(--color-foreground);
+    font-family: var(--font-display);
+    font-synthesis-style: none;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    font-weight: 700;
+    line-height: var(--text-h1--line-height);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+  }
+
+  h4,
+  h5,
+  h6 {
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    line-height: var(--text-h4--line-height);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /**
+   * An underline means a link, always, and it is drawn by hand (DESIGN.md §2.14, §8). The
+   * stroke is a repeating background rather than `text-decoration`, which cannot take a custom
+   * shape. Anchors that are not text — a button, a framed image — reset it with `bg-none pb-0`.
+   * Preflight sets `text-decoration: inherit` on `a`; the line is switched off here so the two
+   * underlines never stack.
+   */
+  a {
+    color: var(--color-primary-bright);
+    text-decoration-line: none;
+    background-image: var(--texture-underline);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 0.8em;
+    padding-bottom: 0.16em;
+    box-decoration-break: clone;
+    transition: color var(--duration-micro) var(--ease-toggle);
+  }
+
+  /* Hover shades the text and leaves the stroke where it is: a moving underline reads as a
+     glitch, not a confirmation. */
+  a:hover {
+    color: var(--color-foreground);
+  }
+
+  /* Never removed, on any interactive element (DESIGN.md §9). */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+  }
+
+  /* Media never overflows its column. `svg` is deliberately excluded: `max-width` is a
+     different property from `width`, so a utilities-layer `width` cannot override it, and
+     the hand-markup primitives size their strokes past the text box on purpose. */
+  img,
+  picture,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+/**
+ * Global reduced-motion kill switch (DESIGN.md §6, §9). Every animation in the system is
+ * confirmation, never content, so removing all of them costs nothing.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/**
+ * Signature motifs (DESIGN.md §2) as utilities, so pages cannot reinvent them. The register
+ * budget is a review rule, not something CSS can enforce: at most 4 distinct devices per
+ * viewport, and one atmosphere device per section boundary.
+ */
+
+/**
+ * The sheet's grain on a surface other than the body, which would otherwise paint a smooth patch
+ * over the grained ground. Pockets and bands never take it: a pocket floor is smooth so the
+ * recess reads against the grain around it, and the band is ink, not metal.
+ */
+@utility grain {
+  background-image: var(--texture-grain);
+}
+
+/**
+ * Pocket anatomy V2, "machined pocket" — the standard card. On the ground it is cut into the
+ * sheet: darker floor, inset walls, a lit lower lip. Inside a `band` the same element is a plate
+ * laid on the table instead (the `band` utility below) — cut into metal, laid on the table.
+ */
+@utility pocket {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-pocket-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-pocket);
+}
+
+/* Interactive pockets: the border warms to 60% primary and the floor lifts a visible step.
+   Nothing translates, nothing glows, the shadow does not change. */
+@utility pocket-interactive {
+  transition:
+    background-color var(--duration-micro) var(--ease-toggle),
+    border-color var(--duration-micro) var(--ease-toggle);
+
+  &:hover,
+  &:focus-within {
+    background-color: var(--color-card-hover);
+    border-color: color-mix(in srgb, var(--color-primary) 60%, transparent);
+  }
+}
+
+/**
+ * The engineering grid (DESIGN.md §2.3). One definition, two consumers: `pocket-feature` below
+ * and `Pattern.astro`. Cell size and stroke alpha are custom properties, and the stroke reads
+ * `--color-foreground` rather than a literal hex — so the grid follows a future light theme's
+ * token set instead of needing a component edit. Not `currentcolor`: this utility lands on
+ * elements that also hold text, and the linework must not be tied to the copy's color.
+ */
+@utility engineering-grid {
+  --grid-cell: 26px;
+  --grid-alpha: 5%;
+  --grid-line: color-mix(in srgb, var(--color-foreground) var(--grid-alpha), transparent);
+
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+
+  /* A `var()` alpha cannot be pre-resolved, so the build's computed fallback for `--grid-line`
+     lands on opaque foreground — solid white linework over content. The grid is atmosphere,
+     never information, so drop it entirely where `color-mix` is unavailable. */
+  @supports not (color: color-mix(in srgb, red, red)) {
+    background-image: none;
+  }
+}
+
+/**
+ * The drafting grid (DESIGN.md §2.3): the engineering grid at blueprint strength, in two weights —
+ * a 26px minor cell at 4% and a 130px (5 × minor) major cell at 8%, the line-weight hierarchy of
+ * a real drawing sheet. For surfaces that are not the page ground: the band's table and the copy
+ * side of a photo hero. The caller feathers it with a mask so it never ends on a hard edge.
+ */
+@utility drafting-grid {
+  --grid-minor: color-mix(in srgb, var(--color-foreground) 4%, transparent);
+  --grid-major: color-mix(in srgb, var(--color-foreground) 8%, transparent);
+
+  background-image:
+    linear-gradient(to right, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-minor) 1px, transparent 1px);
+  background-size:
+    130px 130px,
+    130px 130px,
+    26px 26px,
+    26px 26px;
+
+  @supports not (color: color-mix(in srgb, red, red)) {
+    background-image: none;
+  }
+}
+
+/**
+ * The ink band — the drafting table the sheet lies on (DESIGN.md §2 surfaces). A full-width
+ * section surface with a 30% primary top edge, the accent edge vignette (primary at 9%, gone by
+ * 12% in from each side), and the drafting grid feathered out with a radial mask. It is the one
+ * atmosphere device for its boundary, so it carries no pool or numeral.
+ *
+ * On the table the physics invert: a `pocket` inside a band is a raised plate — lighter floor,
+ * hairline top highlight, contact shadow — and framed media takes the contact shadow in place
+ * of the drafted edge, which ink on ink would not show.
+ */
+@utility band {
+  --band-vignette: color-mix(in srgb, var(--color-primary) 9%, transparent);
+
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-band);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-primary) 30%, transparent),
+    inset 0 -1px 0 rgb(255 255 255 / 0.05);
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  &::before {
+    background: linear-gradient(
+      to right,
+      var(--band-vignette),
+      transparent 12%,
+      transparent 88%,
+      var(--band-vignette)
+    );
+  }
+
+  &::after {
+    @apply drafting-grid;
+
+    background-position: center top;
+    mask-image: radial-gradient(ellipse 85% 90% at 50% 45%, black 35%, transparent 100%);
+  }
+
+  & .pocket {
+    background-color: var(--color-plate);
+    border-color: var(--color-plate-border);
+    box-shadow: var(--shadow-plate);
+  }
+
+  & .pocket-interactive:is(:hover, :focus-within) {
+    background-color: var(--color-plate-hover);
+    border-color: color-mix(in srgb, var(--color-primary) 60%, transparent);
+  }
+
+  & .media-frame {
+    box-shadow: var(--shadow-contact);
+  }
+}
+
+/* The drafting grid over the copy side of a photo hero, fading out before the photo's subject. */
+@utility hero-grid {
+  @apply drafting-grid;
+
+  mask-image: linear-gradient(to right, black, black 35%, transparent 70%);
+}
+
+/* Feature pocket V2+V3, "drawing pocket" — the grid is *inside* the pocket, and only on
+   screens wide enough for it to read. Dense card grids and mobile stay plain V2. */
+@utility pocket-feature {
+  @media (width >= theme(--breakpoint-md)) {
+    @apply engineering-grid;
+  }
+}
+
+/* The 2px primary hairline that ends a hero, full-bleed. */
+@utility accent-rule {
+  height: 2px;
+  background-color: var(--color-primary);
+  border: 0;
+}
+
+/* The 32px rule under a card title. Machined: perfectly straight, unlike a chalk underline. */
+@utility title-rule {
+  @apply accent-rule;
+
+  width: 32px;
+}
+
+/* The "team picture frame" for photo collages and feature media: a print mounted on the sheet
+   with a 6px drafted edge. On a band it takes the contact shadow instead (`band` above). */
+@utility media-frame {
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-drafted-2);
+}
+
+/**
+ * A keycap (DESIGN.md §4, §6, §8): a control that stands on a 3px drafted offset, lifts 1px on
+ * hover, and presses flat on `:active` — motion that confirms the press. Under reduced motion the
+ * face stays put and only the offset changes, so every state still reads.
+ *
+ * The edge is `--keycap-edge`, shadow ink when unset; `keycap-accent` tints it with the theme
+ * primary. It is declared on the element, not in `@theme`, so it resolves against the program
+ * theme the control sits in rather than the root's.
+ */
+@utility keycap {
+  box-shadow: 3px 3px 0 0 var(--keycap-edge, var(--color-ink));
+  transition-property: color, background-color, border-color, box-shadow, translate;
+
+  &:hover {
+    translate: -1px -1px;
+    box-shadow: 4px 4px 0 0 var(--keycap-edge, var(--color-ink));
+  }
+
+  &:active {
+    translate: 2px 2px;
+    box-shadow: var(--shadow-press);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover,
+    &:active {
+      translate: none;
+    }
+  }
+}
+
+/* Modifier for `keycap`: the accent keycap's edge, the theme primary sunk into shadow ink. */
+@utility keycap-accent {
+  --keycap-edge: color-mix(in srgb, var(--color-primary) 35%, var(--color-ink));
+}
+
+/* Highlighter swipe: a skewed translucent marker stroke behind white key words. A heading
+   uses `primary` text *or* a swipe, never both. */
+@utility highlight-swipe {
+  position: relative;
+  color: var(--color-foreground);
+  isolation: isolate;
+
+  /* A featured link (DESIGN.md §2.14: swipe + underline). The swipe is an absolutely positioned
+     pseudo-element, which collapses on an inline that breaks across lines, so the link keeps its
+     few words together instead. */
+  &:is(a) {
+    display: inline-block;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0.08em -0.12em 0.06em -0.12em;
+    z-index: -1;
+    /* Body size: 25% keeps white-on-swipe at AAA (7.6:1 on the ground); verified on /styleguide. */
+    background-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+    border-radius: 2px;
+    transform: rotate(-0.8deg);
+  }
+
+  /* Display size (DESIGN.md §2.13): inside an h1 or h2 the bar is AA-large, and 35% reads as the
+     accent rather than mud (white-on-swipe 5.9:1 on the ground); verified on /styleguide. */
+  :where(h1, h2, .text-display, .text-h1, .text-h2) &::before {
+    background-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+  }
+}
+
+/* Eyebrow label — Orbitron's one all-caps use (DESIGN.md §3). */
+@utility eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Spec label — the other sanctioned caps: Source Code Pro, tracked. */
+@utility spec-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: var(--text-label--letter-spacing);
+  line-height: var(--text-label--line-height);
+  text-transform: uppercase;
+}
+
+/* Spec chip — a stamped plate: transparent fill, 40%-alpha border in the chip's own color. */
+@utility spec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.1875rem 0.5rem;
+  border: 1px solid color-mix(in srgb, currentcolor 40%, transparent);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+}
+
+/* Stat numeral — the data voice (DESIGN.md §8). */
+@utility stat {
+  font-family: var(--font-mono);
+  font-size: var(--text-stat);
+  font-weight: 600;
+  line-height: var(--text-stat--line-height);
+  color: var(--color-primary-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ambient pool — a small lightness modulation of the ground, centred on the section's heading
+   and fading out well inside the section on every side: an ellipse centred on the top edge is
+   cut in half by it and leaves a hard line. One per section, never stacked with another
+   atmosphere device, never behind a photo. */
+@utility ambient-pool {
+  --pool-tint: color-mix(in srgb, var(--color-primary) 9%, transparent);
+
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 55% at 50% 30%, var(--pool-tint), transparent 70%);
+  }
+}
+
+/* Modifier for `ambient-pool`, not a peer of it: this only swaps the tint the pool reads, so it
+   must be composed as `ambient-pool ambient-pool-neutral`. Used alone it draws nothing. */
+@utility ambient-pool-neutral {
+  --pool-tint: color-mix(in srgb, var(--color-foreground) 5%, transparent);
+}
+
+/**
+ * Section rhythm (DESIGN.md §4) — consistent on every section, and never doubled. Two sections
+ * on the same ground share one padding at their boundary: the second drops its top. A band is a
+ * surface of its own, so its edge keeps the padding on both sides.
+ */
+@utility section-y {
+  padding-block: 4rem;
+
+  @media (width >= theme(--breakpoint-md)) {
+    padding-block: 6rem;
+  }
+
+  &:not(.band):is(.section-y:not(.band) + *) {
+    padding-top: 0;
+  }
+}
+
+/**
+ * The shared stroke contract for the hand-markup register (DESIGN.md §2.12–2.15): 2.5px
+ * round-capped `currentColor`, with `non-scaling-stroke` so the weight stays even when the SVG is
+ * stretched non-uniformly over a word. Applied to the `<svg>`; the paths carry only their `d` and
+ * `pathLength`, so a change to the hand's weight is one edit rather than one per device.
+ */
+@utility hand-stroke {
+  fill: none;
+
+  & path {
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-width: 2.5;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+/**
+ * `body` names both a color (§2) and a type size (§3), and Tailwind resolves the color
+ * namespace first — so `text-body` is the *color*, matching `text-muted` and `text-foreground`,
+ * and the size would otherwise be unreachable. Both tokens stay faithful to the doc; the size
+ * gets this utility. Elements inherit the body size from the base layer, so reach for
+ * `text-copy` only when resetting something back to it.
+ */
+@utility text-copy {
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+}
+
+/* Prose measure (DESIGN.md §3). */
+@utility measure {
+  max-width: 70ch;
+}
+
+/**
+ * Long-form prose (DESIGN.md §8) — the flowing column an argument is set in, as opposed to the
+ * grids the rest of the site is built from. Element selectors rather than per-element utilities
+ * because the copy on these pages is authored as markup, and on the collection-driven pages it
+ * arrives from `<Content />` where no class can be attached.
+ *
+ * Includes `measure`, so the two are never composed together.
+ */
+@utility prose-copy {
+  @apply measure;
+
+  & :is(p, ul, ol, blockquote) {
+    margin-block: 1rem;
+  }
+
+  /* The column's own edges stay flush; the rhythm is strictly between siblings. */
+  & > :first-child {
+    margin-block-start: 0;
+  }
+
+  & > :last-child {
+    margin-block-end: 0;
+  }
+
+  & :is(h2, h3, h4) {
+    margin-block-start: 2rem;
+  }
+
+  & ul {
+    padding-inline-start: 1.25rem;
+    list-style-type: disc;
+  }
+
+  & ol {
+    padding-inline-start: 1.5rem;
+    list-style-type: decimal;
+  }
+
+  & li {
+    margin-block: 0.5rem;
+  }
+
+  & li::marker {
+    color: var(--color-primary);
+  }
+
+  /* A nested list is part of its parent item, not a new block. */
+  & :is(ul, ol) :is(ul, ol) {
+    margin-block: 0.5rem;
+  }
+
+  & blockquote {
+    padding-inline-start: 1.5rem;
+    border-inline-start: 2px solid var(--color-primary);
+    color: var(--color-foreground);
+    font-size: var(--text-body-lg);
+    line-height: var(--text-body-lg--line-height);
+  }
+
+  & blockquote cite {
+    display: block;
+    margin-block-start: 0.75rem;
+    color: var(--color-muted);
+    font-size: var(--text-small);
+    font-style: normal;
+  }
+}
+
+/**
+ * The carousel's snap track (Carousel.astro). Slides arrive through a slot, so their sizing
+ * cannot live in the component's scoped style; defining it here also lets the md boundary read
+ * the breakpoint token. `--carousel-item-basis` is set inline by the component.
+ */
+@utility carousel-track {
+  & > * {
+    scroll-snap-align: start;
+    flex: 0 0 100%;
+  }
+
+  @media (width >= theme(--breakpoint-md)) {
+    & > * {
+      flex-basis: var(--carousel-item-basis, 45%);
+    }
+  }
+}
+
+/**
+ * Five feature cards as a deliberate 2 + 3 (DESIGN.md §5: "No orphan rows: plan the math —
+ * 5 cards = intentional 2+3"). Two columns first, so the odd card widens to fill its row rather
+ * than floating; six columns from `lg`, where 3+3 then 2+2+2 divides evenly.
+ *
+ * Here rather than in `FeatureGrid.astro` for the two reasons a style leaves a component: the
+ * spans land on slotted children, which a scoped style cannot reach, and the boundaries read the
+ * breakpoint tokens.
+ */
+@utility feature-grid-2-3 {
+  display: grid;
+  gap: 1.5rem;
+
+  @media (width >= theme(--breakpoint-md)) {
+    grid-template-columns: repeat(2, 1fr);
+
+    & > *:last-child {
+      grid-column: span 2;
+    }
+  }
+
+  @media (width >= theme(--breakpoint-lg)) {
+    grid-template-columns: repeat(6, 1fr);
+
+    & > *:nth-child(-n + 2) {
+      grid-column: span 3;
+    }
+
+    & > *:nth-child(n + 3) {
+      grid-column: span 2;
+    }
+  }
+}
+
+/* The page container (DESIGN.md §5). One definition, so pages cannot reinvent the gutters. */
+@utility container-page {
+  margin-inline: auto;
+  max-width: var(--container-6xl);
+  padding-inline: 1rem;
+
+  @media (width >= theme(--breakpoint-md)) {
+    padding-inline: 1.5rem;
+  }
+}
+
+/**
+ * Chrome links (DESIGN.md §8): nav, footer, card footers. A different layer from copy, so they
+ * never take the hand-drawn stroke — no underline at rest, a straight machined hairline on
+ * hover/focus. Both halves live here so a call site cannot ship one without the other.
+ */
+@utility ui-link {
+  color: var(--color-foreground);
+  background-image: none;
+  padding-bottom: 0;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-primary-bright);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  /* The current page in a nav (§9 requires `aria-current="page"` there). */
+  &[aria-current] {
+    color: var(--color-primary-bright);
+  }
+}
+
+/**
+ * An external link's trailing marker (DESIGN.md §8: "icon at 0.8em"). A pseudo-element rather
+ * than an inline SVG per link, so it cannot be forgotten at a call site.
+ */
+@utility external-link {
+  &::after {
+    content: "↗";
+    display: inline-block;
+    margin-inline-start: 0.25em;
+    font-size: 0.8em;
+    line-height: 1;
+    vertical-align: baseline;
+  }
+}
+
+/**
+ * Hand-markup entrance: strokes draw themselves on. The one sanctioned decorative animation,
+ * because it enacts the metaphor. Reduced motion disables it via the global kill switch, and
+ * the final state is a fully drawn stroke either way.
+ */
+@keyframes draw-on {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/**
+ * Paired with `pathLength="100"` on the animated path, so the dash math is in percent and the
+ * stroke always ends fully drawn. Hard-coded lengths silently truncate any path longer than
+ * the guess.
+ *
+ * The entrance waits for the mark to scroll into view: `BaseLayout` marks every `.draw-on`
+ * `is-pending` and swaps it to `is-drawing` from an IntersectionObserver. Without JavaScript
+ * neither class lands and the stroke is simply drawn.
+ */
+@utility draw-on {
+  stroke-dasharray: 100;
+
+  &.is-pending {
+    stroke-dashoffset: 100;
+  }
+
+  &.is-drawing {
+    animation: draw-on var(--duration-draw) var(--ease-entrance) both;
+  }
+}

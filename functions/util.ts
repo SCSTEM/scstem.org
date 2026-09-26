@@ -1,48 +1,45 @@
 import type {
   APIResponse,
+  CalendarResponse,
   TurnstileResponse,
   TurnstileVerificationResponse,
 } from "@/types";
 
 /**
- * Helper function to generate response message to return to the client. Helps standardize
- * communication and error logging between API and web frontend.
- * @param apiResponse A standardized response object, shared between the API and web frontend
- * @param status HTTP status code
- * @returns A standard HTTP Response object
+ * A JSON response from any endpoint. `headers` are added to the content type. A failed
+ * `APIResponse` that carries an error also logs it, so it reaches the Functions log.
  */
-export const res = (apiResponse: APIResponse, status: number): Response => {
-  if (!apiResponse.success && apiResponse.error)
-    console.error(apiResponse.error);
+export const res = (
+  body: APIResponse | CalendarResponse,
+  status: number,
+  headers: Record<string, string> = {},
+): Response => {
+  if ("success" in body && !body.success && body.error) {
+    console.error(body.error);
+  }
 
-  return new Response(JSON.stringify(apiResponse), {
-    status: status,
-    headers: {
-      "Content-Type": "application/json",
-    },
+  return new Response(JSON.stringify(body), {
+    headers: { ...headers, "Content-Type": "application/json" },
+    status,
   });
 };
 
-/**
- * Helper function to verify CF Turnstile challenges
- * @param secretKey Turnstile secret key (generated from the Cloudflare Dashboard)
- * @param response Response provided by the Turnstile client
- * @param ip IP Provided by the Turnstile client
- * @returns A boolean indicating whether or not the turnstile verification passed
- */
 export const validateTurnstile = async (
   secretKey: string,
   response: string,
-  ip: string,
+  ip: string | null,
 ): Promise<TurnstileVerificationResponse> => {
   const formData = new FormData();
   formData.append("secret", secretKey);
   formData.append("response", response);
-  formData.append("remoteip", ip);
+  // Turnstile treats remoteip as optional; sending a stringified null fails verification.
+  if (ip !== null) {
+    formData.append("remoteip", ip);
+  }
 
   const url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
   const result = await fetch(url, { body: formData, method: "POST" });
   const outcome = await result.json<TurnstileResponse>();
 
-  return Promise.resolve({ valid: outcome.success, response: outcome });
+  return { response: outcome, valid: outcome.success };
 };

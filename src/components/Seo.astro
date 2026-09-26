@@ -1,0 +1,77 @@
+---
+import type { SeoProps } from "@/lib/seo";
+
+import { site } from "@/data/site";
+import { isImageMetadata } from "@/lib/images";
+import { color, programColor } from "@/lib/tokens";
+
+/**
+ * Everything that goes in `<head>` for discoverability. Rendered by BaseLayout, which passes
+ * these props straight through — so **`description` being required here is what stops a page
+ * from shipping without one.** Omitting it is a type error, not a review catch.
+ *
+ * No `keywords` meta: search engines have ignored it for years.
+ */
+type Props = SeoProps;
+
+const {
+  title,
+  description,
+  ogImage = site.ogImage.path,
+  ogImageAlt,
+  noindex = false,
+  theme,
+} = Astro.props;
+
+/** The homepage is the site; anywhere else is a page *of* it. */
+const isHome = Astro.url.pathname === "/";
+const fullTitle = isHome ? site.name : site.titleTemplate.replace("%s", title);
+
+const canonicalUrl = new URL(Astro.url.pathname, site.url);
+
+const imageUrl = new URL(isImageMetadata(ogImage) ? ogImage.src : ogImage, site.url);
+
+/** Dimensions are known for an imported asset and for the site default; alt only when given. */
+const isDefaultImage = ogImage === site.ogImage.path;
+const imageSize = isImageMetadata(ogImage) ? ogImage : isDefaultImage ? site.ogImage : undefined;
+const imageAlt = ogImageAlt ?? (isDefaultImage ? site.ogImage.alt : undefined);
+
+if (imageAlt === undefined) {
+  throw new Error(
+    `${Astro.url.pathname}: a page passing its own ogImage must pass ogImageAlt (og:image:alt).`,
+  );
+}
+
+/** Browser chrome follows the page's action accent, read from the same tokens the CSS ships. */
+const themeColor = theme === undefined ? color("primary") : programColor(theme, "primary");
+---
+
+<title>{fullTitle}</title>
+<meta content={description} name="description" />
+<link href={canonicalUrl.href} rel="canonical" />
+
+{noindex && <meta content="noindex, nofollow" name="robots" />}
+
+<meta content={fullTitle} property="og:title" />
+<meta content={description} property="og:description" />
+<meta content="website" property="og:type" />
+<meta content={canonicalUrl.href} property="og:url" />
+<meta content={site.name} property="og:site_name" />
+<meta content="en_US" property="og:locale" />
+<meta content={imageUrl.href} property="og:image" />
+<meta content={imageAlt} property="og:image:alt" />
+{
+  imageSize !== undefined && (
+    <>
+      <meta content={String(imageSize.width)} property="og:image:width" />
+      <meta content={String(imageSize.height)} property="og:image:height" />
+    </>
+  )
+}
+
+<meta content="summary_large_image" name="twitter:card" />
+<meta content={fullTitle} name="twitter:title" />
+<meta content={description} name="twitter:description" />
+<meta content={imageUrl.href} name="twitter:image" />
+
+<meta content={themeColor} name="theme-color" />

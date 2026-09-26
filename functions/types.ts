@@ -1,27 +1,46 @@
 export interface GenericFormRequest {
-  form: string;
-  turnstileToken: string;
-  name?: string;
   email?: string;
+  form: string;
   message?: string;
+  name?: string;
+  turnstileToken: string;
 }
 
 export interface APIResponse {
-  success: boolean;
-  // biome-ignore lint/suspicious/noExplicitAny: "TODO: Fix this"
-  result?: any;
   error?: unknown;
   message?: string;
+  /** Echoed back to the caller as JSON; the shape is the endpoint's business, not this type's. */
+  result?: unknown;
+  success: boolean;
 }
 
 export interface TurnstileVerificationResponse {
-  valid: boolean;
   response?: TurnstileResponse;
+  valid: boolean;
 }
 
 export interface TurnstileResponse {
-  success: boolean;
+  challenge_ts: string;
   "error-codes": string[];
   hostname: string;
-  challenge_ts: string;
+  success: boolean;
+}
+
+/**
+ * One occurrence on a public calendar, as `/api/calendar/[name]` returns it. `start` and `end`
+ * are ISO 8601 instants; the page formats them in the visitor's own locale and zone.
+ */
+export interface CalendarEvent {
+  allDay: boolean;
+  description: string;
+  end: string;
+  location: string;
+  start: string;
+  title: string;
+}
+
+/** What `/api/calendar/<name>` answers with, either way. */
+export interface CalendarResponse {
+  events?: CalendarEvent[];
+  message?: string;
 }

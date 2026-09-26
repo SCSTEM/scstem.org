@@ -1,0 +1,114 @@
+---
+import ogDonate from "@/assets/og/donate.jpg";
+import drillBits from "@/assets/sc2/drill-bits.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import ContactForm from "@/components/ui/ContactForm.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Section from "@/components/ui/Section.astro";
+import { nav, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
+
+/**
+ * DESIGN.md §2 allows one action accent per view, so every card is
+ * the page's `primary` and the ranking is carried by order and content. The addresses and the
+ * EIN set in the data voice (§3): they are spec values, not prose.
+ */
+const mailingAddress = [
+  site.name,
+  site.location.street,
+  `${site.location.locality}, ${site.location.region} ${site.location.postalCode}`,
+];
+---
+
+<BaseLayout
+  description="Give by mail, online through PayPal Giving Fund, in kind, or as a corporate sponsor. Every route supports STEM programs in Franklin County."
+  ogImage={ogDonate}
+  ogImageAlt="The South Central STEM Collective logo over a rack of drill bits, captioned “Donate”"
+  title="Donate"
+>
+  <JsonLd data={breadcrumbs([{ name: "Donate", path: "/donate" }])} slot="head" />
+
+  <Hero>
+    <HeroImage alt="A rack of drill bits on the workshop wall" slot="media" src={drillBits} />
+
+    <Fragment slot="title">
+      How you can <span class="highlight-swipe">support</span> the mission
+    </Fragment>
+
+    Donations keep the tools sharp, the workspace open, and registration paid for every student who
+    walks in. Here&rsquo;s every way to give.
+
+    <Button class="external-link" href={site.urls.donate} rel="noopener" size="lg" slot="actions">
+      Donate through PayPal
+    </Button>
+  </Hero>
+
+  <Section atmosphere="numeral" index={1}>
+    <Fragment slot="title">Ways to give</Fragment>
+
+    <FeatureGrid columns="2+3">
+      <FeatureCard icon="mail">
+        <Fragment slot="title">By mail</Fragment>
+        <p>Mail a check to the workspace, or hand it to us at any community event.</p>
+        <p class="mt-4 font-semibold text-foreground">Make checks payable to:</p>
+        <p class="font-mono text-body">{site.name}</p>
+        <p class="mt-4 font-semibold text-foreground">Mailing address:</p>
+        <address class="font-mono text-body not-italic">
+          {mailingAddress.map((line) => <span class="block">{line}</span>)}
+        </address>
+      </FeatureCard>
+
+      <FeatureCard
+        badge="via PayPal"
+        cta="Open PayPal Giving Fund"
+        href={site.urls.donate}
+        icon="wallet"
+      >
+        <Fragment slot="title">Online</Fragment>
+        Give securely through PayPal Giving Fund.
+      </FeatureCard>
+
+      <FeatureCard icon="heart-handshake">
+        <Fragment slot="title">Charitable giving fund</Fragment>
+        <p>Your giving fund may already list us. Search by name or EIN.</p>
+        <dl class="mt-4">
+          <dt class="spec-label text-muted">Name</dt>
+          <dd class="text-body">{site.name}</dd>
+          <dt class="mt-3 spec-label text-muted">EIN</dt>
+          <dd class="font-mono text-body">{site.ein}</dd>
+        </dl>
+        <p class="mt-4">Not listed? <a href="#questions">Let us know</a>.</p>
+      </FeatureCard>
+
+      <FeatureCard cta="See our wishlist" href={site.urls.wishlist} icon="tool">
+        <Fragment slot="title">In kind</Fragment>
+        <p>
+          Tools, materials, and equipment keep the workspace stocked. Check the wishlist for current
+          needs, then contact us to arrange a drop-off.
+        </p>
+      </FeatureCard>
+
+      <FeatureCard icon="file-description">
+        <Fragment slot="title">Corporate sponsorship</Fragment>
+        <p>Corporate partners help us keep improving our programs and workspace.</p>
+        <p class="mt-4">
+          <a href="#questions">Contact us below</a> about a corporate sponsorship. Our <a
+            href={nav.sponsors.href}>sponsors page</a
+          > shows who already does.
+        </p>
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="pool-neutral" id="questions">
+    <Fragment slot="title">Let&rsquo;s chat</Fragment>
+    <Fragment slot="intro">Questions about sponsoring or giving? Ask here.</Fragment>
+
+    <ContactForm class="max-w-3xl" name="Sponsor Question" />
+  </Section>
+</BaseLayout>

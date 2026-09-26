@@ -1,0 +1,23 @@
+---
+import { cn } from "@/lib/cn";
+
+/**
+ * The quiet divider — a plain hairline. When a boundary needs to be *felt*, use
+ * `RulerDivider` instead, and count it against the register budget (DESIGN.md §2).
+ */
+interface Props {
+  orientation?: "horizontal" | "vertical";
+  class?: string;
+}
+
+const { orientation = "horizontal", class: className } = Astro.props;
+---
+
+<hr
+  aria-orientation={orientation}
+  class={cn(
+    "border-0 bg-border",
+    orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
+    className,
+  )}
+/>

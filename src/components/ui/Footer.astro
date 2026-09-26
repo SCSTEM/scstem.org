@@ -1,0 +1,93 @@
+---
+import { Image } from "astro:assets";
+
+import logoLockup from "@/assets/brand/logo-white-full.svg";
+import CardTitle from "@/components/ui/primitives/CardTitle.astro";
+import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
+import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import SocialLinks from "@/components/ui/SocialLinks.astro";
+import { nav, programs, site, socials } from "@/data/site";
+import { isExternal } from "@/lib/links";
+
+/**
+ * Site footer: the drafting table the whole sheet lies on — the `band` ink with a hairline top
+ * highlight, and no grid, since the title block is its linework (DESIGN.md §2). It carries the
+ * brand's Light full-width lockup, the variant for dark grounds (§7). The title block sits at the
+ * bottom, which is where a drawing sheet puts its identity strip (§2.9).
+ *
+ * It declares itself a band surface, so the build fails a page whose last section is one.
+ */
+const year = new Date().getFullYear();
+
+/**
+ * The columns are curated — they mix routes with external URLs and use full program names — but
+ * every value is a reference into `src/data/site.ts`, never a re-typed copy.
+ */
+const sections = [
+  {
+    title: "Support us",
+    links: [nav.donate, nav.sponsors, { label: "Wishlist", href: site.urls.wishlist }],
+  },
+  {
+    title: "Programs",
+    links: [
+      { label: programs.fll.name, href: programs.fll.href },
+      { label: programs.frc.name, href: programs.frc.href },
+      nav.calendar,
+    ],
+  },
+  { title: "Find us online", links: socials },
+] as const;
+---
+
+<footer class="bg-band shadow-table-edge" data-surface="band">
+  <div class="container-page py-12">
+    <div class="flex flex-col gap-10 md:flex-row md:justify-between">
+      <div class="max-w-xs">
+        <Image alt={site.name} class="h-auto w-full max-w-[16rem]" src={logoLockup} />
+        <p class="mt-4 text-small">{site.legal}</p>
+        <SocialLinks class="mt-6" email />
+      </div>
+
+      <nav aria-label="Footer" class="grid grid-cols-2 gap-8 md:grid-cols-3">
+        {
+          sections.map((section) => (
+            <div>
+              <CardTitle as="h2" rule>
+                {section.title}
+              </CardTitle>
+              <ul class="mt-3 flex flex-col gap-2">
+                {section.links.map((link) => (
+                  <li>
+                    <a
+                      class:list={[
+                        "ui-link text-small text-body",
+                        isExternal(link.href) && "external-link",
+                      ]}
+                      href={link.href}
+                      rel={isExternal(link.href) ? "noopener" : undefined}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </nav>
+    </div>
+
+    <RulerDivider class="mt-12" />
+
+    <TitleBlock
+      class="mt-6"
+      fields={[
+        { label: "Organization", value: site.name },
+        { label: "Workspace", value: site.location.workspace },
+        { label: "Contact", value: site.email, href: `mailto:${site.email}`, mono: true },
+        { label: "Copyright", value: `© ${String(year)}`, mono: true },
+      ]}
+    />
+  </div>
+</footer>

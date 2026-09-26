@@ -1,0 +1,22 @@
+---
+import type { ComponentProps } from "astro/types";
+
+import type { ProgramTheme } from "@/data/site";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+/**
+ * A program page is the same site wearing team colors (DESIGN.md §2), so this is a thin wrapper
+ * that sets the theme and nothing else.
+ */
+type Props = Omit<ComponentProps<typeof BaseLayout>, "theme"> & {
+  program: ProgramTheme;
+};
+
+const { program, ...rest } = Astro.props;
+---
+
+<BaseLayout {...rest} theme={program}>
+  <slot name="head" slot="head" />
+  <slot />
+</BaseLayout>

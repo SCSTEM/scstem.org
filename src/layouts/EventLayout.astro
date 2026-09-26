@@ -1,0 +1,199 @@
+---
+import { type CollectionEntry, getEntries, render } from "astro:content";
+
+import ogEvents from "@/assets/og/events.jpg";
+import JsonLd from "@/components/JsonLd.astro";
+import Countdown from "@/components/ui/Countdown.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FaqList from "@/components/ui/FaqList.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import Section from "@/components/ui/Section.astro";
+import { programPhotos } from "@/data/programPhotos";
+import { nav, programs, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { type Breadcrumb, breadcrumbs, event as eventJsonLd, faqPage } from "@/lib/jsonld";
+
+/**
+ * One layout for every seasonal event, so a new season is an edit to one markdown file: the hero,
+ * the date, the location, the media links and the questions are frontmatter, and the long-form
+ * copy is the entry's body.
+ */
+interface Props {
+  event: CollectionEntry<"events">;
+  /** The trail above this page. Home and the page itself are added here. */
+  trail?: readonly Breadcrumb[];
+}
+
+const { event, trail = [] } = Astro.props;
+const { data } = event;
+const { Content } = await render(event);
+
+/** `sc2` is the default look and has no `[data-theme]` block. */
+const theme = data.program === "sc2" ? undefined : data.program;
+
+if (data.heroImage !== undefined && data.heroImageAlt === undefined) {
+  throw new Error(`events/${event.id}: an entry with a heroImage must also set heroImageAlt.`);
+}
+
+/** An event that carries no photo of its own takes its program's, so a new event needs no image work. */
+const hero =
+  data.heroImage !== undefined && data.heroImageAlt !== undefined
+    ? { src: data.heroImage, alt: data.heroImageAlt }
+    : { src: programPhotos[data.program].image, alt: programPhotos[data.program].alt };
+
+const faqEntries = data.faq === undefined ? [] : await getEntries(data.faq);
+
+/**
+ * The two flat arrays the schema pairs by index. A mismatch would silently drop a link's
+ * label, so it fails the build the schema comment promises it fails on.
+ */
+const hintLabels = data.hintLabels ?? [];
+const hintUrls = data.hintUrls ?? [];
+if (hintUrls.length !== hintLabels.length) {
+  throw new Error(
+    `events/${event.id}: hintUrls has ${String(hintUrls.length)} entries and hintLabels has ${String(hintLabels.length)}.`,
+  );
+}
+
+const media = [
+  ...(data.teaserUrls ?? []).map((url, index) => ({
+    url,
+    label: `Season teaser ${String(index + 1)}`,
+    icon: "player-play",
+  })),
+  ...hintUrls.map((url, index) => ({ url, label: hintLabels[index] ?? "", icon: "link" })),
+];
+
+const pageUrl = new URL(Astro.url.pathname, site.url).href;
+
+const details = [
+  { label: "Location", value: data.locationName ?? site.location.name },
+  { label: "Address", value: data.locationAddress ?? site.location.workspace },
+  {
+    label: "Directions",
+    value: "Parking and the door to use",
+    href: data.directionsUrl ?? site.urls.directions,
+  },
+];
+---
+
+<BaseLayout
+  description={data.description}
+  ogImage={ogEvents}
+  ogImageAlt="The South Central STEM Collective logo over a collage of students at work, captioned “Events”"
+  theme={theme}
+  title={data.title}
+>
+  <Fragment slot="head">
+    <JsonLd
+      data={eventJsonLd({
+        name: data.title,
+        description: data.description,
+        start: data.start,
+        end: data.end,
+        locationName: data.locationName,
+        locationAddress: data.locationAddress,
+        url: pageUrl,
+        image: new URL(hero.src.src, site.url).href,
+        registrationUrl: data.registrationUrl,
+      })}
+    />
+    {
+      faqEntries.length > 0 && (
+        <JsonLd
+          data={faqPage(
+            faqEntries.map((entry) => ({
+              question: entry.data.question,
+              answer: entry.rendered?.html ?? entry.body ?? "",
+            })),
+          )}
+        />
+      )
+    }
+    {
+      trail.length > 0 && (
+        <JsonLd data={breadcrumbs([...trail, { name: data.title, path: Astro.url.pathname }])} />
+      )
+    }
+  </Fragment>
+
+  <Hero>
+    <HeroImage alt={hero.alt} slot="media" src={hero.src} />
+
+    <Fragment slot="eyebrow">{programs[data.program].name}</Fragment>
+    <Fragment slot="title">{data.title}</Fragment>
+
+    {data.subtitle}
+
+    <Button href={data.ctaHref} size="lg" slot="actions">{data.ctaLabel}</Button>
+    {
+      data.registrationUrl !== undefined && (
+        <Button href={data.registrationUrl} size="lg" slot="actions" variant="outline">
+          Register
+        </Button>
+      )
+    }
+  </Hero>
+
+  <Section atmosphere="pool" srTitle="When and where">
+    <div class="grid gap-6 md:grid-cols-2 md:items-start">
+      <Countdown end={data.end} start={data.start} />
+      <TitleBlock fields={details} orientation="stack" />
+    </div>
+  </Section>
+
+  <Section>
+    <div class="prose-copy">
+      <Content />
+    </div>
+  </Section>
+
+  {
+    media.length > 0 && (
+      <Section atmosphere="ruler">
+        <Fragment slot="title">Teasers and hints</Fragment>
+
+        <ul class="grid gap-3 sm:grid-cols-2">
+          {media.map(({ icon, label, url }) => (
+            <li>
+              <a
+                class="flex items-center gap-3 pocket pocket-interactive bg-none px-5 py-4"
+                href={url}
+                rel="noopener"
+              >
+                <Icon class="shrink-0 text-primary-bright" name={icon} size={24} />
+                <span class="flex-1 font-medium text-body text-foreground">{label}</span>
+                <Icon class="shrink-0 text-muted" name="external-link" size={20} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  {
+    faqEntries.length > 0 && (
+      <Section atmosphere="band">
+        <Fragment slot="title">Frequently asked questions</Fragment>
+        <FaqList class="md:max-w-3xl" entries={faqEntries} name="event-faq" />
+      </Section>
+    )
+  }
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">Tell us you&rsquo;re interested</Fragment>
+      Even if this one doesn&rsquo;t fit your calendar, we&rsquo;d like to know who you are. Students
+      and mentors are both welcome.
+      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      <Button href={nav.calendar.href} size="lg" slot="actions" variant="outline">
+        See when we meet
+      </Button>
+    </CtaBanner>
+  </Section>
+</BaseLayout>

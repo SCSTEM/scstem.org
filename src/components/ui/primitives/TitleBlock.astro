@@ -1,0 +1,49 @@
+---
+import { cn } from "@/lib/cn";
+
+/**
+ * The engineering-drawing identity strip (DESIGN.md §2.9): bordered compartments, each an
+ * uppercase spec label over its value. Its home is the footer bottom — the drawing sheet's
+ * corner. Contact and event pages may use the stacked form as an info card.
+ */
+interface Field {
+  label: string;
+  value: string;
+  /** Codes, URLs, and numbers stay in the data voice; prose values set in Inter. */
+  mono?: boolean;
+  href?: string;
+}
+
+interface Props {
+  fields: readonly Field[];
+  /**
+   * `strip` is the footer's full-width identity bar — horizontal from `md`, stacked below it.
+   * `stack` is the boxed column §2.9 sanctions for a contact or event page's info card, where
+   * the block sits in a narrow column that the horizontal form would crush.
+   */
+  orientation?: "strip" | "stack";
+  class?: string;
+}
+
+const { fields, orientation = "strip", class: className } = Astro.props;
+---
+
+<dl
+  class={cn(
+    "grid grid-cols-1 divide-y divide-border border border-border",
+    orientation === "strip" &&
+      "md:auto-cols-fr md:grid-flow-col md:grid-cols-none md:divide-x md:divide-y-0",
+    className,
+  )}
+>
+  {
+    fields.map((field) => (
+      <div class="px-4 py-3">
+        <dt class="spec-label text-muted">{field.label}</dt>
+        <dd class:list={["mt-1 text-small text-body", field.mono === true && "font-mono"]}>
+          {field.href === undefined ? field.value : <a href={field.href}>{field.value}</a>}
+        </dd>
+      </div>
+    ))
+  }
+</dl>

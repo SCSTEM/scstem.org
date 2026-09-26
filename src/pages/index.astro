@@ -1,0 +1,271 @@
+---
+import type { ImageMetadata } from "astro";
+
+import { getImage, Image } from "astro:assets";
+
+import collage from "@/assets/events/morethanrobots.webp";
+import firstAcronym from "@/assets/first/first-horizontal-acro-dark.png";
+import firstLockup from "@/assets/first/first-horizontal-dark.png";
+import fllField from "@/assets/fll/legos.webp";
+import teamVideoPoster from "@/assets/frc/frc-driveteam2.webp";
+import award from "@/assets/sc2/award.webp";
+import competition from "@/assets/sc2/competition-1.webp";
+import dean from "@/assets/sc2/dean.webp";
+import handsOn from "@/assets/sc2/hands-on-2.webp";
+import leadership from "@/assets/sc2/leadership-1.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Callout from "@/components/ui/primitives/Callout.astro";
+import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
+import Separator from "@/components/ui/primitives/Separator.astro";
+import ProgramCard from "@/components/ui/ProgramCard.astro";
+import Section from "@/components/ui/Section.astro";
+import SponsorStrip from "@/components/ui/SponsorStrip.astro";
+import VideoLink from "@/components/ui/VideoLink.astro";
+import { nav, programs, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { PHOTO_QUALITY } from "@/lib/images";
+import { webSite } from "@/lib/jsonld";
+import { breakpoint } from "@/lib/tokens";
+
+/**
+ * The FIRST identity is art-directed — the spelled-out acronym only reads from `md` up — so the
+ * two renditions are a `<source>` swap, which `<Image>` cannot express. `getImage` gives the
+ * `<source>` the same treatment `<Image>` would: the sources are 2560px masters and the widest
+ * slot here is 384 CSS px.
+ */
+const renderAt = async (source: ImageMetadata, width: number) => ({
+  height: Math.round((width * source.height) / source.width),
+  src: (await getImage({ format: "webp", src: source, width })).src,
+  width,
+});
+
+const acronymArt = await renderAt(firstAcronym, 768);
+const lockupArt = await renderAt(firstLockup, 640);
+
+/**
+ * Each "Real X." of the tagline holds together, so a line only ever breaks between pairs and an
+ * oval never wraps away from its "Real". Below `sm` the three pairs stack as three lines, spaced
+ * so one line's oval clears the next.
+ */
+const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
+---
+
+<BaseLayout description={site.description} title="Home">
+  <JsonLd data={webSite} slot="head" />
+
+  <Hero>
+    <HeroImage
+      alt="Two FIRST LEGO League tables of student-built robots, set up in the SC2 workshop"
+      slot="media"
+      src={fllField}
+    />
+
+    <Fragment slot="title">
+      <span class="highlight-swipe">Robots</span> are in Franklin County. So are we.
+    </Fragment>
+
+    {site.description}
+
+    <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+    <Button href={programs.sc2.href} size="lg" slot="actions" variant="outline">
+      Explore our programs
+    </Button>
+  </Hero>
+
+  <Section atmosphere="numeral" index={1}>
+    <Fragment slot="title">Science, Technology, Engineering, Math, Business, Art, and more</Fragment
+    >
+    <Fragment slot="intro">
+      The South Central STEM Collective (SC2) is &lsquo;STEM Central&rsquo; for south-central
+      Pennsylvania: hands-on education, competitive robotics, and community outreach for ages 9–18.
+      Volunteer mentors with real industry experience teach real-world skills in a fun, competitive
+      setting.
+    </Fragment>
+  </Section>
+
+  <Section atmosphere="numeral" index={2}>
+    <Fragment slot="title">Our programs</Fragment>
+
+    <FeatureGrid columns={2}>
+      <ProgramCard program="fll">
+        Small teams build and program a LEGO® robot, research a real problem, and present both to
+        judges. It&rsquo;s hands-on STEM for ages 9–16, and no experience is expected.
+      </ProgramCard>
+
+      <ProgramCard program="frc">
+        High schoolers get six weeks, a rulebook, and a budget to build a 120-pound robot and
+        compete in alliance with other teams. Along the way they raise the money, design the brand,
+        and bring STEM to the community.
+      </ProgramCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">Who is <span class="italic">FIRST®</span>?</Fragment>
+    <Fragment slot="intro">
+      Both of our teams belong to <span class="italic">FIRST®</span>, a global nonprofit that builds
+      science and technology leaders through teamwork and competition. Each year <span
+        class="italic">FIRST®</span
+      > releases a new challenge; teams and their mentors build a robot to meet it, then compete against
+      teams from around the world.
+    </Fragment>
+
+    <div class="grid items-start gap-10 lg:grid-cols-2">
+      <div>
+        <figure>
+          <!-- The acronym line only reads at desktop widths, so it is a `<source>` swap rather
+               than two images toggled with `hidden`: a hidden `<img>` still downloads. -->
+          <a
+            aria-describedby="first-ref"
+            class="inline-block rounded-sm bg-none"
+            href={site.urls.firstInspires}
+            rel="noopener"
+          >
+            <picture>
+              <source
+                height={acronymArt.height}
+                media={`(min-width: ${breakpoint("md")})`}
+                srcset={acronymArt.src}
+                width={acronymArt.width}
+              />
+              <img
+                alt="FIRST® — For Inspiration and Recognition of Science and Technology"
+                class="h-auto w-full max-w-sm"
+                height={lockupArt.height}
+                loading="lazy"
+                src={lockupArt.src}
+                width={lockupArt.width}
+              />
+            </picture>
+          </a>
+          <Callout as="figcaption" class="mt-3" id="first-ref" reference="REF">
+            firstinspires.org
+          </Callout>
+        </figure>
+
+        <Separator class="my-8" />
+
+        <h3>More than robots</h3>
+        <p class="mt-3 measure">
+          The goal is a robot, but you don&rsquo;t have to be an engineer. Future rocket scientist
+          or aspiring artist, there&rsquo;s a place for you here, and a mentor ready to help you
+          grow. <span class="italic">FIRST®</span> calls it <a
+            class="external-link"
+            href={site.urls.moreThanRobots}
+            rel="noopener">More than Robots</a
+          >.
+        </p>
+      </div>
+
+      <figure>
+        <div class="media-frame">
+          <Image
+            alt="Collage of photos capturing some of the many ways students can get involved including robot design, photography, video, and more."
+            class="w-full"
+            loading="lazy"
+            quality={PHOTO_QUALITY}
+            sizes="(min-width: 64rem) 34rem, 92vw"
+            src={collage}
+            width={1120}
+            widths={[560, 840, 1120]}
+          />
+        </div>
+        <Callout as="figcaption" class="mt-3" reference="FIG. 01">
+          Design, fabrication, photography, video, and more
+        </Callout>
+      </figure>
+    </div>
+  </Section>
+
+  <Section atmosphere="numeral" index={3}>
+    <Fragment slot="title">Why join?</Fragment>
+
+    <FeatureGrid columns="2+3">
+      <FeatureCard image={handsOn} imageAlt="A student and mentor get hands-on with a robot">
+        <Fragment slot="title">Learn real-world skills</Fragment>
+        Get hands on with tools and technology under the supervision of experts in their fields in everything
+        from engineering to marketing. Learn not only how the tools work, but how to use them effectively.
+      </FeatureCard>
+
+      <FeatureCard
+        image={leadership}
+        imageAlt="Two students referencing a whiteboard during a planning meeting"
+      >
+        <Fragment slot="title">Experience leadership and teamwork</Fragment>
+        Build strong relationships with teammates and mentors as you work together throughout the season.
+        Learn how to make decisions as a team and take leadership in your area of expertise.
+      </FeatureCard>
+
+      <FeatureCard image={competition} imageAlt="Team members cheering at competition">
+        <Fragment slot="title">Education through competition</Fragment>
+        Prepare to compete against teams from around the world with a limited time-frame, tight budget,
+        and a complex challenge. Learn how to work under pressure and build reliable systems that can
+        handle intense competition.
+      </FeatureCard>
+
+      <FeatureCard image={award} imageAlt="Team members receiving an award at competition">
+        <Fragment slot="title">Scholarships and career opportunities</Fragment>
+        A <span class="italic">FIRST®</span> team opens doors to scholarships and careers you can&rsquo;t
+        reach anywhere else. Many of our alumni took the skills they built here into STEM careers.
+      </FeatureCard>
+
+      <FeatureCard
+        image={dean}
+        imageAlt="Team members sharing a moment with Dean Kamen, the founder of FIRST®"
+      >
+        <Fragment slot="title">Fun</Fragment>
+        We take the work seriously, not ourselves: dancing the YMCA at competition, Kahoot during meetings,
+        or just hanging out with friends over a robot.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">
+      Meet our high school team, learn about <span class="italic">FIRST®</span>
+    </Fragment>
+
+    <VideoLink
+      href={site.urls.teamVideo}
+      label="Watch our team video on YouTube"
+      poster={teamVideoPoster}
+    />
+  </Section>
+
+  <Section atmosphere="ruler">
+    <Fragment slot="title">Our sponsors</Fragment>
+    <Fragment slot="intro">
+      Local businesses and individuals fund our tools, workspace, and registration fees, so mentors,
+      volunteers, and parents can focus on the students.
+    </Fragment>
+
+    <SponsorStrip />
+    <p class="mt-10 text-center">
+      <a href={nav.sponsors.href}>See every sponsor and how to join them</a>
+    </p>
+  </Section>
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">
+        <span class={taglinePair}>Real <ChalkOval variant={1}>Skills</ChalkOval>.</span>{" "}
+        <span class={taglinePair}>Real <ChalkOval variant={2}>Robots</ChalkOval>.</span>{" "}
+        <span class={taglinePair}>Real <ChalkOval variant={3}>Fun</ChalkOval>.</span>
+      </Fragment>
+      New members, mentors, and sponsors are always welcome. Tell us who you are through our <a
+        class="highlight-swipe"
+        href={nav.cta.href}>{nav.cta.label} form</a
+      >.
+      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      <Button href={nav.donate.href} size="lg" slot="actions" variant="outline">
+        {nav.donate.label}
+      </Button>
+    </CtaBanner>
+  </Section>
+</BaseLayout>

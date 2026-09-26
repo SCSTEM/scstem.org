@@ -1,0 +1,245 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import sc2Logo from "@/assets/brand/logo-color.svg";
+import biohazardLogo from "@/assets/frc/biohazard-logo.svg";
+import JsonLd from "@/components/JsonLd.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import PhotoTimeline from "@/components/ui/PhotoTimeline.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Section from "@/components/ui/Section.astro";
+import StatBand from "@/components/ui/StatBand.astro";
+import { programPhotos } from "@/data/programPhotos";
+import { nav } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { breadcrumbs } from "@/lib/jsonld";
+
+/**
+ * The layout is DESIGN.md §5's single flowing column with photo groupings as interleaved
+ * timeline sections, and §8's stat band.
+ */
+
+/**
+ * The two groupings the narrative turns on: the seasons before the shutdown are the FRC origins
+ * story, and 2023 onward — the first seasons back, and the first FLL teams — is the next
+ * generation.
+ */
+const NEXT_GENERATION_FROM = 2023;
+
+const teamPhotos = (
+  await Promise.all([getCollection("frcTeamPhotos"), getCollection("fllTeamPhotos")])
+)
+  .flat()
+  .toSorted((a, b) => a.data.year - b.data.year);
+
+const origins = teamPhotos.filter((entry) => entry.data.year < NEXT_GENERATION_FROM);
+const nextGeneration = teamPhotos.filter((entry) => entry.data.year >= NEXT_GENERATION_FROM);
+
+const biohazardStats = [
+  { value: "1", label: "Regional win" },
+  { value: "3", label: "Workspaces" },
+  { value: "9", label: "Competition robots", description: "Plus six practice bots." },
+  { value: "15", label: "Competitions" },
+  { value: "8–30", label: "Students", description: "At various points." },
+];
+---
+
+<BaseLayout
+  description="How a 4-H robotics club founded in 2012 became a 501(c)(3) making STEM accessible across Franklin County, Pennsylvania."
+  title="About"
+>
+  <JsonLd data={breadcrumbs([{ name: nav.about.label, path: nav.about.href }])} slot="head" />
+
+  <Hero>
+    <HeroImage alt={programPhotos.sc2.alt} slot="media" src={programPhotos.sc2.image} />
+
+    <Fragment slot="title">About us</Fragment>
+
+    <p>
+      The South Central STEM Collective (SC2) started with one high-school robotics team. Today it
+      makes hands-on STEM, from competitive robotics to community outreach, open to students ages
+      9–18 who are excited about science, engineering, technology, art, and more.
+    </p>
+    <p class="mt-4">
+      We&rsquo;re still early, and our plans are big. From a high-school regional to a younger
+      student&rsquo;s first LEGO® robot, SC2 helps students explore what comes next.
+    </p>
+  </Hero>
+
+  <Section atmosphere="numeral" index={1}>
+    <Fragment slot="title">History</Fragment>
+    <Fragment slot="intro">
+      To know where SC2 is going, start where it came from: Biohazard.
+    </Fragment>
+
+    <div class="flex flex-col-reverse items-start gap-8 md:flex-row md:gap-12">
+      <div class="prose-copy">
+        <h3>Biohazard</h3>
+        <p>
+          Biohazard is a <span class="italic">FIRST®</span> Robotics Competition team, formed in 2012
+          by a small group of students and volunteers as a club under the local 4-H program office.
+        </p>
+        <p>From 2012 to 2020, the team kept growing.</p>
+      </div>
+
+      <Image
+        alt="Biohazard robotics team logo"
+        class="w-32 shrink-0 md:w-48"
+        loading="lazy"
+        src={biohazardLogo}
+      />
+    </div>
+
+    <StatBand class="mt-10" stats={biohazardStats} />
+
+    <p class="mt-10 measure">
+      That momentum carried the team forward. Nobody saw what was around the corner.
+    </p>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">Our FRC origins</Fragment>
+    <PhotoTimeline label="Biohazard team photos, 2013 to 2022" photos={origins} />
+  </Section>
+
+  <Section atmosphere="numeral" index={2}>
+    <Fragment slot="title">2020 and beyond</Fragment>
+
+    <div class="prose-copy">
+      <p>
+        For Biohazard, 2020 started like any season: kickoff in early January, weeks of building,
+        and a first competition in Myrtle Beach, SC, at the end of February. The robot needed work
+        before Pittsburgh, and in the weeks between, the world shut down. The team didn&rsquo;t
+        return to a regional event until 2022.
+      </p>
+      <p>
+        Stuck at home, still itching to compete, and seeing how much the students cared, we started
+        asking: &ldquo;Why couldn&rsquo;t we break away from 4-H and start our own program?&rdquo;
+        That might sound strange. We were proud of our 4-H partnership, as our original website
+        said:
+      </p>
+      <blockquote>
+        The students of Biohazard 4050 are not only members of <span class="italic">FIRST®</span>,
+        but are also members of the Franklin County (PA) 4-H Program. Their dual membership gives
+        them a unique perspective and opportunities for local service and outreach within their
+        community. The students&rsquo; dedication to each other and their commitment to their
+        community is a testimony to their character, service, and leadership skills. The volunteers
+        and mentors of Biohazard 4050 are very proud of the students, and honored to be a part of
+        their experiences!
+        <cite>Biohazard, 2015</cite>
+      </blockquote>
+      <p>
+        But the partnership was holding back growth: complicated finances, fundraising limits,
+        membership rules, and a structure that couldn&rsquo;t keep pace with STEM. After months of
+        planning, with support from Biohazard&rsquo;s parents and mentors, the South Central STEM
+        Collective was born.
+      </p>
+    </div>
+
+    <div class="mt-10 flex flex-col-reverse items-start gap-8 md:flex-row md:gap-12">
+      <div class="prose-copy">
+        <h3>South Central STEM Collective</h3>
+        <p>
+          On paper, our mission is simple: make STEM opportunities accessible to students of all
+          ages and backgrounds. In practice, that&rsquo;s a challenge, and we&rsquo;re excited to
+          meet it.
+        </p>
+        <p>
+          That can take many forms, but the focus is always the students. So we set up a simple
+          three-tier structure:
+        </p>
+      </div>
+
+      <Image
+        alt="South Central STEM Collective logo: a light bulb surrounded by a gear."
+        class="w-32 shrink-0 md:w-48"
+        loading="lazy"
+        src={sc2Logo}
+      />
+    </div>
+
+    <div class="prose-copy mt-6">
+      <ol>
+        <li>
+          &ldquo;SC2&rdquo; acts as the umbrella organization
+          <ul>
+            <li>501(c)(3) non-profit entity</li>
+            <li>Insurance, workspace, and financial management</li>
+            <li>Youth protection and volunteer responsibility</li>
+            <li>Tool acquisition and training</li>
+            <li>Presence in local community</li>
+          </ul>
+        </li>
+        <li>
+          Clubs are formed under the SC2 entity
+          <ul>
+            <li>Entirely self-managed and contained</li>
+            <li>Own leadership structures, goals, bank accounts, schedules, etc.</li>
+            <li>
+              Access to SC2 resources (Internet, tools/equipment, workspace, industry experts, etc.)
+            </li>
+          </ul>
+        </li>
+        <li>
+          Students, parents, volunteers, and mentors work directly with their respective clubs
+          <ul>
+            <li>
+              Activities, competitions, external organizations (e.g. <span class="italic"
+                >FIRST®</span
+              >)
+            </li>
+            <li>Club-driven fundraising</li>
+          </ul>
+        </li>
+      </ol>
+      <p>
+        This lets member clubs run independently while drawing on SC2&rsquo;s resources. The
+        structure may change, but we believe it can have real impact, free of another parent
+        organization&rsquo;s priorities.
+      </p>
+    </div>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">The next generation</Fragment>
+    <PhotoTimeline
+      label="Biohazard and FIRST LEGO League team photos, 2023 onward"
+      photos={nextGeneration}
+    />
+  </Section>
+
+  <Section atmosphere="numeral" index={3}>
+    <Fragment slot="title">Future</Fragment>
+    <Fragment slot="intro">
+      So what does the future hold? That depends largely on our member clubs, but the mission stays
+      the same: be south-central Pennsylvania&rsquo;s &ldquo;STEM Central.&rdquo;
+    </Fragment>
+
+    <div class="prose-copy">
+      <p>It&rsquo;s a long road, and we&rsquo;re excited to travel it. Goals on the horizon:</p>
+      <ul>
+        <li>Operate and maintain a makerspace</li>
+        <li>Secure a permanent location for our workspace, classrooms, and office-space</li>
+        <li>
+          Become a staple in our community, bringing STEM education where it hasn&rsquo;t reached
+          yet
+        </li>
+      </ul>
+    </div>
+  </Section>
+
+  <Section atmosphere="ruler">
+    <CtaBanner>
+      <Fragment slot="title">What&rsquo;s next?</Fragment>
+      That&rsquo;s our story. Now what&rsquo;s yours? Student, parent, professional, business owner, educator,
+      or dreamer, we&rsquo;d love to hear from you. <a href={nav.contact.href}>Get in touch</a>.
+      <Button href={nav.contact.href} size="lg" slot="actions">Contact us</Button>
+      <Button href={nav.cta.href} size="lg" slot="actions" variant="outline">
+        {nav.cta.label}
+      </Button>
+    </CtaBanner>
+  </Section>
+</BaseLayout>

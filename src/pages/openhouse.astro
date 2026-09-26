@@ -1,0 +1,20 @@
+---
+import EventLayout from "@/layouts/EventLayout.astro";
+import { getVisibleEvent } from "@/lib/events";
+
+/**
+ * `/openhouse` is `src/content/events/openhouse.md` and nothing else — every word, date, and
+ * question on the page comes from that file.
+ *
+ * Retiring the season is `hidden: true` there (or the event ending), which lands a reader on the
+ * homepage. In a static build `Astro.redirect` emits a meta-refresh page; the `redirectStubs`
+ * integration in `astro.config.ts` turns that page into a 301 line in the deployed `_redirects`,
+ * so the rule stays beside the entry it reads and the reader still gets a real status code.
+ */
+const event = await getVisibleEvent("openhouse");
+if (event === undefined) {
+  return Astro.redirect("/");
+}
+---
+
+<EventLayout {event} />

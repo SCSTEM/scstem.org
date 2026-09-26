@@ -4,14 +4,10 @@ https://scstem-org.pages.dev/*
 https://*scstem-org.pages.dev/*
   X-Robots-Tag: noindex
 
-https://scstem.org/image/*
+# Every subdomain (staging, astro, …) is a preview; only the apex is production.
+https://*.scstem.org/*
   X-Robots-Tag: noindex
 
-https://scstem.org/video/*
-  X-Robots-Tag: noindex
-
-https://scstem.org/team/*
-  X-Robots-Tag: noindex
-
-https://staging.scstem.org/*
-  X-Robots-Tag: noindex
+# Astro fingerprints every file under /_astro/, so a changed file gets a new URL.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

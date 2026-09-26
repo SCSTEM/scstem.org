@@ -1,0 +1,910 @@
+---
+import Accordion from "@/components/ui/primitives/Accordion.astro";
+import AccordionItem from "@/components/ui/primitives/AccordionItem.astro";
+import Badge from "@/components/ui/primitives/Badge.astro";
+import { badgeToneNames } from "@/components/ui/primitives/Badge.variants";
+import Button from "@/components/ui/primitives/Button.astro";
+import { buttonVariantNames } from "@/components/ui/primitives/Button.variants";
+import Callout from "@/components/ui/primitives/Callout.astro";
+import Card from "@/components/ui/primitives/Card.astro";
+import CardContent from "@/components/ui/primitives/CardContent.astro";
+import CardDescription from "@/components/ui/primitives/CardDescription.astro";
+import CardFooter from "@/components/ui/primitives/CardFooter.astro";
+import CardHeader from "@/components/ui/primitives/CardHeader.astro";
+import CardTitle from "@/components/ui/primitives/CardTitle.astro";
+import Carousel from "@/components/ui/primitives/Carousel.astro";
+import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
+import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
+import Dialog from "@/components/ui/primitives/Dialog.astro";
+import FieldError from "@/components/ui/primitives/FieldError.astro";
+import GhostNumeral from "@/components/ui/primitives/GhostNumeral.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Input from "@/components/ui/primitives/Input.astro";
+import Label from "@/components/ui/primitives/Label.astro";
+import Pattern from "@/components/ui/primitives/Pattern.astro";
+import RegistrationMarks from "@/components/ui/primitives/RegistrationMarks.astro";
+import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
+import Separator from "@/components/ui/primitives/Separator.astro";
+import Skeleton from "@/components/ui/primitives/Skeleton.astro";
+import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
+import Textarea from "@/components/ui/primitives/Textarea.astro";
+import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import { site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { AA_LARGE, AA_NORMAL, AAA_NORMAL, blend, contrastRatio, formatRatio } from "@/lib/contrast";
+import { color, duration, programColor, programThemes, radius, swipeAlpha } from "@/lib/tokens";
+
+/**
+ * The proof page for DESIGN.md: every token, ramp, and motif rendered once, with computed
+ * contrast ratios. Noindexed and out of the sitemap; the review artifact for every primitive.
+ *
+ * The build fails if any pair drops below its floor. Every value is read from
+ * `src/styles/global.css` via `@/lib/tokens`, so a token edit cannot quietly break
+ * accessibility and a renamed token fails the build rather than checking a stale copy.
+ */
+
+const BACKGROUND = color("background");
+const CARD = color("card");
+const BAND = color("band");
+const PLATE = color("plate");
+
+/**
+ * The darkest-to-lightest point copy can land on inside a band: a major (8%) and a minor (4%)
+ * grid line crossing, which is where `muted` is closest to its floor (DESIGN.md §2.3).
+ */
+const GRID_CROSSING = blend(color("foreground"), blend(color("foreground"), BAND, 0.08), 0.04);
+
+/** Every surface text sits on, so each text token is gated on all of them. */
+const textSurfaces = [
+  { name: "background", value: BACKGROUND },
+  { name: "card", value: CARD },
+  { name: "band", value: BAND },
+  { name: "plate", value: PLATE },
+  { name: "band grid crossing", value: GRID_CROSSING },
+] as const;
+
+interface TextToken {
+  name: string;
+  floor: number;
+  use: string;
+}
+
+const textTokens: readonly TextToken[] = [
+  { name: "foreground", floor: AAA_NORMAL, use: "Headings, nav, emphasis" },
+  { name: "body", floor: AAA_NORMAL, use: "All reading copy" },
+  { name: "muted", floor: AA_NORMAL, use: "Captions, meta, labels only" },
+  { name: "primary-bright", floor: AA_NORMAL, use: "Links, focus, key words" },
+  { name: "info-bright", floor: AA_NORMAL, use: "Informational text, data UI" },
+  { name: "destructive-bright", floor: AA_NORMAL, use: "Form errors" },
+];
+
+interface FillPair {
+  name: string;
+  fill: string;
+  label: string;
+}
+
+const fillPairs: readonly FillPair[] = [
+  { name: "Safety Yellow (primary)", fill: color("primary"), label: color("primary-foreground") },
+  { name: "Science Blue (info)", fill: color("info"), label: color("info-foreground") },
+  {
+    name: "Hazard Green (FRC primary)",
+    fill: programColor("frc", "primary"),
+    label: programColor("frc", "primary-foreground"),
+  },
+  {
+    name: "Danger Orange (FLL primary)",
+    fill: programColor("fll", "primary"),
+    label: programColor("fll", "primary-foreground"),
+  },
+  {
+    name: "Destructive",
+    fill: color("destructive"),
+    label: color("destructive-foreground"),
+  },
+];
+
+const tiers = ["platinum", "gold", "silver", "bronze"].map((name) => ({
+  name,
+  value: color(`tier-${name}`),
+}));
+
+const surfaces = [
+  { name: "background", use: "Page ground" },
+  { name: "card", use: "Pockets cut into the ground; form fields" },
+  { name: "band", use: "Ink bands — the drafting table — and the footer" },
+  { name: "plate", use: "Pockets inside a band: raised plates" },
+  { name: "sheet", use: "The neutral keycap's face" },
+  { name: "border", use: "Hairlines, dividers" },
+  { name: "pocket-border", use: "Pocket walls" },
+  { name: "plate-border", use: "Plate edges" },
+  { name: "control-edge", use: "Control boundaries, ≥ 3:1 on every surface" },
+  { name: "ink", use: "Drafted shadow ink" },
+].map((surface) => ({ ...surface, value: color(surface.name) }));
+
+/** The neutral keycap's edge is the control's boundary (WCAG 1.4.11): 3:1 on every surface. */
+const controlEdge = color("control-edge");
+const edgeSurfaces = [BACKGROUND, CARD, BAND, PLATE];
+
+/** Every pair that must hold, checked at build time. */
+const failures: string[] = [];
+
+/**
+ * The grid crossing is a sliver of line, not a surface a paragraph fills, so it holds every
+ * token to AA rather than to the token's own floor; the plain band and plate hold the full floor.
+ */
+for (const token of textTokens) {
+  for (const surface of textSurfaces) {
+    const floor = surface.value === GRID_CROSSING ? AA_NORMAL : token.floor;
+    const ratio = contrastRatio(color(token.name), surface.value);
+    if (ratio < floor) {
+      failures.push(
+        `${token.name} (${color(token.name)}) on ${surface.name} ${surface.value} is ${formatRatio(ratio)}, below its ${String(floor)}:1 floor`,
+      );
+    }
+  }
+}
+
+for (const surface of edgeSurfaces) {
+  const ratio = contrastRatio(controlEdge, surface);
+  if (ratio < AA_LARGE) {
+    failures.push(
+      `control-edge (${controlEdge}) on ${surface} is ${formatRatio(ratio)}, below the 3:1 boundary floor`,
+    );
+  }
+}
+
+/**
+ * Program themes remap the action accent, so their `primary-bright` is a text color the default
+ * theme never checks. DESIGN.md §2 tabulates those ratios, so they are gated here too — reading
+ * the theme list from the stylesheet means a new program cannot ship an unchecked accent.
+ */
+for (const program of programThemes()) {
+  const value = programColor(program, "primary-bright");
+  for (const surface of [BACKGROUND, CARD, BAND, PLATE]) {
+    const ratio = contrastRatio(value, surface);
+    if (ratio < AA_NORMAL) {
+      failures.push(
+        `data-theme="${program}" primary-bright (${value}) on ${surface} is ${formatRatio(ratio)}, below AA`,
+      );
+    }
+  }
+}
+
+for (const pair of fillPairs) {
+  const ratio = contrastRatio(pair.fill, pair.label);
+  if (ratio < AA_NORMAL) {
+    failures.push(
+      `${pair.name}: label ${pair.label} on fill ${pair.fill} is ${formatRatio(ratio)}, below AA`,
+    );
+  }
+}
+
+/**
+ * DESIGN.md §2.13 asks for this one by name: white key words sit on a translucent swipe. The
+ * body-size alpha holds AAA and the display-size (h1/h2) alpha holds AA-large, in every theme,
+ * because the swipe is the theme's `primary`.
+ */
+const SWIPE_ALPHA = swipeAlpha();
+const swipeOnGround = blend(color("primary"), BACKGROUND, SWIPE_ALPHA.body);
+const swipeOnCard = blend(color("primary"), CARD, SWIPE_ALPHA.body);
+const displaySwipeOnGround = blend(color("primary"), BACKGROUND, SWIPE_ALPHA.display);
+
+const swipeChecks = [
+  { size: "body", alpha: SWIPE_ALPHA.body, floor: AAA_NORMAL, floorName: "AAA" },
+  { size: "display", alpha: SWIPE_ALPHA.display, floor: AA_LARGE, floorName: "AA-large" },
+];
+
+for (const primary of [
+  color("primary"),
+  ...programThemes().map((program) => programColor(program, "primary")),
+]) {
+  for (const check of swipeChecks) {
+    for (const surface of [BACKGROUND, CARD]) {
+      const swipe = blend(primary, surface, check.alpha);
+      const ratio = contrastRatio(color("foreground"), swipe);
+      if (ratio < check.floor) {
+        failures.push(
+          `${check.size} highlighter swipe (${primary} at ${String(check.alpha * 100)}%) on ${surface} leaves white text at ${formatRatio(ratio)}, below ${check.floorName}`,
+        );
+      }
+    }
+  }
+}
+
+for (const tier of tiers) {
+  const ratio = contrastRatio(tier.value, CARD);
+  if (ratio < AA_NORMAL) {
+    failures.push(`tier-${tier.name} on card is ${formatRatio(ratio)}, below AA`);
+  }
+}
+
+if (failures.length > 0) {
+  throw new Error(
+    `DESIGN.md §9 contrast floors violated — fix the tokens in src/styles/global.css:\n  ${failures.join("\n  ")}`,
+  );
+}
+
+const typeRamp = [
+  { token: "display", label: "Display", class: "text-display font-display font-bold" },
+  { token: "h1", label: "Heading 1", class: "text-h1 font-display font-bold" },
+  { token: "h2", label: "Heading 2", class: "text-h2 font-display font-semibold" },
+  { token: "h3", label: "Heading 3", class: "text-h3 font-display font-semibold" },
+  { token: "h4", label: "Heading 4", class: "text-h4 font-sans font-semibold" },
+  { token: "stat", label: "1,240", class: "stat" },
+  { token: "body-lg", label: "Body large", class: "text-body-lg" },
+  { token: "body", label: "Body", class: "text-copy" },
+  { token: "small", label: "Small", class: "text-small" },
+  { token: "label", label: "Spec label", class: "spec-label" },
+] as const;
+
+const radii = [
+  { token: "sm", use: "Chips, spec labels, badges" },
+  { token: "md", use: "All controls" },
+  { token: "lg", use: "Pockets, panels, framed media" },
+].map((entry) => ({ ...entry, px: radius(entry.token) }));
+
+const durations = [
+  { token: "micro", use: "hover, focus" },
+  { token: "ui", use: "menus, accordions" },
+  { token: "entrance", use: "scroll-in entrances" },
+].map((entry) => ({ ...entry, value: duration(entry.token) }));
+
+const buttonSizes = ["sm", "md", "lg"] as const;
+
+/**
+ * The keycap's three states, frozen so they can be compared side by side. The offsets restate the
+ * `keycap` utility's; the edge reads `--keycap-edge`, so the accent face shows its tinted edge.
+ */
+const keycapEdge = "var(--keycap-edge, var(--color-ink))";
+const keycapStates = [
+  { name: "Rest", style: `box-shadow: 3px 3px 0 0 ${keycapEdge}` },
+  { name: "Hover", style: `translate: -1px -1px; box-shadow: 4px 4px 0 0 ${keycapEdge}` },
+  { name: "Active", style: "translate: 2px 2px; box-shadow: var(--shadow-press)" },
+];
+
+/**
+ * DESIGN.md §2 tabulates each accent's text-on-dark ratio. Rendering the measured value here
+ * keeps that table checkable: accents are AA-scoped (links, focus, key words — never long copy),
+ * so a value below 7:1 is in-bounds, but a value below 4.5:1 fails the gate above. The list is
+ * read from the stylesheet like the gate's, so a new program theme renders here automatically.
+ */
+const themes = [
+  { name: "Default (SC2)", theme: undefined, accent: color("primary-bright") },
+  ...programThemes().map((program) => ({
+    name: `data-theme="${program}"`,
+    theme: program,
+    accent: programColor(program, "primary-bright"),
+  })),
+];
+---
+
+<BaseLayout
+  description="Every token, type ramp, motif, and primitive in the SC2 design system, with computed contrast ratios."
+  noindex
+  title="Styleguide"
+>
+  <div class="container-page">
+    <header class="section-y">
+      <p class="eyebrow text-primary-bright">Design system</p>
+      <h1 class="mt-2">Styleguide</h1>
+      <p class="mt-4 measure text-body-lg">
+        Every token, ramp, and motif in <code class="font-mono text-foreground">DESIGN.md</code>,
+        rendered once. Contrast ratios are computed at build time; the build fails if a pair drops
+        below its floor.
+      </p>
+    </header>
+
+    <RulerDivider />
+
+    <section class="relative section-y">
+      <GhostNumeral value={1} />
+      <h2>Surfaces</h2>
+      <p class="mt-3 measure">
+        Cut into metal, laid on the table. The page is raised material and cards are pockets
+        machined into it — <em>darker</em> than the page. Ink bands are the drafting table the sheet lies
+        on, and a card on the table is a raised plate.
+      </p>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          surfaces.map((surface) => (
+            <div class="pocket p-4">
+              <div
+                class="h-16 rounded-md border border-border"
+                style={`background-color: ${surface.value}`}
+              />
+              <p class="mt-3 font-mono text-small text-foreground">{surface.name}</p>
+              <p class="font-mono text-small text-muted">{surface.value}</p>
+              <p class="mt-1 text-small">{surface.use}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <h3 class="mt-12">Pocket anatomy</h3>
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        <div class="pocket p-6">
+          <h4>V2 — machined pocket</h4>
+          <p class="mt-2 text-small">
+            The standard card: <code class="font-mono">card</code> fill, 1px pocket border,{" "}
+            <code class="font-mono">radius-lg</code>, inset edge physics.
+          </p>
+        </div>
+        <div class="pocket pocket-interactive p-6">
+          <h4>V2 — interactive</h4>
+          <p class="mt-2 text-small">
+            Hover or focus this card: the border warms to 60% primary and the floor lifts a visible
+            step. No translate, no glow, no shadow change.
+          </p>
+        </div>
+        <div class="relative pocket pocket-feature p-6">
+          <RegistrationMarks />
+          <h4>V2+V3 — drawing pocket</h4>
+          <p class="mt-2 text-small">
+            Feature moments only, ≥ md screens: the engineering grid renders inside the pocket
+            floor. Registration marks are on this one card.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="mt-12">Ink band — the drafting table</h3>
+      <p class="mt-3 measure">
+        <code class="font-mono text-foreground">Section atmosphere="band"</code>: ink, a 30% primary
+        top edge, the accent edge vignette, and the two-weight drafting grid feathered out at its
+        edges. The same pockets inside it are raised plates. On a page it is full-bleed, carries no
+        other device, and never touches another band or the footer — the build fails if it does.
+      </p>
+      <div class="band mt-6 overflow-hidden rounded-lg px-6 py-10 md:px-10">
+        <p class="measure">
+          Body copy on the band, over the grid. The worst line crossing still holds{" "}
+          <code class="font-mono text-foreground">muted</code> at AA.
+        </p>
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
+          <div class="pocket p-6">
+            <h4>Plate</h4>
+            <p class="mt-2 text-small">
+              <code class="font-mono">plate</code> floor, <code class="font-mono">plate-border</code
+              >, a hairline top highlight, and the contact shadow.
+            </p>
+          </div>
+          <div class="pocket pocket-interactive p-6">
+            <h4>Plate — interactive</h4>
+            <p class="mt-2 text-small">
+              Hover or focus: the floor lifts to <code class="font-mono">plate-hover</code> and the border
+              warms to 60% primary.
+            </p>
+          </div>
+          <div class="pocket pocket-feature p-6">
+            <h4>Plate — feature</h4>
+            <p class="mt-2 text-small text-muted">A caption in muted, on a plate over the band.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <RulerDivider />
+
+    <section class="relative section-y">
+      <GhostNumeral value={2} />
+      <h2>Text ramp &amp; contrast</h2>
+      <p class="mt-3 measure">
+        AAA (≥ 7:1) for anything longer than a caption.
+        <code class="font-mono text-foreground">muted</code> is the floor — nothing text-bearing goes
+        dimmer.
+      </p>
+      <div class="mt-8 overflow-x-auto">
+        <table class="w-full min-w-[52rem] border-collapse text-small">
+          <thead>
+            <tr class="border-b border-border text-left">
+              <th class="py-2 spec-label text-muted">Token</th>
+              <th class="py-2 spec-label text-muted">Value</th>
+              <th class="py-2 spec-label text-muted">On background</th>
+              <th class="py-2 spec-label text-muted">On card</th>
+              <th class="py-2 spec-label text-muted">On band</th>
+              <th class="py-2 spec-label text-muted">On plate</th>
+              <th class="py-2 spec-label text-muted">Floor</th>
+              <th class="py-2 spec-label text-muted">Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              textTokens.map((token) => {
+                const value = color(token.name);
+                const onBackground = contrastRatio(value, BACKGROUND);
+                const onCard = contrastRatio(value, CARD);
+                const onBand = contrastRatio(value, BAND);
+                const onPlate = contrastRatio(value, PLATE);
+                return (
+                  <tr class="border-b border-border/60">
+                    <td class="py-3">
+                      <span style={`color: ${value}`}>{token.name}</span>
+                    </td>
+                    <td class="py-3 font-mono text-muted">{value}</td>
+                    <td class="py-3 font-mono">{formatRatio(onBackground)}</td>
+                    <td class="py-3 font-mono">{formatRatio(onCard)}</td>
+                    <td class="py-3 font-mono">{formatRatio(onBand)}</td>
+                    <td class="py-3 font-mono">{formatRatio(onPlate)}</td>
+                    <td class="py-3 font-mono text-muted">{token.floor}:1</td>
+                    <td class="py-3">{token.use}</td>
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 font-mono text-small text-muted">
+        Worst band grid crossing {GRID_CROSSING} &middot; body{" "}
+        {formatRatio(contrastRatio(color("body"), GRID_CROSSING))} &middot; muted{" "}
+        {formatRatio(contrastRatio(color("muted"), GRID_CROSSING))} &middot; control-edge on background
+        {formatRatio(contrastRatio(controlEdge, BACKGROUND))}, band{" "}
+        {formatRatio(contrastRatio(controlEdge, BAND))}, plate{" "}
+        {formatRatio(contrastRatio(controlEdge, PLATE))}
+      </p>
+    </section>
+
+    <RulerDivider />
+
+    <section class="relative section-y">
+      <GhostNumeral value={3} />
+      <h2>Accents — the fill-vs-text law</h2>
+      <p class="mt-3 measure">
+        Every accent is a pair: the brand hex for fills with a near-black label, and a brightened
+        variant for text on dark. One action accent per view.
+      </p>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          fillPairs.map((pair) => (
+            <div class="pocket p-4">
+              <div
+                class="flex h-16 items-center justify-center rounded-md text-small font-semibold"
+                style={`background-color: ${pair.fill}; color: ${pair.label}`}
+              >
+                Label on fill
+              </div>
+              <p class="mt-3 text-small text-foreground">{pair.name}</p>
+              <p class="font-mono text-small text-muted">
+                {pair.fill} / {pair.label} &middot;{" "}
+                {formatRatio(contrastRatio(pair.fill, pair.label))}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+
+      <h3 class="mt-12">Sponsor tiers</h3>
+      <div class="mt-6 flex flex-wrap gap-3">
+        {
+          tiers.map((tier) => (
+            <span class="spec-chip" style={`color: ${tier.value}`}>
+              {tier.name} &middot; {formatRatio(contrastRatio(tier.value, CARD))}
+            </span>
+          ))
+        }
+      </div>
+    </section>
+
+    <RulerDivider />
+
+    <section class="relative section-y">
+      <GhostNumeral value={4} />
+      <h2>Typography</h2>
+      <p class="mt-3 measure">
+        Orbitron owns h1–h3 and eyebrows. Source Code Pro owns numbers and spec labels. Architects
+        Daughter is markup-only. Everything else is Inter.
+      </p>
+      <div class="mt-8 divide-y divide-border">
+        {
+          typeRamp.map((entry) => (
+            <div class="flex flex-col gap-1 py-4 md:flex-row md:items-baseline md:gap-6">
+              <code class="w-28 shrink-0 spec-label text-muted">{entry.token}</code>
+              <span class={entry.class}>{entry.label}</span>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-8 font-hand text-body-lg text-foreground">
+        The annotation hand — five words at most.
+      </p>
+    </section>
+
+    <RulerDivider />
+
+    <section class="relative section-y">
+      <GhostNumeral value={5} />
+      <h2>Radius &amp; motion</h2>
+      <p class="mt-3 measure">
+        One end-mill: three radii, nothing else. Elevation is drafted, not rendered: zero-blur
+        offsets in shadow ink, down-right only. The plate's contact shadow is the one soft shadow,
+        and only a plate or a print on the band takes it.
+      </p>
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
+        {
+          radii.map((entry) => (
+            <div class="pocket p-4">
+              <div
+                class="h-16 border border-primary/40 bg-card-hover"
+                style={`border-radius: ${entry.px}`}
+              />
+              <p class="mt-3 font-mono text-small text-foreground">radius-{entry.token}</p>
+              <p class="font-mono text-small text-muted">{entry.px}</p>
+              <p class="mt-1 text-small">{entry.use}</p>
+            </div>
+          ))
+        }
+      </div>
+      <h3 class="mt-12">Keycaps</h3>
+      <p class="mt-3 measure">
+        Buttons stand on a 3px drafted edge, lift 1px on hover, and press flat on{" "}
+        <code class="font-mono">:active</code> — a 150ms confirmation. The fill never dims. Under reduced
+        motion only the edge changes. The states below are frozen; the live buttons in Primitives respond.
+      </p>
+      <div class="mt-6 flex flex-wrap items-center gap-6">
+        {
+          keycapStates.map((state) => (
+            <figure class="flex flex-col items-start gap-3">
+              <span
+                class="inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground keycap-accent"
+                style={state.style}
+              >
+                Get involved
+              </span>
+              <span
+                class="inline-flex h-11 items-center rounded-md border border-control-edge bg-sheet px-5 font-medium text-foreground"
+                style={state.style}
+              >
+                Donate
+              </span>
+              <figcaption class="spec-label text-muted">{state.name}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+
+      <dl class="mt-8 grid gap-4 sm:grid-cols-3">
+        {
+          durations.map((entry) => (
+            <div class="pocket p-4">
+              <dt class="spec-label text-muted">duration-{entry.token}</dt>
+              <dd class="mt-1 font-mono text-small">
+                {entry.value} — {entry.use}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <RulerDivider />
+
+    <section class="relative section-y">
+      <GhostNumeral value={6} />
+      <h2>Motifs</h2>
+      <p class="mt-3 measure">
+        At most four distinct devices per viewport. If a new one enters a view, another leaves.
+      </p>
+
+      <div class="ambient-pool relative mt-8 overflow-hidden rounded-lg border border-border p-8">
+        <Pattern placement="hero" ticks />
+        <p class="relative eyebrow text-primary-bright">Engineering grid + ticks</p>
+        <p class="relative mt-2 max-w-md text-small">
+          Heroes, section breaks, and bands only — never on the bare page ground. This panel also
+          carries one ambient pool.
+        </p>
+      </div>
+
+      <h3 class="mt-12">Hand markup</h3>
+      <p class="mt-3 measure">
+        Every device ships at least three path variants. Two adjacent instances never share one —
+        identical marks read as a stamp.
+      </p>
+
+      <p class="mt-8 font-display text-h2 font-semibold text-foreground">
+        Real <ChalkOval variant={1}>skills</ChalkOval>. Real{" "}
+        <ChalkOval variant={2}>robots</ChalkOval>. Real <ChalkOval variant={3}>fun</ChalkOval>.
+      </p>
+
+      <p class="mt-10 font-display text-h3 font-semibold text-foreground">
+        A heading with a <ChalkUnderline variant={1}>chalk underline</ChalkUnderline>
+      </p>
+
+      <p class="mt-10 text-body-lg">
+        An underline in copy always means a link: <a href="/sponsors">see every sponsor</a>. A link
+        the page wants noticed is a{" "}
+        <a class="highlight-swipe" href="/get-involved">featured link</a>, swipe and stroke
+        together. Swipes and ovals on their own are emphasis, never links.
+      </p>
+
+      <p class="mt-10 font-display text-h3 font-semibold">
+        A heading with a <span class="highlight-swipe">highlighter swipe</span>
+      </p>
+      <p class="mt-3 font-display text-h3 font-semibold">
+        Or <span class="text-primary-bright">accent-colored text</span> — never both
+      </p>
+      <p class="mt-3 font-mono text-small text-muted">
+        Body swipe at {SWIPE_ALPHA.body * 100}% alpha &middot; white on {swipeOnGround} ={" "}
+        {formatRatio(contrastRatio(color("foreground"), swipeOnGround))} &middot; on {swipeOnCard} ={
+          " "
+        }
+        {formatRatio(contrastRatio(color("foreground"), swipeOnCard))}
+      </p>
+
+      <p class="mt-10 font-display text-h2 font-bold text-foreground">
+        A display heading with a <span class="highlight-swipe">swipe</span>
+      </p>
+      <p class="mt-3 font-mono text-small text-muted">
+        Display swipe (h1, h2, display sizes) at {SWIPE_ALPHA.display * 100}% alpha &middot; white
+        on{" "}
+        {displaySwipeOnGround} = {
+          formatRatio(contrastRatio(color("foreground"), displaySwipeOnGround))
+        }
+      </p>
+
+      <div class="mt-12 flex items-start gap-2">
+        <SketchArrow class="size-14" variant={2} />
+        <a class="mt-8 font-hand text-body-lg" href="/styleguide">Become a sponsor</a>
+      </div>
+
+      <figure class="mt-12">
+        <div class="aspect-video media-frame bg-card-hover"></div>
+        <Callout as="figcaption" class="mt-3" reference="FIG. 01">
+          Framed media: 2px primary border, 6px drafted edge
+        </Callout>
+      </figure>
+
+      <h3 class="mt-12">Title block</h3>
+      <TitleBlock
+        class="mt-6"
+        fields={[
+          { label: "Project", value: new URL(site.url).host },
+          { label: "Organization", value: site.name },
+          { label: "URL", value: new URL(site.url).host, mono: true, href: site.url },
+        ]}
+      />
+    </section>
+
+    <RulerDivider />
+
+    <section class="relative section-y">
+      <GhostNumeral value={7} />
+      <h2>Primitives</h2>
+      <p class="mt-3 measure">
+        Every primitive in <code class="font-mono text-foreground">ui/primitives/</code>, in all
+        variants and states. Repeated under each program theme at the end of the page — a primitive
+        missing here does not exist as far as review is concerned.
+      </p>
+
+      <h3 class="mt-12">Button</h3>
+      <div class="mt-6 space-y-4">
+        {
+          buttonVariantNames.map((variant) => (
+            <div class="flex flex-wrap items-center gap-3">
+              <code class="w-24 shrink-0 spec-label text-muted">{variant}</code>
+              {buttonSizes.map((size) => (
+                <Button size={size} variant={variant}>
+                  {size}
+                </Button>
+              ))}
+              <Button disabled size="md" variant={variant}>
+                disabled
+              </Button>
+              <Button href="/styleguide" size="md" variant={variant}>
+                as link
+              </Button>
+            </div>
+          ))
+        }
+        <div class="flex flex-wrap items-center gap-3">
+          <code class="w-24 shrink-0 spec-label text-muted">icon</code>
+          <Button size="icon" variant="secondary">
+            <Icon label="Previous" name="chevron-left" size={20} />
+          </Button>
+          <Button size="icon" variant="outline">
+            <Icon label="Next" name="chevron-right" size={20} />
+          </Button>
+          <Button size="md" variant="default">
+            <Icon name="download" size={20} />
+            With an icon
+          </Button>
+        </div>
+      </div>
+
+      <h3 class="mt-12">Badge</h3>
+      <div class="mt-6 flex flex-wrap gap-3">
+        {badgeToneNames.map((tone) => <Badge tone={tone}>{tone}</Badge>)}
+        <Badge tone="muted">Ages 9&ndash;16</Badge>
+      </div>
+
+      <h3 class="mt-12">Card</h3>
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle rule>Standard pocket</CardTitle>
+            <CardDescription>
+              Header, title with the machined 32px rule, and a description.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p class="text-small text-muted">Content sits here.</p>
+          </CardContent>
+          <CardFooter>
+            <a class="ui-link text-small" href="/styleguide">A footer link</a>
+          </CardFooter>
+        </Card>
+        <Card interactive>
+          <CardHeader>
+            <CardTitle>Interactive</CardTitle>
+            <CardDescription>
+              Hover or focus: the border warms, the floor lifts a visible step, nothing moves.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <Card feature>
+          <CardHeader>
+            <CardTitle>Feature</CardTitle>
+            <CardDescription> Grid floor inside the pocket, on md and up only. </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+
+      <h3 class="mt-12">Form fields</h3>
+      <div class="mt-6 grid gap-6 md:max-w-xl">
+        <div class="flex flex-col gap-2">
+          <Label for="sg-name" required>Name</Label>
+          <Input
+            autocomplete="name"
+            id="sg-name"
+            name="name"
+            placeholder="Ada Lovelace"
+            required
+            type="text"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <Label for="sg-email">Email</Label>
+          <Input
+            aria-describedby="sg-email-error"
+            autocomplete="email"
+            id="sg-email"
+            invalid
+            name="email"
+            type="email"
+            value="not-an-email"
+          />
+          <FieldError id="sg-email-error">Enter a valid email address.</FieldError>
+        </div>
+        <div class="flex flex-col gap-2">
+          <Label for="sg-message">Message</Label>
+          <Textarea id="sg-message" name="message" placeholder="Tell us about your team…" />
+        </div>
+        <div class="flex flex-col gap-2">
+          <Label for="sg-disabled">Disabled</Label>
+          <Input disabled id="sg-disabled" value="Not editable" />
+        </div>
+      </div>
+
+      <h3 class="mt-12">Accordion</h3>
+      <Accordion class="mt-6 md:max-w-2xl">
+        <AccordionItem name="sg-faq" open question="Does this work without JavaScript?">
+          <p>
+            Yes — it is a native <code class="font-mono">&lt;details&gt;</code> element. The shared <code
+              class="font-mono">name</code
+            > attribute is what closes the others.
+          </p>
+        </AccordionItem>
+        <AccordionItem name="sg-faq" question="What opens when I open this one?">
+          <p>This one, and the one above closes. No script is involved.</p>
+        </AccordionItem>
+        <AccordionItem name="sg-faq" question="Is the content in the DOM when closed?">
+          <p>It is, so agents and search engines read every answer.</p>
+        </AccordionItem>
+      </Accordion>
+
+      <h3 class="mt-12">Dialog</h3>
+      <div class="mt-6">
+        <Button data-dialog-open="sg-dialog" variant="secondary">Open the dialog</Button>
+        <Dialog id="sg-dialog" title="A native dialog">
+          <p>
+            The browser supplies the focus trap, Esc handling, and the inert background. Esc, the
+            close button, and a backdrop click all close it.
+          </p>
+          <div class="mt-6 flex gap-3">
+            <Button data-dialog-close>Done</Button>
+            <Button data-dialog-close variant="ghost">Cancel</Button>
+          </div>
+        </Dialog>
+      </div>
+
+      <h3 class="mt-12">Carousel</h3>
+      <Carousel class="mt-6" label="Styleguide carousel demonstration">
+        {
+          [1, 2, 3, 4, 5].map((index) => (
+            <Card>
+              <CardHeader>
+                <CardTitle>Slide {index}</CardTitle>
+                <CardDescription>
+                  Scroll-snap track. Drag, scroll, or use the arrows.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          ))
+        }
+      </Carousel>
+
+      <h3 class="mt-12">Icon, Separator, Skeleton</h3>
+      <div class="mt-6 flex flex-wrap items-center gap-6">
+        <Icon name="robot" size={32} />
+        <Icon name="calendar-event" size={24} />
+        <Icon name="tools" size={20} />
+        <Icon name="star" size={24} style="filled" />
+        <Separator class="h-8" orientation="vertical" />
+        <div class="w-48 space-y-2">
+          <Skeleton class="h-4 w-full" />
+          <Skeleton class="h-4 w-2/3" />
+        </div>
+      </div>
+      <Separator class="mt-6" />
+    </section>
+
+    <RulerDivider />
+
+    <section class="relative section-y">
+      <GhostNumeral value={8} />
+      <h2>Program themes</h2>
+      <p class="mt-3 measure">
+        A program page is the same site wearing team colors. Each theme remaps four tokens —
+        <code class="font-mono text-foreground">primary</code>,
+        <code class="font-mono text-foreground">primary-bright</code>,
+        <code class="font-mono text-foreground">primary-foreground</code>,
+        <code class="font-mono text-foreground">ring</code> — and nothing else.
+      </p>
+      <div class="mt-8 space-y-6">
+        {
+          themes.map((entry) => (
+            <div class="pocket p-6" data-theme={entry.theme}>
+              <p class="eyebrow text-primary-bright">{entry.name}</p>
+              <p class="mt-1 font-mono text-small text-muted">
+                primary-bright {entry.accent} &middot; on background{" "}
+                {formatRatio(contrastRatio(entry.accent, BACKGROUND))} &middot; on card{" "}
+                {formatRatio(contrastRatio(entry.accent, CARD))}
+              </p>
+              <div class="mt-4 flex flex-wrap items-center gap-3">
+                <Button>Primary</Button>
+                <Button variant="secondary">Secondary</Button>
+                <Button variant="outline">Outline</Button>
+                <Button variant="ghost">Ghost</Button>
+                <Button size="icon" variant="secondary">
+                  <Icon label="Next" name="chevron-right" size={20} />
+                </Button>
+              </div>
+              <div class="mt-4 flex flex-wrap items-center gap-4">
+                <Badge>Default badge</Badge>
+                <Badge tone="info">Info</Badge>
+                <a class="text-small" href="/styleguide">
+                  An in-prose link
+                </a>
+                <span class="stat">12</span>
+                <span class="highlight-swipe text-h4">swiped words</span>
+              </div>
+              <div class="mt-4 grid gap-4 md:grid-cols-2">
+                <div class="flex flex-col gap-2">
+                  <Label for={`sg-theme-${entry.theme ?? "default"}`}>Focus for the ring</Label>
+                  <Input id={`sg-theme-${entry.theme ?? "default"}`} placeholder="Tab into me" />
+                </div>
+                <Card feature interactive>
+                  <CardHeader>
+                    <CardTitle rule>Themed pocket</CardTitle>
+                    <CardDescription>
+                      The title rule and hover border follow the theme.
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </div>
+              <hr class="mt-6 accent-rule" />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

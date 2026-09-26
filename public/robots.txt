@@ -1,3 +1,6 @@
+# Everything is public and we want all of it found — including images and video,
+# and including the AI crawlers (docs/adr/0009-open-crawling-posture.md).
 User-agent: *
-Disallow: /image
-Disallow: /video
+Allow: /
+
+Sitemap: https://scstem.org/sitemap-index.xml

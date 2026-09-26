@@ -1,0 +1,99 @@
+---
+import GhostNumeral from "@/components/ui/primitives/GhostNumeral.astro";
+import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
+import { cn } from "@/lib/cn";
+import { eyebrowClass } from "@/lib/eyebrow";
+
+/**
+ * The vertical rhythm and gutters every page section shares (DESIGN.md §4, §5), plus the one
+ * atmosphere device its boundary carries (§2).
+ *
+ * The device is a single-valued prop rather than a set of booleans, because the doc allows
+ * exactly one per boundary and says "never stacked" — so the type is what enforces it.
+ *
+ * `band` is the one device that is a surface: the section becomes the ink drafting table, and
+ * pockets inside it become raised plates. Every section states its surface in `data-surface`,
+ * which the build reads to fail any page where two bands touch (DESIGN.md §2 — the footer is a
+ * band too, so a page never ends on one). Adjacency is read in document order across
+ * `data-surface` elements, so only Sections, the Hero, and the footer should sit between bands.
+ *
+ * Slots: `eyebrow`, `title` (wrapped in the heading), `intro`, and the default body. They are
+ * slots rather than string props so a heading can carry markup, e.g. an italic FIRST®.
+ *
+ * `srTitle` is the heading for a section whose body speaks for itself on screen: a visually
+ * hidden `h2` that keeps the page outline whole. It takes no header space, and a section passes
+ * it or a `title` slot, not both.
+ */
+interface Props {
+  atmosphere?: "none" | "numeral" | "pool" | "pool-neutral" | "ruler" | "band";
+  /** The ghost numeral's value. Required by, and only read with, `atmosphere="numeral"`. */
+  index?: number;
+  /** A visually hidden heading, in place of the `title` slot. */
+  srTitle?: string;
+  id?: string;
+  class?: string;
+}
+
+const { atmosphere = "none", index, srTitle, id, class: className } = Astro.props;
+
+if (atmosphere === "numeral" && index === undefined) {
+  throw new Error('Section: atmosphere="numeral" needs an `index` for the numeral to show.');
+}
+
+if (srTitle !== undefined && Astro.slots.has("title")) {
+  throw new Error("Section: pass `srTitle` or a `title` slot, not both.");
+}
+
+const hasEyebrow = Astro.slots.has("eyebrow");
+const eyebrow = hasEyebrow ? await Astro.slots.render("eyebrow") : undefined;
+const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("intro");
+---
+
+<section
+  class={cn(
+    "relative section-y",
+    atmosphere === "band" && "band",
+    atmosphere === "pool" && "ambient-pool",
+    atmosphere === "pool-neutral" && "ambient-pool ambient-pool-neutral",
+    className,
+  )}
+  data-surface={atmosphere === "band" ? "band" : "sheet"}
+  id={id}
+>
+  <div class="container-page">
+    {atmosphere === "ruler" && <RulerDivider class="mb-12" />}
+
+    {srTitle !== undefined && <h2 class="sr-only">{srTitle}</h2>}
+
+    {
+      hasHeader && (
+        <div>
+          {eyebrow !== undefined && <p class={eyebrowClass(eyebrow)} set:html={eyebrow} />}
+          {Astro.slots.has("title") && (
+            /* The numeral wraps the heading alone, so it is bottom-aligned to the title and
+               never reaches an intro below it. */
+            <div class={cn("relative", hasEyebrow && "mt-2")}>
+              {atmosphere === "numeral" && index !== undefined && <GhostNumeral value={index} />}
+              <h2>
+                <slot name="title" />
+              </h2>
+            </div>
+          )}
+          {Astro.slots.has("intro") && (
+            <div class="mt-4 measure text-body-lg">
+              <slot name="intro" />
+            </div>
+          )}
+        </div>
+      )
+    }
+
+    {
+      Astro.slots.has("default") && (
+        <div class={hasHeader ? "mt-10" : undefined}>
+          <slot />
+        </div>
+      )
+    }
+  </div>
+</section>

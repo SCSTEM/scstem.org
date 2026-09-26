@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": ["Bash(agent-browser:*)"]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/format-lint.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}
