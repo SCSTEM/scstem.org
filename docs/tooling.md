@@ -55,9 +55,9 @@ the agent. It exits 0 when `node_modules` is missing.
 ## Browser automation
 
 Agents drive a real browser through [agent-browser](https://agent-browser.dev/), a CLI pinned in
-`mise.toml` (`docs/adr/0019-agent-browser.md`). The vendored skill stub at
-`.claude/skills/agent-browser/SKILL.md` points agents at `agent-browser skills get core`, which
-prints the usage guide for the installed version; `.claude/settings.json` allows the command.
+`mise.toml`. The vendored skill stub at `.claude/skills/agent-browser/SKILL.md` points agents at
+`agent-browser skills get core`, which prints the usage guide for the installed version;
+`.claude/settings.json` allows the command.
 
 ```sh
 mise install              # the pinned agent-browser

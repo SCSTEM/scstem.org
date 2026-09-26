@@ -225,5 +225,5 @@ and leave the template itself as `draft: true`.
 - **A mistyped FAQ slug in an event fails `pnpm check`, not `pnpm build`** — Astro logs it and
   builds anyway, dropping that answer from the page, so run `pnpm check` after editing a `faq` list.
 - **Do not add fields the schema does not define** — the build rejects them. If you need a new
-  field, that is a schema change in `src/content.config.ts` and needs an ADR (`docs/adr/`), since
-  the schemas are kept flat on purpose so a git-backed CMS can be added later.
+  field, that is a schema change in `src/content.config.ts`; keep it flat (strings, enums,
+  booleans, dates, numbers, images) so a git-backed CMS can be added later.

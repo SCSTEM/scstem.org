@@ -83,7 +83,6 @@ component still usable with JavaScript disabled.
   pocket depth (§4). Delete those classes rather than translating them.
 - **Minimum touch target 44px** for anything tappable (§9), which is why `Button`'s `md` is
   `h-11` and not shadcn's `h-10`.
-- New dependency of any kind ⇒ an ADR in `docs/adr/` first.
 
 ## Worked example: Accordion
 

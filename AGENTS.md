@@ -53,13 +53,12 @@ Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script
   by hand. Adding, renaming, or removing a size token means the same edit in both files, in the
   same commit; nothing checks them, and a missing entry shows up only as a wrong size in the
   browser.
-- No new dependencies without an ADR in `docs/adr/`.
 - No client-side frameworks, no framework islands.
 - Content changes go in `src/content/` — see `docs/content.md`. **Never inline a content array
   in a page** where a collection exists (the legacy site's habit): query the collection. New
   repeating content earns a collection, not a `const` in frontmatter.
 - Collection schemas stay flat (strings, enums, booleans, dates, numbers, images) so a git-backed
-  CMS stays a later addition. A schema change needs an ADR.
+  CMS stays a later addition.
 - Visual decisions come from `DESIGN.md`. When code and the doc disagree, the doc wins; when
   the doc is silent, add to it before building (its §11 change process).
 - Implementation plan and phase acceptance criteria live in `plan/`.
