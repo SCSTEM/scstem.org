@@ -7,24 +7,14 @@ npm.package_manager = "pnpm"
 node = "26.7.0"
 pnpm = "11.24.0"
 
-"npm:@puppeteer/browsers" = "3.2.1"
-"npm:chrome-devtools-mcp" = "1.8.0"
+"npm:agent-browser" = "0.38.1"
 
 [env]
 _.path = ["{{config_root}}/node_modules/.bin"]
 ASTRO_TELEMETRY_DISABLED = "1"
 
-# Chrome for the chrome-devtools MCP server (.mcp.json).
-[tasks."install:chrome"]
-description = "Install Chrome for Testing into .browser/"
-depends = ["clean:chrome"]
+[tasks."install:browser"]
+description = "Install Chrome for agent-browser"
 run = """
-bin=$(browsers install chrome@stable --path="$MISE_PROJECT_ROOT/.browser" | tail -n1 | awk '{print $2}')
-ln -sfn "$bin" "$MISE_PROJECT_ROOT/.browser/chrome/chrome"
-mkdir -p "$MISE_PROJECT_ROOT/.browser/chrome/user-data"
-echo "Chrome linked: .browser/chrome/chrome -> $bin"
+if [ "$(uname -s)" = Linux ]; then agent-browser install --with-deps; else agent-browser install; fi
 """
-
-[tasks."clean:chrome"]
-description = "Remove the installed Chrome for Testing"
-run = "rm -rf .browser/chrome"

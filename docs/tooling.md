@@ -52,6 +52,27 @@ Only erasable TypeScript syntax (no enums, namespaces, or parameter properties);
 file, then ESLint if it is a file ESLint reads, exiting 2 with the findings so they go back to
 the agent. It exits 0 when `node_modules` is missing.
 
+## Browser automation
+
+Agents drive a real browser through [agent-browser](https://agent-browser.dev/), a CLI pinned in
+`mise.toml` (`docs/adr/0019-agent-browser.md`). The vendored skill stub at
+`.claude/skills/agent-browser/SKILL.md` points agents at `agent-browser skills get core`, which
+prints the usage guide for the installed version; `.claude/settings.json` allows the command.
+
+```sh
+mise install              # the pinned agent-browser
+mise run install:browser  # Chrome for Testing into ~/.agent-browser/browsers
+agent-browser doctor      # confirms Chrome launches
+```
+
+On Linux, WSL included, `install:browser` runs `agent-browser install --with-deps`, which
+apt-installs the libraries Chrome for Testing links against (`libasound2` is the one a bare WSL
+Ubuntu lacks) and asks for `sudo`. macOS needs nothing beyond the download.
+
+Verify against the production build: `pnpm build && pnpm preview`, then
+`agent-browser open http://localhost:4321`. When `pnpm dev` already holds 4321, `astro preview`
+moves to 4322; dev serves `/@vite/client` and the preview does not.
+
 ## Environment variables
 
 | Variable                    | Where                 | Purpose                               |

@@ -27,6 +27,9 @@ TypeScript 6 throughout: `astro check` covers `src/` and the config files, `tsc`
 The Claude Code hook in `.claude/hooks/format-lint.sh` formats and lints every file you edit and
 feeds lint failures back to you.
 
+Browser verification goes through `agent-browser` (the `agent-browser` skill; setup in
+`docs/tooling.md`), against `pnpm preview`, not the dev server.
+
 Repo-specific checks and asset pipelines are TypeScript scripts under `tools/`, run directly by
 Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script.
 
