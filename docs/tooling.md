@@ -36,10 +36,11 @@ does not expose yet; when it does and `@astrojs/check` widens its peer range, bu
 TypeScript scripts run directly by Node (type stripping, no build step), each behind a
 `package.json` script:
 
-| Script       | Does                                                        | Runs in         |
-| ------------ | ----------------------------------------------------------- | --------------- |
-| `check:meta` | Every built page's head: unique title/description, og:image | CI, after build |
-| `assets:og`  | Render the OG cards in `src/assets/og/`                     | by hand         |
+| Script              | Does                                                          | Runs in         |
+| ------------------- | ------------------------------------------------------------- | --------------- |
+| `check:meta`        | Every built page's head: unique title/description, og:image   | CI, after build |
+| `assets:og`         | Render the OG cards in `src/assets/og/`                       | by hand         |
+| `assets:underlines` | Write the link underline strokes into `src/styles/tokens.css` | by hand         |
 
 Two more under `tools/ci/` have no script because Lighthouse CI runs them: `serve.ts` serves
 `dist/` over HTTP/2 and TLS for the audit, and `lighthouse-summary.ts` writes the job summary.

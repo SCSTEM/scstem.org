@@ -39,12 +39,15 @@ take an `as` prop, or infer the element — `Button` renders an `<a>` when given
 
 ## Token gotcha
 
-`body` names both a color (DESIGN.md §2) and a type size (§3). Tailwind resolves the color
-namespace first, so:
+`body` is a color (DESIGN.md §2) and `copy` is the reading size (§3), so:
 
-- `text-body` — the **color** `#D4D4D4`, consistent with `text-muted` and `text-foreground`.
-- `text-copy` — the **size** token. Elements inherit it from the base layer, so this is only for
+- `text-body` — the **color** of reading text, consistent with `text-muted` and `text-foreground`.
+- `text-copy` — the **size**. Elements inherit it from the base layer, so this is only for
   resetting something back.
+
+Values come from `src/styles/tokens.css`, and every one depends on the finish, accent and
+register the element sits in. Reach for the token (`bg-card`, `text-primary-bright`); never
+restate a value.
 
 Relatedly, `@/lib/cn` is a _configured_ merge, not a re-export: it registers the DESIGN.md §3
 type scale as the font-size conflict group. Without that, `cn()` treats every `text-*` class as
@@ -55,4 +58,4 @@ one group and silently drops all but the last. **A new size token means one more
 
 `/styleguide` is the contract for these components. A primitive that is not on it does not exist
 as far as review is concerned: add it in all its variants, sizes, and states, under the default
-theme and both program themes.
+accent and both program accents.

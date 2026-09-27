@@ -89,14 +89,15 @@
   --ease-toggle: var(--sc2-ease-toggle);
 }
 
+/* `light:` styles an element on the light finish (DESIGN.md §2); the dark finish is the default.
+   A dark island inside a light page (`data-mode="dark"` on an element) is not light. */
+@custom-variant light (&:where([data-mode="light"], [data-mode="light"] *):not([data-mode="dark"], [data-mode="dark"] *));
+
 /**
  * Layout. Not tokens a page chooses between, so they stay here with Tailwind. `md` is
  * Tailwind's default, declared so it is emitted as a variable: utilities below and the Navbar
  * sheet script read it, so the mobile/desktop boundary has one definition.
  */
-/* `light:` styles an element on the light finish (DESIGN.md §2); the dark finish is the default. */
-@custom-variant light (&:where([data-mode="light"], [data-mode="light"] *));
-
 @theme {
   --breakpoint-md: 48rem;
   --breakpoint-3xl: 120rem;

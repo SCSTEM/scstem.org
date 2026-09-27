@@ -95,7 +95,9 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
   }
 
   /* On the light finish the photo is pulled back a little (DESIGN.md §7). */
-  :global([data-mode="light"]) .hero-media :global(:is(img, video)) {
+  :global([data-mode="light"])
+    .hero-media:not(:global([data-mode="dark"] *))
+    :global(:is(img, video)) {
     filter: saturate(0.85) contrast(0.92) brightness(1.04);
   }
 </style>
