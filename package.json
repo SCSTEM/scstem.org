@@ -13,7 +13,8 @@
     "fix": "hk fix --all",
     "knip": "knip",
     "check:meta": "node tools/checks/verify-meta.ts",
-    "assets:og": "node tools/assets/og-cards.ts"
+    "assets:og": "node tools/assets/og-cards.ts",
+    "assets:underlines": "node tools/assets/underlines.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",

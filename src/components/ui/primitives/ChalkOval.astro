@@ -3,8 +3,9 @@ import { cn } from "@/lib/cn";
 import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
 
 /**
- * A key word circled by hand (DESIGN.md §2.12) — the "Real ⬭Skills⬭. Real ⬭Robots⬭." treatment.
- * Chalk white over photography, grease-pencil `primary` on the ground.
+ * A key word circled by marker (DESIGN.md §2.12) — the "Real ⬭Skills⬭. Real ⬭Robots⬭."
+ * treatment. Chalk white over photography, the accent's marker on the ground. It may also ring
+ * the one primary button a page most wants pressed (§2.18): wrap the `Button` in it.
  *
  * Three distinct paths, because identical hand-drawn marks read as a stamp and break the
  * illusion: **two adjacent instances must not share a variant.** Per-instance rotation varies
@@ -14,12 +15,26 @@ import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@
  */
 interface Props {
   variant?: HandVariant;
-  /** `chalk` is white for photo contexts; `pencil` is the accent, for the page ground. */
+  /** `chalk` is white for photo contexts; `marker` is the accent, for the page ground. */
   tone?: HandTone;
+  /** A control needs a wider ring than a word, so the oval clears the keycap's drafted edge. */
+  around?: "word" | "control";
   class?: string;
 }
 
-const { variant = 1, tone = "pencil", class: className } = Astro.props;
+const { variant = 1, tone = "marker", around = "word", class: className } = Astro.props;
+
+/** The ring's overhang past its content: the inline margin matches it, so neighbours clear it. */
+const overhang = {
+  word: {
+    host: "mx-4",
+    ring: "-inset-x-4 -inset-y-1.5 h-[calc(100%+0.75rem)] w-[calc(100%+2rem)]",
+  },
+  control: {
+    host: "mx-6",
+    ring: "-inset-x-6 -inset-y-3 h-[calc(100%+1.5rem)] w-[calc(100%+3rem)]",
+  },
+} as const;
 
 /**
  * Open ellipses spanning the full viewBox, each starting and ending at a different point so no
@@ -36,15 +51,11 @@ const rotations = { 1: "-1.2deg", 2: "0.9deg", 3: "-0.6deg" } as const;
 ---
 
 <!-- The inline margin matches the stroke's overhang, so the oval clears the neighbouring words. -->
-<span class={cn("relative mx-4 inline-block", className)}>
+<span class={cn("relative inline-block", overhang[around].host, className)}>
   <slot />
   <svg
     aria-hidden="true"
-    class:list={[
-      handMarkClass,
-      "absolute -inset-x-4 -inset-y-1.5 h-[calc(100%+0.75rem)] w-[calc(100%+2rem)]",
-      handToneClass(tone),
-    ]}
+    class:list={[handMarkClass, "absolute", overhang[around].ring, handToneClass(tone)]}
     preserveAspectRatio="none"
     style={`rotate: ${rotations[variant]}`}
     viewBox="0 0 180 56"

@@ -23,15 +23,19 @@ import Input from "@/components/ui/primitives/Input.astro";
 import Label from "@/components/ui/primitives/Label.astro";
 import Pattern from "@/components/ui/primitives/Pattern.astro";
 import RegistrationMarks from "@/components/ui/primitives/RegistrationMarks.astro";
+import RevisionCloud from "@/components/ui/primitives/RevisionCloud.astro";
 import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
 import Separator from "@/components/ui/primitives/Separator.astro";
 import Skeleton from "@/components/ui/primitives/Skeleton.astro";
 import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
+import StrikeCorrect from "@/components/ui/primitives/StrikeCorrect.astro";
 import Textarea from "@/components/ui/primitives/Textarea.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import { site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { cn } from "@/lib/cn";
 import { AA_LARGE, AA_NORMAL, AAA_NORMAL, blend, contrastRatio, formatRatio } from "@/lib/contrast";
+import { handwritingClass } from "@/lib/hand";
 import {
   accents,
   color,
@@ -628,8 +632,9 @@ const themes = accents().map((accent) => ({
       </p>
 
       <p class="mt-10 text-lead">
-        An underline in copy always means a link: <a href="/sponsors/">see every sponsor</a>. A link
-        the page wants noticed is a{" "}
+        An underline in copy always means a link: <a href="/sponsors/">see every sponsor</a>,{" "}
+        <a href="/programs/">our programs</a>, or <a href="/calendar/">the calendar</a> — three
+        neighbours, three drift strokes. A link the page wants noticed is a{" "}
         <a class="highlight-swipe" href="/get-involved/">
           featured link
         </a>
@@ -657,12 +662,33 @@ const themes = accents().map((accent) => ({
         {formatRatio(contrastRatio(color("foreground"), displaySwipeOnGround))}
       </p>
 
-      <div class="mt-12 flex items-start gap-2">
-        <SketchArrow class="size-14" variant={2} />
-        <a class="mt-8 font-hand text-lead" href="/styleguide/">
-          Become a sponsor
-        </a>
+      <h4 class="mt-12">Leader note and circled control</h4>
+      <div class="mt-6 flex flex-wrap items-start gap-x-16 gap-y-8">
+        <div class="flex items-start">
+          <Button href="/get-involved/">Get involved</Button>
+          <SketchArrow class="mt-6 h-12 w-14 shrink-0" direction="up-left" variant={3} />
+          <span class={cn(handwritingClass, "mt-14 -rotate-3 text-lead")}>start here!</span>
+        </div>
+        <ChalkOval around="control" variant={3}>
+          <Button href="/donate/">Donate</Button>
+        </ChalkOval>
       </div>
+
+      <h4 class="mt-12">Revision cloud</h4>
+      <div class="mt-12 ml-6 flex flex-wrap items-end gap-10">
+        <RevisionCloud class="inline-block" revision={2}>
+          <div class="pocket flex flex-col gap-2 px-4 py-3">
+            <span class="self-start spec-chip spec-label text-primary-bright">Jan 10, 2027</span>
+            <span class="font-semibold text-foreground">Kickoff at the workshop</span>
+          </div>
+        </RevisionCloud>
+        <span class={cn(handwritingClass, "text-lead")}>moved up a week</span>
+      </div>
+
+      <h4 class="mt-12">Strike and correct</h4>
+      <p class="mt-12 font-display text-h2 font-semibold text-foreground">
+        Robots are <StrikeCorrect correction="in Franklin County" struck="cool" />.
+      </p>
 
       <figure class="mt-12">
         <div class="aspect-video media-frame bg-card-hover"></div>

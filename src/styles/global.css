@@ -160,18 +160,21 @@
   }
 
   /**
-   * An underline means a link, always, and it is drawn by hand (DESIGN.md §2.14, §8). The
-   * stroke is a background rather than `text-decoration`, which cannot take a custom shape. Two
-   * layers, one stroke per finish: the finish sizes one to the link and the other to nothing
-   * (`tokens.css`). Anchors that are not text — a button, a framed image — reset it with
-   * `bg-none pb-0`.
-   * Preflight sets `text-decoration: inherit` on `a`; the line is switched off here so the two
-   * underlines never stack.
+   * An underline means a link, always, and it is drawn by hand (DESIGN.md §2.14, §8): a marker
+   * stroke that drifts upward toward its end. The stroke is a background rather than
+   * `text-decoration`, which cannot take a custom shape, and `box-decoration-break: clone` gives
+   * each line of a wrapped link its own stroke. Two layers, one stroke per finish: the finish
+   * sizes one to the link and the other to nothing (`tokens.css`). Anchors that are not text — a
+   * button, a framed image — reset it with `bg-none pb-0`. Preflight sets `text-decoration:
+   * inherit` on `a`; the line is switched off here so the two underlines never stack.
+   *
+   * On the dark finish the text is the accent; on the light finish it is ink, and the yellow
+   * stroke alone says "link" (§2 accents).
    */
   a {
-    color: var(--sc2-primary-bright);
+    color: light-dark(var(--sc2-foreground), var(--sc2-primary-bright));
     text-decoration-line: none;
-    background-image: var(--sc2-underline-dark), var(--sc2-underline-light);
+    background-image: var(--sc2-underline-1-dark), var(--sc2-underline-1-light);
     background-repeat: no-repeat;
     background-position: 0 100%;
     background-size: var(--sc2-underline-size-dark), var(--sc2-underline-size-light);
@@ -180,10 +183,19 @@
     transition: color var(--sc2-duration-micro) var(--sc2-ease-toggle);
   }
 
+  /* Three drift variants, rotated among sibling links so neighbours never share a stroke. */
+  a:nth-of-type(3n + 2) {
+    background-image: var(--sc2-underline-2-dark), var(--sc2-underline-2-light);
+  }
+
+  a:nth-of-type(3n) {
+    background-image: var(--sc2-underline-3-dark), var(--sc2-underline-3-light);
+  }
+
   /* Hover shades the text and leaves the stroke where it is: a moving underline reads as a
      glitch, not a confirmation. */
   a:hover {
-    color: var(--sc2-foreground);
+    color: light-dark(var(--sc2-primary-bright), var(--sc2-foreground));
   }
 
   /* Never removed, on any interactive element (DESIGN.md §9). */
@@ -413,6 +425,47 @@
   }
 }
 
+/**
+ * The revision cloud's scallops (DESIGN.md §2.16): shallow arcs tiled along each edge of a
+ * pseudo-element that stands 15px out from the content, so the cusps float 6px clear of it and
+ * never close against the content's own border. Each tile holds the top of
+ * a ring whose centre sits below the tile, so neighbouring arcs meet in an inward cusp the way a
+ * drafter's cloud does. `round` fits a whole number of scallops to any length, so the cloud
+ * needs no script and never ends on a clipped arc.
+ */
+@utility revision-cloud {
+  /* A 28px-wide, 9px-deep arc is a slice of a 15.4px circle centred 6.4px past the tile. */
+  --cloud-arc: transparent 12.1px, var(--sc2-mark) 12.5px, var(--sc2-mark) 15px, transparent 15.4px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -15px;
+    pointer-events: none;
+    opacity: 0.9;
+    background-image:
+      radial-gradient(circle 15.4px at 50% calc(100% + 6.4px), var(--cloud-arc)),
+      radial-gradient(circle 15.4px at 50% -6.4px, var(--cloud-arc)),
+      radial-gradient(circle 15.4px at calc(100% + 6.4px) 50%, var(--cloud-arc)),
+      radial-gradient(circle 15.4px at -6.4px 50%, var(--cloud-arc));
+    background-position:
+      0 0,
+      0 100%,
+      0 0,
+      100% 0;
+    background-repeat:
+      round no-repeat,
+      round no-repeat,
+      no-repeat round,
+      no-repeat round;
+    background-size:
+      28px 9px,
+      28px 9px,
+      9px 28px,
+      9px 28px;
+  }
+}
+
 /* A drafting center line: long dash, short dash (DESIGN.md §2.6). Drawn as a background so it
    stretches to any width without an SVG. */
 @utility centerline {
@@ -594,9 +647,9 @@
 }
 
 /**
- * The shared stroke contract for the hand-markup register (DESIGN.md §2.12–2.15): 2.5px
- * round-capped `currentColor`, with `non-scaling-stroke` so the weight stays even when the SVG is
- * stretched non-uniformly over a word. Applied to the `<svg>`; the paths carry only their `d` and
+ * The shared stroke contract for the hand-markup register (DESIGN.md §2.12–2.20): the felt
+ * marker, 4.5px round-capped `currentColor` at 90%, with `non-scaling-stroke` so the weight stays
+ * even when the SVG is stretched non-uniformly over a word. Applied to the `<svg>`; the paths carry only their `d` and
  * `pathLength`, so a change to the hand's weight is one edit rather than one per device.
  */
 @utility hand-stroke {
@@ -605,7 +658,9 @@
   & path {
     stroke: currentcolor;
     stroke-linecap: round;
-    stroke-width: 2.5;
+    stroke-linejoin: round;
+    stroke-opacity: 0.9;
+    stroke-width: 4.5;
     vector-effect: non-scaling-stroke;
   }
 }

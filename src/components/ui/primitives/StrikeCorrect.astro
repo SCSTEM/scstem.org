@@ -1,0 +1,63 @@
+---
+import { cn } from "@/lib/cn";
+import { handMarkClass, handwritingClass, type HandVariant } from "@/lib/hand";
+
+/**
+ * Strike and correct (DESIGN.md §2.17): a word struck through with one marker stroke, the
+ * handwritten correction above it, and a caret beneath. Display headings only, once per site
+ * section.
+ *
+ * Assistive tech reads the corrected sentence: the struck word and the drawn correction are
+ * hidden from it, and a visually hidden copy of the correction stands in their place.
+ */
+interface Props {
+  /** The word as struck out. */
+  struck: string;
+  /** What replaces it, handwritten above. */
+  correction: string;
+  variant?: HandVariant;
+  class?: string;
+}
+
+const { struck, correction, variant = 1, class: className } = Astro.props;
+
+/** Each strike rises slightly across the word, the way a quick stroke does. */
+const strikes = {
+  1: "M2 12C30 9 60 11 98 7",
+  2: "M2 11C28 12 66 8 98 9",
+  3: "M2 13C34 10 62 10 98 6",
+} as const;
+
+const rotations = { 1: "-3deg", 2: "-1.5deg", 3: "-4deg" } as const;
+---
+
+<span class={cn("relative inline-block", className)}>
+  <span class="sr-only">{correction}</span>
+  <span aria-hidden="true" class="relative text-muted">
+    {struck}
+    <svg
+      class={cn(handMarkClass, "absolute top-[30%] -left-[5%] h-[40%] w-[110%] text-mark")}
+      preserveAspectRatio="none"
+      viewBox="0 0 100 20"
+    >
+      <path d={strikes[variant]} pathLength="100"></path>
+    </svg>
+  </span>
+  <span
+    aria-hidden="true"
+    class={cn(
+      handwritingClass,
+      "absolute bottom-[85%] -left-[10%] text-[0.5em] leading-none font-normal whitespace-nowrap",
+    )}
+    style={`rotate: ${rotations[variant]}`}
+  >
+    {correction}
+  </span>
+  <svg
+    aria-hidden="true"
+    class={cn(handMarkClass, "absolute top-[88%] left-[42%] h-[0.3em] w-[0.45em] text-mark")}
+    viewBox="0 0 20 14"
+  >
+    <path d="M2 12 10 3 18 12" pathLength="100"></path>
+  </svg>
+</span>

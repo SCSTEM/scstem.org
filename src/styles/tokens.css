@@ -49,8 +49,12 @@
   --sc2-mark: light-dark(#d1a107, #facc15); /* the engineer's marker */
   --sc2-swipe: light-dark(#e1c964, rgb(250 204 21 / 0.25)); /* highlighter, body sizes */
   --sc2-swipe-display: light-dark(#e1c964, rgb(250 204 21 / 0.35)); /* highlighter, h1 and h2 */
-  --sc2-underline-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%23facc15' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-  --sc2-underline-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%23d1a107' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-1-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%23facc15' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-1-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%23d1a107' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%23facc15' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%23d1a107' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%23facc15' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%23d1a107' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 
   /* --- Informational and error pairs -------------------------------------------------------- */
   --sc2-info: #3b82f6;
@@ -142,7 +146,8 @@
   --sc2-texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 
   /* Which finish's link underline shows (§2.14). A data URI cannot read a variable, so each
-     accent carries its stroke once per finish and the finish shows one of the two layers. */
+     accent carries its three strokes once per finish (written by `pnpm assets:underlines`) and
+     the finish shows one of the two layers. */
   --sc2-underline-size-dark: 100% 0.8em;
   --sc2-underline-size-light: 0 0;
 }
@@ -156,8 +161,12 @@
   --sc2-mark: light-dark(#1eb256, #16a34a);
   --sc2-swipe: light-dark(#7cc59a, rgb(22 163 74 / 0.25));
   --sc2-swipe-display: light-dark(#7cc59a, rgb(22 163 74 / 0.35));
-  --sc2-underline-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%233ecf6e' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-  --sc2-underline-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%231eb256' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-1-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%233ecf6e' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-1-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%231eb256' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%233ecf6e' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%231eb256' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%233ecf6e' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%231eb256' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
 
 [data-accent="orange"] {
@@ -168,8 +177,12 @@
   --sc2-mark: light-dark(#e08437, #f97316);
   --sc2-swipe: light-dark(#e8a878, rgb(249 115 22 / 0.25));
   --sc2-swipe-display: light-dark(#e8a878, rgb(249 115 22 / 0.35));
-  --sc2-underline-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%23fb923c' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-  --sc2-underline-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.8C30 14.9 70 14.7 98.5 12.8' fill='none' stroke='%23e08437' stroke-width='2.3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-1-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%23fb923c' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-1-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%23e08437' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%23fb923c' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%23e08437' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%23fb923c' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%23e08437' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
 
 /* --- Blueprint register: cyanotype in dark, whiteprint in light ---------------------------- */

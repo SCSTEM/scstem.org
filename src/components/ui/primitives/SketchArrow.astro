@@ -3,23 +3,23 @@ import { cn } from "@/lib/cn";
 import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
 
 /**
- * A hand-drawn curved arrow (DESIGN.md §2.15). **One per page.**
+ * A hand-drawn curved arrow, the leader of a leader note (DESIGN.md §2.15). **One per view.**
  *
- * Its target is always handwritten annotation text (`font-hand`), never a typeset element — a
- * sketched arrow pointing at regular UI breaks the fiction. The annotation it points at may
- * itself be a link.
+ * It always starts at handwriting (`handwritingClass`) and points from the note to what the
+ * note is about: a handwritten link, a button, or a field. It never floats free and never
+ * points from typeset text.
  *
  * Three variants; adjacent instances must differ.
  */
 interface Props {
   variant?: HandVariant;
   /** Which way the arrow sweeps. */
-  direction?: "down-right" | "down-left" | "right";
+  direction?: "down-right" | "down-left" | "up-left" | "up-right" | "right";
   tone?: HandTone;
   class?: string;
 }
 
-const { variant = 1, direction = "down-right", tone = "pencil", class: className } = Astro.props;
+const { variant = 1, direction = "down-right", tone = "marker", class: className } = Astro.props;
 
 /** Shaft plus a two-stroke head, all open-ended. */
 const paths = {
@@ -40,6 +40,8 @@ const rotations = { 1: "0deg", 2: "-3deg", 3: "2deg" } as const;
 const directions = {
   "down-right": { rotate: "0deg", mirror: "" },
   "down-left": { rotate: "0deg", mirror: "-scale-x-100" },
+  "up-left": { rotate: "180deg", mirror: "" },
+  "up-right": { rotate: "180deg", mirror: "-scale-x-100" },
   right: { rotate: "-45deg", mirror: "" },
 } as const;
 ---
