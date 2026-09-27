@@ -121,3 +121,6 @@ The order is `plan/11-cutover.md` §2–§6; these are the steps only an owner c
       under-construction, special pages — soft margins (the grid fading out before the content
       column, with no frame line) were the close alternative. Revisit once those pages exist in
       the register: keep the frame, or give non-wiki pages soft margins.
+- [ ] **Move the design-language guide to the wiki.** `/design-language/` is an unlinked, noindexed
+      draft on the site until the team wiki exists. Once it moves, delete
+      `src/pages/design-language.astro` and its two `X-Robots-Tag` rules in `public/_headers`.

@@ -94,10 +94,12 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
     filter: grayscale(1) contrast(1.05);
   }
 
-  /* On the light finish the photo is pulled back a little (DESIGN.md §7). */
-  :global([data-mode="light"])
-    .hero-media:not(:global([data-mode="dark"] *))
-    :global(:is(img, video)) {
+  /**
+   * On the light finish the photo is pulled back a little (DESIGN.md §7); a hero inside a dark
+   * island keeps its photo as is. The rule is global as a whole because Astro does not unwrap
+   * `:global()` nested inside `:not()`; `.hero-media` exists only in this component.
+   */
+  :global([data-mode="light"] .hero-media:not([data-mode="dark"] *) :is(img, video)) {
     filter: saturate(0.85) contrast(0.92) brightness(1.04);
   }
 </style>
