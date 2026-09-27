@@ -67,10 +67,6 @@
   --text-label: var(--sc2-text-label);
   --text-label--line-height: var(--sc2-leading-snug);
   --text-label--letter-spacing: var(--sc2-tracking-label);
-  --text-numeral: var(--sc2-text-numeral);
-  --text-numeral--line-height: 1;
-  --text-numeral-lg: var(--sc2-text-numeral-lg);
-  --text-numeral-lg--line-height: 1;
 
   /* Radius, elevation, motion (DESIGN.md §4, §6). */
   --radius-sm: var(--sc2-radius-sm);
@@ -244,7 +240,19 @@
  * laid on the table instead (the `band` utility below) — cut into metal, laid on the table.
  */
 @utility pocket {
+  /* The lit floor (DESIGN.md §2): shadowed under the top wall, a step brighter toward the lip. It
+     is an overlay on the fill, so hover changes only the fill. A feature pocket adds its grid as
+     the layer above it through `--pocket-grid`, so neither utility overrides the other. */
+  --pocket-floor: linear-gradient(
+    to bottom,
+    var(--sc2-pocket-shade),
+    transparent 42%,
+    var(--sc2-pocket-lit)
+  );
+
   background-color: var(--sc2-card);
+  background-image: var(--pocket-grid, none), var(--pocket-floor);
+  background-size: var(--pocket-grid-size, auto), auto;
   border: 1px solid var(--sc2-pocket-border);
   border-radius: var(--sc2-radius-lg);
   box-shadow: var(--sc2-shadow-pocket);
@@ -265,9 +273,10 @@
 }
 
 /**
- * The engineering grid (DESIGN.md §2.3). One definition, two consumers: `pocket-feature` below
- * and `Pattern.astro`. Cell size and stroke alpha are custom properties, and the stroke reads
- * `--color-foreground` rather than a literal hex, so the grid follows the theme's tokens. Not
+ * The engineering grid (DESIGN.md §2.3), for `Pattern.astro`; `pocket-feature` below draws the
+ * same lines as a layer of the pocket floor. Cell size and stroke alpha are custom properties,
+ * and the stroke reads `--sc2-foreground` rather than a literal hex, so the grid follows the
+ * finish and register. Not
  * `currentcolor`: this utility lands on elements that also hold text, and the linework must not
  * be tied to the copy's color.
  */
@@ -362,6 +371,8 @@
   }
 
   & .pocket {
+    --pocket-floor: none;
+
     background-color: var(--sc2-plate);
     border-color: var(--sc2-plate-border);
     box-shadow: var(--sc2-shadow-plate);
@@ -388,8 +399,32 @@
    screens wide enough for it to read. Dense card grids and mobile stay plain V2. */
 @utility pocket-feature {
   @media (width >= theme(--breakpoint-md)) {
-    @apply engineering-grid;
+    --grid-line: color-mix(in srgb, var(--sc2-foreground) 5%, transparent);
+    --pocket-grid:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    --pocket-grid-size: 26px 26px, 26px 26px;
+
+    /* As for `engineering-grid`: without `color-mix` the lines would fall back to opaque. */
+    @supports not (color: color-mix(in srgb, red, red)) {
+      --pocket-grid: none;
+      --pocket-grid-size: auto;
+    }
   }
+}
+
+/* A drafting center line: long dash, short dash (DESIGN.md §2.6). Drawn as a background so it
+   stretches to any width without an SVG. */
+@utility centerline {
+  --centerline: color-mix(in srgb, var(--sc2-foreground) 24%, transparent);
+
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--centerline) 0 12px,
+    transparent 12px 16px,
+    var(--centerline) 16px 18px,
+    transparent 18px 22px
+  );
 }
 
 /* The 2px primary hairline that ends a hero, full-bleed. */

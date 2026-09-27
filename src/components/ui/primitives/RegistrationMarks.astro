@@ -2,10 +2,10 @@
 import { cn } from "@/lib/cn";
 
 /**
- * Drafting-sheet crop marks (DESIGN.md §2.8): corner brackets on **one** feature pocket per
- * view. Never on standard cards — they stop reading as registration and start reading as
- * decoration. Set in from the pocket's edge rather than on it — on the corners they read as part of
- * the border; inside, they frame the content. Expects a `relative` parent.
+ * Construction lines (DESIGN.md §2.8): at each corner of **one** feature pocket per view, two
+ * lines run along the pocket's edges past the corner and cross just outside it — the
+ * construction lines of the lockup on the t-shirt front. Never on standard cards. Expects a
+ * `relative` parent with about 20px of clear space around it, since the marks sit outside.
  */
 interface Props {
   class?: string;
@@ -14,24 +14,28 @@ interface Props {
 const { class: className } = Astro.props;
 
 /**
- * One bracket, rotated into each corner. The four corners are the same mark about the viewBox
- * centre, so the arm length and inset are defined once — editing the mark is one path, not four
- * hand-recomputed coordinate strings.
+ * One corner, mirrored into the other three. The lines cross at (16, 16) of a 44-unit box, and
+ * the box is offset by 16px so that point lands on the pocket's corner: 16px of each line runs
+ * past the corner and 28px along the edge.
  */
-const BRACKET = "M1 13 L1 1 L13 1";
+const CROSS = "M0 16H44M16 0V44";
 
 const corners = [
-  "top-0 left-0",
-  "top-0 right-0 rotate-90",
-  "right-0 bottom-0 rotate-180",
-  "bottom-0 left-0 -rotate-90",
-] as const;
+  "-top-4 -left-4",
+  "-top-4 -right-4 -scale-x-100",
+  "-bottom-4 -left-4 -scale-y-100",
+  "-right-4 -bottom-4 -scale-100",
+];
 ---
 
-<div aria-hidden="true" class={cn("pointer-events-none absolute inset-3", className)}>
+<div aria-hidden="true" class={cn("pointer-events-none absolute inset-0", className)}>
   {corners.map((corner) => (
-    <svg class:list={["absolute size-5 text-primary/35", corner]} fill="none" viewBox="0 0 24 24">
-      <path d={BRACKET} stroke="currentColor" stroke-linecap="round" stroke-width="1.5" />
+    <svg
+      class:list={["absolute size-11 overflow-visible text-foreground/40", corner]}
+      fill="none"
+      viewBox="0 0 44 44"
+    >
+      <path d={CROSS} stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" />
     </svg>
   ))}
 </div>

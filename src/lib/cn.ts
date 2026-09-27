@@ -27,8 +27,6 @@ export const cn = createCn({
         "text-copy",
         "text-small",
         "text-label",
-        "text-numeral",
-        "text-numeral-lg",
       ],
     },
   },

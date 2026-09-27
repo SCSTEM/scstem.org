@@ -17,7 +17,7 @@ import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
 import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
 import Dialog from "@/components/ui/primitives/Dialog.astro";
 import FieldError from "@/components/ui/primitives/FieldError.astro";
-import GhostNumeral from "@/components/ui/primitives/GhostNumeral.astro";
+import GridBubble from "@/components/ui/primitives/GridBubble.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import Input from "@/components/ui/primitives/Input.astro";
 import Label from "@/components/ui/primitives/Label.astro";
@@ -73,6 +73,25 @@ const surfacesIn = (context: Context) => {
   return [
     { name: "background", value: color("background", context), crossing: false },
     { name: "card", value: color("card", context), crossing: false },
+    // The lit floor's two ends (DESIGN.md §2): text can sit anywhere on it.
+    {
+      name: "card, shaded floor",
+      value: blend(
+        rgba("pocket-shade", context).hex,
+        color("card", context),
+        rgba("pocket-shade", context).alpha,
+      ),
+      crossing: false,
+    },
+    {
+      name: "card, lit floor",
+      value: blend(
+        rgba("pocket-lit", context).hex,
+        color("card", context),
+        rgba("pocket-lit", context).alpha,
+      ),
+      crossing: false,
+    },
     { name: "band", value: band, crossing: false },
     { name: "plate", value: color("plate", context), crossing: false },
     { name: "band grid crossing", value: crossing, crossing: true },
@@ -311,7 +330,7 @@ const themes = accents().map((accent) => ({
     <RulerDivider />
 
     <section class="relative section-y">
-      <GhostNumeral value={1} />
+      <GridBubble class="mb-6" value={1} />
       <h2>Surfaces</h2>
       <p class="mt-3 measure">
         Cut into metal, laid on the table. The page is raised material and cards are pockets
@@ -397,7 +416,7 @@ const themes = accents().map((accent) => ({
     <RulerDivider />
 
     <section class="relative section-y">
-      <GhostNumeral value={2} />
+      <GridBubble class="mb-6" value={2} />
       <h2>Text ramp &amp; contrast</h2>
       <p class="mt-3 measure">
         AAA (≥ 7:1) for anything longer than a caption.
@@ -457,7 +476,7 @@ const themes = accents().map((accent) => ({
     <RulerDivider />
 
     <section class="relative section-y">
-      <GhostNumeral value={3} />
+      <GridBubble class="mb-6" value={3} />
       <h2>Accents — the fill-vs-text law</h2>
       <p class="mt-3 measure">
         Every accent is a pair: the brand hex for fills with a near-black label, and a brightened
@@ -494,7 +513,7 @@ const themes = accents().map((accent) => ({
     <RulerDivider />
 
     <section class="relative section-y">
-      <GhostNumeral value={4} />
+      <GridBubble class="mb-6" value={4} />
       <h2>Typography</h2>
       <p class="mt-3 measure">
         Nine roles on three line heights. Orbitron owns display and h1–h3. Source Code Pro owns
@@ -516,7 +535,7 @@ const themes = accents().map((accent) => ({
     <RulerDivider />
 
     <section class="relative section-y">
-      <GhostNumeral value={5} />
+      <GridBubble class="mb-6" value={5} />
       <h2>Radius &amp; motion</h2>
       <p class="mt-3 measure">
         One end-mill: three radii, nothing else. Elevation is drafted, not rendered: zero-blur
@@ -578,7 +597,7 @@ const themes = accents().map((accent) => ({
     <RulerDivider />
 
     <section class="relative section-y">
-      <GhostNumeral value={6} />
+      <GridBubble class="mb-6" value={6} />
       <h2>Motifs</h2>
       <p class="mt-3 measure">
         At most four distinct devices per viewport. If a new one enters a view, another leaves.
@@ -666,7 +685,7 @@ const themes = accents().map((accent) => ({
     <RulerDivider />
 
     <section class="relative section-y">
-      <GhostNumeral value={7} />
+      <GridBubble class="mb-6" value={7} />
       <h2>Primitives</h2>
       <p class="mt-3 measure">
         Every primitive in <code class="font-mono text-foreground">ui/primitives/</code>, in all
@@ -852,7 +871,7 @@ const themes = accents().map((accent) => ({
     <RulerDivider />
 
     <section class="relative section-y">
-      <GhostNumeral value={8} />
+      <GridBubble class="mb-6" value={8} />
       <h2>Accents</h2>
       <p class="mt-3 measure">
         A program page is the same site wearing team colors. An accent remaps the accent set in

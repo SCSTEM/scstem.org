@@ -1,5 +1,5 @@
 ---
-import GhostNumeral from "@/components/ui/primitives/GhostNumeral.astro";
+import GridBubble from "@/components/ui/primitives/GridBubble.astro";
 import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
 import { cn } from "@/lib/cn";
 
@@ -24,8 +24,8 @@ import { cn } from "@/lib/cn";
  * it or a `title` slot, not both.
  */
 interface Props {
-  atmosphere?: "none" | "numeral" | "pool" | "pool-neutral" | "ruler" | "band";
-  /** The ghost numeral's value. Required by, and only read with, `atmosphere="numeral"`. */
+  atmosphere?: "none" | "bubble" | "pool" | "pool-neutral" | "ruler" | "band";
+  /** The grid bubble's number. Required by, and only read with, `atmosphere="bubble"`. */
   index?: number;
   /** A visually hidden heading, in place of the `title` slot. */
   srTitle?: string;
@@ -35,8 +35,8 @@ interface Props {
 
 const { atmosphere = "none", index, srTitle, id, class: className } = Astro.props;
 
-if (atmosphere === "numeral" && index === undefined) {
-  throw new Error('Section: atmosphere="numeral" needs an `index` for the numeral to show.');
+if (atmosphere === "bubble" && index === undefined) {
+  throw new Error('Section: atmosphere="bubble" needs an `index` for the bubble to show.');
 }
 
 if (srTitle !== undefined && Astro.slots.has("title")) {
@@ -66,16 +66,14 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
 
     {hasHeader && (
       <div>
+        {atmosphere === "bubble" && index !== undefined && (
+          <GridBubble class="mb-6" value={index} />
+        )}
         {eyebrow !== undefined && <p class="spec-label text-primary-bright" set:html={eyebrow} />}
         {Astro.slots.has("title") && (
-          /* The numeral wraps the heading alone, so it is bottom-aligned to the title and
-               never reaches an intro below it. */
-          <div class={cn("relative", hasEyebrow && "mt-2")}>
-            {atmosphere === "numeral" && index !== undefined && <GhostNumeral value={index} />}
-            <h2>
-              <slot name="title" />
-            </h2>
-          </div>
+          <h2 class={hasEyebrow ? "mt-2" : undefined}>
+            <slot name="title" />
+          </h2>
         )}
         {Astro.slots.has("intro") && (
           <div class="mt-4 measure text-lead">

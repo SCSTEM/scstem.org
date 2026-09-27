@@ -24,6 +24,8 @@
   --sc2-background: light-dark(#e4e6e9, #262626); /* the sheet */
   --sc2-card: light-dark(#d8dbdf, #171717); /* pockets cut into the sheet */
   --sc2-card-hover: light-dark(#dfe2e5, #1f1f1f); /* a pocket floor lifting a step */
+  --sc2-pocket-shade: light-dark(rgb(20 28 38 / 0.045), rgb(0 0 0 / 0.3)); /* lit floor, top */
+  --sc2-pocket-lit: light-dark(rgb(255 255 255 / 0.2), rgb(255 255 255 / 0.03)); /* at the lip */
   --sc2-pocket-border: light-dark(#c2c6cc, #383838);
   --sc2-band: light-dark(#d1d5da, #121212); /* the drafting table */
   --sc2-plate: light-dark(#eef0f2, #232323); /* a pocket laid on the table */
@@ -90,9 +92,6 @@
   --sc2-text-small: 0.875rem;
   --sc2-text-label: clamp(0.6875rem, 0.6667rem + 0.0926vw, 0.75rem);
   --sc2-tracking-label: 0.05em;
-  /* Ghost section numerals (§2.6): stepped at `md`, not fluid. */
-  --sc2-text-numeral: 5rem;
-  --sc2-text-numeral-lg: 8rem;
 
   /* --- Spacing: nine steps, named by their Tailwind numbers (§4) ---------------------------- */
   --sc2-space-1: 0.25rem;
