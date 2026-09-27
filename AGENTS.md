@@ -45,6 +45,8 @@ Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script
   shadcn-convention, zero-JS-by-default.
 - `src/content/` — markdown content collections (sponsors, events, faq, robots, photos).
 - `src/data/site.ts` — org facts, external URLs, calendar and analytics IDs. No hardcoded constants.
+- `src/styles/tokens.css` — every design token, as plain CSS the wiki and apps import too;
+  `global.css` maps it onto Tailwind. `/styleguide` gates its contrast at build time.
 - `functions/` — Cloudflare Pages Functions (form submit, calendar proxy). Own tsconfig.
 - `tools/` — repo checks, asset pipelines, and CI helpers. Own tsconfig.
 
@@ -53,9 +55,9 @@ Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script
 - `cn` comes from `@/lib/cn` only — a [`cn`](https://github.com/shadcn-ui/cn) merge configured
   with the DESIGN.md §3 type scale (see the docstring). `clsx`, `classnames`, `tailwind-merge`
   are banned imports.
-- The `font-size` group in `src/lib/cn.ts` mirrors the `--text-*` tokens in `src/styles/global.css`
-  by hand. Adding, renaming, or removing a size token means the same edit in both files, in the
-  same commit. The lint rejects a class that names no token, but nothing checks the mirror: a
+- The `font-size` group in `src/lib/cn.ts` mirrors the `--text-*` names that `src/styles/global.css`
+  maps from `tokens.css`, by hand. Adding, renaming, or removing a size token means the same edit
+  in all three files, in the same commit. The lint rejects a class that names no token, but nothing checks the mirror: a
   token missing from `cn.ts` shows up only as a wrong size in the browser.
 - No client-side frameworks, no framework islands.
 - Content changes go in `src/content/` — see `docs/content.md`. **Never inline a content array

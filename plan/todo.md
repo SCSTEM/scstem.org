@@ -112,3 +112,12 @@ The order is `plan/11-cutover.md` §2–§6; these are the steps only an owner c
       goes red here again, the job log now prints each URL's LCP element, phases, and request
       waterfall; start there. The levers left on the fonts are the Source Code Pro and Orbitron
       weight axes, measured at 3.2 KB and 0.7 KB.
+
+## Design
+
+- [ ] **Blueprint frame or soft margins outside the wiki.** The 2026-09 review settled the drawing
+      frame (DESIGN.md §2, the blueprint register) as the default everywhere, and as the right
+      call for the wiki in particular. For the site's other blueprint pages — 404,
+      under-construction, special pages — soft margins (the grid fading out before the content
+      column, with no frame line) were the close alternative. Revisit once those pages exist in
+      the register: keep the frame, or give non-wiki pages soft margins.
