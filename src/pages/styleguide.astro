@@ -247,11 +247,11 @@ const typeRamp = [
   { token: "h2", label: "Heading 2", class: "text-h2 font-display font-semibold" },
   { token: "h3", label: "Heading 3", class: "text-h3 font-display font-semibold" },
   { token: "h4", label: "Heading 4", class: "text-h4 font-sans font-semibold" },
-  { token: "stat", label: "1,240", class: "stat" },
-  { token: "body-lg", label: "Body large", class: "text-body-lg" },
-  { token: "body", label: "Body", class: "text-copy" },
+  { token: "lead", label: "Lead paragraph", class: "text-lead" },
+  { token: "copy", label: "Copy", class: "text-copy" },
   { token: "small", label: "Small", class: "text-small" },
-  { token: "label", label: "Spec label", class: "spec-label" },
+  { token: "label", label: "Label and eyebrow", class: "spec-label" },
+  { token: "stat", label: "1,240", class: "stat" },
 ] as const;
 
 const radii = [
@@ -299,9 +299,9 @@ const themes = accents().map((accent) => ({
 >
   <div class="container-page">
     <header class="section-y">
-      <p class="eyebrow text-primary-bright">Design system</p>
+      <p class="spec-label text-primary-bright">Design system</p>
       <h1 class="mt-2">Styleguide</h1>
-      <p class="mt-4 measure text-body-lg">
+      <p class="mt-4 measure text-lead">
         Every token, ramp, and motif in <code class="font-mono text-foreground">DESIGN.md</code>,
         rendered once. Contrast ratios are computed at build time; the build fails if a pair drops
         below its floor.
@@ -497,8 +497,8 @@ const themes = accents().map((accent) => ({
       <GhostNumeral value={4} />
       <h2>Typography</h2>
       <p class="mt-3 measure">
-        Orbitron owns h1–h3 and eyebrows. Source Code Pro owns numbers and spec labels. Architects
-        Daughter is markup-only. Everything else is Inter.
+        Nine roles on three line heights. Orbitron owns display and h1–h3. Source Code Pro owns
+        numbers and every label. Architects Daughter is markup-only. Everything else is Inter.
       </p>
       <div class="mt-8 divide-y divide-border">
         {typeRamp.map((entry) => (
@@ -508,7 +508,7 @@ const themes = accents().map((accent) => ({
           </div>
         ))}
       </div>
-      <p class="mt-8 font-hand text-body-lg text-foreground">
+      <p class="mt-8 font-hand text-lead text-foreground">
         The annotation hand — five words at most.
       </p>
     </section>
@@ -586,7 +586,7 @@ const themes = accents().map((accent) => ({
 
       <div class="ambient-pool relative mt-8 overflow-hidden rounded-lg border border-border p-8">
         <Pattern placement="hero" ticks />
-        <p class="relative eyebrow text-primary-bright">Engineering grid + ticks</p>
+        <p class="relative spec-label text-primary-bright">Engineering grid + ticks</p>
         <p class="relative mt-2 max-w-md text-small">
           Heroes, section breaks, and bands only — never on the bare page ground. This panel also
           carries one ambient pool.
@@ -608,7 +608,7 @@ const themes = accents().map((accent) => ({
         A heading with a <ChalkUnderline variant={1}>chalk underline</ChalkUnderline>
       </p>
 
-      <p class="mt-10 text-body-lg">
+      <p class="mt-10 text-lead">
         An underline in copy always means a link: <a href="/sponsors/">see every sponsor</a>. A link
         the page wants noticed is a{" "}
         <a class="highlight-swipe" href="/get-involved/">
@@ -640,7 +640,7 @@ const themes = accents().map((accent) => ({
 
       <div class="mt-12 flex items-start gap-2">
         <SketchArrow class="size-14" variant={2} />
-        <a class="mt-8 font-hand text-body-lg" href="/styleguide/">
+        <a class="mt-8 font-hand text-lead" href="/styleguide/">
           Become a sponsor
         </a>
       </div>
@@ -695,10 +695,10 @@ const themes = accents().map((accent) => ({
         <div class="flex flex-wrap items-center gap-3">
           <code class="w-24 shrink-0 spec-label text-muted">icon</code>
           <Button size="icon" variant="secondary">
-            <Icon label="Previous" name="chevron-left" size={20} />
+            <Icon label="Previous" name="chevron--left" size={20} />
           </Button>
           <Button size="icon" variant="outline">
-            <Icon label="Next" name="chevron-right" size={20} />
+            <Icon label="Next" name="chevron--right" size={20} />
           </Button>
           <Button size="md" variant="default">
             <Icon name="download" size={20} />
@@ -836,10 +836,10 @@ const themes = accents().map((accent) => ({
 
       <h3 class="mt-12">Icon, Separator, Skeleton</h3>
       <div class="mt-6 flex flex-wrap items-center gap-6">
-        <Icon name="robot" size={32} />
-        <Icon name="calendar-event" size={24} />
+        <Icon name="bot" size={32} />
+        <Icon name="calendar" size={24} />
         <Icon name="tools" size={20} />
-        <Icon name="star" size={24} style="filled" />
+        <Icon name="star--filled" size={24} />
         <Separator class="h-8" orientation="vertical" />
         <div class="w-48 space-y-2">
           <Skeleton class="h-4 w-full" />
@@ -862,7 +862,7 @@ const themes = accents().map((accent) => ({
       <div class="mt-8 space-y-6">
         {themes.map((entry) => (
           <div class="pocket p-6" data-accent={entry.accent}>
-            <p class="eyebrow text-primary-bright">{entry.name}</p>
+            <p class="spec-label text-primary-bright">{entry.name}</p>
             <p class="mt-1 font-mono text-small text-muted">
               primary-bright {entry.bright} &middot; on background{" "}
               {formatRatio(contrastRatio(entry.bright, BACKGROUND))} &middot; on card{" "}
@@ -874,7 +874,7 @@ const themes = accents().map((accent) => ({
               <Button variant="outline">Outline</Button>
               <Button variant="ghost">Ghost</Button>
               <Button size="icon" variant="secondary">
-                <Icon label="Next" name="chevron-right" size={20} />
+                <Icon label="Next" name="chevron--right" size={20} />
               </Button>
             </div>
             <div class="mt-4 flex flex-wrap items-center gap-4">

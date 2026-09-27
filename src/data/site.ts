@@ -292,18 +292,18 @@ export const socials = [
     label: "Facebook",
     href: site.social.facebook,
     profile: site.socialProfiles.facebook,
-    icon: "brand-facebook",
+    icon: "logo--facebook",
   },
   {
     label: "LinkedIn",
     href: site.social.linkedin,
     profile: site.socialProfiles.linkedin,
-    icon: "brand-linkedin",
+    icon: "logo--linkedin",
   },
   {
     label: "GitHub",
     href: site.social.github,
     profile: site.socialProfiles.github,
-    icon: "brand-github",
+    icon: "logo--github",
   },
 ] as const;

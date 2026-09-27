@@ -11,7 +11,7 @@ export const fieldVariants = cva(
   cn(
     "w-full rounded-md border bg-card px-3 text-copy text-foreground",
     "placeholder:text-muted",
-    "transition-colors duration-(--duration-micro) ease-(--ease-toggle)",
+    "transition-colors duration-(--sc2-duration-micro) ease-(--sc2-ease-toggle)",
     "disabled:cursor-not-allowed disabled:opacity-50",
   ),
   {

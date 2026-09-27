@@ -76,7 +76,7 @@ const intro =
       <Fragment slot="intro">
         Organizations whose support carried us through earlier seasons.
       </Fragment>
-      <ul class="flex flex-wrap gap-x-10 gap-y-3 text-body-lg text-foreground">
+      <ul class="flex flex-wrap gap-x-10 gap-y-3 text-lead text-foreground">
         {past.map((sponsor) => (
           <li>{sponsor.data.name}</li>
         ))}
@@ -99,7 +99,7 @@ const intro =
     <p class="mt-8 flex flex-wrap items-center justify-center gap-2 text-muted">
       Rather just talk it through?
       <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={2} />
-      <a class="font-hand text-body-lg text-primary-bright" href={nav.contact.href}>
+      <a class="font-hand text-lead text-primary-bright" href={nav.contact.href}>
         Become a sponsor
       </a>
     </p>

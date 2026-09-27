@@ -19,7 +19,7 @@ interface Props extends Omit<HTMLAttributes<"ul">, "class"> {
 const { email = false, class: className, ...attrs } = Astro.props;
 
 const links = email
-  ? [...socials, { label: `Email ${site.name}`, href: `mailto:${site.email}`, icon: "mail" }]
+  ? [...socials, { label: `Email ${site.name}`, href: `mailto:${site.email}`, icon: "email" }]
   : socials;
 ---
 

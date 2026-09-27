@@ -29,7 +29,7 @@ import { isExternal } from "@/lib/links";
  * Slots: `title` (so a title carrying markup still works) and the default body.
  */
 interface Props {
-  /** Tabler icon name for the plate. Ignored when the card has an `image`. */
+  /** Carbon icon name for the plate. Ignored when the card has an `image`. */
   icon?: string;
   image?: ImageMetadata;
   /** Required alongside `image`. */
@@ -129,8 +129,8 @@ const plateIcon = image === undefined ? icon : undefined;
       {/* The glyph nudges 2px with the pocket's hover: the card is a link, and says so. An
             off-site link shows the external glyph in place of the arrow (DESIGN.md §8). */}
       <Icon
-        class="text-primary-bright transition-transform duration-(--duration-micro) ease-(--ease-toggle) motion-safe:group-focus-within:translate-x-0.5 motion-safe:group-hover:translate-x-0.5"
-        name={isExternalLink ? "external-link" : "arrow-right"}
+        class="text-primary-bright transition-transform duration-(--sc2-duration-micro) ease-(--sc2-ease-toggle) motion-safe:group-focus-within:translate-x-0.5 motion-safe:group-hover:translate-x-0.5"
+        name={isExternalLink ? "launch" : "arrow--right"}
         size={20}
       />
     </CardFooter>

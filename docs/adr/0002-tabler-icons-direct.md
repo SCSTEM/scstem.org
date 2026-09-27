@@ -1,6 +1,6 @@
 # 0002 — Inline Tabler icons from `@tabler/icons` instead of astro-icon + Iconify
 
-- **Status:** accepted
+- **Status:** superseded by `0023-carbon-icons.md`
 - **Date:** 2026-08-28
 - **Supersedes:** the icon row of `plan/03-primitives.md` ("via `astro-icon` +
   `@iconify-json/tabler`")

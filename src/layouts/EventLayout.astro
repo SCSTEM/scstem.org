@@ -68,7 +68,7 @@ const media = [
   ...(data.teaserUrls ?? []).map((url, index) => ({
     url,
     label: `Season teaser ${String(index + 1)}`,
-    icon: "player-play",
+    icon: "play--filled",
   })),
   ...hintUrls.map((url, index) => ({ url, label: hintLabels[index] ?? "", icon: "link" })),
 ];
@@ -168,7 +168,7 @@ const details = [
             >
               <Icon class="shrink-0 text-primary-bright" name={icon} size={24} />
               <span class="flex-1 font-medium text-body text-foreground">{label}</span>
-              <Icon class="shrink-0 text-muted" name="external-link" size={20} />
+              <Icon class="shrink-0 text-muted" name="launch" size={20} />
             </a>
           </li>
         ))}

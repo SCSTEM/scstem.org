@@ -2,7 +2,6 @@
 import GhostNumeral from "@/components/ui/primitives/GhostNumeral.astro";
 import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
 import { cn } from "@/lib/cn";
-import { eyebrowClass } from "@/lib/eyebrow";
 
 /**
  * The vertical rhythm and gutters every page section shares (DESIGN.md §4, §5), plus the one
@@ -67,7 +66,7 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
 
     {hasHeader && (
       <div>
-        {eyebrow !== undefined && <p class={eyebrowClass(eyebrow)} set:html={eyebrow} />}
+        {eyebrow !== undefined && <p class="spec-label text-primary-bright" set:html={eyebrow} />}
         {Astro.slots.has("title") && (
           /* The numeral wraps the heading alone, so it is bottom-aligned to the title and
                never reaches an intro below it. */
@@ -79,7 +78,7 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
           </div>
         )}
         {Astro.slots.has("intro") && (
-          <div class="mt-4 measure text-body-lg">
+          <div class="mt-4 measure text-lead">
             <slot name="intro" />
           </div>
         )}

@@ -49,25 +49,23 @@
   --font-mono: var(--sc2-font-mono);
   --font-hand: var(--sc2-font-hand);
   --text-display: var(--sc2-text-display);
-  --text-display--line-height: var(--sc2-leading-display);
+  --text-display--line-height: var(--sc2-leading-tight);
   --text-h1: var(--sc2-text-h1);
-  --text-h1--line-height: var(--sc2-leading-h1);
+  --text-h1--line-height: var(--sc2-leading-tight);
   --text-h2: var(--sc2-text-h2);
-  --text-h2--line-height: var(--sc2-leading-h2);
+  --text-h2--line-height: var(--sc2-leading-tight);
   --text-h3: var(--sc2-text-h3);
-  --text-h3--line-height: var(--sc2-leading-h3);
+  --text-h3--line-height: var(--sc2-leading-snug);
   --text-h4: var(--sc2-text-h4);
-  --text-h4--line-height: var(--sc2-leading-h4);
-  --text-stat: var(--sc2-text-stat);
-  --text-stat--line-height: var(--sc2-leading-stat);
-  --text-body-lg: var(--sc2-text-body-lg);
-  --text-body-lg--line-height: var(--sc2-leading-body-lg);
-  --text-body: var(--sc2-text-body);
-  --text-body--line-height: var(--sc2-leading-body);
+  --text-h4--line-height: var(--sc2-leading-snug);
+  --text-lead: var(--sc2-text-lead);
+  --text-lead--line-height: var(--sc2-leading-relaxed);
+  --text-copy: var(--sc2-text-copy);
+  --text-copy--line-height: var(--sc2-leading-relaxed);
   --text-small: var(--sc2-text-small);
-  --text-small--line-height: var(--sc2-leading-small);
+  --text-small--line-height: var(--sc2-leading-relaxed);
   --text-label: var(--sc2-text-label);
-  --text-label--line-height: var(--sc2-leading-label);
+  --text-label--line-height: var(--sc2-leading-snug);
   --text-label--letter-spacing: var(--sc2-tracking-label);
   --text-numeral: var(--sc2-text-numeral);
   --text-numeral--line-height: 1;
@@ -113,8 +111,8 @@
     background-image: var(--sc2-texture-grain);
     color: var(--sc2-body);
     font-family: var(--sc2-font-sans);
-    font-size: var(--sc2-text-body);
-    line-height: var(--sc2-leading-body);
+    font-size: var(--sc2-text-copy);
+    line-height: var(--sc2-leading-relaxed);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -138,17 +136,17 @@
   h1 {
     font-size: var(--sc2-text-h1);
     font-weight: 700;
-    line-height: var(--sc2-leading-h1);
+    line-height: var(--sc2-leading-tight);
   }
 
   h2 {
     font-size: var(--sc2-text-h2);
-    line-height: var(--sc2-leading-h2);
+    line-height: var(--sc2-leading-tight);
   }
 
   h3 {
     font-size: var(--sc2-text-h3);
-    line-height: var(--sc2-leading-h3);
+    line-height: var(--sc2-leading-snug);
   }
 
   h4,
@@ -158,7 +156,7 @@
     font-family: var(--sc2-font-sans);
     font-size: var(--sc2-text-h4);
     font-weight: 600;
-    line-height: var(--sc2-leading-h4);
+    line-height: var(--sc2-leading-snug);
   }
 
   p {
@@ -485,22 +483,14 @@
   }
 }
 
-/* Eyebrow label — Orbitron's one all-caps use (DESIGN.md §3). */
-@utility eyebrow {
-  font-family: var(--sc2-font-display);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* Spec label — the other sanctioned caps: Source Code Pro, tracked. */
+/* The label role (DESIGN.md §3): Source Code Pro, tracked caps — spec labels, chips, eyebrows,
+   the one caps style there is. */
 @utility spec-label {
   font-family: var(--sc2-font-mono);
   font-size: var(--sc2-text-label);
   font-weight: 600;
   letter-spacing: var(--sc2-tracking-label);
-  line-height: var(--sc2-leading-label);
+  line-height: var(--sc2-leading-snug);
   text-transform: uppercase;
 }
 
@@ -515,12 +505,12 @@
   background-color: transparent;
 }
 
-/* Stat numeral — the data voice (DESIGN.md §8). */
+/* Stat numeral — the data voice at h2 size (DESIGN.md §3, §8). */
 @utility stat {
   font-family: var(--sc2-font-mono);
-  font-size: var(--sc2-text-stat);
+  font-size: var(--sc2-text-h2);
   font-weight: 600;
-  line-height: var(--sc2-leading-stat);
+  line-height: var(--sc2-leading-tight);
   color: var(--sc2-primary-bright);
   font-variant-numeric: tabular-nums;
 }
@@ -585,18 +575,6 @@
   }
 }
 
-/**
- * `body` names both a color (§2) and a type size (§3), and Tailwind resolves the color
- * namespace first — so `text-body` is the *color*, matching `text-muted` and `text-foreground`,
- * and the size would otherwise be unreachable. Both tokens stay faithful to the doc; the size
- * gets this utility. Elements inherit the body size from the base layer, so reach for
- * `text-copy` only when resetting something back to it.
- */
-@utility text-copy {
-  font-size: var(--sc2-text-body);
-  line-height: var(--sc2-leading-body);
-}
-
 /* Prose measure (DESIGN.md §3). */
 @utility measure {
   max-width: 70ch;
@@ -657,8 +635,8 @@
     padding-inline-start: 1.5rem;
     border-inline-start: 2px solid var(--sc2-primary);
     color: var(--sc2-foreground);
-    font-size: var(--sc2-text-body-lg);
-    line-height: var(--sc2-leading-body-lg);
+    font-size: var(--sc2-text-lead);
+    line-height: var(--sc2-leading-relaxed);
   }
 
   & blockquote cite {

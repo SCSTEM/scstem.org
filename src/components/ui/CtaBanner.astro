@@ -23,7 +23,7 @@ const { class: className } = Astro.props;
     <h2>
       <slot name="title" />
     </h2>
-    <div class="mx-auto mt-5 measure text-body-lg">
+    <div class="mx-auto mt-5 measure text-lead">
       <slot />
     </div>
     {Astro.slots.has("actions") && (

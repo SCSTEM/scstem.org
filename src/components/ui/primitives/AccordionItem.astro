@@ -27,13 +27,13 @@ const { question, name, open = false, class: className } = Astro.props;
       "flex cursor-pointer list-none items-center justify-between gap-4 py-4",
       "text-h4 font-semibold text-foreground",
       "hover:text-primary-bright",
-      "transition-colors duration-(--duration-micro) ease-(--ease-toggle)",
+      "transition-colors duration-(--sc2-duration-micro) ease-(--sc2-ease-toggle)",
     )}
   >
     {question}
     <Icon
-      class="transition-transform duration-(--duration-ui) ease-(--ease-toggle) group-open:rotate-180"
-      name="chevron-down"
+      class="transition-transform duration-(--sc2-duration-ui) ease-(--sc2-ease-toggle) group-open:rotate-180"
+      name="chevron--down"
       size={20}
     />
   </summary>

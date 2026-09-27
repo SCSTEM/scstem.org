@@ -1,6 +1,5 @@
 ---
 import { cn } from "@/lib/cn";
-import { eyebrowClass } from "@/lib/eyebrow";
 
 /**
  * The page hero (DESIGN.md §5, §7). The media arrives through a slot, so the same component
@@ -55,12 +54,12 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
       {Astro.slots.has("logo") ? (
         <slot name="logo" />
       ) : (
-        eyebrow !== undefined && <p class={eyebrowClass(eyebrow)} set:html={eyebrow} />
+        eyebrow !== undefined && <p class="spec-label text-primary-bright" set:html={eyebrow} />
       )}
       <h1 class={cn("mt-3", hasMedia && "text-display")}>
         <slot name="title" />
       </h1>
-      <div class={cn("measure text-body-lg", hasMedia ? "mt-5 text-foreground" : "mt-4")}>
+      <div class={cn("measure text-lead", hasMedia ? "mt-5 text-foreground" : "mt-4")}>
         <slot />
       </div>
       {Astro.slots.has("actions") && (
