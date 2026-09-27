@@ -25,9 +25,7 @@ const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
       slot="media"
       src={getInvolved}
     />
-
     <Fragment slot="title">Get involved</Fragment>
-
     Students, parents, mentors, volunteers, and businesses all start in the same place. Tell us who
     you are and what you&rsquo;re curious about.
   </Hero>
@@ -48,12 +46,13 @@ const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
       for its own controls, so the wrapper declares light rather than letting a dark page produce
       dark-on-white form fields.
     -->
-    <div class="mt-8 overflow-hidden pocket [color-scheme:light]">
+    <div class="mt-8 overflow-hidden pocket scheme-light">
       <iframe
         class="h-450 w-full border-0"
         loading="lazy"
         src={embedded}
-        title="Get involved with the South Central STEM Collective"></iframe>
+        title="Get involved with the South Central STEM Collective"
+      ></iframe>
     </div>
   </Section>
 </BaseLayout>

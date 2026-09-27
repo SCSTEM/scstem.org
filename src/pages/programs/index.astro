@@ -32,11 +32,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       slot="media"
       src={handsOn}
     />
-
     <Fragment slot="title">Our programs</Fragment>
-
-    Two <FirstMark /> teams under one roof in downtown Chambersburg. The difference
-    is the age you start and the size of the robot you build.
+    Two <FirstMark /> teams under one roof in downtown Chambersburg. The difference is the age you
+    start and the size of the robot you build.
   </Hero>
 
   <Section atmosphere="numeral" index={1}>
@@ -56,9 +54,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
       <ProgramCard program="frc">
         <p>
-          Team {programs.frc.teamNumber} &mdash; {programs.frc.teamName} &mdash; builds a 120-pound robot
-          in six weeks and takes it to regional competitions. Students run the design, the fabrication,
-          the code, the money, and the brand, with mentors who do this for a living.
+          Team {programs.frc.teamNumber} &mdash; {programs.frc.teamName} &mdash; builds a 120-pound
+          robot in six weeks and takes it to regional competitions. Students run the design, the
+          fabrication, the code, the money, and the brand, with mentors who do this for a living.
         </p>
         <p class="mt-3">
           Competing since {programs.frc.since}: nine robots so far, and a new one every January.
@@ -76,7 +74,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     <FeatureGrid columns={3}>
       <FeatureCard cta="See the robots" href={nav.robots.href} icon="robot-face">
         <Fragment slot="title">Our robots</Fragment>
-        Every competition robot since 2019 — what it did, what it won, and what we learned building it.
+        Every competition robot since 2019 — what it did, what it won, and what we learned building
+        it.
       </FeatureCard>
 
       <FeatureCard cta="Open the calendar" href={nav.calendar.href} icon="calendar-event">
@@ -86,8 +85,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
       <FeatureCard cta="Read about FIRST®" href={site.urls.firstInspires} icon="bulb">
         <Fragment slot="title">The wider program</Fragment>
-        Both of our teams belong to <FirstMark />, a global organization
-        running student robotics from elementary school through high school.
+        Both of our teams belong to <FirstMark />, a global organization running student robotics
+        from elementary school through high school.
       </FeatureCard>
     </FeatureGrid>
   </Section>
@@ -95,12 +94,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Still deciding which one?</Fragment>
-      Tell us the student&rsquo;s age and interests, and we&rsquo;ll point you to the right team. Parents
-      and would-be mentors can ask too.
-      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
-      <Button href={nav.contact.href} size="lg" slot="actions" variant="outline"
-        >Ask a question</Button
-      >
+      Tell us the student&rsquo;s age and interests, and we&rsquo;ll point you to the right team.
+      Parents and would-be mentors can ask too.
+      <Button href={nav.cta.href} size="lg" slot="actions">
+        {nav.cta.label}
+      </Button>
+      <Button href={nav.contact.href} size="lg" slot="actions" variant="outline">
+        Ask a question
+      </Button>
     </CtaBanner>
   </Section>
 </BaseLayout>

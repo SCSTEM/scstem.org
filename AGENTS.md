@@ -20,7 +20,9 @@ Pages. **Zero client-side framework runtime** — `.astro` components and plain 
 
 ESLint (typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro` with
 `jsx-a11y-strict`, the vendored anti-slop rules in `tools/lint/`) lints every `.ts`, `.js`, and
-`.astro` file. Prettier formats everything (`docs/adr/0012-single-toolchain.md`).
+`.astro` file; `@shadcn/lint`'s token rules check every class in `src/` against the `@theme`
+(`docs/adr/0020-shadcn-lint-token-rules.md`). Prettier formats everything
+(`docs/adr/0012-single-toolchain.md`).
 TypeScript 6 throughout: `astro check` covers `src/` and the config files, `tsc` covers
 `functions/` and `tools/`.
 
@@ -51,8 +53,8 @@ Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script
   are banned imports.
 - The `font-size` group in `src/lib/cn.ts` mirrors the `--text-*` tokens in `src/styles/global.css`
   by hand. Adding, renaming, or removing a size token means the same edit in both files, in the
-  same commit; nothing checks them, and a missing entry shows up only as a wrong size in the
-  browser.
+  same commit. The lint rejects a class that names no token, but nothing checks the mirror: a
+  token missing from `cn.ts` shows up only as a wrong size in the browser.
 - No client-side frameworks, no framework islands.
 - Content changes go in `src/content/` — see `docs/content.md`. **Never inline a content array
   in a page** where a collection exists (the legacy site's habit): query the collection. New

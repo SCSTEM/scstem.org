@@ -19,4 +19,5 @@ const { id, invalid = false, rows = 5, class: className, ...rest } = Astro.props
   class={cn(fieldVariants({ control: "textarea", invalid }), className)}
   id={id}
   rows={rows}
-  {...rest}></textarea>
+  {...rest}
+></textarea>

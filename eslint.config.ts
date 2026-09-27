@@ -1,3 +1,4 @@
+import { plugin as shadcn } from "@shadcn/lint";
 import astro from "eslint-plugin-astro";
 import perfectionist from "eslint-plugin-perfectionist";
 import { defineConfig, globalIgnores } from "eslint/config";
@@ -50,6 +51,22 @@ export default defineConfig(
         },
       ],
       "perfectionist/sort-imports": "error",
+    },
+  },
+  {
+    // Class names checked against the `@theme` in src/styles/global.css (docs/adr/0020).
+    files: ["src/**/*.{ts,astro}"],
+    plugins: { shadcn },
+    settings: {
+      shadcn: { note: "A new theme token is a DESIGN.md change first (its §11 change process)." },
+    },
+    rules: {
+      "shadcn/no-raw-colors": "error",
+      // Hook classes a component's scoped `<style>` selects; they generate no utility CSS.
+      "shadcn/no-unknown-classes": [
+        "error",
+        { allow: ["hero-media", "menu-icon-close", "menu-icon-open"] },
+      ],
     },
   },
   {

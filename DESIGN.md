@@ -142,18 +142,19 @@ Per Brand Guidelines: Orbitron for page headings/titles (avoid very long or smal
 
 Fluid scale (clamp between 360px and 1440px viewports), defined as tokens:
 
-| Token     | Size (min → max)      | Line height | Font                                                                 |
-| --------- | --------------------- | ----------- | -------------------------------------------------------------------- |
-| `display` | 2.5rem → 4.25rem      | 1.05        | Orbitron 700                                                         |
-| `h1`      | 2rem → 3rem           | 1.1         | Orbitron 700                                                         |
-| `h2`      | 1.5rem → 2.25rem      | 1.15        | Orbitron 600                                                         |
-| `h3`      | 1.25rem → 1.5rem      | 1.25        | Orbitron 600                                                         |
-| `h4`      | 1.125rem → 1.25rem    | 1.35        | Inter 600                                                            |
-| `stat`    | 1.75rem → 2.25rem     | 1.1         | Source Code Pro 600, `primary`                                       |
-| `body-lg` | 1.0625rem → 1.1875rem | 1.65        | Inter 400                                                            |
-| `body`    | 1rem → 1.0625rem      | 1.65        | Inter 400                                                            |
-| `small`   | 0.875rem              | 1.5         | Inter 400/500                                                        |
-| `label`   | 0.6875–0.75rem        | 1.4         | Source Code Pro 600, +0.05em tracking, uppercase (spec labels/chips) |
+| Token     | Size (min → max)      | Line height | Font                                                                           |
+| --------- | --------------------- | ----------- | ------------------------------------------------------------------------------ |
+| `display` | 2.5rem → 4.25rem      | 1.05        | Orbitron 700                                                                   |
+| `h1`      | 2rem → 3rem           | 1.1         | Orbitron 700                                                                   |
+| `h2`      | 1.5rem → 2.25rem      | 1.15        | Orbitron 600                                                                   |
+| `h3`      | 1.25rem → 1.5rem      | 1.25        | Orbitron 600                                                                   |
+| `h4`      | 1.125rem → 1.25rem    | 1.35        | Inter 600                                                                      |
+| `stat`    | 1.75rem → 2.25rem     | 1.1         | Source Code Pro 600, `primary`                                                 |
+| `body-lg` | 1.0625rem → 1.1875rem | 1.65        | Inter 400                                                                      |
+| `body`    | 1rem → 1.0625rem      | 1.65        | Inter 400                                                                      |
+| `small`   | 0.875rem              | 1.5         | Inter 400/500                                                                  |
+| `label`   | 0.6875–0.75rem        | 1.4         | Source Code Pro 600, +0.05em tracking, uppercase (spec labels/chips)           |
+| `numeral` | 5rem; 8rem at ≥ md    | 1           | Source Code Pro 600, ghost numerals only (§2.6); `numeral-lg` is the ≥ md step |
 
 - **Inter ships with its weight axis trimmed to 400–700** and cannot render heavier: the axis this table does not use was 12 KB of critical-path font (`docs/adr/0011-inter-weight-axis.md`). Widening the range means re-instancing the committed file (`docs/adr/0014-vendored-fonts.md`), not just a utility class.
 - Eyebrow labels: Orbitron 500, 12px, uppercase, `+0.08em` tracking, `primary-bright` (text on dark, §2) or `muted` — Orbitron's one all-caps use; SCP `label` is the other sanctioned caps. An eyebrow that carries a numeral ("AGES 9–16", "2019 – PRESENT", "ERROR 404") is data, so it takes the SCP `label` style instead, matching the same figures in a chip.

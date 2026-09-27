@@ -56,17 +56,15 @@ const Frame = href === undefined ? "div" : "a";
     width={photo.width}
     widths={photo.widths}
   />
-  {
-    logo !== undefined && (
-      <Image
-        alt=""
-        class={mark.class}
-        loading="lazy"
-        src={logo}
-        width={mark.width}
-        widths={mark.widths}
-      />
-    )
-  }
+  {logo !== undefined && (
+    <Image
+      alt=""
+      class={mark.class}
+      loading="lazy"
+      src={logo}
+      width={mark.width}
+      widths={mark.widths}
+    />
+  )}
   <slot />
 </Frame>

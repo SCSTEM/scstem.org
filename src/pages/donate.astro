@@ -31,14 +31,11 @@ const mailingAddress = [
 >
   <Hero>
     <HeroImage alt="A rack of drill bits on the workshop wall" slot="media" src={drillBits} />
-
     <Fragment slot="title">
       How you can <span class="highlight-swipe">support</span> the mission
     </Fragment>
-
     Donations keep the tools sharp, the workspace open, and registration paid for every student who
     walks in. Here&rsquo;s every way to give.
-
     <Button href={site.urls.donate} size="lg" slot="actions">
       Donate through PayPal
     </Button>
@@ -55,7 +52,9 @@ const mailingAddress = [
         <p class="font-mono text-body">{site.name}</p>
         <p class="mt-4 font-semibold text-foreground">Mailing address:</p>
         <address class="font-mono text-body not-italic">
-          {mailingAddress.map((line) => <span class="block">{line}</span>)}
+          {mailingAddress.map((line) => (
+            <span class="block">{line}</span>
+          ))}
         </address>
       </FeatureCard>
 
@@ -78,7 +77,9 @@ const mailingAddress = [
           <dt class="mt-3 spec-label text-muted">EIN</dt>
           <dd class="font-mono text-body">{site.ein}</dd>
         </dl>
-        <p class="mt-4">Not listed? <a href="#questions">Let us know</a>.</p>
+        <p class="mt-4">
+          Not listed? <a href="#questions">Let us know</a>.
+        </p>
       </FeatureCard>
 
       <FeatureCard cta="See our wishlist" href={site.urls.wishlist} icon="tool">
@@ -93,9 +94,8 @@ const mailingAddress = [
         <Fragment slot="title">Corporate sponsorship</Fragment>
         <p>Corporate partners help us keep improving our programs and workspace.</p>
         <p class="mt-4">
-          <a href="#questions">Contact us below</a> about a corporate sponsorship. Our <a
-            href={nav.sponsors.href}>sponsors page</a
-          > shows who already does.
+          <a href="#questions">Contact us below</a> about a corporate sponsorship. Our{" "}
+          <a href={nav.sponsors.href}>sponsors page</a> shows who already does.
         </p>
       </FeatureCard>
     </FeatureGrid>

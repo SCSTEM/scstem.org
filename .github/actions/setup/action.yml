@@ -3,9 +3,11 @@ description: Install the mise-pinned toolchain and the pnpm dependencies, with b
 runs:
   using: composite
   steps:
+    # agent-browser in mise.toml is a local tool; CI installs only what the jobs run.
     - uses: jdx/mise-action@v4
       with:
-        version: 2026.8.14
+        version: 2026.9.14
+        install_args: node pnpm
         cache: true
 
     # mise-action caches tool binaries, not pnpm's content-addressable store.

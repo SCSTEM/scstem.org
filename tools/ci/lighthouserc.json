@@ -2,7 +2,10 @@
   "ci": {
     "collect": {
       "numberOfRuns": 3,
-      "settings": { "chromeFlags": "--no-sandbox --ignore-certificate-errors" },
+      "settings": {
+        "chromeFlags": "--no-sandbox --ignore-certificate-errors",
+        "disableFullPageScreenshot": true
+      },
       "startServerCommand": "node tools/ci/serve.ts",
       "startServerReadyPattern": "https://localhost:4321",
       "url": [

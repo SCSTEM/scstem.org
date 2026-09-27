@@ -35,10 +35,8 @@ const grid =
 <div>
   <h3>{level}</h3>
   <ul class={cn("mt-6", grid)}>
-    {
-      sponsors.map((sponsor) => (
-        <SponsorCard layout={count === 1 ? "feature" : "stack"} sponsor={sponsor} />
-      ))
-    }
+    {sponsors.map((sponsor) => (
+      <SponsorCard layout={count === 1 ? "feature" : "stack"} sponsor={sponsor} />
+    ))}
   </ul>
 </div>

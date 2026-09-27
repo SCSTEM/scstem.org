@@ -27,12 +27,10 @@ const { id, class: className } = Astro.props;
   class={cn("flex items-center gap-1.5 text-small text-destructive-bright empty:hidden", className)}
   id={id}
 >
-  {
-    Astro.slots.has("default") && (
-      <>
-        <Icon name="alert-triangle" size={20} />
-        <slot />
-      </>
-    )
-  }
+  {Astro.slots.has("default") && (
+    <>
+      <Icon name="alert-triangle" size={20} />
+      <slot />
+    </>
+  )}
 </p>

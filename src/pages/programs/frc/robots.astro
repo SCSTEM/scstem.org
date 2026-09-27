@@ -35,72 +35,70 @@ const robots = await Promise.all(
       slot="media"
       src={pits}
     />
-
     <Fragment slot="eyebrow">2019 &ndash; present</Fragment>
     <Fragment slot="title">Our robots</Fragment>
-
     Six weeks of build season, one robot, and whatever we learned the year before. Here is every
     machine Biohazard has taken to competition since 2019.
   </Hero>
 
   <Section atmosphere="pool" srTitle="Competition robots, newest first">
     <div class="flex flex-col gap-20 md:gap-28">
-      {
-        robots.map(({ Content, data }, index) => (
-          <article
-            class:list={[
-              "grid items-center gap-8 lg:gap-14",
-              /* A season whose robot has no photo yet is a placeholder, not a feature: it stays
+      {robots.map(({ Content, data }, index) => (
+        <article
+          class:list={[
+            "grid items-center gap-8 lg:gap-14",
+            /* A season whose robot has no photo yet is a placeholder, not a feature: it stays
                  one narrow column rather than pairing a heading with an empty half-page frame. */
-              data.image === undefined ? "max-w-xl" : "lg:grid-cols-2",
-            ]}
-          >
-            <div class:list={[index % 2 === 1 && "lg:order-last"]}>
-              {data.image === undefined ? (
-                <p class="pocket px-5 py-4 spec-label text-muted">{data.imageAlt}</p>
-              ) : (
-                <RobotFigure
-                  image={data.image}
-                  imageAlt={data.imageAlt}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  logo={data.logo}
-                  span="half"
-                />
-              )}
+            data.image === undefined ? "max-w-xl" : "lg:grid-cols-2",
+          ]}
+        >
+          <div class:list={[index % 2 === 1 && "lg:order-last"]}>
+            {data.image === undefined ? (
+              <p class="pocket px-5 py-4 spec-label text-muted">{data.imageAlt}</p>
+            ) : (
+              <RobotFigure
+                image={data.image}
+                imageAlt={data.imageAlt}
+                loading={index === 0 ? "eager" : "lazy"}
+                logo={data.logo}
+                span="half"
+              />
+            )}
+          </div>
+
+          <div>
+            <p class="spec-label text-primary-bright">{data.yearLabel ?? data.year}</p>
+            <h3 class="mt-2 text-h2">{data.name}</h3>
+            {data.game !== undefined && <p class="mt-2 text-muted">{data.game}</p>}
+
+            <div class="prose-copy mt-5">
+              <Content />
             </div>
 
-            <div>
-              <p class="spec-label text-primary-bright">{data.yearLabel ?? data.year}</p>
-              <h3 class="mt-2 text-h2">{data.name}</h3>
-              {data.game !== undefined && <p class="mt-2 text-muted">{data.game}</p>}
-
-              <div class="prose-copy mt-5">
-                <Content />
-              </div>
-
-              {data.achievements !== undefined && (
-                <ul class="mt-6 flex flex-col gap-2">
-                  {data.achievements.map((achievement) => (
-                    <li class="flex items-start gap-2 text-small">
-                      <Icon class="mt-0.5 text-primary-bright" name="trophy" size={20} />
-                      <span>{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </article>
-        ))
-      }
+            {data.achievements !== undefined && (
+              <ul class="mt-6 flex flex-col gap-2">
+                {data.achievements.map((achievement) => (
+                  <li class="flex items-start gap-2 text-small">
+                    <Icon class="mt-0.5 text-primary-bright" name="trophy" size={20} />
+                    <span>{achievement}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </article>
+      ))}
     </div>
   </Section>
 
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">The next one starts in January</Fragment>
-      Every robot on this page was designed, machined, wired, and programmed by students. The next one
-      needs a team.
-      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      Every robot on this page was designed, machined, wired, and programmed by students. The next
+      one needs a team.
+      <Button href={nav.cta.href} size="lg" slot="actions">
+        {nav.cta.label}
+      </Button>
       <Button href={programs.frc.href} size="lg" slot="actions" variant="outline">
         About the team
       </Button>

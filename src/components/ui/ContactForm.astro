@@ -46,28 +46,28 @@ const fields = [
   novalidate
 >
   <div class="grid gap-5 md:grid-cols-2">
-    {
-      fields.map((field) => (
-        <div class="flex flex-col gap-2">
-          <Label for={field.id} required>
-            {field.label}
-          </Label>
-          <Input
-            aria-describedby={`${field.id}-error`}
-            autocomplete={field.autocomplete}
-            id={field.id}
-            name={field.label.toLowerCase()}
-            required
-            type={field.type}
-          />
-          <FieldError id={`${field.id}-error`} />
-        </div>
-      ))
-    }
+    {fields.map((field) => (
+      <div class="flex flex-col gap-2">
+        <Label for={field.id} required>
+          {field.label}
+        </Label>
+        <Input
+          aria-describedby={`${field.id}-error`}
+          autocomplete={field.autocomplete}
+          id={field.id}
+          name={field.label.toLowerCase()}
+          required
+          type={field.type}
+        />
+        <FieldError id={`${field.id}-error`} />
+      </div>
+    ))}
   </div>
 
   <div class="flex flex-col gap-2">
-    <Label for={`${prefix}-message`} required>Message</Label>
+    <Label for={`${prefix}-message`} required>
+      Message
+    </Label>
     <Textarea
       aria-describedby={`${prefix}-message-error`}
       id={`${prefix}-message`}
@@ -85,8 +85,7 @@ const fields = [
       class="flex items-center gap-1.5 text-small empty:hidden data-[state=error]:text-destructive-bright data-[state=ok]:text-primary-bright"
       data-form-status
       role="status"
-    >
-    </p>
+    ></p>
     <Button class="max-md:w-full" data-submit type="submit">
       <Icon name="send" size={20} />
       Submit

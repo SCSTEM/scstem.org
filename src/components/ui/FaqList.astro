@@ -25,11 +25,9 @@ const answers = await Promise.all(
 ---
 
 <Accordion class={className}>
-  {
-    answers.map(({ Content, question }) => (
-      <AccordionItem {name} {question}>
-        <Content />
-      </AccordionItem>
-    ))
-  }
+  {answers.map(({ Content, question }) => (
+    <AccordionItem {name} {question}>
+      <Content />
+    </AccordionItem>
+  ))}
 </Accordion>

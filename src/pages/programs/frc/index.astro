@@ -69,7 +69,6 @@ const stats = [
       slot="media"
       webm={site.heroVideo.webm}
     />
-
     <Image
       alt={`${programs.frc.teamName}, FIRST Robotics Competition team ${String(programs.frc.teamNumber)}`}
       class="h-auto w-56 md:w-72"
@@ -77,23 +76,22 @@ const stats = [
       slot="logo"
       src={biohazardLockup}
     />
-
     <Fragment slot="title">
       Welcome to the <span class="highlight-swipe">next generation</span>
     </Fragment>
-
     Thinkers, engineers, scientists, artists, and dreamers. Since {programs.frc.since}, Biohazard
     has been south-central Pennsylvania&rsquo;s high-school robotics team, and we need you to take
     it to the next level.
-
-    <Button href={nav.cta.href} size="lg" slot="actions">Join the revolution</Button>
+    <Button href={nav.cta.href} size="lg" slot="actions">
+      Join the revolution
+    </Button>
   </Hero>
 
   <Section atmosphere="numeral" index={1}>
     <Fragment slot="title">The hardest fun you&rsquo;ll ever have</Fragment>
     <Fragment slot="intro">
-      <FirstMark /> Robotics Competition (FRC) is a &ldquo;Sport for the Mind&rdquo;:
-      creativity, determination, and teamwork win, against teams from around the world.
+      <FirstMark /> Robotics Competition (FRC) is a &ldquo;Sport for the Mind&rdquo;: creativity,
+      determination, and teamwork win, against teams from around the world.
     </Fragment>
 
     <FeatureGrid columns={2}>
@@ -109,13 +107,14 @@ const stats = [
 
       <FeatureCard icon="users-group">
         <Fragment slot="title">Collaboration</Fragment>
-        Work closely with a team of students and mentors, who will help turn your ideas into reality.
+        Work closely with a team of students and mentors, who will help turn your ideas into
+        reality.
       </FeatureCard>
 
       <FeatureCard icon="mood-happy">
         <Fragment slot="title">Fun</Fragment>
-        We compete hard, but we also have a lot of fun while doing it. Saturday lunches, team picnic,
-        off-season events, and more.
+        We compete hard, but we also have a lot of fun while doing it. Saturday lunches, team
+        picnic, off-season events, and more.
       </FeatureCard>
     </FeatureGrid>
 
@@ -132,9 +131,7 @@ const stats = [
       logo={featured.logo}
       span="full"
     >
-      <span
-        class="absolute top-4 left-4 inline-flex items-center gap-2 rounded-md bg-background/70 px-4 py-2 font-medium text-foreground transition-colors duration-(--duration-micro) group-hover:text-primary-bright"
-      >
+      <span class="absolute top-4 left-4 inline-flex items-center gap-2 rounded-md bg-background/70 px-4 py-2 font-medium text-foreground transition-colors duration-(--duration-micro) group-hover:text-primary-bright">
         Every robot since 2019
         <Icon name="arrow-right" size={20} />
       </span>
@@ -159,9 +156,11 @@ const stats = [
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Find your place on the team</Fragment>
-      Build season starts every January and runs six weeks. Students, mentors, and sponsors all have a
-      place on this team — tell us which one you are.
-      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      Build season starts every January and runs six weeks. Students, mentors, and sponsors all have
+      a place on this team — tell us which one you are.
+      <Button href={nav.cta.href} size="lg" slot="actions">
+        {nav.cta.label}
+      </Button>
       <Button href={nav.calendar.href} size="lg" slot="actions" variant="outline">
         See when we meet
       </Button>

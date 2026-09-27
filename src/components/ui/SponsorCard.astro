@@ -58,20 +58,18 @@ const { name, level, logo, url, sub, since } = sponsor.data;
       featured && "md:px-10 md:py-12",
     )}
   >
-    {
-      logo === undefined ? (
-        <span class="text-center text-h4 font-semibold text-foreground">{name}</span>
-      ) : (
-        <Image
-          alt={`${name} logo`}
-          class={cn("h-20 w-full max-w-56 object-contain", featured && "md:h-28 md:max-w-80")}
-          loading="lazy"
-          src={logo}
-          width={448}
-          widths={[224, 448]}
-        />
-      )
-    }
+    {logo === undefined ? (
+      <span class="text-center text-h4 font-semibold text-foreground">{name}</span>
+    ) : (
+      <Image
+        alt={`${name} logo`}
+        class={cn("h-20 w-full max-w-56 object-contain", featured && "md:h-28 md:max-w-80")}
+        loading="lazy"
+        src={logo}
+        width={448}
+        widths={[224, 448]}
+      />
+    )}
     {sub !== undefined && <p class="text-center text-small text-body">{sub}</p>}
   </div>
 
@@ -84,32 +82,28 @@ const { name, level, logo, url, sub, since } = sponsor.data;
   >
     <div>
       <p class={cn("font-semibold text-foreground", featured && "md:text-h4")}>{name}</p>
-      {
-        since !== undefined && (
-          <p class="mt-1 text-small text-muted">
-            Partnering with us since <time datetime={String(since)}>{since}</time>
-          </p>
-        )
-      }
+      {since !== undefined && (
+        <p class="mt-1 text-small text-muted">
+          Partnering with us since <time datetime={String(since)}>{since}</time>
+        </p>
+      )}
     </div>
 
     <div class="flex items-center gap-3">
       <Badge tone={tones[level]}>{level}</Badge>
-      {
-        url !== undefined && (
-          /* Stretching the anchor over the pocket keeps the whole card clickable while the link
+      {url !== undefined && (
+        /* Stretching the anchor over the pocket keeps the whole card clickable while the link
              itself keeps one short accessible name. */
-          <a
-            aria-label={`${name} website`}
-            class="ui-link after:absolute after:inset-0"
-            data-track="outbound_sponsor_click"
-            href={url}
-            rel="sponsored noopener"
-          >
-            <Icon name="external-link" size={20} />
-          </a>
-        )
-      }
+        <a
+          aria-label={`${name} website`}
+          class="ui-link after:absolute after:inset-0"
+          data-track="outbound_sponsor_click"
+          href={url}
+          rel="sponsored noopener"
+        >
+          <Icon name="external-link" size={20} />
+        </a>
+      )}
     </div>
   </CardFooter>
 </Card>

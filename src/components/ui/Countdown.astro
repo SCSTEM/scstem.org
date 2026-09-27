@@ -33,9 +33,15 @@ const state = hasPassed(end) ? "passed" : Date.now() >= start.getTime() ? "live"
   data-start={start.toISOString()}
 >
   <p class="spec-label text-muted">
-    <span data-state="upcoming" hidden={state !== "upcoming"}>Counting down to</span>
-    <span data-state="live" hidden={state !== "live"}>Happening now</span>
-    <span data-state="passed" hidden={state !== "passed"}>This event has passed</span>
+    <span data-state="upcoming" hidden={state !== "upcoming"}>
+      Counting down to
+    </span>
+    <span data-state="live" hidden={state !== "live"}>
+      Happening now
+    </span>
+    <span data-state="passed" hidden={state !== "passed"}>
+      This event has passed
+    </span>
   </p>
 
   <p class="mt-3 font-mono text-h3 font-semibold tabular-nums">

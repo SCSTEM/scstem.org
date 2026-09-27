@@ -98,13 +98,11 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
     <Button href={embedUrl} slot="actions" variant="outline">
       View on Google Calendar
     </Button>
-    {
-      "theme" in calendar && (
-        <Button href={programs[calendar.theme].href} slot="actions" variant="ghost">
-          About the team
-        </Button>
-      )
-    }
+    {"theme" in calendar && (
+      <Button href={programs[calendar.theme].href} slot="actions" variant="ghost">
+        About the team
+      </Button>
+    )}
   </Hero>
 
   <Section atmosphere="pool" srTitle="The next 90 days">

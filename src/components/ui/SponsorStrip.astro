@@ -29,31 +29,29 @@ const renderHeight = (logo: ImageMetadata): number => Math.min(96, logo.height);
 ---
 
 <ul class={cn("flex flex-wrap items-center justify-center gap-x-10 gap-y-8", className)}>
-  {
-    sponsors.map(({ data }) => {
-      const Tag = data.url === undefined ? "span" : "a";
-      return (
-        <li>
-          <Tag
-            class="block ui-link"
-            data-track={data.url === undefined ? undefined : "outbound_sponsor_click"}
-            href={data.url}
-            rel={data.url === undefined ? undefined : "sponsored noopener"}
-          >
-            {data.logo === undefined ? (
-              <span class="text-h4 font-semibold">{data.name}</span>
-            ) : (
-              <Image
-                alt={`${data.name} logo`}
-                class="h-10 w-auto max-w-40 object-contain md:h-12"
-                height={renderHeight(data.logo)}
-                loading="lazy"
-                src={data.logo}
-              />
-            )}
-          </Tag>
-        </li>
-      );
-    })
-  }
+  {sponsors.map(({ data }) => {
+    const Tag = data.url === undefined ? "span" : "a";
+    return (
+      <li>
+        <Tag
+          class="block ui-link"
+          data-track={data.url === undefined ? undefined : "outbound_sponsor_click"}
+          href={data.url}
+          rel={data.url === undefined ? undefined : "sponsored noopener"}
+        >
+          {data.logo === undefined ? (
+            <span class="text-h4 font-semibold">{data.name}</span>
+          ) : (
+            <Image
+              alt={`${data.name} logo`}
+              class="h-10 w-auto max-w-40 object-contain md:h-12"
+              height={renderHeight(data.logo)}
+              loading="lazy"
+              src={data.logo}
+            />
+          )}
+        </Tag>
+      </li>
+    );
+  })}
 </ul>

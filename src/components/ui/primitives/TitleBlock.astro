@@ -36,14 +36,12 @@ const { fields, orientation = "strip", class: className } = Astro.props;
     className,
   )}
 >
-  {
-    fields.map((field) => (
-      <div class="px-4 py-3">
-        <dt class="spec-label text-muted">{field.label}</dt>
-        <dd class:list={["mt-1 text-small text-body", field.mono === true && "font-mono"]}>
-          {field.href === undefined ? field.value : <a href={field.href}>{field.value}</a>}
-        </dd>
-      </div>
-    ))
-  }
+  {fields.map((field) => (
+    <div class="px-4 py-3">
+      <dt class="spec-label text-muted">{field.label}</dt>
+      <dd class:list={["mt-1 text-small text-body", field.mono === true && "font-mono"]}>
+        {field.href === undefined ? field.value : <a href={field.href}>{field.value}</a>}
+      </dd>
+    </div>
+  ))}
 </dl>

@@ -30,6 +30,7 @@ const { reference, as: Tag = "p", id, class: className } = Astro.props;
     <line stroke="currentColor" stroke-width="1" x1="3" x2="32" y1="4" y2="4"></line>
   </svg>
   <span>
-    {reference !== undefined && `${reference} — `}<slot />
+    {reference !== undefined && `${reference} — `}
+    <slot />
   </span>
 </Tag>

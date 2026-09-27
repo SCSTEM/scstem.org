@@ -24,13 +24,11 @@ const links = email
 ---
 
 <ul class:list={["flex gap-2", className]} {...attrs}>
-  {
-    links.map((link) => (
-      <li>
-        <Button class="hover:bg-card-hover" href={link.href} size="icon" variant="ghost">
-          <Icon label={link.label} name={link.icon} size={24} />
-        </Button>
-      </li>
-    ))
-  }
+  {links.map((link) => (
+    <li>
+      <Button class="hover:bg-card-hover" href={link.href} size="icon" variant="ghost">
+        <Icon label={link.label} name={link.icon} size={24} />
+      </Button>
+    </li>
+  ))}
 </ul>

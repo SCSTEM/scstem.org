@@ -34,5 +34,4 @@ export interface SeoProps {
  * is Home — and a `noindex` page, which no search result shows, takes none.
  */
 export type Placement =
-  | { noindex: true; trail?: never }
-  | { noindex?: false | undefined; trail: readonly Breadcrumb[] };
+  { noindex: true; trail?: never } | { noindex?: false | undefined; trail: readonly Breadcrumb[] };

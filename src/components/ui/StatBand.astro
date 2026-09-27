@@ -37,19 +37,17 @@ const row =
 
 <Card class={cn("overflow-hidden", className)} feature>
   <dl class={cn("grid divide-y divide-border", row)}>
-    {
-      stats.map((stat) => (
-        <div class="p-6">
-          <dt class="sr-only">{stat.label}</dt>
-          <dd>
-            <span class="block stat">{stat.value}</span>
-            <span class="mt-2 block spec-label text-foreground">{stat.label}</span>
-            {stat.description !== undefined && (
-              <span class="mt-2 block text-small text-body">{stat.description}</span>
-            )}
-          </dd>
-        </div>
-      ))
-    }
+    {stats.map((stat) => (
+      <div class="p-6">
+        <dt class="sr-only">{stat.label}</dt>
+        <dd>
+          <span class="block stat">{stat.value}</span>
+          <span class="mt-2 block spec-label text-foreground">{stat.label}</span>
+          {stat.description !== undefined && (
+            <span class="mt-2 block text-small text-body">{stat.description}</span>
+          )}
+        </dd>
+      </div>
+    ))}
   </dl>
 </Card>

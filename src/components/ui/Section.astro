@@ -65,35 +65,31 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
 
     {srTitle !== undefined && <h2 class="sr-only">{srTitle}</h2>}
 
-    {
-      hasHeader && (
-        <div>
-          {eyebrow !== undefined && <p class={eyebrowClass(eyebrow)} set:html={eyebrow} />}
-          {Astro.slots.has("title") && (
-            /* The numeral wraps the heading alone, so it is bottom-aligned to the title and
+    {hasHeader && (
+      <div>
+        {eyebrow !== undefined && <p class={eyebrowClass(eyebrow)} set:html={eyebrow} />}
+        {Astro.slots.has("title") && (
+          /* The numeral wraps the heading alone, so it is bottom-aligned to the title and
                never reaches an intro below it. */
-            <div class={cn("relative", hasEyebrow && "mt-2")}>
-              {atmosphere === "numeral" && index !== undefined && <GhostNumeral value={index} />}
-              <h2>
-                <slot name="title" />
-              </h2>
-            </div>
-          )}
-          {Astro.slots.has("intro") && (
-            <div class="mt-4 measure text-body-lg">
-              <slot name="intro" />
-            </div>
-          )}
-        </div>
-      )
-    }
+          <div class={cn("relative", hasEyebrow && "mt-2")}>
+            {atmosphere === "numeral" && index !== undefined && <GhostNumeral value={index} />}
+            <h2>
+              <slot name="title" />
+            </h2>
+          </div>
+        )}
+        {Astro.slots.has("intro") && (
+          <div class="mt-4 measure text-body-lg">
+            <slot name="intro" />
+          </div>
+        )}
+      </div>
+    )}
 
-    {
-      Astro.slots.has("default") && (
-        <div class={hasHeader ? "mt-10" : undefined}>
-          <slot />
-        </div>
-      )
-    }
+    {Astro.slots.has("default") && (
+      <div class={hasHeader ? "mt-10" : undefined}>
+        <slot />
+      </div>
+    )}
   </div>
 </section>

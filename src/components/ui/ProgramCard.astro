@@ -27,6 +27,8 @@ const titleRest = program === "fll" ? "LEGO® League" : "Robotics Competition";
   image={photo.image}
   imageAlt={photo.alt}
 >
-  <Fragment slot="title"><FirstMark /> {titleRest}</Fragment>
+  <Fragment slot="title">
+    <FirstMark /> {titleRest}
+  </Fragment>
   <slot />
 </FeatureCard>

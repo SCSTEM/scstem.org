@@ -41,26 +41,26 @@ const destinations = [
 
   <Section atmosphere="pool">
     <div class="grid gap-4 sm:grid-cols-2">
-      {
-        destinations.map((destination) => (
-          <Card as="article" interactive>
-            <CardHeader>
-              {/* `h2`: the page's only other heading is its `h1`, and the default `h3` skips a level. */}
-              <CardTitle as="h2">
-                <a class="ui-link" href={destination.href}>
-                  {destination.label}
-                </a>
-              </CardTitle>
-              <CardDescription>{destination.description}</CardDescription>
-            </CardHeader>
-          </Card>
-        ))
-      }
+      {destinations.map((destination) => (
+        <Card as="article" interactive>
+          <CardHeader>
+            {/* `h2`: the page's only other heading is its `h1`, and the default `h3` skips a level. */}
+            <CardTitle as="h2">
+              <a class="ui-link" href={destination.href}>
+                {destination.label}
+              </a>
+            </CardTitle>
+            <CardDescription>{destination.description}</CardDescription>
+          </CardHeader>
+        </Card>
+      ))}
     </div>
 
     <div class="mt-10 flex flex-wrap gap-3">
       <Button href="/">Back to the homepage</Button>
-      <Button href={nav.cta.href} variant="outline">{nav.cta.label}</Button>
+      <Button href={nav.cta.href} variant="outline">
+        {nav.cta.label}
+      </Button>
     </div>
   </Section>
 </BaseLayout>

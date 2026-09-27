@@ -2,6 +2,7 @@ name: CI
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main, staging]
 
@@ -15,45 +16,59 @@ concurrency:
 jobs:
   check:
     name: Check
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
+        id: setup
 
-      # Every step runs even after an earlier one fails, so one PR run reports every kind of
-      # problem. The ESLint matcher turns findings into inline annotations on the PR diff.
+      # Every check runs even after an earlier one fails, so one PR run reports every kind of
+      # problem, and each reports its findings as inline annotations on the PR diff.
       - name: Typecheck
-        run: pnpm typecheck
-      - name: Lint
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: |
-          echo "::add-matcher::.github/eslint-matcher.json"
-          pnpm lint
+          echo "::add-matcher::.github/typescript-matchers.json"
+          pnpm typecheck
+      - name: Lint
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: pnpm lint --format gha
       - name: Format
-        if: ${{ !cancelled() }}
-        run: pnpm fmt:check
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: |
+          pnpm fmt:check || {
+            pnpm exec prettier --list-different . |
+              sed 's/.*/::error file=&,title=Prettier::Not formatted. Run pnpm fmt./'
+            exit 1
+          }
       - name: Unused code and dependencies
-        if: ${{ !cancelled() }}
-        run: pnpm knip
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: pnpm knip --reporter github-actions
 
   build:
     name: Build
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
+    env:
+      LHCI_VERSION: 0.15.1
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
 
       - name: Build
+        id: build
         run: pnpm build
 
       # Title and description uniqueness, and whether every og:image resolves, are only
       # answerable across the whole built site.
       - name: Page metadata
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: pnpm check:meta
 
       # --root-dir resolves the root-relative hrefs Astro emits. llms.txt is in scope because its
       # links are hand-written paths that nothing else checks against the routes they name.
       - name: Links
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
@@ -62,35 +77,43 @@ jobs:
             'dist/**/*.html' 'dist/llms.txt'
           fail: true
 
-      - uses: actions/upload-artifact@v5
+      # The build is deterministic, so a byte-identical dist/ measured with the same server,
+      # config, and lhci version has already passed; only the marker file is cached.
+      - name: Look up a previous Lighthouse pass
+        id: lighthouse-pass
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        uses: actions/cache/restore@v6
         with:
-          name: dist
-          path: dist/
-          retention-days: 1
-
-  lighthouse:
-    name: Lighthouse
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ./.github/actions/setup
-      - uses: actions/download-artifact@v6
-        with:
-          name: dist
-          path: dist/
+          path: .lighthouseci/passed
+          key: lighthouse-${{ env.LHCI_VERSION }}-${{ hashFiles('dist/**', 'tools/ci/**') }}
+          lookup-only: true
 
       - name: Lighthouse CI
-        run: pnpm dlx @lhci/cli@0.15.1 autorun --config=tools/ci/lighthouserc.json
+        id: lighthouse
+        if: ${{ !cancelled() && steps.lighthouse-pass.outcome == 'success' && steps.lighthouse-pass.outputs.cache-hit != 'true' }}
+        run: pnpm dlx @lhci/cli@${{ env.LHCI_VERSION }} autorun --config=tools/ci/lighthouserc.json
 
       # Into the log as well as the summary, so the waterfall behind a failed LCP assertion is
       # readable from the API without downloading the report artifact.
-      - name: Summarize
-        if: ${{ !cancelled() }}
+      - name: Summarize Lighthouse
+        if: ${{ !cancelled() && steps.lighthouse.outcome != 'skipped' }}
         run: node tools/ci/lighthouse-summary.ts | tee -a "$GITHUB_STEP_SUMMARY"
 
+      - name: Note the skipped Lighthouse run
+        if: ${{ steps.lighthouse-pass.outputs.cache-hit == 'true' }}
+        run: echo "Lighthouse skipped, this exact build already passed." >>"$GITHUB_STEP_SUMMARY"
+
       - uses: actions/upload-artifact@v5
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.lighthouse.outcome != 'skipped' }}
         with:
           name: lighthouse-reports
           path: .lighthouseci/reports/
+
+      - name: Record the Lighthouse pass
+        if: ${{ steps.lighthouse.outcome == 'success' }}
+        run: touch .lighthouseci/passed
+      - uses: actions/cache/save@v6
+        if: ${{ steps.lighthouse.outcome == 'success' }}
+        with:
+          path: .lighthouseci/passed
+          key: ${{ steps.lighthouse-pass.outputs.cache-primary-key }}

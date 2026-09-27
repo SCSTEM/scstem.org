@@ -32,7 +32,7 @@ const { label, itemBasis = "45%", arrows = true, class: className } = Astro.prop
     class={cn(
       "flex carousel-track snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth",
       // Hide the scrollbar without hiding the affordance: arrows and drag both remain.
-      "[scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
+      "scrollbar-none [&::-webkit-scrollbar]:hidden",
       "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     )}
     data-carousel-track
@@ -43,18 +43,16 @@ const { label, itemBasis = "45%", arrows = true, class: className } = Astro.prop
     <slot />
   </div>
 
-  {
-    arrows && (
-      <div class="mt-4 flex justify-end gap-2">
-        <Button aria-hidden="true" data-carousel-prev size="icon" tabindex={-1} variant="pocket">
-          <Icon name="chevron-left" size={20} />
-        </Button>
-        <Button aria-hidden="true" data-carousel-next size="icon" tabindex={-1} variant="pocket">
-          <Icon name="chevron-right" size={20} />
-        </Button>
-      </div>
-    )
-  }
+  {arrows && (
+    <div class="mt-4 flex justify-end gap-2">
+      <Button aria-hidden="true" data-carousel-prev size="icon" tabindex={-1} variant="pocket">
+        <Icon name="chevron-left" size={20} />
+      </Button>
+      <Button aria-hidden="true" data-carousel-next size="icon" tabindex={-1} variant="pocket">
+        <Icon name="chevron-right" size={20} />
+      </Button>
+    </div>
+  )}
 </div>
 
 <script>

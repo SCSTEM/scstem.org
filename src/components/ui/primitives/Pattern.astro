@@ -40,23 +40,20 @@ const cell = placement === "pocket" ? "26px" : "28px";
   <div
     class="absolute inset-0 engineering-grid"
     style={`--grid-cell: ${cell}; --grid-alpha: ${alpha};`}
-  >
-  </div>
-  {
-    ticks && (
-      <svg
-        class="absolute inset-x-0 top-0 h-3 w-full text-primary/50"
-        preserveAspectRatio="none"
-        viewBox="0 0 240 12"
-      >
-        <path
-          d={tickStrip}
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1"
-          vector-effect="non-scaling-stroke"
-        />
-      </svg>
-    )
-  }
+  ></div>
+  {ticks && (
+    <svg
+      class="absolute inset-x-0 top-0 h-3 w-full text-primary/50"
+      preserveAspectRatio="none"
+      viewBox="0 0 240 12"
+    >
+      <path
+        d={tickStrip}
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        vector-effect="non-scaling-stroke"
+      />
+    </svg>
+  )}
 </div>

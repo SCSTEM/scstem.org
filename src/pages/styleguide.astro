@@ -302,23 +302,21 @@ const themes = [
       <h2>Surfaces</h2>
       <p class="mt-3 measure">
         Cut into metal, laid on the table. The page is raised material and cards are pockets
-        machined into it — <em>darker</em> than the page. Ink bands are the drafting table the sheet lies
-        on, and a card on the table is a raised plate.
+        machined into it — <em>darker</em> than the page. Ink bands are the drafting table the sheet
+        lies on, and a card on the table is a raised plate.
       </p>
       <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          surfaces.map((surface) => (
-            <div class="pocket p-4">
-              <div
-                class="h-16 rounded-md border border-border"
-                style={`background-color: ${surface.value}`}
-              />
-              <p class="mt-3 font-mono text-small text-foreground">{surface.name}</p>
-              <p class="font-mono text-small text-muted">{surface.value}</p>
-              <p class="mt-1 text-small">{surface.use}</p>
-            </div>
-          ))
-        }
+        {surfaces.map((surface) => (
+          <div class="pocket p-4">
+            <div
+              class="h-16 rounded-md border border-border"
+              style={`background-color: ${surface.value}`}
+            />
+            <p class="mt-3 font-mono text-small text-foreground">{surface.name}</p>
+            <p class="font-mono text-small text-muted">{surface.value}</p>
+            <p class="mt-1 text-small">{surface.use}</p>
+          </div>
+        ))}
       </div>
 
       <h3 class="mt-12">Pocket anatomy</h3>
@@ -363,15 +361,16 @@ const themes = [
           <div class="pocket p-6">
             <h4>Plate</h4>
             <p class="mt-2 text-small">
-              <code class="font-mono">plate</code> floor, <code class="font-mono">plate-border</code
-              >, a hairline top highlight, and the contact shadow.
+              <code class="font-mono">plate</code> floor,{" "}
+              <code class="font-mono">plate-border</code>, a hairline top highlight, and the contact
+              shadow.
             </p>
           </div>
           <div class="pocket pocket-interactive p-6">
             <h4>Plate — interactive</h4>
             <p class="mt-2 text-small">
-              Hover or focus: the floor lifts to <code class="font-mono">plate-hover</code> and the border
-              warms to 60% primary.
+              Hover or focus: the floor lifts to <code class="font-mono">plate-hover</code> and the
+              border warms to 60% primary.
             </p>
           </div>
           <div class="pocket pocket-feature p-6">
@@ -389,11 +388,11 @@ const themes = [
       <h2>Text ramp &amp; contrast</h2>
       <p class="mt-3 measure">
         AAA (≥ 7:1) for anything longer than a caption.
-        <code class="font-mono text-foreground">muted</code> is the floor — nothing text-bearing goes
-        dimmer.
+        <code class="font-mono text-foreground">muted</code> is the floor — nothing text-bearing
+        goes dimmer.
       </p>
       <div class="mt-8 overflow-x-auto">
-        <table class="w-full min-w-[52rem] border-collapse text-small">
+        <table class="w-full min-w-208 border-collapse text-small">
           <thead>
             <tr class="border-b border-border text-left">
               <th class="py-2 spec-label text-muted">Token</th>
@@ -407,36 +406,35 @@ const themes = [
             </tr>
           </thead>
           <tbody>
-            {
-              textTokens.map((token) => {
-                const value = color(token.name);
-                const onBackground = contrastRatio(value, BACKGROUND);
-                const onCard = contrastRatio(value, CARD);
-                const onBand = contrastRatio(value, BAND);
-                const onPlate = contrastRatio(value, PLATE);
-                return (
-                  <tr class="border-b border-border/60">
-                    <td class="py-3">
-                      <span style={`color: ${value}`}>{token.name}</span>
-                    </td>
-                    <td class="py-3 font-mono text-muted">{value}</td>
-                    <td class="py-3 font-mono">{formatRatio(onBackground)}</td>
-                    <td class="py-3 font-mono">{formatRatio(onCard)}</td>
-                    <td class="py-3 font-mono">{formatRatio(onBand)}</td>
-                    <td class="py-3 font-mono">{formatRatio(onPlate)}</td>
-                    <td class="py-3 font-mono text-muted">{token.floor}:1</td>
-                    <td class="py-3">{token.use}</td>
-                  </tr>
-                );
-              })
-            }
+            {textTokens.map((token) => {
+              const value = color(token.name);
+              const onBackground = contrastRatio(value, BACKGROUND);
+              const onCard = contrastRatio(value, CARD);
+              const onBand = contrastRatio(value, BAND);
+              const onPlate = contrastRatio(value, PLATE);
+              return (
+                <tr class="border-b border-border/60">
+                  <td class="py-3">
+                    <span style={`color: ${value}`}>{token.name}</span>
+                  </td>
+                  <td class="py-3 font-mono text-muted">{value}</td>
+                  <td class="py-3 font-mono">{formatRatio(onBackground)}</td>
+                  <td class="py-3 font-mono">{formatRatio(onCard)}</td>
+                  <td class="py-3 font-mono">{formatRatio(onBand)}</td>
+                  <td class="py-3 font-mono">{formatRatio(onPlate)}</td>
+                  <td class="py-3 font-mono text-muted">{token.floor}:1</td>
+                  <td class="py-3">{token.use}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
       <p class="mt-4 font-mono text-small text-muted">
         Worst band grid crossing {GRID_CROSSING} &middot; body{" "}
         {formatRatio(contrastRatio(color("body"), GRID_CROSSING))} &middot; muted{" "}
-        {formatRatio(contrastRatio(color("muted"), GRID_CROSSING))} &middot; control-edge on background
+        {formatRatio(contrastRatio(color("muted"), GRID_CROSSING))} &middot; control-edge on
+        background
         {formatRatio(contrastRatio(controlEdge, BACKGROUND))}, band{" "}
         {formatRatio(contrastRatio(controlEdge, BAND))}, plate{" "}
         {formatRatio(contrastRatio(controlEdge, PLATE))}
@@ -453,34 +451,30 @@ const themes = [
         variant for text on dark. One action accent per view.
       </p>
       <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          fillPairs.map((pair) => (
-            <div class="pocket p-4">
-              <div
-                class="flex h-16 items-center justify-center rounded-md text-small font-semibold"
-                style={`background-color: ${pair.fill}; color: ${pair.label}`}
-              >
-                Label on fill
-              </div>
-              <p class="mt-3 text-small text-foreground">{pair.name}</p>
-              <p class="font-mono text-small text-muted">
-                {pair.fill} / {pair.label} &middot;{" "}
-                {formatRatio(contrastRatio(pair.fill, pair.label))}
-              </p>
+        {fillPairs.map((pair) => (
+          <div class="pocket p-4">
+            <div
+              class="flex h-16 items-center justify-center rounded-md text-small font-semibold"
+              style={`background-color: ${pair.fill}; color: ${pair.label}`}
+            >
+              Label on fill
             </div>
-          ))
-        }
+            <p class="mt-3 text-small text-foreground">{pair.name}</p>
+            <p class="font-mono text-small text-muted">
+              {pair.fill} / {pair.label} &middot;{" "}
+              {formatRatio(contrastRatio(pair.fill, pair.label))}
+            </p>
+          </div>
+        ))}
       </div>
 
       <h3 class="mt-12">Sponsor tiers</h3>
       <div class="mt-6 flex flex-wrap gap-3">
-        {
-          tiers.map((tier) => (
-            <span class="spec-chip" style={`color: ${tier.value}`}>
-              {tier.name} &middot; {formatRatio(contrastRatio(tier.value, CARD))}
-            </span>
-          ))
-        }
+        {tiers.map((tier) => (
+          <span class="spec-chip" style={`color: ${tier.value}`}>
+            {tier.name} &middot; {formatRatio(contrastRatio(tier.value, CARD))}
+          </span>
+        ))}
       </div>
     </section>
 
@@ -494,14 +488,12 @@ const themes = [
         Daughter is markup-only. Everything else is Inter.
       </p>
       <div class="mt-8 divide-y divide-border">
-        {
-          typeRamp.map((entry) => (
-            <div class="flex flex-col gap-1 py-4 md:flex-row md:items-baseline md:gap-6">
-              <code class="w-28 shrink-0 spec-label text-muted">{entry.token}</code>
-              <span class={entry.class}>{entry.label}</span>
-            </div>
-          ))
-        }
+        {typeRamp.map((entry) => (
+          <div class="flex flex-col gap-1 py-4 md:flex-row md:items-baseline md:gap-6">
+            <code class="w-28 shrink-0 spec-label text-muted">{entry.token}</code>
+            <span class={entry.class}>{entry.label}</span>
+          </div>
+        ))}
       </div>
       <p class="mt-8 font-hand text-body-lg text-foreground">
         The annotation hand — five words at most.
@@ -519,59 +511,54 @@ const themes = [
         and only a plate or a print on the band takes it.
       </p>
       <div class="mt-8 grid gap-4 sm:grid-cols-3">
-        {
-          radii.map((entry) => (
-            <div class="pocket p-4">
-              <div
-                class="h-16 border border-primary/40 bg-card-hover"
-                style={`border-radius: ${entry.px}`}
-              />
-              <p class="mt-3 font-mono text-small text-foreground">radius-{entry.token}</p>
-              <p class="font-mono text-small text-muted">{entry.px}</p>
-              <p class="mt-1 text-small">{entry.use}</p>
-            </div>
-          ))
-        }
+        {radii.map((entry) => (
+          <div class="pocket p-4">
+            <div
+              class="h-16 border border-primary/40 bg-card-hover"
+              style={`border-radius: ${entry.px}`}
+            />
+            <p class="mt-3 font-mono text-small text-foreground">radius-{entry.token}</p>
+            <p class="font-mono text-small text-muted">{entry.px}</p>
+            <p class="mt-1 text-small">{entry.use}</p>
+          </div>
+        ))}
       </div>
       <h3 class="mt-12">Keycaps</h3>
       <p class="mt-3 measure">
         Buttons stand on a 3px drafted edge, lift 1px on hover, and press flat on{" "}
-        <code class="font-mono">:active</code> — a 150ms confirmation. The fill never dims. Under reduced
-        motion only the edge changes. The states below are frozen; the live buttons in Primitives respond.
+        <code class="font-mono">:active</code> — a 150ms confirmation. The fill never dims. Under
+        reduced motion only the edge changes. The states below are frozen; the live buttons in
+        Primitives respond.
       </p>
       <div class="mt-6 flex flex-wrap items-center gap-6">
-        {
-          keycapStates.map((state) => (
-            <figure class="flex flex-col items-start gap-3">
-              <span
-                class="inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground keycap-accent"
-                style={state.style}
-              >
-                Get involved
-              </span>
-              <span
-                class="inline-flex h-11 items-center rounded-md border border-control-edge bg-sheet px-5 font-medium text-foreground"
-                style={state.style}
-              >
-                Donate
-              </span>
-              <figcaption class="spec-label text-muted">{state.name}</figcaption>
-            </figure>
-          ))
-        }
+        {keycapStates.map((state) => (
+          <figure class="flex flex-col items-start gap-3">
+            <span
+              class="inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground keycap-accent"
+              style={state.style}
+            >
+              Get involved
+            </span>
+            <span
+              class="inline-flex h-11 items-center rounded-md border border-control-edge bg-sheet px-5 font-medium text-foreground"
+              style={state.style}
+            >
+              Donate
+            </span>
+            <figcaption class="spec-label text-muted">{state.name}</figcaption>
+          </figure>
+        ))}
       </div>
 
       <dl class="mt-8 grid gap-4 sm:grid-cols-3">
-        {
-          durations.map((entry) => (
-            <div class="pocket p-4">
-              <dt class="spec-label text-muted">duration-{entry.token}</dt>
-              <dd class="mt-1 font-mono text-small">
-                {entry.value} — {entry.use}
-              </dd>
-            </div>
-          ))
-        }
+        {durations.map((entry) => (
+          <div class="pocket p-4">
+            <dt class="spec-label text-muted">duration-{entry.token}</dt>
+            <dd class="mt-1 font-mono text-small">
+              {entry.value} — {entry.use}
+            </dd>
+          </div>
+        ))}
       </dl>
     </section>
 
@@ -611,8 +598,10 @@ const themes = [
       <p class="mt-10 text-body-lg">
         An underline in copy always means a link: <a href="/sponsors/">see every sponsor</a>. A link
         the page wants noticed is a{" "}
-        <a class="highlight-swipe" href="/get-involved/">featured link</a>, swipe and stroke
-        together. Swipes and ovals on their own are emphasis, never links.
+        <a class="highlight-swipe" href="/get-involved/">
+          featured link
+        </a>
+        , swipe and stroke together. Swipes and ovals on their own are emphasis, never links.
       </p>
 
       <p class="mt-10 font-display text-h3 font-semibold">
@@ -623,9 +612,7 @@ const themes = [
       </p>
       <p class="mt-3 font-mono text-small text-muted">
         Body swipe at {SWIPE_ALPHA.body * 100}% alpha &middot; white on {swipeOnGround} ={" "}
-        {formatRatio(contrastRatio(color("foreground"), swipeOnGround))} &middot; on {swipeOnCard} ={
-          " "
-        }
+        {formatRatio(contrastRatio(color("foreground"), swipeOnGround))} &middot; on {swipeOnCard} ={" "}
         {formatRatio(contrastRatio(color("foreground"), swipeOnCard))}
       </p>
 
@@ -634,15 +621,15 @@ const themes = [
       </p>
       <p class="mt-3 font-mono text-small text-muted">
         Display swipe (h1, h2, display sizes) at {SWIPE_ALPHA.display * 100}% alpha &middot; white
-        on{" "}
-        {displaySwipeOnGround} = {
-          formatRatio(contrastRatio(color("foreground"), displaySwipeOnGround))
-        }
+        on {displaySwipeOnGround} ={" "}
+        {formatRatio(contrastRatio(color("foreground"), displaySwipeOnGround))}
       </p>
 
       <div class="mt-12 flex items-start gap-2">
         <SketchArrow class="size-14" variant={2} />
-        <a class="mt-8 font-hand text-body-lg" href="/styleguide/">Become a sponsor</a>
+        <a class="mt-8 font-hand text-body-lg" href="/styleguide/">
+          Become a sponsor
+        </a>
       </div>
 
       <figure class="mt-12">
@@ -676,24 +663,22 @@ const themes = [
 
       <h3 class="mt-12">Button</h3>
       <div class="mt-6 space-y-4">
-        {
-          buttonVariantNames.map((variant) => (
-            <div class="flex flex-wrap items-center gap-3">
-              <code class="w-24 shrink-0 spec-label text-muted">{variant}</code>
-              {buttonSizes.map((size) => (
-                <Button size={size} variant={variant}>
-                  {size}
-                </Button>
-              ))}
-              <Button disabled size="md" variant={variant}>
-                disabled
+        {buttonVariantNames.map((variant) => (
+          <div class="flex flex-wrap items-center gap-3">
+            <code class="w-24 shrink-0 spec-label text-muted">{variant}</code>
+            {buttonSizes.map((size) => (
+              <Button size={size} variant={variant}>
+                {size}
               </Button>
-              <Button href="/styleguide/" size="md" variant={variant}>
-                as link
-              </Button>
-            </div>
-          ))
-        }
+            ))}
+            <Button disabled size="md" variant={variant}>
+              disabled
+            </Button>
+            <Button href="/styleguide/" size="md" variant={variant}>
+              as link
+            </Button>
+          </div>
+        ))}
         <div class="flex flex-wrap items-center gap-3">
           <code class="w-24 shrink-0 spec-label text-muted">icon</code>
           <Button size="icon" variant="secondary">
@@ -711,7 +696,9 @@ const themes = [
 
       <h3 class="mt-12">Badge</h3>
       <div class="mt-6 flex flex-wrap gap-3">
-        {badgeToneNames.map((tone) => <Badge tone={tone}>{tone}</Badge>)}
+        {badgeToneNames.map((tone) => (
+          <Badge tone={tone}>{tone}</Badge>
+        ))}
         <Badge tone="muted">Ages 9&ndash;16</Badge>
       </div>
 
@@ -728,7 +715,9 @@ const themes = [
             <p class="text-small text-muted">Content sits here.</p>
           </CardContent>
           <CardFooter>
-            <a class="ui-link text-small" href="/styleguide/">A footer link</a>
+            <a class="ui-link text-small" href="/styleguide/">
+              A footer link
+            </a>
           </CardFooter>
         </Card>
         <Card interactive>
@@ -750,7 +739,9 @@ const themes = [
       <h3 class="mt-12">Form fields</h3>
       <div class="mt-6 grid gap-6 md:max-w-xl">
         <div class="flex flex-col gap-2">
-          <Label for="sg-name" required>Name</Label>
+          <Label for="sg-name" required>
+            Name
+          </Label>
           <Input
             autocomplete="name"
             id="sg-name"
@@ -779,7 +770,7 @@ const themes = [
         </div>
         <div class="flex flex-col gap-2">
           <Label for="sg-disabled">Disabled</Label>
-          <Input disabled id="sg-disabled" value="Not editable" />
+          <Input disabled id="sg-disabled" type="text" value="Not editable" />
         </div>
       </div>
 
@@ -787,9 +778,8 @@ const themes = [
       <Accordion class="mt-6 md:max-w-2xl">
         <AccordionItem name="sg-faq" open question="Does this work without JavaScript?">
           <p>
-            Yes — it is a native <code class="font-mono">&lt;details&gt;</code> element. The shared <code
-              class="font-mono">name</code
-            > attribute is what closes the others.
+            Yes — it is a native <code class="font-mono">&lt;details&gt;</code> element. The shared{" "}
+            <code class="font-mono">name</code> attribute is what closes the others.
           </p>
         </AccordionItem>
         <AccordionItem name="sg-faq" question="What opens when I open this one?">
@@ -802,7 +792,9 @@ const themes = [
 
       <h3 class="mt-12">Dialog</h3>
       <div class="mt-6">
-        <Button data-dialog-open="sg-dialog" variant="secondary">Open the dialog</Button>
+        <Button data-dialog-open="sg-dialog" variant="secondary">
+          Open the dialog
+        </Button>
         <Dialog id="sg-dialog" title="A native dialog">
           <p>
             The browser supplies the focus trap, Esc handling, and the inert background. Esc, the
@@ -810,25 +802,23 @@ const themes = [
           </p>
           <div class="mt-6 flex gap-3">
             <Button data-dialog-close>Done</Button>
-            <Button data-dialog-close variant="ghost">Cancel</Button>
+            <Button data-dialog-close variant="ghost">
+              Cancel
+            </Button>
           </div>
         </Dialog>
       </div>
 
       <h3 class="mt-12">Carousel</h3>
       <Carousel class="mt-6" label="Styleguide carousel demonstration">
-        {
-          [1, 2, 3, 4, 5].map((index) => (
-            <Card>
-              <CardHeader>
-                <CardTitle>Slide {index}</CardTitle>
-                <CardDescription>
-                  Scroll-snap track. Drag, scroll, or use the arrows.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          ))
-        }
+        {[1, 2, 3, 4, 5].map((index) => (
+          <Card>
+            <CardHeader>
+              <CardTitle>Slide {index}</CardTitle>
+              <CardDescription>Scroll-snap track. Drag, scroll, or use the arrows.</CardDescription>
+            </CardHeader>
+          </Card>
+        ))}
       </Carousel>
 
       <h3 class="mt-12">Icon, Separator, Skeleton</h3>
@@ -859,51 +849,53 @@ const themes = [
         <code class="font-mono text-foreground">ring</code> — and nothing else.
       </p>
       <div class="mt-8 space-y-6">
-        {
-          themes.map((entry) => (
-            <div class="pocket p-6" data-theme={entry.theme}>
-              <p class="eyebrow text-primary-bright">{entry.name}</p>
-              <p class="mt-1 font-mono text-small text-muted">
-                primary-bright {entry.accent} &middot; on background{" "}
-                {formatRatio(contrastRatio(entry.accent, BACKGROUND))} &middot; on card{" "}
-                {formatRatio(contrastRatio(entry.accent, CARD))}
-              </p>
-              <div class="mt-4 flex flex-wrap items-center gap-3">
-                <Button>Primary</Button>
-                <Button variant="secondary">Secondary</Button>
-                <Button variant="outline">Outline</Button>
-                <Button variant="ghost">Ghost</Button>
-                <Button size="icon" variant="secondary">
-                  <Icon label="Next" name="chevron-right" size={20} />
-                </Button>
-              </div>
-              <div class="mt-4 flex flex-wrap items-center gap-4">
-                <Badge>Default badge</Badge>
-                <Badge tone="info">Info</Badge>
-                <a class="text-small" href="/styleguide/">
-                  An in-prose link
-                </a>
-                <span class="stat">12</span>
-                <span class="highlight-swipe text-h4">swiped words</span>
-              </div>
-              <div class="mt-4 grid gap-4 md:grid-cols-2">
-                <div class="flex flex-col gap-2">
-                  <Label for={`sg-theme-${entry.theme ?? "default"}`}>Focus for the ring</Label>
-                  <Input id={`sg-theme-${entry.theme ?? "default"}`} placeholder="Tab into me" />
-                </div>
-                <Card feature interactive>
-                  <CardHeader>
-                    <CardTitle rule>Themed pocket</CardTitle>
-                    <CardDescription>
-                      The title rule and hover border follow the theme.
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              </div>
-              <hr class="mt-6 accent-rule" />
+        {themes.map((entry) => (
+          <div class="pocket p-6" data-theme={entry.theme}>
+            <p class="eyebrow text-primary-bright">{entry.name}</p>
+            <p class="mt-1 font-mono text-small text-muted">
+              primary-bright {entry.accent} &middot; on background{" "}
+              {formatRatio(contrastRatio(entry.accent, BACKGROUND))} &middot; on card{" "}
+              {formatRatio(contrastRatio(entry.accent, CARD))}
+            </p>
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <Button>Primary</Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="outline">Outline</Button>
+              <Button variant="ghost">Ghost</Button>
+              <Button size="icon" variant="secondary">
+                <Icon label="Next" name="chevron-right" size={20} />
+              </Button>
             </div>
-          ))
-        }
+            <div class="mt-4 flex flex-wrap items-center gap-4">
+              <Badge>Default badge</Badge>
+              <Badge tone="info">Info</Badge>
+              <a class="text-small" href="/styleguide/">
+                An in-prose link
+              </a>
+              <span class="stat">12</span>
+              <span class="highlight-swipe text-h4">swiped words</span>
+            </div>
+            <div class="mt-4 grid gap-4 md:grid-cols-2">
+              <div class="flex flex-col gap-2">
+                <Label for={`sg-theme-${entry.theme ?? "default"}`}>Focus for the ring</Label>
+                <Input
+                  id={`sg-theme-${entry.theme ?? "default"}`}
+                  placeholder="Tab into me"
+                  type="text"
+                />
+              </div>
+              <Card feature interactive>
+                <CardHeader>
+                  <CardTitle rule>Themed pocket</CardTitle>
+                  <CardDescription>
+                    The title rule and hover border follow the theme.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+            <hr class="mt-6 accent-rule" />
+          </div>
+        ))}
       </div>
     </section>
   </div>

@@ -111,18 +111,16 @@ const details = [
         registrationUrl: data.registrationUrl,
       })}
     />
-    {
-      faqEntries.length > 0 && (
-        <JsonLd
-          data={faqPage(
-            faqEntries.map((entry) => ({
-              question: entry.data.question,
-              answer: entry.rendered?.html ?? entry.body ?? "",
-            })),
-          )}
-        />
-      )
-    }
+    {faqEntries.length > 0 && (
+      <JsonLd
+        data={faqPage(
+          faqEntries.map((entry) => ({
+            question: entry.data.question,
+            answer: entry.rendered?.html ?? entry.body ?? "",
+          })),
+        )}
+      />
+    )}
   </Fragment>
 
   <Hero>
@@ -133,14 +131,14 @@ const details = [
 
     {data.subtitle}
 
-    <Button href={data.ctaHref} size="lg" slot="actions">{data.ctaLabel}</Button>
-    {
-      data.registrationUrl !== undefined && (
-        <Button href={data.registrationUrl} size="lg" slot="actions" variant="outline">
-          Register
-        </Button>
-      )
-    }
+    <Button href={data.ctaHref} size="lg" slot="actions">
+      {data.ctaLabel}
+    </Button>
+    {data.registrationUrl !== undefined && (
+      <Button href={data.registrationUrl} size="lg" slot="actions" variant="outline">
+        Register
+      </Button>
+    )}
   </Hero>
 
   <Section atmosphere="pool" srTitle="When and where">
@@ -156,45 +154,43 @@ const details = [
     </div>
   </Section>
 
-  {
-    media.length > 0 && (
-      <Section atmosphere="ruler">
-        <Fragment slot="title">Teasers and hints</Fragment>
+  {media.length > 0 && (
+    <Section atmosphere="ruler">
+      <Fragment slot="title">Teasers and hints</Fragment>
 
-        <ul class="grid gap-3 sm:grid-cols-2">
-          {media.map(({ icon, label, url }) => (
-            <li>
-              <a
-                class="flex items-center gap-3 pocket pocket-interactive bg-none px-5 py-4"
-                href={url}
-                rel="noopener"
-              >
-                <Icon class="shrink-0 text-primary-bright" name={icon} size={24} />
-                <span class="flex-1 font-medium text-body text-foreground">{label}</span>
-                <Icon class="shrink-0 text-muted" name="external-link" size={20} />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </Section>
-    )
-  }
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {media.map(({ icon, label, url }) => (
+          <li>
+            <a
+              class="flex items-center gap-3 pocket pocket-interactive bg-none px-5 py-4"
+              href={url}
+              rel="noopener"
+            >
+              <Icon class="shrink-0 text-primary-bright" name={icon} size={24} />
+              <span class="flex-1 font-medium text-body text-foreground">{label}</span>
+              <Icon class="shrink-0 text-muted" name="external-link" size={20} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  )}
 
-  {
-    faqEntries.length > 0 && (
-      <Section atmosphere="band">
-        <Fragment slot="title">Frequently asked questions</Fragment>
-        <FaqList class="md:max-w-3xl" entries={faqEntries} name="event-faq" />
-      </Section>
-    )
-  }
+  {faqEntries.length > 0 && (
+    <Section atmosphere="band">
+      <Fragment slot="title">Frequently asked questions</Fragment>
+      <FaqList class="md:max-w-3xl" entries={faqEntries} name="event-faq" />
+    </Section>
+  )}
 
   <Section>
     <CtaBanner>
       <Fragment slot="title">Tell us you&rsquo;re interested</Fragment>
-      Even if this one doesn&rsquo;t fit your calendar, we&rsquo;d like to know who you are. Students
-      and mentors are both welcome.
-      <Button href={nav.cta.href} size="lg" slot="actions">{nav.cta.label}</Button>
+      Even if this one doesn&rsquo;t fit your calendar, we&rsquo;d like to know who you are.
+      Students and mentors are both welcome.
+      <Button href={nav.cta.href} size="lg" slot="actions">
+        {nav.cta.label}
+      </Button>
       <Button href={nav.calendar.href} size="lg" slot="actions" variant="outline">
         See when we meet
       </Button>

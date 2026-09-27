@@ -27,25 +27,23 @@ const { label, photos, class: className } = Astro.props;
 ---
 
 <Carousel class={className} itemBasis="42%" label={label}>
-  {
-    photos.map(({ data }) => (
-      <figure>
-        <Image
-          alt={data.alt}
-          class="aspect-video w-full rounded-lg object-cover"
-          loading="lazy"
-          quality={PHOTO_QUALITY}
-          sizes="(min-width: 48rem) 30rem, 92vw"
-          src={data.photo}
-          width={960}
-          widths={[480, 672, 960]}
-        />
-        {data.caption !== undefined && (
-          <Callout as="figcaption" class="mt-3">
-            {data.caption}
-          </Callout>
-        )}
-      </figure>
-    ))
-  }
+  {photos.map(({ data }) => (
+    <figure>
+      <Image
+        alt={data.alt}
+        class="aspect-video w-full rounded-lg object-cover"
+        loading="lazy"
+        quality={PHOTO_QUALITY}
+        sizes="(min-width: 48rem) 30rem, 92vw"
+        src={data.photo}
+        width={960}
+        widths={[480, 672, 960]}
+      />
+      {data.caption !== undefined && (
+        <Callout as="figcaption" class="mt-3">
+          {data.caption}
+        </Callout>
+      )}
+    </figure>
+  ))}
 </Carousel>

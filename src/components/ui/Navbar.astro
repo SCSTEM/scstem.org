@@ -90,57 +90,57 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
     </a>
 
     <div class="ml-auto hidden items-center gap-1 md:flex" data-sheet-inert>
-      {
-        headerLinks.map((link) =>
-          link.panel ? (
-            <div data-nav-anchor>
-              <span class="flex items-center">
-                <a
-                  aria-current={inSection(link.href) ? "page" : undefined}
-                  class={cn(navLink, "pr-1")}
-                  href={link.href}
-                >
-                  {link.label}
-                </a>
-                <button
-                  aria-label={`Show ${link.label.toLowerCase()}`}
-                  class="grid size-9 place-items-center rounded-md text-foreground hover:text-primary-bright"
-                  popovertarget={`${link.label.toLowerCase()}-panel`}
-                  type="button"
-                >
-                  <Icon name="chevron-down" size={20} />
-                </button>
-              </span>
-              <div
-                class="m-0 w-64 pocket p-2"
-                data-nav-panel
-                id={`${link.label.toLowerCase()}-panel`}
-                popover
+      {headerLinks.map((link) =>
+        link.panel ? (
+          <div data-nav-anchor>
+            <span class="flex items-center">
+              <a
+                aria-current={inSection(link.href) ? "page" : undefined}
+                class={cn(navLink, "pr-1")}
+                href={link.href}
               >
-                {link.panel.map((entry) => (
-                  <a
-                    aria-current={current === entry.href ? "page" : undefined}
-                    class="block rounded-md ui-link px-3 py-2 hover:bg-card-hover"
-                    href={entry.href}
-                  >
-                    <span class="block text-small font-medium">{entry.label}</span>
-                    <span class="block text-small text-muted">{entry.name}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <a
-              aria-current={inSection(link.href) ? "page" : undefined}
-              class={navLink}
-              href={link.href}
+                {link.label}
+              </a>
+              <button
+                aria-label={`Show ${link.label.toLowerCase()}`}
+                class="grid size-9 place-items-center rounded-md text-foreground hover:text-primary-bright"
+                popovertarget={`${link.label.toLowerCase()}-panel`}
+                type="button"
+              >
+                <Icon name="chevron-down" size={20} />
+              </button>
+            </span>
+            <div
+              class="m-0 w-64 pocket p-2"
+              data-nav-panel
+              id={`${link.label.toLowerCase()}-panel`}
+              popover
             >
-              {link.label}
-            </a>
-          ),
-        )
-      }
-      <Button class="ml-2" href={nav.cta.href} size="sm">{nav.cta.label}</Button>
+              {link.panel.map((entry) => (
+                <a
+                  aria-current={current === entry.href ? "page" : undefined}
+                  class="block rounded-md ui-link px-3 py-2 hover:bg-card-hover"
+                  href={entry.href}
+                >
+                  <span class="block text-small font-medium">{entry.label}</span>
+                  <span class="block text-small text-muted">{entry.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            aria-current={inSection(link.href) ? "page" : undefined}
+            class={navLink}
+            href={link.href}
+          >
+            {link.label}
+          </a>
+        ),
+      )}
+      <Button class="ml-2" href={nav.cta.href} size="sm">
+        {nav.cta.label}
+      </Button>
     </div>
 
     <!-- One state, `aria-expanded`, with CSS deriving the icon swap from it. -->
@@ -170,29 +170,27 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
     class="flex h-full flex-col overflow-y-auto px-4 pt-20 pb-[env(safe-area-inset-bottom)]"
   >
     <ul class="flex flex-col divide-y divide-border">
-      {
-        sheetLinks.map((link) => (
-          <li>
-            <a
-              aria-current={inSection(link.href) ? "page" : undefined}
-              class="flex min-h-14 items-center ui-link text-h4 font-semibold"
-              href={link.href}
-            >
-              {link.label}
-            </a>
-          </li>
-        ))
-      }
+      {sheetLinks.map((link) => (
+        <li>
+          <a
+            aria-current={inSection(link.href) ? "page" : undefined}
+            class="flex min-h-14 items-center ui-link text-h4 font-semibold"
+            href={link.href}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
     </ul>
     <div class="mt-auto flex flex-col gap-3 py-6">
-      <Button href={nav.cta.href} size="lg">{nav.cta.label}</Button>
-      {
-        sheetCtas.map((link) => (
-          <Button href={link.href} size="lg" variant="outline">
-            {link.label}
-          </Button>
-        ))
-      }
+      <Button href={nav.cta.href} size="lg">
+        {nav.cta.label}
+      </Button>
+      {sheetCtas.map((link) => (
+        <Button href={link.href} size="lg" variant="outline">
+          {link.label}
+        </Button>
+      ))}
     </div>
   </nav>
 </div>

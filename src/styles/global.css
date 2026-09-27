@@ -1,4 +1,5 @@
-@import "tailwindcss";
+/* Class candidates come from src/ only: DESIGN.md, docs/, and plan/ name classes in prose. */
+@import "tailwindcss" source("../");
 @import "./fonts.css";
 
 /**
@@ -91,6 +92,11 @@
   --text-label: clamp(0.6875rem, 0.6667rem + 0.0926vw, 0.75rem);
   --text-label--line-height: 1.4;
   --text-label--letter-spacing: 0.05em;
+  /* Ghost section numerals (§2.6): stepped at `md`, not fluid. */
+  --text-numeral: 5rem;
+  --text-numeral--line-height: 1;
+  --text-numeral-lg: 8rem;
+  --text-numeral-lg--line-height: 1;
 
   /* --- Radius: one end-mill (DESIGN.md §4) ------------------------------------------------ */
   /* Three values, nothing else. */

@@ -55,32 +55,34 @@ const intro =
 
     {intro}
 
-    <Button href={nav.contact.href} size="lg" slot="actions">Become a sponsor</Button>
+    <Button href={nav.contact.href} size="lg" slot="actions">
+      Become a sponsor
+    </Button>
   </Hero>
 
   <Section atmosphere="numeral" index={1}>
     <Fragment slot="title">Who backs this work</Fragment>
 
     <div class="flex flex-col gap-14">
-      {groups.map((group) => <SponsorTier level={group.level} sponsors={group.members} />)}
+      {groups.map((group) => (
+        <SponsorTier level={group.level} sponsors={group.members} />
+      ))}
     </div>
   </Section>
 
-  {
-    past.length > 0 && (
-      <Section atmosphere="ruler">
-        <Fragment slot="title">With thanks to</Fragment>
-        <Fragment slot="intro">
-          Organizations whose support carried us through earlier seasons.
-        </Fragment>
-        <ul class="flex flex-wrap gap-x-10 gap-y-3 text-body-lg text-foreground">
-          {past.map((sponsor) => (
-            <li>{sponsor.data.name}</li>
-          ))}
-        </ul>
-      </Section>
-    )
-  }
+  {past.length > 0 && (
+    <Section atmosphere="ruler">
+      <Fragment slot="title">With thanks to</Fragment>
+      <Fragment slot="intro">
+        Organizations whose support carried us through earlier seasons.
+      </Fragment>
+      <ul class="flex flex-wrap gap-x-10 gap-y-3 text-body-lg text-foreground">
+        {past.map((sponsor) => (
+          <li>{sponsor.data.name}</li>
+        ))}
+      </ul>
+    </Section>
+  )}
 
   <Section>
     <CtaBanner>
@@ -97,7 +99,9 @@ const intro =
     <p class="mt-8 flex flex-wrap items-center justify-center gap-2 text-muted">
       Rather just talk it through?
       <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={2} />
-      <a class="font-hand text-body-lg text-primary-bright" href={nav.contact.href}>Become a sponsor</a>
+      <a class="font-hand text-body-lg text-primary-bright" href={nav.contact.href}>
+        Become a sponsor
+      </a>
     </p>
   </Section>
 </BaseLayout>

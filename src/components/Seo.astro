@@ -33,13 +33,11 @@ const themeColor = theme === undefined ? color("primary") : programColor(theme, 
 
 <title>{fullTitle}</title>
 <meta content={description} name="description" />
-{
-  noindex ? (
-    <meta content="noindex, nofollow" name="robots" />
-  ) : (
-    <link href={canonicalUrl} rel="canonical" />
-  )
-}
+{noindex ? (
+  <meta content="noindex, nofollow" name="robots" />
+) : (
+  <link href={canonicalUrl} rel="canonical" />
+)}
 
 <meta content={fullTitle} property="og:title" />
 <meta content={description} property="og:description" />

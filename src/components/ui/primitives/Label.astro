@@ -19,11 +19,9 @@ const { for: forId, required = false, class: className, ...rest } = Astro.props;
 
 <label class={cn("text-small font-medium text-foreground", className)} for={forId} {...rest}>
   <slot />
-  {
-    required && (
-      <span class="text-destructive-bright" title="Required">
-        *
-      </span>
-    )
-  }
+  {required && (
+    <span class="text-destructive-bright" title="Required">
+      *
+    </span>
+  )}
 </label>

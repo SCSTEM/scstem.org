@@ -100,16 +100,21 @@ SLACK_FORM_POST_GENERIC=https://hooks.slack.com/triggers/…
 ## CI
 
 Cloudflare Pages builds and deploys from git. `.github/workflows/ci.yml` runs on pull requests
-and pushes to `main` and `staging`, in three jobs:
+and pushes to `main` and `staging`, in two parallel jobs; draft pull requests run nothing until
+they are marked ready (`docs/adr/0021-ci-shape.md`):
 
-- **Check**: typecheck, lint, format, knip, and the repo checks as separate steps, all of which
-  run even when an earlier one fails. ESLint findings become inline annotations on the PR.
-- **Build**: `pnpm build`, `check:meta`, and an offline link check over `dist/` (lychee).
-- **Lighthouse**: `@lhci/cli` via `pnpm dlx` (`docs/adr/0007`) against `tools/ci/serve.ts`, which
-  serves the build artifact over HTTP/2 and TLS the way Cloudflare does (`docs/adr/0018`), three
-  runs per URL over six page shapes. The job summary and the log carry the median scores per URL,
-  every failed assertion, and for each URL the LCP element, its phases, and the request waterfall;
-  full reports upload as an artifact.
+- **Check**: typecheck, lint, format, and knip as separate steps, all of which run even when an
+  earlier one fails. Every one reports its findings as inline annotations on the PR: ESLint
+  through `eslint-formatter-gha`, knip through its `github-actions` reporter, `tsc` and
+  `astro check` through `.github/typescript-matchers.json`, Prettier as one annotation per
+  unformatted file.
+- **Build**: `pnpm build`, then `check:meta`, an offline link check over `dist/` (lychee, which
+  writes its own job summary), and Lighthouse. Lighthouse runs `@lhci/cli` via `pnpm dlx`
+  (`docs/adr/0007`) against `tools/ci/serve.ts`, which serves the build over HTTP/2 and TLS the
+  way Cloudflare does (`docs/adr/0018`), three runs per URL over six page shapes. The
+  job summary and the log carry the median scores per URL, every failed assertion, and for each
+  URL the LCP element, its phases, and the request waterfall; full reports upload as an artifact.
+  A `dist/` byte-identical to one that already passed skips Lighthouse.
 
 ### Performance budgets
 
