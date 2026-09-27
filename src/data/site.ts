@@ -133,6 +133,8 @@ export type PagePath = "/" | `/${string}/`;
 
 /** A program's facts. Flat, like the content schemas. */
 interface Program {
+  /** The accent the program's pages wear; yellow when absent. */
+  accent?: Exclude<Accent, "yellow">;
   ages?: string;
   href: PagePath;
   name: string;
@@ -145,7 +147,19 @@ interface Program {
 }
 
 /**
- * The programs the site is organized around; the key doubles as the theme name and is the
+ * @public
+ *
+ * The action accents `src/styles/tokens.css` declares (DESIGN.md §2). Yellow is the default and
+ * takes no attribute; the others are `data-accent` values. `@/lib/tokens` fails the build if the
+ * stylesheet and this list disagree.
+ */
+export const ACCENTS = ["yellow", "green", "orange"] as const;
+
+/** @public */
+export type Accent = (typeof ACCENTS)[number];
+
+/**
+ * The programs the site is organized around; the key is the
  * `program` enum in `src/content.config.ts`. Typed as a total record over `ProgramKey`, so a
  * program accepted by the schema but missing here is a compile error rather than an `undefined`
  * that surfaces as a runtime throw on a page.
@@ -171,12 +185,14 @@ export const programs = {
     /** Formed as a 4-H club, the team is also where the organization's own history starts. */
     since: 2012,
     ages: "14–18",
+    accent: "green",
     href: "/programs/frc/",
   },
   fll: {
     name: "FIRST LEGO League",
     shortName: "FLL",
     ages: "9–16",
+    accent: "orange",
     href: "/programs/fll/",
   },
 } as const satisfies Record<ProgramKey, Program>;
@@ -184,8 +200,7 @@ export const programs = {
 /**
  * @public
  *
- * A program that carries a `[data-theme]` block in `global.css`; the org-wide `sc2` look
- * is the default and has none.
+ * A program that wears its own accent; the org-wide `sc2` look is the default yellow.
  */
 export type ProgramTheme = Exclude<ProgramKey, "sc2">;
 

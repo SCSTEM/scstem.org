@@ -32,36 +32,52 @@ import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import { site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { AA_LARGE, AA_NORMAL, AAA_NORMAL, blend, contrastRatio, formatRatio } from "@/lib/contrast";
-import { color, duration, programColor, programThemes, radius, swipeAlpha } from "@/lib/tokens";
+import {
+  accents,
+  color,
+  type Context,
+  duration,
+  type Mode,
+  radius,
+  type Register,
+  rgba,
+} from "@/lib/tokens";
 
 /**
  * The proof page for DESIGN.md: every token, ramp, and motif rendered once, with computed
  * contrast ratios. Noindexed and out of the sitemap; the review artifact for every primitive.
  *
- * The build fails if any pair drops below its floor. Every value is read from
- * `src/styles/global.css` via `@/lib/tokens`, so a token edit cannot quietly break
- * accessibility and a renamed token fails the build rather than checking a stale copy.
+ * The build fails if any pair drops below its floor, in every finish, register and accent. Every
+ * value is read from `src/styles/tokens.css` via `@/lib/tokens`, so a token edit cannot quietly
+ * break accessibility and a renamed token fails the build rather than checking a stale copy.
  */
 
-const BACKGROUND = color("background");
-const CARD = color("card");
-const BAND = color("band");
-const PLATE = color("plate");
+const MODES: readonly Mode[] = ["dark", "light"];
+const REGISTERS: readonly Register[] = ["shop", "blueprint"];
+const contexts: readonly Context[] = MODES.flatMap((mode) =>
+  REGISTERS.map((register) => ({ mode, register })),
+);
+const describe = (context: Context): string =>
+  `${context.mode ?? "dark"} ${context.register ?? "shop"}${context.accent === undefined ? "" : ` ${context.accent}`}`;
 
 /**
- * The darkest-to-lightest point copy can land on inside a band: a major (8%) and a minor (4%)
- * grid line crossing, which is where `muted` is closest to its floor (DESIGN.md §2.3).
+ * Every surface text sits on in a context. The grid crossing is the worst point copy can land on
+ * inside a band: a major and a minor drafting-grid line crossing (DESIGN.md §2.3), in the
+ * register's own grid colors.
  */
-const GRID_CROSSING = blend(color("foreground"), blend(color("foreground"), BAND, 0.08), 0.04);
-
-/** Every surface text sits on, so each text token is gated on all of them. */
-const textSurfaces = [
-  { name: "background", value: BACKGROUND },
-  { name: "card", value: CARD },
-  { name: "band", value: BAND },
-  { name: "plate", value: PLATE },
-  { name: "band grid crossing", value: GRID_CROSSING },
-] as const;
+const surfacesIn = (context: Context) => {
+  const band = color("band", context);
+  const major = rgba("grid-major", context);
+  const minor = rgba("grid-minor", context);
+  const crossing = blend(minor.hex, blend(major.hex, band, major.alpha), minor.alpha);
+  return [
+    { name: "background", value: color("background", context), crossing: false },
+    { name: "card", value: color("card", context), crossing: false },
+    { name: "band", value: band, crossing: false },
+    { name: "plate", value: color("plate", context), crossing: false },
+    { name: "band grid crossing", value: crossing, crossing: true },
+  ];
+};
 
 interface TextToken {
   name: string;
@@ -84,24 +100,16 @@ interface FillPair {
   label: string;
 }
 
+const accentName = { yellow: "Safety Yellow", green: "Hazard Green", orange: "Danger Orange" };
+
 const fillPairs: readonly FillPair[] = [
-  { name: "Safety Yellow (primary)", fill: color("primary"), label: color("primary-foreground") },
+  ...accents().map((accent) => ({
+    name: `${accentName[accent]} (primary${accent === "yellow" ? "" : `, data-accent="${accent}"`})`,
+    fill: color("primary", { accent }),
+    label: color("primary-foreground", { accent }),
+  })),
   { name: "Science Blue (info)", fill: color("info"), label: color("info-foreground") },
-  {
-    name: "Hazard Green (FRC primary)",
-    fill: programColor("frc", "primary"),
-    label: programColor("frc", "primary-foreground"),
-  },
-  {
-    name: "Danger Orange (FLL primary)",
-    fill: programColor("fll", "primary"),
-    label: programColor("fll", "primary-foreground"),
-  },
-  {
-    name: "Destructive",
-    fill: color("destructive"),
-    label: color("destructive-foreground"),
-  },
+  { name: "Destructive", fill: color("destructive"), label: color("destructive-foreground") },
 ];
 
 const tiers = ["platinum", "gold", "silver", "bronze"].map((name) => ({
@@ -122,51 +130,87 @@ const surfaces = [
   { name: "ink", use: "Drafted shadow ink" },
 ].map((surface) => ({ ...surface, value: color(surface.name) }));
 
-/** The neutral keycap's edge is the control's boundary (WCAG 1.4.11): 3:1 on every surface. */
-const controlEdge = color("control-edge");
-const edgeSurfaces = [BACKGROUND, CARD, BAND, PLATE];
+/** A swipe as a viewer sees it over a surface: the dark finish's swipes are translucent. */
+const swipeOver = (name: "swipe" | "swipe-display", context: Context, surface: string): string => {
+  const swipe = rgba(name, context);
+  return swipe.alpha === 1 ? swipe.hex : blend(swipe.hex, surface, swipe.alpha);
+};
 
 /** Every pair that must hold, checked at build time. */
 const failures: string[] = [];
 
-/**
- * The grid crossing is a sliver of line, not a surface a paragraph fills, so it holds every
- * token to AA rather than to the token's own floor; the plain band and plate hold the full floor.
- */
-for (const token of textTokens) {
-  for (const surface of textSurfaces) {
-    const floor = surface.value === GRID_CROSSING ? AA_NORMAL : token.floor;
-    const ratio = contrastRatio(color(token.name), surface.value);
-    if (ratio < floor) {
+for (const context of contexts) {
+  const where = describe(context);
+  const onSurfaces = surfacesIn(context);
+
+  /**
+   * The grid crossing is a sliver of line, not a surface a paragraph fills, so it holds every
+   * token to AA rather than to the token's own floor; the plain band and plate hold the full
+   * floor. `primary-bright` is checked per accent below, so it is skipped here.
+   */
+  for (const token of textTokens.filter((entry) => entry.name !== "primary-bright")) {
+    const value = color(token.name, context);
+    for (const surface of onSurfaces) {
+      const floor = surface.crossing ? AA_NORMAL : token.floor;
+      const ratio = contrastRatio(value, surface.value);
+      if (ratio < floor) {
+        failures.push(
+          `${where}: ${token.name} (${value}) on ${surface.name} ${surface.value} is ${formatRatio(ratio)}, below its ${String(floor)}:1 floor`,
+        );
+      }
+    }
+  }
+
+  /** The neutral keycap's edge is the control's boundary (WCAG 1.4.11): 3:1 on every surface. */
+  const edge = color("control-edge", context);
+  for (const surface of onSurfaces.filter((entry) => !entry.crossing)) {
+    const ratio = contrastRatio(edge, surface.value);
+    if (ratio < AA_LARGE) {
       failures.push(
-        `${token.name} (${color(token.name)}) on ${surface.name} ${surface.value} is ${formatRatio(ratio)}, below its ${String(floor)}:1 floor`,
+        `${where}: control-edge (${edge}) on ${surface.name} ${surface.value} is ${formatRatio(ratio)}, below the 3:1 boundary floor`,
       );
     }
   }
-}
 
-for (const surface of edgeSurfaces) {
-  const ratio = contrastRatio(controlEdge, surface);
-  if (ratio < AA_LARGE) {
-    failures.push(
-      `control-edge (${controlEdge}) on ${surface} is ${formatRatio(ratio)}, below the 3:1 boundary floor`,
-    );
-  }
-}
-
-/**
- * Program themes remap the action accent, so their `primary-bright` is a text color the default
- * theme never checks. DESIGN.md §2 tabulates those ratios, so they are gated here too — reading
- * the theme list from the stylesheet means a new program cannot ship an unchecked accent.
- */
-for (const program of programThemes()) {
-  const value = programColor(program, "primary-bright");
-  for (const surface of [BACKGROUND, CARD, BAND, PLATE]) {
-    const ratio = contrastRatio(value, surface);
+  for (const tier of ["platinum", "gold", "silver", "bronze"]) {
+    const value = color(`tier-${tier}`, context);
+    const card = color("card", context);
+    const ratio = contrastRatio(value, card);
     if (ratio < AA_NORMAL) {
-      failures.push(
-        `data-theme="${program}" primary-bright (${value}) on ${surface} is ${formatRatio(ratio)}, below AA`,
-      );
+      failures.push(`${where}: tier-${tier} (${value}) on card is ${formatRatio(ratio)}, below AA`);
+    }
+  }
+
+  for (const accent of accents()) {
+    const themed = { ...context, accent };
+    const bright = color("primary-bright", themed);
+    for (const surface of onSurfaces) {
+      const ratio = contrastRatio(bright, surface.value);
+      if (ratio < AA_NORMAL) {
+        failures.push(
+          `${describe(themed)}: primary-bright (${bright}) on ${surface.name} ${surface.value} is ${formatRatio(ratio)}, below AA`,
+        );
+      }
+    }
+
+    /**
+     * DESIGN.md §2.13 asks for this one by name: key words sit on a highlighter swipe. The body
+     * swipe holds AAA and the display (h1/h2) swipe holds AA-large, over the ground and a pocket.
+     */
+    const ink = color("foreground", themed);
+    for (const check of [
+      { name: "swipe", floor: AAA_NORMAL, floorName: "AAA" },
+      { name: "swipe-display", floor: AA_LARGE, floorName: "AA-large" },
+    ] as const) {
+      for (const surface of [color("background", themed), color("card", themed)]) {
+        const swipe = swipeOver(check.name, themed, surface);
+        const ratio = contrastRatio(ink, swipe);
+        if (ratio < check.floor) {
+          failures.push(
+            `${describe(themed)}: ${check.name} (${swipe} over ${surface}) leaves ${ink} text at ${formatRatio(ratio)}, below ${check.floorName}`,
+          );
+        }
+      }
     }
   }
 }
@@ -180,50 +224,22 @@ for (const pair of fillPairs) {
   }
 }
 
-/**
- * DESIGN.md §2.13 asks for this one by name: white key words sit on a translucent swipe. The
- * body-size alpha holds AAA and the display-size (h1/h2) alpha holds AA-large, in every theme,
- * because the swipe is the theme's `primary`.
- */
-const SWIPE_ALPHA = swipeAlpha();
-const swipeOnGround = blend(color("primary"), BACKGROUND, SWIPE_ALPHA.body);
-const swipeOnCard = blend(color("primary"), CARD, SWIPE_ALPHA.body);
-const displaySwipeOnGround = blend(color("primary"), BACKGROUND, SWIPE_ALPHA.display);
-
-const swipeChecks = [
-  { size: "body", alpha: SWIPE_ALPHA.body, floor: AAA_NORMAL, floorName: "AAA" },
-  { size: "display", alpha: SWIPE_ALPHA.display, floor: AA_LARGE, floorName: "AA-large" },
-];
-
-for (const primary of [
-  color("primary"),
-  ...programThemes().map((program) => programColor(program, "primary")),
-]) {
-  for (const check of swipeChecks) {
-    for (const surface of [BACKGROUND, CARD]) {
-      const swipe = blend(primary, surface, check.alpha);
-      const ratio = contrastRatio(color("foreground"), swipe);
-      if (ratio < check.floor) {
-        failures.push(
-          `${check.size} highlighter swipe (${primary} at ${String(check.alpha * 100)}%) on ${surface} leaves white text at ${formatRatio(ratio)}, below ${check.floorName}`,
-        );
-      }
-    }
-  }
-}
-
-for (const tier of tiers) {
-  const ratio = contrastRatio(tier.value, CARD);
-  if (ratio < AA_NORMAL) {
-    failures.push(`tier-${tier.name} on card is ${formatRatio(ratio)}, below AA`);
-  }
-}
-
 if (failures.length > 0) {
   throw new Error(
-    `DESIGN.md §9 contrast floors violated — fix the tokens in src/styles/global.css:\n  ${failures.join("\n  ")}`,
+    `DESIGN.md §9 contrast floors violated — fix the tokens in src/styles/tokens.css:\n  ${failures.join("\n  ")}`,
   );
 }
+
+const BACKGROUND = color("background");
+const CARD = color("card");
+const BAND = color("band");
+const PLATE = color("plate");
+const GRID_CROSSING = surfacesIn({}).find((surface) => surface.crossing)?.value ?? BAND;
+const controlEdge = color("control-edge");
+const swipeOnGround = swipeOver("swipe", {}, BACKGROUND);
+const swipeOnCard = swipeOver("swipe", {}, CARD);
+const displaySwipeOnGround = swipeOver("swipe-display", {}, BACKGROUND);
+const SWIPE_ALPHA = { body: rgba("swipe").alpha, display: rgba("swipe-display").alpha };
 
 const typeRamp = [
   { token: "display", label: "Display", class: "text-display font-display font-bold" },
@@ -256,27 +272,24 @@ const buttonSizes = ["sm", "md", "lg"] as const;
  * The keycap's three states, frozen so they can be compared side by side. The offsets restate the
  * `keycap` utility's; the edge reads `--keycap-edge`, so the accent face shows its tinted edge.
  */
-const keycapEdge = "var(--keycap-edge, var(--color-ink))";
+const keycapEdge = "var(--keycap-edge, var(--sc2-ink))";
 const keycapStates = [
   { name: "Rest", style: `box-shadow: 3px 3px 0 0 ${keycapEdge}` },
   { name: "Hover", style: `translate: -1px -1px; box-shadow: 4px 4px 0 0 ${keycapEdge}` },
-  { name: "Active", style: "translate: 2px 2px; box-shadow: var(--shadow-press)" },
+  { name: "Active", style: "translate: 2px 2px; box-shadow: var(--sc2-shadow-press)" },
 ];
 
 /**
  * DESIGN.md §2 tabulates each accent's text-on-dark ratio. Rendering the measured value here
  * keeps that table checkable: accents are AA-scoped (links, focus, key words — never long copy),
  * so a value below 7:1 is in-bounds, but a value below 4.5:1 fails the gate above. The list is
- * read from the stylesheet like the gate's, so a new program theme renders here automatically.
+ * read from the stylesheet like the gate's, so a new accent renders here automatically.
  */
-const themes = [
-  { name: "Default (SC2)", theme: undefined, accent: color("primary-bright") },
-  ...programThemes().map((program) => ({
-    name: `data-theme="${program}"`,
-    theme: program,
-    accent: programColor(program, "primary-bright"),
-  })),
-];
+const themes = accents().map((accent) => ({
+  name: accent === "yellow" ? "Default (SC2)" : `data-accent="${accent}"`,
+  accent: accent === "yellow" ? undefined : accent,
+  bright: color("primary-bright", { accent }),
+}));
 ---
 
 <BaseLayout
@@ -840,22 +853,20 @@ const themes = [
 
     <section class="relative section-y">
       <GhostNumeral value={8} />
-      <h2>Program themes</h2>
+      <h2>Accents</h2>
       <p class="mt-3 measure">
-        A program page is the same site wearing team colors. Each theme remaps four tokens —
-        <code class="font-mono text-foreground">primary</code>,
-        <code class="font-mono text-foreground">primary-bright</code>,
-        <code class="font-mono text-foreground">primary-foreground</code>,
-        <code class="font-mono text-foreground">ring</code> — and nothing else.
+        A program page is the same site wearing team colors. An accent remaps the accent set in
+        <code class="font-mono text-foreground">tokens.css</code> — the fill and its label, the text
+        and focus colors, the marker, the swipes and the link underline — and nothing else.
       </p>
       <div class="mt-8 space-y-6">
         {themes.map((entry) => (
-          <div class="pocket p-6" data-theme={entry.theme}>
+          <div class="pocket p-6" data-accent={entry.accent}>
             <p class="eyebrow text-primary-bright">{entry.name}</p>
             <p class="mt-1 font-mono text-small text-muted">
-              primary-bright {entry.accent} &middot; on background{" "}
-              {formatRatio(contrastRatio(entry.accent, BACKGROUND))} &middot; on card{" "}
-              {formatRatio(contrastRatio(entry.accent, CARD))}
+              primary-bright {entry.bright} &middot; on background{" "}
+              {formatRatio(contrastRatio(entry.bright, BACKGROUND))} &middot; on card{" "}
+              {formatRatio(contrastRatio(entry.bright, CARD))}
             </p>
             <div class="mt-4 flex flex-wrap items-center gap-3">
               <Button>Primary</Button>
@@ -877,9 +888,9 @@ const themes = [
             </div>
             <div class="mt-4 grid gap-4 md:grid-cols-2">
               <div class="flex flex-col gap-2">
-                <Label for={`sg-theme-${entry.theme ?? "default"}`}>Focus for the ring</Label>
+                <Label for={`sg-theme-${entry.accent ?? "default"}`}>Focus for the ring</Label>
                 <Input
-                  id={`sg-theme-${entry.theme ?? "default"}`}
+                  id={`sg-theme-${entry.accent ?? "default"}`}
                   placeholder="Tab into me"
                   type="text"
                 />

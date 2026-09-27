@@ -22,7 +22,7 @@ const { width: WIDTH, height: HEIGHT } = site.ogImage;
 /** JPEG, not PNG: a photographic card is ~5x smaller, and no scraper has ever wanted otherwise. */
 const QUALITY = 82;
 
-/** DESIGN.md §2 palette, and the two program accents from `[data-theme]` in global.css. */
+/** DESIGN.md §2 palette, and the two program accents from `[data-accent]` in tokens.css. */
 const color = {
   background: "#262626",
   foreground: "#fafafa",

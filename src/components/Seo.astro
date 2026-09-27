@@ -1,9 +1,9 @@
 ---
 import type { SeoProps } from "@/lib/seo";
 
-import { site } from "@/data/site";
+import { programs, site } from "@/data/site";
 import { absoluteUrl } from "@/lib/links";
-import { color, programColor } from "@/lib/tokens";
+import { color } from "@/lib/tokens";
 
 /**
  * Everything that goes in `<head>` for discoverability. Rendered by BaseLayout, which passes
@@ -28,7 +28,9 @@ const card =
 const imageUrl = absoluteUrl(card.src);
 
 /** Browser chrome follows the page's action accent, read from the same tokens the CSS ships. */
-const themeColor = theme === undefined ? color("primary") : programColor(theme, "primary");
+const themeColor = color("primary", {
+  accent: theme === undefined ? "yellow" : programs[theme].accent,
+});
 ---
 
 <title>{fullTitle}</title>

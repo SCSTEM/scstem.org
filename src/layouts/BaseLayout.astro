@@ -6,7 +6,7 @@ import JsonLd from "@/components/JsonLd.astro";
 import Seo from "@/components/Seo.astro";
 import Footer from "@/components/ui/Footer.astro";
 import Navbar from "@/components/ui/Navbar.astro";
-import { site } from "@/data/site";
+import { programs, site } from "@/data/site";
 import { breadcrumbs, organization } from "@/lib/jsonld";
 import "@/styles/global.css";
 
@@ -14,8 +14,8 @@ import "@/styles/global.css";
  * The chrome every page shares. SEO correctness is built into the signature rather than left to
  * each page: `title` and `description` are required, so a page cannot ship without them.
  *
- * The props are `Seo`'s, forwarded to it; `theme` also lands on `<html>` as `data-theme`, which
- * remaps the action accent for a program page. `trail` is the page's breadcrumb trail, emitted
+ * The props are `Seo`'s, forwarded to it; `theme` names the page's program, whose accent lands on
+ * `<html>` as `data-accent` (`src/styles/tokens.css`). `trail` is the page's breadcrumb trail, emitted
  * here so no page hand-writes its own `BreadcrumbList`.
  *
  * Slots: the default slot is the page body; `head` takes per-page structured data.
@@ -24,10 +24,11 @@ type Props = Omit<SeoProps, "noindex"> & Placement;
 
 const { trail = [], ...seo } = Astro.props;
 const { theme } = seo;
+const accent = theme === undefined ? undefined : programs[theme].accent;
 ---
 
 <!doctype html>
-<html data-theme={theme} lang="en">
+<html data-accent={accent} lang="en">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />

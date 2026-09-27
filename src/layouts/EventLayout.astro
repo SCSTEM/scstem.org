@@ -37,7 +37,7 @@ const { event, trail = [] } = Astro.props;
 const { data } = event;
 const { Content } = await render(event);
 
-/** `sc2` is the default look and has no `[data-theme]` block. */
+/** `sc2` is the default look and wears no program accent. */
 const theme = data.program === "sc2" ? undefined : data.program;
 
 if (data.heroImage !== undefined && data.heroImageAlt === undefined) {
