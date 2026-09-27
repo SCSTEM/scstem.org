@@ -252,6 +252,7 @@ CSS-only, except the two sanctioned scripts (the hand-markup entrance observer a
 - **Real photos of real students and robots** are the brand. Stock and unDraw illustrations retire wherever a photo can serve.
 - Text over photos requires a scrim built from `background`. On the dark finish: 100% at the text edge → ~20% opposite. On the light finish the scrim holds **solid ground across the copy column** (100% to 30% of the width), eases to 86% by the middle and ~28% at the far edge, and the photo is pulled back slightly (saturate 85%, contrast 92%, brightness 104%) so it sits in the aluminum rather than punching through it; the hero's drafting grid draws in ink. **On mobile, heroes put text on solid ground below the photo** (photo fades into `background` via bottom gradient) — never gamble on scrims at small sizes.
 - On a blueprint page, photos go duotone: grayscale, multiplied with the print's blue.
+- **Logos drawn for a dark ground** — every sponsor and _FIRST_ logo the site holds — keep that ground on the light finish: they sit on a **print** (`print`, brand Background Black, `radius-md`), which is transparent on the dark finish. Never recolor a partner's logo to fit the finish.
 - Photo treatment: `radius-lg` framed in sections; full-bleed only in heroes. Consistent warm/neutral grading.
 - Every image: honest `alt`; decorative pattern/grid SVGs `aria-hidden` with `alt=""`.
 - OG images (1200×630): photo + scrim + Orbitron title + lockup; one template, per-section variants. Always the dark finish.

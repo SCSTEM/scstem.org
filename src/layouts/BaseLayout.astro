@@ -33,7 +33,17 @@ const accent = theme === undefined ? undefined : programs[theme].accent;
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="dark" name="color-scheme" />
-
+    <!-- Every page opens dark; a visitor who chose light keeps it (DESIGN.md §5). Inline and
+         blocking on purpose: it sets the finish before first paint, so light mode never flashes
+         dark. ModeToggle writes the same key. -->
+    <script is:inline>
+      try {
+        if (localStorage.getItem("sc2-mode") === "light") {
+          document.documentElement.dataset.mode = "light";
+          document.querySelector('meta[name="color-scheme"]').setAttribute("content", "light");
+        }
+      } catch {}
+    </script>
     <Seo {...seo} />
 
     <link href={site.icons.favicon} rel="icon" sizes="32x32" />

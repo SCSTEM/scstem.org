@@ -44,7 +44,7 @@ const renderHeight = (logo: ImageMetadata): number => Math.min(96, logo.height);
           ) : (
             <Image
               alt={`${data.name} logo`}
-              class="h-10 w-auto max-w-40 object-contain md:h-12"
+              class="box-content h-10 w-auto max-w-40 rounded-md bg-print object-contain p-2 md:h-12"
               height={renderHeight(data.logo)}
               loading="lazy"
               src={data.logo}

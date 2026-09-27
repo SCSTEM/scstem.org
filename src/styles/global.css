@@ -24,6 +24,8 @@
   --color-border: var(--sc2-border);
   --color-control-edge: var(--sc2-control-edge);
   --color-ink: var(--sc2-ink);
+  --color-logo: var(--sc2-logo);
+  --color-print: var(--sc2-print);
   --color-foreground: var(--sc2-foreground);
   --color-body: var(--sc2-body);
   --color-muted: var(--sc2-muted);
@@ -92,6 +94,9 @@
  * Tailwind's default, declared so it is emitted as a variable: utilities below and the Navbar
  * sheet script read it, so the mobile/desktop boundary has one definition.
  */
+/* `light:` styles an element on the light finish (DESIGN.md §2); the dark finish is the default. */
+@custom-variant light (&:where([data-mode="light"], [data-mode="light"] *));
+
 @theme {
   --breakpoint-md: 48rem;
   --breakpoint-3xl: 120rem;

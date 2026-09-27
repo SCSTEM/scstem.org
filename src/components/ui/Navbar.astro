@@ -1,8 +1,9 @@
 ---
 import logoMark from "@/assets/brand/logo-color.svg";
-import logoLockup from "@/assets/brand/logo-white-full.svg";
+import ModeToggle from "@/components/ui/ModeToggle.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
+import Lockup from "@/components/ui/primitives/Lockup.astro";
 import { nav, type NavLink, site } from "@/data/site";
 import { cn } from "@/lib/cn";
 import { breakpoint } from "@/lib/tokens";
@@ -51,6 +52,10 @@ const sheetLinks = nav.primary.filter(onSurface("sheet"));
 const sheetCtas = nav.primary.filter(onSurface("sheet-cta"));
 
 const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
+
+/** A transparent 1×1 GIF: what the logo `<picture>` shows where the lockup takes over. */
+const EMPTY_PIXEL =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 ---
 
 <header
@@ -68,25 +73,23 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
       data-sheet-inert
       href="/"
     >
-      <!-- One fetch, not two: a hidden `<img>` still downloads, so the lockup/mark swap is a
-           `<source>` media query rather than a pair of `hidden`/`md:hidden` images. -->
-      <picture>
-        <source
-          height={logoLockup.height}
-          media={`(min-width: ${breakpoint("md")})`}
-          srcset={logoLockup.src}
-          width={logoLockup.width}
-        />
-        <img
-          alt=""
-          class="h-10 w-auto origin-left"
-          data-header-lockup
-          fetchpriority="high"
-          height={logoMark.height}
-          src={logoMark.src}
-          width={logoMark.width}
-        />
-      </picture>
+      <span class="block origin-left" data-header-lockup>
+        <!-- The square mark below md, the lockup from md up (DESIGN.md §5). A hidden `<img>`
+             still downloads, so from md up the `<source>` swaps the mark for an empty pixel; the
+             lockup is a CSS mask, which a hidden element never fetches. -->
+        <picture class="md:hidden">
+          <source media={`(min-width: ${breakpoint("md")})`} srcset={EMPTY_PIXEL} />
+          <img
+            alt=""
+            class="h-10 w-auto"
+            fetchpriority="high"
+            height={logoMark.height}
+            src={logoMark.src}
+            width={logoMark.width}
+          />
+        </picture>
+        <Lockup class="hidden h-10 md:block" />
+      </span>
     </a>
 
     <div class="ml-auto hidden items-center gap-1 md:flex" data-sheet-inert>
@@ -138,6 +141,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
           </a>
         ),
       )}
+      <ModeToggle class="ml-2" />
       <Button class="ml-2" href={nav.cta.href} size="sm">
         {nav.cta.label}
       </Button>
@@ -183,6 +187,7 @@ const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
       ))}
     </ul>
     <div class="mt-auto flex flex-col gap-3 py-6">
+      <ModeToggle labelled />
       <Button href={nav.cta.href} size="lg">
         {nav.cta.label}
       </Button>

@@ -1,0 +1,30 @@
+---
+import lockup from "@/assets/brand/logo-white-full.svg";
+import { cn } from "@/lib/cn";
+
+/**
+ * The full-width lockup in the finish's one color (DESIGN.md §7): the brand's Light lockup on
+ * the dark finish and its Dark lockup on the light. The two files are the same drawing in white
+ * and in black, so one of them is the shape — a CSS mask — and `--sc2-logo` fills it with brand
+ * White or Black. One file, fetched once, for both finishes.
+ *
+ * Decorative by default, for use inside a link that carries the name; pass `label` where the
+ * lockup stands alone.
+ */
+interface Props {
+  label?: string;
+  class?: string;
+}
+
+const { label, class: className } = Astro.props;
+
+const mask = `url(${lockup.src}) center / contain no-repeat`;
+---
+
+<span
+  aria-hidden={label === undefined ? "true" : undefined}
+  aria-label={label}
+  class={cn("block bg-logo", className)}
+  role={label === undefined ? undefined : "img"}
+  style={`aspect-ratio: ${String(lockup.width)} / ${String(lockup.height)}; mask: ${mask}; -webkit-mask: ${mask};`}
+></span>

@@ -63,7 +63,10 @@ const { name, level, logo, url, sub, since } = sponsor.data;
     ) : (
       <Image
         alt={`${name} logo`}
-        class={cn("h-20 w-full max-w-56 object-contain", featured && "md:h-28 md:max-w-80")}
+        class={cn(
+          "box-content h-20 w-full max-w-56 rounded-md bg-print object-contain p-3",
+          featured && "md:h-28 md:max-w-80",
+        )}
         loading="lazy"
         src={logo}
         width={448}

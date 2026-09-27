@@ -35,6 +35,8 @@
   --sc2-border: light-dark(#c2c6cc, #3a3a3a);
   --sc2-control-edge: light-dark(#6b7178, #737373); /* ≥ 3:1 on every surface */
   --sc2-ink: light-dark(#8e949b, #0c0c0c); /* drafted shadow ink, never a fill */
+  --sc2-logo: light-dark(#171717, #fafafa); /* the one-color lockup: brand Black or White */
+  --sc2-print: light-dark(#262626, transparent); /* the dark ground a logo drawn for one keeps */
 
   /* --- Text ramp (§2) ----------------------------------------------------------------------- */
   --sc2-foreground: light-dark(#16181b, #fafafa); /* headings, nav, emphasis */
