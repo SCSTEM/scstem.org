@@ -8,6 +8,14 @@ https://*scstem-org.pages.dev/*
 https://*.scstem.org/*
   X-Robots-Tag: noindex
 
+# The design-language guide is an internal draft on its way to the team wiki. It also sets
+# `noindex` in its head; the header covers anything that reads headers only.
+/design-language/
+  X-Robots-Tag: noindex
+
+/design-language/*
+  X-Robots-Tag: noindex
+
 # Astro fingerprints every file under /_astro/, so a changed file gets a new URL.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
