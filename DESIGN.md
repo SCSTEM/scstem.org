@@ -112,7 +112,7 @@ Rules:
 
 The rest of the set (`card-hover`, `pocket-border`, `plate-border`, `plate-hover`, `sheet`, `control-edge`, `ink`) is in `tokens.css`. Accents are unchanged: yellow, green and orange all read on both prints.
 
-**The drawing frame**: on a blueprint page the drafting grid (both weights) lives in the page margins only. The content column sits inside a single 1px frame line at the container edge, like the border of a drawing sheet, with zone numbers (1, 2, 3 …) along the top edge and zone letters (A, B, C …) down the left, set in SCP `label` at `muted`. Inside the frame the ground is plain: **no grid line ever crosses text on a blueprint page**. Below `md`, where the margins vanish, the frame and grid go with them. Photos on a blueprint page go duotone (grayscale, multiplied with the print's blue). Whether other special pages take the frame or soft margins without one is open (`plan/todo.md`); the frame is the default.
+**The drawing frame**: on a blueprint page the drafting grid (both weights) lives in the page margins only. The content column sits inside a single 1px frame line at the container edge, like the border of a drawing sheet, with zone numbers (1, 2, 3 …) along the top edge and zone letters (A, B, C …) down the left, set in SCP `label` at `muted`. Inside the frame the ground is plain: **no grid line ever crosses text on a blueprint page**. Below `xl`, where the margins are too narrow to hold a grid, the frame and grid go with them. Photos on a blueprint page go duotone (grayscale, multiplied with the print's blue). Whether other special pages take the frame or soft margins without one is open (`plan/todo.md`); the frame is the default.
 
 ### Signature motifs
 

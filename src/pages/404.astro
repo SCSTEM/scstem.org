@@ -12,7 +12,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 /**
  * Cloudflare Pages serves `404.html` from static output automatically, so this needs no config.
  * Noindexed, and useful rather than cute: the links are the four places people were most likely
- * headed.
+ * headed. It is a blueprint page (DESIGN.md §2): the sheet that is not in the set.
  */
 
 /** Titles and hrefs are the nav inventory's, so a renamed or moved route follows here. */
@@ -30,6 +30,7 @@ const destinations = [
 <BaseLayout
   description="That page does not exist. Here are the places you were most likely headed."
   noindex
+  register="blueprint"
   title="Page not found"
 >
   <Hero>

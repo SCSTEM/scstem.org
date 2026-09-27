@@ -89,6 +89,11 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
     object-fit: cover;
   }
 
+  /* A blueprint page's photo goes duotone: grayscale under the print's own scrim (DESIGN.md §7). */
+  :global([data-register="blueprint"]) .hero-media :global(:is(img, video)) {
+    filter: grayscale(1) contrast(1.05);
+  }
+
   /* On the light finish the photo is pulled back a little (DESIGN.md §7). */
   :global([data-mode="light"]) .hero-media :global(:is(img, video)) {
     filter: saturate(0.85) contrast(0.92) brightness(1.04);

@@ -405,6 +405,47 @@
   }
 }
 
+/**
+ * A blueprint page's sheet (DESIGN.md §2, the blueprint register): the drafting grid across the
+ * page, from `xl` up, beneath the `drawing-frame` that clears it from the content column.
+ */
+@utility drawing-sheet {
+  position: relative;
+  isolation: isolate;
+
+  @media (width >= theme(--breakpoint-xl)) {
+    &::before {
+      @apply drafting-grid;
+
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background-position: center top;
+    }
+  }
+}
+
+/* The frame itself: plain grained ground inside one frame line at the container's edge. */
+@utility drawing-frame {
+  --frame-line: color-mix(in srgb, var(--sc2-foreground) 34%, transparent);
+
+  display: none;
+
+  @media (width >= theme(--breakpoint-xl)) {
+    display: block;
+    position: absolute;
+    inset-block: 1.5rem;
+    inset-inline: calc((100% - var(--container-6xl)) / 2 - 0.5rem);
+    z-index: -1;
+    pointer-events: none;
+    border: 1px solid var(--frame-line);
+    background-color: var(--sc2-background);
+    background-image: var(--sc2-texture-grain);
+  }
+}
+
 /* The drafting grid over the copy side of a photo hero, fading out before the photo's subject. */
 @utility hero-grid {
   @apply drafting-grid;
