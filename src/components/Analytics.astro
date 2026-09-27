@@ -15,7 +15,7 @@ import { TRACK_EVENT } from "@/lib/analytics";
  *
  * Nothing loads before `load`: analytics is never worth a millisecond of anyone's LCP.
  *
- * The snippet is a string rather than markup because a `<script>` inside an Astro expression has
+ * The snippet is a string rather than markup because a script element inside an Astro expression has
  * its body parsed as JSX, where every `{` of a block opens an interpolation.
  */
 const { hostname } = new URL(site.url);
