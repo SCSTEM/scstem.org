@@ -8,13 +8,13 @@ Pages. **Zero client-side framework runtime** — `.astro` components and plain 
 
 ## Commands
 
-| Command                        | What it does                                                                             |
-| ------------------------------ | ---------------------------------------------------------------------------------------- |
-| `mise install && pnpm install` | Set up (mise pins node + pnpm; see `docs/tooling.md`)                                    |
-| `pnpm dev`                     | Dev server                                                                               |
-| `pnpm check`                   | Typecheck + lint + format check + knip + repo checks. **Must pass before every commit.** |
-| `pnpm build`                   | Static build to `dist/`                                                                  |
-| `pnpm fmt` / `pnpm lint:fix`   | Write formatting / autofix lint                                                          |
+| Command                        | What it does                                                                                   |
+| ------------------------------ | ---------------------------------------------------------------------------------------------- |
+| `mise install && pnpm install` | Set up (mise pins node, pnpm, and hk, and installs the pre-commit hook; see `docs/tooling.md`) |
+| `pnpm dev`                     | Dev server                                                                                     |
+| `pnpm check`                   | Typecheck + lint + format check + knip. **Must pass before every commit.**                     |
+| `pnpm build`                   | Static build to `dist/`                                                                        |
+| `pnpm fix`                     | Write formatting and lint autofixes (`hk fix --all`)                                           |
 
 ## Toolchain
 
@@ -26,8 +26,10 @@ ESLint (typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro
 TypeScript 6 throughout: `astro check` covers `src/` and the config files, `tsc` covers
 `functions/` and `tools/`.
 
-The Claude Code hook in `.claude/hooks/format-lint.sh` formats and lints every file you edit and
-feeds lint failures back to you.
+Lint and format run through hk (`hk.pkl`, `docs/adr/0022-hk.md`): the same steps back the git
+pre-commit hook, `pnpm lint` / `pnpm fix`, CI, and the Claude Code hook in
+`.claude/hooks/format-lint.sh`, which formats and lints every file you edit and feeds unfixable
+lint failures back to you.
 
 Browser verification goes through `agent-browser` (the `agent-browser` skill; setup in
 `docs/tooling.md`), against `pnpm preview`, not the dev server.

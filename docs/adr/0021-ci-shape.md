@@ -43,8 +43,8 @@ reports every problem, linted without dependencies and posted a screen of false 
    read by the matcher `actions/setup-node` ships, copied verbatim into
    `.github/typescript-matchers.json`; `astro check` has no machine-readable mode and colors its
    output regardless of TTY, so the same file carries a matcher that tolerates the color codes.
-   Prettier reports no positions, so an unformatted file becomes one file-level annotation.
-6. **Setup installs `node` and `pnpm` only**, and later steps run only when setup succeeded.
+   Prettier reports no positions; the unformatted files are listed in the log (`0022-hk.md`).
+6. **Setup installs `node`, `pnpm`, and `hk` only**, and later steps run only when setup succeeded.
 
 ## Alternatives considered
 

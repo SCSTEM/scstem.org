@@ -30,17 +30,10 @@ jobs:
         run: |
           echo "::add-matcher::.github/typescript-matchers.json"
           pnpm typecheck
-      - name: Lint
+      # The same hk.pkl steps the pre-commit hook runs, over every file.
+      - name: Lint and format
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        run: pnpm lint --format gha
-      - name: Format
-        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        run: |
-          pnpm fmt:check || {
-            pnpm exec prettier --list-different . |
-              sed 's/.*/::error file=&,title=Prettier::Not formatted. Run pnpm fmt./'
-            exit 1
-          }
+        run: hk check --all --no-fail-fast
       - name: Unused code and dependencies
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: pnpm knip --reporter github-actions

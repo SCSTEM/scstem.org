@@ -7,7 +7,7 @@ runs:
     - uses: jdx/mise-action@v4
       with:
         version: 2026.9.14
-        install_args: node pnpm
+        install_args: node pnpm hk
         cache: true
 
     # mise-action caches tool binaries, not pnpm's content-addressable store.

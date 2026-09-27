@@ -6,8 +6,13 @@ npm.package_manager = "pnpm"
 [tools]
 node = "26.9.0"
 pnpm = "12.5.1"
+hk = "2.0.1"
 
 "npm:agent-browser" = "0.38.1"
+
+# The git pre-commit hook (hk.pkl), for every clone that runs `mise install`; CI does not commit.
+[hooks]
+postinstall = '[ -n "$CI" ] || hk install --mise'
 
 [env]
 _.path = ["{{config_root}}/node_modules/.bin"]

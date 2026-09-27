@@ -1,0 +1,26 @@
+amends "package://github.com/jdx/hk/releases/download/v2.0.1/hk@2.0.1#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.0.1/hk@2.0.1#/Builtins.pkl"
+
+// The lint and format steps for every entry point: the pre-commit hook, `pnpm check`, CI's Check
+// job (`hk check --all`), and the Claude Code edit hook (docs/tooling.md).
+steps {
+  ["prettier"] = (Builtins.prettier) { batch = false }
+  // `--format gha` writes workflow-command annotations under GitHub Actions and stylish output
+  // everywhere else. `--no-warn-ignored` keeps an explicitly passed ignored file from counting
+  // against `--max-warnings 0`.
+  ["eslint"] = (Builtins.eslint) {
+    batch = false
+    glob = List("**/*.ts", "**/*.mts", "**/*.js", "**/*.mjs", "**/*.astro")
+    check {
+      command {
+        argv =
+          List("eslint", "--max-warnings", "0", "--no-warn-ignored", "--format", "gha", "{{files}}")
+      }
+    }
+    fix {
+      command {
+        argv = List("eslint", "--max-warnings", "0", "--no-warn-ignored", "--fix", "{{files}}")
+      }
+    }
+  }
+}
