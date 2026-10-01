@@ -5,7 +5,7 @@
 ```sh
 mise install      # the pinned node, pnpm, and hk from mise.toml / mise.lock, and the pre-commit hook
 pnpm install
-pnpm check        # typecheck + lint + format check + knip
+pnpm check        # every hk.pkl step: typecheck, lint, format, knip
 pnpm dev
 ```
 
@@ -24,8 +24,9 @@ resolver. `which pnpm` must resolve inside mise's shims directory; if not, `core
 | Format      | Prettier, with the Astro and Tailwind plugins                                            |
 | Types       | `astro check` for `src/` and config files; `tsc -p functions`, `tsc -p tools`            |
 | Dead code   | knip                                                                                     |
+| Hygiene     | hk's built-in trailing-whitespace, final-newline, and merge-conflict-marker steps        |
 | Repo checks | `tools/checks/*.ts`                                                                      |
-| Hooks       | hk: the Prettier and ESLint steps in `hk.pkl`, for pre-commit, `pnpm lint`, and CI       |
+| Runner      | hk: every check above is a step in `hk.pkl`                                              |
 
 TypeScript is the 6.x line everywhere, one compiler for `astro check`, `tsc`, and
 `typescript-eslint`. `astro check` (Volar) needs the JavaScript compiler's API, which TypeScript 7
@@ -48,11 +49,30 @@ Two more under `tools/ci/` have no script because Lighthouse CI runs them: `serv
 Only erasable TypeScript syntax (no enums, namespaces, or parameter properties);
 `tools/tsconfig.json` enforces it.
 
-## Agent hook
+## hk
 
-`.claude/hooks/format-lint.sh` runs on every `Edit`/`Write` from Claude Code: Prettier on the
-file, then ESLint if it is a file ESLint reads, exiting 2 with the findings so they go back to
-the agent. It exits 0 when `node_modules` is missing.
+`hk.pkl` defines every check once, and each entry point runs a slice of it:
+
+| Entry point                     | Runs                                                               |
+| ------------------------------- | ------------------------------------------------------------------ |
+| git pre-commit hook             | `hk run pre-commit`: fixes and restages the staged files           |
+| `pnpm check`, CI's Check job    | `hk check --all --slow`: every step over every file                |
+| `pnpm fix`                      | `hk fix --all`: every step but the slow ones, fixing what they can |
+| Claude Code, after `Edit/Write` | `hk fix` on the edited file                                        |
+| Claude Code, at the end of turn | `hk fix --slow` over the modified and untracked files              |
+
+`astro check`, `tsc`, and knip read the whole program, so they carry the `slow` profile and run
+only where `--slow` is passed; each runs once when a selected file matches its glob. ESLint
+waits for `astro check`, whose type generation into `.astro/` its typed rules read.
+
+mise's `postinstall` hook runs `hk install --mise`, so every `mise install` outside CI installs
+the pre-commit hook; it runs hk through `mise x`, so Git needs mise on its `PATH`.
+`HK=0 git commit` skips it.
+
+Both Claude Code hooks are inline in `.claude/settings.json` and exit 2 with hk's output when a
+step fails, which hands the findings back to the agent. The edit hook ignores files outside the
+repo. The end-of-turn hook does not run again on the stop it forced (`stop_hook_active`), so a
+problem the agent cannot fix reaches the user instead of looping.
 
 ## Browser automation
 
@@ -105,11 +125,11 @@ Cloudflare Pages builds and deploys from git. `.github/workflows/ci.yml` runs on
 and pushes to `main` and `staging`, in two parallel jobs; draft pull requests run nothing until
 they are marked ready (`docs/adr/0021-ci-shape.md`):
 
-- **Check**: typecheck, `hk check --all` (Prettier and ESLint, the pre-commit hook's steps over
-  every file), and knip as separate steps, all of which run even when an earlier one fails.
-  ESLint (through `eslint-formatter-gha`), knip (its `github-actions` reporter), and `tsc` and
-  `astro check` (`.github/typescript-matchers.json`) report findings as inline annotations on the
-  PR; Prettier lists the unformatted files in the log.
+- **Check**: `pnpm check`, every `hk.pkl` step over every file, each running even when another
+  fails. ESLint (through `eslint-formatter-gha`), knip (its `github-actions` reporter under
+  `GITHUB_ACTIONS`), and `tsc` and `astro check` (`.github/typescript-matchers.json`) report
+  findings as inline annotations on the PR; Prettier and the hygiene steps list the files in the
+  log.
 - **Build**: `pnpm build`, then `check:meta`, an offline link check over `dist/` (lychee, which
   writes its own job summary), and Lighthouse. Lighthouse runs `@lhci/cli` via `pnpm dlx`
   (`docs/adr/0007`) against `tools/ci/serve.ts`, which serves the build over HTTP/2 and TLS the

@@ -42,6 +42,6 @@ oxlint's. Everything else is a compat-layer concern and stays out of `rules/` an
 ## Updating
 
 Re-copy `rules/` and `shared/` from a newer upstream commit, record the commit above, re-apply
-the deviations, run `pnpm fix`, then `tsc -p tools` and `pnpm lint`. Items 1 and 2 are
+the deviations, run `pnpm fix`, then `pnpm check`. Items 1 and 2 are
 mechanical (`sed`); a compile error elsewhere means upstream touched one of the sites in 3–6
 or a new oxlint AST name needs an alias in `estree.ts`.

@@ -7,11 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "pnpm run typecheck && pnpm run lint && pnpm run knip",
-    "typecheck": "astro check && tsc -p functions && tsc -p tools",
-    "lint": "hk check --all",
+    "check": "hk check --all --slow",
     "fix": "hk fix --all",
-    "knip": "knip",
     "check:meta": "node tools/checks/verify-meta.ts",
     "assets:og": "node tools/assets/og-cards.ts",
     "assets:underlines": "node tools/assets/underlines.ts"

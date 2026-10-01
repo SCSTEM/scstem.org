@@ -21,22 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
-        id: setup
 
-      # Every check runs even after an earlier one fails, so one PR run reports every kind of
-      # problem, and each reports its findings as inline annotations on the PR diff.
-      - name: Typecheck
-        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+      # Every hk.pkl step over every file, each reporting its findings as inline annotations on
+      # the PR diff.
+      - name: Check
         run: |
           echo "::add-matcher::.github/typescript-matchers.json"
-          pnpm typecheck
-      # The same hk.pkl steps the pre-commit hook runs, over every file.
-      - name: Lint and format
-        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        run: hk check --all --no-fail-fast
-      - name: Unused code and dependencies
-        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        run: pnpm knip --reporter github-actions
+          pnpm check
 
   build:
     name: Build
@@ -84,7 +75,9 @@ jobs:
       - name: Lighthouse CI
         id: lighthouse
         if: ${{ !cancelled() && steps.lighthouse-pass.outcome == 'success' && steps.lighthouse-pass.outputs.cache-hit != 'true' }}
-        run: pnpm dlx @lhci/cli@${{ env.LHCI_VERSION }} autorun --config=tools/ci/lighthouserc.json
+        run: |
+          pnpm dlx @lhci/cli@${{ env.LHCI_VERSION }} autorun --config=tools/ci/lighthouserc.json
+          touch .lighthouseci/passed
 
       # Into the log as well as the summary, so the waterfall behind a failed LCP assertion is
       # readable from the API without downloading the report artifact.
@@ -102,9 +95,6 @@ jobs:
           name: lighthouse-reports
           path: .lighthouseci/reports/
 
-      - name: Record the Lighthouse pass
-        if: ${{ steps.lighthouse.outcome == 'success' }}
-        run: touch .lighthouseci/passed
       - uses: actions/cache/save@v6
         if: ${{ steps.lighthouse.outcome == 'success' }}
         with:

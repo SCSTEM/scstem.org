@@ -5,7 +5,7 @@ hands-on STEM programs in Franklin County, PA. Astro, static, no client-side fra
 by Cloudflare Pages.
 
 ```sh
-mise install      # pinned node + pnpm
+mise install      # pinned node, pnpm, and hk, and the pre-commit hook
 pnpm install
 pnpm dev          # http://localhost:4321
 pnpm check        # everything CI checks, minus the build

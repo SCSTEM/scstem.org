@@ -12,7 +12,7 @@ Pages. **Zero client-side framework runtime** — `.astro` components and plain 
 | ------------------------------ | ---------------------------------------------------------------------------------------------- |
 | `mise install && pnpm install` | Set up (mise pins node, pnpm, and hk, and installs the pre-commit hook; see `docs/tooling.md`) |
 | `pnpm dev`                     | Dev server                                                                                     |
-| `pnpm check`                   | Typecheck + lint + format check + knip. **Must pass before every commit.**                     |
+| `pnpm check`                   | Every `hk.pkl` step: typecheck, lint, format, knip. **Must pass before every commit.**         |
 | `pnpm build`                   | Static build to `dist/`                                                                        |
 | `pnpm fix`                     | Write formatting and lint autofixes (`hk fix --all`)                                           |
 
@@ -26,10 +26,11 @@ ESLint (typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro
 TypeScript 6 throughout: `astro check` covers `src/` and the config files, `tsc` covers
 `functions/` and `tools/`.
 
-Lint and format run through hk (`hk.pkl`, `docs/adr/0022-hk.md`): the same steps back the git
-pre-commit hook, `pnpm lint` / `pnpm fix`, CI, and the Claude Code hook in
-`.claude/hooks/format-lint.sh`, which formats and lints every file you edit and feeds unfixable
-lint failures back to you.
+Every check is a step in `hk.pkl` (`docs/adr/0022-hk.md`), and the same steps back the git
+pre-commit hook, `pnpm check` / `pnpm fix`, CI, and the Claude Code hooks in
+`.claude/settings.json`: each file you edit is formatted and linted, and the end of each turn
+runs the full set, typecheck and knip included, over the modified files. Unfixable failures
+come back to you.
 
 Browser verification goes through `agent-browser` (the `agent-browser` skill; setup in
 `docs/tooling.md`), against `pnpm preview`, not the dev server.
