@@ -1,12 +1,22 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "lib": ["esnext"],
     "types": ["@cloudflare/workers-types"],
     "paths": {
       "@/*": ["./*"]
-    }
-  }
+    },
+    "noEmit": true,
+    // The Workers runtime cannot use astro/tsconfigs/strictest (DOM and Astro types), so the
+    // same strictness is restated.
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["**/*.ts"]
 }

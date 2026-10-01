@@ -1,0 +1,72 @@
+---
+import Button from "@/components/ui/primitives/Button.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import { cn } from "@/lib/cn";
+
+/**
+ * The finish toggle (DESIGN.md §5): a neutral keycap holding a sun on the dark finish and a moon
+ * on the light, labelled with the finish it switches to. Every page opens dark; the choice is
+ * kept in `localStorage` (`sc2-mode`) and applied before first paint by the inline script in
+ * `BaseLayout`, so a light-mode visitor never sees a dark flash.
+ *
+ * `labelled` adds the finish's name beside the icon, for the mobile menu's full-width row.
+ */
+interface Props {
+  labelled?: boolean;
+  class?: string;
+}
+
+const { labelled = false, class: className } = Astro.props;
+---
+
+<Button
+  aria-label={labelled ? undefined : "Switch to light mode"}
+  class={cn(labelled && "gap-3", className)}
+  data-mode-toggle
+  size={labelled ? "lg" : "icon"}
+  variant="outline"
+>
+  <Icon class="light:hidden" name="sun" size={20} />
+  <Icon class="hidden light:block" name="moon" size={20} />
+  {labelled && <span data-mode-label>Switch to light mode</span>}
+</Button>
+
+<script>
+  const STORAGE_KEY = "sc2-mode";
+  const root = document.documentElement;
+
+  const isLight = (): boolean => root.dataset.mode === "light";
+  const label = (): string => (isLight() ? "Switch to dark mode" : "Switch to light mode");
+
+  const sync = (): void => {
+    for (const toggle of document.querySelectorAll<HTMLElement>("[data-mode-toggle]")) {
+      const text = toggle.querySelector("[data-mode-label]");
+      if (text === null) {
+        toggle.setAttribute("aria-label", label());
+      } else {
+        text.textContent = label();
+      }
+    }
+  };
+
+  for (const toggle of document.querySelectorAll("[data-mode-toggle]")) {
+    toggle.addEventListener("click", () => {
+      const next = isLight() ? "dark" : "light";
+      if (next === "light") {
+        root.dataset.mode = "light";
+      } else {
+        delete root.dataset.mode;
+      }
+      document.querySelector('meta[name="color-scheme"]')?.setAttribute("content", next);
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        // Storage can be unavailable (a private window, blocked site data); the switch still
+        // applies to this page, it just is not remembered.
+      }
+      sync();
+    });
+  }
+
+  sync();
+</script>

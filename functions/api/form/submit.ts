@@ -1,53 +1,102 @@
 import type { GenericFormRequest } from "@/types";
+
 import { res, validateTurnstile } from "@/util";
 
-export const onRequestPost: PagesFunction<{
-  TS_SECRET_KEY: string;
-  SLACK_FORM_POST_GENERIC: string;
-}> = async ({ request, env }) => {
-  const data = await request.json<GenericFormRequest>();
+/** A posted field before it is checked; only a non-blank string passes `isFilled`. */
+type PostedValue = boolean | number | string | null | undefined;
 
-  let key = env.TS_SECRET_KEY;
-  if (!key) key = "1x0000000000000000000000000000000AA";
+/** The body as posted: the browser's `required` attributes are a courtesy, not a guarantee. */
+interface PostedForm {
+  readonly email?: PostedValue;
+  readonly form?: PostedValue;
+  readonly message?: PostedValue;
+  readonly name?: PostedValue;
+  readonly turnstileToken?: PostedValue;
+}
+
+const isFilled = (value: PostedValue): value is string =>
+  typeof value === "string" && value.trim() !== "";
+
+/**
+ * Both secrets are required: without `TS_SECRET_KEY` the challenge cannot be verified, and
+ * without `SLACK_FORM_POST_GENERIC` a submission has nowhere to go. Either missing is an error
+ * answer, never a "received" one. Local development sets them in `.dev.vars` (`docs/tooling.md`).
+ */
+export const onRequestPost: PagesFunction<{
+  SLACK_FORM_POST_GENERIC?: string;
+  TS_SECRET_KEY?: string;
+}> = async ({ env, request }) => {
+  if (!env.TS_SECRET_KEY || !env.SLACK_FORM_POST_GENERIC) {
+    return res(
+      {
+        error: "Form secrets are not configured",
+        message: "The form is not accepting submissions right now",
+        success: false,
+      },
+      500,
+    );
+  }
+
+  let body: PostedForm | null;
+  try {
+    body = await request.json<PostedForm | null>();
+  } catch {
+    return res({ message: "Request body is not valid JSON", success: false }, 400);
+  }
+
+  const { email, form, message, name, turnstileToken } = body ?? {};
+  if (
+    !isFilled(email) ||
+    !isFilled(form) ||
+    !isFilled(message) ||
+    !isFilled(name) ||
+    !isFilled(turnstileToken)
+  ) {
+    return res({ message: "Every field is required", success: false }, 400);
+  }
+  const data: GenericFormRequest = { email, form, message, name, turnstileToken };
 
   try {
-    const ts = await validateTurnstile(
-      key,
-      data.turnstileToken,
+    const challenge = await validateTurnstile(
+      env.TS_SECRET_KEY,
+      turnstileToken,
       request.headers.get("CF-Connecting-IP"),
     );
 
-    if (!ts.valid)
+    if (!challenge.success) {
       return res(
         {
-          success: false,
           message: "Challenge verification failed",
-          result: ts.response,
+          result: challenge,
+          success: false,
         },
         418,
       );
+    }
 
-    if (env.SLACK_FORM_POST_GENERIC)
-      await fetch(env.SLACK_FORM_POST_GENERIC, {
-        method: "POST",
-        body: JSON.stringify({
-          form: data.form,
-          name: data.name ?? "",
-          email: data.email ?? "",
-          message: data.message ?? "",
-        }),
-      });
+    const posted = await fetch(env.SLACK_FORM_POST_GENERIC, {
+      body: JSON.stringify({ email, form, message, name }),
+      method: "POST",
+    });
 
-    return res(
-      { success: true, message: "Submission received", result: data },
-      200,
-    );
+    if (!posted.ok) {
+      return res(
+        {
+          error: `Slack webhook returned ${String(posted.status)}`,
+          message: "Error handling submission",
+          success: false,
+        },
+        502,
+      );
+    }
+
+    return res({ message: "Submission received", result: data, success: true }, 200);
   } catch (error) {
     return res(
       {
-        success: false,
+        error,
         message: "Error handling submission",
-        error: error,
+        success: false,
       },
       500,
     );

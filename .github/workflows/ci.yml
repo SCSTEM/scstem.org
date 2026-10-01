@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main, staging]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+
+      # Every hk.pkl step over every file, each reporting its findings as inline annotations on
+      # the PR diff.
+      - name: Check
+        run: |
+          echo "::add-matcher::.github/typescript-matchers.json"
+          pnpm check
+
+  build:
+    name: Build
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    env:
+      LHCI_VERSION: 0.15.1
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+
+      - name: Build
+        id: build
+        run: pnpm build
+
+      # Title and description uniqueness, and whether every og:image resolves, are only
+      # answerable across the whole built site.
+      - name: Page metadata
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: pnpm check:meta
+
+      # --root-dir resolves the root-relative hrefs Astro emits. llms.txt is in scope because its
+      # links are hand-written paths that nothing else checks against the routes they name.
+      - name: Links
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --offline --include-fragments --no-progress
+            --root-dir ${{ github.workspace }}/dist
+            'dist/**/*.html' 'dist/llms.txt'
+          fail: true
+
+      # The build is deterministic, so a byte-identical dist/ measured with the same server,
+      # config, and lhci version has already passed; only the marker file is cached.
+      - name: Look up a previous Lighthouse pass
+        id: lighthouse-pass
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        uses: actions/cache/restore@v6
+        with:
+          path: .lighthouseci/passed
+          key: lighthouse-${{ env.LHCI_VERSION }}-${{ hashFiles('dist/**', 'tools/ci/**') }}
+          lookup-only: true
+
+      - name: Lighthouse CI
+        id: lighthouse
+        if: ${{ !cancelled() && steps.lighthouse-pass.outcome == 'success' && steps.lighthouse-pass.outputs.cache-hit != 'true' }}
+        run: |
+          pnpm dlx @lhci/cli@${{ env.LHCI_VERSION }} autorun --config=tools/ci/lighthouserc.json
+          touch .lighthouseci/passed
+
+      # Into the log as well as the summary, so the waterfall behind a failed LCP assertion is
+      # readable from the API without downloading the report artifact.
+      - name: Summarize Lighthouse
+        if: ${{ !cancelled() && steps.lighthouse.outcome != 'skipped' }}
+        run: node tools/ci/lighthouse-summary.ts | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Note the skipped Lighthouse run
+        if: ${{ steps.lighthouse-pass.outputs.cache-hit == 'true' }}
+        run: echo "Lighthouse skipped, this exact build already passed." >>"$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() && steps.lighthouse.outcome != 'skipped' }}
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/reports/
+
+      - uses: actions/cache/save@v6
+        if: ${{ steps.lighthouse.outcome == 'success' }}
+        with:
+          path: .lighthouseci/passed
+          key: ${{ steps.lighthouse-pass.outputs.cache-primary-key }}

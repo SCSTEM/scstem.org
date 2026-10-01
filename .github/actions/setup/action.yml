@@ -1,0 +1,26 @@
+name: Setup
+description: Install the mise-pinned toolchain and the pnpm dependencies, with both cached.
+runs:
+  using: composite
+  steps:
+    # agent-browser in mise.toml is a local tool; CI installs only what the jobs run.
+    - uses: jdx/mise-action@v4
+      with:
+        version: 2026.9.14
+        install_args: node pnpm hk
+        cache: true
+
+    # mise-action caches tool binaries, not pnpm's content-addressable store.
+    - name: Locate pnpm store
+      shell: bash
+      run: echo "PNPM_STORE=$(pnpm store path --silent)" >>"$GITHUB_ENV"
+
+    - uses: actions/cache@v6
+      with:
+        path: ${{ env.PNPM_STORE }}
+        key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: pnpm-store-${{ runner.os }}-
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile --prefer-offline

@@ -1,0 +1,53 @@
+amends "package://github.com/jdx/hk/releases/download/v2.1.0/hk@2.1.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.1.0/hk@2.1.0#/Builtins.pkl"
+
+// A failing step does not abort the rest, so one run reports every problem.
+fail_fast = false
+
+// Every check the repo runs, for every entry point: the pre-commit hook, `pnpm check`, CI's Check
+// job, and the Claude Code hooks in .claude/settings.json (docs/tooling.md).
+steps {
+  ["trailing-whitespace"] = Builtins.trailing_whitespace
+  ["newlines"] = Builtins.newlines
+  ["merge-conflict"] = Builtins.check_merge_conflict
+  ["prettier"] = (Builtins.prettier) { batch = false }
+  // `--format gha` writes workflow-command annotations under GitHub Actions and stylish output
+  // everywhere else. `--no-warn-ignored` keeps an explicitly passed ignored file from counting
+  // against `--max-warnings 0`.
+  ["eslint"] = (Builtins.eslint) {
+    batch = false
+    glob = List("**/*.ts", "**/*.mts", "**/*.js", "**/*.mjs", "**/*.astro")
+    // Typed rules read the `astro:content` types that `astro check` generates into .astro/.
+    depends = "astro"
+    check {
+      command {
+        argv =
+          List("eslint", "--max-warnings", "0", "--no-warn-ignored", "--format", "gha", "{{files}}")
+      }
+    }
+    fix {
+      command {
+        argv = List("eslint", "--max-warnings", "0", "--no-warn-ignored", "--fix", "{{files}}")
+      }
+    }
+  }
+
+  // Whole-program checks, behind the `slow` profile so the pre-commit hook and the per-edit agent
+  // hook skip them. Each runs once when any file in its glob is selected.
+  ["astro"] {
+    profiles = List("slow")
+    glob = List("src/**", "*.ts", "tsconfig.json")
+    check = "astro check"
+  }
+  // One `tsc -p` per tsconfig.json; src/ and the root config files are `astro check`'s.
+  ["tsc"] = (Builtins.tsc) {
+    profiles = List("slow")
+    glob = List("functions/**/*.ts", "tools/**/*.ts")
+  }
+  // Check only: `knip --fix` deletes code.
+  ["knip"] {
+    profiles = List("slow")
+    glob = List("**/*.ts", "**/*.mts", "**/*.js", "**/*.mjs", "**/*.astro", "package.json")
+    check = "knip ${GITHUB_ACTIONS:+--reporter github-actions}"
+  }
+}

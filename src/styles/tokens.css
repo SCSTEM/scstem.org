@@ -1,0 +1,225 @@
+/**
+ * SC2 design tokens (DESIGN.md §2–§4): the one portable source for every surface that wears the
+ * brand. Plain CSS with no build step, so this site, the team wiki and web apps import the same
+ * file. This site maps it onto Tailwind in `global.css`; nothing here knows Tailwind exists.
+ *
+ * Three independent switches, each an attribute on `<html>` or any element below it:
+ *
+ *   data-mode="dark" | "light"         the finish: black-anodized steel or clear-anodized aluminum
+ *   data-accent="green" | "orange"     the action accent; yellow when unset
+ *   data-register="blueprint"          the drawing of the part: cyanotype and whiteprint
+ *
+ * Dark is the default finish. Every color is written once as `light-dark(light, dark)`, so the
+ * finish follows `color-scheme` and nests without restating a token. What `light-dark()` cannot
+ * carry (images and lengths) sits in the `[data-mode]` blocks at the end of the file.
+ *
+ * Values are normative-by-copy: when one disagrees with DESIGN.md, the doc wins (§11), and
+ * `/styleguide` fails the build when a pair drops below its contrast floor.
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* --- Surfaces: cut into metal, laid on the table (§2) ------------------------------------ */
+  --sc2-background: light-dark(#e4e6e9, #262626); /* the sheet */
+  --sc2-card: light-dark(#d8dbdf, #171717); /* pockets cut into the sheet */
+  --sc2-card-hover: light-dark(#dfe2e5, #1f1f1f); /* a pocket floor lifting a step */
+  --sc2-pocket-shade: light-dark(rgb(20 28 38 / 0.045), rgb(0 0 0 / 0.3)); /* lit floor, top */
+  --sc2-pocket-lit: light-dark(rgb(255 255 255 / 0.2), rgb(255 255 255 / 0.03)); /* at the lip */
+  --sc2-pocket-border: light-dark(#c2c6cc, #383838);
+  --sc2-band: light-dark(#d1d5da, #121212); /* the drafting table */
+  --sc2-plate: light-dark(#eef0f2, #232323); /* a pocket laid on the table */
+  --sc2-plate-border: light-dark(#c9cdd2, #333333);
+  --sc2-plate-hover: light-dark(#f5f6f7, #2a2a2a);
+  --sc2-sheet: light-dark(#eff1f3, #2e2e2e); /* the neutral keycap's face */
+  --sc2-border: light-dark(#c2c6cc, #3a3a3a);
+  --sc2-control-edge: light-dark(#6b7178, #737373); /* ≥ 3:1 on every surface */
+  --sc2-ink: light-dark(#8e949b, #0c0c0c); /* drafted shadow ink, never a fill */
+  --sc2-logo: light-dark(#171717, #fafafa); /* the one-color lockup: brand Black or White */
+  --sc2-print: light-dark(#262626, transparent); /* the dark ground a logo drawn for one keeps */
+
+  /* --- Text ramp (§2) ----------------------------------------------------------------------- */
+  --sc2-foreground: light-dark(#16181b, #fafafa); /* headings, nav, emphasis */
+  --sc2-body: light-dark(#2b2f34, #d4d4d4); /* all reading copy */
+  --sc2-muted: light-dark(#4b5057, #a3a3a3); /* captions, meta, labels only */
+
+  /* --- Accent: Safety Yellow by default (§2 fill-vs-text law) ------------------------------ */
+  --sc2-primary: #facc15; /* fills */
+  --sc2-primary-foreground: #171717; /* a label on the fill */
+  --sc2-primary-bright: light-dark(#713f12, #facc15); /* text and icons on the ground */
+  --sc2-ring: light-dark(#713f12, #facc15);
+  --sc2-mark: light-dark(#d1a107, #facc15); /* the engineer's marker */
+  --sc2-swipe: light-dark(#e1c964, rgb(250 204 21 / 0.25)); /* highlighter, body sizes */
+  --sc2-swipe-display: light-dark(#e1c964, rgb(250 204 21 / 0.35)); /* highlighter, h1 and h2 */
+  --sc2-underline-1-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%23facc15' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-1-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%23d1a107' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%23facc15' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%23d1a107' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%23facc15' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%23d1a107' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+
+  /* --- Informational and error pairs -------------------------------------------------------- */
+  --sc2-info: #3b82f6;
+  --sc2-info-bright: light-dark(#1e40af, #60a5fa);
+  --sc2-info-foreground: #171717;
+  --sc2-destructive: #db262f;
+  --sc2-destructive-bright: light-dark(#991b1b, #fca5a5);
+  --sc2-destructive-foreground: #fafafa;
+
+  /* --- Sponsor tiers: text in a stamped chip (§8) ------------------------------------------- */
+  --sc2-tier-platinum: light-dark(#475569, #cbd5e1);
+  --sc2-tier-gold: light-dark(#854d0e, #facc15);
+  --sc2-tier-silver: light-dark(#52525b, #a3a3a3);
+  --sc2-tier-bronze: light-dark(#9a3412, #d08954);
+
+  /* --- Drafting grid lines (§2.3): minor 26px cell, major 130px ------------------------------ */
+  /* Ink lines on a light sheet read stronger than white lines on a dark one, so the light
+     finish draws them fainter. */
+  --sc2-grid-minor: light-dark(rgb(22 24 27 / 0.03), rgb(250 250 250 / 0.04));
+  --sc2-grid-major: light-dark(rgb(22 24 27 / 0.06), rgb(250 250 250 / 0.08));
+
+  /* --- Typography (§3) ---------------------------------------------------------------------- */
+  --sc2-font-display: "Orbitron", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --sc2-font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sc2-font-mono: "Source Code Pro", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --sc2-font-hand: "Architects Daughter", "Comic Sans MS", cursive;
+
+  /* Nine roles on three line heights (§3), fluid between 360px and 1440px viewports. */
+  --sc2-leading-tight: 1.1; /* display, h1, h2, stats */
+  --sc2-leading-snug: 1.3; /* h3, h4, labels */
+  --sc2-leading-relaxed: 1.6; /* lead, copy, small */
+  --sc2-text-display: clamp(2.5rem, 1.9167rem + 2.5926vw, 4.25rem);
+  --sc2-text-h1: clamp(2rem, 1.6667rem + 1.4815vw, 3rem);
+  --sc2-text-h2: clamp(1.5rem, 1.25rem + 1.1111vw, 2.25rem);
+  --sc2-text-h3: clamp(1.25rem, 1.1667rem + 0.3704vw, 1.5rem);
+  --sc2-text-h4: clamp(1.125rem, 1.0833rem + 0.1852vw, 1.25rem);
+  --sc2-text-lead: clamp(1.0625rem, 1.0208rem + 0.1852vw, 1.1875rem);
+  --sc2-text-copy: clamp(1rem, 0.9792rem + 0.0926vw, 1.0625rem);
+  --sc2-text-small: 0.875rem;
+  --sc2-text-label: clamp(0.6875rem, 0.6667rem + 0.0926vw, 0.75rem);
+  --sc2-tracking-label: 0.05em;
+
+  /* --- Spacing: nine steps, named by their Tailwind numbers (§4) ---------------------------- */
+  --sc2-space-1: 0.25rem;
+  --sc2-space-2: 0.5rem;
+  --sc2-space-3: 0.75rem;
+  --sc2-space-4: 1rem;
+  --sc2-space-6: 1.5rem;
+  --sc2-space-8: 2rem;
+  --sc2-space-12: 3rem;
+  --sc2-space-16: 4rem;
+  --sc2-space-24: 6rem;
+
+  /* --- Radius: one per kind of object (§4) ---------------------------------------------------- */
+  --sc2-radius-sm: 4px; /* stamped: chips, spec labels, badges */
+  --sc2-radius-md: 8px; /* controls: buttons, inputs, icon tiles */
+  --sc2-radius-lg: 12px; /* cut features: pockets, panels, framed media */
+
+  /* --- Elevation: drafted, not rendered (§4) ------------------------------------------------ */
+  --sc2-shadow-pocket:
+    inset 0 3px 12px light-dark(rgb(20 28 38 / 0.22), rgb(0 0 0 / 0.75)),
+    inset 0 1px 0 light-dark(rgb(20 28 38 / 0.2), rgb(0 0 0 / 0.9)),
+    0 1px 0 light-dark(rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.07));
+  --sc2-shadow-contact:
+    0 1px 0 light-dark(rgb(20 28 38 / 0.25), rgb(0 0 0 / 0.9)),
+    0 12px 24px -8px light-dark(rgb(20 28 38 / 0.3), rgb(0 0 0 / 0.8));
+  --sc2-shadow-plate:
+    inset 0 1px 0 light-dark(rgb(255 255 255 / 0.8), rgb(255 255 255 / 0.09)),
+    inset 0 0 0 1px light-dark(rgb(255 255 255 / 0.5), rgb(255 255 255 / 0.06)),
+    var(--sc2-shadow-contact);
+  --sc2-shadow-drafted-1: 3px 3px 0 0 var(--sc2-ink);
+  --sc2-shadow-drafted-2: 6px 6px 0 0 var(--sc2-ink);
+  --sc2-shadow-press: 1px 1px 0 0 var(--sc2-ink);
+  --sc2-shadow-table-edge: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.06));
+
+  /* --- Motion (§6) -------------------------------------------------------------------------- */
+  --sc2-duration-micro: 150ms; /* hover, focus */
+  --sc2-duration-ui: 250ms; /* menus, accordions */
+  --sc2-duration-entrance: 500ms; /* scroll-in entrances */
+  --sc2-duration-draw: 1100ms; /* hand-markup strokes drawing on */
+  --sc2-ease-entrance: cubic-bezier(0, 0, 0.2, 1);
+  --sc2-ease-toggle: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* --- Material ----------------------------------------------------------------------------- */
+  /* The sheet's grain: one octave of high-frequency fractal noise with a steep gamma, so only the
+     brightest fraction of each cell carries alpha — film grain with no cell structure to repeat.
+     Over the dark ground it lifts the mean ~8 levels; the light finish takes the same noise in
+     near-black. */
+  --sc2-texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  /* Which finish's link underline shows (§2.14). A data URI cannot read a variable, so each
+     accent carries its three strokes once per finish (written by `pnpm assets:underlines`) and
+     the finish shows one of the two layers. */
+  --sc2-underline-size-dark: 100% 0.8em;
+  --sc2-underline-size-light: 0 0;
+}
+
+/* --- Accents: each swaps the accent set and nothing else ----------------------------------- */
+[data-accent="green"] {
+  --sc2-primary: #16a34a; /* Hazard Green */
+  --sc2-primary-foreground: #08240f;
+  --sc2-primary-bright: light-dark(#14532d, #3ecf6e);
+  --sc2-ring: light-dark(#14532d, #3ecf6e);
+  --sc2-mark: light-dark(#1eb256, #16a34a);
+  --sc2-swipe: light-dark(#7cc59a, rgb(22 163 74 / 0.25));
+  --sc2-swipe-display: light-dark(#7cc59a, rgb(22 163 74 / 0.35));
+  --sc2-underline-1-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%233ecf6e' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-1-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%231eb256' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%233ecf6e' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%231eb256' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%233ecf6e' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%231eb256' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+
+[data-accent="orange"] {
+  --sc2-primary: #f97316; /* Danger Orange */
+  --sc2-primary-foreground: #241102;
+  --sc2-primary-bright: light-dark(#7c2d12, #fb923c);
+  --sc2-ring: light-dark(#7c2d12, #fb923c);
+  --sc2-mark: light-dark(#e08437, #f97316);
+  --sc2-swipe: light-dark(#e8a878, rgb(249 115 22 / 0.25));
+  --sc2-swipe-display: light-dark(#e8a878, rgb(249 115 22 / 0.35));
+  --sc2-underline-1-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%23fb923c' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-1-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.2C28 13.3 64 12.4 98.5 10.4' fill='none' stroke='%23e08437' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%23fb923c' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-2-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 12.4C34 13.4 66 12.8 98.5 11.2' fill='none' stroke='%23e08437' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%23fb923c' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+  --sc2-underline-3-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='M1.5 13.4C22 12.7 62 12.3 98.8 11.8' fill='none' stroke='%23e08437' stroke-width='4.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+
+/* --- Blueprint register: cyanotype in dark, whiteprint in light ---------------------------- */
+[data-register="blueprint"] {
+  --sc2-background: light-dark(#f3f6fa, #0f2b52);
+  --sc2-card: light-dark(#e4eaf3, #0b2242);
+  --sc2-card-hover: light-dark(#eaeff6, #0e284c);
+  --sc2-pocket-border: light-dark(#b7c6de, #34507a);
+  --sc2-band: light-dark(#dce4f0, #0a1f3d);
+  --sc2-plate: light-dark(#ffffff, #133566);
+  --sc2-plate-border: light-dark(#c4d1e4, #2a4c7e);
+  --sc2-plate-hover: light-dark(#ffffff, #173b70);
+  --sc2-sheet: light-dark(#ffffff, #153563);
+  --sc2-border: light-dark(#b7c6de, #2f4c75);
+  --sc2-control-edge: light-dark(#4a607d, #8fa6c8);
+  --sc2-ink: light-dark(#a7b6cc, #061430);
+  --sc2-foreground: light-dark(#0b1f3a, #fafafa);
+  --sc2-body: light-dark(#26405f, #d6e1f0);
+  --sc2-muted: light-dark(#3e5270, #a9bdd8);
+  --sc2-info-bright: light-dark(#1e40af, #93c5fd);
+  --sc2-grid-minor: light-dark(rgb(11 31 58 / 0.04), rgb(250 250 250 / 0.05));
+  --sc2-grid-major: light-dark(rgb(11 31 58 / 0.09), rgb(250 250 250 / 0.11));
+}
+
+/* --- Finishes: what light-dark() cannot carry ---------------------------------------------- */
+[data-mode="dark"] {
+  color-scheme: dark;
+  --sc2-texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --sc2-underline-size-dark: 100% 0.8em;
+  --sc2-underline-size-light: 0 0;
+}
+
+[data-mode="light"] {
+  color-scheme: light;
+  --sc2-texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.09 0 0 0 0 0.11 0.75 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --sc2-underline-size-dark: 0 0;
+  --sc2-underline-size-light: 100% 0.8em;
+}
