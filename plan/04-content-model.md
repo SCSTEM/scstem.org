@@ -80,7 +80,7 @@ Typed constants module (single import site for site facts):
 
 ### 3. Editing documentation
 
-`docs/content.md` — the "2-minute sponsor" guide: add/remove/deactivate a sponsor, add an event / hide last year's, add an FAQ, add a robot. Include exact file templates. Link from `AGENTS.md` and README. Note the CMS-future constraint: keep schemas flat; schema changes need an ADR.
+`docs/content.md` — the "2-minute sponsor" guide: add/remove/deactivate a sponsor, add an event / hide last year's, add an FAQ, add a robot. Include exact file templates. Link from `AGENTS.md` and README. Note the CMS-future constraint: keep schemas flat.
 
 ### 4. Guardrail
 

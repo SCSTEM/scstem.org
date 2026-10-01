@@ -11,7 +11,6 @@ This directory is the complete implementation plan for rewriting scstem.org from
 - `staging` and `main` are untouched until Phase 11 (cutover). Cloudflare Pages gives every stack branch its own preview URL, kept noindexed by the existing `public/_headers` rules — **the topmost layer's preview is always the full-site preview** (each layer contains everything below it).
 - The old site lives in **`legacy/`** during the rewrite (moved there in Phase 01). It is the _reference_ for content, copy, URLs, and behavior. **Never import from `legacy/`; never copy components.** Copy _content and intent_, rebuild the implementation.
 - Before every commit: `pnpm check && pnpm build` must pass. A phase is done when its acceptance criteria are all checked and CI is green.
-- When a phase makes a decision not covered here, record it in `docs/adr/NNNN-<slug>.md` and note it in the phase PR description.
 
 ## Objectives (from project owner)
 

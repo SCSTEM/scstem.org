@@ -72,5 +72,4 @@ Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script
 ## Comments
 
 Describe what is there, never what is not. No narrating your edits ("changed X to Y"), no
-"as requested", no placeholders for work you did not do. Rejected alternatives and the
-reasoning behind a decision go in `docs/adr/`, not in a comment.
+"as requested", no placeholders for work you did not do, no rejected alternatives.

@@ -11,7 +11,7 @@ import { PROGRAM_KEYS } from "@/data/site";
  * Schemas stay deliberately **flat**: strings, enums, booleans, dates, numbers, and image
  * paths. No nested objects beyond one level, no discriminated unions. That is what keeps a
  * git-backed CMS (Keystatic and friends) a later addition rather than a restructuring, and it
- * is why `location` below is two flat fields instead of an object. Schema changes need an ADR.
+ * is why `location` below is two flat fields instead of an object.
  */
 
 /**

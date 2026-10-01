@@ -12,7 +12,7 @@ Finish everything discoverability: sitemap/robots, per-page OG images, structure
 ### 1. Sitemap & robots
 
 - `@astrojs/sitemap` (installed Phase 01; the `/styleguide` filter already exists in `astro.config.ts`): extend the filter to hidden events (use `getVisibleEvents()` from Phase 08). Verify `<lastmod>` behavior; set `changefreq` only if honest.
-- Replace `public/robots.txt` (still the legacy file): `User-agent: *` allow-all, plus `Sitemap: https://scstem.org/sitemap-index.xml`. **Changes from legacy:** drop `Disallow: /image` and `/video` (blocks Google Images/video indexing of team content — we want that traffic). Do not block AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.) — being in AI answers is an objective. Record this in `docs/adr/` as a deliberate posture alongside D25.
+- Replace `public/robots.txt` (still the legacy file): `User-agent: *` allow-all, plus `Sitemap: https://scstem.org/sitemap-index.xml`. **Changes from legacy:** drop `Disallow: /image` and `/video` (blocks Google Images/video indexing of team content — we want that traffic). Do not block AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.) — being in AI answers is an objective. This is a deliberate posture alongside D25.
 - `/styleguide` noindex already ships (Phase 05, Seo prop) — verify it held; nothing to add.
 
 ### 2. Metadata verification (CI teeth)

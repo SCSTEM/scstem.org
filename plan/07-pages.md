@@ -11,7 +11,7 @@ Shared rules for all groups:
 
 - Reference the legacy page for copy/content inventory only; rebuild with `ui/` + primitives.
 - Images via astro:assets with explicit dimensions (sources may still be heavy — Phase 09 fixes sources; markup must already be responsive: `widths`/`sizes`, lazy below the fold).
-- Any repeating content discovered that should be a collection → add to Phase 04's collections in the same PR (schema + ADR note), don't inline it.
+- Any repeating content discovered that should be a collection → add to Phase 04's collections in the same PR, don't inline it.
 - **Copy porting trap** (overview standing rule 4): a line break before an inline `<em>`/`<code>`/component collapses the preceding space in Astro's output. When porting prose, diff the _rendered_ visible text against legacy, not the source.
 - The pages here are already linked from `nav.primary` in `src/data/site.ts` — do not add ad-hoc links; if a page's title differs from its nav label, the nav label wins in chrome. `/contact` is deliberately not a nav route (the 404 page titles it literally).
 
@@ -69,7 +69,7 @@ Shared rules for all groups:
 ### New Pages Function: `functions/api/calendar/[name].ts`
 
 - Validates `name` against the calendar IDs in a shared server-side map (mirror `site.ts` values; functions can't import from `src/` — duplicate the two IDs with a comment pointing at `site.ts`).
-- Fetches the calendar's public ICS feed server-side, parses upcoming events (next ~90 days) into JSON `{title, start, end, location, description}[]`. Parse with a minimal hand-rolled ICS parser (the feed shape is stable) — avoid adding a heavy dependency; if parsing proves gnarly, a micro ICS lib is acceptable with an ADR.
+- Fetches the calendar's public ICS feed server-side, parses upcoming events (next ~90 days) into JSON `{title, start, end, location, description}[]`. Parse with a minimal hand-rolled ICS parser (the feed shape is stable) — avoid adding a heavy dependency; if parsing proves gnarly, a micro ICS lib is acceptable.
 - Cache: `Cache-Control: public, max-age=900` + CF cache API.
 
 ### `/calendar/frc`, `/calendar/sc2` (`legacy/src/app/calendar/[name]/page.tsx`)

@@ -92,7 +92,7 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
   2. Commands (`mise run check` / `pnpm check`, dev, build).
   3. Toolchain ownership table (which linter/formatter owns which extensions) + "hooks run them automatically on every edit."
   4. Architecture map (5 lines: pages, layouts, ui vs ui/primitives, content collections, data/site.ts, functions/).
-  5. Comments policy (adopt spark's): describe what is there, never what is not; no narrating edits; rejected alternatives go in `docs/adr/`.
+  5. Comments policy (adopt spark's): describe what is there, never what is not; no narrating edits; no rejected alternatives in comments.
 - `ln -s AGENTS.md CLAUDE.md` (symlink, committed).
 - `.claude/settings.json` PostToolUse hook on `Edit|Write|NotebookEdit` → `.claude/hooks/format-lint.sh` (timeout 60).
 - `.claude/hooks/format-lint.sh` (adapt spark's `oxc.sh`): read hook JSON from stdin; resolve `.tool_response.filePath // .tool_input.file_path`; exit 0 for files outside repo, in `legacy/`, `dist/`, `.astro/`, `node_modules/`, `plan/`, or vendored rule dirs. Route by extension:
