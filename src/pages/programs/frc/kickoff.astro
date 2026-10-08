@@ -11,7 +11,7 @@ import { programTrail } from "@/lib/jsonld";
 const trail = programTrail("frc");
 const event = await getVisibleEvent("frc-kickoff");
 if (event === undefined) {
-  return Astro.redirect(trail[1].path, 301);
+  return Astro.redirect(trail[1].path, 302);
 }
 ---
 

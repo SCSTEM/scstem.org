@@ -14,9 +14,7 @@ type Props = SeoProps;
 
 const { title, description, og, noindex = false, theme } = Astro.props;
 
-/** The homepage is the site; anywhere else is a page *of* it. */
-const isHome = Astro.url.pathname === "/";
-const fullTitle = isHome ? site.name : site.titleTemplate.replace("%s", title);
+const fullTitle = site.titleTemplate.replace("%s", title);
 
 /** `trailingSlash: "always"` makes the pathname the trailing-slash form a page is served at. */
 const canonicalUrl = absoluteUrl(Astro.url.pathname);

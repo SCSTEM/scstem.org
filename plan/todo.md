@@ -1,8 +1,6 @@
 # Owner tasks
 
-Work that Phases 09 through 11 set up but could not finish, because it needs an account, a
-dashboard, or a URL that is actually reachable. Everything here is a deliberate gap, not an
-oversight — each item says what is already in the repository waiting for it.
+Remaining content decisions, account configuration, and deployed checks for the migration.
 
 ## Cutover
 
@@ -24,6 +22,7 @@ The order is `plan/11-cutover.md` §2–§6; these are the steps only an owner c
 - [ ] **Staging soak** on https://staging.scstem.org: phone, tablet, desktop; keyboard-only pass;
       screen-reader smoke on the nav and the contact form; Lighthouse against real Cloudflare
       serving; the contact form end to end with production Turnstile (a Slack message arrives);
+      the joining Google Form loaded by scrolling, its direct-link fallback, and submission;
       both calendars live; GA4 DebugView confirming staging does **not** report. Then sign off.
 - [ ] **Launch**: merge `staging` into `main`, spot-check pages, redirects, the form, calendars,
       and GA4 Realtime. Submit the sitemap to Search Console and Bing; run the Rich Results test
@@ -39,7 +38,7 @@ The order is `plan/11-cutover.md` §2–§6; these are the steps only an owner c
       project's build environment (production and preview). Until it is set the beacon is not
       injected at all — the snippet skips it on an empty token — so GA4 is the only collector.
       `docs/analytics.md` has the details. _(D21 is not fully satisfied until this is done.)_
-- [ ] **GA4 property review.** Data retention (default 14 months; 26 is available), an
+- [ ] **GA4 property review.** Confirm event-data retention (standard GA4 offers 2 or 14 months), an
       internal-traffic filter if the workshop has a static IP, and unwanted-referral exclusions
       for `paypal.com` and `docs.google.com`.
 - [ ] **Mark the six taxonomy events as key events** in GA4 → Admin → Events:
@@ -54,11 +53,10 @@ The order is `plan/11-cutover.md` §2–§6; these are the steps only an owner c
 - [ ] **Verify Bing Webmaster Tools**, importing from Search Console rather than re-verifying.
 - [ ] **Run the five JSON-LD shapes through the Rich Results Test and the schema.org validator**
       once the site is on a reachable URL: `NGO`, `WebSite`, `BreadcrumbList`, `Event`, `FAQPage`.
-      Both validators live on Google infrastructure, which this development environment's network
-      policy blocks, so Phase 10 could only assert locally that every block parses, carries
-      `@context: https://schema.org`, and has an `@type` — that check is in
-      `tools/checks/verify-meta.ts` and runs in CI. Google's own eligibility rules are what still
-      need a run.
+      `tools/checks/verify-meta.ts` validates the site's five schema contracts locally, and
+      `check:events` exercises future event pages even out of season. Google's eligibility rules
+      and the deployed URLs still need an external validation pass. Use a real upcoming event
+      for the Event check; the future fixture dates are only for CI.
 - [ ] **Check the OG cards in a card debugger** (opengraph.xyz, Facebook's Sharing Debugger,
       LinkedIn's Post Inspector) against the preview deploy. `verify-meta` already proves every
       `og:image` is absolute and resolves to a built file; what it cannot prove is how a given
@@ -83,7 +81,17 @@ The order is `plan/11-cutover.md` §2–§6; these are the steps only an owner c
       absent from the sitemap and `/llms.txt`. That is automatic now — an event retires itself once
       its `end` passes, on the first deploy after it. Nothing is broken; the site simply has no
       live event. **Date the next season's entries forward when you have real dates** and both
-      pages come back on the next deploy. `docs/content.md` has the workflow.
+      pages come back on the next deploy. Refresh the kickoff title, description, body, teasers,
+      and hints for the new season as well. `docs/content.md` has the workflow.
+- [ ] **Refresh the robot history.** Replace the 2025 placeholder with the real robot's name,
+      story, and photograph; add the 2026 season once its details are ready. These entries live in
+      `src/content/frc/robots/`. The FRC hero feature chooses the newest photographed entry.
+- [ ] **Confirm joining copy.** Check the shared age ranges and dues answer in `src/content/faq/`
+      against current team policy. The answers now appear on the program and get-involved pages.
+- [ ] **Assign an SC2 calendar owner.** Publish general STEM/community events to the existing SC2
+      Google Calendar as the pipeline becomes available. The site combines it with Biohazard
+      automatically; avoid independently duplicating events across both calendars. On staging,
+      confirm source labels, event descriptions, and the combined Google Calendar fallback.
 - [ ] **Re-shoot or re-pick the hero video source if the softness bothers you.** The committed cut
       is 720p because the master is an out-of-focus wide-angle action-cam take, and a 1080p encode
       of it is 2.4x the bytes for no visible difference (`docs/adr/0006-hero-video-encode.md`).
@@ -92,17 +100,9 @@ The order is `plan/11-cutover.md` §2–§6; these are the steps only an owner c
       (`docs/adr/0010-og-cards.md`); which photograph each section gets is a taste call, and the
       seven currently chosen are the best fit from `src/assets/`, not a considered shoot. Swap a
       path in `tools/assets/og-cards.ts` and run `pnpm assets:og`.
-- [ ] **Regenerating the OG cards needs a font step** that CI deliberately does not do:
-      `pip install fonttools brotli`, then `pnpm assets:og-fonts` once per machine. Only relevant
-      when the cards change.
 
 ## Performance
 
-- [ ] **The Lighthouse URL list no longer includes an event-landing page.** `plan/09` §5 budgeted
-      `/openhouse/` as one of the six page shapes; an event retires itself now, so that URL is a
-      redirect stub out of season and the list uses `/about/` instead. When a live event exists and
-      you want its shape budgeted, add its URL to `lighthouserc.json` — and take it out again when
-      the season ends.
 - [ ] **Watch item, not an open problem: the LCP budget is met, tightest median 1577 ms against
       2000 ms.** The gate had been red on every CI run since Phase 09: the runner's Chrome 152
       fetches below-the-fold images during the initial load where Chrome 141 did not, and

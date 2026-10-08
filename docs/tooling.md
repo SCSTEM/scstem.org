@@ -37,11 +37,13 @@ does not expose yet; when it does and `@astrojs/check` widens its peer range, bu
 TypeScript scripts run directly by Node (type stripping, no build step), each behind a
 `package.json` script:
 
-| Script              | Does                                                          | Runs in         |
-| ------------------- | ------------------------------------------------------------- | --------------- |
-| `check:meta`        | Every built page's head: unique title/description, og:image   | CI, after build |
-| `assets:og`         | Render the OG cards in `src/assets/og/`                       | by hand         |
-| `assets:underlines` | Write the link underline strokes into `src/styles/tokens.css` | by hand         |
+| Script              | Does                                                           | Runs in         |
+| ------------------- | -------------------------------------------------------------- | --------------- |
+| `check:meta`        | Every built page's head: unique title/description, og:image    | CI, after build |
+| `check:calendar`    | Recurrence, daylight saving, exceptions, and feed merging      | hk / CI         |
+| `check:events`      | Isolated future-event build, metadata, and Lighthouse fixtures | CI, after build |
+| `assets:og`         | Render the OG cards in `src/assets/og/`                        | by hand         |
+| `assets:underlines` | Write the link underline strokes into `src/styles/tokens.css`  | by hand         |
 
 Two more under `tools/ci/` have no script because Lighthouse CI runs them: `serve.ts` serves
 `dist/` over HTTP/2 and TLS for the audit, and `lighthouse-summary.ts` writes the job summary.
@@ -133,7 +135,10 @@ they are marked ready (`docs/adr/0021-ci-shape.md`):
 - **Build**: `pnpm build`, then `check:meta`, an offline link check over `dist/` (lychee, which
   writes its own job summary), and Lighthouse. Lighthouse runs `@lhci/cli` via `pnpm dlx`
   (`docs/adr/0007`) against `tools/ci/serve.ts`, which serves the build over HTTP/2 and TLS the
-  way Cloudflare does (`docs/adr/0018`), three runs per URL over six page shapes. The
+  way Cloudflare does (`docs/adr/0018`), three runs per URL including FLL, donation, joining, and
+  both event layouts. `check:events` builds a temporary copy with future dates, validates its
+  metadata and discovery, and stores it in `.lighthouseci/events/`. The audit server exposes
+  those pages under `/__event-fixture/`; production `dist/` and source dates stay unchanged. The
   job summary and the log carry the median scores per URL, every failed assertion, and for each
   URL the LCP element, its phases, and the request waterfall; full reports upload as an artifact.
   A `dist/` byte-identical to one that already passed skips Lighthouse.
@@ -158,8 +163,13 @@ Mobile emulation with simulated throttling, so transfer size and request count d
 simulation follows the protocol it observes: HTTP/2 with gzip, as served. Locally (`openssl` on
 the path for the self-signed certificate):
 
+The Google Forms embed on `/get-involved/` starts loading when it enters the viewport; the
+initial-load audit excludes that later third-party transfer. Check the embedded form and its
+direct-link fallback during the staging soak.
+
 ```sh
 pnpm build
+pnpm check:events
 pnpm dlx @lhci/cli@0.15.1 autorun --config=tools/ci/lighthouserc.json
 node tools/ci/lighthouse-summary.ts
 ```

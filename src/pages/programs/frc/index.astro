@@ -11,6 +11,7 @@ import FeatureGrid from "@/components/ui/FeatureGrid.astro";
 import FirstMark from "@/components/ui/FirstMark.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroVideo from "@/components/ui/HeroVideo.astro";
+import JoiningFaq from "@/components/ui/JoiningFaq.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
@@ -65,6 +66,7 @@ const stats = [
     <HeroVideo
       alt="The view from Biohazard's driver station, out over a packed competition field"
       mp4={site.heroVideo.mp4}
+      id="frc-hero-video"
       poster={heroVideoPoster}
       slot="media"
       webm={site.heroVideo.webm}
@@ -84,6 +86,18 @@ const stats = [
     it to the next level.
     <Button href={nav.cta.href} size="lg" slot="actions">
       Join the revolution
+    </Button>
+    <Button
+      aria-controls="frc-hero-video"
+      class="group"
+      data-video-toggle
+      hidden
+      slot="actions"
+      variant="outline"
+    >
+      <Icon class="group-data-[paused=true]:hidden" name="pause" size={20} />
+      <Icon class="hidden group-data-[paused=true]:block" name="play--filled" size={20} />
+      <span data-video-label>Play background video</span>
     </Button>
   </Hero>
 
@@ -153,6 +167,8 @@ const stats = [
     />
   </Section>
 
+  <JoiningFaq program="frc" />
+
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Find your place on the team</Fragment>
@@ -161,7 +177,7 @@ const stats = [
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>
-      <Button href={nav.calendar.href} size="lg" slot="actions" variant="outline">
+      <Button href={nav.frcCalendar.href} size="lg" slot="actions" variant="outline">
         See when we meet
       </Button>
     </CtaBanner>

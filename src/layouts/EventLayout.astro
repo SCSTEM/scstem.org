@@ -131,14 +131,16 @@ const details = [
 
     {data.subtitle}
 
-    <Button href={data.ctaHref} size="lg" slot="actions">
-      {data.ctaLabel}
-    </Button>
-    {data.registrationUrl !== undefined && (
-      <Button href={data.registrationUrl} size="lg" slot="actions" variant="outline">
-        Register
+    <Fragment slot="actions">
+      <Button href={data.ctaHref} size="lg">
+        {data.ctaLabel}
       </Button>
-    )}
+      {data.registrationUrl !== undefined && (
+        <Button href={data.registrationUrl} size="lg" variant="outline">
+          Register
+        </Button>
+      )}
+    </Fragment>
   </Hero>
 
   <Section atmosphere="pool" srTitle="When and where">

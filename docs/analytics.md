@@ -1,6 +1,7 @@
 # Analytics
 
-Two collectors, both cookieless-by-default, both loading after `load`:
+Two collectors, both loading after `load`: Cloudflare Web Analytics is cookieless; GA4 can set
+analytics cookies because `analytics_storage` is granted.
 
 | What                     | Where it comes from                                | Status                           |
 | ------------------------ | -------------------------------------------------- | -------------------------------- |
@@ -78,7 +79,7 @@ These need account access this repository does not have.
 - **Cloudflare Web Analytics.** Create the site in the Cloudflare dashboard, copy its beacon
   token, and set `PUBLIC_CF_BEACON_TOKEN` in the Pages project's build environment (production
   and preview). Until then the beacon is absent: the snippet skips it on an empty token.
-- **GA4 property review.** Data retention (14 months is the default; 26 is available), an
+- **GA4 property review.** Confirm event-data retention (standard GA4 offers 2 or 14 months), an
   internal-traffic filter if the workshop has a static IP, and unwanted-referral exclusions for
   `paypal.com` and `docs.google.com` so a returning donor is not re-attributed to a referral.
 - **Key events.** Mark all six events above as key events in GA4 → Admin → Events.
@@ -88,5 +89,5 @@ These need account access this repository does not have.
 The 35 KB gzipped per-page JS budget (`lighthouserc.json`) excludes analytics: `gtag.js` is about
 35 KB on its own. The Lighthouse gate measures the site without GA4 because the hostname check
 keeps the tag out of every local run, preview deploy, and CI run. Production adds `gtag.js` after
-`load`, so it never touches LCP or TBT; it does add to total transfer, which the 1 MB page-weight
-assertion has room for.
+`load`; check its actual performance on the deployed hostname, because the CI assertions exclude
+that third-party transfer and execution.

@@ -13,6 +13,8 @@ import HeroImage from "@/components/ui/HeroImage.astro";
  * for it.
  */
 interface Props {
+  /** The labelled playback button in the hero's action row references this id. */
+  id: string;
   /** Describes the footage: the poster is what a reader who never sees it moving is left with. */
   alt: string;
   mp4: string;
@@ -20,12 +22,12 @@ interface Props {
   webm: string;
 }
 
-const { alt, mp4, poster, webm } = Astro.props;
+const { id, alt, mp4, poster, webm } = Astro.props;
 ---
 
 <HeroImage alt={alt} src={poster} />
 
-<video aria-hidden="true" data-hero-video loop muted playsinline preload="none">
+<video aria-hidden="true" data-hero-video id={id} loop muted playsinline preload="none">
   <source src={webm} type="video/webm" />
   <source src={mp4} type="video/mp4" />
 </video>
@@ -44,9 +46,12 @@ const { alt, mp4, poster, webm } = Astro.props;
 </style>
 
 <script>
-  const video = document.querySelector("[data-hero-video]");
-
-  if (video instanceof HTMLVideoElement) {
+  for (const video of document.querySelectorAll<HTMLVideoElement>("[data-hero-video]")) {
+    const toggle = document.querySelector<HTMLButtonElement>(
+      `[data-video-toggle][aria-controls="${video.id}"]`,
+    );
+    const label = toggle?.querySelector("[data-video-label]");
+    if (toggle === null || toggle === undefined || label === null || label === undefined) continue;
     /**
      * SAFETY: `NetworkInformation` is absent from lib.dom, so the shape is named here; the `in`
      * guard is what makes the read safe, and `saveData` is the only member touched.
@@ -55,9 +60,25 @@ const { alt, mp4, poster, webm } = Astro.props;
       "connection" in navigator ? (navigator.connection as { saveData?: boolean }) : undefined;
 
     /** Motion the visitor has asked not to see, and bytes they have asked not to spend. */
-    const wanted =
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-      connection?.saveData !== true;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let wanted = !motion.matches && connection?.saveData !== true;
+    let inView = false;
+
+    const sync = (): void => {
+      label.textContent = wanted ? "Pause background video" : "Play background video";
+      toggle.dataset.paused = String(!wanted);
+    };
+
+    const playOrPause = (): void => {
+      if (wanted && inView && !document.hidden) {
+        void video.play().catch(() => {
+          wanted = false;
+          sync();
+        });
+      } else {
+        video.pause();
+      }
+    };
 
     /**
      * Not before `load`: the hero is in the viewport from the first paint, so an observer armed
@@ -67,28 +88,41 @@ const { alt, mp4, poster, webm } = Astro.props;
     const arm = () => {
       const observer = new IntersectionObserver((entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            // Autoplay can still be refused; give up rather than retry on every scroll, and the
-            // poster carries the hero exactly as it does under reduced motion.
-            video.play().catch(() => observer.disconnect());
-          } else {
-            video.pause();
-          }
+          inView = entry.isIntersecting;
+          playOrPause();
         }
       });
 
       // Only on `playing`: revealing it any earlier shows a blank frame over the poster. It stays
       // revealed through later pauses, since fading back would read as a glitch.
       video.addEventListener("playing", () => video.setAttribute("data-playing", ""));
+      video.addEventListener("error", () => {
+        wanted = false;
+        toggle.hidden = true;
+        observer.disconnect();
+      });
+      toggle.addEventListener("click", () => {
+        wanted = !wanted;
+        sync();
+        playOrPause();
+      });
+      motion.addEventListener("change", (event) => {
+        if (event.matches) {
+          wanted = false;
+          sync();
+          playOrPause();
+        }
+      });
+      document.addEventListener("visibilitychange", playOrPause);
+      sync();
+      toggle.hidden = false;
       observer.observe(video);
     };
 
-    if (wanted) {
-      if (document.readyState === "complete") {
-        arm();
-      } else {
-        window.addEventListener("load", arm, { once: true });
-      }
+    if (document.readyState === "complete") {
+      arm();
+    } else {
+      window.addEventListener("load", arm, { once: true });
     }
   }
 </script>

@@ -62,6 +62,10 @@ No. The workspace has everything you need, and we will show you how to use it sa
 
 Optional `program: frc | fll | sc2` if the answer only applies to one program.
 
+Answers tagged `joining` appear on `/get-involved/` and the matching program pages. Leave
+`program` unset for answers shared across programs. An answer tagged `openhouse` stays on the
+event page so seasonal directions do not appear in the year-round joining questions.
+
 The `slug` — the filename without `.md` — is how events refer to an answer, so keep it
 descriptive and stable. Renaming a file means updating any event that lists it.
 
@@ -98,7 +102,7 @@ searcher nothing. It also has to be **unique across the site**. Write it for som
 whether to click, not as a summary of the page.
 
 **An event retires itself once its `end` has passed.** On the first deploy after the event ends,
-the page redirects to its parent and the URL leaves the sitemap and `/llms.txt`. Dating next
+the page temporarily redirects (302) to its parent and the URL leaves the sitemap and `/llms.txt`. Dating next
 season's entry forward brings the page straight back.
 
 **Give every event an `end`.** The page counts down to `start`, says "Happening now" from then
@@ -141,7 +145,7 @@ import { getVisibleEvent } from "@/lib/events";
 
 const event = await getVisibleEvent("my-event");
 if (event === undefined) {
-  return Astro.redirect("/");
+  return Astro.redirect("/", 302);
 }
 ---
 
@@ -203,6 +207,24 @@ pnpm dlx sharp-cli@6.0.0 -i camera.jpg -o src/assets/<domain>/<name>.webp \
 
 Nothing enforces this; an unconverted master shows up as a slow build and a large diff
 (`docs/adr/0016`). Logos stay SVG or PNG (see "Add a sponsor").
+
+## Calendar events
+
+`/calendar/sc2/` combines the SC2 and Biohazard public Google Calendar feeds through the Pages
+Function. `/calendar/frc/` shows only Biohazard. Publish general STEM and community events to SC2,
+and team meetings and competitions to Biohazard; no Google-side aggregation is needed. Calendar
+IDs live in `src/data/site.ts` and are mirrored in `functions/api/calendar/[name].ts` because the
+Function bundles separately.
+
+The combined agenda labels each event's source and deduplicates shared occurrences by Google
+Calendar UID and start time. Independently created copies have different UIDs, so publish each
+event to one source when possible. Event descriptions appear under **Event details**. If one feed
+fails, the other still renders with an incomplete-schedule warning; the Google Calendar fallback
+includes both sources.
+
+The agenda looks 90 days ahead and caches complete responses for 15 minutes. Google Calendar
+events and the seasonal landing pages in `src/content/events/` are separate publishing workflows;
+updating one does not update the other.
 
 ## Where things live
 

@@ -98,7 +98,14 @@ export const GET: APIRoute = async () => {
       {
         title: nav.calendar.label,
         href: nav.calendar.href,
-        description: "Meetings, competitions, and outreach, from the public Google Calendar.",
+        description:
+          "Meetings, competitions, and outreach, combining the SC2 and Biohazard public calendars.",
+      },
+      {
+        title: nav.frcCalendar.label,
+        href: nav.frcCalendar.href,
+        description:
+          "Build sessions and competitions for Biohazard, from the team's public calendar.",
       },
     ]),
     section("Support", [

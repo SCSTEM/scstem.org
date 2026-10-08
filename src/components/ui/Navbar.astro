@@ -51,7 +51,8 @@ const headerLinks: readonly NavLink[] = nav.primary.filter(onSurface("header"));
 const sheetLinks = nav.primary.filter(onSurface("sheet"));
 const sheetCtas = nav.primary.filter(onSurface("sheet-cta"));
 
-const navLink = "ui-link text-small rounded-md px-3 py-2 font-medium";
+const navLink =
+  "ui-link inline-flex min-h-11 items-center text-small rounded-md px-2 py-2 font-medium lg:px-3";
 
 /** A transparent 1×1 GIF: what the logo `<picture>` shows where the lockup takes over. */
 const EMPTY_PIXEL =
@@ -61,7 +62,7 @@ const EMPTY_PIXEL =
 <header
   class={cn(
     "sticky top-0 z-50 border-b border-border",
-    "bg-background/95 supports-[backdrop-filter]:bg-background/80 supports-[backdrop-filter]:backdrop-blur",
+    "bg-background/95 supports-backdrop-filter:bg-background/80 supports-backdrop-filter:backdrop-blur",
     className,
   )}
   data-site-header
@@ -106,7 +107,7 @@ const EMPTY_PIXEL =
               </a>
               <button
                 aria-label={`Show ${link.label.toLowerCase()}`}
-                class="grid size-9 place-items-center rounded-md text-foreground hover:text-primary-bright"
+                class="grid size-11 place-items-center rounded-md text-foreground hover:text-primary-bright"
                 popovertarget={`${link.label.toLowerCase()}-panel`}
                 type="button"
               >
@@ -142,7 +143,7 @@ const EMPTY_PIXEL =
         ),
       )}
       <ModeToggle class="ml-2" />
-      <Button class="ml-2" href={nav.cta.href} size="sm">
+      <Button class="ml-2 px-3 text-small" href={nav.cta.href}>
         {nav.cta.label}
       </Button>
     </div>

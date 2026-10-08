@@ -21,7 +21,7 @@ import { programTrail } from "@/lib/jsonld";
 export const getStaticPaths = (() => {
   interface Calendar {
     /** The public calendar's id, as `src/data/site.ts` holds it. */
-    googleId: string;
+    googleIds: readonly string[];
     heading: string;
     intro: string;
     description: string;
@@ -35,7 +35,7 @@ export const getStaticPaths = (() => {
    */
   const calendars = {
     sc2: {
-      googleId: site.calendars.sc2,
+      googleIds: [site.calendars.sc2, site.calendars.frc],
       title: nav.calendar.label,
       heading: "What is coming up",
       intro:
@@ -44,7 +44,7 @@ export const getStaticPaths = (() => {
         "Upcoming build sessions, competitions, and community events at the South Central STEM Collective in Chambersburg, Pennsylvania.",
     },
     frc: {
-      googleId: site.calendars.frc,
+      googleIds: [site.calendars.frc],
       title: "Biohazard calendar",
       heading: "Biohazard's season",
       intro:
@@ -76,9 +76,13 @@ const trail =
     ? programTrail(calendar.theme, { name: calendar.title, path: `/calendar/${name}/` })
     : [{ name: nav.calendar.label, path: nav.calendar.href }];
 
-const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(
-  atob(calendar.googleId),
-)}&ctz=${encodeURIComponent(site.location.timeZone)}`;
+const embedParams = new URLSearchParams({ ctz: site.location.timeZone });
+for (const id of calendar.googleIds) {
+  embedParams.append("src", atob(id));
+}
+const embedUrl = `https://calendar.google.com/calendar/embed?${embedParams.toString()}`;
+
+const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
 ---
 
 <BaseLayout
@@ -95,18 +99,36 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
 
     <p>{calendar.intro}</p>
 
-    <Button href={embedUrl} slot="actions" variant="outline">
-      View on Google Calendar
-    </Button>
-    {"theme" in calendar && (
-      <Button href={programs[calendar.theme].href} slot="actions" variant="ghost">
-        About the team
+    <Fragment slot="actions">
+      <Button href={embedUrl} variant="outline">
+        View on Google Calendar
       </Button>
-    )}
+      {"theme" in calendar && (
+        <Button href={nav.calendar.href} variant="outline">
+          All events
+        </Button>
+      )}
+      {"theme" in calendar ? (
+        <Button href={programs[calendar.theme].href} variant="ghost">
+          About the team
+        </Button>
+      ) : (
+        <Button href={nav.frcCalendar.href} variant="ghost">
+          {nav.frcCalendar.label}
+        </Button>
+      )}
+    </Fragment>
   </Hero>
 
   <Section atmosphere="pool" srTitle="The next 90 days">
-    <div class="max-w-3xl" data-agenda data-calendar={name} data-time-zone={site.location.timeZone}>
+    <div
+      class="max-w-3xl"
+      data-agenda
+      data-calendar={name}
+      data-sc2-label={calendarLabels.sc2}
+      data-frc-label={calendarLabels.frc}
+      data-time-zone={site.location.timeZone}
+    >
       <div class="flex flex-col gap-4" data-agenda-loading>
         <Skeleton class="h-6 w-48" />
         <Skeleton class="h-24 w-full" />
@@ -115,7 +137,7 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
         <Skeleton class="h-24 w-full" />
       </div>
 
-      <p class="text-lead" data-agenda-message hidden></p>
+      <p class="mb-6 text-lead" data-agenda-message hidden role="status"></p>
       <ol class="flex flex-col gap-10" data-agenda-days></ol>
     </div>
   </Section>
@@ -222,9 +244,30 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
         );
 
         const detail = element("div", "mt-1 sm:mt-0");
+        if (calendar === "sc2" && event.calendar !== undefined) {
+          detail.append(
+            element(
+              "p",
+              "spec-label text-primary-bright mb-2",
+              agenda.dataset[`${event.calendar}Label`],
+            ),
+          );
+        }
         detail.append(element("p", "text-h4 font-semibold text-foreground", event.title));
         if (event.location !== "") {
           detail.append(element("p", "text-small text-body mt-1", event.location));
+        }
+        if (event.description !== "") {
+          const disclosure = element("details", "mt-3");
+          disclosure.append(
+            element(
+              "summary",
+              "cursor-pointer text-small font-medium text-foreground",
+              "Event details",
+            ),
+          );
+          disclosure.append(element("p", "mt-2 whitespace-pre-line text-body", event.description));
+          detail.append(disclosure);
         }
         item.append(detail);
         entries.append(item);
@@ -237,7 +280,12 @@ const embedUrl = `https://calendar.google.com/calendar/embed?src=${encodeURIComp
         if (!response.ok || body.events === undefined) {
           throw new Error(body.message ?? "Could not load the calendar");
         }
-        render(body.events);
+        if (body.message !== undefined) {
+          say(body.message);
+        }
+        if (body.events.length > 0 || body.message === undefined) {
+          render(body.events);
+        }
       })
       .catch(() => {
         say(

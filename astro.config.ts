@@ -28,10 +28,11 @@ const isIndexable = (page: string): boolean => {
 
 /**
  * Every redirect page Astro emits — a retired event's route, which `Astro.redirect` in a static
- * build writes as a meta-refresh stub — also becomes a 301 line in the deployed `_redirects`.
+ * build writes as a meta-refresh stub — also becomes a 302 line in the deployed `_redirects`.
  * Cloudflare Pages applies that file before serving assets, so the unstyled stub never paints
  * and crawlers get a real status code; the stub stays as the fallback for any other host. The
  * rule is read off the emitted page, so it follows the event entry with no second list to keep.
+ * These seasonal URLs return for the next event, so their redirects are temporary.
  */
 const redirectStubs = (): AstroIntegration => ({
   name: "redirect-stubs",
@@ -49,7 +50,7 @@ const redirectStubs = (): AstroIntegration => ({
           return [];
         }
         const from = `/${pathname.replace(/\/$/u, "")}`;
-        return [`${from} ${target} 301`, `${from}/ ${target} 301`];
+        return [`${from} ${target} 302`, `${from}/ ${target} 302`];
       });
       if (lines.length > 0) {
         appendFileSync(new URL("_redirects", dir), `\n${lines.join("\n")}\n`);

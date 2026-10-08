@@ -23,7 +23,7 @@ export const site = {
 
   description:
     "The South Central STEM Collective runs FIRST robotics and hands-on STEM programs for ages 9–18 in Franklin County, Pennsylvania.",
-  /** `%s` is the page title. The homepage uses the bare site name instead. */
+  /** `%s` is the page title, including the homepage's offering and location. */
   titleTemplate: "%s | South Central STEM Collective",
 
   email: "info@scstem.org",
@@ -233,6 +233,7 @@ export interface NavLink extends Route {
  * re-typed at the call site.
  */
 const calendar = { label: "Calendar", href: "/calendar/sc2/" } as const;
+const frcCalendar = { label: "Biohazard calendar", href: "/calendar/frc/" } as const;
 const donate = { label: "Donate", href: "/donate/" } as const;
 const sponsors = { label: "Sponsors", href: "/sponsors/" } as const;
 const about = { label: "About", href: "/about/" } as const;
@@ -266,6 +267,7 @@ export const nav = {
 
   about,
   calendar,
+  frcCalendar,
   contact,
   donate,
   programs: programsHub,
@@ -277,6 +279,7 @@ export const nav = {
 } as const satisfies {
   about: Route;
   calendar: Route;
+  frcCalendar: Route;
   contact: Route;
   cta: Route;
   donate: Route;

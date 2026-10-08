@@ -26,6 +26,10 @@ export interface TurnstileResponse {
  * are ISO 8601 instants; the page formats them in the visitor's own locale and zone.
  */
 export interface CalendarEvent {
+  /** Stable iCalendar UID, shared when the same event is copied between feeds. */
+  uid: string;
+  /** The feed an aggregated occurrence belongs to. */
+  calendar?: "sc2" | "frc";
   allDay: boolean;
   description: string;
   end: string;
@@ -37,5 +41,6 @@ export interface CalendarEvent {
 /** What `/api/calendar/<name>` answers with, either way. */
 export interface CalendarResponse {
   events?: CalendarEvent[];
+  /** An error, or a warning when an aggregated feed is only partly available. */
   message?: string;
 }

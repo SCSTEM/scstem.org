@@ -10,6 +10,8 @@
     "check": "hk check --all --slow",
     "fix": "hk fix --all",
     "check:meta": "node tools/checks/verify-meta.ts",
+    "check:calendar": "node tools/checks/verify-calendar.ts",
+    "check:events": "node tools/checks/verify-events.ts",
     "assets:og": "node tools/assets/og-cards.ts",
     "assets:underlines": "node tools/assets/underlines.ts"
   },

@@ -55,10 +55,9 @@ export const buttonVariants = cva(
       } satisfies Record<ButtonVariant, string>,
       size: {
         /**
-         * Every size clears the 44px minimum touch target except `sm`, which is for dense,
-         * non-primary controls that sit inside an already-large target.
+         * Every size clears the 44px minimum touch target; `sm` uses tighter horizontal padding.
          */
-        sm: "h-9 px-3 text-small",
+        sm: "h-11 px-3 text-small",
         md: "h-11 px-5 text-copy",
         lg: "h-12 px-7 text-lead",
         icon: "size-11",

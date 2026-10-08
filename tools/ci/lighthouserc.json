@@ -12,9 +12,14 @@
         "https://localhost:4321/",
         "https://localhost:4321/programs/frc/",
         "https://localhost:4321/programs/frc/robots/",
+        "https://localhost:4321/programs/fll/",
+        "https://localhost:4321/donate/",
+        "https://localhost:4321/get-involved/",
         "https://localhost:4321/sponsors/",
         "https://localhost:4321/about/",
-        "https://localhost:4321/contact/"
+        "https://localhost:4321/contact/",
+        "https://localhost:4321/__event-fixture/openhouse/",
+        "https://localhost:4321/__event-fixture/programs/frc/kickoff/"
       ]
     },
     "assert": {

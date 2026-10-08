@@ -237,14 +237,14 @@ Nothing else; pill radii are banned. **Nested corners**: an inner radius is the 
 
 ## 6. Motion
 
-CSS-only, except the two sanctioned scripts (the hand-markup entrance observer and the mode toggle). Motion confirms — it never decorates.
+CSS handles decorative transitions; small scripts manage the hand-markup entrance observer, the mode toggle, and user-controlled hero playback. Motion confirms — it never decorates.
 
 - Durations: 150ms (hover/focus), 250ms (menus, accordions), 500ms (scroll-in entrances). `ease-out` entrances, `ease-in-out` toggles.
 - **Keycaps** (§8): hover lifts the face 1px up-left as its offset grows to 4px; `:active` presses it 2px down-right onto a 1px offset. 150ms `ease-in-out`, `translate` and `box-shadow` only. Reduced motion keeps the offsets and drops the translate, so every state still reads. A card's footer arrow nudges 2px on hover under the same rule.
 - Switching finish does not animate: colors change at once.
-- Only `opacity` and `transform` animate.
+- Decorative entrances animate `opacity` and `transform`; keycaps also animate their drafted edge as specified above.
 - Scroll entrances: single fade-up (8px), once; CSS scroll-driven animations with content-visible-by-default fallback.
-- Hero video: `preload="none"`, poster-first, plays in-view; `prefers-reduced-motion` disables video autoplay and all entrances. No parallax anywhere.
+- Hero video: `preload="none"`, poster-first, plays in-view; a labelled 44px neutral keycap in the hero's action row pauses or plays the footage. A visitor's pause persists through scrolling out of and back into view. `prefers-reduced-motion` and save-data disable autoplay; playback remains opt-in. No parallax anywhere.
 - Carousels: CSS scroll-snap, user-driven; sponsor strip may slow-marquee — pausable, reduced-motion-off.
 
 ## 7. Imagery & art direction
@@ -266,6 +266,7 @@ CSS-only, except the two sanctioned scripts (the hand-markup entrance observer a
 - **Chips/spec labels**: `label` style — uppercase, tracked, 1px 40%-alpha border in the chip's color, transparent bg, `radius-sm`. Ages ("AGES 9–16"), sponsor tiers, event dates. Tier colors, dark / light: platinum `#CBD5E1` / `#475569`, gold `#FACC15` / `#854D0E`, silver `#A3A3A3` / `#52525B`, bronze `#D08954` / `#9A3412`.
 - **Stat band**: SCP stat numeral (§3) + Inter caption in `body`, on a pocket (feature moments get the grid floor) — a plate when it sits in a band.
 - **Forms**: visible `Label` above every field; `card` bg inputs, 1px `border`, focus = `ring` 2px; errors in the destructive text token with icon + `aria-describedby`.
+- **Embedded forms**: reserve their height and load when the frame enters the viewport. Keep a direct external form link and a no-JavaScript embed. Third-party scripts begin with the form, rather than with the page's initial view.
 - **Icons**: **IBM Carbon** (`@carbon/icons`), the 32px masters, filled in `currentColor`, rendered at 16 / 20 / 24 / 32px — engineering glyphs drawn on a square grid, including the brand logos the footer needs. One set, never mixed with another. Always with text or an `aria-label`. No emoji as UI.
 - **Long-form prose** (pages carrying an argument rather than a grid — about, news, an event body, a wiki page): one flowing column at prose measure. Lists take `primary` markers (or tick marks, §2.19, for checklists), `body` text, and one level of nesting at most. Blockquotes take a 2px `primary` rule on the leading edge and `lead` `foreground` text, with the attribution beneath in `muted` `small` — no quote glyphs, no italics. Paragraph rhythm 16px, with 32px above a heading that follows copy.
 
@@ -276,7 +277,7 @@ CSS-only, except the two sanctioned scripts (the hand-markup entrance observer a
 - Focus: 2px `ring` (accent text color) + 2px offset on every interactive element, never removed.
 - Keyboard: everything operable; skip link first in DOM; `aria-current="page"` in nav; menus close on Esc; the mode toggle is a real `<button>` whose label names the finish it switches to.
 - Landmarks: one `header`/`main`/`footer`; labeled `nav`s; headings form an outline.
-- Touch targets ≥ 44px; hover-only affordances forbidden (dropdowns have focus + tap paths per §5).
+- Buttons, icon controls, and primary navigation targets are ≥ 44×44 CSS px. This is the site's usability target, matching WCAG 2.2's enhanced (AAA) target-size criterion; AA's minimum is 24×24px, with spacing and inline exceptions. Inline prose links follow the surrounding line height. Dense secondary link lists meet the 24px minimum or its spacing exception; a compact button's visible face may be smaller only inside a 44px hit area. Glyph size and hit area are independent. Hover-only affordances are forbidden (dropdowns have focus + tap paths per §5).
 - `prefers-reduced-motion` honored globally; `color-scheme` set by the finish.
 
 ## 10. Do / Don't

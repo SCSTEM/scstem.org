@@ -10,6 +10,10 @@ steps {
   ["trailing-whitespace"] = Builtins.trailing_whitespace
   ["newlines"] = Builtins.newlines
   ["merge-conflict"] = Builtins.check_merge_conflict
+  ["calendar"] {
+    glob = List("functions/**/*.ts", "tools/checks/verify-calendar.ts")
+    check = "node tools/checks/verify-calendar.ts"
+  }
   ["prettier"] = (Builtins.prettier) { batch = false }
   // `--format gha` writes workflow-command annotations under GitHub Actions and stylish output
   // everywhere else. `--no-warn-ignored` keeps an explicitly passed ignored file from counting

@@ -49,6 +49,12 @@ jobs:
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: pnpm check:meta
 
+      # Future dates live only in an isolated fixture build, even when production events retire.
+      - name: Event fixtures
+        id: events
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: pnpm check:events
+
       # --root-dir resolves the root-relative hrefs Astro emits. llms.txt is in scope because its
       # links are hand-written paths that nothing else checks against the routes they name.
       - name: Links
@@ -65,11 +71,11 @@ jobs:
       # config, and lhci version has already passed; only the marker file is cached.
       - name: Look up a previous Lighthouse pass
         id: lighthouse-pass
-        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.build.outcome == 'success' && steps.events.outcome == 'success' }}
         uses: actions/cache/restore@v6
         with:
           path: .lighthouseci/passed
-          key: lighthouse-${{ env.LHCI_VERSION }}-${{ hashFiles('dist/**', 'tools/ci/**') }}
+          key: lighthouse-${{ env.LHCI_VERSION }}-${{ hashFiles('dist/**', '.lighthouseci/events/**', 'tools/ci/**') }}
           lookup-only: true
 
       - name: Lighthouse CI

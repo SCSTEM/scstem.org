@@ -2,16 +2,17 @@
 import getInvolved from "@/assets/sc2/get-involved.webp";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
+import JoiningFaq from "@/components/ui/JoiningFaq.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 /**
- * The iframe is `loading="lazy"` with its height reserved, so it costs nothing until it scrolls
- * into view and shifts nothing when it arrives.
+ * The frame's height is reserved, and its external document loads when it enters the viewport.
  */
 const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
+const formTitle = `${nav.cta.label} with the ${site.name}`;
 ---
 
 <BaseLayout
@@ -29,6 +30,8 @@ const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
     Students, parents, mentors, volunteers, and businesses all start in the same place. Tell us who
     you are and what you&rsquo;re curious about.
   </Hero>
+
+  <JoiningFaq />
 
   <Section atmosphere="pool">
     <Fragment slot="title">Tell us about you</Fragment>
@@ -49,10 +52,35 @@ const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
     <div class="mt-8 overflow-hidden pocket scheme-light">
       <iframe
         class="h-450 w-full border-0"
+        data-form-embed
+        data-src={embedded}
+        hidden
         loading="lazy"
-        src={embedded}
-        title="Get involved with the South Central STEM Collective"
+        title={formTitle}
       ></iframe>
+      <noscript>
+        <iframe
+          class="h-450 w-full border-0"
+          loading="lazy"
+          src={embedded}
+          title={formTitle}
+        ></iframe>
+      </noscript>
     </div>
   </Section>
 </BaseLayout>
+
+<script>
+  for (const frame of document.querySelectorAll<HTMLIFrameElement>("[data-form-embed]")) {
+    const src = frame.dataset.src;
+    if (src === undefined) continue;
+    frame.hidden = false;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        frame.src = src;
+        observer.disconnect();
+      }
+    });
+    observer.observe(frame);
+  }
+</script>

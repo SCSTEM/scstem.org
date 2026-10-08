@@ -1,4 +1,4 @@
-import type { CalendarEvent } from "@/types";
+import type { CalendarEvent } from "./types.ts";
 
 /**
  * Just enough iCalendar to render an agenda from a public Google Calendar feed. Not a
@@ -272,7 +272,8 @@ const expand = (
 
     if (rule.freq === "DAILY") {
       cursor.setUTCDate(cursor.getUTCDate() + period * rule.interval);
-      dates = [cursor.getTime()];
+      const day = DAYS[cursor.getUTCDay()] ?? "";
+      dates = dayCodes.size === 0 || dayCodes.has(day) ? [cursor.getTime()] : [];
     } else if (rule.freq === "WEEKLY") {
       // Step to the first day of the start's week (`WKST`), then take the requested weekdays
       // inside it. Which week a day falls in decides which weeks an INTERVAL > 1 rule skips.
@@ -307,8 +308,7 @@ const expand = (
       }
     }
 
-    const furthest = occurrences.at(-1);
-    if (exhausted || (furthest !== undefined && toInstant(furthest) > windowEnd)) {
+    if (exhausted || toInstant(cursor.getTime()) > windowEnd) {
       break;
     }
   }
@@ -548,6 +548,7 @@ export const upcomingEvents = (
       }
 
       results.push({
+        uid: event.uid,
         allDay: start.allDay,
         description: event.description,
         end: new Date(ends).toISOString(),
@@ -559,4 +560,17 @@ export const upcomingEvents = (
   }
 
   return results.toSorted((a, b) => a.start.localeCompare(b.start));
+};
+
+/** Shared occurrences appear once in the combined agenda, ordered by their actual start. */
+export const mergeCalendarEvents = (feeds: readonly CalendarEvent[][]): CalendarEvent[] => {
+  const merged = new Map<string, CalendarEvent>();
+  for (const occurrence of feeds.flat()) {
+    const identity = occurrence.uid || `${occurrence.title}:${occurrence.location}`;
+    const key = `${identity}:${occurrence.start}`;
+    if (!merged.has(key)) {
+      merged.set(key, occurrence);
+    }
+  }
+  return [...merged.values()].toSorted((a, b) => a.start.localeCompare(b.start));
 };

@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+
+import type { ProgramTheme } from "@/data/site";
+
+import JsonLd from "@/components/JsonLd.astro";
+import FaqList from "@/components/ui/FaqList.astro";
+import Section from "@/components/ui/Section.astro";
+import { faqPage } from "@/lib/jsonld";
+
+interface Props {
+  program?: ProgramTheme;
+}
+
+const { program } = Astro.props;
+const entries = (
+  await getCollection(
+    "faq",
+    ({ data }) =>
+      data.tags?.includes("joining") === true &&
+      !data.tags.includes("openhouse") &&
+      (program === undefined || data.program === undefined || data.program === program),
+  )
+).toSorted((a, b) => a.data.question.localeCompare(b.data.question));
+---
+
+{entries.length > 0 && (
+  <Section>
+    <Fragment slot="title">Questions about joining</Fragment>
+    <JsonLd
+      data={faqPage(
+        entries.map((entry) => ({
+          question: entry.data.question,
+          answer: entry.rendered?.html ?? entry.body ?? "",
+        })),
+      )}
+    />
+    <FaqList class="max-w-3xl" entries={entries} name="joining-faq" />
+  </Section>
+)}

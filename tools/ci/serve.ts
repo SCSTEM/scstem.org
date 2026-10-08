@@ -19,6 +19,8 @@ import { extname, join } from "node:path";
 import { gzipSync } from "node:zlib";
 
 const DIST = "dist";
+const EVENTS = join(".lighthouseci", "events");
+const EVENT_PREFIX = "/__event-fixture/";
 const PORT = Number(process.env.PORT ?? "4321");
 const CERT_DIR = join(".lighthouseci", "tls");
 
@@ -87,14 +89,19 @@ const certificate = () => {
 
 /** The file a request path resolves to, and the status it deserves. */
 const resolve = (pathname: string) => {
-  const direct = join(DIST, decodeURIComponent(pathname));
-  if (existsSync(direct)) {
-    if (!statSync(direct).isDirectory()) {
-      return { path: direct, status: 200 };
-    }
-    const index = join(direct, "index.html");
-    if (existsSync(index)) {
-      return { path: index, status: 200 };
+  const eventPage = pathname.startsWith(EVENT_PREFIX);
+  const roots = eventPage ? [EVENTS] : pathname.startsWith("/_astro/") ? [DIST, EVENTS] : [DIST];
+  const relative = decodeURIComponent(eventPage ? pathname.slice(EVENT_PREFIX.length) : pathname);
+  for (const root of roots) {
+    const direct = join(root, relative);
+    if (existsSync(direct)) {
+      if (!statSync(direct).isDirectory()) {
+        return { path: direct, status: 200 };
+      }
+      const index = join(direct, "index.html");
+      if (existsSync(index)) {
+        return { path: index, status: 200 };
+      }
     }
   }
   return { path: join(DIST, "404.html"), status: 404 };

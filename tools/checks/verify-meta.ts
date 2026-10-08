@@ -15,7 +15,7 @@ import { z } from "astro/zod";
 import { readdir, readFile, stat } from "node:fs/promises";
 import { extname, join } from "node:path";
 
-const DIST = "dist";
+const DIST = process.argv[2] ?? "dist";
 
 /** Every file under `dir`, recursively, whose name passes `keep`. */
 const walk = async (dir: string, keep: (name: string) => boolean): Promise<string[]> => {
@@ -76,11 +76,88 @@ const exists = async (path: string): Promise<boolean> => {
   }
 };
 
-/** The keys asserted on every JSON-LD block; the rest of the object is opaque here. */
-const JsonLd = z.looseObject({
+/** The site's emitted schema contracts, including the live-event fixtures checked in CI. */
+const context = {
   "@context": z.literal("https://schema.org"),
-  "@type": z.string().min(1),
-});
+};
+const text = z.string().min(1);
+const url = z.url();
+const address = z.union([
+  text,
+  z.looseObject({
+    "@type": z.literal("PostalAddress"),
+    streetAddress: text,
+    addressLocality: text,
+    addressRegion: text,
+    postalCode: text,
+    addressCountry: text,
+  }),
+]);
+const JsonLd = z.union([
+  z.looseObject({
+    ...context,
+    "@type": z.literal("NGO"),
+    name: text,
+    url,
+    logo: url,
+    email: z.email(),
+    address,
+    sameAs: z.array(url).min(1),
+  }),
+  z.looseObject({ ...context, "@type": z.literal("WebSite"), name: text, url }),
+  z.looseObject({
+    ...context,
+    "@type": z.literal("BreadcrumbList"),
+    itemListElement: z
+      .array(
+        z.looseObject({
+          "@type": z.literal("ListItem"),
+          position: z.number().int().positive(),
+          name: text,
+          item: url,
+        }),
+      )
+      .min(1)
+      .refine((items) => items.every((item, index) => item.position === index + 1), {
+        message: "Breadcrumb positions must be sequential, starting at 1",
+      }),
+  }),
+  z
+    .looseObject({
+      ...context,
+      "@type": z.literal("Event"),
+      name: text,
+      description: text,
+      url,
+      image: url.optional(),
+      startDate: z.iso.datetime({ offset: true }),
+      endDate: z.iso.datetime({ offset: true }).optional(),
+      eventStatus: z.literal("https://schema.org/EventScheduled"),
+      location: z.looseObject({ "@type": z.literal("Place"), name: text, address }),
+      organizer: z.looseObject({ "@type": z.literal("NGO"), name: text, url }),
+      offers: z.looseObject({ "@type": z.literal("Offer"), url, availability: url }).optional(),
+    })
+    .refine(
+      (event) =>
+        event.endDate === undefined || Date.parse(event.endDate) > Date.parse(event.startDate),
+      {
+        message: "Event endDate must follow startDate",
+      },
+    ),
+  z.looseObject({
+    ...context,
+    "@type": z.literal("FAQPage"),
+    mainEntity: z
+      .array(
+        z.looseObject({
+          "@type": z.literal("Question"),
+          name: text,
+          acceptedAnswer: z.looseObject({ "@type": z.literal("Answer"), text }),
+        }),
+      )
+      .min(1),
+  }),
+]);
 
 const paths = (await walk(DIST, (name) => extname(name) === ".html")).toSorted();
 const pages = await Promise.all(
@@ -125,6 +202,23 @@ for (const { html, route } of pages) {
 
   if (/<meta[^>]*\bhttp-equiv="refresh"/u.test(html)) {
     continue;
+  }
+
+  if (route === "/calendar/sc2/" || route === "/calendar/frc/") {
+    const googleLink = /\bhref="(https:\/\/calendar\.google\.com\/calendar\/embed\?[^"]+)"/u.exec(
+      html,
+    )?.[1];
+    if (googleLink === undefined) {
+      fail("no Google Calendar fallback link");
+    } else {
+      const sources = new URL(googleLink.replaceAll("&amp;", "&")).searchParams.getAll("src");
+      const expectedSources = route === "/calendar/sc2/" ? 2 : 1;
+      if (sources.length !== expectedSources) {
+        fail(
+          `Google Calendar fallback has ${String(sources.length)} sources, expected ${String(expectedSources)}`,
+        );
+      }
+    }
   }
 
   const titles = [...html.matchAll(/<title[^>]*>([\s\S]*?)<\/title>/gu)].flatMap(
@@ -192,6 +286,8 @@ for (const { html, route } of pages) {
       for (const issue of parsed.error.issues) {
         fail(`JSON-LD ${issue.path.join(".") || "block"}: ${issue.message}`);
       }
+    } else if (parsed.data["@type"] === "Event" && parsed.data.image !== undefined) {
+      images.push({ image: parsed.data.image, route });
     }
   }
 }
