@@ -54,7 +54,7 @@ export default defineConfig(
     },
   },
   {
-    // Class names checked against the `@theme` in src/styles/global.css (docs/adr/0020).
+    // Class names checked against the `@theme` in src/styles/global.css.
     files: ["src/**/*.{ts,astro}"],
     plugins: { shadcn },
     settings: {

@@ -71,11 +71,11 @@ threshold is 0.95, and the widget is the form's spam defence.
 
 It was not met by the image work. Two font changes did it, in this order:
 
-1. **Removing the two font preloads** (§4, `docs/adr/0008-no-font-preloads.md`). 61 KB of
+1. **Removing the two font preloads** (§4). 61 KB of
    High-priority font was queued from `<head>` ahead of the render-blocking stylesheet and well
    ahead of the hero `<img>`, on pages whose LCP element is always a photograph. Worth ~660 ms.
-2. **Trimming Inter's weight axis** to the range DESIGN.md §3 sanctions
-   (`docs/adr/0011-inter-weight-axis.md`), 47.1 KB → 35.2 KB on the critical path.
+2. **Trimming Inter's weight axis** to the range DESIGN.md §3 sanctions,
+   47.1 KB → 35.2 KB on the critical path.
 
 Before the second change, LCP was **bimodal** — clusters around 1.2 s and 2.1 s with nothing
 between, and `/programs/frc/robots/` and `/sponsors/` each had runs above the 2000 ms budget
@@ -87,13 +87,12 @@ So `lighthouserc.json` asserts on the **median** of three runs rather than the b
 the budget was always supposed to mean. The remaining spread is one slow run per page and
 median-of-three absorbs it. Tightest margin is `/` and `/openhouse/` at 1807 ms.
 
-### Deviations from this brief, each with an ADR
+### Deviations from this brief
 
-- **§2's "AVIF+WebP formats" is WebP only** — `docs/adr/0005-webp-only-image-variants.md`. AVIF is
-  40× slower to encode for a saving WebP matches at any affordable effort level; the measurements
-  are in the ADR. What §2 actually wanted — variants smaller than their sources — came from
+- **§2's "AVIF+WebP formats" is WebP only**. AVIF is
+  40× slower to encode for a saving WebP matches at any affordable effort level. What §2 actually wanted — variants smaller than their sources — came from
   `PHOTO_QUALITY` plus an explicit `width` on every responsive call site.
-- **§4's "exactly two preloaded font files" is zero** — `docs/adr/0008-no-font-preloads.md`. The
+- **§4's "exactly two preloaded font files" is zero**. The
   head audit that section asks for is what found them: 61 KB of High-priority fonts ahead of the
   hero `<img>` cost ~290 ms of FCP and ~660 ms of LCP, for a shorter FOUT and no CLS difference.
 

@@ -45,5 +45,5 @@ Technical SEO (Phases 05/10) makes the site _eligible_ to rank. Content is what 
 - Keystatic (git-backed CMS UI) once a non-git editor actually needs it — schemas are already compatible (D2).
 - Per-page generated OG images (satori) if news volume makes curated OGs tedious.
 - Light theme + theme switcher (tokens already structured for it, D15).
-- oxc migration when oxlint/oxfmt support Astro (`docs/adr/0001-toolchain-split.md` has the seam).
+- oxc migration when oxlint/oxfmt support Astro.
 - Playwright smoke tests if manual QA starts missing regressions (D13 said zero tests; revisit only with evidence).

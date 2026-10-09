@@ -84,7 +84,7 @@ Both were silent, and both would have spread through every page had they not bee
   for `cn`, no `clsx`/`tailwind-merge` sprawl) is unchanged; the source is this module, which wraps
   the package.
 
-- **Icons come from `@tabler/icons`**, inlined at build (ADR 0002), not `astro-icon` +
+- **Icons come from `@tabler/icons`**, inlined at build, not `astro-icon` +
   `@iconify-json/tabler`. Two fewer dependencies; icon names are Tabler's own. The package's
   `exports` map rewrites every subpath including `package.json`, so `src/lib/icon.ts` locates the
   icons directory through a known icon file instead of the manifest.

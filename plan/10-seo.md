@@ -139,7 +139,7 @@ any page. Full transcript in `docs/analytics.md`.
 
 ### The social cards are committed artifacts
 
-Seven cards from one template, `docs/adr/0010-og-cards.md`. `sharp` resolves an SVG `font-family`
+Seven cards from one template. `sharp` resolves an SVG `font-family`
 through fontconfig, which reads neither the variable woff2 the site ships nor a weight axis, so a
 build-time pipeline would need a font cache on every build machine to render files that change
 about never. `pnpm assets:og-fonts` then `pnpm assets:og`, by hand, output committed. 34–52 KB
@@ -178,4 +178,3 @@ date rather than a midnight timestamp.
 Nothing on the domain is private, which is D25's precondition for dropping the legacy `/team/*`,
 `/image/*` and `/video/*` noindex rules: `src/content/` and `src/pages/` hold marketing copy,
 sponsor records, robot history, a published FAQ, and a public event's published schedule.
-`docs/adr/0009-open-crawling-posture.md` records the posture, AI crawlers included.

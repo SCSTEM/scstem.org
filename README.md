@@ -19,7 +19,6 @@ pnpm build        # static build to dist/
 | `docs/content.md`   | Editing content: sponsors, events, FAQ, robots, team photos |
 | `docs/tooling.md`   | Toolchain, CI, performance budgets, environment variables   |
 | `docs/analytics.md` | GA4 and Cloudflare Web Analytics, and the event taxonomy    |
-| `docs/adr/`         | Decisions and the reasoning behind them                     |
 
 Cloudflare Pages builds from git: `main` is scstem.org, `staging` is staging.scstem.org, and every
 other branch gets a noindexed preview URL. Changes land on `staging` first and merge to `main` once

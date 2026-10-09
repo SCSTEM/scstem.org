@@ -4,8 +4,7 @@ import { dirname, join } from "node:path";
 
 /**
  * Reads IBM Carbon icon source at build time and returns just its inner markup, so `Icon.astro`
- * can wrap it in an `<svg>` carrying our own size and accessibility attributes
- * (docs/adr/0023-carbon-icons.md).
+ * can wrap it in an `<svg>` carrying our own size and accessibility attributes.
  *
  * Static output means this runs during `astro build` and never in a browser. Only the icons a
  * page actually references are read, and the package itself never ships.

@@ -1,5 +1,5 @@
 # Everything is public and we want all of it found — including images and video,
-# and including the AI crawlers (docs/adr/0009-open-crawling-posture.md).
+# and including the AI crawlers. Nothing private or internal belongs on this domain.
 User-agent: *
 Allow: /
 

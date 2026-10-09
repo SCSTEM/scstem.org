@@ -20,13 +20,12 @@ Pages. **Zero client-side framework runtime** — `.astro` components and plain 
 
 ESLint (typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro` with
 `jsx-a11y-strict`, the vendored anti-slop rules in `tools/lint/`) lints every `.ts`, `.js`, and
-`.astro` file; `@shadcn/lint`'s token rules check every class in `src/` against the `@theme`
-(`docs/adr/0020-shadcn-lint-token-rules.md`). Prettier formats everything
-(`docs/adr/0012-single-toolchain.md`).
+`.astro` file; `@shadcn/lint`'s token rules check every class in `src/` against the `@theme`.
+Prettier formats everything.
 TypeScript 6 throughout: `astro check` covers `src/` and the config files, `tsc` covers
 `functions/` and `tools/`.
 
-Every check is a step in `hk.pkl` (`docs/adr/0022-hk.md`), and the same steps back the git
+Every check is a step in `hk.pkl`, and the same steps back the git
 pre-commit hook, `pnpm check` / `pnpm fix`, CI, and the Claude Code hooks in
 `.claude/settings.json`: each file you edit is formatted and linted, and the end of each turn
 runs the full set, typecheck and knip included, over the modified files. Unfixable failures

@@ -51,6 +51,37 @@ Two more under `tools/ci/` have no script because Lighthouse CI runs them: `serv
 Only erasable TypeScript syntax (no enums, namespaces, or parameter properties);
 `tools/tsconfig.json` enforces it.
 
+### Hand-made assets
+
+Committed binaries that no script regenerates.
+
+**Fonts** in `src/styles/fonts/` are the files the Google Fonts CSS API serves for DESIGN.md §3's
+weights. Request the CSS with a full browser user agent, or it answers with TTF:
+
+```sh
+curl -A "Mozilla/5.0 (Macintosh) AppleWebKit/537.36 Chrome/140.0.0.0 Safari/537.36" \
+  "https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Orbitron:wght@600..700&family=Source+Code+Pro:wght@400..600&family=Architects+Daughter&display=swap"
+```
+
+Download the `latin` file of each face (and Inter's `latin-ext`) over the existing one, and copy
+its `font-weight` and `unicode-range` into `src/styles/fonts.css`.
+
+**The FRC hero video** in `public/video/biohazard/` is a 10.5 s loop cut from the 1080p master
+(git history has it) at the one steady stretch, whose first and last frames match. 720p because
+the footage is soft and 1080p looks identical at more than twice the size:
+
+```sh
+ffmpeg -ss 8.0 -t 10.5 -i master.mp4 -an -vf "scale=1280:720:flags=lanczos" \
+  -c:v libx264 -profile:v high -preset slower -crf 21 -pix_fmt yuv420p \
+  -g 60 -movflags +faststart home-video.mp4
+
+ffmpeg -ss 8.0 -t 10.5 -i master.mp4 -an -vf "scale=1280:720:flags=lanczos" \
+  -c:v libvpx-vp9 -crf 30 -b:v 0 -row-mt 1 -deadline good -cpu-used 1 \
+  -g 60 -pix_fmt yuv420p home-video.webm
+```
+
+The poster, `src/assets/frc/hero-video-poster.webp`, is the encoded MP4's first frame.
+
 ## hk
 
 `hk.pkl` defines every check once, and each entry point runs a slice of it:
@@ -125,7 +156,7 @@ SLACK_FORM_POST_GENERIC=https://hooks.slack.com/triggers/…
 
 Cloudflare Pages builds and deploys from git. `.github/workflows/ci.yml` runs on pull requests
 and pushes to `main` and `staging`, in two parallel jobs; draft pull requests run nothing until
-they are marked ready (`docs/adr/0021-ci-shape.md`):
+they are marked ready:
 
 - **Check**: `pnpm check`, every `hk.pkl` step over every file, each running even when another
   fails. ESLint (through `eslint-formatter-gha`), knip (its `github-actions` reporter under
@@ -134,11 +165,11 @@ they are marked ready (`docs/adr/0021-ci-shape.md`):
   log.
 - **Build**: `pnpm build`, then `check:meta`, an offline link check over `dist/` (lychee, which
   writes its own job summary), and Lighthouse. Lighthouse runs `@lhci/cli` via `pnpm dlx`
-  (`docs/adr/0007`) against `tools/ci/serve.ts`, which serves the build over HTTP/2 and TLS the
-  way Cloudflare does (`docs/adr/0018`), three runs per URL including FLL, donation, joining, and
-  both event layouts. `check:events` builds a temporary copy with future dates, validates its
-  metadata and discovery, and stores it in `.lighthouseci/events/`. The audit server exposes
-  those pages under `/__event-fixture/`; production `dist/` and source dates stay unchanged. The
+  against `tools/ci/serve.ts`, which serves the build over HTTP/2 and TLS the way Cloudflare
+  does, three runs per URL including FLL, donation, joining, and both event layouts.
+  `check:events` builds a temporary copy with future dates, validates its metadata and discovery,
+  and stores it in `.lighthouseci/events/`. The audit server exposes those pages under
+  `/__event-fixture/`; production `dist/` and source dates stay unchanged. The
   job summary and the log carry the median scores per URL, every failed assertion, and for each
   URL the LCP element, its phases, and the request waterfall; full reports upload as an artifact.
   A `dist/` byte-identical to one that already passed skips Lighthouse.

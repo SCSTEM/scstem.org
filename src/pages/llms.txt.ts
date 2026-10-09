@@ -8,8 +8,7 @@ import { absoluteUrl } from "@/lib/links";
 /**
  * The llms.txt convention (https://llmstxt.org): one plain-text map of the site, so an agent
  * answering "where can my kid do robotics near Chambersburg" reads a curated index instead of
- * crawling and guessing. Objective 4 — and the reason `robots.txt` blocks no AI crawler
- * (`docs/adr/0009-open-crawling-posture.md`).
+ * crawling and guessing. Objective 4 — and the reason `robots.txt` blocks no AI crawler.
  *
  * Every URL and program fact comes from `src/data/site.ts`; events come from the collection, so
  * a retired season disappears here the same build it disappears from the sitemap. The one-line

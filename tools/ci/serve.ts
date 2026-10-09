@@ -2,7 +2,7 @@ import type { IncomingHttpHeaders, ServerHttp2Stream } from "node:http2";
 
 /**
  * Serves `dist/` the way Cloudflare Pages does — HTTP/2 over TLS, compressed — for the Lighthouse
- * gate (`docs/adr/0018-lighthouse-over-http2.md`).
+ * gate.
  *
  * Lighthouse simulates its Slow 4G link from the protocol it observes. Over `astro preview`'s
  * HTTP/1.1 every parallel request is charged its own connection handshake, which production

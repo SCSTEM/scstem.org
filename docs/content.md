@@ -110,7 +110,7 @@ state and never retires on its own: nothing in the file says when the event is o
 a duration would invent one. `hidden: true` is for retiring an event _early_, or one with no `end`.
 
 `heroImage` is optional: without one the page uses a photo of the event's program. With one,
-`heroImageAlt` is required and the build fails without it (`docs/adr/0004`).
+`heroImageAlt` is required and the build fails without it.
 
 **Never write the date in prose as well.** The displayed date is formatted from `start`/`end`, so
 changing the season is one edit. A date typed into the body — or into an FAQ answer — is a second
@@ -204,8 +204,8 @@ pnpm dlx sharp-cli@6.0.0 -i camera.jpg -o src/assets/<domain>/<name>.webp \
   --autoOrient -f webp -q 80 resize 2560 2560 --fit inside --withoutEnlargement
 ```
 
-Nothing enforces this; an unconverted master shows up as a slow build and a large diff
-(`docs/adr/0016`). Logos stay SVG or PNG (see "Add a sponsor").
+Nothing enforces this; an unconverted master shows up as a slow build and a large diff.
+Logos stay SVG or PNG (see "Add a sponsor").
 
 ## Calendar events
 

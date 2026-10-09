@@ -49,7 +49,7 @@ Extend `docs/content.md`: "Update the open house for a new season" (edit dates/c
 
 ## Implementation notes
 
-- **`heroImageAlt` was added to the `events` schema** (`docs/adr/0004`). The layout had no honest
+- **`heroImageAlt` was added to the `events` schema**. The layout had no honest
   `alt` for a hero photo: the title repeats the `h1`, the `description` is written for search
   results, and `alt=""` would call a photo of students decorative. Optional, but supplying
   `heroImage` without it fails the build — the mechanism `Seo.astro` already uses for `ogImage`.

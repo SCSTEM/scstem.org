@@ -62,9 +62,9 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 - ESLint (flat, `eslint.config.ts`), **scoped to `**/*.astro` only**:
   - `eslint-plugin-astro` flat recommended + its `jsx-a11y-strict` config; `typescript-eslint` parser for frontmatter with type-aware rules (`strictTypeChecked` applied to astro files).
   - Import sorting for `.astro` frontmatter: `eslint-plugin-perfectionist` `sort-imports` (autofixable) — mirrors oxfmt's `sortImports` so the whole repo is sorted.
-  - Best-effort task: register the vendored anti-slop rules as a local ESLint plugin for `.astro` frontmatter (the rules use the ESLint rule API). If any rule fails to load under ESLint, skip that rule and note it in `docs/adr/0001-toolchain-split.md` — do not fork the rule source.
+  - Best-effort task: register the vendored anti-slop rules as a local ESLint plugin for `.astro` frontmatter (the rules use the ESLint rule API). If any rule fails to load under ESLint, skip that rule and note why — do not fork the rule source.
   - Global ignores: everything except `**/*.astro` (plus `legacy/**`, `dist/**`, `.astro/**`).
-- Prettier: `.prettierrc.json` with `plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"]` (tailwind plugin last), astro override (`parser: "astro"`). `.prettierignore`: everything except `**/*.astro`, `**/*.md` (`*`, `!*.astro`, `!*.md`, plus re-ignore `legacy/**`, `dist/**`, `plan/**` markdown stays formatted-by-hand: ignore `plan/**` and `docs/adr/**` if churn is unwanted — implementer's call, document it).
+- Prettier: `.prettierrc.json` with `plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"]` (tailwind plugin last), astro override (`parser: "astro"`). `.prettierignore`: everything except `**/*.astro`, `**/*.md` (`*`, `!*.astro`, `!*.md`, plus re-ignore `legacy/**`, `dist/**`, `plan/**` markdown stays formatted-by-hand: ignore `plan/**` if churn is unwanted — implementer's call, document it).
 - `.editorconfig` for what neither formatter covers (yaml/toml/shell): utf-8, lf, 2-space, final newline, trim trailing whitespace except `*.md`.
 - `knip.json`: all rules `"error"`; entry points: `astro.config.ts`, `src/pages/**`, `functions/**`, `eslint.config.ts`; ignore `legacy/**`, `tools/lint/anti-slop/**`.
 - `package.json` scripts (single source of truth):
@@ -82,7 +82,6 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
     "check": "pnpm run typecheck && pnpm run lint && pnpm run fmt:check && pnpm run knip",
   }
   ```
-- `docs/adr/0001-toolchain-split.md`: record D24 and the exact oxc-Astro migration seam — "when oxlint/oxfmt ship Astro support: delete `eslint.config.ts`, Prettier config + plugins and their devDependencies; remove `.astro`/`.md` from oxfmt ignores; move anti-slop ESLint registration (if any) back to jsPlugins-only; update hook script and `docs/tooling.md` ownership table."
 
 ### 5. Editor + agent config
 
@@ -118,12 +117,12 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
 - [x] Deliberately adding `import clsx from "clsx"` to a `.ts` file fails `pnpm lint`; same for a chained type assertion (anti-slop active).
 - [x] Editing a `.ts` and an `.astro` file via Claude Code triggers the hook and auto-formats each with the correct toolchain; a lint error is fed back to the agent.
 - [ ] CI workflow runs and blocks on a seeded lint error (verify once, then fix). — **verified on the phase PR, not locally.**
-- [x] `AGENTS.md` + `CLAUDE.md` symlink, `docs/tooling.md`, `docs/adr/0001-toolchain-split.md` exist.
+- [x] `AGENTS.md` + `CLAUDE.md` symlink, `docs/tooling.md` exist.
 
 ### Deviations from this brief
 
 - `typescript` pinned to 6.0.3, not latest (7.x): `typescript-eslint` peers `<6.1.0`,
-  `@astrojs/check` peers `^5 || ^6`. Recorded in `docs/adr/0001-toolchain-split.md`. This is the
+  `@astrojs/check` peers `^5 || ^6`. This is the
   JavaScript compiler; `functions/` runs on TypeScript 7 via `tsgo` (below).
 - Every dependency is pinned to the newest version **at least a week old**, because
   `minimumReleaseAge` rejects fresher ones. Pins are therefore not "latest".
@@ -143,5 +142,4 @@ An empty-but-real Astro project at the repo root with the complete final toolcha
   `**/*.{astro,md}` glob; ESLint scopes by `files:` rather than a blanket ignore. All three
   are gitignore-semantics workarounds documented in `docs/tooling.md`.
 - The anti-slop rules are **not** re-registered as a local ESLint plugin for `.astro`
-  frontmatter; rationale in `docs/adr/0001-toolchain-split.md`.
-- `docs/adr/0002-tabler-icons-direct.md` supersedes Phase 03's icon dependency choice.
+  frontmatter.

@@ -194,7 +194,7 @@ Per Brand Guidelines: Orbitron for page headings/titles (avoid very long or smal
 - **Eyebrows are labels**: `label` in `primary-bright` (or `muted`) above a heading. There is no second caps style.
 - **Stats are data at `h2` size**: Source Code Pro 600, tight, tabular figures, `primary-bright` (the `stat` utility).
 - The size role for reading text is `copy` rather than `body`, which is the color (§2): `text-copy` is the size, `text-body` the color.
-- **Inter ships with its weight axis trimmed to 400–700** and cannot render heavier (`docs/adr/0011-inter-weight-axis.md`). Widening the range means re-instancing the committed file (`docs/adr/0014-vendored-fonts.md`), not just a utility class.
+- **Each face is declared at the weights above** (Inter at 400–700, so markdown bold renders a real 700) and clamps anything outside them. A heavier weight means widening the declaration in `src/styles/fonts.css`, not just a utility class.
 - Prose measure: 65–75ch (`measure`).
 - Headings: sentence case; one `h1` per page; no skipped levels; never "SC2" in a heading (§1).
 

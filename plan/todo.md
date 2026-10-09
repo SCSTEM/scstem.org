@@ -94,10 +94,10 @@ The order is `plan/11-cutover.md` §2–§6; these are the steps only an owner c
       confirm source labels, event descriptions, and the combined Google Calendar fallback.
 - [ ] **Re-shoot or re-pick the hero video source if the softness bothers you.** The committed cut
       is 720p because the master is an out-of-focus wide-angle action-cam take, and a 1080p encode
-      of it is 2.4x the bytes for no visible difference (`docs/adr/0006-hero-video-encode.md`).
+      of it is 2.4x the bytes for no visible difference.
       A sharper master would justify 1080p inside the same 3 MB budget.
-- [ ] **Review the OG cards' photography.** The template is fixed
-      (`docs/adr/0010-og-cards.md`); which photograph each section gets is a taste call, and the
+- [ ] **Review the OG cards' photography.** The template is fixed;
+      which photograph each section gets is a taste call, and the
       seven currently chosen are the best fit from `src/assets/`, not a considered shoot. Swap a
       path in `tools/assets/og-cards.ts` and run `pnpm assets:og`.
 
@@ -107,8 +107,8 @@ The order is `plan/11-cutover.md` §2–§6; these are the steps only an owner c
       2000 ms.** The gate had been red on every CI run since Phase 09: the runner's Chrome 152
       fetches below-the-fold images during the initial load where Chrome 141 did not, and
       `astro preview`'s HTTP/1.1 was costing 450 ms of simulated handshakes that Cloudflare's
-      HTTP/2 never pays. Closed by measuring over HTTP/2 (`docs/adr/0018-lighthouse-over-http2.md`),
-      subsetting the fonts (`docs/adr/0017-font-subset.md`), and a 672px image ladder step. If CI
+      HTTP/2 never pays. Closed by measuring over HTTP/2,
+      subsetting the fonts, and a 672px image ladder step. If CI
       goes red here again, the job log now prints each URL's LCP element, phases, and request
       waterfall; start there. The levers left on the fonts are the Source Code Pro and Orbitron
       weight axes, measured at 3.2 KB and 0.7 KB.

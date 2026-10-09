@@ -81,7 +81,7 @@ Implement DESIGN.md §2 "signature motifs" as reusable pieces so pages can't rei
   DESIGN.md §2.12 calls them primitives. The conventions README arrives with Phase 03.
 - **`@typescript-eslint/no-unsafe-return` is off for `.astro`.** `astro-eslint-parser` does not
   type template JSX, so every `items.map(() => <El />)` trips it. Frontmatter stays fully typed
-  and `astro check` type-checks templates. Reasoning is in the config and ADR 0001.
+  and `astro check` type-checks templates. Reasoning is in the config.
 - **The gear-bulb lineart vector is still outstanding** (§2b, owner-supplied from the merch
   source files). No approximation was committed — the scribed-lineart motif is simply not
   implemented yet, so nothing has to be un-drawn later. `Callout` and `TitleBlock`, the other

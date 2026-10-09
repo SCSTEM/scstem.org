@@ -145,7 +145,7 @@ Add a lint restriction (oxlint `no-restricted-imports` or a small check script i
   program the schema accepts but the map lacks is a compile error.
 - **`astro.config.ts` reads `site.url`.** The canonical origin was declared in both places, so a
   domain change could leave canonical/OG tags disagreeing with the sitemap, silently.
-- **`sharp` is a direct dependency** (`docs/adr/0003`). This phase moves 33 images behind
+- **`sharp` is a direct dependency**. This phase moves 33 images behind
   `image()`, and pnpm's isolated layout keeps Astro's own copy where the bundled image service
   cannot resolve it — every collection image would have fallen back to unoptimized passthrough.
 - **Assets moved only as far as the collections need,** and the moved ones were re-encoded.

@@ -7,9 +7,6 @@
  * anywhere `pnpm install` has. By hand, from the repo root; commit the output:
  *
  *     pnpm assets:og
- *
- * `docs/adr/0010-og-cards.md` covers why these are committed artifacts rather than a build step,
- * and `docs/adr/0015-og-cards-satori.md` the renderer.
  */
 import { Resvg } from "@resvg/resvg-js";
 import { readFile, writeFile } from "node:fs/promises";
