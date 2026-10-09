@@ -10,7 +10,6 @@ import { getVisibleEvent } from "@/lib/events";
  * homepage. In a static build `Astro.redirect` emits a meta-refresh page; the `redirectStubs`
  * integration in `astro.config.ts` turns that page into a 302 line in the deployed `_redirects`,
  * so the rule stays beside the entry it reads and the reader still gets a real status code.
- * The temporary redirect keeps this URL available for the next season.
  */
 const event = await getVisibleEvent("openhouse");
 if (event === undefined) {

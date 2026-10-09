@@ -1,21 +1,16 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import {
-  cpSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  rmSync,
-  symlinkSync,
-  writeFileSync,
-} from "node:fs";
+import { cpSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { join } from "node:path";
 
-/** A separate build keeps future fixture dates out of source content and production dist/. */
+/**
+ * Builds a temp-directory copy of the site with every event dated in the future, asserts its live
+ * event pages, and leaves that build for Lighthouse.
+ */
 const root = process.cwd();
 const fixture = mkdtempSync(join(tmpdir(), "scstem-events-"));
-const output = resolve(".lighthouseci/events");
+const output = join(root, ".lighthouseci/events");
 const routes = [
   { id: "openhouse", path: "/openhouse/", faq: true, cta: "Get involved", register: true },
   {
@@ -69,7 +64,10 @@ try {
     assert.ok(sitemap.includes(path), `${path} is discoverable in the sitemap`);
     assert.ok(llms.includes(path), `${path} is discoverable in llms.txt`);
     assert.ok(!redirects.split("\n").some((line) => line.startsWith(`${path} `)));
-    const hero = html.slice(html.indexOf("<main"), html.indexOf('<hr class="accent-rule"'));
+    const heroStart = html.indexOf("<main");
+    const heroEnd = html.indexOf('<hr class="accent-rule"', heroStart);
+    assert.ok(heroStart >= 0 && heroEnd >= 0, `${path} renders a hero ending in its accent rule`);
+    const hero = html.slice(heroStart, heroEnd);
     assert.ok(hero.includes(cta), `${path} preserves its primary hero action`);
     assert.equal(
       />\s*Register\s*<\/a>/u.test(hero),
@@ -78,7 +76,6 @@ try {
     );
     if (faq) assert.ok(html.includes('"@type":"FAQPage"'), `${path} renders its FAQ schema`);
   }
-  mkdirSync(resolve(".lighthouseci"), { recursive: true });
   rmSync(output, { recursive: true, force: true });
   cpSync(dist, output, { recursive: true });
   console.log("future event pages verified; Lighthouse fixtures in .lighthouseci/events/");

@@ -74,3 +74,9 @@ Node (`node tools/checks/verify-meta.ts`); every one has a `package.json` script
 
 Describe what is there, never what is not. No narrating your edits ("changed X to Y"), no
 "as requested", no placeholders for work you did not do, no rejected alternatives.
+
+Comment only where the code cannot speak for itself: behavior that is ambiguous or unclear
+from reading it, or a deliberate break from convention or an uncommon path that a reader would
+otherwise "fix". A comment never restates what the code already says, never justifies a
+one-off decision, and never names anything that can go stale (a file path, a function, a
+component, a person). When in doubt, leave it out.

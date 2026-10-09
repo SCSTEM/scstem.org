@@ -54,9 +54,7 @@ export const buttonVariants = cva(
         pocket: "pocket pocket-interactive text-foreground",
       } satisfies Record<ButtonVariant, string>,
       size: {
-        /**
-         * Every size clears the 44px minimum touch target; `sm` uses tighter horizontal padding.
-         */
+        /** Every size clears the 44px minimum touch target. */
         sm: "h-11 px-3 text-small",
         md: "h-11 px-5 text-copy",
         lg: "h-12 px-7 text-lead",

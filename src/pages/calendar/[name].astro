@@ -20,7 +20,7 @@ import { programTrail } from "@/lib/jsonld";
  */
 export const getStaticPaths = (() => {
   interface Calendar {
-    /** The public calendar's id, as `src/data/site.ts` holds it. */
+    /** The public calendars' ids, in the base64 form Google's share links use. */
     googleIds: readonly string[];
     heading: string;
     intro: string;
@@ -45,7 +45,7 @@ export const getStaticPaths = (() => {
     },
     frc: {
       googleIds: [site.calendars.frc],
-      title: "Biohazard calendar",
+      title: nav.frcCalendar.label,
       heading: "Biohazard's season",
       intro:
         "Build sessions, competitions, and off-season events for the high-school robotics team. Times are Eastern.",
@@ -103,15 +103,15 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
       <Button href={embedUrl} variant="outline">
         View on Google Calendar
       </Button>
-      {"theme" in calendar && (
-        <Button href={nav.calendar.href} variant="outline">
-          All events
-        </Button>
-      )}
       {"theme" in calendar ? (
-        <Button href={programs[calendar.theme].href} variant="ghost">
-          About the team
-        </Button>
+        <>
+          <Button href={nav.calendar.href} variant="outline">
+            All events
+          </Button>
+          <Button href={programs[calendar.theme].href} variant="ghost">
+            About the team
+          </Button>
+        </>
       ) : (
         <Button href={nav.frcCalendar.href} variant="ghost">
           {nav.frcCalendar.label}
@@ -166,6 +166,20 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
     node.setAttribute("datetime", datetime);
     return node;
   };
+
+  /**
+   * Google Calendar stores a description written in its editor as HTML. Line breaks and block
+   * boundaries become newlines and the markup is dropped; `DOMParser` runs no scripts and loads
+   * nothing.
+   */
+  const plainText = (html: string): string =>
+    new DOMParser()
+      .parseFromString(
+        html.replace(/<br\s*\/?>|<\/?(?:p|div|li|ul|ol)\b[^>]*>/giu, "\n"),
+        "text/html",
+      )
+      .body.textContent.replace(/\n\s*\n/gu, "\n")
+      .trim();
 
   for (const agenda of document.querySelectorAll<HTMLElement>("[data-agenda]")) {
     const { calendar, timeZone } = agenda.dataset;
@@ -244,7 +258,7 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
         );
 
         const detail = element("div", "mt-1 sm:mt-0");
-        if (calendar === "sc2" && event.calendar !== undefined) {
+        if (event.calendar !== undefined) {
           detail.append(
             element(
               "p",
@@ -257,7 +271,8 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
         if (event.location !== "") {
           detail.append(element("p", "text-small text-body mt-1", event.location));
         }
-        if (event.description !== "") {
+        const description = plainText(event.description);
+        if (description !== "") {
           const disclosure = element("details", "mt-3");
           disclosure.append(
             element(
@@ -266,7 +281,7 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
               "Event details",
             ),
           );
-          disclosure.append(element("p", "mt-2 whitespace-pre-line text-body", event.description));
+          disclosure.append(element("p", "mt-2 whitespace-pre-line text-body", description));
           detail.append(disclosure);
         }
         item.append(detail);
@@ -280,10 +295,13 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
         if (!response.ok || body.events === undefined) {
           throw new Error(body.message ?? "Could not load the calendar");
         }
-        if (body.message !== undefined) {
-          say(body.message);
+        if (body.missing !== undefined) {
+          const names = body.missing.map((source) => agenda.dataset[`${source}Label`]);
+          say(
+            `The ${names.join(" and ")} calendar could not load. This schedule is incomplete; check Google Calendar for the full schedule.`,
+          );
         }
-        if (body.events.length > 0 || body.message === undefined) {
+        if (body.events.length > 0 || body.missing === undefined) {
           render(body.events);
         }
       })

@@ -1,3 +1,5 @@
+import type { CollectionEntry } from "astro:content";
+
 import { type PagePath, type ProgramTheme, nav, programs, site, socials } from "@/data/site";
 import { absoluteUrl } from "@/lib/links";
 
@@ -157,19 +159,17 @@ export const event = ({
 });
 
 /**
- * @public Consumed by `EventLayout`.
+ * @public
  *
- * The `FAQPage` for a page's answered questions. `answer` is the entry's rendered HTML, which
+ * The `FAQPage` for a page's answered questions. Each answer is the entry's rendered HTML, which
  * Google's FAQ documentation permits.
  */
-export const faqPage = (
-  entries: readonly { readonly answer: string; readonly question: string }[],
-): JsonLdObject => ({
+export const faqPage = (entries: readonly CollectionEntry<"faq">[]): JsonLdObject => ({
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: entries.map(({ question, answer }) => ({
+  mainEntity: entries.map((entry) => ({
     "@type": "Question",
-    name: question,
-    acceptedAnswer: { "@type": "Answer", text: answer },
+    name: entry.data.question,
+    acceptedAnswer: { "@type": "Answer", text: entry.rendered?.html ?? entry.body ?? "" },
   })),
 });

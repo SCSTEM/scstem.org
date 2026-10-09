@@ -18,7 +18,6 @@ const entries = (
     "faq",
     ({ data }) =>
       data.tags?.includes("joining") === true &&
-      !data.tags.includes("openhouse") &&
       (program === undefined || data.program === undefined || data.program === program),
   )
 ).toSorted((a, b) => a.data.question.localeCompare(b.data.question));
@@ -27,14 +26,7 @@ const entries = (
 {entries.length > 0 && (
   <Section>
     <Fragment slot="title">Questions about joining</Fragment>
-    <JsonLd
-      data={faqPage(
-        entries.map((entry) => ({
-          question: entry.data.question,
-          answer: entry.rendered?.html ?? entry.body ?? "",
-        })),
-      )}
-    />
+    <JsonLd data={faqPage(entries)} />
     <FaqList class="max-w-3xl" entries={entries} name="joining-faq" />
   </Section>
 )}

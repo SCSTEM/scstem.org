@@ -3,7 +3,7 @@ import type { AstroIntegration } from "astro";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
-import { appendFileSync, existsSync, readFileSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 
 // Loaded through jiti, and this module imports nothing from `astro:*`, so the config can read the
 // same origin everything else derives canonical and OG URLs from.
@@ -32,7 +32,8 @@ const isIndexable = (page: string): boolean => {
  * Cloudflare Pages applies that file before serving assets, so the unstyled stub never paints
  * and crawlers get a real status code; the stub stays as the fallback for any other host. The
  * rule is read off the emitted page, so it follows the event entry with no second list to keep.
- * These seasonal URLs return for the next event, so their redirects are temporary.
+ * These seasonal URLs return for the next event, so their redirects are temporary. Astro delays
+ * a 302 stub's refresh by two seconds, so the stub is rewritten to refresh immediately.
  */
 const redirectStubs = (): AstroIntegration => ({
   name: "redirect-stubs",
@@ -43,12 +44,16 @@ const redirectStubs = (): AstroIntegration => ({
         if (!existsSync(page)) {
           return [];
         }
-        const target = /<meta[^>]*\bhttp-equiv="refresh"[^>]*\bcontent="\d+;url=([^"]+)"/u.exec(
-          readFileSync(page, "utf8"),
-        )?.[1];
+        const html = readFileSync(page, "utf8");
+        const refresh = /(<meta[^>]*\bhttp-equiv="refresh"[^>]*\bcontent=")\d+;url=([^"]+)"/u;
+        const target = refresh.exec(html)?.[2];
         if (target === undefined) {
           return [];
         }
+        writeFileSync(
+          page,
+          html.replace(refresh, (_, meta: string) => `${meta}0;url=${target}"`),
+        );
         const from = `/${pathname.replace(/\/$/u, "")}`;
         return [`${from} ${target} 302`, `${from}/ ${target} 302`];
       });

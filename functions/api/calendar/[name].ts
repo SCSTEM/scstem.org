@@ -25,6 +25,12 @@ const TIME_ZONE = "America/New_York";
 
 type CalendarName = keyof typeof CALENDARS;
 
+/** The feeds each agenda merges. */
+const SOURCES = {
+  frc: ["frc"],
+  sc2: ["sc2", "frc"],
+} as const satisfies Record<CalendarName, readonly CalendarName[]>;
+
 const isCalendarName = (value: string | undefined): value is CalendarName =>
   value !== undefined && Object.hasOwn(CALENDARS, value);
 
@@ -56,52 +62,52 @@ export const onRequestGet: PagesFunction<unknown, "name"> = async ({
   }
 
   try {
-    const sources: CalendarName[] = name === "sc2" ? ["sc2", "frc"] : ["frc"];
+    const sources = SOURCES[name];
     const now = Date.now();
-    const feeds = await Promise.allSettled(
+    const feeds = await Promise.all(
       sources.map(async (source) => {
-        const address = atob(CALENDARS[source]);
-        const url = `https://calendar.google.com/calendar/ical/${encodeURIComponent(address)}/public/basic.ics`;
-        const upstream = await fetch(url, {
-          cf: { cacheTtl: MAX_AGE },
-          signal: AbortSignal.timeout(8000),
-        });
-        if (!upstream.ok) {
-          throw new Error(`${source} calendar feed returned ${String(upstream.status)}`);
+        try {
+          const address = atob(CALENDARS[source]);
+          const url = `https://calendar.google.com/calendar/ical/${encodeURIComponent(address)}/public/basic.ics`;
+          const upstream = await fetch(url, {
+            cf: { cacheTtl: MAX_AGE },
+            signal: AbortSignal.timeout(8000),
+          });
+          if (!upstream.ok) {
+            throw new Error(`${source} calendar feed returned ${String(upstream.status)}`);
+          }
+          const feed = (await upstream.text()).trim();
+          if (!feed.startsWith("BEGIN:VCALENDAR") || !feed.endsWith("END:VCALENDAR")) {
+            throw new Error(`${source} calendar feed is not an iCalendar document`);
+          }
+          const upcoming = upcomingEvents(feed, now, WINDOW_DAYS, TIME_ZONE);
+          const events =
+            sources.length > 1
+              ? upcoming.map((event) => ({ ...event, calendar: source }))
+              : upcoming;
+          return { source, events };
+        } catch (error) {
+          console.error(error);
+          return { source, events: undefined };
         }
-        const feed = (await upstream.text()).trim();
-        if (!feed.startsWith("BEGIN:VCALENDAR") || !feed.endsWith("END:VCALENDAR")) {
-          throw new Error(`${source} calendar feed is not an iCalendar document`);
-        }
-        return upcomingEvents(feed, now, WINDOW_DAYS, TIME_ZONE).map((event) => ({
-          ...event,
-          calendar: source,
-        }));
       }),
     );
-    const available = feeds.flatMap((feed) => (feed.status === "fulfilled" ? [feed.value] : []));
-    const missing = feeds.flatMap((feed, index) => {
-      if (feed.status === "fulfilled") {
-        return [];
-      }
-      console.error(feed.reason);
-      return sources[index] === "frc" ? ["Biohazard"] : ["SC2"];
-    });
+    const available = feeds.flatMap(({ events }) => (events === undefined ? [] : [events]));
+    const missing = feeds.flatMap(({ events, source }) => (events === undefined ? [source] : []));
     if (available.length === 0) {
       return res({ message: "Could not reach the calendar feeds" }, 502, NO_STORE);
     }
 
+    const partial = missing.length > 0;
     const response = res(
       {
         events: mergeCalendarEvents(available),
-        ...(missing.length > 0 && {
-          message: `The ${missing.join(" and ")} calendar could not load. This schedule is incomplete; check Google Calendar for the full schedule.`,
-        }),
+        ...(partial && { missing }),
       },
       200,
-      missing.length > 0 ? NO_STORE : { "Cache-Control": `public, max-age=${String(MAX_AGE)}` },
+      partial ? NO_STORE : { "Cache-Control": `public, max-age=${String(MAX_AGE)}` },
     );
-    if (missing.length === 0) {
+    if (!partial) {
       waitUntil(cache.put(request, response.clone()));
     }
     return response;

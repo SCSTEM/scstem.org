@@ -9,7 +9,8 @@ import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 /**
- * The frame's height is reserved, and its external document loads when it enters the viewport.
+ * Native `loading="lazy"` starts fetching a frame well before it scrolls into view, so the script
+ * below assigns the form's `src` only once the reserved frame enters the viewport.
  */
 const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
 const formTitle = `${nav.cta.label} with the ${site.name}`;

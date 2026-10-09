@@ -21,6 +21,9 @@ export interface TurnstileResponse {
   success: boolean;
 }
 
+/** The public calendars an agenda draws from. */
+export type CalendarName = "sc2" | "frc";
+
 /**
  * One occurrence on a public calendar, as `/api/calendar/[name]` returns it. `start` and `end`
  * are ISO 8601 instants; the page formats them in the visitor's own locale and zone.
@@ -28,8 +31,8 @@ export interface TurnstileResponse {
 export interface CalendarEvent {
   /** Stable iCalendar UID, shared when the same event is copied between feeds. */
   uid: string;
-  /** The feed an aggregated occurrence belongs to. */
-  calendar?: "sc2" | "frc";
+  /** The feed an occurrence belongs to, set only when an agenda merges several. */
+  calendar?: CalendarName;
   allDay: boolean;
   description: string;
   end: string;
@@ -41,6 +44,7 @@ export interface CalendarEvent {
 /** What `/api/calendar/<name>` answers with, either way. */
 export interface CalendarResponse {
   events?: CalendarEvent[];
-  /** An error, or a warning when an aggregated feed is only partly available. */
   message?: string;
+  /** The merged feeds that could not load, when the agenda is only partly available. */
+  missing?: CalendarName[];
 }

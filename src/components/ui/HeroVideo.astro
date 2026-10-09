@@ -50,8 +50,9 @@ const { id, alt, mp4, poster, webm } = Astro.props;
     const toggle = document.querySelector<HTMLButtonElement>(
       `[data-video-toggle][aria-controls="${video.id}"]`,
     );
-    const label = toggle?.querySelector("[data-video-label]");
-    if (toggle === null || toggle === undefined || label === null || label === undefined) continue;
+    if (toggle === null) continue;
+    const label = toggle.querySelector("[data-video-label]");
+    if (label === null) continue;
     /**
      * SAFETY: `NetworkInformation` is absent from lib.dom, so the shape is named here; the `in`
      * guard is what makes the read safe, and `saveData` is the only member touched.
@@ -71,7 +72,9 @@ const { id, alt, mp4, poster, webm } = Astro.props;
 
     const playOrPause = (): void => {
       if (wanted && inView && !document.hidden) {
-        void video.play().catch(() => {
+        void video.play().catch((error: unknown) => {
+          // A pause that interrupts a pending play rejects it; only a refusal turns playback off.
+          if (error instanceof DOMException && error.name === "AbortError") return;
           wanted = false;
           sync();
         });
@@ -96,11 +99,14 @@ const { id, alt, mp4, poster, webm } = Astro.props;
       // Only on `playing`: revealing it any earlier shows a blank frame over the poster. It stays
       // revealed through later pauses, since fading back would read as a glitch.
       video.addEventListener("playing", () => video.setAttribute("data-playing", ""));
-      video.addEventListener("error", () => {
+      const unavailable = (): void => {
         wanted = false;
         toggle.hidden = true;
         observer.disconnect();
-      });
+      };
+      // A failed `<source>` reports on itself, not on the video; the last one failing means none loaded.
+      video.addEventListener("error", unavailable);
+      video.querySelector("source:last-of-type")?.addEventListener("error", unavailable);
       toggle.addEventListener("click", () => {
         wanted = !wanted;
         sync();

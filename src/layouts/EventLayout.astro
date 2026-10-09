@@ -111,16 +111,7 @@ const details = [
         registrationUrl: data.registrationUrl,
       })}
     />
-    {faqEntries.length > 0 && (
-      <JsonLd
-        data={faqPage(
-          faqEntries.map((entry) => ({
-            question: entry.data.question,
-            answer: entry.rendered?.html ?? entry.body ?? "",
-          })),
-        )}
-      />
-    )}
+    {faqEntries.length > 0 && <JsonLd data={faqPage(faqEntries)} />}
   </Fragment>
 
   <Hero>

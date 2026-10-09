@@ -76,7 +76,7 @@ const exists = async (path: string): Promise<boolean> => {
   }
 };
 
-/** The site's emitted schema contracts, including the live-event fixtures checked in CI. */
+/** The JSON-LD shapes the site emits. */
 const context = {
   "@context": z.literal("https://schema.org"),
 };
@@ -93,7 +93,7 @@ const address = z.union([
     addressCountry: text,
   }),
 ]);
-const JsonLd = z.union([
+const JsonLd = z.discriminatedUnion("@type", [
   z.looseObject({
     ...context,
     "@type": z.literal("NGO"),
@@ -166,8 +166,8 @@ const pages = await Promise.all(
 
 const failures: string[] = [];
 const seen = { description: new Map<string, string>(), title: new Map<string, string>() };
-/** og:image checks are deferred so the reads run together rather than one per page. */
-const images: { image: string; route: string }[] = [];
+/** Image checks are deferred so the reads run together rather than one per page. */
+const images: { image: string; label: string; route: string }[] = [];
 
 /**
  * A head field every page carries exactly once and no two pages share. Returns the page's value,
@@ -202,23 +202,6 @@ for (const { html, route } of pages) {
 
   if (/<meta[^>]*\bhttp-equiv="refresh"/u.test(html)) {
     continue;
-  }
-
-  if (route === "/calendar/sc2/" || route === "/calendar/frc/") {
-    const googleLink = /\bhref="(https:\/\/calendar\.google\.com\/calendar\/embed\?[^"]+)"/u.exec(
-      html,
-    )?.[1];
-    if (googleLink === undefined) {
-      fail("no Google Calendar fallback link");
-    } else {
-      const sources = new URL(googleLink.replaceAll("&amp;", "&")).searchParams.getAll("src");
-      const expectedSources = route === "/calendar/sc2/" ? 2 : 1;
-      if (sources.length !== expectedSources) {
-        fail(
-          `Google Calendar fallback has ${String(sources.length)} sources, expected ${String(expectedSources)}`,
-        );
-      }
-    }
   }
 
   const titles = [...html.matchAll(/<title[^>]*>([\s\S]*?)<\/title>/gu)].flatMap(
@@ -257,7 +240,7 @@ for (const { html, route } of pages) {
   if (image === undefined) {
     fail("no og:image");
   } else if (URL.canParse(image)) {
-    images.push({ image, route });
+    images.push({ image, label: "og:image", route });
   } else {
     fail(`og:image is not absolute: ${image}`);
   }
@@ -287,21 +270,20 @@ for (const { html, route } of pages) {
         fail(`JSON-LD ${issue.path.join(".") || "block"}: ${issue.message}`);
       }
     } else if (parsed.data["@type"] === "Event" && parsed.data.image !== undefined) {
-      images.push({ image: parsed.data.image, route });
+      images.push({ image: parsed.data.image, label: "Event image", route });
     }
   }
 }
 
 const resolved = await Promise.all(
-  images.map(async ({ image, route }) => ({
-    found: await exists(join(DIST, new URL(image).pathname)),
-    image,
-    route,
+  images.map(async (entry) => ({
+    ...entry,
+    found: await exists(join(DIST, new URL(entry.image).pathname)),
   })),
 );
-for (const { found, image, route } of resolved) {
+for (const { found, image, label, route } of resolved) {
   if (!found) {
-    failures.push(`${route}: og:image does not resolve to a built file: ${image}`);
+    failures.push(`${route}: ${label} does not resolve to a built file: ${image}`);
   }
 }
 

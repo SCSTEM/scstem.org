@@ -63,8 +63,7 @@ No. The workspace has everything you need, and we will show you how to use it sa
 Optional `program: frc | fll | sc2` if the answer only applies to one program.
 
 Answers tagged `joining` appear on `/get-involved/` and the matching program pages. Leave
-`program` unset for answers shared across programs. An answer tagged `openhouse` stays on the
-event page so seasonal directions do not appear in the year-round joining questions.
+`program` unset for answers shared across programs.
 
 The `slug` — the filename without `.md` — is how events refer to an answer, so keep it
 descriptive and stable. Renaming a file means updating any event that lists it.
