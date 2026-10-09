@@ -5,7 +5,8 @@ import { cn } from "@/lib/cn";
  * Construction lines (DESIGN.md §2.8): at each corner of **one** feature pocket per view, two
  * lines run along the pocket's edges past the corner and cross just outside it — the
  * construction lines of the lockup on the t-shirt front. Never on standard cards. Expects a
- * `relative` parent with about 20px of clear space around it, since the marks sit outside.
+ * `relative` parent with about 20px of clear space around it, since the marks sit outside. A
+ * `pocket` holding the marks is cut square, so the lines cross on its real corner.
  */
 interface Props {
   class?: string;
@@ -28,7 +29,11 @@ const corners = [
 ];
 ---
 
-<div aria-hidden="true" class={cn("pointer-events-none absolute inset-0", className)}>
+<div
+  aria-hidden="true"
+  class={cn("pointer-events-none absolute inset-0", className)}
+  data-registration-marks
+>
   {corners.map((corner) => (
     <svg
       class:list={["absolute size-11 overflow-visible text-foreground/40", corner]}

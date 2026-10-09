@@ -1,25 +1,26 @@
 ---
-import logoMark from "@/assets/brand/logo-color.svg";
-import ModeToggle from "@/components/ui/ModeToggle.astro";
+import { getImage } from "astro:assets";
+
 import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import Lockup from "@/components/ui/primitives/Lockup.astro";
-import { nav, type NavLink, site } from "@/data/site";
+import ProgramName from "@/components/ui/ProgramName.astro";
+import { programPhotos } from "@/data/programPhotos";
+import { nav, type NavLink, type ProgramTheme, programs, site } from "@/data/site";
 import { cn } from "@/lib/cn";
 import { breakpoint } from "@/lib/tokens";
 
 /**
  * Site header (DESIGN.md §5). Sticky on all viewports, condensing after scroll in pure CSS.
  *
- * Identity is the **real lockup**, never a rebuilt gear plus the name in Inter: the brand's Light
- * full-width lockup on ≥ md (the variant for dark grounds — the color lockup's gray wordmark is
- * 2:1 on this header), the color square mark alone on mobile. Brand rules forbid substituting "SC2"
- * for the name, and the full name appears in page content (hero and footer) to satisfy them.
+ * Identity is the **real lockup** on every viewport, never a rebuilt gear plus the name in Inter:
+ * the brand's Light full-width lockup (the variant for dark grounds — the color lockup's gray
+ * wordmark is 2:1 on this header).
  *
- * The Programs entry is a real link to `/programs` with a disclosure *in addition* — never
- * hover-only, so touch and no-JS both get a destination (§5, §9). The panel is a native
- * `popover`, which supplies Esc, light-dismiss and top-layer placement without script (§9's
- * "menus close on Esc"; WCAG 2.2 SC 1.4.13 needs the dismissal).
+ * The Programs entry is a real link to `/programs` with a disclosure *in addition*, so touch and
+ * no-JS both get a destination (§5, §9). The panel is a native `popover`, which supplies Esc,
+ * light-dismiss and top-layer placement without script (§9's "menus close on Esc"; WCAG 2.2
+ * SC 1.4.13 needs the dismissal). Script adds only the mouse hover-intent on top.
  *
  * Both viewports project `nav` from `src/data/site.ts`; the desktop/sheet split is the `surfaces`
  * field there, not two hand-written lists.
@@ -48,15 +49,51 @@ const onSurface =
     link.surfaces.includes(surface);
 
 const headerLinks: readonly NavLink[] = nav.primary.filter(onSurface("header"));
-const sheetLinks = nav.primary.filter(onSurface("sheet"));
+const sheetLinks: readonly NavLink[] = nav.primary.filter(onSurface("sheet"));
 const sheetCtas = nav.primary.filter(onSurface("sheet-cta"));
 
-const navLink =
-  "ui-link inline-flex min-h-11 items-center text-small rounded-md px-2 py-2 font-medium lg:px-3";
+const panelId = (link: NavLink): string => `${link.label.toLowerCase()}-panel`;
 
-/** A transparent 1×1 GIF: what the logo `<picture>` shows where the lockup takes over. */
-const EMPTY_PIXEL =
-  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+/**
+ * The panel's program photos are CSS backgrounds, not `<img>`s: a closed popover is
+ * `display: none`, and browsers still fetch a lazy `<img>` there on every page, where a hidden
+ * element's background is never requested.
+ */
+const PANEL_PHOTO_WIDTH = 240;
+const panelPhoto = async (key: ProgramTheme): Promise<string> => {
+  const sources = await Promise.all(
+    [1, 2].map(async (density) => {
+      const { src } = await getImage({
+        src: programPhotos[key].image,
+        width: PANEL_PHOTO_WIDTH * density,
+      });
+      return `url("${src}") ${String(density)}x`;
+    }),
+  );
+  return `background-image: image-set(${sources.join(", ")})`;
+};
+const panelPhotos = new Map(
+  await Promise.all(
+    headerLinks
+      .flatMap((link) => link.panel?.programs ?? [])
+      .map(async (key) => [key, await panelPhoto(key)] as const),
+  ),
+);
+
+/**
+ * Header items run the full height of the bar, so the current page's rule sits on the header's
+ * bottom hairline rather than under the text.
+ */
+const navItem = cn(
+  "relative flex h-full items-center bg-none px-3 pb-0 spec-label text-body lg:px-4",
+  "hover:text-foreground aria-[current]:text-foreground",
+  "after:absolute after:inset-x-3 after:-bottom-px after:h-0.5 after:bg-primary lg:after:inset-x-4",
+  "after:scale-x-0 aria-[current]:after:scale-x-100",
+  "after:transition-transform after:duration-(--sc2-duration-micro) after:ease-(--sc2-ease-toggle)",
+);
+
+/** Chrome links inside the panel and sheet: no hand underline, which belongs to links in copy. */
+const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
 ---
 
 <header
@@ -67,7 +104,7 @@ const EMPTY_PIXEL =
   )}
   data-site-header
 >
-  <nav aria-label="Main" class="container-page flex items-center gap-4">
+  <nav aria-label="Main" class="container-page flex h-16 items-center gap-6">
     <a
       aria-label={`${site.name} — home`}
       class="flex shrink-0 items-center ui-link py-2"
@@ -75,92 +112,141 @@ const EMPTY_PIXEL =
       href="/"
     >
       <span class="block origin-left" data-header-lockup>
-        <!-- The square mark below md, the lockup from md up (DESIGN.md §5). A hidden `<img>`
-             still downloads, so from md up the `<source>` swaps the mark for an empty pixel; the
-             lockup is a CSS mask, which a hidden element never fetches. -->
-        <picture class="md:hidden">
-          <source media={`(min-width: ${breakpoint("md")})`} srcset={EMPTY_PIXEL} />
-          <img
-            alt=""
-            class="h-10 w-auto"
-            fetchpriority="high"
-            height={logoMark.height}
-            src={logoMark.src}
-            width={logoMark.width}
-          />
-        </picture>
-        <Lockup class="hidden h-10 md:block" />
+        <Lockup class="h-10" />
       </span>
     </a>
 
-    <div class="ml-auto hidden items-center gap-1 md:flex" data-sheet-inert>
-      {headerLinks.map((link) =>
-        link.panel ? (
-          <div data-nav-anchor>
-            <span class="flex items-center">
+    <div class="ml-auto hidden h-full items-center md:flex" data-sheet-inert>
+      <ul class="flex h-full items-center">
+        {headerLinks.map((link) =>
+          link.panel ? (
+            <li class="flex h-full items-center" data-nav-anchor>
               <a
                 aria-current={inSection(link.href) ? "page" : undefined}
-                class={cn(navLink, "pr-1")}
+                class={cn(navItem, "pr-0 lg:pr-0 after:right-0 lg:after:right-0")}
                 href={link.href}
               >
                 {link.label}
               </a>
               <button
                 aria-label={`Show ${link.label.toLowerCase()}`}
-                class="grid size-11 place-items-center rounded-md text-foreground hover:text-primary-bright"
-                popovertarget={`${link.label.toLowerCase()}-panel`}
+                class="-mr-2 flex size-11 items-center rounded-md pl-2 text-body hover:text-foreground lg:-mr-1"
+                data-nav-trigger
+                popovertarget={panelId(link)}
                 type="button"
               >
-                <Icon name="chevron--down" size={20} />
+                <Icon name="chevron--down" size={16} />
               </button>
-            </span>
-            <div
-              class="m-0 w-64 pocket p-2"
-              data-nav-panel
-              id={`${link.label.toLowerCase()}-panel`}
-              popover
-            >
-              {link.panel.map((entry) => (
-                <a
-                  aria-current={current === entry.href ? "page" : undefined}
-                  class="block rounded-md ui-link px-3 py-2 hover:bg-card-hover"
-                  href={entry.href}
-                >
-                  <span class="block text-small font-medium">{entry.label}</span>
-                  <span class="block text-small text-muted">{entry.name}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <a
-            aria-current={inSection(link.href) ? "page" : undefined}
-            class={navLink}
-            href={link.href}
-          >
-            {link.label}
-          </a>
-        ),
-      )}
-      <ModeToggle class="ml-2" />
-      <Button class="ml-2" href={nav.cta.href} size="sm">
+              <div
+                class="m-0 w-lg rounded-lg border border-border bg-card p-2 shadow-plate"
+                data-nav-panel
+                id={panelId(link)}
+                popover
+              >
+                <ul class="grid grid-cols-2 gap-2">
+                  {link.panel.programs.map((key) => (
+                    <li data-accent={programs[key].accent}>
+                      <a
+                        aria-current={inSection(programs[key].href) ? "page" : undefined}
+                        class={cn(
+                          chromeLink,
+                          "group flex h-full flex-col gap-3 rounded-sm p-2 hover:bg-card-hover aria-[current]:bg-card-hover",
+                        )}
+                        href={programs[key].href}
+                      >
+                        <span
+                          class="relative block aspect-video overflow-hidden rounded-sm bg-cover bg-center"
+                          style={panelPhotos.get(key)}
+                        >
+                          <span class="absolute inset-x-0 bottom-0 h-0.5 bg-primary" />
+                        </span>
+                        <span class="flex flex-col gap-1 px-1 pb-1">
+                          <span class="flex items-baseline justify-between gap-2">
+                            <span class="spec-label text-primary-bright">
+                              {programs[key].shortName}
+                            </span>
+                            <span class="spec-label text-muted">Ages {programs[key].ages}</span>
+                          </span>
+                          <span class="text-small font-semibold group-hover:text-primary-bright group-aria-[current]:text-primary-bright">
+                            <ProgramName program={key} />
+                          </span>
+                          <span class="text-small text-muted">{programs[key].tagline}</span>
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <div class="mt-2 flex items-center border-t border-border pt-2">
+                  {link.panel.links.map((entry) => (
+                    <a
+                      aria-current={current === entry.href ? "page" : undefined}
+                      class={cn(
+                        chromeLink,
+                        "inline-flex h-11 items-center gap-2 rounded-sm px-3 text-small font-medium",
+                        "hover:bg-card-hover aria-[current]:text-primary-bright",
+                      )}
+                      href={entry.href}
+                    >
+                      <Icon class="text-muted" name={entry.icon} size={16} />
+                      {entry.label}
+                    </a>
+                  ))}
+                  <a
+                    class={cn(
+                      chromeLink,
+                      "group ml-auto inline-flex h-11 items-center gap-2 rounded-sm px-3",
+                      "text-small font-medium hover:bg-card-hover",
+                    )}
+                    href={link.href}
+                  >
+                    All programs
+                    <Icon
+                      class="text-primary-bright transition-transform duration-(--sc2-duration-micro) motion-safe:group-hover:translate-x-0.5"
+                      name="arrow--right"
+                      size={16}
+                    />
+                  </a>
+                </div>
+              </div>
+            </li>
+          ) : (
+            <li class="h-full">
+              <a
+                aria-current={inSection(link.href) ? "page" : undefined}
+                class={navItem}
+                href={link.href}
+              >
+                {link.label}
+              </a>
+            </li>
+          ),
+        )}
+      </ul>
+      <span aria-hidden="true" class="mr-6 ml-3 h-6 w-px bg-border lg:ml-2"></span>
+      <Button class="px-5" href={nav.cta.href} size="sm">
         {nav.cta.label}
       </Button>
     </div>
 
-    <!-- One state, `aria-expanded`, with CSS deriving the icon swap from it. -->
+    <!-- One state, `aria-expanded`, with CSS deriving the label and icon swap from it. -->
     <Button
       aria-controls="mobile-menu"
       aria-expanded="false"
       aria-label="Open menu"
-      class="ml-auto md:hidden"
+      class="-mr-3 ml-auto hover:bg-transparent hover:text-primary-bright md:hidden"
       data-md={breakpoint("md")}
       data-menu-toggle
-      size="icon"
+      size="sm"
       variant="ghost"
     >
-      <Icon class="menu-icon-open" name="menu" size={24} />
-      <Icon class="menu-icon-close" name="close" size={24} />
+      <span class="flex items-center gap-2" data-when="closed">
+        <span class="spec-label">Menu</span>
+        <Icon name="menu" size={24} />
+      </span>
+      <span class="flex items-center gap-2" data-when="open">
+        <span class="spec-label">Close</span>
+        <Icon name="close" size={24} />
+      </span>
     </Button>
   </nav>
 </header>
@@ -172,23 +258,49 @@ const EMPTY_PIXEL =
 <div class="fixed inset-0 z-40 bg-background md:hidden" data-menu-sheet hidden id="mobile-menu">
   <nav
     aria-label="Mobile"
-    class="flex h-full flex-col overflow-y-auto px-4 pt-20 pb-[env(safe-area-inset-bottom)]"
+    class="flex h-full flex-col overflow-y-auto px-4 pt-16 pb-[env(safe-area-inset-bottom)]"
   >
-    <ul class="flex flex-col divide-y divide-border">
+    <ul class="flex flex-col divide-y divide-border border-b border-border">
       {sheetLinks.map((link) => (
         <li>
           <a
             aria-current={inSection(link.href) ? "page" : undefined}
-            class="flex min-h-14 items-center ui-link text-h4 font-semibold"
+            class={cn(
+              chromeLink,
+              "flex min-h-16 items-center text-h4 font-semibold aria-[current]:text-primary-bright",
+            )}
             href={link.href}
           >
             {link.label}
           </a>
+          {link.panel && (
+            <ul class="mb-4 ml-1 flex flex-col border-l border-border">
+              {link.panel.programs.map((key) => (
+                <li data-accent={programs[key].accent}>
+                  <a
+                    aria-current={inSection(programs[key].href) ? "page" : undefined}
+                    class={cn(
+                      chromeLink,
+                      "flex min-h-12 items-center gap-3 pl-5 text-copy font-medium",
+                      "aria-[current]:text-primary-bright",
+                    )}
+                    href={programs[key].href}
+                  >
+                    <span class="w-8 shrink-0 spec-label text-primary-bright">
+                      {programs[key].shortName}
+                    </span>
+                    <span>
+                      <ProgramName program={key} />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
       ))}
     </ul>
     <div class="mt-auto flex flex-col gap-3 py-6">
-      <ModeToggle labelled />
       <Button href={nav.cta.href} size="lg">
         {nav.cta.label}
       </Button>
@@ -226,26 +338,21 @@ const EMPTY_PIXEL =
     }
   }
 
-  /**
-   * The open/closed icon pair, derived from the button's own state.
-   *
-   * `:global()` on the icon is required: the `<svg>` is rendered by `Icon.astro`, so it carries no
-   * `data-astro-cid-*` of this component and a plain descendant selector would be rewritten to
-   * demand one and match nothing. The `[data-menu-toggle]` side keeps the scope.
-   */
-  [data-menu-toggle] :global(.menu-icon-close),
-  [data-menu-toggle][aria-expanded="true"] :global(.menu-icon-open) {
+  /* The menu button's label and icon, derived from its own state. */
+  [data-menu-toggle] [data-when="open"],
+  [data-menu-toggle][aria-expanded="true"] [data-when="closed"] {
     display: none;
   }
 
-  [data-menu-toggle][aria-expanded="true"] :global(.menu-icon-close) {
-    display: block;
+  [data-menu-toggle][aria-expanded="true"] [data-when="open"] {
+    display: flex;
   }
 
   /**
    * The Programs panel. A popover renders in the top layer, where offsets resolve against the
-   * viewport rather than the header, so it is anchored to its nav item instead. The script below
-   * places it where anchor positioning is unsupported.
+   * viewport rather than the header, so it is anchored to its nav item: centered beneath it, or
+   * flush to whichever side keeps it on screen. The script below places it where anchor
+   * positioning is unsupported.
    */
   [data-nav-anchor] {
     anchor-name: --nav-panel;
@@ -254,9 +361,76 @@ const EMPTY_PIXEL =
   [data-nav-panel] {
     position: fixed;
     inset: auto;
+    margin-top: 0.5rem;
     position-anchor: --nav-panel;
-    top: calc(anchor(bottom) + 0.75rem);
-    left: anchor(left);
+    position-area: bottom;
+    position-try-fallbacks:
+      bottom span-left,
+      bottom span-right;
+    transition:
+      opacity var(--sc2-duration-ui) var(--sc2-ease-entrance),
+      translate var(--sc2-duration-ui) var(--sc2-ease-entrance),
+      display var(--sc2-duration-ui) allow-discrete,
+      overlay var(--sc2-duration-ui) allow-discrete;
+  }
+
+  [data-nav-panel]:not(:popover-open) {
+    opacity: 0;
+  }
+
+  @starting-style {
+    [data-nav-panel]:popover-open {
+      opacity: 0;
+    }
+  }
+
+  /**
+   * The chevron turns over while the panel is open. `:global()` on the `<svg>` is required: it is
+   * rendered by `Icon.astro`, so it carries no `data-astro-cid-*` of this component and a plain
+   * descendant selector would match nothing. The `[data-nav-trigger]` side keeps the scope.
+   */
+  [data-nav-trigger] :global(svg) {
+    transition: rotate var(--sc2-duration-ui) var(--sc2-ease-toggle);
+  }
+
+  [data-nav-anchor]:has([data-nav-panel]:popover-open) [data-nav-trigger] {
+    color: var(--sc2-foreground);
+
+    & :global(svg) {
+      rotate: 180deg;
+    }
+  }
+
+  /* The sheet fades in from just above, as if dropping out of the header. */
+  [data-menu-sheet] {
+    transition:
+      opacity var(--sc2-duration-ui) var(--sc2-ease-entrance),
+      translate var(--sc2-duration-ui) var(--sc2-ease-entrance),
+      display var(--sc2-duration-ui) allow-discrete;
+  }
+
+  [data-menu-sheet][hidden] {
+    opacity: 0;
+  }
+
+  @starting-style {
+    [data-menu-sheet]:not([hidden]) {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-nav-panel]:not(:popover-open),
+    [data-menu-sheet][hidden] {
+      translate: 0 -0.5rem;
+    }
+
+    @starting-style {
+      [data-nav-panel]:popover-open,
+      [data-menu-sheet]:not([hidden]) {
+        translate: 0 -0.5rem;
+      }
+    }
   }
 
   /* The scroll lock, likewise: no inline style to leave behind. */
@@ -268,17 +442,68 @@ const EMPTY_PIXEL =
 <script>
   const anchor = document.querySelector("[data-nav-anchor]");
   const panel = document.querySelector("[data-nav-panel]");
+  const trigger = document.querySelector("[data-nav-trigger]");
 
-  if (
-    anchor instanceof HTMLElement &&
-    panel instanceof HTMLElement &&
-    !CSS.supports("anchor-name", "--nav-panel")
-  ) {
+  if (anchor instanceof HTMLElement && panel instanceof HTMLElement) {
+    if (!CSS.supports("anchor-name", "--nav-panel")) {
+      panel.addEventListener("toggle", (event) => {
+        if (event instanceof ToggleEvent && event.newState === "open") {
+          const { bottom, left, width } = anchor.getBoundingClientRect();
+          const gutter = 16;
+          const centered = left + width / 2 - panel.offsetWidth / 2;
+          const x = Math.min(
+            Math.max(gutter, centered),
+            window.innerWidth - panel.offsetWidth - gutter,
+          );
+          panel.style.top = `${String(bottom)}px`;
+          panel.style.left = `${String(x)}px`;
+        }
+      });
+    }
+
+    /**
+     * Hover intent for a mouse: open after a beat, and close only once the pointer has been off
+     * both the item and the panel for a moment, so crossing the gap between them does not shut it.
+     * A panel opened by click or keyboard stays until it is dismissed.
+     */
+    const OPEN_DELAY = 80;
+    const CLOSE_DELAY = 200;
+    let timer: number | undefined;
+    let openedByHover = false;
+
+    const schedule = (action: () => void, delay: number) => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(action, delay);
+    };
+
+    for (const region of [anchor, panel]) {
+      region.addEventListener("pointerenter", (event) => {
+        if (event.pointerType !== "mouse") return;
+        schedule(() => {
+          if (!panel.matches(":popover-open")) {
+            openedByHover = true;
+            panel.showPopover();
+          }
+        }, OPEN_DELAY);
+      });
+
+      region.addEventListener("pointerleave", (event) => {
+        if (event.pointerType !== "mouse") return;
+        schedule(() => {
+          if (openedByHover && panel.matches(":popover-open")) panel.hidePopover();
+        }, CLOSE_DELAY);
+      });
+    }
+
     panel.addEventListener("toggle", (event) => {
-      if (event instanceof ToggleEvent && event.newState === "open") {
-        const { bottom, left } = anchor.getBoundingClientRect();
-        panel.style.top = `calc(${String(bottom)}px + 0.75rem)`;
-        panel.style.left = `${String(left)}px`;
+      if (event instanceof ToggleEvent && event.newState === "closed") openedByHover = false;
+    });
+
+    /** A click on the chevron of a hover-opened panel pins it open rather than closing it. */
+    trigger?.addEventListener("click", (event) => {
+      if (openedByHover) {
+        event.preventDefault();
+        openedByHover = false;
       }
     });
   }

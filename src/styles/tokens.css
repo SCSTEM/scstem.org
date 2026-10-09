@@ -31,7 +31,7 @@
   --sc2-plate: light-dark(#eef0f2, #232323); /* a pocket laid on the table */
   --sc2-plate-border: light-dark(#c9cdd2, #333333);
   --sc2-plate-hover: light-dark(#f5f6f7, #2a2a2a);
-  --sc2-sheet: light-dark(#eff1f3, #2e2e2e); /* the neutral keycap's face */
+  --sc2-sheet: light-dark(#eff1f3, #2e2e2e); /* the outline button's face */
   --sc2-border: light-dark(#c2c6cc, #3a3a3a);
   --sc2-control-edge: light-dark(#6b7178, #737373); /* ≥ 3:1 on every surface */
   --sc2-ink: light-dark(#8e949b, #0c0c0c); /* drafted shadow ink, never a fill */
@@ -143,9 +143,9 @@
   /* --- Material ----------------------------------------------------------------------------- */
   /* The sheet's grain: one octave of high-frequency fractal noise with a steep gamma, so only the
      brightest fraction of each cell carries alpha — film grain with no cell structure to repeat.
-     Over the dark ground it lifts the mean ~8 levels; the light finish takes the same noise in
+     Over the dark ground it lifts the mean ~5 levels; the light finish takes the same noise in
      near-black. */
-  --sc2-texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --sc2-texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 0.6 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 
   /* Which finish's link underline shows (§2.14). A data URI cannot read a variable, so each
      accent carries its three strokes once per finish (written by `pnpm assets:underlines`) and
@@ -212,14 +212,14 @@
 /* --- Finishes: what light-dark() cannot carry ---------------------------------------------- */
 [data-mode="dark"] {
   color-scheme: dark;
-  --sc2-texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --sc2-texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.98 0 0 0 0 0.98 0.6 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   --sc2-underline-size-dark: 100% 0.8em;
   --sc2-underline-size-light: 0 0;
 }
 
 [data-mode="light"] {
   color-scheme: light;
-  --sc2-texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.09 0 0 0 0 0.11 0.75 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --sc2-texture-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='1' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='5' amplitude='1'/%3E%3C/feComponentTransfer%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.09 0 0 0 0 0.11 0.45 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   --sc2-underline-size-dark: 0 0;
   --sc2-underline-size-light: 100% 0.8em;
 }

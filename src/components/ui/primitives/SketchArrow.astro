@@ -5,9 +5,10 @@ import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@
 /**
  * A hand-drawn curved arrow, the leader of a leader note (DESIGN.md §2.15). **One per view.**
  *
- * It always starts at handwriting (`handwritingClass`) and points from the note to what the
- * note is about: a handwritten link, a button, or a field. It never floats free and never
- * points from typeset text.
+ * It always touches handwriting (`handwritingClass`): it points from a handwritten note to what
+ * the note is about (a handwritten link, a button, or a field), or from a short typeset question
+ * to the handwritten link that answers it. It never floats free and never joins two pieces of
+ * typeset text.
  *
  * Three variants; adjacent instances must differ.
  */

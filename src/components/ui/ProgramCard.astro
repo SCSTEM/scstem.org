@@ -1,6 +1,6 @@
 ---
 import FeatureCard from "@/components/ui/FeatureCard.astro";
-import FirstMark from "@/components/ui/FirstMark.astro";
+import ProgramName from "@/components/ui/ProgramName.astro";
 import { programPhotos } from "@/data/programPhotos";
 import { type ProgramTheme, programs } from "@/data/site";
 
@@ -15,8 +15,6 @@ interface Props {
 const { program } = Astro.props;
 const facts = programs[program];
 const photo = programPhotos[program];
-/** The title after the italic FIRST® mark. */
-const titleRest = program === "fll" ? "LEGO® League" : "Robotics Competition";
 ---
 
 <FeatureCard
@@ -28,7 +26,7 @@ const titleRest = program === "fll" ? "LEGO® League" : "Robotics Competition";
   imageAlt={photo.alt}
 >
   <Fragment slot="title">
-    <FirstMark /> {titleRest}
+    <ProgramName program={program} />
   </Fragment>
   <slot />
 </FeatureCard>

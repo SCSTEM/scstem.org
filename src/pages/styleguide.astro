@@ -145,7 +145,7 @@ const surfaces = [
   { name: "card", use: "Pockets cut into the ground; form fields" },
   { name: "band", use: "Ink bands — the drafting table — and the footer" },
   { name: "plate", use: "Pockets inside a band: raised plates" },
-  { name: "sheet", use: "The neutral keycap's face" },
+  { name: "sheet", use: "The outline button's face" },
   { name: "border", use: "Hairlines, dividers" },
   { name: "pocket-border", use: "Pocket walls" },
   { name: "plate-border", use: "Plate edges" },
@@ -184,7 +184,7 @@ for (const context of contexts) {
     }
   }
 
-  /** The neutral keycap's edge is the control's boundary (WCAG 1.4.11): 3:1 on every surface. */
+  /** The outline button's edge is the control's boundary (WCAG 1.4.11): 3:1 on every surface. */
   const edge = color("control-edge", context);
   for (const surface of onSurfaces.filter((entry) => !entry.crossing)) {
     const ratio = contrastRatio(edge, surface.value);
@@ -561,10 +561,10 @@ const themes = accents().map((accent) => ({
       </div>
       <h3 class="mt-12">Keycaps</h3>
       <p class="mt-3 measure">
-        Buttons stand on a 3px drafted edge, lift 1px on hover, and press flat on{" "}
+        The primary button stands on a 3px drafted edge, lifts 1px on hover, and presses flat on{" "}
         <code class="font-mono">:active</code> — a 150ms confirmation. The fill never dims. Under
-        reduced motion only the edge changes. The states below are frozen; the live buttons in
-        Primitives respond.
+        reduced motion only the edge changes. The outline button beside it stays flat. The states
+        below are frozen; the live buttons in Primitives respond.
       </p>
       <div class="mt-6 flex flex-wrap items-center gap-6">
         {keycapStates.map((state) => (
@@ -574,12 +574,6 @@ const themes = accents().map((accent) => ({
               style={state.style}
             >
               Get involved
-            </span>
-            <span
-              class="inline-flex h-11 items-center rounded-md border border-control-edge bg-sheet px-5 font-medium text-foreground"
-              style={state.style}
-            >
-              Donate
             </span>
             <figcaption class="spec-label text-muted">{state.name}</figcaption>
           </figure>

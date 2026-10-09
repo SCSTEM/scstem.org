@@ -98,12 +98,16 @@ const intro =
       </Button>
     </CtaBanner>
 
-    <p class="mt-8 flex flex-wrap items-center justify-center gap-2 text-muted">
+    <!-- The arrow and its link wrap as one unit: on a narrow screen they drop below the
+         question together, the arrow still pointing at the link. -->
+    <p class="mt-8 flex flex-wrap items-center justify-center gap-x-2 text-muted">
       Rather just talk it through?
-      <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={2} />
-      <a class={cn(handwritingClass, "text-lead")} href={nav.contact.href}>
-        Become a sponsor
-      </a>
+      <span class="flex items-center gap-2">
+        <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={2} />
+        <a class={cn(handwritingClass, "text-lead")} href={nav.contact.href}>
+          Become a sponsor
+        </a>
+      </span>
     </p>
   </Section>
 </BaseLayout>

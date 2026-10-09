@@ -140,6 +140,8 @@ interface Program {
   shortName: string;
   /** The year the team formed. */
   since?: number;
+  /** One line on what the program does, for menus too tight for a paragraph. */
+  tagline?: string;
   teamName?: string;
   /** The team's FIRST-issued number. */
   teamNumber?: number;
@@ -184,6 +186,7 @@ export const programs = {
     /** Formed as a 4-H club, the team is also where the organization's own history starts. */
     since: 2012,
     ages: "14–18",
+    tagline: "A 120-pound competition robot, built by students every season.",
     accent: "green",
     href: "/programs/frc/",
   },
@@ -191,6 +194,7 @@ export const programs = {
     name: "FIRST LEGO League",
     shortName: "FLL",
     ages: "9–16",
+    tagline: "LEGO® robots, table missions, and a research project.",
     accent: "orange",
     href: "/programs/fll/",
   },
@@ -209,14 +213,20 @@ interface Route {
   readonly label: string;
 }
 
-/** A disclosure panel's row: the link plus the one-line description under it. */
+/** A disclosure panel's secondary link, with its Carbon icon. */
 interface PanelLink extends Route {
-  readonly name: string;
+  readonly icon: string;
+}
+
+/** A disclosure panel: a tile per program, then a row of secondary links. */
+interface Panel {
+  readonly programs: readonly ProgramTheme[];
+  readonly links: readonly PanelLink[];
 }
 
 export interface NavLink extends Route {
   /** Disclosure panel this entry opens in the header, in addition to being a link. */
-  readonly panel?: readonly PanelLink[];
+  readonly panel?: Panel;
   /**
    * Which chrome shows this entry, and how. The desktop header and the mobile sheet carry
    * deliberately different sets (DESIGN.md §5) — Donate is a header link (`header`) and a
@@ -240,13 +250,14 @@ const programsHub = { label: "Programs", href: programs.sc2.href } as const;
 const robots = { label: "Robots", href: `${programs.frc.href}robots/` } as const;
 const contact = { label: "Contact", href: "/contact/" } as const;
 
-/** The Programs disclosure in the desktop header. */
-const programsPanel = [
-  { label: programs.fll.shortName, href: programs.fll.href, name: programs.fll.name },
-  { label: programs.frc.shortName, href: programs.frc.href, name: programs.frc.name },
-  { ...robots, name: "Our competition robots" },
-  { ...calendar, name: "Upcoming events" },
-] as const;
+/** The Programs disclosure in the desktop header, and the program rows of the mobile sheet. */
+const programsPanel = {
+  programs: ["fll", "frc"],
+  links: [
+    { ...robots, icon: "bot" },
+    { ...calendar, icon: "calendar" },
+  ],
+} as const;
 
 /**
  * @public Consumed by the app shell and the 404 page.

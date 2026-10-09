@@ -184,7 +184,9 @@
     background-repeat: no-repeat;
     background-position: 0 100%;
     background-size: var(--sc2-underline-size-dark), var(--sc2-underline-size-light);
-    padding-bottom: 0.16em;
+    /* The stroke is a fixed 4.2px while the offset scales with the text, so a fixed term keeps
+       its top clear of the descenders at every size, not just the large ones. */
+    padding-bottom: calc(0.16em + 3px);
     box-decoration-break: clone;
     transition: color var(--sc2-duration-micro) var(--sc2-ease-toggle);
   }
@@ -274,6 +276,12 @@
   border: 1px solid var(--sc2-pocket-border);
   border-radius: var(--sc2-radius-lg);
   box-shadow: var(--sc2-shadow-pocket);
+
+  /* Construction lines (DESIGN.md §2.8) cross at the pocket's true corner, so a crop-marked
+     pocket is cut square: a radius inside the crossing reads as a bulging, squircle edge. */
+  &:has(> [data-registration-marks]) {
+    border-radius: 0;
+  }
 }
 
 /* Interactive pockets: the border warms to 60% primary and the floor lifts a visible step.
@@ -463,6 +471,12 @@
       linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
       linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
     --pocket-grid-size: 26px 26px, 26px 26px;
+
+    /* `round` stretches each cell by under a pixel so a whole number fits the pocket, and the
+       border-box origin tucks the first line under the opaque border: every pocket shows whole
+       cells, edge to edge, instead of a partial row and column at its right and bottom. */
+    background-origin: border-box;
+    background-repeat: round;
 
     /* As for `engineering-grid`: without `color-mix` the lines would fall back to opaque. */
     @supports not (color: color-mix(in srgb, red, red)) {

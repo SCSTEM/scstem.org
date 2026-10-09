@@ -41,10 +41,13 @@ export const buttonVariants = cva(
         secondary:
           "border border-border bg-card text-foreground transition-colors hover:bg-card-hover",
         /**
-         * A neutral keycap: an opaque sheet face, so it reads the same over photography, with an
-         * edge at ≥ 3:1 against every surface it sits on. Hover warms the edge to the accent.
+         * Flat, beside the raised accent keycap: an opaque sheet face, so it reads the same over
+         * photography, with an edge at ≥ 3:1 against every surface it sits on. A drafted edge in
+         * ink cannot show on the dark grounds, so it would only detach from the face. Hover warms
+         * the edge to the accent.
          */
-        outline: "keycap border border-control-edge bg-sheet text-foreground hover:border-primary",
+        outline:
+          "border border-control-edge bg-sheet text-foreground transition-colors hover:border-primary",
         ghost: "text-foreground transition-colors hover:bg-card",
         /**
          * A machined pocket rather than a filled control — for chrome that sits over content

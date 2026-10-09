@@ -63,10 +63,7 @@ export default defineConfig(
     rules: {
       "shadcn/no-raw-colors": "error",
       // Hook classes a component's scoped `<style>` selects; they generate no utility CSS.
-      "shadcn/no-unknown-classes": [
-        "error",
-        { allow: ["hero-media", "menu-icon-close", "menu-icon-open"] },
-      ],
+      "shadcn/no-unknown-classes": ["error", { allow: ["hero-media"] }],
     },
   },
   {
