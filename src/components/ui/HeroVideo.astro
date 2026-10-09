@@ -1,0 +1,134 @@
+---
+import type { ImageMetadata } from "astro";
+
+import HeroImage from "@/components/ui/HeroImage.astro";
+
+/**
+ * A `Hero`'s looping background footage, over the frame it starts from.
+ *
+ * The poster is a real `<Image>` rather than the video's own `poster` attribute, because it is
+ * the page's LCP element and only an `<Image>` gives it a responsive ladder — `poster=` hands a
+ * phone the same still a desktop gets. The video lies on top at `preload="none"` and reveals
+ * itself once it is genuinely playing, so a visitor who never reaches that point pays nothing
+ * for it.
+ */
+interface Props {
+  /** The labelled playback button in the hero's action row references this id. */
+  id: string;
+  /** Describes the footage: the poster is what a reader who never sees it moving is left with. */
+  alt: string;
+  mp4: string;
+  poster: ImageMetadata;
+  webm: string;
+}
+
+const { id, alt, mp4, poster, webm } = Astro.props;
+---
+
+<HeroImage alt={alt} src={poster} />
+
+<video aria-hidden="true" data-hero-video id={id} loop muted playsinline preload="none">
+  <source src={webm} type="video/webm" />
+  <source src={mp4} type="video/mp4" />
+</video>
+
+<style>
+  video {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--sc2-duration-entrance) var(--sc2-ease-entrance);
+  }
+
+  video[data-playing] {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  for (const video of document.querySelectorAll<HTMLVideoElement>("[data-hero-video]")) {
+    const toggle = document.querySelector<HTMLButtonElement>(
+      `[data-video-toggle][aria-controls="${video.id}"]`,
+    );
+    if (toggle === null) continue;
+    const label = toggle.querySelector("[data-video-label]");
+    if (label === null) continue;
+    /**
+     * SAFETY: `NetworkInformation` is absent from lib.dom, so the shape is named here; the `in`
+     * guard is what makes the read safe, and `saveData` is the only member touched.
+     */
+    const connection =
+      "connection" in navigator ? (navigator.connection as { saveData?: boolean }) : undefined;
+
+    /** Motion the visitor has asked not to see, and bytes they have asked not to spend. */
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let wanted = !motion.matches && connection?.saveData !== true;
+    let inView = false;
+
+    const sync = (): void => {
+      label.textContent = wanted ? "Pause background video" : "Play background video";
+      toggle.dataset.paused = String(!wanted);
+    };
+
+    const playOrPause = (): void => {
+      if (wanted && inView && !document.hidden) {
+        void video.play().catch((error: unknown) => {
+          // A pause that interrupts a pending play rejects it; only a refusal turns playback off.
+          if (error instanceof DOMException && error.name === "AbortError") return;
+          wanted = false;
+          sync();
+        });
+      } else {
+        video.pause();
+      }
+    };
+
+    /**
+     * Not before `load`: the hero is in the viewport from the first paint, so an observer armed
+     * any earlier puts the video's first megabyte in a bandwidth race with the poster that *is*
+     * the LCP.
+     */
+    const arm = () => {
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          inView = entry.isIntersecting;
+          playOrPause();
+        }
+      });
+
+      // Only on `playing`: revealing it any earlier shows a blank frame over the poster. It stays
+      // revealed through later pauses, since fading back would read as a glitch.
+      video.addEventListener("playing", () => video.setAttribute("data-playing", ""));
+      const unavailable = (): void => {
+        wanted = false;
+        toggle.hidden = true;
+        observer.disconnect();
+      };
+      // A failed `<source>` reports on itself, not on the video; the last one failing means none loaded.
+      video.addEventListener("error", unavailable);
+      video.querySelector("source:last-of-type")?.addEventListener("error", unavailable);
+      toggle.addEventListener("click", () => {
+        wanted = !wanted;
+        sync();
+        playOrPause();
+      });
+      motion.addEventListener("change", (event) => {
+        if (event.matches) {
+          wanted = false;
+          sync();
+          playOrPause();
+        }
+      });
+      document.addEventListener("visibilitychange", playOrPause);
+      sync();
+      toggle.hidden = false;
+      observer.observe(video);
+    };
+
+    if (document.readyState === "complete") {
+      arm();
+    } else {
+      window.addEventListener("load", arm, { once: true });
+    }
+  }
+</script>

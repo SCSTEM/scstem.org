@@ -1,0 +1,87 @@
+---
+import getInvolved from "@/assets/sc2/get-involved.webp";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import JoiningFaq from "@/components/ui/JoiningFaq.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Section from "@/components/ui/Section.astro";
+import { nav, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+/**
+ * Native `loading="lazy"` starts fetching a frame well before it scrolls into view, so the script
+ * below assigns the form's `src` only once the reserved frame enters the viewport.
+ */
+const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
+const formTitle = `${nav.cta.label} with the ${site.name}`;
+---
+
+<BaseLayout
+  description="Students, parents, mentors, and volunteers all start here. Tell the South Central STEM Collective who you are and what you’re curious about."
+  title="Get involved"
+  trail={[{ name: nav.cta.label, path: nav.cta.href }]}
+>
+  <Hero>
+    <HeroImage
+      alt="Students and mentors working together at a build session"
+      slot="media"
+      src={getInvolved}
+    />
+    <Fragment slot="title">Get involved</Fragment>
+    Students, parents, mentors, volunteers, and businesses all start in the same place. Tell us who
+    you are and what you&rsquo;re curious about.
+  </Hero>
+
+  <JoiningFaq />
+
+  <Section atmosphere="pool">
+    <Fragment slot="title">Tell us about you</Fragment>
+    <Fragment slot="intro">
+      The form takes a couple of minutes. Nothing on it is binding, and we&rsquo;ll follow up by
+      email.
+    </Fragment>
+
+    <Button href={site.urls.getInvolvedForm} variant="outline">
+      Open the form in Google Forms
+    </Button>
+
+    <!--
+      Google renders the form on a white ground and honors the embedding page's `color-scheme`
+      for its own controls, so the wrapper declares light rather than letting a dark page produce
+      dark-on-white form fields.
+    -->
+    <div class="mt-8 overflow-hidden pocket scheme-light">
+      <iframe
+        class="h-450 w-full border-0"
+        data-form-embed
+        data-src={embedded}
+        hidden
+        loading="lazy"
+        title={formTitle}
+      ></iframe>
+      <noscript>
+        <iframe
+          class="h-450 w-full border-0"
+          loading="lazy"
+          src={embedded}
+          title={formTitle}
+        ></iframe>
+      </noscript>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script>
+  for (const frame of document.querySelectorAll<HTMLIFrameElement>("[data-form-embed]")) {
+    const src = frame.dataset.src;
+    if (src === undefined) continue;
+    frame.hidden = false;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        frame.src = src;
+        observer.disconnect();
+      }
+    });
+    observer.observe(frame);
+  }
+</script>

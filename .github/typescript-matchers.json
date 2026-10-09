@@ -1,0 +1,32 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "tsc",
+      "pattern": [
+        {
+          "regexp": "^([^\\s].*)[\\(:](\\d+)[,:](\\d+)(?:\\):\\s+|\\s+-\\s+)(error|warning|info)\\s+TS(\\d+)\\s*:\\s*(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "code": 5,
+          "message": 6
+        }
+      ]
+    },
+    {
+      "owner": "astro-check",
+      "pattern": [
+        {
+          "regexp": "^(?:\u001b\\[[0-9;]*m)*([^\\s\u001b][^\u001b]*)(?:\u001b\\[[0-9;]*m)*:(?:\u001b\\[[0-9;]*m)*(\\d+)(?:\u001b\\[[0-9;]*m)*:(?:\u001b\\[[0-9;]*m)*(\\d+)(?:\u001b\\[[0-9;]*m)* - (?:\u001b\\[[0-9;]*m)*(error|warning)(?:\u001b\\[[0-9;]*m)* ts\\((\\d+)\\): (?:\u001b\\[[0-9;]*m)*(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "code": 5,
+          "message": 6
+        }
+      ]
+    }
+  ]
+}

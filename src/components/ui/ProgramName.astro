@@ -1,0 +1,19 @@
+---
+import type { ProgramTheme } from "@/data/site";
+
+import FirstMark from "@/components/ui/FirstMark.astro";
+
+/** A program's full name with the *FIRST®* word mark set as the brand requires (DESIGN.md §1). */
+interface Props {
+  program: ProgramTheme;
+}
+
+const { program } = Astro.props;
+
+const afterMark = {
+  fll: "LEGO® League",
+  frc: "Robotics Competition",
+} as const satisfies Record<ProgramTheme, string>;
+---
+
+<FirstMark /> {afterMark[program]}

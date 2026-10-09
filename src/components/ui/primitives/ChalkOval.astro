@@ -1,0 +1,69 @@
+---
+import { cn } from "@/lib/cn";
+import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
+
+/**
+ * A key word circled by marker (DESIGN.md §2.12) — the "Real ⬭Skills⬭. Real ⬭Robots⬭."
+ * treatment. Chalk white over photography, the accent's marker on the ground. It may also ring
+ * the one primary button a page most wants pressed (§2.18): wrap the `Button` in it.
+ *
+ * Three distinct paths, because identical hand-drawn marks read as a stamp and break the
+ * illusion: **two adjacent instances must not share a variant.** Per-instance rotation varies
+ * them further. Tagline and display contexts only, one run per view.
+ *
+ * Pill-shaped UI is banned (DESIGN.md §10) — this is the sanctioned way to ring a word.
+ */
+interface Props {
+  variant?: HandVariant;
+  /** `chalk` is white for photo contexts; `marker` is the accent, for the page ground. */
+  tone?: HandTone;
+  /** A control needs a wider ring than a word, so the oval clears the keycap's drafted edge. */
+  around?: "word" | "control";
+  class?: string;
+}
+
+const { variant = 1, tone = "marker", around = "word", class: className } = Astro.props;
+
+/** The ring's overhang past its content: the inline margin matches it, so neighbours clear it. */
+const overhang = {
+  word: {
+    host: "mx-4",
+    ring: "-inset-x-4 -inset-y-1.5 h-[calc(100%+0.75rem)] w-[calc(100%+2rem)]",
+  },
+  control: {
+    host: "mx-6",
+    ring: "-inset-x-6 -inset-y-3 h-[calc(100%+1.5rem)] w-[calc(100%+3rem)]",
+  },
+} as const;
+
+/**
+ * Open ellipses spanning the full viewBox, each starting and ending at a different point so no
+ * stroke closes cleanly. Spanning it is not optional: the SVG is stretched over the word, so a
+ * path covering only part of the box lands beside the word instead of around it.
+ */
+const paths = {
+  1: "M170 18C160 7 118 3 86 4 46 5 10 13 6 27c-3 13 26 25 80 25 48 0 86-9 89-23 1-8-8-15-27-20",
+  2: "M12 16C30 6 76 3 108 5c40 3 68 11 65 25-3 14-51 23-97 21C32 49 5 41 7 28 8 20 16 14 30 10",
+  3: "M176 24C172 11 128 3 92 4 48 5 8 14 5 28c-3 14 31 24 87 24 48 0 82-10 84-24 1-8-6-15-24-20",
+} as const;
+
+const rotations = { 1: "-1.2deg", 2: "0.9deg", 3: "-0.6deg" } as const;
+---
+
+<!-- The inline margin matches the stroke's overhang, so the oval clears the neighbouring words. -->
+<span class={cn("relative inline-block", overhang[around].host, className)}>
+  <slot />
+  <svg
+    aria-hidden="true"
+    class:list={[handMarkClass, "absolute", overhang[around].ring, handToneClass(tone)]}
+    preserveAspectRatio="none"
+    style={`rotate: ${rotations[variant]}`}
+    viewBox="0 0 180 56"
+  >
+    <!--
+      pathLength normalizes the dash animation to percent, so the stroke always ends fully
+      drawn. The stroke itself comes from `hand-stroke` (global.css).
+    -->
+    <path d={paths[variant]} pathLength="100"></path>
+  </svg>
+</span>

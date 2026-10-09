@@ -1,0 +1,551 @@
+---
+import { getImage } from "astro:assets";
+
+import Button from "@/components/ui/primitives/Button.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Lockup from "@/components/ui/primitives/Lockup.astro";
+import ProgramName from "@/components/ui/ProgramName.astro";
+import { programPhotos } from "@/data/programPhotos";
+import { nav, type NavLink, type ProgramTheme, programs, site } from "@/data/site";
+import { cn } from "@/lib/cn";
+import { breakpoint } from "@/lib/tokens";
+
+/**
+ * Site header (DESIGN.md §5). Sticky on all viewports, condensing after scroll in pure CSS.
+ *
+ * Identity is the **real lockup** on every viewport, never a rebuilt gear plus the name in Inter:
+ * the brand's Light full-width lockup (the variant for dark grounds — the color lockup's gray
+ * wordmark is 2:1 on this header).
+ *
+ * The Programs entry is a real link to `/programs` with a disclosure *in addition*, so touch and
+ * no-JS both get a destination (§5, §9). The panel is a native `popover`, which supplies Esc,
+ * light-dismiss and top-layer placement without script (§9's "menus close on Esc"; WCAG 2.2
+ * SC 1.4.13 needs the dismissal). Script adds only the mouse hover-intent on top.
+ *
+ * Both viewports project `nav` from `src/data/site.ts`; the desktop/sheet split is the `surfaces`
+ * field there, not two hand-written lists.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const current = Astro.url.pathname;
+/**
+ * A section is "current" for its children too. Page paths end in `/`, so a section's href is a
+ * prefix of every page below it: /programs/frc/ lights up Programs.
+ */
+const inSection = (href: string): boolean => current.startsWith(href);
+
+/**
+ * `as const` on the data gives each entry's `surfaces` a literal tuple type, so a direct
+ * `.includes("header")` is an error on entries that lack it. Widening through the parameter is
+ * what keeps one list readable from both surfaces without a cast.
+ */
+const onSurface =
+  (surface: string) =>
+  (link: { readonly surfaces: readonly string[] }): boolean =>
+    link.surfaces.includes(surface);
+
+const headerLinks: readonly NavLink[] = nav.primary.filter(onSurface("header"));
+const sheetLinks: readonly NavLink[] = nav.primary.filter(onSurface("sheet"));
+const sheetCtas = nav.primary.filter(onSurface("sheet-cta"));
+
+const panelId = (link: NavLink): string => `${link.label.toLowerCase()}-panel`;
+
+/**
+ * The panel's program photos are CSS backgrounds, not `<img>`s: a closed popover is
+ * `display: none`, and browsers still fetch a lazy `<img>` there on every page, where a hidden
+ * element's background is never requested.
+ */
+const PANEL_PHOTO_WIDTH = 240;
+const panelPhoto = async (key: ProgramTheme): Promise<string> => {
+  const sources = await Promise.all(
+    [1, 2].map(async (density) => {
+      const { src } = await getImage({
+        src: programPhotos[key].image,
+        width: PANEL_PHOTO_WIDTH * density,
+      });
+      return `url("${src}") ${String(density)}x`;
+    }),
+  );
+  return `background-image: image-set(${sources.join(", ")})`;
+};
+const panelPhotos = new Map(
+  await Promise.all(
+    headerLinks
+      .flatMap((link) => link.panel?.programs ?? [])
+      .map(async (key) => [key, await panelPhoto(key)] as const),
+  ),
+);
+
+/**
+ * Header items run the full height of the bar, so the current page's rule sits on the header's
+ * bottom hairline rather than under the text.
+ */
+const navItem = cn(
+  "relative flex h-full items-center bg-none px-3 pb-0 spec-label text-body lg:px-4",
+  "hover:text-foreground aria-[current]:text-foreground",
+  "after:absolute after:inset-x-3 after:-bottom-px after:h-0.5 after:bg-primary lg:after:inset-x-4",
+  "after:scale-x-0 aria-[current]:after:scale-x-100",
+  "after:transition-transform after:duration-(--sc2-duration-micro) after:ease-(--sc2-ease-toggle)",
+);
+
+/** Chrome links inside the panel and sheet: no hand underline, which belongs to links in copy. */
+const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
+---
+
+<header
+  class={cn(
+    "sticky top-0 z-50 border-b border-border",
+    "bg-background/95 supports-backdrop-filter:bg-background/80 supports-backdrop-filter:backdrop-blur",
+    className,
+  )}
+  data-site-header
+>
+  <nav aria-label="Main" class="container-page flex h-16 items-center gap-6">
+    <a
+      aria-label={`${site.name} — home`}
+      class="flex shrink-0 items-center ui-link py-2"
+      data-sheet-inert
+      href="/"
+    >
+      <span class="block origin-left" data-header-lockup>
+        <Lockup class="h-10" />
+      </span>
+    </a>
+
+    <div class="ml-auto hidden h-full items-center md:flex" data-sheet-inert>
+      <ul class="flex h-full items-center">
+        {headerLinks.map((link) =>
+          link.panel ? (
+            <li class="flex h-full items-center" data-nav-anchor>
+              <a
+                aria-current={inSection(link.href) ? "page" : undefined}
+                class={cn(navItem, "pr-0 lg:pr-0 after:right-0 lg:after:right-0")}
+                href={link.href}
+              >
+                {link.label}
+              </a>
+              <button
+                aria-label={`Show ${link.label.toLowerCase()}`}
+                class="-mr-2 flex size-11 items-center rounded-md pl-2 text-body hover:text-foreground lg:-mr-1"
+                data-nav-trigger
+                popovertarget={panelId(link)}
+                type="button"
+              >
+                <Icon name="chevron--down" size={16} />
+              </button>
+              <div
+                class="m-0 w-lg rounded-lg border border-border bg-card p-2 shadow-plate"
+                data-nav-panel
+                id={panelId(link)}
+                popover
+              >
+                <ul class="grid grid-cols-2 gap-2">
+                  {link.panel.programs.map((key) => (
+                    <li data-accent={programs[key].accent}>
+                      <a
+                        aria-current={inSection(programs[key].href) ? "page" : undefined}
+                        class={cn(
+                          chromeLink,
+                          "group flex h-full flex-col gap-3 rounded-sm p-2 hover:bg-card-hover aria-[current]:bg-card-hover",
+                        )}
+                        href={programs[key].href}
+                      >
+                        <span
+                          class="relative block aspect-video overflow-hidden rounded-sm bg-cover bg-center"
+                          style={panelPhotos.get(key)}
+                        >
+                          <span class="absolute inset-x-0 bottom-0 h-0.5 bg-primary" />
+                        </span>
+                        <span class="flex flex-col gap-1 px-1 pb-1">
+                          <span class="flex items-baseline justify-between gap-2">
+                            <span class="spec-label text-primary-bright">
+                              {programs[key].shortName}
+                            </span>
+                            <span class="spec-label text-muted">Ages {programs[key].ages}</span>
+                          </span>
+                          <span class="text-small font-semibold group-hover:text-primary-bright group-aria-[current]:text-primary-bright">
+                            <ProgramName program={key} />
+                          </span>
+                          <span class="text-small text-muted">{programs[key].tagline}</span>
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <div class="mt-2 flex items-center border-t border-border pt-2">
+                  {link.panel.links.map((entry) => (
+                    <a
+                      aria-current={current === entry.href ? "page" : undefined}
+                      class={cn(
+                        chromeLink,
+                        "inline-flex h-11 items-center gap-2 rounded-sm px-3 text-small font-medium",
+                        "hover:bg-card-hover aria-[current]:text-primary-bright",
+                      )}
+                      href={entry.href}
+                    >
+                      <Icon class="text-muted" name={entry.icon} size={16} />
+                      {entry.label}
+                    </a>
+                  ))}
+                  <a
+                    class={cn(
+                      chromeLink,
+                      "group ml-auto inline-flex h-11 items-center gap-2 rounded-sm px-3",
+                      "text-small font-medium hover:bg-card-hover",
+                    )}
+                    href={link.href}
+                  >
+                    All programs
+                    <Icon
+                      class="text-primary-bright transition-transform duration-(--sc2-duration-micro) motion-safe:group-hover:translate-x-0.5"
+                      name="arrow--right"
+                      size={16}
+                    />
+                  </a>
+                </div>
+              </div>
+            </li>
+          ) : (
+            <li class="h-full">
+              <a
+                aria-current={inSection(link.href) ? "page" : undefined}
+                class={navItem}
+                href={link.href}
+              >
+                {link.label}
+              </a>
+            </li>
+          ),
+        )}
+      </ul>
+      <span aria-hidden="true" class="mr-6 ml-3 h-6 w-px bg-border lg:ml-2"></span>
+      <Button class="px-5" href={nav.cta.href} size="sm">
+        {nav.cta.label}
+      </Button>
+    </div>
+
+    <!-- One state, `aria-expanded`, with CSS deriving the label and icon swap from it. -->
+    <Button
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label="Open menu"
+      class="-mr-3 ml-auto hover:bg-transparent hover:text-primary-bright md:hidden"
+      data-md={breakpoint("md")}
+      data-menu-toggle
+      size="sm"
+      variant="ghost"
+    >
+      <span class="flex items-center gap-2" data-when="closed">
+        <span class="spec-label">Menu</span>
+        <Icon name="menu" size={24} />
+      </span>
+      <span class="flex items-center gap-2" data-when="open">
+        <span class="spec-label">Close</span>
+        <Icon name="close" size={24} />
+      </span>
+    </Button>
+  </nav>
+</header>
+
+<!--
+  Full-height sheet (DESIGN.md §5). Nothing is more than two taps away. Opaque, so the page
+  behind it is marked `inert` while it is open rather than left in the tab order.
+-->
+<div class="fixed inset-0 z-40 bg-background md:hidden" data-menu-sheet hidden id="mobile-menu">
+  <nav
+    aria-label="Mobile"
+    class="flex h-full flex-col overflow-y-auto px-4 pt-16 pb-[env(safe-area-inset-bottom)]"
+  >
+    <ul class="flex flex-col divide-y divide-border border-b border-border">
+      {sheetLinks.map((link) => (
+        <li>
+          <a
+            aria-current={inSection(link.href) ? "page" : undefined}
+            class={cn(
+              chromeLink,
+              "flex min-h-16 items-center text-h4 font-semibold aria-[current]:text-primary-bright",
+            )}
+            href={link.href}
+          >
+            {link.label}
+          </a>
+          {link.panel && (
+            <ul class="mb-4 ml-1 flex flex-col border-l border-border">
+              {link.panel.programs.map((key) => (
+                <li data-accent={programs[key].accent}>
+                  <a
+                    aria-current={inSection(programs[key].href) ? "page" : undefined}
+                    class={cn(
+                      chromeLink,
+                      "flex min-h-12 items-center gap-3 pl-5 text-copy font-medium",
+                      "aria-[current]:text-primary-bright",
+                    )}
+                    href={programs[key].href}
+                  >
+                    <span class="w-8 shrink-0 spec-label text-primary-bright">
+                      {programs[key].shortName}
+                    </span>
+                    <span>
+                      <ProgramName program={key} />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ul>
+    <div class="mt-auto flex flex-col gap-3 py-6">
+      <Button href={nav.cta.href} size="lg">
+        {nav.cta.label}
+      </Button>
+      {sheetCtas.map((link) => (
+        <Button href={link.href} size="lg" variant="outline">
+          {link.label}
+        </Button>
+      ))}
+    </div>
+  </nav>
+</div>
+
+<style>
+  /**
+   * Condense after scroll. Scroll-driven animations are progressive: where they are unsupported
+   * the header simply keeps its full height, which is the correct fallback.
+   *
+   * `scale`, not `height`: height is not a compositor property, so animating it relayouts the
+   * sticky header and reflows the page below on every scroll frame (DESIGN.md §6 — "only
+   * `opacity` and `transform` animate").
+   */
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      [data-header-lockup] {
+        animation: condense-lockup linear both;
+        animation-timeline: scroll(root block);
+        animation-range: 0 120px;
+      }
+    }
+  }
+
+  @keyframes condense-lockup {
+    to {
+      scale: 0.8;
+    }
+  }
+
+  /* The menu button's label and icon, derived from its own state. */
+  [data-menu-toggle] [data-when="open"],
+  [data-menu-toggle][aria-expanded="true"] [data-when="closed"] {
+    display: none;
+  }
+
+  [data-menu-toggle][aria-expanded="true"] [data-when="open"] {
+    display: flex;
+  }
+
+  /**
+   * The Programs panel. A popover renders in the top layer, where offsets resolve against the
+   * viewport rather than the header, so it is anchored to its nav item: centered beneath it, or
+   * flush to whichever side keeps it on screen. The script below places it where anchor
+   * positioning is unsupported.
+   */
+  [data-nav-anchor] {
+    anchor-name: --nav-panel;
+  }
+
+  [data-nav-panel] {
+    position: fixed;
+    inset: auto;
+    margin-top: 0.5rem;
+    position-anchor: --nav-panel;
+    position-area: bottom;
+    position-try-fallbacks:
+      bottom span-left,
+      bottom span-right;
+    transition:
+      opacity var(--sc2-duration-ui) var(--sc2-ease-entrance),
+      translate var(--sc2-duration-ui) var(--sc2-ease-entrance),
+      display var(--sc2-duration-ui) allow-discrete,
+      overlay var(--sc2-duration-ui) allow-discrete;
+  }
+
+  [data-nav-panel]:not(:popover-open) {
+    opacity: 0;
+  }
+
+  @starting-style {
+    [data-nav-panel]:popover-open {
+      opacity: 0;
+    }
+  }
+
+  /**
+   * The chevron turns over while the panel is open. `:global()` on the `<svg>` is required: it is
+   * rendered by `Icon.astro`, so it carries no `data-astro-cid-*` of this component and a plain
+   * descendant selector would match nothing. The `[data-nav-trigger]` side keeps the scope.
+   */
+  [data-nav-trigger] :global(svg) {
+    transition: rotate var(--sc2-duration-ui) var(--sc2-ease-toggle);
+  }
+
+  [data-nav-anchor]:has([data-nav-panel]:popover-open) [data-nav-trigger] {
+    color: var(--sc2-foreground);
+
+    & :global(svg) {
+      rotate: 180deg;
+    }
+  }
+
+  /* The sheet fades in from just above, as if dropping out of the header. */
+  [data-menu-sheet] {
+    transition:
+      opacity var(--sc2-duration-ui) var(--sc2-ease-entrance),
+      translate var(--sc2-duration-ui) var(--sc2-ease-entrance),
+      display var(--sc2-duration-ui) allow-discrete;
+  }
+
+  [data-menu-sheet][hidden] {
+    opacity: 0;
+  }
+
+  @starting-style {
+    [data-menu-sheet]:not([hidden]) {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-nav-panel]:not(:popover-open),
+    [data-menu-sheet][hidden] {
+      translate: 0 -0.5rem;
+    }
+
+    @starting-style {
+      [data-nav-panel]:popover-open,
+      [data-menu-sheet]:not([hidden]) {
+        translate: 0 -0.5rem;
+      }
+    }
+  }
+
+  /* The scroll lock, likewise: no inline style to leave behind. */
+  body:has([data-menu-sheet]:not([hidden])) {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  const anchor = document.querySelector("[data-nav-anchor]");
+  const panel = document.querySelector("[data-nav-panel]");
+  const trigger = document.querySelector("[data-nav-trigger]");
+
+  if (anchor instanceof HTMLElement && panel instanceof HTMLElement) {
+    if (!CSS.supports("anchor-name", "--nav-panel")) {
+      panel.addEventListener("toggle", (event) => {
+        if (event instanceof ToggleEvent && event.newState === "open") {
+          const { bottom, left, width } = anchor.getBoundingClientRect();
+          const gutter = 16;
+          const centered = left + width / 2 - panel.offsetWidth / 2;
+          const x = Math.min(
+            Math.max(gutter, centered),
+            window.innerWidth - panel.offsetWidth - gutter,
+          );
+          panel.style.top = `${String(bottom)}px`;
+          panel.style.left = `${String(x)}px`;
+        }
+      });
+    }
+
+    /**
+     * Hover intent for a mouse: open after a beat, and close only once the pointer has been off
+     * both the item and the panel for a moment, so crossing the gap between them does not shut it.
+     * A panel opened by click or keyboard stays until it is dismissed.
+     */
+    const OPEN_DELAY = 80;
+    const CLOSE_DELAY = 200;
+    let timer: number | undefined;
+    let openedByHover = false;
+
+    const schedule = (action: () => void, delay: number) => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(action, delay);
+    };
+
+    for (const region of [anchor, panel]) {
+      region.addEventListener("pointerenter", (event) => {
+        if (event.pointerType !== "mouse") return;
+        schedule(() => {
+          if (!panel.matches(":popover-open")) {
+            openedByHover = true;
+            panel.showPopover();
+          }
+        }, OPEN_DELAY);
+      });
+
+      region.addEventListener("pointerleave", (event) => {
+        if (event.pointerType !== "mouse") return;
+        schedule(() => {
+          if (openedByHover && panel.matches(":popover-open")) panel.hidePopover();
+        }, CLOSE_DELAY);
+      });
+    }
+
+    panel.addEventListener("toggle", (event) => {
+      if (event instanceof ToggleEvent && event.newState === "closed") openedByHover = false;
+    });
+
+    /** A click on the chevron of a hover-opened panel pins it open rather than closing it. */
+    trigger?.addEventListener("click", (event) => {
+      if (openedByHover) {
+        event.preventDefault();
+        openedByHover = false;
+      }
+    });
+  }
+
+  const toggle = document.querySelector("[data-menu-toggle]");
+  const sheet = document.querySelector("[data-menu-sheet]");
+
+  if (toggle instanceof HTMLElement && sheet instanceof HTMLElement) {
+    /**
+     * The sheet is opaque and covers the page, so everything behind it leaves the tab order and
+     * the accessibility tree — otherwise Tab past the last item walks invisible links. `body`
+     * cannot be the target: it contains the sheet. Everything in the shell that is not the toggle
+     * carries `data-sheet-inert`.
+     */
+    const behind = document.querySelectorAll("main, footer, [data-sheet-inert]");
+
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      sheet.hidden = !open;
+      for (const element of behind) element.toggleAttribute("inert", open);
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !sheet.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    /**
+     * Both the sheet and its toggle are `md:hidden`, so crossing the breakpoint while open would
+     * otherwise leave the page scroll-locked and inert with no visible control to undo it. The
+     * boundary comes from the `--breakpoint-md` token at build time, via `data-md`.
+     */
+    const desktop = window.matchMedia(`(min-width: ${toggle.dataset.md ?? "48rem"})`);
+    desktop.addEventListener("change", (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

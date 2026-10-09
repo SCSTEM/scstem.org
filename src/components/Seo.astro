@@ -1,0 +1,58 @@
+---
+import type { SeoProps } from "@/lib/seo";
+
+import { programs, site } from "@/data/site";
+import { absoluteUrl } from "@/lib/links";
+import { color } from "@/lib/tokens";
+
+/**
+ * Everything that goes in `<head>` for discoverability. Rendered by BaseLayout, which passes
+ * these props straight through — so **`description` being required here is what stops a page
+ * from shipping without one.** Omitting it is a type error, not a review catch.
+ */
+type Props = SeoProps;
+
+const { title, description, og, noindex = false, theme } = Astro.props;
+
+const fullTitle = site.titleTemplate.replace("%s", title);
+
+/** `trailingSlash: "always"` makes the pathname the trailing-slash form a page is served at. */
+const canonicalUrl = absoluteUrl(Astro.url.pathname);
+
+const card =
+  og === undefined
+    ? { ...site.ogImage, src: site.ogImage.path }
+    : { alt: og.alt, height: og.image.height, src: og.image.src, width: og.image.width };
+const imageUrl = absoluteUrl(card.src);
+
+/** Browser chrome follows the page's action accent, read from the same tokens the CSS ships. */
+const themeColor = color("primary", {
+  accent: theme === undefined ? "yellow" : programs[theme].accent,
+});
+---
+
+<title>{fullTitle}</title>
+<meta content={description} name="description" />
+{noindex ? (
+  <meta content="noindex, nofollow" name="robots" />
+) : (
+  <link href={canonicalUrl} rel="canonical" />
+)}
+
+<meta content={fullTitle} property="og:title" />
+<meta content={description} property="og:description" />
+<meta content="website" property="og:type" />
+{!noindex && <meta content={canonicalUrl} property="og:url" />}
+<meta content={site.name} property="og:site_name" />
+<meta content="en_US" property="og:locale" />
+<meta content={imageUrl} property="og:image" />
+<meta content={card.alt} property="og:image:alt" />
+<meta content={String(card.width)} property="og:image:width" />
+<meta content={String(card.height)} property="og:image:height" />
+
+<meta content="summary_large_image" name="twitter:card" />
+<meta content={fullTitle} name="twitter:title" />
+<meta content={description} name="twitter:description" />
+<meta content={imageUrl} name="twitter:image" />
+
+<meta content={themeColor} name="theme-color" />

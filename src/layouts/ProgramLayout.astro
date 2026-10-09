@@ -1,0 +1,23 @@
+---
+import type { ProgramTheme } from "@/data/site";
+import type { Breadcrumb } from "@/lib/jsonld";
+import type { SeoProps } from "@/lib/seo";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+/**
+ * A program page is the same site wearing team colors (DESIGN.md §2), so this is a thin wrapper
+ * that sets the theme and nothing else.
+ */
+type Props = Omit<SeoProps, "noindex" | "theme"> & {
+  program: ProgramTheme;
+  trail: readonly Breadcrumb[];
+};
+
+const { program, ...rest } = Astro.props;
+---
+
+<BaseLayout {...rest} theme={program}>
+  <slot name="head" slot="head" />
+  <slot />
+</BaseLayout>

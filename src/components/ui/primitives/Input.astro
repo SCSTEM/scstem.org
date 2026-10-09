@@ -1,0 +1,27 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/cn";
+
+import { fieldVariants } from "./Field.variants";
+
+/**
+ * A pocket-floored field (DESIGN.md §8): `card` background, hairline border, focus ring from
+ * the theme accent. Validation uses native attributes; the error message is `FieldError`, wired
+ * by `aria-describedby`.
+ */
+interface Props extends Omit<HTMLAttributes<"input">, "class"> {
+  id: string;
+  invalid?: boolean;
+  class?: string;
+}
+
+const { id, invalid = false, class: className, ...rest } = Astro.props;
+---
+
+<input
+  aria-invalid={invalid ? "true" : undefined}
+  class={cn(fieldVariants({ control: "input", invalid }), className)}
+  id={id}
+  {...rest}
+/>

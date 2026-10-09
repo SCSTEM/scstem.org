@@ -1,0 +1,937 @@
+/* Class candidates come from src/ only: DESIGN.md, docs/, and plan/ name classes in prose. */
+@import "tailwindcss" source("../");
+@import "./fonts.css";
+@import "./tokens.css";
+
+/**
+ * Tailwind's view of the design tokens. The values live in `tokens.css`, the portable file the
+ * wiki and apps import too; this block only names them for utilities. `inline` makes every
+ * utility read the `--sc2-*` token where it is used, so a `data-mode`, `data-accent` or
+ * `data-register` switch on any element reaches the utilities inside it. The same reason means
+ * rules in this file read `--sc2-*` tokens directly: `inline` emits no `--color-*` variables.
+ */
+@theme inline {
+  /* Colors (DESIGN.md §2). */
+  --color-background: var(--sc2-background);
+  --color-card: var(--sc2-card);
+  --color-card-hover: var(--sc2-card-hover);
+  --color-pocket-border: var(--sc2-pocket-border);
+  --color-band: var(--sc2-band);
+  --color-plate: var(--sc2-plate);
+  --color-plate-border: var(--sc2-plate-border);
+  --color-plate-hover: var(--sc2-plate-hover);
+  --color-sheet: var(--sc2-sheet);
+  --color-border: var(--sc2-border);
+  --color-control-edge: var(--sc2-control-edge);
+  --color-ink: var(--sc2-ink);
+  --color-logo: var(--sc2-logo);
+  --color-print: var(--sc2-print);
+  --color-foreground: var(--sc2-foreground);
+  --color-body: var(--sc2-body);
+  --color-muted: var(--sc2-muted);
+  --color-primary: var(--sc2-primary);
+  --color-primary-bright: var(--sc2-primary-bright);
+  --color-primary-foreground: var(--sc2-primary-foreground);
+  --color-ring: var(--sc2-ring);
+  --color-mark: var(--sc2-mark);
+  --color-info: var(--sc2-info);
+  --color-info-bright: var(--sc2-info-bright);
+  --color-info-foreground: var(--sc2-info-foreground);
+  --color-destructive: var(--sc2-destructive);
+  --color-destructive-bright: var(--sc2-destructive-bright);
+  --color-destructive-foreground: var(--sc2-destructive-foreground);
+  --color-tier-platinum: var(--sc2-tier-platinum);
+  --color-tier-gold: var(--sc2-tier-gold);
+  --color-tier-silver: var(--sc2-tier-silver);
+  --color-tier-bronze: var(--sc2-tier-bronze);
+
+  /* Typography (DESIGN.md §3). */
+  --font-display: var(--sc2-font-display);
+  --font-sans: var(--sc2-font-sans);
+  --font-mono: var(--sc2-font-mono);
+  --font-hand: var(--sc2-font-hand);
+  --text-display: var(--sc2-text-display);
+  --text-display--line-height: var(--sc2-leading-tight);
+  --text-h1: var(--sc2-text-h1);
+  --text-h1--line-height: var(--sc2-leading-tight);
+  --text-h2: var(--sc2-text-h2);
+  --text-h2--line-height: var(--sc2-leading-tight);
+  --text-h3: var(--sc2-text-h3);
+  --text-h3--line-height: var(--sc2-leading-snug);
+  --text-h4: var(--sc2-text-h4);
+  --text-h4--line-height: var(--sc2-leading-snug);
+  --text-lead: var(--sc2-text-lead);
+  --text-lead--line-height: var(--sc2-leading-relaxed);
+  --text-copy: var(--sc2-text-copy);
+  --text-copy--line-height: var(--sc2-leading-relaxed);
+  --text-small: var(--sc2-text-small);
+  --text-small--line-height: var(--sc2-leading-relaxed);
+  --text-label: var(--sc2-text-label);
+  --text-label--line-height: var(--sc2-leading-snug);
+  --text-label--letter-spacing: var(--sc2-tracking-label);
+
+  /* Radius, elevation, motion (DESIGN.md §4, §6). */
+  --radius-sm: var(--sc2-radius-sm);
+  --radius-md: var(--sc2-radius-md);
+  --radius-lg: var(--sc2-radius-lg);
+  --shadow-pocket: var(--sc2-shadow-pocket);
+  --shadow-contact: var(--sc2-shadow-contact);
+  --shadow-plate: var(--sc2-shadow-plate);
+  --shadow-drafted-1: var(--sc2-shadow-drafted-1);
+  --shadow-drafted-2: var(--sc2-shadow-drafted-2);
+  --shadow-press: var(--sc2-shadow-press);
+  --shadow-table-edge: var(--sc2-shadow-table-edge);
+  --duration-micro: var(--sc2-duration-micro);
+  --duration-ui: var(--sc2-duration-ui);
+  --duration-entrance: var(--sc2-duration-entrance);
+  --duration-draw: var(--sc2-duration-draw);
+  --ease-entrance: var(--sc2-ease-entrance);
+  --ease-toggle: var(--sc2-ease-toggle);
+}
+
+/* `light:` styles an element on the light finish (DESIGN.md §2); the dark finish is the default.
+   A dark island inside a light page (`data-mode="dark"` on an element) is not light. */
+@custom-variant light (&:where([data-mode="light"], [data-mode="light"] *):not([data-mode="dark"], [data-mode="dark"] *));
+
+/**
+ * Layout. Not tokens a page chooses between, so they stay here with Tailwind. `md` is
+ * Tailwind's default, declared so it is emitted as a variable: utilities below and the Navbar
+ * sheet script read it, so the mobile/desktop boundary has one definition.
+ */
+@theme {
+  --breakpoint-md: 48rem;
+  --breakpoint-3xl: 120rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--sc2-background);
+    background-image: var(--sc2-texture-grain);
+    color: var(--sc2-body);
+    font-family: var(--sc2-font-sans);
+    font-size: var(--sc2-text-copy);
+    line-height: var(--sc2-leading-relaxed);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /**
+   * Orbitron owns h1–h3 and stops there (DESIGN.md §3): h4–h6 are Inter. Orbitron has no italic
+   * and is never set italic, so an italic span in a heading — the FIRST® mark (§1) — stands
+   * upright instead of taking a synthesized oblique. That covers the ®, which Orbitron lacks and
+   * `--font-display` takes from Inter. `CardTitle` sets its h2/h3 in Inter and turns synthesis
+   * back on.
+   */
+  h1,
+  h2,
+  h3 {
+    color: var(--sc2-foreground);
+    font-family: var(--sc2-font-display);
+    font-synthesis-style: none;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--sc2-text-h1);
+    font-weight: 700;
+    line-height: var(--sc2-leading-tight);
+  }
+
+  h2 {
+    font-size: var(--sc2-text-h2);
+    line-height: var(--sc2-leading-tight);
+  }
+
+  h3 {
+    font-size: var(--sc2-text-h3);
+    line-height: var(--sc2-leading-snug);
+  }
+
+  h4,
+  h5,
+  h6 {
+    color: var(--sc2-foreground);
+    font-family: var(--sc2-font-sans);
+    font-size: var(--sc2-text-h4);
+    font-weight: 600;
+    line-height: var(--sc2-leading-snug);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /**
+   * An underline means a link, always, and it is drawn by hand (DESIGN.md §2.14, §8): a marker
+   * stroke that drifts upward toward its end. The stroke is a background rather than
+   * `text-decoration`, which cannot take a custom shape, and `box-decoration-break: clone` gives
+   * each line of a wrapped link its own stroke. Two layers, one stroke per finish: the finish
+   * sizes one to the link and the other to nothing (`tokens.css`). Anchors that are not text — a
+   * button, a framed image — reset it with `bg-none pb-0`. Preflight sets `text-decoration:
+   * inherit` on `a`; the line is switched off here so the two underlines never stack.
+   *
+   * On the dark finish the text is the accent; on the light finish it is ink, and the yellow
+   * stroke alone says "link" (§2 accents).
+   */
+  a {
+    color: light-dark(var(--sc2-foreground), var(--sc2-primary-bright));
+    text-decoration-line: none;
+    background-image: var(--sc2-underline-1-dark), var(--sc2-underline-1-light);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: var(--sc2-underline-size-dark), var(--sc2-underline-size-light);
+    /* The stroke is a fixed 4.2px while the offset scales with the text, so a fixed term keeps
+       its top clear of the descenders at every size, not just the large ones. */
+    padding-bottom: calc(0.16em + 3px);
+    box-decoration-break: clone;
+    transition: color var(--sc2-duration-micro) var(--sc2-ease-toggle);
+  }
+
+  /* Three drift variants, rotated among sibling links so neighbours never share a stroke. */
+  a:nth-of-type(3n + 2) {
+    background-image: var(--sc2-underline-2-dark), var(--sc2-underline-2-light);
+  }
+
+  a:nth-of-type(3n) {
+    background-image: var(--sc2-underline-3-dark), var(--sc2-underline-3-light);
+  }
+
+  /* Hover shades the text and leaves the stroke where it is: a moving underline reads as a
+     glitch, not a confirmation. */
+  a:hover {
+    color: light-dark(var(--sc2-primary-bright), var(--sc2-foreground));
+  }
+
+  /* Never removed, on any interactive element (DESIGN.md §9). */
+  :focus-visible {
+    outline: 2px solid var(--sc2-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--sc2-primary);
+    color: var(--sc2-primary-foreground);
+  }
+
+  /* Media never overflows its column. `svg` is deliberately excluded: `max-width` is a
+     different property from `width`, so a utilities-layer `width` cannot override it, and
+     the hand-markup primitives size their strokes past the text box on purpose. */
+  img,
+  picture,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+/**
+ * Global reduced-motion kill switch (DESIGN.md §6, §9). Every animation in the system is
+ * confirmation, never content, so removing all of them costs nothing.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/**
+ * Signature motifs (DESIGN.md §2) as utilities, so pages cannot reinvent them. The register
+ * budget is a review rule, not something CSS can enforce: at most 4 distinct devices per
+ * viewport, and one atmosphere device per section boundary.
+ */
+
+/**
+ * Pocket anatomy V2, "machined pocket" — the standard card. On the ground it is cut into the
+ * sheet: darker floor, inset walls, a lit lower lip. Inside a `band` the same element is a plate
+ * laid on the table instead (the `band` utility below) — cut into metal, laid on the table.
+ */
+@utility pocket {
+  /* The lit floor (DESIGN.md §2): shadowed under the top wall, a step brighter toward the lip. It
+     is an overlay on the fill, so hover changes only the fill. A feature pocket adds its grid as
+     the layer above it through `--pocket-grid`, so neither utility overrides the other. */
+  --pocket-floor: linear-gradient(
+    to bottom,
+    var(--sc2-pocket-shade),
+    transparent 42%,
+    var(--sc2-pocket-lit)
+  );
+
+  background-color: var(--sc2-card);
+  background-image: var(--pocket-grid, none), var(--pocket-floor);
+  background-size: var(--pocket-grid-size, auto), auto;
+  border: 1px solid var(--sc2-pocket-border);
+  border-radius: var(--sc2-radius-lg);
+  box-shadow: var(--sc2-shadow-pocket);
+
+  /* Construction lines (DESIGN.md §2.8) cross at the pocket's true corner, so a crop-marked
+     pocket is cut square: a radius inside the crossing reads as a bulging, squircle edge. */
+  &:has(> [data-registration-marks]) {
+    border-radius: 0;
+  }
+}
+
+/* Interactive pockets: the border warms to 60% primary and the floor lifts a visible step.
+   Nothing translates, nothing glows, the shadow does not change. */
+@utility pocket-interactive {
+  transition:
+    background-color var(--sc2-duration-micro) var(--sc2-ease-toggle),
+    border-color var(--sc2-duration-micro) var(--sc2-ease-toggle);
+
+  &:hover,
+  &:focus-within {
+    background-color: var(--sc2-card-hover);
+    border-color: color-mix(in srgb, var(--sc2-primary) 60%, transparent);
+  }
+}
+
+/**
+ * The engineering grid (DESIGN.md §2.3), for `Pattern.astro`; `pocket-feature` below draws the
+ * same lines as a layer of the pocket floor. Cell size and stroke alpha are custom properties,
+ * and the stroke reads `--sc2-foreground` rather than a literal hex, so the grid follows the
+ * finish and register. Not
+ * `currentcolor`: this utility lands on elements that also hold text, and the linework must not
+ * be tied to the copy's color.
+ */
+@utility engineering-grid {
+  --grid-cell: 26px;
+  --grid-alpha: 5%;
+  --grid-line: color-mix(in srgb, var(--sc2-foreground) var(--grid-alpha), transparent);
+
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+
+  /* A `var()` alpha cannot be pre-resolved, so the build's computed fallback for `--grid-line`
+     lands on opaque foreground — solid white linework over content. The grid is atmosphere,
+     never information, so drop it entirely where `color-mix` is unavailable. */
+  @supports not (color: color-mix(in srgb, red, red)) {
+    background-image: none;
+  }
+}
+
+/**
+ * The drafting grid (DESIGN.md §2.3): the engineering grid at blueprint strength, in two weights —
+ * a 26px minor cell and a 130px (5 × minor) major cell, the line-weight hierarchy of a real
+ * drawing sheet, in the register's `--sc2-grid-*` line colors. For surfaces that are not the page ground: the band's table and the copy
+ * side of a photo hero. The caller feathers it with a mask so it never ends on a hard edge.
+ */
+@utility drafting-grid {
+  --grid-minor: var(--sc2-grid-minor);
+  --grid-major: var(--sc2-grid-major);
+
+  background-image:
+    linear-gradient(to right, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-minor) 1px, transparent 1px);
+  background-size:
+    130px 130px,
+    130px 130px,
+    26px 26px,
+    26px 26px;
+
+  @supports not (color: color-mix(in srgb, red, red)) {
+    background-image: none;
+  }
+}
+
+/**
+ * The ink band — the drafting table the sheet lies on (DESIGN.md §2 surfaces). A full-width
+ * section surface with a 30% primary top edge, the accent edge vignette (primary at 9%, gone by
+ * 12% in from each side), and the drafting grid feathered out with a radial mask. It is the one
+ * atmosphere device for its boundary, so it carries no pool or numeral.
+ *
+ * On the table the physics invert: a `pocket` inside a band is a raised plate — lighter floor,
+ * hairline top highlight, contact shadow — and framed media takes the contact shadow in place
+ * of the drafted edge, which ink on ink would not show.
+ */
+@utility band {
+  --band-vignette: color-mix(in srgb, var(--sc2-primary) 9%, transparent);
+
+  position: relative;
+  isolation: isolate;
+  background-color: var(--sc2-band);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--sc2-primary) 30%, transparent),
+    inset 0 -1px 0 light-dark(rgb(20 28 38 / 0.08), rgb(255 255 255 / 0.05));
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  &::before {
+    background: linear-gradient(
+      to right,
+      var(--band-vignette),
+      transparent 12%,
+      transparent 88%,
+      var(--band-vignette)
+    );
+  }
+
+  &::after {
+    @apply drafting-grid;
+
+    background-position: center top;
+    mask-image: radial-gradient(ellipse 85% 90% at 50% 45%, black 35%, transparent 100%);
+  }
+
+  & .pocket {
+    --pocket-floor: none;
+
+    background-color: var(--sc2-plate);
+    border-color: var(--sc2-plate-border);
+    box-shadow: var(--sc2-shadow-plate);
+  }
+
+  & .pocket-interactive:is(:hover, :focus-within) {
+    background-color: var(--sc2-plate-hover);
+    border-color: color-mix(in srgb, var(--sc2-primary) 60%, transparent);
+  }
+
+  & .media-frame {
+    box-shadow: var(--sc2-shadow-contact);
+  }
+}
+
+/**
+ * A blueprint page's sheet (DESIGN.md §2, the blueprint register): the drafting grid across the
+ * page, from `xl` up, beneath the `drawing-frame` that clears it from the content column.
+ */
+@utility drawing-sheet {
+  position: relative;
+  isolation: isolate;
+
+  @media (width >= theme(--breakpoint-xl)) {
+    &::before {
+      @apply drafting-grid;
+
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background-position: center top;
+    }
+  }
+}
+
+/* The frame itself: plain grained ground inside one frame line at the container's edge. */
+@utility drawing-frame {
+  --frame-line: color-mix(in srgb, var(--sc2-foreground) 34%, transparent);
+
+  display: none;
+
+  @media (width >= theme(--breakpoint-xl)) {
+    display: block;
+    position: absolute;
+    inset-block: 1.5rem;
+    inset-inline: calc((100% - var(--container-6xl)) / 2 - 0.5rem);
+    z-index: -1;
+    pointer-events: none;
+    border: 1px solid var(--frame-line);
+    background-color: var(--sc2-background);
+    background-image: var(--sc2-texture-grain);
+  }
+}
+
+/* The drafting grid over the copy side of a photo hero, fading out before the photo's subject. */
+@utility hero-grid {
+  @apply drafting-grid;
+
+  mask-image: linear-gradient(to right, black, black 35%, transparent 70%);
+}
+
+/* Feature pocket V2+V3, "drawing pocket" — the grid is *inside* the pocket, and only on
+   screens wide enough for it to read. Dense card grids and mobile stay plain V2. */
+@utility pocket-feature {
+  @media (width >= theme(--breakpoint-md)) {
+    --grid-line: color-mix(in srgb, var(--sc2-foreground) 5%, transparent);
+    --pocket-grid:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    --pocket-grid-size: 26px 26px, 26px 26px;
+
+    /* `round` stretches each cell by under a pixel so a whole number fits the pocket, and the
+       border-box origin tucks the first line under the opaque border: every pocket shows whole
+       cells, edge to edge, instead of a partial row and column at its right and bottom. */
+    background-origin: border-box;
+    background-repeat: round;
+
+    /* As for `engineering-grid`: without `color-mix` the lines would fall back to opaque. */
+    @supports not (color: color-mix(in srgb, red, red)) {
+      --pocket-grid: none;
+      --pocket-grid-size: auto;
+    }
+  }
+}
+
+/**
+ * The revision cloud's scallops (DESIGN.md §2.16): shallow arcs tiled along each edge of a
+ * pseudo-element that stands 15px out from the content, so the cusps float 6px clear of it and
+ * never close against the content's own border. Each tile holds the top of
+ * a ring whose centre sits below the tile, so neighbouring arcs meet in an inward cusp the way a
+ * drafter's cloud does. `round` fits a whole number of scallops to any length, so the cloud
+ * needs no script and never ends on a clipped arc.
+ */
+@utility revision-cloud {
+  /* A 28px-wide, 9px-deep arc is a slice of a 15.4px circle centred 6.4px past the tile. */
+  --cloud-arc: transparent 12.1px, var(--sc2-mark) 12.5px, var(--sc2-mark) 15px, transparent 15.4px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -15px;
+    pointer-events: none;
+    opacity: 0.9;
+    background-image:
+      radial-gradient(circle 15.4px at 50% calc(100% + 6.4px), var(--cloud-arc)),
+      radial-gradient(circle 15.4px at 50% -6.4px, var(--cloud-arc)),
+      radial-gradient(circle 15.4px at calc(100% + 6.4px) 50%, var(--cloud-arc)),
+      radial-gradient(circle 15.4px at -6.4px 50%, var(--cloud-arc));
+    background-position:
+      0 0,
+      0 100%,
+      0 0,
+      100% 0;
+    background-repeat:
+      round no-repeat,
+      round no-repeat,
+      no-repeat round,
+      no-repeat round;
+    background-size:
+      28px 9px,
+      28px 9px,
+      9px 28px,
+      9px 28px;
+  }
+}
+
+/* A drafting center line: long dash, short dash (DESIGN.md §2.6). Drawn as a background so it
+   stretches to any width without an SVG. */
+@utility centerline {
+  --centerline: color-mix(in srgb, var(--sc2-foreground) 24%, transparent);
+
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--centerline) 0 12px,
+    transparent 12px 16px,
+    var(--centerline) 16px 18px,
+    transparent 18px 22px
+  );
+}
+
+/* The 2px primary hairline that ends a hero, full-bleed. */
+@utility accent-rule {
+  height: 2px;
+  background-color: var(--sc2-primary);
+  border: 0;
+}
+
+/* The 32px rule under a card title. Machined: perfectly straight, unlike a chalk underline. */
+@utility title-rule {
+  @apply accent-rule;
+
+  width: 32px;
+}
+
+/* The "team picture frame" for photo collages and feature media: a print mounted on the sheet
+   with a 6px drafted edge. On a band it takes the contact shadow instead (`band` above). */
+@utility media-frame {
+  border: 2px solid var(--sc2-primary);
+  border-radius: var(--sc2-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--sc2-shadow-drafted-2);
+}
+
+/**
+ * A keycap (DESIGN.md §4, §6, §8): a control that stands on a 3px drafted offset, lifts 1px on
+ * hover, and presses flat on `:active` — motion that confirms the press. Under reduced motion the
+ * face stays put and only the offset changes, so every state still reads.
+ *
+ * The edge is `--keycap-edge`, shadow ink when unset; `keycap-accent` tints it with the theme
+ * primary. It is declared on the element, not in `@theme`, so it resolves against the program
+ * theme the control sits in rather than the root's.
+ */
+@utility keycap {
+  box-shadow: 3px 3px 0 0 var(--keycap-edge, var(--sc2-ink));
+  transition-property: color, background-color, border-color, box-shadow, translate;
+
+  &:hover {
+    translate: -1px -1px;
+    box-shadow: 4px 4px 0 0 var(--keycap-edge, var(--sc2-ink));
+  }
+
+  &:active {
+    translate: 2px 2px;
+    box-shadow: var(--sc2-shadow-press);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover,
+    &:active {
+      translate: none;
+    }
+  }
+}
+
+/* Modifier for `keycap`: the accent keycap's edge, the theme primary sunk into shadow ink. */
+@utility keycap-accent {
+  --keycap-edge: color-mix(in srgb, var(--sc2-primary) 35%, var(--sc2-ink));
+}
+
+/* Highlighter swipe: a skewed translucent marker stroke behind white key words. A heading
+   uses `primary` text *or* a swipe, never both. */
+@utility highlight-swipe {
+  position: relative;
+  color: var(--sc2-foreground);
+  isolation: isolate;
+
+  /* A featured link (DESIGN.md §2.14: swipe + underline). The swipe is an absolutely positioned
+     pseudo-element, which collapses on an inline that breaks across lines, so the link keeps its
+     few words together instead. */
+  &:is(a) {
+    display: inline-block;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0.08em -0.12em 0.06em -0.12em;
+    z-index: -1;
+    /* Body size: AAA for the text on it in both finishes; verified on /styleguide. */
+    background-color: var(--sc2-swipe);
+    border-radius: 2px;
+    transform: rotate(-0.8deg);
+  }
+
+  /* Display size (DESIGN.md §2.13): inside an h1 or h2 the bar is AA-large, so the dark finish
+     takes a stronger swipe that reads as the accent rather than mud; verified on /styleguide. */
+  :where(h1, h2, .text-display, .text-h1, .text-h2) &::before {
+    background-color: var(--sc2-swipe-display);
+  }
+}
+
+/* The label role (DESIGN.md §3): Source Code Pro, tracked caps — spec labels, chips, eyebrows,
+   the one caps style there is. */
+@utility spec-label {
+  font-family: var(--sc2-font-mono);
+  font-size: var(--sc2-text-label);
+  font-weight: 600;
+  letter-spacing: var(--sc2-tracking-label);
+  line-height: var(--sc2-leading-snug);
+  text-transform: uppercase;
+}
+
+/* Spec chip — a stamped plate: transparent fill, 40%-alpha border in the chip's own color. */
+@utility spec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.1875rem 0.5rem;
+  border: 1px solid color-mix(in srgb, currentcolor 40%, transparent);
+  border-radius: var(--sc2-radius-sm);
+  background-color: transparent;
+}
+
+/* Stat numeral — the data voice at h2 size (DESIGN.md §3, §8). */
+@utility stat {
+  font-family: var(--sc2-font-mono);
+  font-size: var(--sc2-text-h2);
+  font-weight: 600;
+  line-height: var(--sc2-leading-tight);
+  color: var(--sc2-primary-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ambient pool — a small lightness modulation of the ground, centred on the section's heading
+   and fading out well inside the section on every side: an ellipse centred on the top edge is
+   cut in half by it and leaves a hard line. One per section, never stacked with another
+   atmosphere device, never behind a photo. */
+@utility ambient-pool {
+  --pool-tint: color-mix(in srgb, var(--sc2-primary) 9%, transparent);
+
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 55% at 50% 30%, var(--pool-tint), transparent 70%);
+  }
+}
+
+/* Modifier for `ambient-pool`, not a peer of it: this only swaps the tint the pool reads, so it
+   must be composed as `ambient-pool ambient-pool-neutral`. Used alone it draws nothing. */
+@utility ambient-pool-neutral {
+  --pool-tint: color-mix(in srgb, var(--sc2-foreground) 5%, transparent);
+}
+
+/**
+ * Section rhythm (DESIGN.md §4) — consistent on every section, and never doubled. Two sections
+ * on the same ground share one padding at their boundary: the second drops its top. A band is a
+ * surface of its own, so its edge keeps the padding on both sides.
+ */
+@utility section-y {
+  padding-block: 4rem;
+
+  @media (width >= theme(--breakpoint-md)) {
+    padding-block: 6rem;
+  }
+
+  &:not(.band):is(.section-y:not(.band) + *) {
+    padding-top: 0;
+  }
+}
+
+/**
+ * The shared stroke contract for the hand-markup register (DESIGN.md §2.12–2.20): the felt
+ * marker, 4.5px round-capped `currentColor` at 90%, with `non-scaling-stroke` so the weight stays
+ * even when the SVG is stretched non-uniformly over a word. Applied to the `<svg>`; the paths carry only their `d` and
+ * `pathLength`, so a change to the hand's weight is one edit rather than one per device.
+ */
+@utility hand-stroke {
+  fill: none;
+
+  & path {
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-opacity: 0.9;
+    stroke-width: 4.5;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+/* Prose measure (DESIGN.md §3). */
+@utility measure {
+  max-width: 70ch;
+}
+
+/**
+ * Long-form prose (DESIGN.md §8) — the flowing column an argument is set in, as opposed to the
+ * grids the rest of the site is built from. Element selectors rather than per-element utilities
+ * because the copy on these pages is authored as markup, and on the collection-driven pages it
+ * arrives from `<Content />` where no class can be attached.
+ *
+ * Includes `measure`, so the two are never composed together.
+ */
+@utility prose-copy {
+  @apply measure;
+
+  & :is(p, ul, ol, blockquote) {
+    margin-block: 1rem;
+  }
+
+  /* The column's own edges stay flush; the rhythm is strictly between siblings. */
+  & > :first-child {
+    margin-block-start: 0;
+  }
+
+  & > :last-child {
+    margin-block-end: 0;
+  }
+
+  & :is(h2, h3, h4) {
+    margin-block-start: 2rem;
+  }
+
+  & ul {
+    padding-inline-start: 1.25rem;
+    list-style-type: disc;
+  }
+
+  & ol {
+    padding-inline-start: 1.5rem;
+    list-style-type: decimal;
+  }
+
+  & li {
+    margin-block: 0.5rem;
+  }
+
+  & li::marker {
+    color: var(--sc2-primary);
+  }
+
+  /* A nested list is part of its parent item, not a new block. */
+  & :is(ul, ol) :is(ul, ol) {
+    margin-block: 0.5rem;
+  }
+
+  & blockquote {
+    padding-inline-start: 1.5rem;
+    border-inline-start: 2px solid var(--sc2-primary);
+    color: var(--sc2-foreground);
+    font-size: var(--sc2-text-lead);
+    line-height: var(--sc2-leading-relaxed);
+  }
+
+  & blockquote cite {
+    display: block;
+    margin-block-start: 0.75rem;
+    color: var(--sc2-muted);
+    font-size: var(--sc2-text-small);
+    font-style: normal;
+  }
+}
+
+/**
+ * The carousel's snap track (Carousel.astro). Slides arrive through a slot, so their sizing
+ * cannot live in the component's scoped style; defining it here also lets the md boundary read
+ * the breakpoint token. `--carousel-item-basis` is set inline by the component.
+ */
+@utility carousel-track {
+  & > * {
+    scroll-snap-align: start;
+    flex: 0 0 100%;
+  }
+
+  @media (width >= theme(--breakpoint-md)) {
+    & > * {
+      flex-basis: var(--carousel-item-basis, 45%);
+    }
+  }
+}
+
+/**
+ * Five feature cards as a deliberate 2 + 3 (DESIGN.md §5: "No orphan rows: plan the math —
+ * 5 cards = intentional 2+3"). Two columns first, so the odd card widens to fill its row rather
+ * than floating; six columns from `lg`, where 3+3 then 2+2+2 divides evenly.
+ *
+ * Here rather than in `FeatureGrid.astro` for the two reasons a style leaves a component: the
+ * spans land on slotted children, which a scoped style cannot reach, and the boundaries read the
+ * breakpoint tokens.
+ */
+@utility feature-grid-2-3 {
+  display: grid;
+  gap: 1.5rem;
+
+  @media (width >= theme(--breakpoint-md)) {
+    grid-template-columns: repeat(2, 1fr);
+
+    & > *:last-child {
+      grid-column: span 2;
+    }
+  }
+
+  @media (width >= theme(--breakpoint-lg)) {
+    grid-template-columns: repeat(6, 1fr);
+
+    & > *:nth-child(-n + 2) {
+      grid-column: span 3;
+    }
+
+    & > *:nth-child(n + 3) {
+      grid-column: span 2;
+    }
+  }
+}
+
+/* The page container (DESIGN.md §5). One definition, so pages cannot reinvent the gutters. */
+@utility container-page {
+  margin-inline: auto;
+  max-width: var(--container-6xl);
+  padding-inline: 1rem;
+
+  @media (width >= theme(--breakpoint-md)) {
+    padding-inline: 1.5rem;
+  }
+}
+
+/**
+ * Chrome links (DESIGN.md §8): nav, footer, card footers. A different layer from copy, so they
+ * never take the hand-drawn stroke — no underline at rest, a straight machined hairline on
+ * hover/focus. Both halves live here so a call site cannot ship one without the other.
+ */
+@utility ui-link {
+  color: var(--sc2-foreground);
+  background-image: none;
+  padding-bottom: 0;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--sc2-primary-bright);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  /* The current page in a nav (§9 requires `aria-current="page"` there). */
+  &[aria-current] {
+    color: var(--sc2-primary-bright);
+  }
+}
+
+/**
+ * An external link's trailing marker (DESIGN.md §8: "icon at 0.8em"). A pseudo-element rather
+ * than an inline SVG per link, so it cannot be forgotten at a call site.
+ */
+@utility external-link {
+  &::after {
+    content: "↗";
+    display: inline-block;
+    margin-inline-start: 0.25em;
+    font-size: 0.8em;
+    line-height: 1;
+    vertical-align: baseline;
+  }
+}
+
+/**
+ * Hand-markup entrance: strokes draw themselves on. The one sanctioned decorative animation,
+ * because it enacts the metaphor. Reduced motion disables it via the global kill switch, and
+ * the final state is a fully drawn stroke either way.
+ */
+@keyframes draw-on {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/**
+ * Paired with `pathLength="100"` on the animated path, so the dash math is in percent and the
+ * stroke always ends fully drawn. Hard-coded lengths silently truncate any path longer than
+ * the guess.
+ *
+ * The entrance waits for the mark to scroll into view: `BaseLayout` marks every `.draw-on`
+ * `is-pending` and swaps it to `is-drawing` from an IntersectionObserver. Without JavaScript
+ * neither class lands and the stroke is simply drawn.
+ */
+@utility draw-on {
+  stroke-dasharray: 100;
+
+  &.is-pending {
+    stroke-dashoffset: 100;
+  }
+
+  &.is-drawing {
+    animation: draw-on var(--sc2-duration-draw) var(--sc2-ease-entrance) both;
+  }
+}

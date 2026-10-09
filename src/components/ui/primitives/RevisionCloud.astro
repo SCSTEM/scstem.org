@@ -1,0 +1,36 @@
+---
+import { cn } from "@/lib/cn";
+
+/**
+ * A revision cloud (DESIGN.md §2.16): the drafting mark for "this changed", a scalloped marker
+ * cloud around its content with a delta tag holding the revision number. Only for something that
+ * really is new or changed, and removed once it is no longer news. One per view.
+ *
+ * Drawn in CSS (`@utility revision-cloud`), so it fits content of any size without a script. The
+ * scallops stand 15px out from the content box: leave about 24px of clear space around it, and
+ * a little more above the top right corner for the tag.
+ */
+interface Props {
+  /** The revision the change belongs to, shown in the delta tag. */
+  revision: number | string;
+  class?: string;
+}
+
+const { revision, class: className } = Astro.props;
+---
+
+<div class={cn("relative revision-cloud", className)}>
+  <slot />
+  <span
+    aria-hidden="true"
+    class="absolute -top-11 -right-10 grid h-6 w-7 place-items-center pt-1.5 font-mono text-label font-semibold text-primary-bright select-none"
+  >
+    <svg
+      class="absolute inset-0 size-full overflow-visible text-mark hand-stroke"
+      viewBox="0 0 28 24"
+    >
+      <path d="M14 2 26.5 22.5H1.5Z"></path>
+    </svg>
+    <span class="relative">{revision}</span>
+  </span>
+</div>

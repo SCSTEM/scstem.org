@@ -1,0 +1,32 @@
+---
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import ProgramName from "@/components/ui/ProgramName.astro";
+import { programPhotos } from "@/data/programPhotos";
+import { type ProgramTheme, programs } from "@/data/site";
+
+/**
+ * A program's feature card: its photo, age badge, title, and a link to its page. The body copy
+ * is the default slot, since each page describes the program in its own words.
+ */
+interface Props {
+  program: ProgramTheme;
+}
+
+const { program } = Astro.props;
+const facts = programs[program];
+const photo = programPhotos[program];
+---
+
+<FeatureCard
+  badge={`Ages ${facts.ages}`}
+  cta={`Explore ${facts.name}`}
+  feature
+  href={facts.href}
+  image={photo.image}
+  imageAlt={photo.alt}
+>
+  <Fragment slot="title">
+    <ProgramName program={program} />
+  </Fragment>
+  <slot />
+</FeatureCard>

@@ -1,0 +1,970 @@
+---
+import Hero from "@/components/ui/Hero.astro";
+import Badge from "@/components/ui/primitives/Badge.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Callout from "@/components/ui/primitives/Callout.astro";
+import Card from "@/components/ui/primitives/Card.astro";
+import CardContent from "@/components/ui/primitives/CardContent.astro";
+import CardDescription from "@/components/ui/primitives/CardDescription.astro";
+import CardFooter from "@/components/ui/primitives/CardFooter.astro";
+import CardHeader from "@/components/ui/primitives/CardHeader.astro";
+import CardTitle from "@/components/ui/primitives/CardTitle.astro";
+import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
+import FieldError from "@/components/ui/primitives/FieldError.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Input from "@/components/ui/primitives/Input.astro";
+import Label from "@/components/ui/primitives/Label.astro";
+import RegistrationMarks from "@/components/ui/primitives/RegistrationMarks.astro";
+import RevisionCloud from "@/components/ui/primitives/RevisionCloud.astro";
+import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
+import StrikeCorrect from "@/components/ui/primitives/StrikeCorrect.astro";
+import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import Section from "@/components/ui/Section.astro";
+import { site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { cn } from "@/lib/cn";
+import { handwritingClass } from "@/lib/hand";
+
+/**
+ * The design language, written for the people who build with it: what the SC2 look is, which
+ * token or component to reach for, and how the pieces combine, with live examples. A draft of
+ * the team wiki's design pages, so it is noindexed (and `_headers` repeats that for the path)
+ * and linked from nowhere. DESIGN.md stays the source of truth; `/styleguide` is the proof page
+ * with every token and contrast ratio.
+ *
+ * Each top-level section is one future wiki page.
+ */
+
+const sections = [
+  { id: "idea", title: "The idea" },
+  { id: "switches", title: "Three switches" },
+  { id: "tokens", title: "Which token?" },
+  { id: "type", title: "Type" },
+  { id: "space", title: "Space and radius" },
+  { id: "depth", title: "Surfaces and depth" },
+  { id: "components", title: "Components" },
+  { id: "marker", title: "The marker" },
+  { id: "blueprint", title: "The blueprint register" },
+  { id: "recipes", title: "Recipes" },
+  { id: "checklist", title: "Before you ship" },
+];
+
+/** "If you are placing …, use …": the token decisions a new page actually makes. */
+const tokenChoices = [
+  {
+    group: "Text",
+    rows: [
+      ["A heading, a nav item, emphasis", "foreground", "text-foreground"],
+      ["Any paragraph or list someone reads", "body", "text-body"],
+      ["A caption, a date, a label — never a paragraph", "muted", "text-muted"],
+      ["A link, a key word, an icon, a stat", "primary-bright", "text-primary-bright"],
+    ],
+  },
+  {
+    group: "Surfaces",
+    rows: [
+      ["The page itself", "background", "bg-background"],
+      ["A card, panel or field cut into the page", "card", "pocket (utility)"],
+      ["A full-width section that should read as a table", "band", 'Section atmosphere="band"'],
+      ["A card inside a band", "plate", "automatic: a pocket in a band"],
+    ],
+  },
+  {
+    group: "Accent",
+    rows: [
+      ["A button, a rule, a filled mark", "primary", "bg-primary text-primary-foreground"],
+      ["Text or an icon in the accent", "primary-bright", "text-primary-bright"],
+      ["A hand-drawn stroke", "mark", "text-mark (the hand primitives set it)"],
+    ],
+  },
+];
+
+const typeRoles = [
+  { role: "display", use: "The hero heading only", class: "text-display font-display font-bold" },
+  { role: "h1", use: "A page's one title", class: "text-h1 font-display font-bold" },
+  { role: "h2", use: "A section heading", class: "text-h2 font-display font-semibold" },
+  { role: "h3", use: "A sub-section heading", class: "text-h3 font-display font-semibold" },
+  { role: "h4", use: "Card titles, subheads", class: "text-h4 font-semibold text-foreground" },
+  { role: "lead", use: "A section's intro paragraph", class: "text-lead" },
+  { role: "copy", use: "Everything people read", class: "text-copy" },
+  { role: "small", use: "Captions, meta, dense cards", class: "text-small" },
+  { role: "label", use: "Eyebrows, chips, spec labels", class: "spec-label" },
+];
+
+const spaceSteps = [
+  { step: 1, px: 4 },
+  { step: 2, px: 8 },
+  { step: 3, px: 12 },
+  { step: 4, px: 16 },
+  { step: 6, px: 24 },
+  { step: 8, px: 32 },
+  { step: 12, px: 48 },
+  { step: 16, px: 64 },
+  { step: 24, px: 96 },
+];
+
+const iconSamples = ["bot", "calendar", "tools", "trophy", "email", "launch", "logo--github"];
+
+const switchCode = `<!-- The whole page: the light finish, in Biohazard green. -->
+<html data-mode="light" data-accent="green">
+
+<!-- Or any element: a dark island on a light page. -->
+<section data-mode="dark">…</section>
+
+<!-- The wiki or an app, without Tailwind: -->
+<link rel="stylesheet" href="tokens.css" />
+.panel { background: var(--sc2-card); color: var(--sc2-body); }`;
+
+const eventRecipe = `<RevisionCloud revision={2}>
+  <Card>
+    <CardHeader>
+      <Badge tone="info">Jan 10, 2027</Badge>
+      <CardTitle>Kickoff at the workshop</CardTitle>
+    </CardHeader>
+  </Card>
+</RevisionCloud>
+<span class={handwritingClass}>moved up a week</span>`;
+
+const sectionRecipe = `<Section atmosphere="bubble" index={2}>
+  <Fragment slot="eyebrow">Ages 14–18</Fragment>
+  <Fragment slot="title">Build season starts in January</Fragment>
+  <Card feature class="relative">
+    <RegistrationMarks />
+    …
+    <ChalkOval around="control" variant={3}>
+      <Button href="/get-involved/">Get involved</Button>
+    </ChalkOval>
+  </Card>
+</Section>`;
+
+const logoRecipe = `<!-- Drawn for a dark ground: it keeps that ground in the light finish. -->
+<img class="rounded-md bg-print p-3" src={logo.src} alt="Volvo logo" />`;
+
+/** A preview switch: the label type, filled with the accent while pressed. */
+const choiceClass =
+  "min-h-11 rounded-md border border-control-edge bg-sheet px-3 spec-label text-foreground aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground";
+
+const checklist = [
+  "Every text token is the right role: body for reading, muted only for captions.",
+  "One action accent per view; blue only for information.",
+  "Every link has its underline; nothing that isn't a link does.",
+  "At most four devices in any viewport (links don't count).",
+  "It works in both finishes: flip the toggle in the header and look again.",
+  "Headings go h1 → h2 → h3 with no skipped level, in sentence case.",
+  "Every interactive element shows the focus ring and is 44px or larger to tap.",
+  "Photos have honest alt text; decorative marks are hidden from assistive tech.",
+  "pnpm check passes, and /styleguide builds (it fails on a contrast regression).",
+];
+---
+
+<BaseLayout
+  description="The SC2 design language for the people who build with it: the look, the tokens, the components and how they combine, with live examples."
+  noindex
+  title="Design language"
+>
+  <Hero>
+    <Fragment slot="eyebrow">For builders · draft for the team wiki</Fragment>
+    <Fragment slot="title">The SC2 design language</Fragment>
+
+    <p>
+      How the South Central STEM Collective looks on screen, and how to build with it: which token
+      to reach for, which component fits, and how the pieces combine. Everything below is live, so
+      it follows the finish toggle in the header.
+    </p>
+  </Hero>
+
+  <Section srTitle="On this page">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+      <div class="measure">
+        <p>
+          <a href="https://github.com/SCSTEM/scstem.org/blob/astro/DESIGN.md">DESIGN.md</a> is the
+          source of truth, and <a href="/styleguide/">the styleguide</a> proves every token and
+          contrast ratio. This page is the guide in between. It shows every device at once, so it
+          breaks the four-per-view budget on purpose; a real page never does.
+        </p>
+      </div>
+      <nav aria-label="On this page" class="pocket p-6">
+        <p class="spec-label text-muted">On this page</p>
+        <ol class="mt-3 grid gap-1 text-small">
+          {sections.map((section, index) => (
+            <li class="flex gap-3">
+              <span class="font-mono text-muted">{String(index + 1).padStart(2, "0")}</span>
+              <a class="ui-link" href={`#${section.id}`}>
+                {section.title}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" id="idea" index={1}>
+    <Fragment slot="eyebrow">01 · The idea</Fragment>
+    <Fragment slot="title">A build document, marked up</Fragment>
+    <Fragment slot="intro">
+      <p>
+        Every SC2 screen is a sheet of material with a drawing on it and an engineer's notes over
+        the top. Three layers, and each has its own rules.
+      </p>
+    </Fragment>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <Card>
+        <CardHeader>
+          <CardTitle rule>Machined</CardTitle>
+          <CardDescription>
+            The sheet: pockets cut into it, plates laid on a table, keycaps with drafted edges.
+            Perfectly geometric, always.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle rule>Scribed</CardTitle>
+          <CardDescription>
+            The drawing printed onto it: grids, grid bubbles, title blocks, callouts. Fine lines in
+            the data font.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle rule>Marked up</CardTitle>
+          <CardDescription>
+            The engineer's felt marker: <span class="highlight-swipe">swipes</span>, ovals,
+            underlines, arrows and clouds. A few strokes that mean something.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" id="switches" index={2}>
+    <Fragment slot="eyebrow">02 · Three switches</Fragment>
+    <Fragment slot="title">One part, any finish</Fragment>
+    <Fragment slot="intro">
+      <p>
+        Components read tokens and nothing else, so three attributes change the whole look: the
+        finish, the accent, and the register. Try them on the panel.
+      </p>
+    </Fragment>
+
+    <div class="flex flex-wrap gap-x-8 gap-y-4" data-preview-controls>
+      <div aria-label="Finish" class="flex items-center gap-3" role="group">
+        <span class="w-20 spec-label text-muted">Finish</span>
+        <div class="flex gap-2">
+          <button
+            aria-pressed="true"
+            class={choiceClass}
+            data-preview-choice
+            data-attr="mode"
+            data-value="dark"
+            type="button"
+          >
+            Dark
+          </button>
+          <button
+            aria-pressed="false"
+            class={choiceClass}
+            data-preview-choice
+            data-attr="mode"
+            data-value="light"
+            type="button"
+          >
+            Light
+          </button>
+        </div>
+      </div>
+      <div aria-label="Accent" class="flex items-center gap-3" role="group">
+        <span class="w-20 spec-label text-muted">Accent</span>
+        <div class="flex gap-2">
+          <button
+            aria-pressed="true"
+            class={choiceClass}
+            data-preview-choice
+            data-attr="accent"
+            data-value=""
+            type="button"
+          >
+            Yellow
+          </button>
+          <button
+            aria-pressed="false"
+            class={choiceClass}
+            data-preview-choice
+            data-attr="accent"
+            data-value="green"
+            type="button"
+          >
+            Green
+          </button>
+          <button
+            aria-pressed="false"
+            class={choiceClass}
+            data-preview-choice
+            data-attr="accent"
+            data-value="orange"
+            type="button"
+          >
+            Orange
+          </button>
+        </div>
+      </div>
+      <div aria-label="Register" class="flex items-center gap-3" role="group">
+        <span class="w-20 spec-label text-muted">Register</span>
+        <div class="flex gap-2">
+          <button
+            aria-pressed="true"
+            class={choiceClass}
+            data-preview-choice
+            data-attr="register"
+            data-value=""
+            type="button"
+          >
+            Shop
+          </button>
+          <button
+            aria-pressed="false"
+            class={choiceClass}
+            data-preview-choice
+            data-attr="register"
+            data-value="blueprint"
+            type="button"
+          >
+            Blueprint
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="mt-6 rounded-lg border border-border bg-background bg-(image:--sc2-texture-grain) p-6 text-body md:p-10"
+      data-mode="dark"
+      data-preview
+    >
+      <p class="spec-label text-primary-bright">Ages 14–18 · Franklin County</p>
+      <p class="mt-2 font-display text-h2 font-semibold text-foreground">
+        Real robots, built <span class="highlight-swipe">right here</span>.
+      </p>
+      <p class="mt-4 measure">
+        Teams meet Saturdays at the workshop. Check <a href="/calendar/">the calendar</a> for dates,
+        or <a href="/programs/">read about our programs</a>.
+      </p>
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <div class="flex items-start justify-between gap-3">
+              <CardTitle rule>
+                <i>FIRST</i>® Robotics Competition
+              </CardTitle>
+              <Badge>Ages 14–18</Badge>
+            </div>
+            <CardDescription>A 120-pound robot, six weeks, and one rulebook.</CardDescription>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardContent class="pt-6">
+            <p class="spec-label text-muted">Years on the field</p>
+            <p class="mt-1 stat">14+</p>
+          </CardContent>
+        </Card>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Button href="/get-involved/">Get involved</Button>
+        <Button href="/donate/" variant="outline">
+          Donate
+        </Button>
+      </div>
+    </div>
+
+    <p class="mt-6 font-mono text-small text-muted" data-preview-attrs>
+      data-mode="dark"
+    </p>
+
+    <pre class="mt-6 overflow-x-auto pocket p-5 font-mono text-small text-body"><code>{switchCode}</code></pre>
+  </Section>
+
+  <Section atmosphere="bubble" id="tokens" index={3}>
+    <Fragment slot="eyebrow">03 · Which token?</Fragment>
+    <Fragment slot="title">Start from what the thing is</Fragment>
+    <Fragment slot="intro">
+      <p>
+        You never pick a color, only a role. Each row names the role, the token, and what to write
+        on this site. On the wiki or in an app, the same token is{" "}
+        <code class="font-mono text-foreground">var(--sc2-…)</code>.
+      </p>
+    </Fragment>
+
+    <div class="grid grid-cols-1 gap-8">
+      {tokenChoices.map((group) => (
+        <div>
+          <h3 class="text-h4">{group.group}</h3>
+          <div class="mt-3 overflow-x-auto">
+            <table class="w-full min-w-160 border-collapse text-small">
+              <thead>
+                <tr class="border-b border-border text-left">
+                  <th class="py-2 pr-4 spec-label text-muted">If you are placing</th>
+                  <th class="py-2 pr-4 spec-label text-muted">Token</th>
+                  <th class="py-2 spec-label text-muted">On this site</th>
+                </tr>
+              </thead>
+              <tbody>
+                {group.rows.map(([use, token, css]) => (
+                  <tr class="border-b border-border/60">
+                    <td class="py-3 pr-4">{use}</td>
+                    <td class="py-3 pr-4 font-mono text-foreground">{token}</td>
+                    <td class="py-3 font-mono text-muted">{css}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" id="type" index={4}>
+    <Fragment slot="eyebrow">04 · Type</Fragment>
+    <Fragment slot="title">Nine roles, three line heights</Fragment>
+    <Fragment slot="intro">
+      <p>
+        Pick the role the text plays; its size, leading and font follow. Orbitron is for headings
+        only, Source Code Pro for every number and label, Inter for everything else, and the hand
+        for five-word notes.
+      </p>
+    </Fragment>
+
+    <div class="divide-y divide-border">
+      {typeRoles.map((entry) => (
+        <div class="grid grid-cols-1 gap-2 py-5 md:grid-cols-[10rem_minmax(0,1fr)] md:items-baseline md:gap-6">
+          <div>
+            <p class="font-mono text-small text-foreground">{entry.role}</p>
+            <p class="text-small text-muted">{entry.use}</p>
+          </div>
+          <p class={cn(entry.class, "min-w-0 text-foreground")}>The workshop opens at nine</p>
+        </div>
+      ))}
+      <div class="grid grid-cols-1 gap-2 py-5 md:grid-cols-[10rem_minmax(0,1fr)] md:items-baseline md:gap-6">
+        <div>
+          <p class="font-mono text-small text-foreground">stat</p>
+          <p class="text-small text-muted">A number that is the point</p>
+        </div>
+        <p class="stat">1,240</p>
+      </div>
+      <div class="grid grid-cols-1 gap-2 py-5 md:grid-cols-[10rem_minmax(0,1fr)] md:items-baseline md:gap-6">
+        <div>
+          <p class="font-mono text-small text-foreground">hand</p>
+          <p class="text-small text-muted">A note, five words at most</p>
+        </div>
+        <p class={cn(handwritingClass, "text-lead")}>start here!</p>
+      </div>
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" id="space" index={5}>
+    <Fragment slot="eyebrow">05 · Space and radius</Fragment>
+    <Fragment slot="title">Nine steps and three corners</Fragment>
+    <Fragment slot="intro">
+      <p>
+        Spacing comes from nine steps, named by their Tailwind numbers. Other values are allowed
+        when a layout needs one, but they are the exception a reviewer asks about. Radius follows
+        the kind of object.
+      </p>
+    </Fragment>
+
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-2">
+      <div>
+        <h3 class="text-h4">Spacing</h3>
+        <ul class="mt-4 grid gap-2">
+          {spaceSteps.map((entry) => (
+            <li class="grid grid-cols-[6rem_minmax(0,1fr)] items-center gap-4">
+              <span class="text-right font-mono text-small text-muted">
+                {entry.step} · {entry.px}px
+              </span>
+              <span class="h-3 rounded-sm bg-primary/70" style={`width: ${String(entry.px)}px`} />
+            </li>
+          ))}
+        </ul>
+        <dl class="mt-6 grid gap-3 text-small">
+          <div>
+            <dt class="font-semibold text-foreground">Inside a component</dt>
+            <dd>8 · 12 · 16 · 24. Cards are 24 inside; chips 4 × 8.</dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-foreground">Between components</dt>
+            <dd>24 · 32 · 48.</dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-foreground">Sections</dt>
+            <dd>
+              64 on phones, 96 from tablets up — the <code class="font-mono">section-y</code>{" "}
+              utility.
+            </dd>
+          </div>
+        </dl>
+      </div>
+      <div>
+        <h3 class="text-h4">Radius</h3>
+        <div class="mt-4 grid gap-6">
+          <div class="flex items-center gap-4">
+            <Badge>Ages 9–16</Badge>
+            <p class="text-small">
+              <b class="text-foreground">Stamped, 4px</b> — chips, badges, the icon plate.
+            </p>
+          </div>
+          <div class="flex items-center gap-4">
+            <Button size="sm" variant="outline">
+              Control
+            </Button>
+            <p class="text-small">
+              <b class="text-foreground">Control, 8px</b> — buttons, inputs, toggles.
+            </p>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="size-16 shrink-0 pocket"></div>
+            <p class="text-small">
+              <b class="text-foreground">Cut, 12px</b> — pockets, plates, panels, photos.
+            </p>
+          </div>
+          <p class="text-small text-muted">
+            Nested corners: the inner radius is the outer minus the inset, never below 4px. No
+            pills, ever — a circled word is a marker oval.
+          </p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" id="depth" index={6}>
+    <Fragment slot="eyebrow">06 · Surfaces and depth</Fragment>
+    <Fragment slot="title">Cut into the sheet, laid on the table</Fragment>
+    <Fragment slot="intro">
+      <p>
+        On the page, cards are pockets cut down into the sheet, with a lit floor. Inside a band, the
+        same card rises as a plate. What stands up — a button, a framed photo — casts a hard,
+        drafted edge down and to the right. Nothing glows and nothing floats.
+      </p>
+    </Fragment>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <Card>
+        <CardHeader>
+          <CardTitle>Pocket</CardTitle>
+          <CardDescription>
+            The default card. Darker than the page, lit toward its lip.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+      <Card interactive>
+        <CardHeader>
+          <CardTitle>Interactive pocket</CardTitle>
+          <CardDescription>
+            Hover it: the border warms and the floor lifts. It never moves.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+      <Card class="relative" feature>
+        <RegistrationMarks />
+        <CardHeader>
+          <CardTitle>Feature pocket</CardTitle>
+          <CardDescription>
+            A grid floor and construction lines, for the one moment a view wants noticed.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </div>
+
+    <div class="band mt-10 overflow-hidden rounded-lg px-6 py-10 md:px-10">
+      <p class="measure">
+        A band is the drafting table: a full-width section with a grid of its own. The same card
+        inside it is a raised plate.
+      </p>
+      <div class="mt-6 grid gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Plate</CardTitle>
+            <CardDescription>Lighter than the table, with a soft contact shadow.</CardDescription>
+          </CardHeader>
+        </Card>
+        <Card interactive>
+          <CardHeader>
+            <CardTitle>Interactive plate</CardTitle>
+            <CardDescription>Two bands never touch, and the footer is one.</CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" id="components" index={7}>
+    <Fragment slot="eyebrow">07 · Components</Fragment>
+    <Fragment slot="title">The pieces, and when to use each</Fragment>
+
+    <div class="grid grid-cols-1 gap-12">
+      <div>
+        <h3 class="text-h3">Buttons are keycaps</h3>
+        <p class="mt-2 measure">
+          One primary per region: the thing the page wants done. Outline for the second action.
+          Ghost and secondary for quiet controls. A link that does something is a button; a button
+          that goes somewhere can be a link.
+        </p>
+        <div class="mt-5 flex flex-wrap items-center gap-3">
+          <Button>Primary</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button size="icon" variant="outline">
+            <Icon label="Next" name="chevron--right" size={20} />
+          </Button>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-h3">Links come in three forms</h3>
+        <ul class="mt-4 grid gap-3 measure">
+          <li>
+            <b class="text-foreground">In copy</b> — the marker underline:{" "}
+            <a href="/about/">who we are</a>.
+          </li>
+          <li>
+            <b class="text-foreground">In chrome</b> — nav, footer, card footers:{" "}
+            <a class="ui-link" href="/sponsors/">
+              no stroke at rest
+            </a>
+            , a straight hairline on hover.
+          </li>
+          <li>
+            <b class="text-foreground">As a reference</b> — a linked logo or figure, with a callout
+            naming where it goes.
+          </li>
+        </ul>
+        <Callout class="mt-3" reference="REF">
+          firstinspires.org
+        </Callout>
+      </div>
+
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div>
+          <h3 class="text-h3">Chips</h3>
+          <p class="mt-2">Short facts in the data voice: ages, tiers, dates.</p>
+          <div class="mt-4 flex flex-wrap gap-3">
+            <Badge>Ages 9–16</Badge>
+            <Badge tone="info">Jan 10</Badge>
+            <Badge tone="muted">2019 – present</Badge>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-h3">Icons</h3>
+          <p class="mt-2">
+            IBM Carbon, filled, at 16, 20, 24 or 32px. Always beside text or with a label.
+          </p>
+          <div class="mt-4 flex flex-wrap items-center gap-5 text-foreground">
+            {iconSamples.map((name) => (
+              <Icon name={name} size={24} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div>
+          <h3 class="text-h3">Forms</h3>
+          <div class="mt-4 flex flex-col gap-2">
+            <Label for="dl-email">Email</Label>
+            <Input
+              aria-describedby="dl-email-error"
+              autocomplete="email"
+              id="dl-email"
+              invalid
+              name="email"
+              type="email"
+              value="not-an-email"
+            />
+            <FieldError id="dl-email-error">
+              Enter an email address, like you@example.com.
+            </FieldError>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-h3">Title block</h3>
+          <p class="mt-2">
+            The drawing's identity strip: the footer, info cards, a wiki page's metadata.
+          </p>
+          <TitleBlock
+            class="mt-4"
+            fields={[
+              { label: "Owner", value: "Mechanical lead" },
+              { label: "Updated", value: "2026-09-14", mono: true },
+              { label: "Rev", value: "C", mono: true },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" id="marker" index={8}>
+    <Fragment slot="eyebrow">08 · The marker</Fragment>
+    <Fragment slot="title">A few strokes that mean something</Fragment>
+    <Fragment slot="intro">
+      <p>
+        The marker is how the site draws attention. Every device has one job and one rule, and a
+        viewport shows at most four devices of any kind.
+      </p>
+    </Fragment>
+
+    <div class="grid grid-cols-1 gap-12">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-center">
+        <p class="font-display text-h2 font-semibold text-foreground">
+          Real <ChalkOval variant={1}>Skills</ChalkOval>. Real{" "}
+          <ChalkOval variant={2}>Robots</ChalkOval>.
+        </p>
+        <p>
+          <b class="text-foreground">Ovals</b> circle key words in a tagline or display heading. One
+          run per view, never in body copy.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-center">
+        <p class="font-display text-h3 font-semibold text-foreground">
+          A heading with a <span class="highlight-swipe">highlighter swipe</span>
+        </p>
+        <p>
+          <b class="text-foreground">Swipes</b> emphasize one phrase — instead of accent-colored
+          text, never with it. Swipe plus underline is a featured link:{" "}
+          <a class="highlight-swipe" href="/get-involved/">
+            get involved
+          </a>
+          .
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-center">
+        <div class="flex items-start">
+          <Button href="/get-involved/">Get involved</Button>
+          <SketchArrow class="mt-6 h-12 w-14 shrink-0" direction="up-left" variant={3} />
+          <span class={cn(handwritingClass, "mt-14 -rotate-3 text-lead")}>start here!</span>
+        </div>
+        <p>
+          <b class="text-foreground">Leader notes</b> point a short handwritten note at a control.
+          The arrow always starts at the handwriting. One per view.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-center">
+        <div>
+          <ChalkOval around="control" variant={2}>
+            <Button href="/donate/">Donate</Button>
+          </ChalkOval>
+        </div>
+        <p>
+          <b class="text-foreground">Circled controls</b> ring the one button a page most wants
+          pressed. Primary buttons only, once per page.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-center">
+        <div class="mt-4 ml-6 flex flex-wrap items-end gap-10">
+          <RevisionCloud class="inline-block" revision={2}>
+            <div class="flex flex-col gap-2 pocket px-4 py-3">
+              <Badge class="self-start" tone="info">
+                Jan 10, 2027
+              </Badge>
+              <span class="font-semibold text-foreground">Kickoff at the workshop</span>
+            </div>
+          </RevisionCloud>
+        </div>
+        <p>
+          <b class="text-foreground">Revision clouds</b> mark something that really changed — a
+          moved date, a new season — with the revision number in the delta tag. Take it down once it
+          is no longer news.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-center">
+        <p class="pt-8 font-display text-h2 font-semibold text-foreground">
+          Robots are <StrikeCorrect correction="in Franklin County" struck="cool" variant={2} />.
+        </p>
+        <p>
+          <b class="text-foreground">Strike and correct</b> rewrites a word in a display heading,
+          once per site section. Screen readers hear only the correction.
+        </p>
+      </div>
+
+      <p class="measure text-small text-muted">
+        Tick marks for checklists and margin brackets beside long prose are specified in DESIGN.md
+        (§2.19, §2.20) and ship with the team wiki, their first home.
+      </p>
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" id="blueprint" index={9}>
+    <Fragment slot="eyebrow">09 · The blueprint register</Fragment>
+    <Fragment slot="title">The drawing of the part</Fragment>
+    <Fragment slot="intro">
+      <p>
+        <code class="font-mono text-foreground">data-register="blueprint"</code> turns the sheet
+        into a cyanotype (dark) or a whiteprint (light). The grid lives in the margins, outside a
+        drawing frame with zone marks; inside the frame the ground is plain, so no line ever crosses
+        text.
+      </p>
+    </Fragment>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div
+        class="rounded-lg border border-border bg-background bg-(image:--sc2-texture-grain) p-6 text-body"
+        data-mode="dark"
+        data-register="blueprint"
+      >
+        <p class="spec-label text-primary-bright">Cyanotype</p>
+        <p class="mt-2 text-h4 font-semibold text-foreground">Drivetrain checklist</p>
+        <TitleBlock
+          class="mt-4"
+          fields={[
+            { label: "Owner", value: "Mechanical lead" },
+            { label: "Rev", value: "C", mono: true },
+          ]}
+        />
+      </div>
+      <div
+        class="rounded-lg border border-border bg-background bg-(image:--sc2-texture-grain) p-6 text-body"
+        data-mode="light"
+        data-register="blueprint"
+      >
+        <p class="spec-label text-primary-bright">Whiteprint</p>
+        <p class="mt-2 text-h4 font-semibold text-foreground">Drivetrain checklist</p>
+        <TitleBlock
+          class="mt-4"
+          fields={[
+            { label: "Owner", value: "Mechanical lead" },
+            { label: "Rev", value: "C", mono: true },
+          ]}
+        />
+      </div>
+    </div>
+    <p class="mt-6 measure">
+      Use it for pages about the drawing — 404 and under-construction pages, special pages, and the
+      wiki — never for a page whose job is to persuade. <a href="/404.html">The 404 page</a> is the
+      live example.
+    </p>
+  </Section>
+
+  <Section atmosphere="bubble" id="recipes" index={10}>
+    <Fragment slot="eyebrow">10 · Recipes</Fragment>
+    <Fragment slot="title">Putting it together</Fragment>
+
+    <div class="grid grid-cols-1 gap-12">
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div>
+          <h3 class="text-h4">An event whose date moved</h3>
+          <p class="mt-2">
+            The card stays a card. The cloud says it changed, and a leader note says how.
+          </p>
+          <pre class="mt-4 overflow-x-auto pocket p-5 font-mono text-small text-body"><code>{eventRecipe}</code></pre>
+        </div>
+        <div>
+          <h3 class="text-h4">A section that asks for something</h3>
+          <p class="mt-2">
+            A grid bubble numbers it, the feature pocket carries the ask, and the one primary is
+            circled.
+          </p>
+          <pre class="mt-4 overflow-x-auto pocket p-5 font-mono text-small text-body"><code>{sectionRecipe}</code></pre>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div>
+          <h3 class="text-h4">A partner's logo</h3>
+          <p class="mt-2">
+            Every sponsor and <i>FIRST</i> logo the site holds was drawn for a dark ground. It keeps
+            that ground on the light finish, on a print. Never recolor someone else's logo.
+          </p>
+          <pre class="mt-4 overflow-x-auto pocket p-5 font-mono text-small text-body"><code>{logoRecipe}</code></pre>
+        </div>
+        <div>
+          <h3 class="text-h4">A wiki article</h3>
+          <p class="mt-2">
+            One column at prose measure in the blueprint register. The title block carries the
+            page's owner, date and revision; checklists take tick marks; a revision cloud marks a
+            section that changed since the last revision.
+          </p>
+          <Card class="mt-4">
+            <CardHeader>
+              <CardTitle>Drivetrain checklist</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <TitleBlock
+                fields={[
+                  { label: "Owner", value: "Mechanical lead" },
+                  { label: "Updated", value: "2026-09-14", mono: true },
+                ]}
+              />
+            </CardContent>
+            <CardFooter>
+              <a class="ui-link text-small" href={site.socialProfiles.github}>
+                SC2 on GitHub
+              </a>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" id="checklist" index={11}>
+    <Fragment slot="eyebrow">11 · Before you ship</Fragment>
+    <Fragment slot="title">The checklist</Fragment>
+
+    <ol class="grid grid-cols-1 gap-3 measure">
+      {checklist.map((item, index) => (
+        <li class="flex gap-4">
+          <span class="font-mono text-small text-muted">{String(index + 1).padStart(2, "0")}</span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ol>
+  </Section>
+</BaseLayout>
+
+<script>
+  /**
+   * The preview panel's three switches (section 02). Each sets one attribute on the panel, and
+   * the tokens do the rest; the unset accent and register are the defaults.
+   */
+  const panel = document.querySelector<HTMLElement>("[data-preview]");
+  const readout = document.querySelector("[data-preview-attrs]");
+
+  const describe = (element: HTMLElement): string =>
+    ["mode", "accent", "register"]
+      .flatMap((name) => {
+        const value = element.dataset[name];
+        return value === undefined ? [] : [`data-${name}="${value}"`];
+      })
+      .join(" ");
+
+  if (panel !== null) {
+    for (const choice of document.querySelectorAll<HTMLButtonElement>("[data-preview-choice]")) {
+      choice.addEventListener("click", () => {
+        const attr = choice.dataset.attr;
+        const value = choice.dataset.value;
+        if (attr === undefined || value === undefined) {
+          return;
+        }
+        if (value === "") {
+          panel.removeAttribute(`data-${attr}`);
+        } else {
+          panel.dataset[attr] = value;
+        }
+        for (const sibling of document.querySelectorAll<HTMLButtonElement>(
+          `[data-preview-choice][data-attr="${attr}"]`,
+        )) {
+          sibling.setAttribute("aria-pressed", String(sibling === choice));
+        }
+        if (readout !== null) {
+          readout.textContent = describe(panel);
+        }
+      });
+    }
+  }
+</script>
