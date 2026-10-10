@@ -219,7 +219,7 @@ const roles = [
     <Card class="p-6">
       <dl class="grid gap-x-10 gap-y-4 md:grid-cols-2">
         {logistics.map((entry) => (
-          <div class="grid grid-cols-[5rem_1fr] gap-x-4">
+          <div class="grid grid-cols-[5rem_1fr] items-baseline gap-x-4">
             <dt class="spec-label text-muted">{entry.term}</dt>
             <dd class="text-foreground">{entry.detail}</dd>
           </div>
@@ -257,12 +257,14 @@ const roles = [
     </h3>
     <ol class="mt-6 grid gap-x-10 border-t border-border md:grid-cols-2 lg:grid-cols-3">
       {timeline.map((entry) => (
-        <li class="grid grid-cols-[5.5rem_1fr] gap-x-4 border-b border-border py-4">
-          <span class="spec-label text-primary-bright">{entry.label}</span>
+        <li class="grid grid-cols-[5rem_1fr] items-baseline gap-x-4 border-b border-border py-5">
+          <span class="font-mono text-h3 font-semibold text-primary-bright tabular-nums">
+            {entry.label}
+          </span>
           <ul class="flex flex-col gap-2">
             {entry.honors.map((honor) => (
-              <li class="flex items-start gap-2 text-small">
-                <Icon class="mt-0.5 text-primary-bright" name={honor.icon} size={20} />
+              <li class="flex items-start gap-2">
+                <Icon class="mt-1 shrink-0 text-primary-bright" name={honor.icon} size={20} />
                 <span>
                   <FirstMarked text={honor.text} />
                 </span>
