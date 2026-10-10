@@ -83,7 +83,7 @@ const bandsNeverTouch = (): AstroIntegration => ({
       });
       if (touching.length > 0) {
         throw new Error(
-          `Two band surfaces touch on ${touching.join(", ")} — put a sheet section between them (DESIGN.md §2).`,
+          `Two band surfaces touch on ${touching.join(", ")} - put a sheet section between them (DESIGN.md §2).`,
         );
       }
     },

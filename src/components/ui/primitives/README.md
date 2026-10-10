@@ -13,13 +13,13 @@ onto the root element so callers can extend without forking.
 
 **CVA definitions live in a sibling `*.variants.ts`.** Astro forbids exporting values from a
 component (`astro/no-exports-from-components`), so `Button.astro` imports `buttonVariants` from
-`Button.variants.ts`. This is also what lets another component reuse a recipe — a link styled as
-a button — instead of copying classes.
+`Button.variants.ts`. This is also what lets another component reuse a recipe - a link styled as
+a button - instead of copying classes.
 
 **Zero JS by default.** The interactivity ladder, in order:
 
-1. A native HTML element — `<details>` for Accordion, `<dialog>` for Dialog.
-2. CSS alone — scroll-snap for Carousel, `:focus-within` for disclosures.
+1. A native HTML element - `<details>` for Accordion, `<dialog>` for Dialog.
+2. CSS alone - scroll-snap for Carousel, `:focus-within` for disclosures.
 3. A small inline `<script>` with no dependencies.
 
 Only reach for a lower rung when the ones above genuinely cannot deliver, and always as
@@ -32,7 +32,7 @@ native `<dialog>` brings its own focus trap, Esc handling and inert background; 
 brings Enter/Space.
 
 **Polymorphism instead of `asChild`.** Where shadcn passes behavior down with `asChild`, these
-take an `as` prop, or infer the element — `Button` renders an `<a>` when given `href`.
+take an `as` prop, or infer the element - `Button` renders an `<a>` when given `href`.
 
 **Types.** Each primitive declares a local `Props` interface extending the right
 `HTMLAttributes<"element">` from `astro/types`, with `class` omitted so `cn()` owns merging.
@@ -41,8 +41,8 @@ take an `as` prop, or infer the element — `Button` renders an `<a>` when given
 
 `body` is a color (DESIGN.md §2) and `copy` is the reading size (§3), so:
 
-- `text-body` — the **color** of reading text, consistent with `text-muted` and `text-foreground`.
-- `text-copy` — the **size**. Elements inherit it from the base layer, so this is only for
+- `text-body` - the **color** of reading text, consistent with `text-muted` and `text-foreground`.
+- `text-copy` - the **size**. Elements inherit it from the base layer, so this is only for
   resetting something back.
 
 Values come from `src/styles/tokens.css`, and every one depends on the finish, accent and

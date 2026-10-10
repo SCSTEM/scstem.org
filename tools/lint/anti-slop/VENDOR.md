@@ -4,7 +4,7 @@ Lint rules from [dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop), MIT
 `LICENSE`). `rules/` and `shared/` are copied from the repo's
 `skills/install-anti-slop/assets/anti-slop/` at commit `6d538555cb151d4121ed51a27db81890eacf8ae9`.
 
-- The Effect-specific rules (`effect/`) are omitted — this repo does not use Effect.
+- The Effect-specific rules (`effect/`) are omitted - this repo does not use Effect.
 - Vendored rather than depended on because the plugin ships as skill assets, not an npm package.
 - Upstream writes for oxlint's JS-plugin API. ESLint loads the rules through `compat.ts`: `defineRule` wraps `createOnce`
   in an ESLint `create`, and `estree.ts` maps the oxlint AST type names onto typescript-estree's.

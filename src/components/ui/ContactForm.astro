@@ -226,7 +226,7 @@ const fields = [
       }
 
       if (token === "") {
-        setStatus(status, "error", "Waiting on the spam check — try again in a moment.");
+        setStatus(status, "error", "Waiting on the spam check - try again in a moment.");
         return;
       }
 
@@ -250,7 +250,7 @@ const fields = [
           if (body.success !== true) {
             throw new Error(body.message ?? "Error submitting form");
           }
-          setStatus(status, "ok", "Thanks — we have your message and will be in touch.");
+          setStatus(status, "ok", "Thanks - we have your message and will be in touch.");
           document.dispatchEvent(
             new CustomEvent<string>(TRACK_EVENT, { detail: "contact_submit" }),
           );

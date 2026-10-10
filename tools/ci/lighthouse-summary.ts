@@ -116,7 +116,7 @@ if (representative.length > 0) {
     const label = element?.items[0].items[0]?.node.nodeLabel ?? "(no element)";
     const phases =
       element?.items[1].items.map((p) => `${p.phase} ${ms(p.timing)}`).join(", ") ?? "";
-    lines.push("", `**\`${path(run.url)}\`** — LCP ${ms(lcp)}, ${label}`, "", phases, "");
+    lines.push("", `**\`${path(run.url)}\`** - LCP ${ms(lcp)}, ${label}`, "", phases, "");
 
     const requests = audits["network-requests"].details.items.filter(
       (r) => !r.url.startsWith("data:"),
