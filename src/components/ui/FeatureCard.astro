@@ -9,6 +9,7 @@ import CardContent from "@/components/ui/primitives/CardContent.astro";
 import CardFooter from "@/components/ui/primitives/CardFooter.astro";
 import CardHeader from "@/components/ui/primitives/CardHeader.astro";
 import CardTitle from "@/components/ui/primitives/CardTitle.astro";
+import FigureTag from "@/components/ui/primitives/FigureTag.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import { cn } from "@/lib/cn";
 import { PHOTO_QUALITY } from "@/lib/images";
@@ -23,6 +24,7 @@ interface Props {
   icon?: string;
   image?: ImageMetadata;
   imageAlt?: string;
+  imageCaption?: string;
   badge?: string;
   href?: string;
   /** The footer link's text and accessible name; make it specific. */
@@ -36,6 +38,7 @@ const {
   icon,
   image,
   imageAlt,
+  imageCaption,
   badge,
   href,
   cta = "Learn more",
@@ -63,7 +66,7 @@ const plateIcon = image === undefined ? icon : undefined;
   interactive={href !== undefined}
 >
   {image !== undefined && (
-    <div class="p-4 pb-0">
+    <div class="relative m-4 mb-0">
       <Image
         alt={imageAlt ?? ""}
         class="aspect-16/10 w-full rounded-md object-cover"
@@ -74,6 +77,7 @@ const plateIcon = image === undefined ? icon : undefined;
         width={900}
         widths={[400, 672, 768, 900]}
       />
+      <FigureTag caption={imageCaption} class="right-2 bottom-2 md:right-3 md:bottom-3" />
     </div>
   )}
 

@@ -31,7 +31,7 @@ if (latest === undefined) {
   trail={programTrail("fll")}
 >
   <Hero>
-    <HeroImage alt={latest.alt} slot="media" src={latest.photo} />
+    <HeroImage alt={latest.alt} caption={latest.caption} slot="media" src={latest.photo} />
     <Fragment slot="eyebrow">Ages {programs.fll.ages}</Fragment>
     <Fragment slot="title">
       Where <span class="highlight-swipe">building</span> turns into engineering

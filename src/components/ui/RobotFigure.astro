@@ -3,19 +3,21 @@ import type { ImageMetadata } from "astro";
 
 import { Image } from "astro:assets";
 
+import Callout from "@/components/ui/primitives/Callout.astro";
 import { PHOTO_QUALITY } from "@/lib/images";
 
 /** The wordmark is decorative (`alt=""`): the photo's alt already names the robot. */
 interface Props {
   image: ImageMetadata;
   imageAlt: string;
+  caption: string;
   logo?: ImageMetadata | undefined;
   span: "full" | "half";
   href?: string;
   loading?: "eager" | "lazy";
 }
 
-const { image, imageAlt, logo, span, href, loading = "lazy" } = Astro.props;
+const { image, imageAlt, caption, logo, span, href, loading = "lazy" } = Astro.props;
 
 const photo =
   span === "full"
@@ -34,29 +36,34 @@ const mark =
 const Frame = href === undefined ? "div" : "a";
 ---
 
-<Frame
-  class:list={["relative media-frame", href !== undefined && "group block bg-none pb-0"]}
-  href={href}
->
-  <Image
-    alt={imageAlt}
-    class="w-full"
-    loading={loading}
-    quality={PHOTO_QUALITY}
-    sizes={photo.sizes}
-    src={image}
-    width={photo.width}
-    widths={photo.widths}
-  />
-  {logo !== undefined && (
+<figure>
+  <Frame
+    class:list={["relative media-frame", href !== undefined && "group block bg-none pb-0"]}
+    href={href}
+  >
     <Image
-      alt=""
-      class={mark.class}
-      loading="lazy"
-      src={logo}
-      width={mark.width}
-      widths={mark.widths}
+      alt={imageAlt}
+      class="w-full"
+      loading={loading}
+      quality={PHOTO_QUALITY}
+      sizes={photo.sizes}
+      src={image}
+      width={photo.width}
+      widths={photo.widths}
     />
-  )}
-  <slot />
-</Frame>
+    {logo !== undefined && (
+      <Image
+        alt=""
+        class={mark.class}
+        loading="lazy"
+        src={logo}
+        width={mark.width}
+        widths={mark.widths}
+      />
+    )}
+    <slot />
+  </Frame>
+  <Callout as="figcaption" class="mt-3" figure>
+    {caption}
+  </Callout>
+</figure>

@@ -61,6 +61,7 @@ const entries = rendered.map((entry, index) => ({
   <Hero>
     <HeroImage
       alt="Biohazard's pit crew working on the robot between matches"
+      caption="Pit crew between matches"
       slot="media"
       src={pits}
     />
@@ -88,6 +89,7 @@ const entries = rendered.map((entry, index) => ({
           {photo !== undefined && (
             <div class:list={[flip && "lg:order-last"]}>
               <RobotFigure
+                caption={heading === label ? label : `${heading}, ${label}`}
                 image={photo.image}
                 imageAlt={photo.imageAlt}
                 loading={index === 0 ? "eager" : "lazy"}

@@ -3,15 +3,19 @@ import type { ImageMetadata } from "astro";
 
 import { Image } from "astro:assets";
 
+import FigureTag from "@/components/ui/primitives/FigureTag.astro";
 import { PHOTO_QUALITY } from "@/lib/images";
 
 /** The LCP element on every page that has a hero, hence eager loading and high fetch priority. */
 interface Props {
   alt: string;
   src: ImageMetadata;
+  caption?: string | undefined;
+  /** Off where the caller places the figure label itself. */
+  tag?: boolean;
 }
 
-const { alt, src } = Astro.props;
+const { alt, src, caption, tag = true } = Astro.props;
 ---
 
 <Image
@@ -24,3 +28,5 @@ const { alt, src } = Astro.props;
   width={1920}
   widths={[640, 768, 960, 1280, 1920]}
 />
+
+{tag && <FigureTag caption={caption} />}

@@ -96,7 +96,12 @@ const outreachByYear = outreachYears.map((year) => ({
   trail={[{ name: nav.about.label, path: nav.about.href }]}
 >
   <Hero>
-    <HeroImage alt={programPhotos.sc2.alt} slot="media" src={programPhotos.sc2.image} />
+    <HeroImage
+      alt={programPhotos.sc2.alt}
+      caption={programPhotos.sc2.caption}
+      slot="media"
+      src={programPhotos.sc2.image}
+    />
 
     <Fragment slot="title">About us</Fragment>
 

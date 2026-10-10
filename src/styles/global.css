@@ -108,6 +108,10 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  main {
+    counter-reset: fig;
+  }
+
   /* Orbitron has no italic, so an italic span in a heading (the FIRST® mark) stands upright
      instead of taking a synthesized oblique; the ®, which Orbitron lacks, falls back to Inter. */
   h1,
@@ -571,6 +575,34 @@
   letter-spacing: var(--sc2-tracking-label);
   line-height: var(--sc2-leading-snug);
   text-transform: uppercase;
+}
+
+/* Figures number themselves in document order, so each page counts from 1 whichever components
+   render them. */
+@utility fig-number {
+  &::before {
+    counter-increment: fig;
+    content: "Fig. " counter(fig);
+  }
+}
+
+/* The overlaid figure label: partial-opacity ink on a local scrim from the ground, so it holds
+   contrast over any part of a photo. */
+@utility fig-tag {
+  isolation: isolate;
+  color: color-mix(in srgb, var(--sc2-foreground) 75%, transparent);
+
+  &::before {
+    position: absolute;
+    z-index: -1;
+    inset: -1rem -1.5rem;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--sc2-background) 70%, transparent),
+      transparent
+    );
+    content: "";
+  }
 }
 
 @utility spec-chip {
