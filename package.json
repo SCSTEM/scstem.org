@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "node tools/dev.ts",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "wrangler pages dev dist --port 4321",
     "check": "hk check --all --slow",
     "fix": "hk fix --all",
     "check:meta": "node tools/checks/verify-meta.ts",
@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
-    "@cloudflare/workers-types": "5.20261003.1",
     "@carbon/icons": "11.89.0",
+    "@cloudflare/workers-types": "5.20261003.1",
     "@resvg/resvg-js": "2.6.2",
     "@shadcn/lint": "0.2.0",
     "@types/node": "26.6.4",
@@ -44,6 +44,7 @@
     "prettier-plugin-tailwindcss": "0.8.1",
     "satori": "0.35.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.71.0"
+    "typescript-eslint": "8.71.0",
+    "wrangler": "4.147.0"
   }
 }

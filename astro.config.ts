@@ -118,5 +118,9 @@ export default defineConfig({
   trailingSlash: "always",
   vite: {
     plugins: [tailwindcss()],
+    /** Set when dev runs the Pages Functions under wrangler alongside the dev server. */
+    ...(process.env.FUNCTIONS_ORIGIN !== undefined && {
+      server: { proxy: { "/api": process.env.FUNCTIONS_ORIGIN } },
+    }),
   },
 });

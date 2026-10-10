@@ -60,7 +60,7 @@ dispatches `TRACK_EVENT` with its name. Then add the row above, and mark it a ke
 ## Verifying it
 
 The snippet is gated on the production hostname, so a local check has to pretend to be that host:
-build, rewrite the hostname in the emitted snippet to `localhost`, serve with `astro preview`, and
+build, rewrite the hostname in the emitted snippet to `localhost`, serve with `pnpm preview`, and
 watch `dataLayer` after `load` — `["consent","default",{…}]`, `["js",Date]`, `["config",…]` in
 that order, then `["event",…]` entries as links are clicked. In production, GA4's **DebugView** is
 the equivalent check; `?gtm_debug=x` on a real page turns it on for that session.

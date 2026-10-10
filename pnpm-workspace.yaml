@@ -5,6 +5,8 @@ allowBuilds:
   esbuild: true
   # Its postinstall only runs IBM's telemetry collector; the SVGs ship in the tarball.
   "@carbon/icons": false
+  # The platform binary arrives as an optional dependency; the postinstall only re-checks it.
+  workerd: false
 
 # eslint-plugin-jsx-a11y's peer range stops at eslint ^9, but its rules load and fire under
 # eslint 10; without this the unmet peer is a warning on every install.

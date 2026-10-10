@@ -126,8 +126,13 @@ apt-installs the libraries Chrome for Testing links against (`libasound2` is the
 Ubuntu lacks) and asks for `sudo`. macOS needs nothing beyond the download.
 
 Verify against the production build: `pnpm build && pnpm preview`, then
-`agent-browser open http://localhost:4321`. When `pnpm dev` already holds 4321, `astro preview`
-moves to 4322; dev serves `/@vite/client` and the preview does not.
+`agent-browser open http://localhost:4321`. The preview is `wrangler pages dev`, the Cloudflare
+Pages runtime, so the Pages Functions (calendar, contact form), `_redirects`, and Cloudflare's
+trailing-slash redirects behave as they do in production. Stop `pnpm dev` first: both want port 4321.
+
+`pnpm dev` (`tools/dev.ts`) runs `astro dev` with wrangler beside it on port 8788, serving the
+Pages Functions; the dev server proxies `/api` there, so the calendar and contact form work in
+dev too.
 
 ## Environment variables
 
@@ -143,7 +148,7 @@ so a fresh clone and every preview deploy work with no setup; production sets bo
 
 The Function secrets have no defaults: `functions/api/form/submit.ts` answers an error when either
 is unset, so a deploy missing one never tells a visitor their message arrived. To run the Function
-locally (`wrangler pages dev`), put them in a git-ignored `.dev.vars` at the repo root, with
+locally (`pnpm preview`), put them in a git-ignored `.dev.vars` at the repo root, with
 Turnstile's always-passes test secret matching the test site key:
 
 ```sh

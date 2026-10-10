@@ -3,6 +3,7 @@ node_modules
 
 .astro
 dist
+.wrangler
 
 .DS_Store
 *.pem
