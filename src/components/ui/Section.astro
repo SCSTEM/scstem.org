@@ -88,5 +88,11 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
         <slot />
       </div>
     )}
+
+    {Astro.slots.has("action") && (
+      <div class="mt-12">
+        <slot name="action" />
+      </div>
+    )}
   </div>
 </section>

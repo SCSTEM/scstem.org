@@ -18,6 +18,7 @@ import Callout from "@/components/ui/primitives/Callout.astro";
 import Card from "@/components/ui/primitives/Card.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import Section from "@/components/ui/Section.astro";
+import SectionAction from "@/components/ui/SectionAction.astro";
 import StatBand from "@/components/ui/StatBand.astro";
 import VideoLink from "@/components/ui/VideoLink.astro";
 import { ogCards } from "@/data/ogCards";
@@ -48,7 +49,7 @@ const timeline = seasons
 const logistics = [
   { term: "When", detail: programs.frc.meets },
   { term: "Hours", detail: programs.frc.hours },
-  { term: "Where", detail: site.location.workspace },
+  { term: "Where", detail: site.location.workspace, href: site.urls.directions },
   { term: "Ages", detail: programs.frc.ages },
   { term: "Team", detail: `${programs.frc.students} students` },
   { term: "Cost", detail: programs.frc.cost },
@@ -221,36 +222,31 @@ const roles = [
         {logistics.map((entry) => (
           <div class="grid grid-cols-[5rem_1fr] items-baseline gap-x-4">
             <dt class="spec-label text-muted">{entry.term}</dt>
-            <dd class="text-foreground">{entry.detail}</dd>
+            <dd class="text-foreground">
+              {"href" in entry ? (
+                <a class="external-link" href={entry.href} rel="noopener">
+                  {entry.detail}
+                </a>
+              ) : (
+                entry.detail
+              )}
+            </dd>
           </div>
         ))}
       </dl>
     </Card>
-    <div class="mt-6 flex flex-col gap-4">
-      <p class="measure">
-        Students are encouraged, not required, to make every meeting &mdash; we know families are
-        busy.
-      </p>
-      <ul class="flex flex-wrap gap-x-8 gap-y-3">
-        <li>
-          <a href={nav.frcCalendar.href}>Meeting calendar</a>
-        </li>
-        <li>
-          <a class="external-link" href={site.urls.directions} rel="noopener">
-            Directions and parking
-          </a>
-        </li>
-      </ul>
-    </div>
+    <p class="mt-6 measure">
+      Students are encouraged, not required, to make every meeting - we know families are busy.
+    </p>
+
+    <SectionAction href={nav.frcCalendar.href} prompt="Need this month's dates?" slot="action">
+      See the meeting calendar
+    </SectionAction>
   </Section>
 
   <Section atmosphere="bubble" index={3}>
     <Fragment slot="title">On the field</Fragment>
     <Fragment slot="intro">{programs.frc.competitions}</Fragment>
-
-    <Button href={nav.robots.href} slot="aside" variant="secondary">
-      See every season
-    </Button>
 
     <h3 class="text-h4">
       {awards} awards in {seasonTotal} seasons
@@ -274,6 +270,10 @@ const roles = [
         </li>
       ))}
     </ol>
+
+    <SectionAction href={nav.robots.href} slot="action" variant={2}>
+      See every season
+    </SectionAction>
   </Section>
 
   <Section atmosphere="bubble" index={4}>

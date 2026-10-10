@@ -22,6 +22,7 @@ import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import ProgramCard from "@/components/ui/ProgramCard.astro";
 import Section from "@/components/ui/Section.astro";
+import SectionAction from "@/components/ui/SectionAction.astro";
 import SponsorStrip from "@/components/ui/SponsorStrip.astro";
 import StatBand from "@/components/ui/StatBand.astro";
 import { ALUMNI_FIELDS, OUTREACH_KINDS } from "@/content.config";
@@ -239,10 +240,6 @@ const outreachKinds = {
       The numbers below come from official competition results, season by season.
     </Fragment>
 
-    <Button href={nav.robots.href} slot="aside" variant="secondary">
-      See every season
-    </Button>
-
     <StatBand stats={record} />
 
     <h3 class="mt-16">Where our alumni went</h3>
@@ -258,14 +255,18 @@ const outreachKinds = {
         </div>
       ))}
     </dl>
+
+    <SectionAction href={nav.robots.href} slot="action" variant={1}>
+      See every season
+    </SectionAction>
   </Section>
 
   <Section atmosphere="bubble" index={3}>
     <Fragment slot="title">What parents ask</Fragment>
     <FaqList entries={parentQuestions} name="parent-faq" />
-    <p class="mt-8">
-      Something else? <a href={nav.contact.href}>Ask us directly</a>.
-    </p>
+    <SectionAction href={nav.contact.href} prompt="Something else?" slot="action" variant={2}>
+      Ask us directly
+    </SectionAction>
   </Section>
 
   <Section atmosphere="bubble" index={4}>
@@ -296,10 +297,14 @@ const outreachKinds = {
       ))}
     </ul>
 
-    <p class="mt-10 measure">Want a robot demonstration at your school, club, or event?</p>
-    <Button class="mt-4" href={nav.contact.href} variant="secondary">
-      Invite us
-    </Button>
+    <SectionAction
+      href={nav.contact.href}
+      prompt="Want a robot demonstration at your school, club, or event?"
+      slot="action"
+      variant={3}
+    >
+      Request a demonstration
+    </SectionAction>
   </Section>
 
   <Section atmosphere="ruler">
@@ -309,11 +314,11 @@ const outreachKinds = {
       nothing.
     </Fragment>
 
-    <Button href={nav.sponsors.href} slot="aside" variant="secondary">
-      See every sponsor
-    </Button>
-
     <SponsorStrip />
+
+    <SectionAction href={nav.sponsors.href} slot="action" variant={2}>
+      See every sponsor
+    </SectionAction>
   </Section>
 
   <Section>

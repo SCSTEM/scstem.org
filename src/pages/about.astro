@@ -11,6 +11,7 @@ import HeroImage from "@/components/ui/HeroImage.astro";
 import PhotoTimeline from "@/components/ui/PhotoTimeline.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
+import SectionAction from "@/components/ui/SectionAction.astro";
 import StatBand from "@/components/ui/StatBand.astro";
 import { programPhotos } from "@/data/programPhotos";
 import { nav, programs, site } from "@/data/site";
@@ -306,11 +307,15 @@ const outreachByYear = outreachYears.map((year) => ({
           In {year}: {appearances}.
         </p>
       ))}
-      <p>
-        Want a robot demonstration at your school, club, or event?{" "}
-        <a href={nav.contact.href}>Invite us</a>.
-      </p>
     </div>
+
+    <SectionAction
+      href={nav.contact.href}
+      prompt="Want a robot demonstration at your school, club, or event?"
+      slot="action"
+    >
+      Request a demonstration
+    </SectionAction>
   </Section>
 
   <Section atmosphere="bubble" index={5}>
