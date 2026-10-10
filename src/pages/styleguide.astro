@@ -291,15 +291,14 @@ const durations = [
 
 const buttonSizes = ["sm", "md", "lg"] as const;
 
-/**
- * The keycap's three states, frozen so they can be compared side by side. The offsets restate the
- * `keycap` utility's; the edge reads `--keycap-edge`, so the accent face shows its tinted edge.
- */
-const keycapEdge = "var(--keycap-edge, var(--sc2-ink))";
+/** The keycap's three states, frozen so they can be compared side by side. */
 const keycapStates = [
-  { name: "Rest", style: `box-shadow: 3px 3px 0 0 ${keycapEdge}` },
-  { name: "Hover", style: `translate: -1px -1px; box-shadow: 4px 4px 0 0 ${keycapEdge}` },
-  { name: "Active", style: "translate: 2px 2px; box-shadow: var(--sc2-shadow-press)" },
+  { name: "Rest", style: undefined },
+  { name: "Hover", style: "--keycap-offset: 4px; translate: -1px -1px" },
+  {
+    name: "Active",
+    style: "--keycap-offset: 1px; --keycap-catch: rgb(255 255 255 / 0.2); translate: 2px 2px",
+  },
 ];
 
 /**
@@ -570,7 +569,7 @@ const themes = accents().map((accent) => ({
         {keycapStates.map((state) => (
           <figure class="flex flex-col items-start gap-3">
             <span
-              class="inline-flex h-11 items-center rounded-md bg-primary px-5 font-medium text-primary-foreground keycap-accent"
+              class="inline-flex h-11 items-center rounded-md px-5 font-semibold text-primary-foreground keycap"
               style={state.style}
             >
               Get involved

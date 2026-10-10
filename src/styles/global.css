@@ -77,9 +77,7 @@
   --shadow-pocket: var(--sc2-shadow-pocket);
   --shadow-contact: var(--sc2-shadow-contact);
   --shadow-plate: var(--sc2-shadow-plate);
-  --shadow-drafted-1: var(--sc2-shadow-drafted-1);
   --shadow-drafted-2: var(--sc2-shadow-drafted-2);
-  --shadow-press: var(--sc2-shadow-press);
   --shadow-table-edge: var(--sc2-shadow-table-edge);
   --duration-micro: var(--sc2-duration-micro);
   --duration-ui: var(--sc2-duration-ui);
@@ -111,6 +109,7 @@
   body {
     background-color: var(--sc2-background);
     background-image: var(--sc2-texture-grain);
+    background-size: var(--sc2-texture-grain-size);
     color: var(--sc2-body);
     font-family: var(--sc2-font-sans);
     font-size: var(--sc2-text-copy);
@@ -452,6 +451,7 @@
     border: 1px solid var(--frame-line);
     background-color: var(--sc2-background);
     background-image: var(--sc2-texture-grain);
+    background-size: var(--sc2-texture-grain-size);
   }
 }
 
@@ -565,26 +565,44 @@
 }
 
 /**
- * A keycap (DESIGN.md §4, §6, §8): a control that stands on a 3px drafted offset, lifts 1px on
- * hover, and presses flat on `:active` — motion that confirms the press. Under reduced motion the
- * face stays put and only the offset changes, so every state still reads.
+ * The accent keycap (DESIGN.md §4, §6, §8): a lit accent face standing on a drafted `ink` edge,
+ * scribed 1px beyond it so the edge still reads where ink meets ink. It lifts 1px on hover and
+ * presses onto a 1px edge on `:active`. Under reduced motion the face stays put and only the
+ * edge changes, so every state still reads.
  *
- * The edge is `--keycap-edge`, shadow ink when unset; `keycap-accent` tints it with the theme
- * primary. It is declared on the element, not in `@theme`, so it resolves against the program
- * theme the control sits in rather than the root's.
+ * Every state is the one `--keycap-offset`, so a frozen state is that property and a translate.
+ * The rim and the face read `--sc2-primary` on the element, so a keycap takes the program theme
+ * it sits in.
  */
 @utility keycap {
-  box-shadow: 3px 3px 0 0 var(--keycap-edge, var(--sc2-ink));
+  --keycap-offset: 3px;
+  --keycap-catch: rgb(255 255 255 / 0.35);
+
+  border: 1px solid color-mix(in srgb, var(--sc2-primary-foreground) 28%, var(--sc2-primary));
+  background-color: var(--sc2-primary);
+  background-image: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.12),
+    transparent 45%,
+    rgb(0 0 0 / 0.06)
+  );
+  background-size: auto;
+  box-shadow:
+    inset 0 1px 0 var(--keycap-catch),
+    var(--keycap-offset) var(--keycap-offset) 0 0 var(--sc2-ink),
+    calc(var(--keycap-offset) + 1px) calc(var(--keycap-offset) + 1px) 0 0
+      color-mix(in srgb, var(--sc2-control-edge) 55%, transparent);
   transition-property: color, background-color, border-color, box-shadow, translate;
 
   &:hover {
+    --keycap-offset: 4px;
     translate: -1px -1px;
-    box-shadow: 4px 4px 0 0 var(--keycap-edge, var(--sc2-ink));
   }
 
   &:active {
+    --keycap-offset: 1px;
+    --keycap-catch: rgb(255 255 255 / 0.2);
     translate: 2px 2px;
-    box-shadow: var(--sc2-shadow-press);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -593,11 +611,6 @@
       translate: none;
     }
   }
-}
-
-/* Modifier for `keycap`: the accent keycap's edge, the theme primary sunk into shadow ink. */
-@utility keycap-accent {
-  --keycap-edge: color-mix(in srgb, var(--sc2-primary) 35%, var(--sc2-ink));
 }
 
 /* Highlighter swipe: a skewed translucent marker stroke behind white key words. A heading
