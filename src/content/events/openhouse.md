@@ -12,7 +12,6 @@ ctaHref: /get-involved
 faq:
   - when-is-the-open-house
   - what-age-to-join
-  - what-does-it-cost
   - no-robotics-experience
   - not-interested-in-robots
   - cant-make-the-open-house

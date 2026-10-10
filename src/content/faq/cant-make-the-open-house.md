@@ -4,5 +4,5 @@ program: sc2
 tags: [openhouse]
 ---
 
-Yes! Fill out our [Get involved](/get-involved/) form and we'll reach out. There's a good chance
-we have a meeting coming up you're welcome to visit!
+Yes. Fill out the [Get involved](/get-involved) form and a volunteer will invite you to a regular
+meeting instead.

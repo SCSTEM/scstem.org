@@ -3,5 +3,5 @@ question: What if I'm not interested in robots, engineering, or computers?
 tags: [joining]
 ---
 
-You should still check us out! Many of our students are into art, business, video production,
-and more — there's a place on our teams for just about everyone.
+Come anyway. Our students also run the fundraising, video, social media, and brand, and the team
+needs all of it.

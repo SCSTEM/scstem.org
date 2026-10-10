@@ -82,17 +82,11 @@ if (latest === undefined) {
       season watching someone else build.
     </Fragment>
 
-    <FeatureGrid columns={2}>
+    <FeatureGrid columns={3}>
       <FeatureCard cta="Get directions" href={site.urls.directions} icon="location">
         <Fragment slot="title">Downtown Chambersburg</Fragment>
         Every team shares a workspace with {programs.frc.teamName}: same mentors, same tools,
         smaller robots. Find us at {site.location.street}, downtown.
-      </FeatureCard>
-
-      <FeatureCard icon="wallet">
-        <Fragment slot="title">{programs.fll.cost}</Fragment>
-        Families cover the extras, like a team shirt or a hotel night at an away event. Sponsors
-        cover the rest.
       </FeatureCard>
 
       <FeatureCard icon="security">
@@ -114,7 +108,7 @@ if (latest === undefined) {
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Start here</Fragment>
-      No LEGO® collection required: the robots, the tools, and the mentors are ours. Tell us your
+      No LEGO® collection required: we supply the robots, the tools, and the mentors. Tell us your
       student&rsquo;s age and we&rsquo;ll tell you what the next season looks like.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}

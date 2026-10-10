@@ -11,10 +11,7 @@ interface Props {
 const { program } = Astro.props;
 const facts = programs[program];
 const photo = programPhotos[program];
-const logistics = [
-  { term: "When", detail: "hours" in facts ? facts.hours : undefined },
-  { term: "Cost", detail: facts.cost },
-].filter((entry) => entry.detail !== undefined);
+const hours = "hours" in facts ? facts.hours : undefined;
 ---
 
 <FeatureCard
@@ -30,14 +27,10 @@ const logistics = [
     <ProgramName program={program} />
   </Fragment>
   <slot />
-  {logistics.length > 0 && (
-    <dl class="mt-4 grid grid-cols-[auto_1fr] items-baseline gap-x-4 gap-y-1 text-small">
-      {logistics.map((entry) => (
-        <>
-          <dt class="spec-label text-muted">{entry.term}</dt>
-          <dd class="text-foreground">{entry.detail}</dd>
-        </>
-      ))}
+  {hours !== undefined && (
+    <dl class="mt-4 grid grid-cols-[auto_1fr] items-baseline gap-x-4 text-small">
+      <dt class="spec-label text-muted">When</dt>
+      <dd class="text-foreground">{hours}</dd>
     </dl>
   )}
 </FeatureCard>

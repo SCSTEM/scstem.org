@@ -32,7 +32,6 @@ Each season file lists the game, events, best result, and awards, checked agains
 
 - [ ] Number of teams this season, and students per team.
 - [ ] Meeting days, times, and season months.
-- [ ] Cost per student, if it differs from "low to no cost".
 - [ ] Tournaments the teams attend, and roughly when.
 - [ ] The new FLL age range (it's changing); then update `programs.fll.ages`.
 - [ ] **New alt text** for `src/content/fll/team-photos/2024.md`. It's now the FLL hero, and
@@ -71,3 +70,35 @@ posed. Each one removes a repeat or an empty spot:
       kickoff event page also uses.
 - [ ] **The workspace:** a wide interior shot of downtown Chambersburg, for "When and where we
       meet" on the FRC page and the FLL page.
+
+## Questions
+
+From the October 2026 copy review, ranked by how much each one changes what parents and the
+public read.
+
+1. **"Hands-on STEM programs"**: `site.ts` (`description`, `legal`) promises programs beyond the
+   two teams, but `/programs/` says "We don't run workshops yet". Describe only what runs now, name
+   robot demonstrations as the third offering, or keep it because workshops have a start date?
+2. **Sponsors**: what a level costs and what recognition it brings (amounts, a floor, or
+   packet-only), and whether the sponsors page's closing banner should lead with Get involved
+   rather than the packet.
+3. **Active sponsors and names**: only JLG, The WorkShope, and Y.B. Welding are active. Confirm
+   the 2026 roster and how each wants to be credited (WellSpan; Orrstown Bank?; Volvo
+   Construction Equipment?; Manitowoc Cranes?).
+4. **Robot weight**: "120-pound robot" is stated as fact on five pages and "up to 120 pounds" on
+   one. Typical weight or the rule? Say it one way.
+5. **Home headline**: "Robots are in Franklin County. So are we." Keep it as the hook, or say
+   what we are ("Where Franklin County students build competition robots")?
+6. **About page structure**: the umbrella / entity / "member clubs" section reads as bylaws, and
+   "clubs" appears nowhere else. Compress to one paragraph, move it to the wiki, or keep it for
+   schools and partners?
+7. **About page balance**: the org page carries Biohazard's stats and one sentence on FLL. Add
+   FLL numbers when known, or reframe About as "Our story" and leave stats to the team pages?
+8. **What a school gets from a demo**: free or not, how long, what shows up, how much notice.
+9. **Calendar source label**: org-wide events are labeled "SC2" beside "Biohazard". What are
+   those events in practice: "All programs", "FIRST LEGO League", or the full name?
+10. **Donate page**: tax-deductibility wording beside the EIN, and whether to show what a gift
+    buys ($X = one registration). Is "charitable giving fund" a donor-advised fund or workplace
+    giving?
+11. **Competition months**: "Spring", "March", and "March and April" all appear, and "the Greater
+    Pittsburgh Regional every season" has exceptions (2012-2013 Pittsburgh, 2020-2021 Palmetto).

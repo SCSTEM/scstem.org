@@ -52,7 +52,6 @@ const logistics = [
   { term: "Where", detail: site.location.workspace, href: site.urls.directions },
   { term: "Ages", detail: programs.frc.ages },
   { term: "Team", detail: `${programs.frc.students} students` },
-  { term: "Cost", detail: programs.frc.cost },
 ];
 
 const mentorStats = [
@@ -63,7 +62,7 @@ const mentorStats = [
   },
   {
     value: `${String(programs.frc.alumniMentors)} of ${String(programs.frc.mentors)}`,
-    label: "Are Biohazard alumni",
+    label: "Biohazard alumni",
     description: "Former students, back to teach the team they learned on.",
   },
 ];
@@ -122,7 +121,7 @@ const roles = [
 ---
 
 <ProgramLayout
-  description={`Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName} builds a 120-pound FIRST robot every season in downtown Chambersburg: when we meet, what it costs, and ${String(awards)} awards since ${String(programs.frc.since)}.`}
+  description={`Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName} builds a 120-pound FIRST robot every season in downtown Chambersburg: when we meet, who mentors, and ${String(awards)} awards since ${String(programs.frc.since)}.`}
   og={ogCards.frc}
   program="frc"
   title="Biohazard - FIRST Robotics Competition"

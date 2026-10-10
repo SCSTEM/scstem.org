@@ -6,7 +6,7 @@ export const site = {
   url: "https://scstem.org",
 
   legal:
-    "SC2 is a 501(c)(3) non-profit providing STEM opportunities for students in and around Franklin County, PA.",
+    "SC2 is a 501(c)(3) nonprofit providing STEM opportunities for students in and around Franklin County, PA.",
   ein: "86-2328794",
   founded: 2021,
 
@@ -99,7 +99,6 @@ interface Program {
   teamNumber?: number;
   meets?: string;
   hours?: string;
-  cost?: string;
   competitions?: string;
   competitionsPerSeason?: number;
   students?: string;
@@ -130,7 +129,6 @@ export const programs = {
     meets:
       "Weekly from April to December; Mondays, Tuesdays, Thursdays and Saturdays from January through competition season",
     hours: "Weeknights 6:30-8:30 PM, Saturdays 10 AM-4 PM",
-    cost: "Low to no cost",
     competitions:
       "The Greater Pittsburgh Regional every season, plus one more event within driving range. Events run Thursday to Saturday.",
     competitionsPerSeason: 2,
@@ -145,7 +143,6 @@ export const programs = {
     shortName: "FLL",
     ages: "9-16",
     tagline: "LEGO® robots, table missions, and a research project.",
-    cost: "Low to no cost",
     accent: "orange",
     href: "/programs/fll",
   },
