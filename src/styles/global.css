@@ -165,42 +165,31 @@
   }
 
   /**
-   * An underline means a link, always, and it is drawn by hand (DESIGN.md §2.14, §8): a marker
-   * stroke that drifts upward toward its end. The stroke is a background rather than
-   * `text-decoration`, which cannot take a custom shape, and `box-decoration-break: clone` gives
-   * each line of a wrapped link its own stroke. Two layers, one stroke per finish: the finish
-   * sizes one to the link and the other to nothing (`tokens.css`). Anchors that are not text — a
-   * button, a framed image — reset it with `bg-none pb-0`. Preflight sets `text-decoration:
-   * inherit` on `a`; the line is switched off here so the two underlines never stack.
+   * An underline means a link, always (DESIGN.md §2.14, §8): a plain straight line, never a hand
+   * stroke, which is reserved for emphasis. The line is a background rather than
+   * `text-decoration` so that every anchor that is not text — a button, a pocket, a framed image —
+   * drops it by setting its own background (`bg-none pb-0` where it has none), and
+   * `box-decoration-break: clone` underlines each line of a wrapped link. Preflight sets
+   * `text-decoration: inherit` on `a`; the line is switched off here so two underlines never stack.
    *
-   * On the dark finish the text is the accent; on the light finish it is ink, and the yellow
-   * stroke alone says "link" (§2 accents).
+   * On the dark finish the text is the accent and the line follows it; on the light finish the
+   * text is ink, and the line in the marker color says "link" (§2 accents).
    */
   a {
+    --link-line: light-dark(var(--sc2-mark), currentColor);
+
     color: light-dark(var(--sc2-foreground), var(--sc2-primary-bright));
     text-decoration-line: none;
-    background-image: var(--sc2-underline-1-dark), var(--sc2-underline-1-light);
+    background-image: linear-gradient(var(--link-line), var(--link-line));
     background-repeat: no-repeat;
     background-position: 0 100%;
-    background-size: var(--sc2-underline-size-dark), var(--sc2-underline-size-light);
-    /* The stroke is a fixed 4.2px while the offset scales with the text, so a fixed term keeps
-       its top clear of the descenders at every size, not just the large ones. */
-    padding-bottom: calc(0.16em + 3px);
+    background-size: 100% max(1px, 0.07em);
+    padding-bottom: 0.1em;
     box-decoration-break: clone;
     transition: color var(--sc2-duration-micro) var(--sc2-ease-toggle);
   }
 
-  /* Three drift variants, rotated among sibling links so neighbours never share a stroke. */
-  a:nth-of-type(3n + 2) {
-    background-image: var(--sc2-underline-2-dark), var(--sc2-underline-2-light);
-  }
-
-  a:nth-of-type(3n) {
-    background-image: var(--sc2-underline-3-dark), var(--sc2-underline-3-light);
-  }
-
-  /* Hover shades the text and leaves the stroke where it is: a moving underline reads as a
-     glitch, not a confirmation. */
+  /* Hover shades the text; the underline stays put, since a moving one reads as a glitch. */
   a:hover {
     color: light-dark(var(--sc2-primary-bright), var(--sc2-foreground));
   }
@@ -631,9 +620,11 @@
   color: var(--sc2-foreground);
   isolation: isolate;
 
-  /* A featured link (DESIGN.md §2.14: swipe + underline). The swipe is an absolutely positioned
-     pseudo-element, which collapses on an inline that breaks across lines, so the link keeps its
-     few words together instead. */
+  /* The swipe is an absolutely positioned pseudo-element, which collapses on an inline that breaks
+     across lines, so a swiped phrase never wraps. A featured link (DESIGN.md §2.14: swipe +
+     underline) also needs to be a box for its underline. */
+  white-space: nowrap;
+
   &:is(a) {
     display: inline-block;
   }
@@ -681,7 +672,7 @@
 /* Stat numeral — the data voice at h2 size (DESIGN.md §3, §8). */
 @utility stat {
   font-family: var(--sc2-font-mono);
-  font-size: var(--sc2-text-h2);
+  font-size: var(--sc2-text-h1);
   font-weight: 600;
   line-height: var(--sc2-leading-tight);
   color: var(--sc2-primary-bright);
@@ -705,6 +696,15 @@
     z-index: -1;
     pointer-events: none;
     background: radial-gradient(ellipse 70% 55% at 50% 30%, var(--pool-tint), transparent 70%);
+    /* The ellipse scales with the section, so in a tall one it is still strong where the box ends.
+       Feathering both edges keeps the glow from ever stopping on a line. */
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black 10rem,
+      black calc(100% - 10rem),
+      transparent
+    );
   }
 }
 
@@ -888,7 +888,7 @@
 
 /**
  * Chrome links (DESIGN.md §8): nav, footer, card footers. A different layer from copy, so they
- * never take the hand-drawn stroke — no underline at rest, a straight machined hairline on
+ * never take the copy underline — no underline at rest, a straight machined hairline on
  * hover/focus. Both halves live here so a call site cannot ship one without the other.
  */
 @utility ui-link {

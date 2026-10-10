@@ -6,6 +6,9 @@ import { cn } from "@/lib/cn";
  * The stat band (DESIGN.md §8): a Source Code Pro numeral in the theme accent over an Inter
  * caption, on a feature pocket. This is where the voice rule from §1 — "numbers beat adjectives"
  * — gets its surface.
+ *
+ * Each cell draws its own engineering grid rather than the pocket drawing one across all of
+ * them, so every divider falls on a grid line and each cell shows whole squares.
  */
 interface Stat {
   /** The numeral itself. Short — it sets in the data voice at display size. */
@@ -35,16 +38,16 @@ const row =
     : "lg:grid-flow-col lg:auto-cols-fr lg:divide-x lg:divide-y-0";
 ---
 
-<Card class={cn("overflow-hidden", className)} feature>
+<Card class={cn("overflow-hidden", className)}>
   <dl class={cn("grid divide-y divide-border", row)}>
     {stats.map((stat) => (
-      <div class="p-6">
+      <div class="p-6 md:engineering-grid md:bg-origin-border md:bg-repeat-round">
         <dt class="sr-only">{stat.label}</dt>
         <dd>
           <span class="block stat">{stat.value}</span>
           <span class="mt-2 block spec-label text-foreground">{stat.label}</span>
           {stat.description !== undefined && (
-            <span class="mt-2 block text-small text-body">{stat.description}</span>
+            <span class="mt-2 block text-copy text-body">{stat.description}</span>
           )}
         </dd>
       </div>

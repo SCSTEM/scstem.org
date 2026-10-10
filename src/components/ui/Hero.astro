@@ -14,8 +14,9 @@ import { cn } from "@/lib/cn";
  * before the photo's subject.
  *
  * Without `media` it is the compact header: the same copy on the ground, at `h1` size rather than
- * `display`, for a page whose content has to start above the fold. Both end on the accent rule
- * (§2.2).
+ * `display`, for a page whose content has to start above the fold. Only the media hero ends on
+ * the accent rule (§2.2), which edges the full-bleed media; the compact header leaves the gap to
+ * the section below it.
  *
  * Slots: `media`, `eyebrow` or `logo` (a lockup image in the eyebrow's place), `title` (wrapped
  * in the `h1`), the default subhead, and `actions`.
@@ -49,7 +50,7 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
   <div
     class={cn(
       "relative container-page",
-      hasMedia ? "section-y md:flex md:min-h-120 md:items-center" : "pt-12 pb-10 md:pt-16 md:pb-12",
+      hasMedia ? "section-y md:flex md:min-h-120 md:items-center" : "pt-12 md:pt-16",
     )}
   >
     <div class={hasMedia ? "max-w-2xl" : undefined}>
@@ -75,7 +76,7 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
   </div>
 </section>
 
-<hr class="accent-rule" />
+{hasMedia && <hr class="accent-rule" />}
 
 <style>
   /**

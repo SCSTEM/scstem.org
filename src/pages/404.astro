@@ -1,10 +1,8 @@
 ---
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
 import Hero from "@/components/ui/Hero.astro";
 import Button from "@/components/ui/primitives/Button.astro";
-import Card from "@/components/ui/primitives/Card.astro";
-import CardDescription from "@/components/ui/primitives/CardDescription.astro";
-import CardHeader from "@/components/ui/primitives/CardHeader.astro";
-import CardTitle from "@/components/ui/primitives/CardTitle.astro";
 import Section from "@/components/ui/Section.astro";
 import { nav, programs } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -17,13 +15,25 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
 /** Titles and hrefs are the nav inventory's, so a renamed or moved route follows here. */
 const destinations = [
-  { ...nav.programs, description: "FIRST LEGO League and FIRST Robotics Competition." },
+  {
+    ...nav.programs,
+    icon: "bot",
+    cta: "See our programs",
+    description: "FIRST LEGO League and FIRST Robotics Competition.",
+  },
   {
     ...nav.about,
+    icon: "information",
+    cta: "Read about us",
     description: `Who we are and what we’ve built since ${String(programs.frc.since)}.`,
   },
-  { ...nav.sponsors, description: "The businesses that make this possible." },
-  { ...nav.contact, description: "Ask us anything." },
+  {
+    ...nav.sponsors,
+    icon: "enterprise",
+    cta: "See our sponsors",
+    description: "The businesses that make this possible.",
+  },
+  { ...nav.contact, icon: "email", cta: "Contact us", description: "Ask us anything." },
 ];
 ---
 
@@ -40,22 +50,15 @@ const destinations = [
     <p>It may have moved, or the link may be out of date. Try one of these instead.</p>
   </Hero>
 
-  <Section atmosphere="pool">
-    <div class="grid gap-4 sm:grid-cols-2">
+  <Section atmosphere="pool" srTitle="Where to go instead">
+    <FeatureGrid columns={2}>
       {destinations.map((destination) => (
-        <Card as="article" interactive>
-          <CardHeader>
-            {/* `h2`: the page's only other heading is its `h1`, and the default `h3` skips a level. */}
-            <CardTitle as="h2">
-              <a class="ui-link" href={destination.href}>
-                {destination.label}
-              </a>
-            </CardTitle>
-            <CardDescription>{destination.description}</CardDescription>
-          </CardHeader>
-        </Card>
+        <FeatureCard cta={destination.cta} href={destination.href} icon={destination.icon}>
+          <Fragment slot="title">{destination.label}</Fragment>
+          {destination.description}
+        </FeatureCard>
       ))}
-    </div>
+    </FeatureGrid>
 
     <div class="mt-10 flex flex-wrap gap-3">
       <Button href="/">Back to the homepage</Button>

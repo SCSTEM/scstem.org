@@ -1,11 +1,14 @@
 ---
 import getInvolved from "@/assets/sc2/get-involved.webp";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import JoiningFaq from "@/components/ui/JoiningFaq.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
-import { nav, site } from "@/data/site";
+import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 /**
@@ -17,7 +20,7 @@ const formTitle = `${nav.cta.label} with the ${site.name}`;
 ---
 
 <BaseLayout
-  description="Students, parents, mentors, and volunteers all start here. Tell the South Central STEM Collective who you are and what you’re curious about."
+  description="Students, parents, mentors, and sponsors all start here: a short form, then a South Central STEM Collective volunteer writes back."
   title="Get involved"
   trail={[{ name: nav.cta.label, path: nav.cta.href }]}
 >
@@ -28,17 +31,51 @@ const formTitle = `${nav.cta.label} with the ${site.name}`;
       src={getInvolved}
     />
     <Fragment slot="title">Get involved</Fragment>
-    Students, parents, mentors, volunteers, and businesses all start in the same place. Tell us who
-    you are and what you&rsquo;re curious about.
+    Students, parents, mentors, volunteers, and businesses all start with the same short form. A
+    volunteer emails you back to learn a bit more, then invites you to a meeting or sends the
+    details you asked for.
+    <Button href="#form" size="lg" slot="actions">
+      Fill out the form
+    </Button>
   </Hero>
+
+  <Section atmosphere="bubble" index={1}>
+    <Fragment slot="title">Where you fit</Fragment>
+
+    <FeatureGrid columns={2}>
+      <FeatureCard cta="Compare the programs" href={programs.sc2.href} icon="education">
+        <Fragment slot="title">Students and parents</Fragment>
+        <FirstMark /> LEGO League is for ages {programs.fll.ages}, and {programs.frc.teamName} for
+        ages {programs.frc.ages}. Families pay little or nothing.
+      </FeatureCard>
+
+      <FeatureCard icon="group">
+        <Fragment slot="title">Mentors and volunteers</Fragment>
+        Professionals who can teach a skill, and parents who can lend a hand. Every mentor and
+        volunteer follows Pennsylvania and <FirstMark /> youth-protection guidelines.
+      </FeatureCard>
+
+      <FeatureCard cta="See who sponsors us" href={nav.sponsors.href} icon="enterprise">
+        <Fragment slot="title">Sponsors</Fragment>
+        Businesses fund our tools, workspace, and registration fees. Tell us about your company on
+        the form, and we&rsquo;ll send the sponsorship details.
+      </FeatureCard>
+
+      <FeatureCard cta="Request a demonstration" href={nav.contact.href} icon="events">
+        <Fragment slot="title">Schools and community groups</Fragment>
+        Want a robot demonstration at your school, club, or event? Skip the form and send us the
+        date and place instead.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
 
   <JoiningFaq />
 
-  <Section atmosphere="pool">
+  <Section atmosphere="pool" id="form">
     <Fragment slot="title">Tell us about you</Fragment>
     <Fragment slot="intro">
-      The form takes a couple of minutes. Nothing on it is binding, and we&rsquo;ll follow up by
-      email.
+      The form takes a couple of minutes, and nothing on it is binding. Tell us who you are and what
+      you&rsquo;re curious about.
     </Fragment>
 
     <Button href={site.urls.getInvolvedForm} variant="secondary">
@@ -46,11 +83,12 @@ const formTitle = `${nav.cta.label} with the ${site.name}`;
     </Button>
 
     <!--
-      Google renders the form on a white ground and honors the embedding page's `color-scheme`
-      for its own controls, so the wrapper declares light rather than letting a dark page produce
-      dark-on-white form fields.
+      Google draws only its white form card; the rest of its page is transparent, and the section
+      shows through. Two things keep it that way: the wrapper declares light, matching the form's
+      own `color-scheme` (a mismatch makes the browser paint an opaque backdrop behind the frame,
+      and gives dark-on-white form fields), and the wrapper itself has no surface of its own.
     -->
-    <div class="mt-8 overflow-hidden pocket scheme-light">
+    <div class="mt-8 scheme-light">
       <iframe
         class="h-450 w-full border-0"
         data-form-embed

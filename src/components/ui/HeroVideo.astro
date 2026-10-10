@@ -2,6 +2,8 @@
 import type { ImageMetadata } from "astro";
 
 import HeroImage from "@/components/ui/HeroImage.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
 
 /**
  * A `Hero`'s looping background footage, over the frame it starts from.
@@ -11,9 +13,12 @@ import HeroImage from "@/components/ui/HeroImage.astro";
  * phone the same still a desktop gets. The video lies on top at `preload="none"` and reveals
  * itself once it is genuinely playing, so a visitor who never reaches that point pays nothing
  * for it.
+ *
+ * Its playback control sits in the footage's bottom corner as a quiet icon button, so it never
+ * competes with the hero's actions; its accessible name says which way it toggles.
  */
 interface Props {
-  /** The labelled playback button in the hero's action row references this id. */
+  /** The playback control references this id. */
   id: string;
   /** Describes the footage: the poster is what a reader who never sees it moving is left with. */
   alt: string;
@@ -31,6 +36,21 @@ const { id, alt, mp4, poster, webm } = Astro.props;
   <source src={webm} type="video/webm" />
   <source src={mp4} type="video/mp4" />
 </video>
+
+<Button
+  aria-controls={id}
+  class="group absolute right-3 bottom-3 z-10 bg-background/55 text-foreground/80 hover:text-foreground md:right-6 md:bottom-6"
+  data-video-toggle
+  hidden
+  size="icon"
+  variant="ghost"
+>
+  <Icon class="group-data-[paused=true]:hidden" name="pause" size={20} />
+  <Icon class="hidden group-data-[paused=true]:block" name="play--filled" size={20} />
+  <span class="sr-only" data-video-label>
+    Play background video
+  </span>
+</Button>
 
 <style>
   video {

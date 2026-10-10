@@ -1,6 +1,6 @@
 ---
 question: What if I don't know anything about robotics?
-tags: [joining]
+tags: [joining, parents]
 ---
 
-That's okay! Plenty of our students started with none, and we'll teach you what you need.
+No experience needed. Mentors and teammates will teach you everything you need.

@@ -1,8 +1,9 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
 
 import pits from "@/assets/frc/robots/2021-robot-pits.webp";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FirstMarked from "@/components/ui/FirstMarked.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
@@ -13,20 +14,48 @@ import { ogCards } from "@/data/ogCards";
 import { nav, programs } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
 import { programTrail } from "@/lib/jsonld";
+import { awardCount, getSeasons } from "@/lib/seasons";
 
-/** The `frcRobots` collection, newest first, as a list so every robot is in view and indexed. */
-const robots = await Promise.all(
-  (await getCollection("frcRobots"))
-    .toSorted((a, b) => b.data.year - a.data.year)
-    .map(async (entry) => ({ ...(await render(entry)), data: entry.data })),
+const seasons = await getSeasons();
+const latestYear = seasons[0]?.data.year ?? programs.frc.since;
+
+const rendered = await Promise.all(
+  seasons.map(async (entry) => {
+    const { image, imageAlt } = entry.data;
+    if (image !== undefined && imageAlt === undefined) {
+      throw new Error(`frcRobots: ${entry.id} has an \`image\` but no \`imageAlt\`.`);
+    }
+    const { Content } = await render(entry);
+    const label = entry.data.yearLabel ?? String(entry.data.year);
+    return {
+      Content,
+      data: entry.data,
+      hasBody: (entry.body ?? "").trim() !== "",
+      label,
+      heading: entry.data.name ?? label,
+      photo: image === undefined || imageAlt === undefined ? undefined : { image, imageAlt },
+    };
+  }),
 );
+
+/**
+ * A photographed season is a feature, alternating sides among the photographed ones; the rest
+ * are compact rows, and a run of them reads as one ruled ledger.
+ */
+const entries = rendered.map((entry, index) => ({
+  ...entry,
+  flip: rendered.slice(0, index).filter((earlier) => earlier.photo !== undefined).length % 2 === 1,
+  endsRun:
+    entry.photo === undefined &&
+    (index === rendered.length - 1 || rendered[index + 1]?.photo !== undefined),
+}));
 ---
 
 <ProgramLayout
-  description="Every Biohazard competition robot since 2019 — Toxic Silver, Robo Fett, O'Mega, Viper, and Troubleclef — with the games they played and the awards they won."
+  description={`Every Biohazard season since ${String(programs.frc.since)}: the robot, the game, the events, the best finish, and all ${String(awardCount(seasons))} awards the team has won.`}
   og={ogCards.frc}
   program="frc"
-  title="Our robots"
+  title={`Biohazard, every season since ${String(programs.frc.since)}`}
   trail={programTrail("frc", { name: nav.robots.label, path: nav.robots.href })}
 >
   <Hero>
@@ -35,67 +64,99 @@ const robots = await Promise.all(
       slot="media"
       src={pits}
     />
-    <Fragment slot="eyebrow">2019 &ndash; present</Fragment>
-    <Fragment slot="title">Our robots</Fragment>
-    Six weeks of build season, one robot, and whatever we learned the year before. Here is every
-    machine Biohazard has taken to competition since 2019.
+    <Fragment slot="eyebrow">
+      {programs.frc.since} &ndash; {latestYear}
+    </Fragment>
+    <Fragment slot="title">Every season since {programs.frc.since}</Fragment>
+    Each January brings a new game, and a robot to build before competitions start in March. Here is
+    every season {programs.frc.teamName} has competed: the robot, the game, the events we traveled
+    to, how far we got, and what we won.
   </Hero>
 
-  <Section atmosphere="pool" srTitle="Competition robots, newest first">
-    <div class="flex flex-col gap-20 md:gap-28">
-      {robots.map(({ Content, data }, index) => (
-        <article
+  <Section atmosphere="pool" srTitle="Seasons, newest first">
+    <ol>
+      {entries.map(({ Content, data, endsRun, flip, hasBody, heading, label, photo }, index) => (
+        <li
           class:list={[
-            "grid items-center gap-8 lg:gap-14",
-            /* A season whose robot has no photo yet is a placeholder, not a feature: it stays
-                 one narrow column rather than pairing a heading with an empty half-page frame. */
-            data.image === undefined ? "max-w-xl" : "lg:grid-cols-2",
+            "grid",
+            photo === undefined
+              ? "gap-x-8 gap-y-3 border-t border-border py-6 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
+              : "items-center gap-8 py-10 md:py-14 lg:grid-cols-2 lg:gap-14",
+            endsRun && "border-b",
           ]}
         >
-          <div class:list={[index % 2 === 1 && "lg:order-last"]}>
-            {data.image === undefined ? (
-              <p class="pocket px-5 py-4 spec-label text-muted">{data.imageAlt}</p>
-            ) : (
+          {photo !== undefined && (
+            <div class:list={[flip && "lg:order-last"]}>
               <RobotFigure
-                image={data.image}
-                imageAlt={data.imageAlt}
+                image={photo.image}
+                imageAlt={photo.imageAlt}
                 loading={index === 0 ? "eager" : "lazy"}
                 logo={data.logo}
                 span="half"
               />
-            )}
-          </div>
+            </div>
+          )}
 
-          <div>
-            <p class="spec-label text-primary-bright">{data.yearLabel ?? data.year}</p>
-            <h3 class="mt-2 text-h2">{data.name}</h3>
-            {data.game !== undefined && <p class="mt-2 text-muted">{data.game}</p>}
-
-            <div class="prose-copy mt-5">
-              <Content />
+          <div class:list={[photo === undefined && "contents"]}>
+            <div>
+              {heading !== label && <p class="spec-label text-primary-bright">{label}</p>}
+              <h3
+                class:list={[
+                  photo === undefined ? "text-h3" : "text-h2",
+                  heading !== label && "mt-2",
+                ]}
+              >
+                {heading}
+              </h3>
+              {data.game !== undefined && (
+                <p class="mt-2 text-muted">
+                  <FirstMarked text={data.game} />
+                </p>
+              )}
             </div>
 
-            {data.achievements !== undefined && (
-              <ul class="mt-6 flex flex-col gap-2">
-                {data.achievements.map((achievement) => (
-                  <li class="flex items-start gap-2 text-small">
-                    <Icon class="mt-0.5 text-primary-bright" name="trophy" size={20} />
-                    <span>{achievement}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div class:list={[photo !== undefined && "mt-5"]}>
+              {hasBody && (
+                <div class="prose-copy mb-5">
+                  <Content />
+                </div>
+              )}
+
+              {data.result !== undefined && (
+                <p class="font-medium text-foreground">{data.result}</p>
+              )}
+
+              {data.awards !== undefined && (
+                <ul class="mt-3 flex flex-col gap-2">
+                  {data.awards.map((award) => (
+                    <li class="flex items-start gap-2 text-small">
+                      <Icon class="mt-0.5 text-primary-bright" name="trophy" size={20} />
+                      <span>
+                        <FirstMarked text={award} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {data.events !== undefined && (
+                <p class="mt-3 text-small">
+                  <span class="spec-label text-muted">Events</span>{" "}
+                  <FirstMarked text={data.events.join(" · ")} />
+                </p>
+              )}
+            </div>
           </div>
-        </article>
+        </li>
       ))}
-    </div>
+    </ol>
   </Section>
 
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">The next one starts in January</Fragment>
-      Every robot on this page was designed, machined, wired, and programmed by students. The next
-      one needs a team.
+      Every robot here was designed, machined, wired, and programmed by students. The next one needs
+      a team.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>

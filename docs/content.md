@@ -158,25 +158,75 @@ the location, the questions, the page copy — comes from the markdown file.
 Two events do not yet justify a dynamic `[event].astro` route; when there are several, that is
 worth revisiting.
 
-## Add a robot
+## Add a season
 
-`src/content/frc/robots/<year>-<name>.md`, with the photo in `src/assets/frc/robots/`:
+Every Biohazard season gets one file, robot or not: `src/content/frc/robots/<year>-<name>.md`, or
+`<year>.md` when the robot has no name. A photo goes in `src/assets/frc/robots/`.
 
 ```md
 ---
 year: 2026
 name: Example
+game: Example Game
 image: ../../../assets/frc/robots/2026-robot-field.webp
 imageAlt: Example on the competition field
-achievements:
-  - Industrial Design Award, Pittsburgh Regional
+events:
+  - Greater Pittsburgh Regional
+  - Battle O' Baltimore (off-season)
+result: Third place at the Greater Pittsburgh Regional
+awards:
+  - Industrial Design Award, Greater Pittsburgh Regional
 ---
 
 A paragraph or two about the robot: what it does, what makes it unusual, how the season went.
 ```
 
-The robots page orders by `year`, newest first. `image` and `achievements` are optional — a robot
-with no photo yet still gets a page entry.
+Only `year` is required. A season without a photo shows as a compact row on the season-history
+page; supplying `image` without `imageAlt` fails the build.
+
+`awards` is one line per award per event, as _FIRST_ names it — the same award at two events is two
+lines. Regional winner and finalist titles count; the participation award and individual student
+honors such as Dean's List never go in, since the count is the team's. The
+award and season counts on the home and FRC pages are read from these files, so adding a season
+updates them. Never put a student's name in an award line.
+
+`result` is the season's best finish in one plain sentence. Check results against
+[The Blue Alliance](https://www.thebluealliance.com/team/4050) before publishing.
+
+## Add an alumni highlight
+
+`src/content/alumni/<program>-<number>.md`, one file per alumnus, no body:
+
+```md
+---
+field: Engineering
+program: frc
+---
+```
+
+The field is all the site publishes: no name, role, or employer. `field` is one of the fixed
+list in `src/content.config.ts`; the home and sponsors pages count alumni per field.
+
+## Add an outreach appearance
+
+`src/content/outreach/<year>-<name>.md`, no body — one file per community event the teams appear
+at:
+
+```md
+---
+name: Old Market Day
+kind: festival
+description: "Robot demos on the street at downtown Chambersburg's summer festival."
+year: 2026
+month: 7
+place: Chambersburg
+---
+```
+
+`kind` is `school`, `sponsor`, or `festival`. `description` is one line on what the teams did
+there. The home page lists the newest year's appearances
+in calendar order; `month` sets that order and is not printed. `place` is optional; leave it off
+when the name already says where.
 
 ## Add a team photo
 
@@ -227,12 +277,12 @@ updating one does not update the other.
 
 ## Where things live
 
-| What                                                 | Where                           |
-| ---------------------------------------------------- | ------------------------------- |
-| Sponsors, events, FAQ, robots, team photos           | `src/content/`                  |
-| Images those files point at                          | `src/assets/`                   |
-| Org facts, external URLs, calendar and analytics IDs | `src/data/site.ts`              |
-| Page structure and copy that is not content          | `src/pages/`, `src/components/` |
+| What                                                          | Where                           |
+| ------------------------------------------------------------- | ------------------------------- |
+| Sponsors, events, FAQ, seasons, alumni, outreach, team photos | `src/content/`                  |
+| Images those files point at                                   | `src/assets/`                   |
+| Org facts, external URLs, calendar and analytics IDs          | `src/data/site.ts`              |
+| Page structure and copy that is not content                   | `src/pages/`, `src/components/` |
 
 ## Sharp edges
 

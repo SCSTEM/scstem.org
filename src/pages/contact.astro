@@ -23,7 +23,7 @@ const fields = [
 ---
 
 <BaseLayout
-  description="Questions about a program, a sponsorship, or getting your student started? Send the South Central STEM Collective a message."
+  description="Questions, sponsorships, or a robot demonstration for your school, group, or event? Send the South Central STEM Collective a message."
   title="Contact"
   trail={[{ name: nav.contact.label, path: nav.contact.href }]}
 >
@@ -34,8 +34,9 @@ const fields = [
       src={laptop}
     />
     <Fragment slot="title">Contact us</Fragment>
-    Questions about a program, a sponsorship, or getting your student started? Send us a note and a
-    real person will answer.
+    Questions about a program or a sponsorship? Want a robot demonstration at your school, community
+    group, or event? Send us a note and a real person will answer. Joining a team? Start with the{" "}
+    <a href={nav.cta.href}>{nav.cta.label} form</a>.
   </Hero>
 
   <Section atmosphere="pool-neutral" srTitle="Send us a message">
@@ -46,6 +47,18 @@ const fields = [
 
       <div class="flex flex-col gap-6">
         <TitleBlock {fields} orientation="stack" />
+
+        <Card>
+          <CardHeader>
+            <CardTitle rule>Robot demonstrations</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>
+              Schools, community groups, and event organizers: tell us the date, the place, and who
+              will be there, and we&rsquo;ll see which team can bring a robot.
+            </p>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>

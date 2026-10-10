@@ -3,18 +3,18 @@ import { getCollection } from "astro:content";
 
 import partsNotes from "@/assets/sc2/parts-notes.webp";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
-import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
 import Section from "@/components/ui/Section.astro";
 import SponsorTier from "@/components/ui/SponsorTier.astro";
-import { SPONSOR_LEVELS } from "@/content.config";
+import { ALUMNI_FIELDS, SPONSOR_LEVELS } from "@/content.config";
 import { ogCards } from "@/data/ogCards";
 import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { cn } from "@/lib/cn";
-import { handwritingClass } from "@/lib/hand";
 
 /**
  * One group per level, strongest first, because the tier is the page's whole information
@@ -33,9 +33,18 @@ const past = sponsors
   .filter((entry) => !entry.data.active)
   .toSorted((a, b) => a.data.name.localeCompare(b.data.name));
 
-/** Hero copy — too long to double as the meta description below. */
-const intro =
-  "Local businesses and individuals keep our tools running and our workspace open. Here's who backs this work, and how to join them.";
+/** The fields alumni work in, the most common first: what a sponsor's money turns into. */
+const alumni = await getCollection("alumni");
+const listFormat = new Intl.ListFormat("en-US", { style: "long", type: "conjunction" });
+const alumniFields = listFormat.format(
+  ALUMNI_FIELDS.map((field) => ({
+    field,
+    count: alumni.filter((entry) => entry.data.field === field).length,
+  }))
+    .filter((entry) => entry.count > 0)
+    .toSorted((a, b) => b.count - a.count)
+    .map((entry) => entry.field.toLowerCase().replace(/\bit\b/u, "IT")),
+);
 ---
 
 <BaseLayout
@@ -50,19 +59,44 @@ const intro =
       slot="media"
       src={partsNotes}
     />
-
     <Fragment slot="title">
       <span class="highlight-swipe">Sponsors</span> help us build
     </Fragment>
-
-    {intro}
-
-    <Button href={nav.contact.href} size="lg" slot="actions">
-      Become a sponsor
+    Local businesses fund our teams. Here&rsquo;s who backs this work, and how to join them.
+    <Button href={nav.cta.href} size="lg" slot="actions">
+      {nav.cta.label}
     </Button>
   </Hero>
 
   <Section atmosphere="bubble" index={1}>
+    <Fragment slot="title">A local investment</Fragment>
+    <Fragment slot="intro">
+      The students you back go on to careers. The {alumni.length} alumni we keep up with work in{" "}
+      {alumniFields}.
+    </Fragment>
+
+    <h3>Where the money goes</h3>
+    <p class="mt-4 measure">
+      Sponsor money goes to three places, so families pay little or nothing to take part.
+    </p>
+
+    <FeatureGrid class="mt-8" columns={3}>
+      <FeatureCard icon="tools">
+        <Fragment slot="title">Tools</Fragment>
+        The machines and hand tools students learn on, and the materials they build with.
+      </FeatureCard>
+      <FeatureCard icon="building">
+        <Fragment slot="title">Workspace</Fragment>
+        Our workspace in downtown Chambersburg, where every team meets and builds.
+      </FeatureCard>
+      <FeatureCard icon="ticket">
+        <Fragment slot="title">Registration</Fragment>
+        <FirstMark /> registration fees for every team, every season.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="bubble" index={2}>
     <Fragment slot="title">Who backs this work</Fragment>
 
     <div class="flex flex-col gap-14">
@@ -93,21 +127,9 @@ const intro =
       <Button href={site.urls.sponsorPacket} size="lg" slot="actions">
         Sponsorship packet
       </Button>
-      <Button href={nav.donate.href} size="lg" slot="actions" variant="secondary">
-        {nav.donate.label}
+      <Button href={nav.contact.href} size="lg" slot="actions" variant="secondary">
+        Talk it through with us
       </Button>
     </CtaBanner>
-
-    <!-- The arrow and its link wrap as one unit: on a narrow screen they drop below the
-         question together, the arrow still pointing at the link. -->
-    <p class="mt-8 flex flex-wrap items-center justify-center gap-x-2 text-muted">
-      Rather just talk it through?
-      <span class="flex items-center gap-2">
-        <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={2} />
-        <a class={cn(handwritingClass, "text-lead")} href={nav.contact.href}>
-          Become a sponsor
-        </a>
-      </span>
-    </p>
   </Section>
 </BaseLayout>

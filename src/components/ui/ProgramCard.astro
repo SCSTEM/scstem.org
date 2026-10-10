@@ -6,7 +6,8 @@ import { type ProgramTheme, programs } from "@/data/site";
 
 /**
  * A program's feature card: its photo, age badge, title, and a link to its page. The body copy
- * is the default slot, since each page describes the program in its own words.
+ * is the default slot, since each page describes the program in its own words; the logistics a
+ * parent decides on follow it, read from the program's facts.
  */
 interface Props {
   program: ProgramTheme;
@@ -15,6 +16,10 @@ interface Props {
 const { program } = Astro.props;
 const facts = programs[program];
 const photo = programPhotos[program];
+const logistics = [
+  { term: "When", detail: "hours" in facts ? facts.hours : undefined },
+  { term: "Cost", detail: facts.cost },
+].filter((entry) => entry.detail !== undefined);
 ---
 
 <FeatureCard
@@ -29,4 +34,14 @@ const photo = programPhotos[program];
     <ProgramName program={program} />
   </Fragment>
   <slot />
+  {logistics.length > 0 && (
+    <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-small">
+      {logistics.map((entry) => (
+        <>
+          <dt class="spec-label text-muted">{entry.term}</dt>
+          <dd class="text-foreground">{entry.detail}</dd>
+        </>
+      ))}
+    </dl>
+  )}
 </FeatureCard>

@@ -27,7 +27,8 @@ const { class: className } = Astro.props;
       <slot />
     </div>
     {Astro.slots.has("actions") && (
-      <div class="mt-8 flex flex-wrap justify-center gap-3">
+      /* One column of full-width buttons below `sm`, as in the hero. */
+      <div class="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:justify-center">
         <slot name="actions" />
       </div>
     )}

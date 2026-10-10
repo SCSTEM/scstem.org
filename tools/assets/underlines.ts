@@ -1,6 +1,6 @@
 /**
- * Writes the link underline strokes into `src/styles/tokens.css` (DESIGN.md §2.14): three drift
- * variants, for each accent, for each finish — eighteen data URIs. A data URI cannot read a CSS
+ * Writes the hand underline strokes into `src/styles/tokens.css` for the apps that import it: three
+ * drift variants, for each accent, for each finish — eighteen data URIs. A data URI cannot read a CSS
  * variable, so each stroke's color is baked in; this script keeps the eighteen in step with the
  * three paths below and with the colors the stylesheet already declares.
  *
@@ -15,7 +15,7 @@ import { readFile, writeFile } from "node:fs/promises";
 const TOKENS = new URL("../../src/styles/tokens.css", import.meta.url);
 
 /**
- * The drift (§2.14): nearly straight, rising ~2px toward the end. The SVG is stretched to the
+ * The drift: nearly straight, rising ~2px toward the end. The SVG is stretched to the
  * link's width and 0.8em tall, and `non-scaling-stroke` keeps the 4.2px weight at any size.
  */
 const PATHS = [

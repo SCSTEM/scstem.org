@@ -16,8 +16,9 @@ import { cn } from "@/lib/cn";
  * band too, so a page never ends on one). Adjacency is read in document order across
  * `data-surface` elements, so only Sections, the Hero, and the footer should sit between bands.
  *
- * Slots: `eyebrow`, `title` (wrapped in the heading), `intro`, and the default body. They are
- * slots rather than string props so a heading can carry markup, e.g. an italic FIRST®.
+ * Slots: `eyebrow`, `title` (wrapped in the heading), `intro`, `aside`, and the default body. They
+ * are slots rather than string props so a heading can carry markup, e.g. an italic FIRST®. `aside`
+ * sits at the header's far end from `lg`, bottom-aligned with the intro, and below it on mobile.
  *
  * `srTitle` is the heading for a section whose body speaks for itself on screen: a visually
  * hidden `h2` that keeps the page outline whole. It takes no header space, and a section passes
@@ -27,13 +28,18 @@ interface Props {
   atmosphere?: "none" | "bubble" | "pool" | "pool-neutral" | "ruler" | "band";
   /** The grid bubble's number. Required by, and only read with, `atmosphere="bubble"`. */
   index?: number;
+  /**
+   * `center` centers the header over the body, for a page's closing section around a single block
+   * such as a form. The body places itself.
+   */
+  align?: "start" | "center";
   /** A visually hidden heading, in place of the `title` slot. */
   srTitle?: string;
   id?: string;
   class?: string;
 }
 
-const { atmosphere = "none", index, srTitle, id, class: className } = Astro.props;
+const { atmosphere = "none", align = "start", index, srTitle, id, class: className } = Astro.props;
 
 if (atmosphere === "bubble" && index === undefined) {
   throw new Error('Section: atmosphere="bubble" needs an `index` for the bubble to show.');
@@ -65,19 +71,32 @@ const hasHeader = hasEyebrow || Astro.slots.has("title") || Astro.slots.has("int
     {srTitle !== undefined && <h2 class="sr-only">{srTitle}</h2>}
 
     {hasHeader && (
-      <div>
-        {atmosphere === "bubble" && index !== undefined && (
-          <GridBubble class="mb-6" value={index} />
+      <div
+        class={cn(
+          Astro.slots.has("aside") &&
+            "flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12",
+          align === "center" && "text-center",
         )}
-        {eyebrow !== undefined && <p class="spec-label text-primary-bright" set:html={eyebrow} />}
-        {Astro.slots.has("title") && (
-          <h2 class={hasEyebrow ? "mt-2" : undefined}>
-            <slot name="title" />
-          </h2>
-        )}
-        {Astro.slots.has("intro") && (
-          <div class="mt-4 measure text-lead">
-            <slot name="intro" />
+      >
+        <div>
+          {atmosphere === "bubble" && index !== undefined && (
+            <GridBubble class="mb-6" value={index} />
+          )}
+          {eyebrow !== undefined && <p class="spec-label text-primary-bright" set:html={eyebrow} />}
+          {Astro.slots.has("title") && (
+            <h2 class={hasEyebrow ? "mt-2" : undefined}>
+              <slot name="title" />
+            </h2>
+          )}
+          {Astro.slots.has("intro") && (
+            <div class={cn("mt-4 measure text-lead", align === "center" && "mx-auto")}>
+              <slot name="intro" />
+            </div>
+          )}
+        </div>
+        {Astro.slots.has("aside") && (
+          <div class="shrink-0">
+            <slot name="aside" />
           </div>
         )}
       </div>

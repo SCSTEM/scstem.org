@@ -25,8 +25,8 @@ hintLabels:
 **Kickoff.** The game is revealed! Teams watch the live broadcast and receive the game manual to
 start strategizing.
 
-**Build season – 6 weeks.** Design, prototype, build, and program the robot to meet the game
-challenges.
+**Build season.** From kickoff to the first competition in March, design, prototype, build, and
+program the robot to meet the game challenges.
 
 **Competition – March & April.** Compete in regional events, form alliances, and work toward
 qualifying for the World Championship.

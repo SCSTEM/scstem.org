@@ -7,6 +7,7 @@ import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Section from "@/components/ui/Section.astro";
+import { SPONSOR_LEVELS } from "@/content.config";
 import { ogCards } from "@/data/ogCards";
 import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -35,8 +36,8 @@ const mailingAddress = [
       <span class="highlight-swipe">Support</span>
       <span class="block">local STEM</span>
     </Fragment>
-    Donations keep the tools sharp, the workspace open, and registration paid for every student who
-    walks in. Here&rsquo;s every way to give.
+    Your gift buys tools and materials, keeps the workspace open, and pays competition registration
+    fees, so families pay little or nothing. Here&rsquo;s every way to give.
     <Button href={site.urls.donate} size="lg" slot="actions">
       Donate through PayPal
     </Button>
@@ -59,16 +60,6 @@ const mailingAddress = [
         </address>
       </FeatureCard>
 
-      <FeatureCard
-        badge="via PayPal"
-        cta="Open PayPal Giving Fund"
-        href={site.urls.donate}
-        icon="wallet"
-      >
-        <Fragment slot="title">Online</Fragment>
-        Give securely through PayPal Giving Fund.
-      </FeatureCard>
-
       <FeatureCard icon="partnership">
         <Fragment slot="title">Charitable giving fund</Fragment>
         <p>Your giving fund may already list us. Search by name or EIN.</p>
@@ -83,6 +74,16 @@ const mailingAddress = [
         </p>
       </FeatureCard>
 
+      <FeatureCard
+        badge="via PayPal"
+        cta="Open PayPal Giving Fund"
+        href={site.urls.donate}
+        icon="wallet"
+      >
+        <Fragment slot="title">Online</Fragment>
+        Give securely through PayPal Giving Fund.
+      </FeatureCard>
+
       <FeatureCard cta="See our wishlist" href={site.urls.wishlist} icon="tools">
         <Fragment slot="title">In kind</Fragment>
         <p>
@@ -91,21 +92,21 @@ const mailingAddress = [
         </p>
       </FeatureCard>
 
-      <FeatureCard icon="document">
+      <FeatureCard cta="See sponsorship levels" href={nav.sponsors.href} icon="document">
         <Fragment slot="title">Corporate sponsorship</Fragment>
-        <p>Corporate partners help us keep improving our programs and workspace.</p>
-        <p class="mt-4">
-          <a href="#questions">Contact us below</a> about a corporate sponsorship. Our{" "}
-          <a href={nav.sponsors.href}>sponsors page</a> shows who already does.
-        </p>
+        Businesses sponsor a season at one of {SPONSOR_LEVELS.length} levels, each recognized on our
+        sponsors page.
       </FeatureCard>
     </FeatureGrid>
   </Section>
 
-  <Section atmosphere="pool-neutral" id="questions">
-    <Fragment slot="title">Let&rsquo;s chat</Fragment>
-    <Fragment slot="intro">Questions about sponsoring or giving? Ask here.</Fragment>
+  <Section align="center" atmosphere="pool-neutral" id="questions">
+    <Fragment slot="title">Questions about giving</Fragment>
+    <Fragment slot="intro">
+      Sponsorships, in-kind gifts, giving funds, or anything else: ask here and a volunteer will
+      answer.
+    </Fragment>
 
-    <ContactForm class="max-w-3xl" name="Sponsor Question" />
+    <ContactForm class="mx-auto max-w-3xl" name="Sponsor Question" />
   </Section>
 </BaseLayout>

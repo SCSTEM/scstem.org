@@ -75,10 +75,9 @@ export const GET: APIRoute = async () => {
         description: `Ages ${programs.frc.ages}. Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName}, competing since ${String(programs.frc.since)}.`,
       },
       {
-        title: "Competition robots",
+        title: "Season history",
         href: nav.robots.href,
-        description:
-          "Every robot Biohazard has built, with the game it played and the awards it won.",
+        description: `Every Biohazard season since ${String(programs.frc.since)}: the game, the events, the robot where there was one, and the awards.`,
       },
     ]),
     section("Get involved", [

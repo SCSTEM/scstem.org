@@ -96,6 +96,11 @@ const faq = defineCollection({
   }),
 });
 
+/**
+ * One entry per Biohazard season, robot or not: the season-history page lists every year, and the
+ * team's award count is read from these entries rather than stated anywhere. A season with no
+ * known robot omits `name` and `image`; supplying an `image` without `imageAlt` fails the page.
+ */
 const frcRobots = defineCollection({
   loader: glob({ base: "src/content/frc/robots", pattern: "**/*.md" }),
   schema: ({ image }) =>
@@ -106,15 +111,59 @@ const frcRobots = defineCollection({
        * stays the sort key.
        */
       yearLabel: z.string().optional(),
-      name: z.string(),
+      name: z.string().optional(),
       /** The season's game, as FIRST named it. */
       game: z.string().optional(),
       image: image().optional(),
-      imageAlt: z.string(),
+      imageAlt: z.string().optional(),
       /** Per-robot wordmark overlaid on the photo, where a season had one. */
       logo: image().optional(),
-      achievements: z.array(z.string()).optional(),
+      /** Events attended, by name, in the order played. Off-season events say so. */
+      events: z.array(z.string()).optional(),
+      /** The season's best finish, in one line. */
+      result: z.string().optional(),
+      /**
+       * Team awards as FIRST names them, one per win; the same award at two events is two entries.
+       * Individual student honors such as Dean's List stay out: the count is the team's.
+       */
+      awards: z.array(z.string()).optional(),
     }),
+});
+
+/**
+ * The fields alumni have gone into, one entry per alumnus. A field is all the site publishes: no
+ * name, role, or employer, so no entry points at a person.
+ */
+export const ALUMNI_FIELDS = ["Software and IT", "Engineering", "Management", "Design"] as const;
+
+const alumni = defineCollection({
+  loader: glob({ base: "src/content/alumni", pattern: "**/*.md" }),
+  schema: z.strictObject({
+    field: z.enum(ALUMNI_FIELDS),
+    program: z.enum(PROGRAM_KEYS),
+  }),
+});
+
+/**
+ * Community events the teams appear at — demonstrations, expos, festivals. Unlike `events`, these
+ * get no page of their own; they are the record of where the public has seen the robots.
+ */
+export const OUTREACH_KINDS = ["school", "sponsor", "festival"] as const;
+
+const outreach = defineCollection({
+  loader: glob({ base: "src/content/outreach", pattern: "**/*.md" }),
+  schema: z.strictObject({
+    name: z.string(),
+    kind: z.enum(OUTREACH_KINDS),
+    /** One line on what the teams did there. */
+    description: z.string(),
+    year: z.number().int(),
+    /** Orders a year's appearances; the site does not print it. */
+    month: z.number().int().min(1).max(12),
+    /** The town, where the name does not already say it. */
+    place: z.string().optional(),
+    url: z.url().optional(),
+  }),
 });
 
 /** FRC and FLL team photos are the same shape; the split is by directory. */
@@ -149,4 +198,6 @@ export const collections = {
   frcRobots,
   frcTeamPhotos,
   fllTeamPhotos,
+  alumni,
+  outreach,
 };

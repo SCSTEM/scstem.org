@@ -43,7 +43,7 @@ TypeScript scripts run directly by Node (type stripping, no build step), each be
 | `check:calendar`    | Recurrence, daylight saving, exceptions, and feed merging      | hk / CI         |
 | `check:events`      | Isolated future-event build, metadata, and Lighthouse fixtures | CI, after build |
 | `assets:og`         | Render the OG cards in `src/assets/og/`                        | by hand         |
-| `assets:underlines` | Write the link underline strokes into `src/styles/tokens.css`  | by hand         |
+| `assets:underlines` | Write the hand underline strokes into `src/styles/tokens.css`  | by hand         |
 
 Two more under `tools/ci/` have no script because Lighthouse CI runs them: `serve.ts` serves
 `dist/` over HTTP/2 and TLS for the audit, and `lighthouse-summary.ts` writes the job summary.
@@ -66,21 +66,22 @@ curl -A "Mozilla/5.0 (Macintosh) AppleWebKit/537.36 Chrome/140.0.0.0 Safari/537.
 Download the `latin` file of each face (and Inter's `latin-ext`) over the existing one, and copy
 its `font-weight` and `unicode-range` into `src/styles/fonts.css`.
 
-**The FRC hero video** in `public/video/biohazard/` is a 10.5 s loop cut from the 1080p master
-(git history has it) at the one steady stretch, whose first and last frames match. 720p because
-the footage is soft and 1080p looks identical at more than twice the size:
+**The FRC hero video** in `public/video/biohazard/` is the full 44 s master (git history has the
+1080p original), looped whole. 720p because the footage is soft and 1080p looks identical at more
+than twice the size:
 
 ```sh
-ffmpeg -ss 8.0 -t 10.5 -i master.mp4 -an -vf "scale=1280:720:flags=lanczos" \
-  -c:v libx264 -profile:v high -preset slower -crf 21 -pix_fmt yuv420p \
+ffmpeg -i master.mp4 -an -vf "scale=1280:720:flags=lanczos" \
+  -c:v libx264 -profile:v high -preset slower -crf 26 -pix_fmt yuv420p \
   -g 60 -movflags +faststart home-video.mp4
 
-ffmpeg -ss 8.0 -t 10.5 -i master.mp4 -an -vf "scale=1280:720:flags=lanczos" \
-  -c:v libvpx-vp9 -crf 30 -b:v 0 -row-mt 1 -deadline good -cpu-used 1 \
+ffmpeg -i master.mp4 -an -vf "scale=1280:720:flags=lanczos" \
+  -c:v libvpx-vp9 -crf 36 -b:v 0 -row-mt 1 -deadline good -cpu-used 1 \
   -g 60 -pix_fmt yuv420p home-video.webm
 ```
 
-The poster, `src/assets/frc/hero-video-poster.webp`, is the encoded MP4's first frame.
+The poster, `src/assets/frc/hero-video-poster.webp`, is the master's first frame at 1080p
+(`cwebp -q 60`).
 
 ## hk
 
@@ -194,7 +195,8 @@ the path for the self-signed certificate):
 
 The Google Forms embed on `/get-involved/` starts loading when it enters the viewport; the
 initial-load audit excludes that later third-party transfer. Check the embedded form and its
-direct-link fallback during the staging soak.
+direct-link fallback during the staging soak. The FRC hero video (about 3 MB) starts only after
+`load`, so the audit blocks `/video/` and the 1 MB budget covers the initial page alone.
 
 ```sh
 pnpm build

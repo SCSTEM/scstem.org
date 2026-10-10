@@ -8,9 +8,11 @@ export const site = {
   legal:
     "SC2 is a 501(c)(3) non-profit providing STEM opportunities for students in and around Franklin County, PA.",
   ein: "86-2328794",
+  /** The year SC2 incorporated as its own nonprofit; Biohazard predates it. */
+  founded: 2021,
 
   description:
-    "South Central STEM Collective runs FIRST robotics teams and hands-on STEM programs for ages 9-18 in Franklin County, Pennsylvania.",
+    "South Central STEM Collective runs FIRST robotics teams and hands-on STEM programs for ages 9–18 in Franklin County, Pennsylvania.",
   // `%s` is the page title, including the homepage's offering and location.
   titleTemplate: "%s | South Central STEM Collective",
 
@@ -97,6 +99,22 @@ interface Program {
   tagline?: string;
   teamName?: string;
   teamNumber?: number;
+  /** When the program meets, in a phrase a parent can plan around. */
+  meets?: string;
+  /** Meeting hours, by kind of day. */
+  hours?: string;
+  /** What a family pays, in a short phrase. The detail is the cost FAQ. */
+  cost?: string;
+  /** Which events the team travels to each season. */
+  competitions?: string;
+  /** How many official events the team enters each season. */
+  competitionsPerSeason?: number;
+  /** The usual roster size, as a range. */
+  students?: string;
+  /** Professional mentors, not counting other volunteers. */
+  mentors?: number;
+  /** How many of the professional mentors are alumni who came back. */
+  alumniMentors?: number;
 }
 
 export const ACCENTS = ["yellow", "green", "orange"] as const;
@@ -117,16 +135,27 @@ export const programs = {
     teamName: "Biohazard",
     teamNumber: 4050,
     since: 2012,
-    ages: "14-18",
+    ages: "14–18",
     tagline: "A 120-pound competition robot, built by students every season.",
+    meets:
+      "Weekly from April to December; Mondays, Tuesdays, Thursdays and Saturdays from January through competition season",
+    hours: "Weeknights 6:30–8:30 PM, Saturdays 10 AM–4 PM",
+    cost: "Low to no cost",
+    competitions:
+      "The Greater Pittsburgh Regional every season, plus one more event within driving range. Events run Thursday to Saturday.",
+    competitionsPerSeason: 2,
+    students: "10–20",
+    mentors: 5,
+    alumniMentors: 3,
     accent: "green",
     href: "/programs/frc/",
   },
   fll: {
     name: "FIRST LEGO League",
     shortName: "FLL",
-    ages: "9-16",
+    ages: "9–16",
     tagline: "LEGO® robots, table missions, and a research project.",
+    cost: "Low to no cost",
     accent: "orange",
     href: "/programs/fll/",
   },
@@ -159,7 +188,7 @@ const donate = { label: "Donate", href: "/donate/" } as const;
 const sponsors = { label: "Sponsors", href: "/sponsors/" } as const;
 const about = { label: "About", href: "/about/" } as const;
 const programsHub = { label: "Programs", href: programs.sc2.href } as const;
-const robots = { label: "Robots", href: `${programs.frc.href}robots/` } as const;
+const robots = { label: "Season history", href: `${programs.frc.href}robots/` } as const;
 const contact = { label: "Contact", href: "/contact/" } as const;
 
 const programsPanel = {

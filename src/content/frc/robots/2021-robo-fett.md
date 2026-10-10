@@ -2,8 +2,16 @@
 year: 2021
 yearLabel: 2020-2021
 name: Robo Fett
+game: Infinite Recharge
 image: ../../../assets/frc/robots/2021-robot-field.webp
 imageAlt: Robo Fett on the competition field
+events:
+  - "Palmetto Regional"
+  - "FIRST At Home challenges (virtual)"
+  - "Battle O' Baltimore (off-season)"
+result: "Quarterfinalist at the Palmetto Regional"
+awards:
+  - "Imagery Award, FIRST At Home challenges (virtual)"
 ---
 
 Armed with a giant scissor-lift climber and an inline shooting mechanism, Robo Fett is one of two

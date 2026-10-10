@@ -22,29 +22,39 @@ const sponsors = (await getCollection("sponsors", (entry) => entry.data.active))
 );
 
 /**
- * Logos render 48px tall, so 96 covers a 2x screen — but never past a logo's own height. Several
- * of these are small originals, and upscaling one only makes a heavier, blurrier file.
+ * Logos render up to 80px tall, so 160 covers a 2x screen — but never past a logo's own height.
+ * Several of these are small originals, and upscaling one only makes a heavier, blurrier file.
  */
-const renderHeight = (logo: ImageMetadata): number => Math.min(96, logo.height);
+const renderHeight = (logo: ImageMetadata): number => Math.min(160, logo.height);
+
+/** The column count follows the count, as for a sponsor tier (DESIGN.md §5): never an orphan row. */
+const columns =
+  sponsors.length === 3
+    ? "sm:grid-cols-3"
+    : sponsors.length % 2 === 0
+      ? "sm:grid-cols-2"
+      : sponsors.length > 1
+        ? "sm:grid-cols-2 lg:grid-cols-3"
+        : undefined;
 ---
 
-<ul class={cn("flex flex-wrap items-center justify-center gap-x-10 gap-y-8", className)}>
+<ul class={cn("grid gap-4", columns, className)}>
   {sponsors.map(({ data }) => {
-    const Tag = data.url === undefined ? "span" : "a";
+    const Tag = data.url === undefined ? "div" : "a";
     return (
-      <li>
+      <li class={cn("pocket", data.url !== undefined && "pocket-interactive")}>
         <Tag
-          class="block ui-link"
+          class="flex h-24 items-center justify-center bg-none p-5 sm:h-32 sm:p-6"
           data-track={data.url === undefined ? undefined : "outbound_sponsor_click"}
           href={data.url}
           rel={data.url === undefined ? undefined : "sponsored noopener"}
         >
           {data.logo === undefined ? (
-            <span class="text-h4 font-semibold">{data.name}</span>
+            <span class="text-h4 font-semibold text-foreground">{data.name}</span>
           ) : (
             <Image
               alt={`${data.name} logo`}
-              class="box-content h-10 w-auto max-w-40 rounded-md bg-print object-contain p-2 md:h-12"
+              class="h-full w-auto max-w-full object-contain"
               height={renderHeight(data.logo)}
               loading="lazy"
               src={data.logo}
