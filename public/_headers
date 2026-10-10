@@ -10,7 +10,7 @@ https://*.scstem.org/*
 
 # The design-language guide is an internal draft on its way to the team wiki. It also sets
 # `noindex` in its head; the header covers anything that reads headers only.
-/design-language/
+/design-language
   X-Robots-Tag: noindex
 
 /design-language/*

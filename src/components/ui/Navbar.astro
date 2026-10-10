@@ -8,6 +8,7 @@ import ProgramName from "@/components/ui/ProgramName.astro";
 import { programPhotos } from "@/data/programPhotos";
 import { nav, type NavLink, type ProgramTheme, programs, site } from "@/data/site";
 import { cn } from "@/lib/cn";
+import { servedPath } from "@/lib/links";
 import { breakpoint } from "@/lib/tokens";
 
 /**
@@ -21,9 +22,8 @@ interface Props {
 
 const { class: className } = Astro.props;
 
-const current = Astro.url.pathname;
-/** Page paths end in `/`, so a section's href is a prefix of every page below it. */
-const inSection = (href: string): boolean => current.startsWith(href);
+const current = servedPath(Astro.url);
+const inSection = (href: string): boolean => current === href || current.startsWith(`${href}/`);
 
 /**
  * `as const` gives each entry's `surfaces` a literal tuple type, so a direct `.includes()` errors

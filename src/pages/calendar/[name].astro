@@ -60,7 +60,7 @@ const { calendar, name } = Astro.props;
 
 const trail =
   "theme" in calendar
-    ? programTrail(calendar.theme, { name: calendar.title, path: `/calendar/${name}/` })
+    ? programTrail(calendar.theme, { name: calendar.title, path: `/calendar/${name}` })
     : [{ name: nav.calendar.label, path: nav.calendar.href }];
 
 const embedParams = new URLSearchParams({ ctz: site.location.timeZone });

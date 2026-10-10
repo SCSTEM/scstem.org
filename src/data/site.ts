@@ -85,7 +85,7 @@ export const site = {
   },
 } as const;
 
-export type PagePath = "/" | `/${string}/`;
+export type PagePath = "/" | `/${string}`;
 
 interface Program {
   accent?: Exclude<Accent, "yellow">;
@@ -117,7 +117,7 @@ export const programs = {
   sc2: {
     name: "South Central STEM Collective",
     shortName: "SC2",
-    href: "/programs/",
+    href: "/programs",
   },
   frc: {
     name: "FIRST Robotics Competition",
@@ -138,7 +138,7 @@ export const programs = {
     mentors: 5,
     alumniMentors: 3,
     accent: "green",
-    href: "/programs/frc/",
+    href: "/programs/frc",
   },
   fll: {
     name: "FIRST LEGO League",
@@ -147,7 +147,7 @@ export const programs = {
     tagline: "LEGO® robots, table missions, and a research project.",
     cost: "Low to no cost",
     accent: "orange",
-    href: "/programs/fll/",
+    href: "/programs/fll",
   },
 } as const satisfies Record<ProgramKey, Program>;
 
@@ -172,14 +172,14 @@ export interface NavLink extends Route {
   readonly surfaces: readonly ("header" | "sheet" | "sheet-cta")[];
 }
 
-const calendar = { label: "Calendar", href: "/calendar/sc2/" } as const;
-const frcCalendar = { label: "Biohazard calendar", href: "/calendar/frc/" } as const;
-const donate = { label: "Donate", href: "/donate/" } as const;
-const sponsors = { label: "Sponsors", href: "/sponsors/" } as const;
-const about = { label: "About", href: "/about/" } as const;
+const calendar = { label: "Calendar", href: "/calendar/sc2" } as const;
+const frcCalendar = { label: "Biohazard calendar", href: "/calendar/frc" } as const;
+const donate = { label: "Donate", href: "/donate" } as const;
+const sponsors = { label: "Sponsors", href: "/sponsors" } as const;
+const about = { label: "About", href: "/about" } as const;
 const programsHub = { label: "Programs", href: programs.sc2.href } as const;
-const robots = { label: "Season history", href: `${programs.frc.href}robots/` } as const;
-const contact = { label: "Contact", href: "/contact/" } as const;
+const robots = { label: "Season history", href: `${programs.frc.href}/robots` } as const;
+const contact = { label: "Contact", href: "/contact" } as const;
 
 const programsPanel = {
   programs: ["fll", "frc"],
@@ -207,7 +207,7 @@ export const nav = {
   robots,
   sponsors,
 
-  cta: { label: "Get involved", href: "/get-involved/" },
+  cta: { label: "Get involved", href: "/get-involved" },
 } as const satisfies {
   about: Route;
   calendar: Route;

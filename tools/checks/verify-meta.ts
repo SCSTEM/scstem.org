@@ -40,19 +40,22 @@ const contentsOf = (html: string, key: string, value: string): string[] =>
 const count = (html: string, pattern: RegExp): number => [...html.matchAll(pattern)].length;
 
 /**
- * Pages build to `<path>/index.html`, which Cloudflare Pages 308-redirects to from the bare path,
- * costing a round trip. A last segment with a dot is a file and is exempt.
+ * Pages build to `<path>.html`, served at the bare path; Cloudflare Pages 308-redirects the slashed
+ * path to it, costing a round trip.
  */
-const slashless = (html: string): string[] => [
+const slashed = (html: string): string[] => [
   ...new Set(
     [...html.matchAll(/\bhref="(\/(?!\/)[^"?#]*)/gu)].flatMap(([, path = ""]) =>
-      path.endsWith("/") || /\.[^/]*$/u.test(path) ? [] : [path],
+      path.length > 1 && path.endsWith("/") ? [path] : [],
     ),
   ),
 ];
 
 const routeOf = (path: string): string =>
-  `/${path.slice(DIST.length + 1).replace(/(?:^|\/)index\.html$/u, "")}/`.replace("//", "/");
+  `/${path
+    .slice(DIST.length + 1)
+    .replace(/\.html$/u, "")
+    .replace(/(?:^|\/)index$/u, "")}`;
 
 const exists = async (path: string): Promise<boolean> => {
   try {
@@ -176,9 +179,9 @@ const unique = (
 for (const { html, route } of pages) {
   const fail = (message: string) => failures.push(`${route}: ${message}`);
 
-  const unslashed = slashless(html);
-  if (unslashed.length > 0) {
-    fail(`links to a page without its trailing slash: ${unslashed.join(", ")}`);
+  const trailing = slashed(html);
+  if (trailing.length > 0) {
+    fail(`links to a page with a trailing slash: ${trailing.join(", ")}`);
   }
 
   if (/<meta[^>]*\bhttp-equiv="refresh"/u.test(html)) {

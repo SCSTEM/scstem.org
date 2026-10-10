@@ -10,6 +10,9 @@ import { site } from "./src/data/site";
 
 const outDir = "./dist";
 
+const htmlFile = (pathname: string): string =>
+  `${pathname.replace(/^\/|\/$|\.html$/gu, "") || "index"}.html`;
+
 /**
  * A URL both in the sitemap and `noindex` is a Search Console error. Indexability is read off the
  * emitted HTML, which covers explicit `noindex` pages and redirect stubs without a second list;
@@ -17,7 +20,7 @@ const outDir = "./dist";
  */
 const isIndexable = (page: string): boolean => {
   const { pathname } = new URL(page);
-  const html = readFileSync(`${outDir}${pathname}index.html`, "utf8");
+  const html = readFileSync(`${outDir}/${htmlFile(pathname)}`, "utf8");
   return !/<meta(?=[^>]*\bname="robots")(?=[^>]*noindex)[^>]*>/u.test(html);
 };
 
@@ -33,7 +36,7 @@ const redirectStubs = (): AstroIntegration => ({
   hooks: {
     "astro:build:done": ({ dir, pages, logger }) => {
       const lines = pages.flatMap(({ pathname }) => {
-        const page = new URL(`${pathname}index.html`, dir);
+        const page = new URL(htmlFile(pathname), dir);
         if (!existsSync(page)) {
           return [];
         }
@@ -47,7 +50,7 @@ const redirectStubs = (): AstroIntegration => ({
           page,
           html.replace(refresh, (_, meta: string) => `${meta}0;url=${target}"`),
         );
-        const from = `/${pathname.replace(/\/$/u, "")}`;
+        const from = `/${pathname}`;
         return [`${from} ${target} 302`, `${from}/ ${target} 302`];
       });
       if (lines.length > 0) {
@@ -68,7 +71,7 @@ const bandsNeverTouch = (): AstroIntegration => ({
   hooks: {
     "astro:build:done": ({ dir, pages }) => {
       const touching = pages.flatMap(({ pathname }) => {
-        const page = new URL(`${pathname}index.html`, dir);
+        const page = new URL(htmlFile(pathname), dir);
         if (!existsSync(page)) {
           return [];
         }
@@ -91,6 +94,7 @@ const bandsNeverTouch = (): AstroIntegration => ({
 });
 
 export default defineConfig({
+  build: { format: "file" },
   env: {
     schema: {
       /**
@@ -110,12 +114,11 @@ export default defineConfig({
   output: "static",
   site: site.url,
   /**
-   * Cloudflare Pages serves `<path>/index.html` at `<path>/`; matching that makes
-   * `Astro.url.pathname` the served form canonical URLs are read from. `astro dev` and `astro
-   * preview` 404 a bare page path where Cloudflare 308-redirects it; endpoints with an extension
-   * are exempt.
+   * Cloudflare Pages serves `<path>.html` at the bare `<path>` and 308-redirects `<path>/` and
+   * `<path>.html` to it, so the slash-less form is the served one, and the one search engines
+   * already index. `astro dev` 404s a slashed page path where Cloudflare redirects it.
    */
-  trailingSlash: "always",
+  trailingSlash: "never",
   vite: {
     plugins: [tailwindcss()],
     /** Set when dev runs the Pages Functions under wrangler alongside the dev server. */

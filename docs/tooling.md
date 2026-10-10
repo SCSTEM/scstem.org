@@ -198,7 +198,7 @@ Mobile emulation with simulated throttling, so transfer size and request count d
 simulation follows the protocol it observes: HTTP/2 with gzip, as served. Locally (`openssl` on
 the path for the self-signed certificate):
 
-The Google Forms embed on `/get-involved/` starts loading when it enters the viewport; the
+The Google Forms embed on `/get-involved` starts loading when it enters the viewport; the
 initial-load audit excludes that later third-party transfer. Check the embedded form and its
 direct-link fallback during the staging soak. The FRC hero video (about 3 MB) starts only after
 `load`, so the audit blocks `/video/` and the 1 MB budget covers the initial page alone.

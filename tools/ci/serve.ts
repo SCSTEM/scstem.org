@@ -80,20 +80,28 @@ const certificate = () => {
   return { cert: readFileSync(cert), key: readFileSync(key) };
 };
 
-const resolve = (pathname: string) => {
+type Resolved = { location: string } | { path: string; status: number };
+
+/**
+ * Cloudflare's HTML handling: `<path>.html` is served at `<path>`, and the slashed and `.html`
+ * spellings of a page 308-redirect there.
+ */
+const resolve = (pathname: string): Resolved => {
   const eventPage = pathname.startsWith(EVENT_PREFIX);
+  const prefix = eventPage ? EVENT_PREFIX.slice(0, -1) : "";
   const roots = eventPage ? [EVENTS] : pathname.startsWith("/_astro/") ? [DIST, EVENTS] : [DIST];
-  const relative = decodeURIComponent(eventPage ? pathname.slice(EVENT_PREFIX.length) : pathname);
+  const relative = decodeURIComponent(pathname.slice(prefix.length));
+  const served = relative.replace(/(?:index)?\.html$/u, "").replace(/(?<=.)\/$/u, "");
+  const page = served === "/" ? "/index.html" : `${served}.html`;
   for (const root of roots) {
+    if (existsSync(join(root, page))) {
+      return served === relative
+        ? { path: join(root, page), status: 200 }
+        : { location: `${prefix}${served}` };
+    }
     const direct = join(root, relative);
-    if (existsSync(direct)) {
-      if (!statSync(direct).isDirectory()) {
-        return { path: direct, status: 200 };
-      }
-      const index = join(direct, "index.html");
-      if (existsSync(index)) {
-        return { path: index, status: 200 };
-      }
+    if (existsSync(direct) && !statSync(direct).isDirectory()) {
+      return { path: direct, status: 200 };
     }
   }
   return { path: join(DIST, "404.html"), status: 404 };
@@ -118,7 +126,13 @@ const bodyOf = (path: string): Buffer => {
 
 server.on("stream", (stream: ServerHttp2Stream, headers: IncomingHttpHeaders) => {
   const pathname = new URL(headers[":path"] ?? "/", `https://localhost:${String(PORT)}`).pathname;
-  const { path, status } = resolve(pathname);
+  const resolved = resolve(pathname);
+  if ("location" in resolved) {
+    stream.respond({ ":status": 308, location: resolved.location });
+    stream.end();
+    return;
+  }
+  const { path, status } = resolved;
   const extension = extname(path);
   const body = bodyOf(path);
   const response = new Map<string, string>([

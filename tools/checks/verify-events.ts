@@ -9,10 +9,10 @@ const root = process.cwd();
 const fixture = mkdtempSync(join(tmpdir(), "scstem-events-"));
 const output = join(root, ".lighthouseci/events");
 const routes = [
-  { id: "openhouse", path: "/openhouse/", faq: true, cta: "Get involved", register: true },
+  { id: "openhouse", path: "/openhouse", faq: true, cta: "Get involved", register: true },
   {
     id: "frc-kickoff",
-    path: "/programs/frc/kickoff/",
+    path: "/programs/frc/kickoff",
     faq: false,
     cta: "Watch on FIRST website",
     register: false,
@@ -53,7 +53,7 @@ try {
   const redirects = readFileSync(join(dist, "_redirects"), "utf8");
   const llms = readFileSync(join(dist, "llms.txt"), "utf8");
   for (const { path, faq, cta, register } of routes) {
-    const html = readFileSync(join(dist, path, "index.html"), "utf8");
+    const html = readFileSync(join(dist, `${path}.html`), "utf8");
     assert.ok(html.includes('"@type":"Event"'), `${path} renders its Event schema`);
     assert.ok(html.includes(`"startDate":"${new Date(start).toISOString()}"`));
     assert.ok(html.includes(`"endDate":"${new Date(end).toISOString()}"`));

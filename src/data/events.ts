@@ -5,6 +5,6 @@ import { type PagePath, programs } from "@/data/site";
  * fails the build.
  */
 export const eventRoutes: ReadonlyMap<string, PagePath> = new Map<string, PagePath>([
-  ["openhouse", "/openhouse/"],
-  ["frc-kickoff", `${programs.frc.href}kickoff/`],
+  ["openhouse", "/openhouse"],
+  ["frc-kickoff", `${programs.frc.href}/kickoff`],
 ]);

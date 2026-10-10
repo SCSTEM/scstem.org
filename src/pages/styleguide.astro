@@ -615,7 +615,7 @@ const themes = accents().map((accent) => ({
         An underline in copy always means a link: <a href="/sponsors/">see every sponsor</a>,{" "}
         <a href="/programs/">our programs</a>, or <a href="/calendar/">the calendar</a> — a straight
         line under every one. A link the page wants noticed is a{" "}
-        <a class="highlight-swipe" href="/get-involved/">
+        <a class="highlight-swipe" href="/get-involved">
           featured link
         </a>
         , swipe and underline together. Swipes and ovals on their own are emphasis, never links.
@@ -645,12 +645,12 @@ const themes = accents().map((accent) => ({
       <h4 class="mt-12">Leader note and circled control</h4>
       <div class="mt-6 flex flex-wrap items-start gap-x-16 gap-y-8">
         <div class="flex items-start">
-          <Button href="/get-involved/">Get involved</Button>
+          <Button href="/get-involved">Get involved</Button>
           <SketchArrow class="mt-6 h-12 w-14 shrink-0" direction="up-left" variant={3} />
           <span class={cn(handwritingClass, "mt-14 -rotate-3 text-lead")}>start here!</span>
         </div>
         <ChalkOval around="control" variant={3}>
-          <Button href="/donate/">Donate</Button>
+          <Button href="/donate">Donate</Button>
         </ChalkOval>
       </div>
 
@@ -712,7 +712,7 @@ const themes = accents().map((accent) => ({
             <Button disabled size="md" variant={variant}>
               disabled
             </Button>
-            <Button href="/styleguide/" size="md" variant={variant}>
+            <Button href="/styleguide" size="md" variant={variant}>
               as link
             </Button>
           </div>
@@ -750,7 +750,7 @@ const themes = accents().map((accent) => ({
             <p class="text-small text-muted">Content sits here.</p>
           </CardContent>
           <CardFooter>
-            <a class="ui-link text-small" href="/styleguide/">
+            <a class="ui-link text-small" href="/styleguide">
               A footer link
             </a>
           </CardFooter>
@@ -901,7 +901,7 @@ const themes = accents().map((accent) => ({
             <div class="mt-4 flex flex-wrap items-center gap-4">
               <Badge>Default badge</Badge>
               <Badge tone="info">Info</Badge>
-              <a class="text-small" href="/styleguide/">
+              <a class="text-small" href="/styleguide">
                 An in-prose link
               </a>
               <span class="stat">12</span>

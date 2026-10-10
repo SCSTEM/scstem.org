@@ -62,7 +62,7 @@ No. The workspace has everything you need, and we will show you how to use it sa
 
 Optional `program: frc | fll | sc2` if the answer only applies to one program.
 
-Answers tagged `joining` appear on `/get-involved/` and the matching program pages. Leave
+Answers tagged `joining` appear on `/get-involved` and the matching program pages. Leave
 `program` unset for answers shared across programs.
 
 The `slug` — the filename without `.md` — is how events refer to an answer, so keep it
@@ -259,8 +259,8 @@ Logos stay SVG or PNG (see "Add a sponsor").
 
 ## Calendar events
 
-`/calendar/sc2/` combines the SC2 and Biohazard public Google Calendar feeds through the Pages
-Function. `/calendar/frc/` shows only Biohazard. Publish general STEM and community events to SC2,
+`/calendar/sc2` combines the SC2 and Biohazard public Google Calendar feeds through the Pages
+Function. `/calendar/frc` shows only Biohazard. Publish general STEM and community events to SC2,
 and team meetings and competitions to Biohazard; no Google-side aggregation is needed. Calendar
 IDs live in `src/data/site.ts` and are mirrored in `functions/api/calendar/[name].ts` because the
 Function bundles separately.

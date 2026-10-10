@@ -52,15 +52,16 @@ jobs:
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: pnpm check:events
 
-      # `--root-dir` resolves the root-relative hrefs Astro emits; `llms.txt` has hand-written paths
-      # that nothing else checks against routes.
+      # `--root-dir` resolves the root-relative hrefs Astro emits, and `--fallback-extensions` maps a
+      # page path to its `.html` file; `llms.txt` has hand-written paths that nothing else checks
+      # against routes.
       - name: Links
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
             --offline --include-fragments --no-progress
-            --root-dir ${{ github.workspace }}/dist
+            --root-dir ${{ github.workspace }}/dist --fallback-extensions html
             'dist/**/*.html' 'dist/llms.txt'
           fail: true
 

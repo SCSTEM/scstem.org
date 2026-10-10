@@ -2,7 +2,7 @@
 import type { SeoProps } from "@/lib/seo";
 
 import { programs, site } from "@/data/site";
-import { absoluteUrl } from "@/lib/links";
+import { absoluteUrl, servedPath } from "@/lib/links";
 import { color } from "@/lib/tokens";
 
 type Props = SeoProps;
@@ -11,8 +11,7 @@ const { title, description, og, noindex = false, theme } = Astro.props;
 
 const fullTitle = site.titleTemplate.replace("%s", title);
 
-/** `trailingSlash: "always"` makes the pathname the form a page is served at. */
-const canonicalUrl = absoluteUrl(Astro.url.pathname);
+const canonicalUrl = absoluteUrl(servedPath(Astro.url));
 
 const card =
   og === undefined
