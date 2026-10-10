@@ -133,14 +133,12 @@ moves to 4322; dev serves `/@vite/client` and the preview does not.
 | Variable                    | Where                 | Purpose                               |
 | --------------------------- | --------------------- | ------------------------------------- |
 | `PUBLIC_TURNSTILE_SITE_KEY` | build (public)        | Turnstile widget on the contact form  |
-| `PUBLIC_CF_BEACON_TOKEN`    | build (public)        | Cloudflare Web Analytics beacon       |
 | `TS_SECRET_KEY`             | Pages Function secret | Turnstile server-side verification    |
 | `SLACK_FORM_POST_GENERIC`   | Pages Function secret | Slack webhook for contact submissions |
 
 The public ones are declared in `astro.config.ts`'s `env.schema` and imported from
-`astro:env/client`. `PUBLIC_TURNSTILE_SITE_KEY` defaults to Cloudflare's always-passes test key
-and `PUBLIC_CF_BEACON_TOKEN` to empty (no beacon), so a fresh clone and every preview deploy work
-with no setup; production sets both in the Pages dashboard.
+`astro:env/client`. `PUBLIC_TURNSTILE_SITE_KEY` defaults to Cloudflare's always-passes test key,
+so a fresh clone and every preview deploy work with no setup; production sets both in the Pages dashboard.
 
 The Function secrets have no defaults: `functions/api/form/submit.ts` answers an error when either
 is unset, so a deploy missing one never tells a visitor their message arrived. To run the Function

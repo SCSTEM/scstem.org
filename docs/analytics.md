@@ -3,13 +3,6 @@
 Two collectors, both loading after `load`: Cloudflare Web Analytics is cookieless; GA4 can set
 analytics cookies because `analytics_storage` is granted.
 
-| What                     | Where it comes from                                | Status                           |
-| ------------------------ | -------------------------------------------------- | -------------------------------- |
-| GA4 (`gtag.js`)          | `site.analytics.ga4MeasurementId` — `G-3TPD3DLYBR` | live                             |
-| Cloudflare Web Analytics | `PUBLIC_CF_BEACON_TOKEN` (Pages dashboard)         | **unset — beacon does not load** |
-
-`src/components/Analytics.astro` renders both, from `BaseLayout`, at the end of `<body>`.
-
 ## When it loads, and when it does not
 
 Two gates, and both are load-bearing:
@@ -76,9 +69,6 @@ the equivalent check; `?gtm_debug=x` on a real page turns it on for that session
 
 These need account access this repository does not have.
 
-- **Cloudflare Web Analytics.** Create the site in the Cloudflare dashboard, copy its beacon
-  token, and set `PUBLIC_CF_BEACON_TOKEN` in the Pages project's build environment (production
-  and preview). Until then the beacon is absent: the snippet skips it on an empty token.
 - **GA4 property review.** Confirm event-data retention (standard GA4 offers 2 or 14 months), an
   internal-traffic filter if the workshop has a static IP, and unwanted-referral exclusions for
   `paypal.com` and `docs.google.com` so a returning donor is not re-attributed to a referral.

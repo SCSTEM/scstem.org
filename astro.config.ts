@@ -119,17 +119,6 @@ export default defineConfig({
         context: "client",
         default: "1x00000000000000000000AA",
       }),
-      /**
-       * Cloudflare Web Analytics' beacon token. Public by design — it ships in the page —
-       * and empty by default, which is how a preview or a fresh clone runs with no beacon at all.
-       * The production value is set in the Pages dashboard, beside the Turnstile keys; until it
-       * is, GA4 is the only analytics the site has (`docs/analytics.md`).
-       */
-      PUBLIC_CF_BEACON_TOKEN: envField.string({
-        access: "public",
-        context: "client",
-        default: "",
-      }),
     },
   },
   integrations: [sitemap({ filter: isIndexable }), redirectStubs(), bandsNeverTouch()],
