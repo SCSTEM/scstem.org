@@ -4,7 +4,7 @@ import AccordionItem from "@/components/ui/primitives/AccordionItem.astro";
 import Badge from "@/components/ui/primitives/Badge.astro";
 import { badgeToneNames } from "@/components/ui/primitives/Badge.variants";
 import Button from "@/components/ui/primitives/Button.astro";
-import { buttonVariantNames } from "@/components/ui/primitives/Button.variants";
+import { buttonVariants, buttonVariantNames } from "@/components/ui/primitives/Button.variants";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Card from "@/components/ui/primitives/Card.astro";
 import CardContent from "@/components/ui/primitives/CardContent.astro";
@@ -145,7 +145,7 @@ const surfaces = [
   { name: "card", use: "Pockets cut into the ground; form fields" },
   { name: "band", use: "Ink bands — the drafting table — and the footer" },
   { name: "plate", use: "Pockets inside a band: raised plates" },
-  { name: "sheet", use: "The outline button's face" },
+  { name: "sheet", use: "The secondary button's face" },
   { name: "border", use: "Hairlines, dividers" },
   { name: "pocket-border", use: "Pocket walls" },
   { name: "plate-border", use: "Plate edges" },
@@ -184,7 +184,7 @@ for (const context of contexts) {
     }
   }
 
-  /** The outline button's edge is the control's boundary (WCAG 1.4.11): 3:1 on every surface. */
+  /** The secondary button's edge is the control's boundary (WCAG 1.4.11): 3:1 on every surface. */
   const edge = color("control-edge", context);
   for (const surface of onSurfaces.filter((entry) => !entry.crossing)) {
     const ratio = contrastRatio(edge, surface.value);
@@ -294,11 +294,8 @@ const buttonSizes = ["sm", "md", "lg"] as const;
 /** The keycap's three states, frozen so they can be compared side by side. */
 const keycapStates = [
   { name: "Rest", style: undefined },
-  { name: "Hover", style: "--keycap-offset: 4px; translate: -1px -1px" },
-  {
-    name: "Active",
-    style: "--keycap-offset: 1px; --keycap-catch: rgb(255 255 255 / 0.2); translate: 2px 2px",
-  },
+  { name: "Hover", style: "--keycap-tint: 14%" },
+  { name: "Active", style: "--keycap-depth: 0px; translate: 0 3px" },
 ];
 
 /**
@@ -560,18 +557,15 @@ const themes = accents().map((accent) => ({
       </div>
       <h3 class="mt-12">Keycaps</h3>
       <p class="mt-3 measure">
-        The primary button stands on a 3px drafted edge, lifts 1px on hover, and presses flat on{" "}
-        <code class="font-mono">:active</code> — a 150ms confirmation. The fill never dims. Under
-        reduced motion only the edge changes. The outline button beside it stays flat. The states
-        below are frozen; the live buttons in Primitives respond.
+        A button stands on a 3px lip that drops straight down. Hover never moves it: the primary
+        face brightens, the secondary's border warms to the accent. A press seats it flush on{" "}
+        <code class="font-mono">:active</code>, at once and without a tween. The fill never dims.
+        The states below are frozen; the live buttons in Primitives respond.
       </p>
       <div class="mt-6 flex flex-wrap items-center gap-6">
         {keycapStates.map((state) => (
           <figure class="flex flex-col items-start gap-3">
-            <span
-              class="inline-flex h-11 items-center rounded-md px-5 font-semibold text-primary-foreground keycap"
-              style={state.style}
-            >
+            <span class={buttonVariants()} style={state.style}>
               Get involved
             </span>
             <figcaption class="spec-label text-muted">{state.name}</figcaption>
@@ -734,9 +728,6 @@ const themes = accents().map((accent) => ({
           <code class="w-24 shrink-0 spec-label text-muted">icon</code>
           <Button size="icon" variant="secondary">
             <Icon label="Previous" name="chevron--left" size={20} />
-          </Button>
-          <Button size="icon" variant="outline">
-            <Icon label="Next" name="chevron--right" size={20} />
           </Button>
           <Button size="md" variant="default">
             <Icon name="download" size={20} />
@@ -909,7 +900,6 @@ const themes = accents().map((accent) => ({
             <div class="mt-4 flex flex-wrap items-center gap-3">
               <Button>Primary</Button>
               <Button variant="secondary">Secondary</Button>
-              <Button variant="outline">Outline</Button>
               <Button variant="ghost">Ghost</Button>
               <Button size="icon" variant="secondary">
                 <Icon label="Next" name="chevron--right" size={20} />

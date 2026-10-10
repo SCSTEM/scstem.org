@@ -50,7 +50,7 @@ The page is the raised material; cards are **pockets machined into it**. (This i
 | `card-hover`   | `#1F1F1F` | `#DFE2E5` | A pocket floor lifting a step                                        |
 | `band`         | `#121212` | `#D1D5DA` | Ink bands — the drafting table — and the footer                      |
 | `plate`        | `#232323` | `#EEF0F2` | Pockets inside a band: raised plates (`plate-border`, `plate-hover`) |
-| `sheet`        | `#2E2E2E` | `#EFF1F3` | The outline button's face (§8)                                       |
+| `sheet`        | `#2E2E2E` | `#EFF1F3` | The secondary button's face (§8)                                     |
 | `border`       | `#3A3A3A` | `#C2C6CC` | Hairlines, card borders, dividers (`pocket-border` for pocket walls) |
 | `control-edge` | `#737373` | `#6B7178` | Control boundaries: ≥ 3:1 on ground, card, band and plate            |
 | `ink`          | `#0C0C0C` | `#8E949B` | Drafted shadow ink (§4) — never a fill                               |
@@ -76,13 +76,13 @@ Rule: **AAA (≥ 7:1) for anything longer than a caption; AA (4.5:1) for everyth
 
 ### Accents — the fill-vs-text law
 
-Every accent is a **set**, swapped whole by `data-accent`: the brand hex for _fills_ (buttons, rules, chips' borders, large graphics — with a near-black label), a text color for _text, icons and focus_ on the ground, the **marker** color for hand strokes (§2.12–2.20), and a solid highlighter for swipes. The brand hexes other than yellow fail as text on dark, and none of them pass as text on light, so the text value differs by finish. No exceptions, no fourth variant.
+Every accent is a **set**, swapped whole by `data-accent`: the brand hex for _fills_ (buttons, rules, chips' borders, large graphics — with a near-black label), a deep same-hue **lip** the keycap stands on (§8; a brown-gold under yellow, never an olive), a text color for _text, icons and focus_ on the ground, the **marker** color for hand strokes (§2.12–2.20), and a solid highlighter for swipes. The brand hexes other than yellow fail as text on dark, and none of them pass as text on light, so the text value differs by finish. No exceptions, no fourth variant.
 
-| Accent        | Fill / label          | Text: dark / light    | Marker: dark / light  | Role                                                             |
-| ------------- | --------------------- | --------------------- | --------------------- | ---------------------------------------------------------------- |
-| Safety Yellow | `#FACC15` / `#171717` | `#FACC15` / `#713F12` | `#FACC15` / `#D1A107` | **Action** (default): CTAs, links, focus ring, key-word emphasis |
-| Hazard Green  | `#16A34A` / `#08240F` | `#3ECF6E` / `#14532D` | `#16A34A` / `#1EB256` | `data-accent="green"`: Biohazard, FRC                            |
-| Danger Orange | `#F97316` / `#241102` | `#FB923C` / `#7C2D12` | `#F97316` / `#E08437` | `data-accent="orange"`: FLL                                      |
+| Accent        | Fill / label          | Lip       | Text: dark / light    | Marker: dark / light  | Role                                                             |
+| ------------- | --------------------- | --------- | --------------------- | --------------------- | ---------------------------------------------------------------- |
+| Safety Yellow | `#FACC15` / `#171717` | `#A16207` | `#FACC15` / `#713F12` | `#FACC15` / `#D1A107` | **Action** (default): CTAs, links, focus ring, key-word emphasis |
+| Hazard Green  | `#16A34A` / `#08240F` | `#14532D` | `#3ECF6E` / `#14532D` | `#16A34A` / `#1EB256` | `data-accent="green"`: Biohazard, FRC                            |
+| Danger Orange | `#F97316` / `#241102` | `#9A3412` | `#FB923C` / `#7C2D12` | `#F97316` / `#E08437` | `data-accent="orange"`: FLL                                      |
 
 Two fixed pairs sit outside the accent set: **Science Blue** (`#3B82F6` fill / `#171717` label; text `#60A5FA` dark, `#1E40AF` light, `#93C5FD` on cyanotype) for informational callouts, calendar chips and data UI; and **Destructive** (`#DB262F` / `#FAFAFA`; text `#FCA5A5` dark, `#991B1B` light) for errors only — form validation and destructive confirmations. Destructive is not a brand accent and never decorative. Sponsor-tier chips (§8) have their own text colors per finish.
 
@@ -216,12 +216,12 @@ Per Brand Guidelines: Orbitron for page headings/titles (avoid very long or smal
 | Token       | Value | Kind of object                                                |
 | ----------- | ----- | ------------------------------------------------------------- |
 | `radius-sm` | 4px   | **Stamped**: chips, spec labels, badges, the icon plate       |
-| `radius-md` | 8px   | **Control**: buttons, inputs, toggles                         |
+| `radius-md` | 6px   | **Control**: buttons, inputs, toggles                         |
 | `radius-lg` | 12px  | **Cut**: pockets, plates, panels, framed media — one end-mill |
 
 Nothing else, except the square corner of a crop-marked pocket (§2.8); pill radii are banned. **Nested corners**: an inner radius is the outer radius minus the inset between them, never below 4px (a photo inset 8px in a pocket takes 4px).
 
-**Elevation — drafted, not rendered**: depth is drawn the way a draftsman draws it, or cut. Pockets on the ground go _down_ (§2 pocket anatomy). What rises is drawn with **zero-blur offsets in `ink`, down-right only**: the keycap's edge (3px at rest, 4px lifted, 1px pressed; §8) and `--sc2-shadow-drafted-2` (6px, framed media). The plate's contact shadow is the one soft shadow, and only a plate, a print laid on a band, or the header's Programs panel (§5) takes it. Blurred drop shadows and glows stay banned everywhere else; a pocket on the ground never rises.
+**Elevation — drafted, not rendered**: depth is drawn the way a draftsman draws it, or cut. Pockets on the ground go _down_ (§2 pocket anatomy). What rises is drawn with **zero-blur offsets**: framed media cast a 6px edge in `ink`, down-right (`--sc2-shadow-drafted-2`), and a keycap stands on a 3px lip straight down in its own color (§8). The plate's contact shadow is the one soft shadow, and only a plate, a print laid on a band, or the header's Programs panel (§5) takes it. Blurred drop shadows and glows stay banned everywhere else; a pocket on the ground never rises.
 
 ## 5. Layout & navigation
 
@@ -241,12 +241,12 @@ Nothing else, except the square corner of a crop-marked pocket (§2.8); pill rad
 CSS handles decorative transitions; small scripts manage the hand-markup entrance observer, the header menus, and user-controlled hero playback. Motion confirms — it never decorates.
 
 - Durations: 150ms (hover/focus), 250ms (menus, accordions), 500ms (scroll-in entrances). `ease-out` entrances, `ease-in-out` toggles.
-- **Keycaps** (§8): hover lifts the face 1px up-left as its edge grows to 4px; `:active` presses it 2px down-right onto a 1px edge. 150ms `ease-in-out`, `translate` and `box-shadow` only. Reduced motion keeps the offsets and drops the translate, so every state still reads. A card's footer arrow nudges 2px on hover under the same rule.
+- **Keycaps** (§8): hover never moves a keycap; only its colors change, over 150ms `ease-in-out`. `:active` seats it flush at once — the lip collapses and the face drops 3px with no tween, so the label never renders between pixels — and the hit area reaches 4px past the travel, so a press at the key's edge stays on it. A card's footer arrow nudges 2px on hover, 150ms `ease-in-out`.
 - Switching finish does not animate: colors change at once.
 - Menus (the Programs panel, the mobile sheet) enter at 250ms: a fade and an 8px drop from the header, `ease-out`; reduced motion keeps the fade.
-- Decorative entrances animate `opacity` and `transform`; keycaps also animate their drafted edge as specified above.
+- Decorative entrances animate `opacity` and `transform`.
 - Scroll entrances: single fade-up (8px), once; CSS scroll-driven animations with content-visible-by-default fallback.
-- Hero video: `preload="none"`, poster-first, plays in-view; a labelled 44px outline button in the hero's action row pauses or plays the footage. A visitor's pause persists through scrolling out of and back into view. `prefers-reduced-motion` and save-data disable autoplay; playback remains opt-in. No parallax anywhere.
+- Hero video: `preload="none"`, poster-first, plays in-view; a labelled 44px secondary button in the hero's action row pauses or plays the footage. A visitor's pause persists through scrolling out of and back into view. `prefers-reduced-motion` and save-data disable autoplay; playback remains opt-in. No parallax anywhere.
 - Carousels: CSS scroll-snap, user-driven; sponsor strip may slow-marquee — pausable, reduced-motion-off.
 
 ## 7. Imagery & art direction
@@ -262,7 +262,7 @@ CSS handles decorative transitions; small scripts manage the hand-markup entranc
 
 ## 8. Components tone
 
-- **Buttons are keycaps** (§4, §6): labels in Inter 600. `primary` — a machined accent cap: the accent face lit like a plate (a white top catch over a faint top-to-bottom shade), a 1px rim of the accent sunk toward its label color, standing on a 3px drafted edge in neutral `ink` with a 1px `control-edge` scribe beyond it, so the edge still reads on a band where ink meets ink. Never an accent-tinted edge: every dark shade of the accent reads as olive. Hover lifts, `:active` presses, and the fill never dims. `outline` — flat, so the accent keycap is the one raised control in a view: opaque `sheet` face with the plate's top catch, 1px `control-edge` border, `foreground` text, no drafted edge (an `ink` edge cannot show on the dark grounds and only detaches from the face); hover warms the border to `primary`, and a press drops the face into a pocket. `secondary` — a pocket at control scale, the quiet control and the chrome over content (carousel arrows); on a band it is a plate. `ghost` — text, a `card` face on hover. **Disabled** is a grey cap seated flush — `sheet` face, `border` edge, `muted` label, no edge and no travel — never a faded accent. One primary per view region. Min touch target 44×44px (nav CTA included). `radius-md`. A hero's actions stack full-width below `sm`, so a wrapped pair never shows two widths.
+- **Buttons are keycaps** (§4, §6): labels in Inter 600, three variants and no fourth. `primary` — a solid accent face with a transparent 1px border, standing on a 3px **lip** straight down in the accent's lip color (§2): one depth cue, no gradient, highlight or rim. `secondary` — the same build in neutral: an opaque `sheet` face (so it reads the same over photography), a 1px `control-edge` border and a `control-edge` lip; the second action in a view, and the chrome over content (carousel arrows). `ghost` — text, a `card` face on hover. Hover never moves a key: the primary face brightens toward white and the fill never dims; the secondary's border warms to `primary`. A press seats either flush (§7). **Disabled** is a grey cap seated flush — `sheet` face, `border` edge, `muted` label, no lip and no travel — never a faded accent. One primary per view region. Min touch target 44×44px (nav CTA included): `sm` 44px, `md` 46px, `lg` 52px tall. `radius-md`. A hero's actions stack full-width below `sm`, so a wrapped pair never shows two widths.
 - **Links**: three forms and no fourth. _In copy_: the hand underline (§2.14); a featured link adds the swipe. _In chrome_ (footer, card footers): `ui-link` — `foreground`, no underline at rest, a straight 1px machined hairline on hover/focus. The header's nav items are their own chrome form (§5) and never take a hairline. Chrome is a different layer from copy and never takes the hand stroke. _As a reference_: a linked logo or figure with a `Callout` beneath naming the destination (`REF — firstinspires.org`). A link that is an action is a button, not a link. External links: icon at 0.8em + `rel="noopener"`.
 - **Cards**: pocket anatomy per §2. FeatureCard carries **one identity mark**: a photo when it has one, otherwise an icon on a **stamped plate** (36px square, 1px 40%-alpha `primary` border, `radius-sm`, transparent fill, `primary-bright` 20px icon) — never both, and never a filled tile. Then an `h4` title with its spec chip on the same line, the 32px accent rule, `body` copy, optional footer link.
 - **Chips/spec labels**: `label` style — uppercase, tracked, 1px 40%-alpha border in the chip's color, transparent bg, `radius-sm`. Ages ("AGES 9–16"), sponsor tiers, event dates. Tier colors, dark / light: platinum `#CBD5E1` / `#475569`, gold `#FACC15` / `#854D0E`, silver `#A3A3A3` / `#52525B`, bronze `#D08954` / `#9A3412`.
@@ -304,7 +304,7 @@ CSS handles decorative transitions; small scripts manage the hand-markup entranc
 | Blurred shadows and glows; lifting a _pocket_                                       | Drafted zero-blur offsets on controls and framed media; plates only on a band                      |
 | Two bands touching; a band carrying a second device                                 | A sheet section between bands; the band is its boundary's one device                               |
 | A sketched arrow between two pieces of typeset text; a revision cloud as decoration | Arrows touch handwriting (§2.15); clouds mark real changes (§2.16)                                 |
-| A button that dims on hover                                                         | A keycap that lifts, then presses                                                                  |
+| A button that dims on hover                                                         | A keycap that brightens, then seats flush                                                          |
 | Icons from two sets on one page                                                     | Carbon only (§8)                                                                                   |
 | `alt="image"` / missing alt                                                         | Descriptive alt or explicit `alt=""`                                                               |
 | Generic hero copy ("Empowering the future…")                                        | Specific, local, human                                                                             |

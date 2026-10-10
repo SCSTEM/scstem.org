@@ -46,6 +46,7 @@
   /* --- Accent: Safety Yellow by default (§2 fill-vs-text law) ------------------------------ */
   --sc2-primary: #facc15; /* fills */
   --sc2-primary-foreground: #171717; /* a label on the fill */
+  --sc2-primary-lip: #a16207; /* the keycap's skirt, under the fill */
   --sc2-primary-bright: light-dark(#713f12, #facc15); /* text and icons on the ground */
   --sc2-ring: light-dark(#713f12, #facc15);
   --sc2-mark: light-dark(#d1a107, #facc15); /* the engineer's marker */
@@ -112,7 +113,7 @@
 
   /* --- Radius: one per kind of object (§4) ---------------------------------------------------- */
   --sc2-radius-sm: 4px; /* stamped: chips, spec labels, badges */
-  --sc2-radius-md: 8px; /* controls: buttons, inputs, icon tiles */
+  --sc2-radius-md: 6px; /* controls: buttons, inputs, icon tiles */
   --sc2-radius-lg: 12px; /* cut features: pockets, panels, framed media */
 
   /* --- Elevation: drafted, not rendered (§4) ------------------------------------------------ */
@@ -165,6 +166,7 @@
 [data-accent="green"] {
   --sc2-primary: #16a34a; /* Hazard Green */
   --sc2-primary-foreground: #08240f;
+  --sc2-primary-lip: #14532d;
   --sc2-primary-bright: light-dark(#14532d, #3ecf6e);
   --sc2-ring: light-dark(#14532d, #3ecf6e);
   --sc2-mark: light-dark(#1eb256, #16a34a);
@@ -181,6 +183,7 @@
 [data-accent="orange"] {
   --sc2-primary: #f97316; /* Danger Orange */
   --sc2-primary-foreground: #241102;
+  --sc2-primary-lip: #9a3412;
   --sc2-primary-bright: light-dark(#7c2d12, #fb923c);
   --sc2-ring: light-dark(#7c2d12, #fb923c);
   --sc2-mark: light-dark(#e08437, #f97316);

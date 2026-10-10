@@ -565,51 +565,62 @@
 }
 
 /**
- * The accent keycap (DESIGN.md §4, §6, §8): a lit accent face standing on a drafted `ink` edge,
- * scribed 1px beyond it so the edge still reads where ink meets ink. It lifts 1px on hover and
- * presses onto a 1px edge on `:active`. Under reduced motion the face stays put and only the
- * edge changes, so every state still reads.
+ * A keycap (DESIGN.md §6, §8): a solid face on a lip that drops straight down. Hover never moves
+ * it; a press seats it flush, at once, with no tween, so the label never renders between pixels.
+ * The hit area reaches past the travel, so a pointer at the edge stays on the key through a press.
  *
- * Every state is the one `--keycap-offset`, so a frozen state is that property and a translate.
- * The rim and the face read `--sc2-primary` on the element, so a keycap takes the program theme
- * it sits in.
+ * Each state is one custom property, so a frozen state is that property and a translate. The face
+ * and lip come from `keycap-primary` or `keycap-secondary`.
  */
 @utility keycap {
-  --keycap-offset: 3px;
-  --keycap-catch: rgb(255 255 255 / 0.35);
+  --keycap-depth: 3px;
 
-  border: 1px solid color-mix(in srgb, var(--sc2-primary-foreground) 28%, var(--sc2-primary));
-  background-color: var(--sc2-primary);
-  background-image: linear-gradient(
-    to bottom,
-    rgb(255 255 255 / 0.12),
-    transparent 45%,
-    rgb(0 0 0 / 0.06)
-  );
-  background-size: auto;
-  box-shadow:
-    inset 0 1px 0 var(--keycap-catch),
-    var(--keycap-offset) var(--keycap-offset) 0 0 var(--sc2-ink),
-    calc(var(--keycap-offset) + 1px) calc(var(--keycap-offset) + 1px) 0 0
-      color-mix(in srgb, var(--sc2-control-edge) 55%, transparent);
-  transition-property: color, background-color, border-color, box-shadow, translate;
+  position: relative;
+  background-image: none;
+  box-shadow: 0 var(--keycap-depth) 0 0 var(--keycap-lip);
+  transition-property: color, background-color, border-color;
 
-  &:hover {
-    --keycap-offset: 4px;
-    translate: -1px -1px;
+  /* `::before`, because an external link's trailing glyph is the `::after`. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -4px 0;
   }
 
   &:active {
-    --keycap-offset: 1px;
-    --keycap-catch: rgb(255 255 255 / 0.2);
-    translate: 2px 2px;
+    --keycap-depth: 0px;
+    translate: 0 3px;
   }
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    &:hover,
-    &:active {
-      translate: none;
-    }
+/**
+ * The accent keycap. Its face and lip read `--sc2-primary*` on the element, so it takes the
+ * program theme it sits in. Hover brightens the face; the fill never dims.
+ */
+@utility keycap-primary {
+  --keycap-lip: var(--sc2-primary-lip);
+  --keycap-tint: 0%;
+
+  border: 1px solid transparent;
+  background-color: color-mix(in oklch, var(--sc2-primary), white var(--keycap-tint));
+
+  &:hover {
+    --keycap-tint: 14%;
+  }
+}
+
+/**
+ * The secondary keycap: an opaque sheet face, so it reads the same over photography, on a lip in
+ * the control edge. Hover warms the border to the accent.
+ */
+@utility keycap-secondary {
+  --keycap-lip: var(--sc2-control-edge);
+
+  border: 1px solid var(--sc2-control-edge);
+  background-color: var(--sc2-sheet);
+
+  &:hover {
+    border-color: var(--sc2-primary);
   }
 }
 

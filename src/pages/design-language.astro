@@ -214,7 +214,7 @@ const checklist = [
         <CardHeader>
           <CardTitle rule>Machined</CardTitle>
           <CardDescription>
-            The sheet: pockets cut into it, plates laid on a table, keycaps with drafted edges.
+            The sheet: pockets cut into it, plates laid on a table, keycaps standing on their lips.
             Perfectly geometric, always.
           </CardDescription>
         </CardHeader>
@@ -372,7 +372,7 @@ const checklist = [
       </div>
       <div class="mt-8 flex flex-wrap gap-3">
         <Button href="/get-involved/">Get involved</Button>
-        <Button href="/donate/" variant="outline">
+        <Button href="/donate/" variant="secondary">
           Donate
         </Button>
       </div>
@@ -515,7 +515,7 @@ const checklist = [
             </p>
           </div>
           <div class="flex items-center gap-4">
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="secondary">
               Control
             </Button>
             <p class="text-small">
@@ -543,8 +543,8 @@ const checklist = [
     <Fragment slot="intro">
       <p>
         On the page, cards are pockets cut down into the sheet, with a lit floor. Inside a band, the
-        same card rises as a plate. What stands up — a button, a framed photo — casts a hard,
-        drafted edge down and to the right. Nothing glows and nothing floats.
+        same card rises as a plate. A framed photo casts a hard, drafted edge down and to the right;
+        a button stands on a lip of its own color. Nothing glows and nothing floats.
       </p>
     </Fragment>
 
@@ -606,16 +606,15 @@ const checklist = [
       <div>
         <h3 class="text-h3">Buttons are keycaps</h3>
         <p class="mt-2 measure">
-          One primary per region: the thing the page wants done. Outline for the second action.
-          Ghost and secondary for quiet controls. A link that does something is a button; a button
-          that goes somewhere can be a link.
+          One primary per region: the thing the page wants done. Secondary for the second action and
+          for chrome over content; ghost for quiet controls. A link that does something is a button;
+          a button that goes somewhere can be a link.
         </p>
         <div class="mt-5 flex flex-wrap items-center gap-3">
           <Button>Primary</Button>
-          <Button variant="outline">Outline</Button>
           <Button variant="secondary">Secondary</Button>
           <Button variant="ghost">Ghost</Button>
-          <Button size="icon" variant="outline">
+          <Button size="icon" variant="secondary">
             <Icon label="Next" name="chevron--right" size={20} />
           </Button>
         </div>

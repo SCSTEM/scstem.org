@@ -100,12 +100,12 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
     <p>{calendar.intro}</p>
 
     <Fragment slot="actions">
-      <Button href={embedUrl} variant="outline">
+      <Button href={embedUrl} variant="secondary">
         View on Google Calendar
       </Button>
       {"theme" in calendar ? (
         <>
-          <Button href={nav.calendar.href} variant="outline">
+          <Button href={nav.calendar.href} variant="secondary">
             All events
           </Button>
           <Button href={programs[calendar.theme].href} variant="ghost">
