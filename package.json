@@ -21,29 +21,29 @@
     "astro": "7.3.5",
     "class-variance-authority": "0.7.1",
     "cn": "0.4.0",
-    "sharp": "0.35.4",
+    "sharp": "0.35.5",
     "tailwindcss": "4.3.3"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
-    "@cloudflare/workers-types": "5.20260924.1",
+    "@cloudflare/workers-types": "5.20261003.1",
     "@carbon/icons": "11.89.0",
     "@resvg/resvg-js": "2.6.2",
     "@shadcn/lint": "0.2.0",
-    "@types/node": "26.6.2",
-    "@typescript-eslint/utils": "8.70.1",
-    "eslint": "10.11.0",
+    "@types/node": "26.6.4",
+    "@typescript-eslint/utils": "8.71.0",
+    "eslint": "10.12.0",
     "eslint-formatter-gha": "2.0.1",
     "eslint-plugin-astro": "3.2.1",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-perfectionist": "5.12.1",
     "jiti": "2.7.0",
-    "knip": "6.38.0",
+    "knip": "6.39.0",
     "prettier": "3.9.9",
     "prettier-plugin-astro": "1.1.0",
     "prettier-plugin-tailwindcss": "0.8.1",
-    "satori": "0.33.5",
+    "satori": "0.35.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.70.1"
+    "typescript-eslint": "8.71.0"
   }
 }
