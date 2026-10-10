@@ -1,11 +1,7 @@
 /**
- * Renders the Lighthouse CI run in `.lighthouseci/` as Markdown: median category scores per URL,
- * every failed assertion, then for each URL what the LCP was and the requests in flight before
- * it. The last part is what answers "why did LCP move" without downloading the report artifact:
- * on the simulated Slow 4G link every request costs a fixed latency and every kilobyte costs
- * time, so the waterfall is the budget.
- *
- *     node tools/ci/lighthouse-summary.ts | tee -a "$GITHUB_STEP_SUMMARY"
+ * Renders the Lighthouse CI run as Markdown. The per-URL list of requests before LCP answers "why
+ * did LCP move" without downloading the report: on the simulated Slow 4G link every request and
+ * kilobyte costs time, so the waterfall is the budget.
  */
 import { existsSync, readFileSync } from "node:fs";
 
@@ -40,7 +36,6 @@ interface LcpPhase {
   timing: number;
 }
 
-/** The slice of a Lighthouse report this script reads. */
 interface Report {
   audits: {
     "largest-contentful-paint": { numericValue: number };
@@ -62,7 +57,7 @@ const read = <T>(path: string): T[] =>
   existsSync(path) ? (JSON.parse(readFileSync(path, "utf8")) as T[]) : [];
 
 const report = (path: string): Report =>
-  // SAFETY: a Lighthouse report; only the audits declared in `Report` are read.
+  // SAFETY: a Lighthouse report; only the audits declared above are read.
   JSON.parse(readFileSync(path, "utf8")) as Report;
 
 const runs = read<RunSummary>(".lighthouseci/reports/manifest.json");

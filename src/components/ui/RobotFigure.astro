@@ -5,15 +5,7 @@ import { Image } from "astro:assets";
 
 import { PHOTO_QUALITY } from "@/lib/images";
 
-/**
- * A competition robot's photo in a `media-frame`, with the season's wordmark in the bottom-right
- * corner where the season had one. The wordmark is decorative (`alt=""`): the photo's alt already
- * names the robot.
- *
- * `span` sets the image sizes for where the figure sits: `full` across the section, `half` in one
- * column of a two-column row. With `href` the frame is the link — reset from the text-link
- * underline — and the default slot carries whatever overlays it, such as the link's label.
- */
+/** The wordmark is decorative (`alt=""`): the photo's alt already names the robot. */
 interface Props {
   image: ImageMetadata;
   imageAlt: string;

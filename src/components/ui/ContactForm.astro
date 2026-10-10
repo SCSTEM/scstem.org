@@ -10,19 +10,10 @@ import Textarea from "@/components/ui/primitives/Textarea.astro";
 import { site } from "@/data/site";
 import { cn } from "@/lib/cn";
 
-/**
- * The form behind `/api/form/submit`.
- *
- * Validation is the browser's own Constraint Validation API: the fields carry native attributes,
- * and the script only borrows the messages so they can render in the system's own error style
- * instead of a native bubble. Turnstile renders explicitly into its container once its API
- * arrives.
- */
 interface Props {
   /**
-   * Which form this is, echoed into the Slack message the function posts. `/contact` sends
-   * "Contact Us" and `/donate` sends "Sponsor Question"; the receiving end tells the funnels
-   * apart by these strings.
+   * Echoed into the Slack message the function posts; the receiving end tells funnels apart by this
+   * string.
    */
   name: string;
   class?: string;
@@ -30,7 +21,6 @@ interface Props {
 
 const { name, class: className } = Astro.props;
 
-/** Ids must be unique per document, and `/donate` renders this form beneath other content. */
 const prefix = name.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-");
 
 const fields = [
@@ -103,7 +93,6 @@ const fields = [
 <script>
   import { TRACK_EVENT } from "@/lib/analytics";
 
-  /** The subset of the Turnstile API this uses. Loaded from Cloudflare, so it carries no types. */
   interface Turnstile {
     render: (
       container: HTMLElement,
@@ -122,9 +111,8 @@ const fields = [
   const TURNSTILE_API = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
   /**
-   * One shared load of Cloudflare's API for however many forms a page carries. Injected rather
-   * than written into the markup, because the widget is inert without this script anyway — so
-   * a no-JS visitor is spared the request, and the `<noscript>` note is what serves them.
+   * Injected rather than written into the markup: the widget is inert without JS, so a no-JS
+   * visitor skips the request.
    */
   let api: Promise<Turnstile> | undefined;
 
@@ -198,10 +186,6 @@ const fields = [
         setStatus(status, "error", "The spam check could not load. Please reload and try again.");
       });
 
-    /**
-     * Each field's error paragraph is the `aria-describedby` target the markup already wired,
-     * so writing the browser's own message into it is the whole of the validation UI.
-     */
     const controls = [...form.elements].filter(
       (element): element is HTMLInputElement | HTMLTextAreaElement =>
         element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement,
@@ -221,8 +205,7 @@ const fields = [
     };
 
     for (const control of controls) {
-      // Only after a field has been judged once: validating as someone first types a half-
-      // written address is noise, not help.
+      // Input re-validates only a field already flagged: judging a half-typed address is noise.
       control.addEventListener("blur", () => {
         showValidity(control);
       });

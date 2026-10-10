@@ -8,16 +8,12 @@ import Carousel from "@/components/ui/primitives/Carousel.astro";
 import { PHOTO_QUALITY } from "@/lib/images";
 
 /**
- * A run of team photos as a scroll-snap track, oldest first — the "photo groupings as
- * interleaved timeline sections" the about page is built from (DESIGN.md §5).
- *
- * The photos are dense and repeating, so they take the plain `radius-lg` treatment of §7 rather
- * than the 2px `media-frame`, which §2.4 reserves for singular feature media.
+ * Dense, repeating photos take plain `radius-lg` rather than `media-frame`, which is reserved for
+ * singular feature media.
  */
 type TeamPhoto = CollectionEntry<"frcTeamPhotos"> | CollectionEntry<"fllTeamPhotos">;
 
 interface Props {
-  /** Names the track for assistive tech, so two timelines on a page are distinguishable. */
   label: string;
   photos: readonly TeamPhoto[];
   class?: string;

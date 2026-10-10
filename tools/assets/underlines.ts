@@ -1,22 +1,15 @@
 /**
- * Writes the hand underline strokes into `src/styles/tokens.css` for the apps that import it: three
- * drift variants, for each accent, for each finish — eighteen data URIs. A data URI cannot read a CSS
- * variable, so each stroke's color is baked in; this script keeps the eighteen in step with the
- * three paths below and with the colors the stylesheet already declares.
- *
- * Each accent's strokes take its dark-finish text color (`--sc2-primary-bright`) and its
- * light-finish marker (`--sc2-mark`). By hand, from the repo root, after changing either or a
- * path here; commit the result:
- *
- *     pnpm assets:underlines
+ * Writes the underline stroke data URIs into the design tokens stylesheet. A data URI cannot read
+ * a CSS variable, so each stroke's color is baked in; rerun by hand and commit after changing a
+ * path or the accent colors it reads.
  */
 import { readFile, writeFile } from "node:fs/promises";
 
 const TOKENS = new URL("../../src/styles/tokens.css", import.meta.url);
 
 /**
- * The drift: nearly straight, rising ~2px toward the end. The SVG is stretched to the
- * link's width and 0.8em tall, and `non-scaling-stroke` keeps the 4.2px weight at any size.
+ * Stretched to the link's width and 0.8em tall; `non-scaling-stroke` keeps the 4.2px weight at any
+ * size.
  */
 const PATHS = [
   "M1.5 13.2C28 13.3 64 12.4 98.5 10.4",
@@ -29,7 +22,6 @@ const WEIGHT = 4.2;
 const uri = (hex: string, path: string): string =>
   `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16' preserveAspectRatio='none'%3E%3Cpath d='${path}' fill='none' stroke='%23${hex.replace("#", "")}' stroke-width='${String(WEIGHT)}' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E")`;
 
-/** The `[light, dark]` sides of a `light-dark()` declaration inside a block. */
 const sides = (block: string, name: string): readonly [string, string] => {
   const match = new RegExp(
     `--sc2-${name}:\\s*light-dark\\((#[\\da-f]{6}),\\s*(#[\\da-f]{6})\\)`,
@@ -47,7 +39,6 @@ const UNDERLINE = /^ *--sc2-underline-\d-(?:dark|light):[^;]*;\n/gm;
 
 const css = await readFile(TOKENS, "utf8");
 
-/** `:root` and every `[data-accent]` block: the blocks that set an accent's colors. */
 const headers = [":root {", ...[...css.matchAll(/^\[data-accent="[\w-]+"] \{/gm)].map((m) => m[0])];
 
 let out = css;

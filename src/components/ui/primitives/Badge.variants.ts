@@ -1,12 +1,5 @@
 import { cva } from "class-variance-authority";
 
-/**
- * Spec labels stamped onto the sheet (DESIGN.md §8): uppercase, tracked, transparent fill, a
- * 40%-alpha border in the badge's own color — all carried by the `spec-chip` utility. Filled
- * dark-on-dark tier pills are banned, as are pill radii — these are `radius-sm` plates.
- */
-
-/** Exported so `/styleguide` renders every tone; `satisfies` keeps the two in lockstep. */
 export const badgeToneNames = [
   "default",
   "muted",

@@ -8,16 +8,12 @@ import Icon from "@/components/ui/primitives/Icon.astro";
 import { PHOTO_QUALITY } from "@/lib/images";
 
 /**
- * A still in a `media-frame` that links out to a video, with the theme's primary play button
- * centred over a `background` scrim (DESIGN.md §7). The anchor is the whole frame, so the target
- * is the full poster and the button is decorative: `label` names the destination for assistive
- * tech and the poster is `alt=""`.
+ * The anchor is the whole frame, so the play button is decorative: `label` names the destination
+ * and the poster is `alt=""`.
  */
 interface Props extends Omit<HTMLAttributes<"a">, "class" | "href" | "aria-label"> {
   href: string | URL;
-  /** The accessible name of the link, e.g. "Watch our team video on YouTube". */
   label: string;
-  /** The frame the visitor sees before following the link. */
   poster: ImageMetadata;
   class?: string;
 }

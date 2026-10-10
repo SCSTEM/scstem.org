@@ -7,11 +7,6 @@ import ogFrc from "@/assets/og/frc.jpg";
 import ogPrograms from "@/assets/og/programs.jpg";
 import ogSponsors from "@/assets/og/sponsors.jpg";
 
-/**
- * The social cards a page can carry in place of the site-wide default (`site.ogImage`), each
- * with the alt text that describes it. `tools/assets/og-cards.ts` renders the images; a card's
- * alt changes in the same commit as its photo or title there.
- */
 export const ogCards = {
   donate: {
     image: ogDonate,

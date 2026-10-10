@@ -6,10 +6,6 @@ import { cn } from "@/lib/cn";
 
 import { badgeVariants } from "./Badge.variants";
 
-/**
- * Sponsor tiers, program tags, age ranges, event dates — anything that reads as a spec value
- * (DESIGN.md §8). The tier tones map to the four sponsor levels.
- */
 interface Props extends Omit<HTMLAttributes<"span">, "class">, VariantProps<typeof badgeVariants> {
   class?: string;
 }

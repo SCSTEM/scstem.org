@@ -7,28 +7,18 @@ import { isExternal } from "@/lib/links";
 
 import { buttonVariants } from "./Button.variants";
 
-/**
- * The one button in the system. Renders an `<a>` when given `href` (README, "Polymorphism").
- *
- * `default` fills with the *theme's* primary pair, so identical markup is Safety Yellow on SC2
- * pages, Hazard Green on FRC, Danger Orange on FLL. One primary per view region (DESIGN.md §8).
- */
+/** `default` takes the theme's primary colors, so one markup renders each program's accent. */
 interface Props
   extends
     Omit<HTMLAttributes<"button">, "class">,
     Pick<HTMLAttributes<"a">, "download" | "hreflang" | "rel" | "target">,
     VariantProps<typeof buttonVariants> {
-  /** Present ⇒ renders an anchor instead of a button. */
   href?: string | URL;
   type?: "button" | "submit" | "reset";
   class?: string;
 }
 
-/**
- * `disabled` is meaningless on an anchor — the attribute is invalid there and `:disabled` never
- * matches — so it maps to `aria-disabled`, which the variants already style, and the `href` is
- * dropped so the control is genuinely not navigable.
- */
+/** `disabled` is invalid on an anchor: links take `aria-disabled` and drop `href` instead. */
 const {
   variant,
   size,
@@ -43,10 +33,7 @@ const {
 const isLink = href !== undefined;
 const Tag = isLink ? "a" : "button";
 
-/**
- * An off-site href takes `rel="noopener"` and, unless the button is an icon, the external marker
- * (DESIGN.md §8); an icon button's glyph already names where it goes.
- */
+/** An icon button's glyph already says where it goes, so it skips the external marker. */
 const isExternalLink = isLink && isExternal(String(href));
 ---
 

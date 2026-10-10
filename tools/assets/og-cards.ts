@@ -1,13 +1,4 @@
-/**
- * Renders the social cards (DESIGN.md §7): one template — photograph, scrim, eyebrow, Orbitron
- * title, lockup — at 1200x630, in the seven variants the site links to.
- *
- * Satori lays the card out and embeds the type from `./fonts/Orbitron-Bold.ttf`, resvg
- * rasterizes it, and sharp writes the JPEG. Nothing is looked up on the machine, so this runs
- * anywhere `pnpm install` has. By hand, from the repo root; commit the output:
- *
- *     pnpm assets:og
- */
+/** Generates the committed social card images; run by hand and commit the output. */
 import { Resvg } from "@resvg/resvg-js";
 import { readFile, writeFile } from "node:fs/promises";
 import satori from "satori";
@@ -16,10 +7,9 @@ import sharp from "sharp";
 import { nav, programs, site } from "../../src/data/site.ts";
 
 const { width: WIDTH, height: HEIGHT } = site.ogImage;
-/** JPEG, not PNG: a photographic card is ~5x smaller, and no scraper has ever wanted otherwise. */
 const QUALITY = 82;
 
-/** DESIGN.md §2 palette, and the two program accents from `[data-accent]` in tokens.css. */
+/** Mirrors the design tokens' palette and program accents. */
 const color = {
   background: "#262626",
   foreground: "#fafafa",
@@ -29,10 +19,9 @@ const color = {
   fll: "#fb923c",
 };
 
-/** A static 700 instance from Google Fonts: Satori reads TTF/OTF/WOFF and no variable axis. */
+/** A static instance: Satori reads TTF/OTF/WOFF but no variable axis. */
 const FONT_FILE = "tools/assets/fonts/Orbitron-Bold.ttf";
 const FONT = "Orbitron";
-/** The monochrome light lockup, which is the variant a dark ground calls for (DESIGN.md §7). */
 const LOCKUP = "src/assets/brand/logo-white-full.svg";
 const LOCKUP_WIDTH = 300;
 
@@ -99,7 +88,7 @@ const cards: Card[] = [
   },
 ];
 
-/** The CSS Satori is given; every container declares `display: flex`, as Satori requires. */
+/** Satori requires every container to declare `display: flex`. */
 interface Style {
   position?: "absolute" | "relative";
   display?: "flex";
@@ -121,7 +110,6 @@ interface Style {
   marginBottom?: number;
 }
 
-/** Satori's element shape without a JSX runtime: the two element kinds this template uses. */
 interface Element {
   type: "div" | "img";
   props: {

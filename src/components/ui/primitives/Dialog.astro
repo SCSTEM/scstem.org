@@ -5,13 +5,8 @@ import Button from "./Button.astro";
 import Icon from "./Icon.astro";
 
 /**
- * A modal on native `<dialog>` — rung 3 of the interactivity ladder. The browser supplies the
- * focus trap, Esc handling, inert background, and top-layer stacking; the script below only
- * wires triggers.
- *
- * Open it from anywhere with `data-dialog-open="<id>"`; close from inside with
- * `data-dialog-close`. Without JavaScript the dialog stays closed and its trigger does nothing,
- * so a dialog must never hold content that is only available there.
+ * Open from anywhere with `data-dialog-open="<id>"`; close from inside with `data-dialog-close`.
+ * Without JavaScript the dialog stays closed, so it must never hold content found nowhere else.
  */
 interface Props {
   id: string;
@@ -62,8 +57,8 @@ const { id, title, class: className } = Astro.props;
       return;
     }
 
-    // A click landing on the dialog element itself is on the backdrop: its own children
-    // sit inside the padding boxes above, so they never match.
+    // The dialog's children sit inside its padded boxes, so a click on the element itself is a
+    // backdrop click.
     if (target instanceof HTMLDialogElement) target.close();
   });
 </script>

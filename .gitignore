@@ -1,25 +1,18 @@
-# dependencies
 node_modules
 .pnpm-store
 
-# astro
 .astro
 dist
 
-# misc
 .DS_Store
 *.pem
 
-# debug
 npm-debug.log*
 pnpm-debug.log*
 
-# local env files
 .env*.local
 .dev.vars
 
-# typescript
 *.tsbuildinfo
 
-# lighthouse ci
 .lighthouseci/

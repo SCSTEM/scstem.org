@@ -10,7 +10,7 @@ hk = "2.1.0"
 
 "npm:agent-browser" = "0.38.1"
 
-# The git pre-commit hook (hk.pkl), for every clone that runs `mise install`; CI does not commit.
+# Installs the pre-commit hook; CI does not commit.
 [hooks]
 postinstall = '[ -n "$CI" ] || hk install --mise'
 

@@ -15,32 +15,19 @@ import { PHOTO_QUALITY } from "@/lib/images";
 import { isExternal } from "@/lib/links";
 
 /**
- * The card the section grids are built from (DESIGN.md §8): a photo or a stamped icon plate, a
- * title over the machined 32px rule, body copy, and an optional footer link whose hit area covers
- * the whole pocket.
- *
- * A card carries one identity mark, not two. With a photo the photo is the identity and the icon
- * is not rendered; without one the icon stands in as a plate in the spec-chip anatomy — 1px
- * 40%-alpha border, `radius-sm`, transparent fill — so the header row speaks one register.
- *
- * The photo is inset rather than bled to the pocket's top edge: a full-width image would cover
- * the inset shadow that makes the card read as machined *into* the page (§2).
- *
- * Slots: `title` (so a title carrying markup still works) and the default body.
+ * The photo is inset rather than bled to the top edge: a full-width image would cover the inset
+ * shadow that makes the card read as machined into the page.
  */
 interface Props {
   /** Carbon icon name for the plate. Ignored when the card has an `image`. */
   icon?: string;
   image?: ImageMetadata;
-  /** Required alongside `image`. */
   imageAlt?: string;
-  /** A spec chip in the header row — an age range, a season, a tier. */
   badge?: string;
-  /** Turns the whole pocket into the link's hit area. */
   href?: string;
-  /** The footer link's text, and therefore its accessible name — make it specific. */
+  /** The footer link's text and accessible name; make it specific. */
   cta?: string;
-  /** Renders the grid inside the pocket floor. Feature moments only; dense grids stay plain. */
+  /** Feature moments only; dense grids stay plain. */
   feature?: boolean;
   class?: string;
 }
@@ -100,8 +87,8 @@ const plateIcon = image === undefined ? icon : undefined;
       <CardTitle>
         <slot name="title" />
       </CardTitle>
-      {/* One title line tall and centred on it, so the chip never sets the row's height and the
-          rule below sits at the same depth whether or not a card has a chip. */}
+      {/* One title line tall, so the chip never sets the row's height and the rule below sits at
+          the same depth with or without it. */}
       {badge !== undefined && (
         <span class="flex h-lh shrink-0 items-center text-h4">
           <Badge>{badge}</Badge>
@@ -117,8 +104,8 @@ const plateIcon = image === undefined ? icon : undefined;
 
   {href !== undefined && (
     <CardFooter>
-      {/* The stretched pseudo-element makes the pocket clickable without nesting the card's
-            content inside the anchor, so the link keeps one short accessible name. */}
+      {/* The stretched pseudo-element makes the pocket clickable without nesting the card's content
+          in the anchor, so the link keeps one short accessible name. */}
       <a
         class="ui-link text-small font-medium after:absolute after:inset-0"
         href={href}
@@ -126,8 +113,6 @@ const plateIcon = image === undefined ? icon : undefined;
       >
         {cta}
       </a>
-      {/* The glyph nudges 2px with the pocket's hover: the card is a link, and says so. An
-            off-site link shows the external glyph in place of the arrow (DESIGN.md §8). */}
       <Icon
         class="text-primary-bright transition-transform duration-(--sc2-duration-micro) ease-(--sc2-ease-toggle) motion-safe:group-focus-within:translate-x-0.5 motion-safe:group-hover:translate-x-0.5"
         name={isExternalLink ? "launch" : "arrow--right"}

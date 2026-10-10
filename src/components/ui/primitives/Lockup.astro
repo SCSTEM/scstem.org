@@ -2,15 +2,7 @@
 import lockup from "@/assets/brand/logo-white-full.svg";
 import { cn } from "@/lib/cn";
 
-/**
- * The full-width lockup in the finish's one color (DESIGN.md §7): the brand's Light lockup on
- * the dark finish and its Dark lockup on the light. The two files are the same drawing in white
- * and in black, so one of them is the shape — a CSS mask — and `--sc2-logo` fills it with brand
- * White or Black. One file, fetched once, for both finishes.
- *
- * Decorative by default, for use inside a link that carries the name; pass `label` where the
- * lockup stands alone.
- */
+/** One white asset serves both finishes: it is the CSS mask shape, and `--sc2-logo` fills it. */
 interface Props {
   label?: string;
   class?: string;

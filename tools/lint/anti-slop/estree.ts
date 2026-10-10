@@ -1,8 +1,7 @@
 /**
- * The oxlint AST type names the vendored rules use, as typescript-estree types. Two node kinds
- * oxlint keeps in its AST and typescript-estree drops (`ParenthesizedExpression`,
- * `TSParenthesizedType`) are declared here so upstream's unwrap loops type-check; they never
- * match at runtime.
+ * The oxlint AST type names the vendored rules use, as typescript-estree types. The two node kinds
+ * typescript-estree drops (`ParenthesizedExpression`, `TSParenthesizedType`) are declared so the
+ * rules' unwrap loops type-check; they never match at runtime.
  */
 import type { TSESTree } from "@typescript-eslint/utils";
 

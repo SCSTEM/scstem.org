@@ -7,10 +7,6 @@ import { getCollection } from "astro:content";
 import { SPONSOR_LEVELS } from "@/content.config";
 import { cn } from "@/lib/cn";
 
-/**
- * The active sponsors' logos, strongest level first. Retiring a sponsor is `active: false` in its
- * markdown file — the strip needs no code change, and the record stays in git as data.
- */
 interface Props {
   class?: string;
 }
@@ -22,12 +18,12 @@ const sponsors = (await getCollection("sponsors", (entry) => entry.data.active))
 );
 
 /**
- * Logos render up to 80px tall, so 160 covers a 2x screen — but never past a logo's own height.
- * Several of these are small originals, and upscaling one only makes a heavier, blurrier file.
+ * Logos render up to 80px tall, so 160 covers a 2x screen; never past a logo's own height, since
+ * upscaling only makes a heavier, blurrier file.
  */
 const renderHeight = (logo: ImageMetadata): number => Math.min(160, logo.height);
 
-/** The column count follows the count, as for a sponsor tier (DESIGN.md §5): never an orphan row. */
+/** The column count follows the sponsor count so no row is left orphaned. */
 const columns =
   sponsors.length === 3
     ? "sm:grid-cols-3"

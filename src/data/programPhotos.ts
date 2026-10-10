@@ -5,11 +5,6 @@ import driveTeam from "@/assets/frc/frc-driveteam.webp";
 import students from "@/assets/sc2/students.webp";
 import { type ProgramKey, programs } from "@/data/site";
 
-/**
- * Each program's representative photograph and its alt text: the program cards, the program
- * heroes, and the fallback hero of an event that carries no photo of its own. Kept apart from
- * `site.ts`, which stays import-free so Node tools can load it directly.
- */
 export const programPhotos = {
   sc2: {
     image: students,

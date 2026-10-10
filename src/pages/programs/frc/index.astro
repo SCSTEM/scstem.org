@@ -32,7 +32,6 @@ const awards = awardCount(seasons);
 const seasonTotal = seasonCount(seasons);
 const championships = championshipSeasons(seasons);
 
-/** Seasons that won an award or reached the Championship, oldest first. */
 const timeline = seasons
   .filter((entry) => (entry.data.awards?.length ?? 0) > 0 || championships.includes(entry))
   .toReversed()
@@ -68,7 +67,6 @@ const mentorStats = [
   },
 ];
 
-/** The season, in order: a sequence, so it reads left to right. */
 const season = [
   {
     when: "Kickoff · January",

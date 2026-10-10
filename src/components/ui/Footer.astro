@@ -7,19 +7,9 @@ import SocialLinks from "@/components/ui/SocialLinks.astro";
 import { nav, programs, site, socials } from "@/data/site";
 import { isExternal } from "@/lib/links";
 
-/**
- * Site footer: the drafting table the whole sheet lies on — the `band` ink with a hairline top
- * highlight, and no grid, since the title block is its linework (DESIGN.md §2). It carries the
- * full-width lockup in the finish's one color (§7). The title block sits at the bottom, which is where a drawing sheet puts its identity strip (§2.9).
- *
- * It declares itself a band surface, so the build fails a page whose last section is one.
- */
+/** Declares a band surface, so the build fails a page whose last section is also a band. */
 const year = new Date().getFullYear();
 
-/**
- * The columns are curated — they mix routes with external URLs and use full program names — but
- * every value is a reference into `src/data/site.ts`, never a re-typed copy.
- */
 const sections = [
   {
     title: "Support us",

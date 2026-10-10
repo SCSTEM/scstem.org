@@ -1,16 +1,10 @@
 import type { IncomingHttpHeaders, ServerHttp2Stream } from "node:http2";
 
 /**
- * Serves `dist/` the way Cloudflare Pages does — HTTP/2 over TLS, compressed — for the Lighthouse
- * gate.
- *
- * Lighthouse simulates its Slow 4G link from the protocol it observes. Over `astro preview`'s
- * HTTP/1.1 every parallel request is charged its own connection handshake, which production
- * never pays; against this server the same build measures about 450 ms less LCP. The certificate
- * is self-signed, generated with `openssl` on first run, and Lighthouse is launched with
- * `--ignore-certificate-errors` (`tools/ci/lighthouserc.json`).
- *
- *     pnpm build && node tools/ci/serve.ts        # https://localhost:4321
+ * Serves `dist/` like Cloudflare Pages (HTTP/2 over TLS, compressed) for the Lighthouse gate.
+ * Lighthouse simulates Slow 4G from the observed protocol: over `astro preview`'s HTTP/1.1 every
+ * parallel request is charged a connection handshake production never pays, about 450 ms of LCP.
+ * The certificate is self-signed, so Lighthouse runs with `--ignore-certificate-errors`.
  */
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, statSync } from "node:fs";
@@ -56,7 +50,6 @@ const COMPRESSIBLE = new Set([
   ".svg",
 ]);
 
-/** A self-signed certificate for `localhost`, made once and kept beside the Lighthouse reports. */
 const certificate = () => {
   const cert = join(CERT_DIR, "cert.pem");
   const key = join(CERT_DIR, "key.pem");
@@ -87,7 +80,6 @@ const certificate = () => {
   return { cert: readFileSync(cert), key: readFileSync(key) };
 };
 
-/** The file a request path resolves to, and the status it deserves. */
 const resolve = (pathname: string) => {
   const eventPage = pathname.startsWith(EVENT_PREFIX);
   const roots = eventPage ? [EVENTS] : pathname.startsWith("/_astro/") ? [DIST, EVENTS] : [DIST];
@@ -109,10 +101,7 @@ const resolve = (pathname: string) => {
 
 const server = createSecureServer({ ...certificate(), allowHTTP1: true });
 
-/**
- * Each file's body as it goes on the wire, read and compressed once: `dist/` is a finished build
- * and does not change while this runs, and a Lighthouse run requests the same files many times.
- */
+/** Read and compressed once: `dist/` does not change while this runs. */
 const bodies = new Map<string, Buffer>();
 
 const bodyOf = (path: string): Buffer => {

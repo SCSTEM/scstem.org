@@ -3,11 +3,7 @@ import type { HTMLAttributes } from "astro/types";
 
 import { cn } from "@/lib/cn";
 
-/**
- * Inter 600, not Orbitron: card titles sit below h3 size, and Orbitron is rationed to h1–h3
- * (DESIGN.md §3). Inter keeps the italic the Orbitron headings suppress, so a FIRST® mark in
- * a card title is italic (§1). `rule` adds the machined 32px accent hairline beneath.
- */
+/** Inter rather than Orbitron (reserved for h1–h3), so a FIRST® mark in a title stays italic. */
 interface Props extends Omit<HTMLAttributes<"h3">, "class"> {
   as?: "h2" | "h3" | "h4" | "p";
   rule?: boolean;

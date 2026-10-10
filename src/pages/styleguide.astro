@@ -47,15 +47,6 @@ import {
   rgba,
 } from "@/lib/tokens";
 
-/**
- * The proof page for DESIGN.md: every token, ramp, and motif rendered once, with computed
- * contrast ratios. Noindexed and out of the sitemap; the review artifact for every primitive.
- *
- * The build fails if any pair drops below its floor, in every finish, register and accent. Every
- * value is read from `src/styles/tokens.css` via `@/lib/tokens`, so a token edit cannot quietly
- * break accessibility and a renamed token fails the build rather than checking a stale copy.
- */
-
 const MODES: readonly Mode[] = ["dark", "light"];
 const REGISTERS: readonly Register[] = ["shop", "blueprint"];
 const contexts: readonly Context[] = MODES.flatMap((mode) =>
@@ -65,9 +56,8 @@ const describe = (context: Context): string =>
   `${context.mode ?? "dark"} ${context.register ?? "shop"}${context.accent === undefined ? "" : ` ${context.accent}`}`;
 
 /**
- * Every surface text sits on in a context. The grid crossing is the worst point copy can land on
- * inside a band: a major and a minor drafting-grid line crossing (DESIGN.md §2.3), in the
- * register's own grid colors.
+ * Every surface text sits on; the grid crossing (a major and a minor drafting-grid line crossing,
+ * in the register's own colors) is the worst point copy can land on inside a band.
  */
 const surfacesIn = (context: Context) => {
   const band = color("band", context);
@@ -77,7 +67,7 @@ const surfacesIn = (context: Context) => {
   return [
     { name: "background", value: color("background", context), crossing: false },
     { name: "card", value: color("card", context), crossing: false },
-    // The lit floor's two ends (DESIGN.md §2): text can sit anywhere on it.
+    // The lit floor's two ends: text can sit anywhere on it.
     {
       name: "card, shaded floor",
       value: blend(
@@ -131,6 +121,11 @@ const fillPairs: readonly FillPair[] = [
     fill: color("primary", { accent }),
     label: color("primary-foreground", { accent }),
   })),
+  ...accents().map((accent) => ({
+    name: `${accentName[accent]} button at rest`,
+    fill: color("primary-rest", { accent }),
+    label: color("primary-foreground", { accent }),
+  })),
   { name: "Science Blue (info)", fill: color("info"), label: color("info-foreground") },
   { name: "Destructive", fill: color("destructive"), label: color("destructive-foreground") },
 ];
@@ -159,7 +154,6 @@ const swipeOver = (name: "swipe" | "swipe-display", context: Context, surface: s
   return swipe.alpha === 1 ? swipe.hex : blend(swipe.hex, surface, swipe.alpha);
 };
 
-/** Every pair that must hold, checked at build time. */
 const failures: string[] = [];
 
 for (const context of contexts) {
@@ -167,9 +161,8 @@ for (const context of contexts) {
   const onSurfaces = surfacesIn(context);
 
   /**
-   * The grid crossing is a sliver of line, not a surface a paragraph fills, so it holds every
-   * token to AA rather than to the token's own floor; the plain band and plate hold the full
-   * floor. `primary-bright` is checked per accent below, so it is skipped here.
+   * A grid crossing is a sliver of line, not a surface a paragraph fills, so tokens hold to AA
+   * there rather than their own floor. `primary-bright` is checked per accent below.
    */
   for (const token of textTokens.filter((entry) => entry.name !== "primary-bright")) {
     const value = color(token.name, context);
@@ -217,8 +210,8 @@ for (const context of contexts) {
     }
 
     /**
-     * DESIGN.md §2.13 asks for this one by name: key words sit on a highlighter swipe. The body
-     * swipe holds AAA and the display (h1/h2) swipe holds AA-large, over the ground and a pocket.
+     * Key words sit on a highlighter swipe: the body swipe holds AAA, the display (h1/h2) swipe
+     * AA-large, over the ground and a pocket.
      */
     const ink = color("foreground", themed);
     for (const check of [
@@ -291,18 +284,18 @@ const durations = [
 
 const buttonSizes = ["sm", "md", "lg"] as const;
 
-/** The keycap's three states, frozen so they can be compared side by side. */
 const keycapStates = [
   { name: "Rest", style: undefined },
-  { name: "Hover", style: "--keycap-tint: 14%" },
+  {
+    name: "Hover",
+    style: "--keycap-lip: var(--sc2-primary-lip); background-color: var(--sc2-primary)",
+  },
   { name: "Active", style: "--keycap-depth: 0px; translate: 0 3px" },
 ];
 
 /**
- * DESIGN.md §2 tabulates each accent's text-on-dark ratio. Rendering the measured value here
- * keeps that table checkable: accents are AA-scoped (links, focus, key words — never long copy),
- * so a value below 7:1 is in-bounds, but a value below 4.5:1 fails the gate above. The list is
- * read from the stylesheet like the gate's, so a new accent renders here automatically.
+ * Accents are AA-scoped (links, focus, key words, never long copy): below 7:1 is in-bounds, below
+ * 4.5:1 fails the gate above.
  */
 const themes = accents().map((accent) => ({
   name: accent === "yellow" ? "Default (SC2)" : `data-accent="${accent}"`,
@@ -558,9 +551,9 @@ const themes = accents().map((accent) => ({
       <h3 class="mt-12">Keycaps</h3>
       <p class="mt-3 measure">
         A button stands on a 3px lip that drops straight down. Hover never moves it: the primary
-        face brightens, the secondary's border warms to the accent. A press seats it flush on{" "}
-        <code class="font-mono">:active</code>, at once and without a tween. The fill never dims.
-        The states below are frozen; the live buttons in Primitives respond.
+        face and lip rise to the brand color, the secondary's border and lip warm to the accent. A
+        press seats it flush on <code class="font-mono">:active</code>, at once and without a tween.
+        The fill never dims. The states below are frozen; the live buttons in Primitives respond.
       </p>
       <div class="mt-6 flex flex-wrap items-center gap-6">
         {keycapStates.map((state) => (

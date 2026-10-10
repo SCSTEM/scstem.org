@@ -9,29 +9,14 @@ import CardFooter from "@/components/ui/primitives/CardFooter.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import { cn } from "@/lib/cn";
 
-/**
- * One sponsor's pocket: the logo on a plate, the name and its tier chip, and — where we have one
- * — the year the partnership started.
- *
- * `layout="feature"` is the pocket for a sponsor that has its tier to itself: a full-width row
- * that sets the logo and the text side by side from `md` up, on the drawing-pocket floor
- * (DESIGN.md §2), so a lone sponsor fills its row instead of a third of it.
- *
- * The tier chip's tone comes from `Badge`'s tier tones (DESIGN.md §8), keyed by level, so the
- * ranking's colors live with the rest of the token set.
- */
 type Level = CollectionEntry<"sponsors">["data"]["level"];
 
-/** Every level maps to a tone; `satisfies` fails the build when a level is added without one. */
 const tones = {
   Platinum: "platinum",
   Gold: "gold",
   Silver: "silver",
   Bronze: "bronze",
-  /**
-   * Friend sits outside the metals, so DESIGN.md §8 names no color for it. `muted` is the
-   * neutral chip — present and legible, without inventing a sixth tier color.
-   */
+  // Friend sits outside the metals and has no tier color; `muted` is the neutral chip.
   Friend: "muted",
 } as const satisfies Record<Level, string>;
 
@@ -95,8 +80,8 @@ const { name, level, logo, url, sub, since } = sponsor.data;
     <div class="flex items-center gap-3">
       <Badge tone={tones[level]}>{level}</Badge>
       {url !== undefined && (
-        /* Stretching the anchor over the pocket keeps the whole card clickable while the link
-             itself keeps one short accessible name. */
+        /* The stretched anchor keeps the whole card clickable while the link keeps one short
+           accessible name. */
         <a
           aria-label={`${name} website`}
           class="ui-link after:absolute after:inset-0"

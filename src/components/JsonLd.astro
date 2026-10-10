@@ -1,10 +1,7 @@
 ---
 import type { JsonLdObject } from "@/lib/jsonld";
 
-/**
- * Serializes one structured-data object into the document. The data always comes from
- * `src/lib/jsonld.ts`, i.e. from us, so `set:html` carries no untrusted input.
- */
+/** `set:html` is safe only because `data` is built from our own content, never from user input. */
 interface Props {
   data: JsonLdObject;
 }

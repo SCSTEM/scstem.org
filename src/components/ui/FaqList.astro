@@ -5,11 +5,7 @@ import Accordion from "@/components/ui/primitives/Accordion.astro";
 import AccordionItem from "@/components/ui/primitives/AccordionItem.astro";
 
 /**
- * A group of `faq` entries as disclosures. The question is frontmatter and the answer is the
- * body, so the markdown is rendered here rather than by every page that lists questions.
- *
- * `name` reaches each `<details>` individually — that attribute is what makes the group
- * exclusive-open — so it is a prop here rather than something `Accordion` could push down.
+ * `name` is set on each `<details>` individually; that attribute makes the group exclusive-open.
  */
 interface Props {
   entries: readonly CollectionEntry<"faq">[];

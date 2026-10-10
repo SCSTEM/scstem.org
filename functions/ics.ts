@@ -1,21 +1,9 @@
 import type { CalendarEvent } from "./types.ts";
 
-/**
- * Just enough iCalendar to render an agenda from a public Google Calendar feed. Not a
- * general RFC 5545 implementation: it reads `VEVENT`s, resolves their times, expands the
- * recurrence rules Google actually emits for a team calendar, and stops there.
- *
- * Recurrence is not optional here. A robotics team's calendar is mostly repeating build
- * sessions, whose single `DTSTART` sits months in the past — a parser that ignored `RRULE` would
- * render an empty agenda on a calendar that is anything but.
- */
-
-/** Anything past this is a malformed or hostile feed, not a schedule. */
 const MAX_OCCURRENCES = 5000;
 
 /**
- * Content lines may be folded across several physical lines, continued by a leading space or
- * tab (RFC 5545 §3.1). Unfolding has to happen before anything else is read.
+ * Content lines may be folded: a leading space or tab continues the previous line (RFC 5545 §3.1).
  */
 const unfold = (feed: string): string[] => {
   const lines: string[] = [];
@@ -32,7 +20,6 @@ interface Line {
   value: string;
 }
 
-/** `DTSTART;TZID=America/New_York:20260107T183000` → name, params, value. */
 const parseLine = (line: string): Line | undefined => {
   const colon = line.indexOf(":");
   if (colon === -1) {
@@ -56,15 +43,14 @@ const parseLine = (line: string): Line | undefined => {
 };
 
 /**
- * TEXT values escape commas, semicolons, backslashes, and newlines (RFC 5545 §3.3.11). One pass,
- * so an escaped backslash is never re-read as the start of the next escape.
+ * One pass, so an escaped backslash is never re-read as the start of the next escape (RFC 5545
+ * §3.3.11).
  */
 const unescapeText = (value: string): string =>
   value.replaceAll(/\\([\\;,nN])/g, (_, escaped: string) =>
     escaped === "n" || escaped === "N" ? "\n" : escaped,
   );
 
-/** One formatter per zone for the isolate's lifetime; constructing one is the costly part. */
 const formatters = new Map<string, Intl.DateTimeFormat>();
 
 const zoneFormatter = (timeZone: string): Intl.DateTimeFormat => {
@@ -85,10 +71,6 @@ const zoneFormatter = (timeZone: string): Intl.DateTimeFormat => {
   return formatter;
 };
 
-/**
- * A named zone's UTC offset in milliseconds at a given instant. Workers ship full ICU, so the
- * zone database is the runtime's rather than a table this would have to keep current.
- */
 const zoneOffset = (instant: number, timeZone: string): number => {
   const parts = zoneFormatter(timeZone).formatToParts(new Date(instant));
 
@@ -106,34 +88,27 @@ const zoneOffset = (instant: number, timeZone: string): number => {
   return wall - instant;
 };
 
-/**
- * A wall-clock time in a named zone, as an instant. Offsets are looked up from a first guess and
- * then re-checked, because the guess can land on the far side of a DST transition from the
- * answer — one correction is enough for every real transition.
- */
+/** The first offset guess can land on the far side of a DST transition, so it is re-read once. */
 const fromZone = (wall: number, timeZone: string): number => {
   const once = wall - zoneOffset(wall, timeZone);
   return wall - zoneOffset(once, timeZone);
 };
 
 interface Moment {
-  /** A `VALUE=DATE` property: an all-day event, with no meaningful time of day. */
   allDay: boolean;
-  /** Epoch milliseconds. */
   at: number;
   /**
-   * The wall-clock reading, encoded as if it were UTC, plus the zone it was read in. Recurrence
-   * has to step on the wall clock and convert afterwards: stepping in absolute time instead
-   * moves a 6:30pm meeting to 7:30pm the week the clocks change.
+   * The wall-clock reading encoded as if it were UTC. Recurrence steps on the wall clock and
+   * converts afterwards: stepping in absolute time moves a 6:30pm meeting to 7:30pm when the
+   * clocks change.
    */
   wall: number;
   zone: string | undefined;
 }
 
 /**
- * `20260107T183000Z`, `20260107T183000`, or `20260107`. A bare date is a day on the calendar's
- * own wall, not a UTC one, so it resolves as midnight in `dateZone`: read as UTC midnight, an
- * all-day event would format as the evening before anywhere west of Greenwich.
+ * A bare date resolves as midnight in `dateZone`: read as UTC midnight, an all-day event would
+ * format as the evening before anywhere west of Greenwich.
  */
 const parseMoment = (line: Line, dateZone: string): Moment | undefined => {
   const match = /^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})(Z)?)?$/.exec(line.value);
@@ -154,7 +129,6 @@ const parseMoment = (line: Line, dateZone: string): Moment | undefined => {
   const allDay = hour === undefined;
   const zone = allDay ? dateZone : line.params.TZID;
   if (utc === "Z" || zone === undefined) {
-    // An explicit UTC stamp and a floating time read as written.
     return { allDay, at: wall, wall, zone: undefined };
   }
 
@@ -166,7 +140,6 @@ const parseMoment = (line: Line, dateZone: string): Moment | undefined => {
   }
 };
 
-/** Reads a wall clock back as an instant, in the zone the property named — or as written. */
 const resolver =
   (zone: string | undefined) =>
   (wall: number): number => {
@@ -180,21 +153,17 @@ const resolver =
     }
   };
 
-/** Weekday codes in `BYDAY` and `WKST`, indexed to match `Date#getUTCDay`. */
 const DAYS: readonly string[] = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
 
-/** The weekday a `BYDAY` code names, or -1 — no assertion, so an unknown code stays a miss. */
 const dayIndex = (code: string): number => DAYS.indexOf(code);
 
 interface Rule {
-  /** `MO`, `TU`, … for weekly; `2TU`, `-1FR`, … for monthly. */
   byDay: string[];
   byMonthDay: number[];
   count?: number | undefined;
   freq: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
   interval: number;
   until?: number | undefined;
-  /** The weekday a week starts on, as a `DAYS` index; RFC 5545 defaults it to Monday. */
   weekStart: number;
 }
 
@@ -233,8 +202,7 @@ const parseRule = (value: string, dateZone: string): Rule | undefined => {
 };
 
 /**
- * The wall clocks a rule produces from its start, bounded by the window and a hard cap. Dates
- * step in wall time; `toInstant` is only consulted to test `UNTIL` and the window, which are
+ * Dates step in wall time; `toInstant` is only consulted for `UNTIL` and the window, which are
  * absolute.
  */
 const expand = (
@@ -261,11 +229,6 @@ const expand = (
 
   const dayCodes = new Set(rule.byDay.map((day) => day.slice(-2)));
 
-  /**
-   * The rule's period, stepped `interval` at a time; each period then contributes either its own
-   * anchor date or the `BYDAY`/`BYMONTHDAY` dates within it. Bounded by the window rather than by
-   * the rule, so an unbounded weekly rule terminates.
-   */
   for (let period = 0; period < MAX_OCCURRENCES; period += 1) {
     const cursor = new Date(start);
     let dates: number[];
@@ -275,8 +238,7 @@ const expand = (
       const day = DAYS[cursor.getUTCDay()] ?? "";
       dates = dayCodes.size === 0 || dayCodes.has(day) ? [cursor.getTime()] : [];
     } else if (rule.freq === "WEEKLY") {
-      // Step to the first day of the start's week (`WKST`), then take the requested weekdays
-      // inside it. Which week a day falls in decides which weeks an INTERVAL > 1 rule skips.
+      // The week boundary (`WKST`) decides which weeks an INTERVAL > 1 rule skips.
       const intoWeek = (cursor.getUTCDay() - rule.weekStart + 7) % 7;
       cursor.setUTCDate(cursor.getUTCDate() - intoWeek + period * 7 * rule.interval);
       const week = dayCodes.size > 0 ? [...dayCodes] : [DAYS[first.getUTCDay()] ?? "SU"];
@@ -328,7 +290,6 @@ const withTime = (date: number, time: TimeOfDay): number => {
   return stamp.getTime();
 };
 
-/** The dates a monthly or yearly rule selects inside the month `cursor` starts. */
 const monthDates = (cursor: Date, rule: Rule, first: Date): number[] => {
   const year = cursor.getUTCFullYear();
   const month = cursor.getUTCMonth();
@@ -366,8 +327,7 @@ const monthDates = (cursor: Date, rule: Rule, first: Date): number[] => {
     });
   }
 
-  // No BYxxx: the rule repeats the start date's day of the month, skipping months too short
-  // for it — a 31st never becomes the 1st of the next month.
+  // A 31st skips short months rather than rolling into the next.
   const day = first.getUTCDate();
   return day > length ? [] : [Date.UTC(year, month, day)];
 };
@@ -377,7 +337,6 @@ interface RawEvent {
   end?: Moment | undefined;
   excluded: Set<number>;
   location: string;
-  /** Set on an event that overrides one occurrence of its series. */
   recurrenceId?: number | undefined;
   rule?: Rule | undefined;
   start?: Moment | undefined;
@@ -389,7 +348,7 @@ interface RawEvent {
 const parseEvents = (feed: string, dateZone: string): RawEvent[] => {
   const events: RawEvent[] = [];
   let current: RawEvent | undefined;
-  /** Depth of components nested in the current event (a `VALARM`), whose properties are not its own. */
+  /** Depth inside components nested in the event (a `VALARM`), whose properties are not its own. */
   let nested = 0;
 
   for (const raw of unfold(feed)) {
@@ -487,14 +446,7 @@ const parseEvents = (feed: string, dateZone: string): RawEvent[] => {
   return events;
 };
 
-/**
- * Upcoming events from an iCalendar feed, earliest first.
- *
- * @param feed The raw `.ics` body.
- * @param from Start of the window, epoch milliseconds.
- * @param days How far ahead to look.
- * @param timeZone The zone the agenda is shown in, which all-day dates are days of.
- */
+/** `timeZone` is the zone the agenda is shown in, which all-day dates are days of. */
 export const upcomingEvents = (
   feed: string,
   from: number,
@@ -504,12 +456,8 @@ export const upcomingEvents = (
   const until = from + days * 24 * 60 * 60 * 1000;
   const parsed = parseEvents(feed, timeZone);
 
-  /**
-   * An event carrying `RECURRENCE-ID` replaces one occurrence of its series — a moved or edited
-   * instance. Keying overrides by uid and instant lets the series skip the occurrences that have
-   * one, so a rescheduled meeting appears once, at its new time — and a cancelled one, which
-   * is itself left out below, not at all.
-   */
+  // A `RECURRENCE-ID` event replaces one occurrence of its series, so the series skips that
+  // instant; a cancelled override is dropped below, leaving the occurrence out entirely.
   const overridden = new Set(
     parsed.flatMap((event) =>
       event.recurrenceId === undefined ? [] : [`${event.uid}:${String(event.recurrenceId)}`],
@@ -542,7 +490,6 @@ export const upcomingEvents = (
       ) {
         continue;
       }
-      // An event that started earlier today but has not finished is still upcoming.
       if (ends < from || at > until) {
         continue;
       }
@@ -562,7 +509,6 @@ export const upcomingEvents = (
   return results.toSorted((a, b) => a.start.localeCompare(b.start));
 };
 
-/** Shared occurrences appear once in the combined agenda, ordered by their actual start. */
 export const mergeCalendarEvents = (feeds: readonly CalendarEvent[][]): CalendarEvent[] => {
   const merged = new Map<string, CalendarEvent>();
   for (const occurrence of feeds.flat()) {

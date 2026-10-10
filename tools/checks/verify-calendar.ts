@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 
 import { mergeCalendarEvents, upcomingEvents } from "../../functions/ics.ts";
 
-/** Deterministic recurrence fixtures: the public feeds change independently of this branch. */
 const agenda = (events: string, from: string, days = 90) =>
   upcomingEvents(
     `BEGIN:VCALENDAR\r\n${events.trim().replaceAll("\n", "\r\n")}\r\nEND:VCALENDAR`,

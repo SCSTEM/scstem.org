@@ -9,8 +9,7 @@
       "@/*": ["./*"]
     },
     "noEmit": true,
-    // The Workers runtime cannot use astro/tsconfigs/strictest (DOM and Astro types), so the
-    // same strictness is restated.
+    // Restates astro/tsconfigs/strictest, whose DOM and Astro types the Workers runtime cannot use.
     "strict": true,
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,

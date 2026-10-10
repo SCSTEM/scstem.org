@@ -3,17 +3,11 @@ import { cn } from "@/lib/cn";
 import { handMarkClass, handwritingClass, type HandVariant } from "@/lib/hand";
 
 /**
- * Strike and correct (DESIGN.md §2.17): a word struck through with one marker stroke, the
- * handwritten correction above it, and a caret beneath. Display headings only, once per site
- * section.
- *
- * Assistive tech reads the corrected sentence: the struck word and the drawn correction are
- * hidden from it, and a visually hidden copy of the correction stands in their place.
+ * Assistive tech reads the corrected sentence: the struck word and drawn correction are hidden, and
+ * a visually hidden copy of the correction stands in.
  */
 interface Props {
-  /** The word as struck out. */
   struck: string;
-  /** What replaces it, handwritten above. */
   correction: string;
   variant?: HandVariant;
   class?: string;
@@ -21,7 +15,6 @@ interface Props {
 
 const { struck, correction, variant = 1, class: className } = Astro.props;
 
-/** Each strike rises slightly across the word, the way a quick stroke does. */
 const strikes = {
   1: "M2 12C30 9 60 11 98 7",
   2: "M2 11C28 12 66 8 98 9",

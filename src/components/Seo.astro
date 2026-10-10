@@ -5,18 +5,13 @@ import { programs, site } from "@/data/site";
 import { absoluteUrl } from "@/lib/links";
 import { color } from "@/lib/tokens";
 
-/**
- * Everything that goes in `<head>` for discoverability. Rendered by BaseLayout, which passes
- * these props straight through — so **`description` being required here is what stops a page
- * from shipping without one.** Omitting it is a type error, not a review catch.
- */
 type Props = SeoProps;
 
 const { title, description, og, noindex = false, theme } = Astro.props;
 
 const fullTitle = site.titleTemplate.replace("%s", title);
 
-/** `trailingSlash: "always"` makes the pathname the trailing-slash form a page is served at. */
+/** `trailingSlash: "always"` makes the pathname the form a page is served at. */
 const canonicalUrl = absoluteUrl(Astro.url.pathname);
 
 const card =
@@ -25,7 +20,6 @@ const card =
     : { alt: og.alt, height: og.image.height, src: og.image.src, width: og.image.width };
 const imageUrl = absoluteUrl(card.src);
 
-/** Browser chrome follows the page's action accent, read from the same tokens the CSS ships. */
 const themeColor = color("primary", {
   accent: theme === undefined ? "yellow" : programs[theme].accent,
 });

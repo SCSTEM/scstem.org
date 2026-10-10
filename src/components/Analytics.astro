@@ -3,26 +3,14 @@ import { nav, site } from "@/data/site";
 import { TRACK_EVENT } from "@/lib/analytics";
 
 /**
- * GA4 and Cloudflare Web Analytics. The taxonomy, and the property-side audit this needs,
- * are in `docs/analytics.md`.
- *
- * Two gates, both necessary. `import.meta.env.PROD` keeps the snippet out of `pnpm dev`; the
- * hostname check keeps every preview deploy, `astro preview`, and Lighthouse run out of the
- * production property — a preview URL is a real hostname serving a production build, so the
- * build-time gate alone would pollute the data.
- *
- * Nothing loads before `load`: analytics is never worth a millisecond of anyone's LCP.
- *
- * The snippet is a string rather than markup because a script element inside an Astro expression has
- * its body parsed as JSX, where every `{` of a block opens an interpolation.
+ * Both the `PROD` gate and the hostname gate are needed: a preview deploy is a real hostname
+ * serving a production build, so the build-time gate alone would pollute the production property.
  */
 const { hostname } = new URL(site.url);
 
 /**
- * Link destination to GA4 event name. Reading the destination beats tagging twenty call sites
- * with `data-track`, for the same reason the rest of the chrome reads `src/data/site.ts`: a route
- * is named once. `data-track` stays available for the clicks a URL cannot identify — a sponsor's
- * own site, whose href is a per-entry value.
+ * Clicks on links to these hrefs fire the named event; `data-track` covers links whose href varies
+ * per entry.
  */
 const destinations = {
   [nav.cta.href]: "get_involved_click",
@@ -32,6 +20,10 @@ const destinations = {
   [site.urls.sponsorPacket]: "sponsor_packet_download",
 };
 
+/**
+ * A string, because a script body inside an Astro expression is parsed as JSX, where every `{`
+ * opens an interpolation.
+ */
 const snippet = `
 if (location.hostname === ${JSON.stringify(hostname)}) {
   addEventListener("load", function () {

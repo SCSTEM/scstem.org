@@ -5,13 +5,7 @@ import { Image } from "astro:assets";
 
 import { PHOTO_QUALITY } from "@/lib/images";
 
-/**
- * The photograph behind a `Hero`. It is the page's LCP element on every page that has one, so
- * the loading policy and the variant ladder are one decision here rather than six attributes
- * repeated at eleven call sites.
- *
- * `Hero` sizes and crops whatever lands in its `media` slot, so no layout classes belong here.
- */
+/** The LCP element on every page that has a hero, hence eager loading and high fetch priority. */
 interface Props {
   alt: string;
   src: ImageMetadata;

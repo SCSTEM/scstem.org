@@ -3,17 +3,10 @@ import { cn } from "@/lib/cn";
 import { formatEventDate, hasPassed } from "@/lib/event-date";
 
 /**
- * The event's date, plus the time left until it. The absolute date is always in the HTML — a
- * static build cannot know when the page is read, and an agent or a reader without JavaScript
- * gets the real answer rather than an empty slot.
- *
- * The three states are all in the markup, one shown, and the script below flips which. That keeps
- * every word of copy here and stops the state the build happened to see from going stale in a
- * browser.
- *
- * `hasPassed` is shared with the visibility rule in `src/lib/events.ts`, so a page that says an
- * event has passed and a page that has dropped out of the sitemap are the same page. The window
- * where this state is visible is between the event ending and the next deploy.
+ * The absolute date is always in the HTML, since a static build cannot know when the page is read.
+ * All three states are in the markup and the script flips which is shown, so the state the build
+ * saw never goes stale in a browser. "Passed" shares its cutoff with the rule that drops past
+ * events from the sitemap.
  */
 interface Props {
   start: Date;
@@ -74,7 +67,6 @@ const state = hasPassed(end) ? "passed" : Date.now() >= start.getTime() ? "live"
       for (const label of labels) {
         label.hidden = label.dataset.state !== state;
       }
-      // "passed" is final; nothing changes after it.
       if (state === "passed") clearInterval(timer);
 
       remaining.hidden = state !== "upcoming";

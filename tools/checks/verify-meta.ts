@@ -1,23 +1,14 @@
 import { z } from "astro/zod";
 /**
- * Asserts the head of every built page (plan/10 §2).
- *
- * `astro check` proves a page passed `title` and `description` to `BaseLayout`; it cannot prove
- * two pages did not pass the *same* ones, that a description is a length a search engine will
- * print, or that an `og:image` resolves to a file that exists. Those only become visible in
- * `dist/`, which is why this runs after the build rather than inside `pnpm check`.
- *
- * Redirect pages are skipped for the head checks — Astro writes them, they carry `noindex`, and
- * none of those apply — but not for the link check, since their target is a route of ours.
- *
- *     pnpm build && node tools/checks/verify-meta.ts
+ * Duplicate titles, unprintable description lengths, and unresolved `og:image` files only show up
+ * in built output, so this runs after the build rather than in `pnpm check`. Redirect pages are
+ * skipped for the head checks but not the link check, since their target is one of our routes.
  */
 import { readdir, readFile, stat } from "node:fs/promises";
 import { extname, join } from "node:path";
 
 const DIST = process.argv[2] ?? "dist";
 
-/** Every file under `dir`, recursively, whose name passes `keep`. */
 const walk = async (dir: string, keep: (name: string) => boolean): Promise<string[]> => {
   const entries = await readdir(dir, { withFileTypes: true });
   const nested = await Promise.all(
@@ -31,18 +22,16 @@ const walk = async (dir: string, keep: (name: string) => boolean): Promise<strin
   );
   return nested.flat();
 };
-/** Google truncates a description around 160 characters and ignores one too short to be useful. */
+/** Search engines truncate near 160 characters and ignore descriptions too short to be useful. */
 const DESCRIPTION_MIN = 50;
 const DESCRIPTION_MAX = 160;
 
-/** Every `<meta>`/`<link>` tag on the page, as raw text. */
 const tags = (html: string): string[] =>
   [...html.matchAll(/<(?:meta|link)\b[^>]*>/gu)].map((match) => match[0]);
 
 const attribute = (tag: string, name: string): string | undefined =>
   new RegExp(`\\b${name}="([^"]*)"`, "u").exec(tag)?.[1];
 
-/** `<meta name="description">` → its content, for every tag matching one key/value pair. */
 const contentsOf = (html: string, key: string, value: string): string[] =>
   tags(html)
     .filter((tag) => attribute(tag, key) === value)
@@ -51,9 +40,8 @@ const contentsOf = (html: string, key: string, value: string): string[] =>
 const count = (html: string, pattern: RegExp): number => [...html.matchAll(pattern)].length;
 
 /**
- * Root-relative hrefs to a page without its trailing slash. Pages build to `<path>/index.html`,
- * which Cloudflare Pages 308-redirects to from the bare path, so each one costs a round trip. A
- * path whose last segment has a dot is a file (`/site.webmanifest`, an asset) and is exempt.
+ * Pages build to `<path>/index.html`, which Cloudflare Pages 308-redirects to from the bare path,
+ * costing a round trip. A last segment with a dot is a file and is exempt.
  */
 const slashless = (html: string): string[] => [
   ...new Set(
@@ -63,7 +51,6 @@ const slashless = (html: string): string[] => [
   ),
 ];
 
-/** `dist/programs/frc/index.html` → `/programs/frc/`. */
 const routeOf = (path: string): string =>
   `/${path.slice(DIST.length + 1).replace(/(?:^|\/)index\.html$/u, "")}/`.replace("//", "/");
 
@@ -76,7 +63,6 @@ const exists = async (path: string): Promise<boolean> => {
   }
 };
 
-/** The JSON-LD shapes the site emits. */
 const context = {
   "@context": z.literal("https://schema.org"),
 };
@@ -166,13 +152,8 @@ const pages = await Promise.all(
 
 const failures: string[] = [];
 const seen = { description: new Map<string, string>(), title: new Map<string, string>() };
-/** Image checks are deferred so the reads run together rather than one per page. */
 const images: { image: string; label: string; route: string }[] = [];
 
-/**
- * A head field every page carries exactly once and no two pages share. Returns the page's value,
- * or `undefined` when the page carries the field zero or several times.
- */
 const unique = (
   route: string,
   field: keyof typeof seen,
@@ -250,8 +231,8 @@ for (const { html, route } of pages) {
     fail("no og:image:alt");
   }
 
-  // Structured data is serialized by hand in `src/lib/jsonld.ts`; a block that stops parsing, or
-  // loses its type, is invisible until a rich-results run months later.
+  // Structured data is serialized by hand; a block that stops parsing, or loses its type, is
+  // invisible until a rich-results run months later.
   const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gu)];
   if (blocks.length === 0) {
     fail("no JSON-LD");

@@ -3,12 +3,7 @@ import { cn } from "@/lib/cn";
 
 import Icon from "./Icon.astro";
 
-/**
- * A field's error message (DESIGN.md §8): destructive text token, an icon, and an id the input
- * points at with `aria-describedby`. `aria-live` so a message added after submit is announced.
- *
- * Renders its container even when empty, so adding a message later does not shift the layout.
- */
+/** `aria-live` so a message added after submit is announced. */
 interface Props {
   /** Must match the input's `aria-describedby`. */
   id: string;
@@ -18,10 +13,8 @@ interface Props {
 const { id, class: className } = Astro.props;
 ---
 
-<!--
-  The icon is gated on slot content, not just hidden with the container: `:empty` matches only
-  elements with no child nodes at all, so an unconditional `<Icon>` would defeat `empty:hidden`.
--->
+<!-- `empty:hidden` needs an element with no child nodes, so the icon renders only with slot
+  content. -->
 <p
   aria-live="polite"
   class={cn("flex items-center gap-1.5 text-small text-destructive-bright empty:hidden", className)}

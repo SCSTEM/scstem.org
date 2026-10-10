@@ -1,4 +1,3 @@
-# For what Prettier does not format (toml, shell, gitignore-likes).
 root = true
 
 [*]

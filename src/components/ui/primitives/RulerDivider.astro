@@ -1,18 +1,12 @@
 ---
 import { cn } from "@/lib/cn";
 
-/**
- * The strong section divider (DESIGN.md §2.7): a graduated tick strip, like the edge of a
- * steel rule. Plain 1px hairlines remain the quiet default — reach for this when a boundary
- * needs to be felt, and count it against the register budget.
- */
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
 
-/** Baseline plus 61 graduated ticks, as one path — one element instead of one per tick. */
 const ticks = Array.from({ length: 61 }, (_, index) => index * 4);
 const strip = [
   "M0 15H240",
@@ -27,8 +21,7 @@ const strip = [
   role="presentation"
   viewBox="0 0 240 16"
 >
-  <!-- `non-scaling-stroke`: the viewBox is stretched to the container, which would otherwise
-       widen every tick by the horizontal scale factor. Ticks stay hairlines, like the rule. -->
+  <!-- `non-scaling-stroke` keeps the ticks hairlines; the stretched viewBox would widen them. -->
   <path
     d={strip}
     fill="none"

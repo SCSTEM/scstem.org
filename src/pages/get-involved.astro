@@ -12,8 +12,8 @@ import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 /**
- * Native `loading="lazy"` starts fetching a frame well before it scrolls into view, so the script
- * below assigns the form's `src` only once the reserved frame enters the viewport.
+ * Native `loading="lazy"` fetches a frame well before it scrolls into view, so a script assigns
+ * `src` once it does.
  */
 const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
 const formTitle = `${nav.cta.label} with the ${site.name}`;
@@ -82,12 +82,9 @@ const formTitle = `${nav.cta.label} with the ${site.name}`;
       Open the form in Google Forms
     </Button>
 
-    <!--
-      Google draws only its white form card; the rest of its page is transparent, and the section
-      shows through. Two things keep it that way: the wrapper declares light, matching the form's
-      own `color-scheme` (a mismatch makes the browser paint an opaque backdrop behind the frame,
-      and gives dark-on-white form fields), and the wrapper itself has no surface of its own.
-    -->
+    <!-- Google's form page is transparent around its white card. The wrapper declares light to
+      match the form's `color-scheme`; a mismatch paints an opaque backdrop behind the frame and
+      dark-on-white fields. -->
     <div class="mt-8 scheme-light">
       <iframe
         class="h-450 w-full border-0"

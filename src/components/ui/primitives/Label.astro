@@ -3,13 +3,9 @@ import type { HTMLAttributes } from "astro/types";
 
 import { cn } from "@/lib/cn";
 
-/**
- * Every field gets a visible label above it (DESIGN.md §8). Placeholder-as-label is not an
- * option this system offers.
- */
 interface Props extends Omit<HTMLAttributes<"label">, "class"> {
   for: string;
-  /** Marks the field required, for sighted users; also set `required` on the input itself. */
+  /** Visual marker only; also set `required` on the input. */
   required?: boolean;
   class?: string;
 }

@@ -1,9 +1,7 @@
 /**
- * The `@oxlint/plugins` surface the vendored rules import, provided by ESLint.
- *
- * `defineRule` turns an oxlint-shaped rule (`meta` + `createOnce`) into an ESLint rule module
- * whose `create` delegates to `createOnce`. `ESTree` maps the oxlint AST type names the rules use
- * onto typescript-estree's (see `estree.ts`).
+ * The `@oxlint/plugins` surface the vendored rules import, provided by ESLint. `defineRule` turns
+ * an oxlint-shaped rule (`meta` + `createOnce`) into an ESLint rule module whose `create`
+ * delegates to `createOnce`; `ESTree` maps oxlint's AST type names onto typescript-estree's.
  */
 import type { TSESLint, TSESTree } from "@typescript-eslint/utils";
 import type { Rule } from "eslint";
@@ -34,7 +32,6 @@ export interface SourceCode {
   readonly visitorKeys: TSESLint.SourceCode.VisitorKeys;
 }
 
-/** The rule context surface the rules use. */
 interface Context<MessageIds extends string> {
   readonly options: Options;
   report(descriptor: {
@@ -58,11 +55,9 @@ interface OxlintRule<MessageIds extends string> {
 export function defineRule<MessageIds extends string>(
   rule: OxlintRule<MessageIds>,
 ): Rule.RuleModule {
-  // SAFETY: ESLint builds the context and consumes the listener; `Context` and
-  // `TSESLint.RuleListener` are typescript-eslint's names for those same runtime objects (the
-  // runtime SourceCode has the `isGlobalReference` and `scopeManager` that `Context` names).
-  // The scope classes of the two type packages share no structure, so the bridge is a chained
-  // assertion.
+  // SAFETY: ESLint builds the context and consumes the listener; the typescript-eslint types are
+  // names for those same runtime objects, but their scope classes share no structure, so the
+  // bridge is a chained assertion.
   // eslint-disable-next-line anti-slop/no-chained-type-assertions -- see SAFETY above
   const create = rule.createOnce as unknown as Rule.RuleModule["create"];
   return { meta: { ...rule.meta, schema: rule.meta.schema ?? [] }, create };

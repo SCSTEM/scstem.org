@@ -32,12 +32,6 @@ import { webSite } from "@/lib/jsonld";
 import { awardCount, championshipSeasons, getSeasons, seasonCount } from "@/lib/seasons";
 import { breakpoint } from "@/lib/tokens";
 
-/**
- * The FIRST identity is art-directed — the spelled-out acronym only reads from `md` up — so the
- * two renditions are a `<source>` swap, which `<Image>` cannot express. `getImage` gives the
- * `<source>` the same treatment `<Image>` would: the sources are 2560px masters and the widest
- * slot here is 448 CSS px.
- */
 const renderAt = async (source: ImageMetadata, width: number) => ({
   height: Math.round((width * source.height) / source.width),
   src: (await getImage({ format: "webp", src: source, width })).src,
@@ -48,9 +42,8 @@ const acronymArt = await renderAt(firstAcronym, 896);
 const lockupArt = await renderAt(firstLockup, 640);
 
 /**
- * Each "Real X." of the tagline holds together, so a line only ever breaks between pairs and an
- * oval never wraps away from its "Real". Below `sm` the three pairs stack as three lines, spaced
- * so one line's oval clears the next.
+ * Each "Real X." pair never wraps internally; below `sm` pairs stack, padded so one line's oval
+ * clears the next.
  */
 const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
 
@@ -78,7 +71,6 @@ const record = [
 
 const alumni = await getCollection("alumni");
 
-/** Each field alumni have gone into, the most common first. */
 const alumniFields = ALUMNI_FIELDS.map((field) => ({
   field,
   count: alumni.filter((entry) => entry.data.field === field).length,
@@ -90,7 +82,6 @@ const parentQuestions = (
   await getCollection("faq", ({ data }) => data.tags?.includes("parents") === true)
 ).toSorted((a, b) => a.data.question.localeCompare(b.data.question));
 
-/** The newest year of community appearances, in calendar order. */
 const outreach = await getCollection("outreach");
 const outreachYear = Math.max(...outreach.map((entry) => entry.data.year));
 const recentOutreach = outreach
@@ -158,8 +149,8 @@ const outreachKinds = {
     </Fragment>
 
     <figure slot="aside">
-      <!-- The acronym line only reads at desktop widths, so it is a `<source>` swap rather
-           than two images toggled with `hidden`: a hidden `<img>` still downloads. -->
+      <!-- A hidden `<img>` still downloads, so the acronym line is a `<source>` swap rather than a
+        toggled image. -->
       <a
         aria-describedby="first-ref"
         class="inline-block rounded-md bg-print bg-none p-3"
@@ -190,7 +181,6 @@ const outreachKinds = {
 
     <div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
       <div>
-        <!-- The facts sit on a plate so their dividers never run beside the band's grid lines. -->
         <Card class="px-6">
           <dl class="divide-y divide-border">
             <div class="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:gap-6">

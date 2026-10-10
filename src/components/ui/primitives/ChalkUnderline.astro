@@ -2,16 +2,8 @@
 import { cn } from "@/lib/cn";
 import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
 
-/**
- * A hand-drawn underline beneath a heading or display phrase (DESIGN.md §2.14). Never inside
- * body copy: there an underline means a link, and links carry a straight line.
- *
- * Deliberately distinct from `title-rule`, the machined 32px card rule, which stays perfectly
- * straight. Machined versus hand is a contrast the system relies on; never blend the two.
- *
- * Three variants; adjacent instances must differ.
- */
 interface Props {
+  /** Adjacent instances must use different variants. */
   variant?: HandVariant;
   tone?: HandTone;
   class?: string;
@@ -19,7 +11,6 @@ interface Props {
 
 const { variant = 1, tone = "marker", class: className } = Astro.props;
 
-/** Each curve sags differently and overshoots at a different end. */
 const paths = {
   1: "M2 6C34 2 92 1 148 4c22 1 32 2 30 3",
   2: "M4 4C40 8 96 9 150 5c18-1 26-2 26-1",

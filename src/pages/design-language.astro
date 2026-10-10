@@ -25,16 +25,6 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { cn } from "@/lib/cn";
 import { handwritingClass } from "@/lib/hand";
 
-/**
- * The design language, written for the people who build with it: what the SC2 look is, which
- * token or component to reach for, and how the pieces combine, with live examples. A draft of
- * the team wiki's design pages, so it is noindexed (and `_headers` repeats that for the path)
- * and linked from nowhere. DESIGN.md stays the source of truth; `/styleguide` is the proof page
- * with every token and contrast ratio.
- *
- * Each top-level section is one future wiki page.
- */
-
 const sections = [
   { id: "idea", title: "The idea" },
   { id: "switches", title: "Three switches" },
@@ -49,7 +39,6 @@ const sections = [
   { id: "checklist", title: "Before you ship" },
 ];
 
-/** "If you are placing …, use …": the token decisions a new page actually makes. */
 const tokenChoices = [
   {
     group: "Text",
@@ -140,7 +129,6 @@ const sectionRecipe = `<Section atmosphere="bubble" index={2}>
 const logoRecipe = `<!-- Drawn for a dark ground: it keeps that ground in the light finish. -->
 <img class="rounded-md bg-print p-3" src={logo.src} alt="Volvo logo" />`;
 
-/** A preview switch: the label type, filled with the accent while pressed. */
 const choiceClass =
   "min-h-11 rounded-md border border-control-edge bg-sheet px-3 spec-label text-foreground aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground";
 
@@ -927,10 +915,6 @@ const checklist = [
 </BaseLayout>
 
 <script>
-  /**
-   * The preview panel's three switches (section 02). Each sets one attribute on the panel, and
-   * the tokens do the rest; the unset accent and register are the defaults.
-   */
   const panel = document.querySelector<HTMLElement>("[data-preview]");
   const readout = document.querySelector("[data-preview-attrs]");
 

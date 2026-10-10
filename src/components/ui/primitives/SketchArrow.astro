@@ -2,19 +2,9 @@
 import { cn } from "@/lib/cn";
 import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
 
-/**
- * A hand-drawn curved arrow, the leader of a leader note (DESIGN.md §2.15). **One per view.**
- *
- * It always touches handwriting (`handwritingClass`): it points from a handwritten note to what
- * the note is about (a handwritten link, a button, or a field), or from a short typeset question
- * to the handwritten link that answers it. It never floats free and never joins two pieces of
- * typeset text.
- *
- * Three variants; adjacent instances must differ.
- */
 interface Props {
+  /** Adjacent instances must use different variants. */
   variant?: HandVariant;
-  /** Which way the arrow sweeps. */
   direction?: "down-right" | "down-left" | "up-left" | "up-right" | "right";
   tone?: HandTone;
   class?: string;
@@ -22,7 +12,6 @@ interface Props {
 
 const { variant = 1, direction = "down-right", tone = "marker", class: className } = Astro.props;
 
-/** Shaft plus a two-stroke head, all open-ended. */
 const paths = {
   1: { shaft: "M6 6C10 26 26 42 54 48", head: "M54 48 38 44 M54 48 46 34" },
   2: { shaft: "M8 4C6 24 18 44 52 50", head: "M52 50 35 48 M52 50 43 35" },
@@ -30,11 +19,9 @@ const paths = {
 } as const;
 
 /**
- * Rotation is set inline (per-variant jitter), and Tailwind v4 implements `rotate-*` with the
- * same individual `rotate` property — an inline style would silently beat the class. So the
- * direction's rotation is summed into that one value instead of being a utility.
- *
- * Mirroring stays a class: `-scale-x-100` sets `scale`, which does not collide.
+ * Rotation is one inline `rotate` value because Tailwind v4's `rotate-*` sets the same property
+ * and an inline style would silently override it. Mirroring stays a class: `-scale-x-100` sets
+ * `scale`, which does not collide.
  */
 const rotations = { 1: "0deg", 2: "-3deg", 3: "2deg" } as const;
 

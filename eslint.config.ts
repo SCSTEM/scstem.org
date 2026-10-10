@@ -11,7 +11,7 @@ export default defineConfig(
     "dist/",
     ".astro/",
     "public/",
-    // Vendored upstream rule source (tools/lint/anti-slop/VENDOR.md); its glue is linted.
+    // Vendored upstream rule source; its glue is linted.
     "tools/lint/anti-slop/rules/",
     "tools/lint/anti-slop/shared/",
   ]),
@@ -30,7 +30,6 @@ export default defineConfig(
       "anti-slop/no-object-parameters": "error",
       "anti-slop/no-reflect-apply": "error",
       "anti-slop/no-reflect-get": "error",
-      // A type guard from `unknown` is the boundary parser the rule asks for.
       "anti-slop/no-runtime-typeof": ["error", { allowInTypeGuards: true }],
       "anti-slop/no-shape-in-symbol-names": "error",
       "anti-slop/no-unknown-parameters": "error",
@@ -54,7 +53,6 @@ export default defineConfig(
     },
   },
   {
-    // Class names checked against the `@theme` in src/styles/global.css.
     files: ["src/**/*.{ts,astro}"],
     plugins: { shadcn },
     settings: {
@@ -62,12 +60,11 @@ export default defineConfig(
     },
     rules: {
       "shadcn/no-raw-colors": "error",
-      // Hook classes a component's scoped `<style>` selects; they generate no utility CSS.
+      // Hook classes a scoped `<style>` selects; they generate no utility CSS.
       "shadcn/no-unknown-classes": ["error", { allow: ["hero-media"] }],
     },
   },
   {
-    // A Worker's console is its log stream; a CLI script's console is how it reports.
     files: ["functions/**", "tools/**"],
     rules: { "no-console": "off" },
   },
@@ -90,8 +87,8 @@ export default defineConfig(
       // A `return` in frontmatter (redirect, 404) has no enclosing function in the parser's AST,
       // which crashes this rule.
       "@typescript-eslint/no-misused-promises": "off",
-      // A keyboard-reachable scroll container needs `tabindex="0"` (WCAG 2.2 SC 2.1.1) and is
-      // named with `role="region"`; the rule only allows `tabpanel` by default.
+      // A keyboard-reachable scroll container needs `tabindex="0"` and `role="region"`; the rule
+      // only allows `tabpanel` by default.
       "astro/jsx-a11y/no-noninteractive-tabindex": [
         "error",
         { roles: ["tabpanel", "region"], tags: [] },

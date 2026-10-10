@@ -2,10 +2,8 @@ import type { GenericFormRequest } from "@/types";
 
 import { res, validateTurnstile } from "@/util";
 
-/** A posted field before it is checked; only a non-blank string passes `isFilled`. */
 type PostedValue = boolean | number | string | null | undefined;
 
-/** The body as posted: the browser's `required` attributes are a courtesy, not a guarantee. */
 interface PostedForm {
   readonly email?: PostedValue;
   readonly form?: PostedValue;
@@ -17,11 +15,6 @@ interface PostedForm {
 const isFilled = (value: PostedValue): value is string =>
   typeof value === "string" && value.trim() !== "";
 
-/**
- * Both secrets are required: without `TS_SECRET_KEY` the challenge cannot be verified, and
- * without `SLACK_FORM_POST_GENERIC` a submission has nowhere to go. Either missing is an error
- * answer, never a "received" one. Local development sets them in `.dev.vars` (`docs/tooling.md`).
- */
 export const onRequestPost: PagesFunction<{
   SLACK_FORM_POST_GENERIC?: string;
   TS_SECRET_KEY?: string;

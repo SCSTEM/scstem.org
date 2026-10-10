@@ -19,17 +19,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { type Breadcrumb, event as eventJsonLd, faqPage } from "@/lib/jsonld";
 import { absoluteUrl } from "@/lib/links";
 
-/**
- * One layout for every seasonal event, so a new season is an edit to one markdown file: the hero,
- * the date, the location, the media links and the questions are frontmatter, and the long-form
- * copy is the entry's body.
- */
 interface Props {
   event: CollectionEntry<"events">;
-  /**
-   * The trail above this page, below Home; the page itself is appended here. Empty for an event
-   * published at the site root.
-   */
   trail?: readonly Breadcrumb[];
 }
 
@@ -37,14 +28,12 @@ const { event, trail = [] } = Astro.props;
 const { data } = event;
 const { Content } = await render(event);
 
-/** `sc2` is the default look and wears no program accent. */
 const theme = data.program === "sc2" ? undefined : data.program;
 
 if (data.heroImage !== undefined && data.heroImageAlt === undefined) {
   throw new Error(`events/${event.id}: an entry with a heroImage must also set heroImageAlt.`);
 }
 
-/** An event that carries no photo of its own takes its program's, so a new event needs no image work. */
 const hero =
   data.heroImage !== undefined && data.heroImageAlt !== undefined
     ? { src: data.heroImage, alt: data.heroImageAlt }
@@ -52,10 +41,7 @@ const hero =
 
 const faqEntries = data.faq === undefined ? [] : await getEntries(data.faq);
 
-/**
- * The two flat arrays the schema pairs by index. A mismatch would silently drop a link's
- * label, so it fails the build the schema comment promises it fails on.
- */
+// Parallel arrays paired by index; a mismatch would silently drop a label, so it fails the build.
 const hintLabels = data.hintLabels ?? [];
 const hintUrls = data.hintUrls ?? [];
 if (hintUrls.length !== hintLabels.length) {

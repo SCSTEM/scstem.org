@@ -2,32 +2,17 @@ import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/cn";
 
-/**
- * Astro forbids exporting values from a component (`astro/no-exports-from-components`), so CVA
- * definitions live in a sibling `*.variants.ts`. Other components can then compose these
- * classes — a link styled as a button, say — without duplicating the recipe.
- */
-
-/**
- * The variant inventory, exported so `/styleguide` renders every one — a variant missing there
- * does not exist as far as review is concerned (primitives/README.md). `satisfies` below keeps
- * this list and the recipe map in lockstep.
- */
 export const buttonVariantNames = ["default", "secondary", "ghost"] as const;
 
 type ButtonVariant = (typeof buttonVariantNames)[number];
 
 export const buttonVariants = cva(
   cn(
-    // `pb-0` because the base layer draws the link underline on every `<a>` as a background
-    // image over a little bottom padding, and this recipe renders as an anchor whenever a Button
-    // gets an `href`. Each variant replaces the image: the keycaps with their own faces, the
-    // ghost with `bg-none`.
+    // `pb-0`: the base layer draws link underlines as a background image over bottom padding,
+    // and this recipe renders as an anchor given an `href`. Each variant replaces the image.
     "inline-flex items-center justify-center gap-2 rounded-md pb-0 font-semibold whitespace-nowrap",
-    // Duration and easing only: each variant names the properties it animates.
+    // Timing only; each variant names the properties it animates.
     "duration-(--sc2-duration-micro) ease-(--sc2-ease-toggle)",
-    // A disabled control is a grey cap seated flush: no edge, no travel, a muted label. Fading
-    // the accent face instead would muddy it to olive.
     "disabled:pointer-events-none disabled:translate-none disabled:border-border disabled:bg-sheet disabled:bg-none disabled:text-muted disabled:shadow-none",
     "aria-disabled:pointer-events-none aria-disabled:translate-none aria-disabled:border-border aria-disabled:bg-sheet aria-disabled:bg-none aria-disabled:text-muted aria-disabled:shadow-none",
   ),
@@ -35,18 +20,13 @@ export const buttonVariants = cva(
     defaultVariants: { variant: "default", size: "md" },
     variants: {
       variant: {
-        /** The accent keycap (DESIGN.md §8). */
         default: "keycap keycap-primary text-primary-foreground",
-        /**
-         * The secondary keycap — the quiet action beside a primary, and the chrome that sits over
-         * content (carousel arrows).
-         */
         secondary: "keycap keycap-secondary text-foreground",
         ghost:
           "bg-none text-foreground transition-colors hover:bg-card disabled:bg-transparent aria-disabled:bg-transparent",
       } satisfies Record<ButtonVariant, string>,
       size: {
-        /** Every size clears the 44px minimum touch target. */
+        /** Every size clears the 44px touch-target minimum. */
         sm: "h-11 px-4 text-small",
         md: "h-11.5 px-5.5 text-copy",
         lg: "h-13 px-7 text-lead",

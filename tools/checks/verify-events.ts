@@ -4,10 +4,7 @@ import { cpSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync }
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-/**
- * Builds a temp-directory copy of the site with every event dated in the future, asserts its live
- * event pages, and leaves that build for Lighthouse.
- */
+/** Leaves the future-dated build in place for Lighthouse. */
 const root = process.cwd();
 const fixture = mkdtempSync(join(tmpdir(), "scstem-events-"));
 const output = join(root, ".lighthouseci/events");

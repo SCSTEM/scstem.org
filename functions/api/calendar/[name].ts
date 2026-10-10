@@ -2,30 +2,20 @@ import { mergeCalendarEvents, upcomingEvents } from "@/ics";
 import { res } from "@/util";
 
 /**
- * Fetches public ICS feeds server-side and hands the page JSON. The feeds send no CORS
- * headers, so a page cannot read it directly.
- */
-
-/**
- * Mirrors `site.calendars` in `src/data/site.ts` — Pages Functions are bundled separately and
- * cannot import from `src/`, so the two ids are duplicated verbatim rather than transformed,
- * which keeps them diffable against their source. These are the base64 form Google's share links
- * use; the ICS endpoint wants the address inside.
+ * Duplicated from the site's calendar config: Pages Functions bundle separately and cannot
+ * import from `src/`. Base64 as in Google's share links; the ICS endpoint wants the decoded
+ * address, and the feeds send no CORS headers, hence this proxy.
  */
 const CALENDARS = {
   frc: "Y19hYjljNWJlYTEwODgyYzAxYTAxOGNiZDUxYWIyMzcwYmY4NDk5NDZiZTRlMjUzNTAwZmZmMWQxMGZkY2M4NjFhQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20",
   sc2: "Y19wcDlkOXRrbGRrbThmdXZtcjMyZTBwZTgxc0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t",
 };
 
-/**
- * Mirrors `site.location.timeZone`, the zone the agenda page formats in. All-day dates resolve to
- * midnight here, so the page files them under their own day.
- */
+/** Duplicated from the site's location config; all-day dates resolve to midnight in this zone. */
 const TIME_ZONE = "America/New_York";
 
 type CalendarName = keyof typeof CALENDARS;
 
-/** The feeds each agenda merges. */
 const SOURCES = {
   frc: ["frc"],
   sc2: ["sc2", "frc"],
@@ -34,13 +24,10 @@ const SOURCES = {
 const isCalendarName = (value: string | undefined): value is CalendarName =>
   value !== undefined && Object.hasOwn(CALENDARS, value);
 
-/** How far ahead the agenda looks. */
 const WINDOW_DAYS = 90;
 
-/** Fifteen minutes: a schedule change should surface the same day, not the same minute. */
 const MAX_AGE = 900;
 
-/** An error answer is never cached; only a parsed feed is. */
 const NO_STORE = { "Cache-Control": "no-store" };
 
 export const onRequestGet: PagesFunction<unknown, "name"> = async ({
@@ -53,8 +40,7 @@ export const onRequestGet: PagesFunction<unknown, "name"> = async ({
     return res({ message: "Unknown calendar" }, 404, NO_STORE);
   }
 
-  // Cloudflare's edge cache, keyed on the request, so one fetch of the feed serves every visitor
-  // for the freshness window instead of each browser holding its own copy.
+  // Edge cache keyed on the request: one feed fetch serves every visitor for the freshness window.
   const cache = caches.default;
   const cached = await cache.match(request);
   if (cached !== undefined) {

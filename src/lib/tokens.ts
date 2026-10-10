@@ -1,19 +1,12 @@
-// `?raw` inlines the stylesheets' source at build time. `readFileSync` cannot be used here:
-// the page is bundled before it is prerendered, so a path relative to this module no longer
-// points at `src/`.
+// `?raw` inlines the stylesheets at build time. `readFileSync` fails because the page is bundled
+// before it is prerendered, so a module-relative path no longer reaches `src/`.
 import { ACCENTS, type Accent } from "@/data/site";
 import tailwindSource from "@/styles/global.css?raw";
 import tokenSource from "@/styles/tokens.css?raw";
 
 /**
- * Reads the design tokens out of `src/styles/tokens.css` at build time, so anything verifying
- * them verifies the values the site actually ships. The stylesheet is authoritative
- * (DESIGN.md §11) and this module is its only reader: a consumer restating a value as a
- * literal can drift from the stylesheet with a green build.
- *
- * A token resolves for one context (finish, accent, register) to what a viewer sees there, and
- * anything this reader cannot resolve throws. A value it half-understood would reach the
- * contrast math as `NaN`, which passes every floor check.
+ * Anything this reader cannot resolve throws: a half-understood value would reach the contrast
+ * math as `NaN`, which passes every floor check.
  */
 
 export type Mode = "dark" | "light";
@@ -25,19 +18,17 @@ export interface Context {
   register?: Register;
 }
 
-/** A resolved color: six-digit hex plus its alpha, 1 for an opaque token. */
 export interface Rgba {
   hex: string;
   alpha: number;
 }
 
-// Comments are stripped before parsing: a selector mentioned in prose would otherwise register
-// as a block, and a commented-out declaration would read as live.
+// Comments are stripped first: a selector in prose would register as a block, and a commented-out
+// declaration would read as live.
 const strip = (css: string): string => css.replaceAll(/\/\*[\s\S]*?\*\//g, "");
 const tokensCss = strip(tokenSource);
 const tailwindCss = strip(tailwindSource);
 
-/** Body of the first `{ … }` following `header`, or undefined when the header is absent. */
 const blockAfter = (css: string, header: string): string | undefined => {
   const start = css.indexOf(header);
   if (start === -1) {
@@ -100,13 +91,12 @@ for (const name of declaredAccents) {
   }
 }
 
-/** Every accent, the unset default first. */
 export const accents = (): readonly Accent[] => ACCENTS;
 
 const where = (context: Context): string =>
   `${context.mode ?? "dark"} / ${context.accent ?? "yellow"} / ${context.register ?? "shop"}`;
 
-/** The declared value of `--sc2-<name>` in a context: accent block, then register, then root. */
+/** Precedence: accent block, then register, then root. */
 const declared = (name: string, context: Context): string => {
   const property = `--sc2-${name}`;
   const accent = context.accent ?? "yellow";
@@ -120,7 +110,6 @@ const declared = (name: string, context: Context): string => {
   return value;
 };
 
-/** Splits on commas that are not inside parentheses. */
 const topLevelArguments = (inner: string): string[] => {
   const parts: string[] = [];
   let depth = 0;
@@ -139,7 +128,6 @@ const topLevelArguments = (inner: string): string[] => {
   return parts;
 };
 
-/** Substitutes `var(--sc2-*)` references and picks the finish's side of `light-dark()`. */
 const resolve = (value: string, context: Context, depth = 0): string => {
   if (depth > 8) {
     throw new Error(`token reference loop while resolving "${value}" (${where(context)})`);
@@ -179,11 +167,9 @@ const toRgba = (value: string, label: string): Rgba => {
   throw new Error(`${label} resolves to "${value}", which is not a six-digit hex or rgb() color`);
 };
 
-/** A color token in a context, with its alpha (the dark finish's swipes are translucent). */
 export const rgba = (name: string, context: Context = {}): Rgba =>
   toRgba(resolve(declared(name, context), context), `--sc2-${name} (${where(context)})`);
 
-/** An opaque color token in a context, as a six-digit hex. */
 export const color = (name: string, context: Context = {}): string => {
   const value = rgba(name, context);
   if (value.alpha !== 1) {
@@ -192,13 +178,10 @@ export const color = (name: string, context: Context = {}): string => {
   return value.hex;
 };
 
-/** A `--sc2-radius-*` token. */
 export const radius = (name: string): string => declared(`radius-${name}`, {});
 
-/** A `--sc2-duration-*` token. */
 export const duration = (name: string): string => declared(`duration-${name}`, {});
 
-/** A `--breakpoint-*` token from the layout `@theme` block in `global.css`. */
 export const breakpoint = (name: string): string => {
   const value = declarations(blockAfter(tailwindCss, "@theme {")).get(`--breakpoint-${name}`);
   if (value === undefined) {

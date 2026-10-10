@@ -39,8 +39,8 @@ const rendered = await Promise.all(
 );
 
 /**
- * A photographed season is a feature, alternating sides among the photographed ones; the rest
- * are compact rows, and a run of them reads as one ruled ledger.
+ * Features alternate sides counting only photographed seasons; a run of compact rows ends in one
+ * rule.
  */
 const entries = rendered.map((entry, index) => ({
   ...entry,

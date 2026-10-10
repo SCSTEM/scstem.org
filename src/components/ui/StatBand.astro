@@ -3,19 +3,13 @@ import Card from "@/components/ui/primitives/Card.astro";
 import { cn } from "@/lib/cn";
 
 /**
- * The stat band (DESIGN.md §8): a Source Code Pro numeral in the theme accent over an Inter
- * caption, on a feature pocket. This is where the voice rule from §1 — "numbers beat adjectives"
- * — gets its surface.
- *
- * Each cell draws its own engineering grid rather than the pocket drawing one across all of
- * them, so every divider falls on a grid line and each cell shows whole squares.
+ * Each cell draws its own engineering grid rather than the pocket drawing one across all of them,
+ * so every divider falls on a grid line and each cell shows whole squares.
  */
 interface Stat {
-  /** The numeral itself. Short — it sets in the data voice at display size. */
+  /** Short: it sets at display size. */
   value: string;
-  /** What the numeral counts. */
   label: string;
-  /** One line of context. Optional: the about page's counts need none. */
   description?: string;
 }
 
@@ -27,10 +21,9 @@ interface Props {
 const { stats, class: className } = Astro.props;
 
 /**
- * The band is a column or a single row, never a wrapping grid — which is what keeps the hairline
- * dividers correct (a two-column intermediate would put a stray inline-start border on the first
- * cell of every row after the first) and satisfies "no orphan rows" (DESIGN.md §5) by never
- * having a second row at all. A short band can turn at `sm`; a long one needs the full container.
+ * A column or a single row, never a wrapping grid: a two-column intermediate would put a stray
+ * inline-start border on the first cell of every later row. A short band can turn at `sm`; a long
+ * one needs `lg`.
  */
 const row =
   stats.length <= 3

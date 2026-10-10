@@ -5,30 +5,12 @@ import { nav, type PagePath, programs, site } from "@/data/site";
 import { getVisibleEvents } from "@/lib/events";
 import { absoluteUrl } from "@/lib/links";
 
-/**
- * The llms.txt convention (https://llmstxt.org): one plain-text map of the site, so an agent
- * answering "where can my kid do robotics near Chambersburg" reads a curated index instead of
- * crawling and guessing. Objective 4 — and the reason `robots.txt` blocks no AI crawler.
- *
- * Every URL and program fact comes from `src/data/site.ts`; events come from the collection, so
- * a retired season disappears here the same build it disappears from the sitemap. The one-line
- * descriptions are written here, because a page's own `description` is a meta tag aimed at a
- * search result and reads wrong as a directory entry.
- *
- * No `llms-full.txt`: it would be a second copy of every page's prose to keep in sync, and this
- * file plus the sitemap already lead an agent to the real thing.
- */
-
 interface Entry {
   readonly description: string;
   readonly href: PagePath;
   readonly title: string;
 }
 
-/**
- * A section with no entries is omitted rather than rendered as a bare heading — events retire
- * themselves, so "Events" is empty out of season.
- */
 const section = (heading: string, entries: readonly Entry[]): string | undefined =>
   entries.length === 0
     ? undefined
@@ -41,7 +23,6 @@ const section = (heading: string, entries: readonly Entry[]): string | undefined
         "",
       ].join("\n");
 
-/** `2026-09-06`, in the timezone everything the organization runs happens in. */
 const isoDay = (date: Date): string =>
   new Intl.DateTimeFormat("en-CA", { dateStyle: "short", timeZone: site.location.timeZone }).format(
     date,

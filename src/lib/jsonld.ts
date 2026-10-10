@@ -3,14 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import { type PagePath, type ProgramTheme, nav, programs, site, socials } from "@/data/site";
 import { absoluteUrl } from "@/lib/links";
 
-/**
- * Typed builders for the schema.org objects the site emits. Keeping them here rather than inline
- * in layouts means one place to audit against a validator, and one place a field can be added.
- *
- * The data is all ours, so `JsonLd.astro` can serialize it with `set:html` safely.
- */
-
-/** What a schema.org property is allowed to hold — the concrete contract, not `unknown`. */
+// All data here is first-party, which is what makes serializing it with `set:html` safe.
 type JsonLdValue = string | number | boolean | JsonLdObject | readonly JsonLdValue[];
 
 export interface JsonLdObject {
@@ -19,7 +12,6 @@ export interface JsonLdObject {
   readonly [key: string]: JsonLdValue | undefined;
 }
 
-/** The workshop's address, the only one known part by part. */
 const workspaceAddress = {
   "@type": "PostalAddress",
   streetAddress: site.location.street,
@@ -29,10 +21,7 @@ const workspaceAddress = {
   addressCountry: site.location.country,
 } as const;
 
-/**
- * The organization, emitted on every page by BaseLayout. `NGO` rather than `Organization`: it is
- * the specific type for a nonprofit, and specificity is what makes structured data useful.
- */
+/** `NGO` rather than `Organization`: the specific type for a nonprofit. */
 export const organization: JsonLdObject = {
   "@context": "https://schema.org",
   "@type": "NGO",
@@ -47,7 +36,6 @@ export const organization: JsonLdObject = {
   sameAs: socials.map((social) => social.profile),
 };
 
-/** The site itself. Homepage only — repeating it on every page adds nothing. */
 export const webSite: JsonLdObject = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -58,16 +46,13 @@ export const webSite: JsonLdObject = {
 /** @public */
 export interface Breadcrumb {
   readonly name: string;
-  /** Site-root-relative, e.g. `/programs/frc/`. */
   readonly path: PagePath;
 }
 
 /**
  * @public
  *
- * Breadcrumbs for a nested page, emitted by `BaseLayout` from its `trail`. Pass the full trail
- * including the current page; the home link is added automatically, since every trail starts
- * there.
+ * Pass the full trail including the current page; the home link is added automatically.
  */
 export const breadcrumbs = (trail: readonly Breadcrumb[]): JsonLdObject => ({
   "@context": "https://schema.org",
@@ -80,10 +65,6 @@ export const breadcrumbs = (trail: readonly Breadcrumb[]): JsonLdObject => ({
   })),
 });
 
-/**
- * The trail to a program's page — Programs, then the program — followed by any pages below it.
- * Pass the result as a layout's `trail`.
- */
 export const programTrail = (
   program: ProgramTheme,
   ...rest: readonly Breadcrumb[]
@@ -93,28 +74,21 @@ export const programTrail = (
   ...rest,
 ];
 
-/** @public Consumed by `EventLayout`, which passes an `events` entry's frontmatter through. */
+/** @public */
 export interface EventDetails {
   readonly description: string;
   readonly end?: Date | undefined;
-  /** Absolute, like `url` — a relative path in structured data resolves against nothing. */
+  /** Absolute: structured data has no base to resolve a relative path against. */
   readonly image?: string | undefined;
-  /** Both default to the workspace, exactly as the visible page does. */
   readonly locationAddress?: string | undefined;
   readonly locationName?: string | undefined;
   readonly name: string;
   readonly registrationUrl?: string | undefined;
   readonly start: Date;
-  /** The page's own absolute URL. */
   readonly url: string;
 }
 
-/**
- * @public Consumed by `EventLayout`.
- *
- * One event's `Event` object. Dates come from the entry's timestamps rather than any displayed
- * string, so the structured data cannot disagree with the page.
- */
+/** @public */
 export const event = ({
   name,
   description,
@@ -136,10 +110,8 @@ export const event = ({
   location: {
     "@type": "Place",
     name: locationName ?? site.location.name,
-    /**
-     * Only the workspace's address is known part by part; an off-site event carries one free-text
-     * line, and schema.org takes either for `address`.
-     */
+    // An off-site event carries one free-text line; schema.org accepts a string or a PostalAddress.
+
     address: locationAddress ?? workspaceAddress,
   },
   organizer: {
@@ -161,8 +133,7 @@ export const event = ({
 /**
  * @public
  *
- * The `FAQPage` for a page's answered questions. Each answer is the entry's rendered HTML, which
- * Google's FAQ documentation permits.
+ * Each answer is the entry's rendered HTML, which Google's FAQ documentation permits.
  */
 export const faqPage = (entries: readonly CollectionEntry<"faq">[]): JsonLdObject => ({
   "@context": "https://schema.org",

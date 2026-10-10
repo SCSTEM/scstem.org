@@ -6,21 +6,13 @@ import Button from "@/components/ui/primitives/Button.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 
 /**
- * A `Hero`'s looping background footage, over the frame it starts from.
- *
- * The poster is a real `<Image>` rather than the video's own `poster` attribute, because it is
- * the page's LCP element and only an `<Image>` gives it a responsive ladder — `poster=` hands a
- * phone the same still a desktop gets. The video lies on top at `preload="none"` and reveals
- * itself once it is genuinely playing, so a visitor who never reaches that point pays nothing
- * for it.
- *
- * Its playback control sits in the footage's bottom corner as a quiet icon button, so it never
- * competes with the hero's actions; its accessible name says which way it toggles.
+ * The poster is a real `<Image>` rather than the video's `poster` attribute, because it is the LCP
+ * element and only `<Image>` gives it a responsive ladder. The video overlays it at
+ * `preload="none"` and reveals itself once playing.
  */
 interface Props {
-  /** The playback control references this id. */
   id: string;
-  /** Describes the footage: the poster is what a reader who never sees it moving is left with. */
+  /** Describes the footage, since the video itself is hidden from assistive tech. */
   alt: string;
   mp4: string;
   poster: ImageMetadata;
@@ -73,14 +65,10 @@ const { id, alt, mp4, poster, webm } = Astro.props;
     if (toggle === null) continue;
     const label = toggle.querySelector("[data-video-label]");
     if (label === null) continue;
-    /**
-     * SAFETY: `NetworkInformation` is absent from lib.dom, so the shape is named here; the `in`
-     * guard is what makes the read safe, and `saveData` is the only member touched.
-     */
+    // `NetworkInformation` is absent from lib.dom; the `in` guard makes the read safe.
     const connection =
       "connection" in navigator ? (navigator.connection as { saveData?: boolean }) : undefined;
 
-    /** Motion the visitor has asked not to see, and bytes they have asked not to spend. */
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let wanted = !motion.matches && connection?.saveData !== true;
     let inView = false;
@@ -104,9 +92,8 @@ const { id, alt, mp4, poster, webm } = Astro.props;
     };
 
     /**
-     * Not before `load`: the hero is in the viewport from the first paint, so an observer armed
-     * any earlier puts the video's first megabyte in a bandwidth race with the poster that *is*
-     * the LCP.
+     * Not before `load`: an observer armed earlier races the video's first megabyte against the LCP
+     * poster.
      */
     const arm = () => {
       const observer = new IntersectionObserver((entries) => {
@@ -116,15 +103,16 @@ const { id, alt, mp4, poster, webm } = Astro.props;
         }
       });
 
-      // Only on `playing`: revealing it any earlier shows a blank frame over the poster. It stays
-      // revealed through later pauses, since fading back would read as a glitch.
+      // Only on `playing`: any earlier shows a blank frame over the poster. It stays revealed
+      // through later pauses.
       video.addEventListener("playing", () => video.setAttribute("data-playing", ""));
       const unavailable = (): void => {
         wanted = false;
         toggle.hidden = true;
         observer.disconnect();
       };
-      // A failed `<source>` reports on itself, not on the video; the last one failing means none loaded.
+      // A failed `<source>` reports on itself, not the video; the last one failing means none
+      // loaded.
       video.addEventListener("error", unavailable);
       video.querySelector("source:last-of-type")?.addEventListener("error", unavailable);
       toggle.addEventListener("click", () => {

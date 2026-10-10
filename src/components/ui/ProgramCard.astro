@@ -4,11 +4,6 @@ import ProgramName from "@/components/ui/ProgramName.astro";
 import { programPhotos } from "@/data/programPhotos";
 import { type ProgramTheme, programs } from "@/data/site";
 
-/**
- * A program's feature card: its photo, age badge, title, and a link to its page. The body copy
- * is the default slot, since each page describes the program in its own words; the logistics a
- * parent decides on follow it, read from the program's facts.
- */
 interface Props {
   program: ProgramTheme;
 }

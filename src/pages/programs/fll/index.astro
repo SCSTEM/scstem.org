@@ -15,10 +15,6 @@ import { nav, programs, site } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
 import { programTrail } from "@/lib/jsonld";
 
-/**
- * The newest team photo leads this page; the program photo already fronts this program's cards
- * and menu tile, and a photo leads one page only.
- */
 const latest = (await getCollection("fllTeamPhotos")).toSorted(
   (a, b) => b.data.year - a.data.year,
 )[0]?.data;

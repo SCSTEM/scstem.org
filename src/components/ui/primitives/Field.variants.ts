@@ -2,11 +2,6 @@ import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/cn";
 
-/**
- * The shared recipe for text controls (DESIGN.md §8): pocket floor, hairline border, accent focus
- * ring. `Input` and `Textarea` differ only in height versus vertical padding, so the invalid,
- * disabled and transition treatment has one definition.
- */
 export const fieldVariants = cva(
   cn(
     "w-full rounded-md border bg-card px-3 text-copy text-foreground",
@@ -18,7 +13,6 @@ export const fieldVariants = cva(
     defaultVariants: { control: "input", invalid: false },
     variants: {
       control: {
-        /** A single-line control is a 44px touch target. */
         input: "h-11",
         textarea: "py-2",
       },

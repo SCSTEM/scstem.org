@@ -11,19 +11,9 @@ import { cn } from "@/lib/cn";
 import { breakpoint } from "@/lib/tokens";
 
 /**
- * Site header (DESIGN.md §5). Sticky on all viewports, condensing after scroll in pure CSS.
- *
- * Identity is the **real lockup** on every viewport, never a rebuilt gear plus the name in Inter:
- * the brand's Light full-width lockup (the variant for dark grounds — the color lockup's gray
- * wordmark is 2:1 on this header).
- *
- * The Programs entry is a real link to `/programs` with a disclosure *in addition*, so touch and
- * no-JS both get a destination (§5, §9). The panel is a native `popover`, which supplies Esc,
- * light-dismiss and top-layer placement without script (§9's "menus close on Esc"; WCAG 2.2
- * SC 1.4.13 needs the dismissal). Script adds only the mouse hover-intent on top.
- *
- * Both viewports project `nav` from `src/data/site.ts`; the desktop/sheet split is the `surfaces`
- * field there, not two hand-written lists.
+ * The Programs entry is a real link with a disclosure in addition, so touch and no-JS both get a
+ * destination. The panel is a native `popover`, which supplies Esc, light-dismiss and top-layer
+ * placement without script (WCAG 1.4.13 needs the dismissal); script adds only mouse hover intent.
  */
 interface Props {
   class?: string;
@@ -32,16 +22,12 @@ interface Props {
 const { class: className } = Astro.props;
 
 const current = Astro.url.pathname;
-/**
- * A section is "current" for its children too. Page paths end in `/`, so a section's href is a
- * prefix of every page below it: /programs/frc/ lights up Programs.
- */
+/** Page paths end in `/`, so a section's href is a prefix of every page below it. */
 const inSection = (href: string): boolean => current.startsWith(href);
 
 /**
- * `as const` on the data gives each entry's `surfaces` a literal tuple type, so a direct
- * `.includes("header")` is an error on entries that lack it. Widening through the parameter is
- * what keeps one list readable from both surfaces without a cast.
+ * `as const` gives each entry's `surfaces` a literal tuple type, so a direct `.includes()` errors
+ * on entries lacking the value; widening through the parameter avoids a cast.
  */
 const onSurface =
   (surface: string) =>
@@ -55,9 +41,8 @@ const sheetCtas = nav.primary.filter(onSurface("sheet-cta"));
 const panelId = (link: NavLink): string => `${link.label.toLowerCase()}-panel`;
 
 /**
- * The panel's program photos are CSS backgrounds, not `<img>`s: a closed popover is
- * `display: none`, and browsers still fetch a lazy `<img>` there on every page, where a hidden
- * element's background is never requested.
+ * CSS backgrounds, not `<img>`s: browsers still fetch a lazy `<img>` inside a closed popover, but
+ * never a hidden element's background.
  */
 const PANEL_PHOTO_WIDTH = 240;
 const panelPhoto = async (key: ProgramTheme): Promise<string> => {
@@ -81,8 +66,8 @@ const panelPhotos = new Map(
 );
 
 /**
- * Header items run the full height of the bar, so the current page's rule sits on the header's
- * bottom hairline rather than under the text.
+ * Items run the full height of the bar so the current page's rule sits on the header's bottom
+ * hairline.
  */
 const navItem = cn(
   "relative flex h-full items-center bg-none px-3 pb-0 spec-label text-body lg:px-4",
@@ -92,7 +77,7 @@ const navItem = cn(
   "after:transition-transform after:duration-(--sc2-duration-micro) after:ease-(--sc2-ease-toggle)",
 );
 
-/** Chrome links inside the panel and sheet: no underline, which belongs to links in copy. */
+/** Drops the underline that belongs to links in copy. */
 const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
 ---
 
@@ -228,7 +213,7 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
       </Button>
     </div>
 
-    <!-- One state, `aria-expanded`, with CSS deriving the label and icon swap from it. -->
+    <!-- `aria-expanded` is the only state; CSS derives the label and icon swap from it. -->
     <Button
       aria-controls="mobile-menu"
       aria-expanded="false"
@@ -251,10 +236,6 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
   </nav>
 </header>
 
-<!--
-  Full-height sheet (DESIGN.md §5). Nothing is more than two taps away. Opaque, so the page
-  behind it is marked `inert` while it is open rather than left in the tab order.
--->
 <div class="fixed inset-0 z-40 bg-background md:hidden" data-menu-sheet hidden id="mobile-menu">
   <nav
     aria-label="Mobile"
@@ -314,13 +295,9 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
 </div>
 
 <style>
-  /**
-   * Condense after scroll. Scroll-driven animations are progressive: where they are unsupported
-   * the header simply keeps its full height, which is the correct fallback.
-   *
-   * `scale`, not `height`: height is not a compositor property, so animating it relayouts the
-   * sticky header and reflows the page below on every scroll frame (DESIGN.md §6 — "only
-   * `opacity` and `transform` animate").
+  /*
+   * Where scroll-driven animations are unsupported the header keeps its full height. `scale`, not
+   * `height`: height is not a compositor property and would reflow the page every scroll frame.
    */
   @supports (animation-timeline: scroll()) {
     @media (prefers-reduced-motion: no-preference) {
@@ -338,7 +315,6 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
     }
   }
 
-  /* The menu button's label and icon, derived from its own state. */
   [data-menu-toggle] [data-when="open"],
   [data-menu-toggle][aria-expanded="true"] [data-when="closed"] {
     display: none;
@@ -348,11 +324,10 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
     display: flex;
   }
 
-  /**
-   * The Programs panel. A popover renders in the top layer, where offsets resolve against the
-   * viewport rather than the header, so it is anchored to its nav item: centered beneath it, or
-   * flush to whichever side keeps it on screen. The script below places it where anchor
-   * positioning is unsupported.
+  /*
+   * A popover renders in the top layer, where offsets resolve against the viewport rather than the
+   * header, so it is anchored to its nav item. The script places it where anchor positioning is
+   * unsupported.
    */
   [data-nav-anchor] {
     anchor-name: --nav-panel;
@@ -384,11 +359,8 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
     }
   }
 
-  /**
-   * The chevron turns over while the panel is open. `:global()` on the `<svg>` is required: it is
-   * rendered by `Icon.astro`, so it carries no `data-astro-cid-*` of this component and a plain
-   * descendant selector would match nothing. The `[data-nav-trigger]` side keeps the scope.
-   */
+  /* `:global()` on the svg is required: the icon renders in another component, so it has no
+     `data-astro-cid-*` of this one. */
   [data-nav-trigger] :global(svg) {
     transition: rotate var(--sc2-duration-ui) var(--sc2-ease-toggle);
   }
@@ -401,7 +373,6 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
     }
   }
 
-  /* The sheet fades in from just above, as if dropping out of the header. */
   [data-menu-sheet] {
     transition:
       opacity var(--sc2-duration-ui) var(--sc2-ease-entrance),
@@ -433,7 +404,7 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
     }
   }
 
-  /* The scroll lock, likewise: no inline style to leave behind. */
+  /* Scroll lock in CSS leaves no inline style behind. */
   body:has([data-menu-sheet]:not([hidden])) {
     overflow: hidden;
   }
@@ -462,9 +433,9 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
     }
 
     /**
-     * Hover intent for a mouse: open after a beat, and close only once the pointer has been off
-     * both the item and the panel for a moment, so crossing the gap between them does not shut it.
-     * A panel opened by click or keyboard stays until it is dismissed.
+     * Mouse hover intent: close only once the pointer has been off both the item and the panel for
+     * a moment, so crossing the gap between them does not shut it. A panel opened by click or
+     * keyboard stays until dismissed.
      */
     const OPEN_DELAY = 80;
     const CLOSE_DELAY = 200;
@@ -513,10 +484,9 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
 
   if (toggle instanceof HTMLElement && sheet instanceof HTMLElement) {
     /**
-     * The sheet is opaque and covers the page, so everything behind it leaves the tab order and
-     * the accessibility tree — otherwise Tab past the last item walks invisible links. `body`
-     * cannot be the target: it contains the sheet. Everything in the shell that is not the toggle
-     * carries `data-sheet-inert`.
+     * The sheet is opaque, so everything behind it leaves the tab order and accessibility tree;
+     * otherwise Tab walks invisible links. `body` cannot be the target since it contains the sheet,
+     * so every shell element other than the toggle carries `data-sheet-inert`.
      */
     const behind = document.querySelectorAll("main, footer, [data-sheet-inert]");
 
@@ -540,8 +510,7 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
 
     /**
      * Both the sheet and its toggle are `md:hidden`, so crossing the breakpoint while open would
-     * otherwise leave the page scroll-locked and inert with no visible control to undo it. The
-     * boundary comes from the `--breakpoint-md` token at build time, via `data-md`.
+     * leave the page scroll-locked and inert with no visible control to undo it.
      */
     const desktop = window.matchMedia(`(min-width: ${toggle.dataset.md ?? "48rem"})`);
     desktop.addEventListener("change", (event) => {

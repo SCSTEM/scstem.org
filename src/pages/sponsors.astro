@@ -16,14 +16,8 @@ import { ogCards } from "@/data/ogCards";
 import { nav, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
-/**
- * One group per level, strongest first, because the tier is the page's whole information
- * hierarchy. Former sponsors (`active: false`) get a name-only acknowledgment from the same
- * collection.
- */
 const sponsors = await getCollection("sponsors");
 
-/** Declaration order in `SPONSOR_LEVELS` is the ranking, so the grouping never restates it. */
 const groups = SPONSOR_LEVELS.map((level) => ({
   level,
   members: sponsors.filter((entry) => entry.data.active && entry.data.level === level),
@@ -33,7 +27,6 @@ const past = sponsors
   .filter((entry) => !entry.data.active)
   .toSorted((a, b) => a.data.name.localeCompare(b.data.name));
 
-/** The fields alumni work in, the most common first: what a sponsor's money turns into. */
 const alumni = await getCollection("alumni");
 const listFormat = new Intl.ListFormat("en-US", { style: "long", type: "conjunction" });
 const alumniFields = listFormat.format(

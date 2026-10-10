@@ -7,13 +7,6 @@ import Section from "@/components/ui/Section.astro";
 import { nav, programs } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
-/**
- * Cloudflare Pages serves `404.html` from static output automatically, so this needs no config.
- * Noindexed, and useful rather than cute: the links are the four places people were most likely
- * headed. It is a blueprint page (DESIGN.md §2): the sheet that is not in the set.
- */
-
-/** Titles and hrefs are the nav inventory's, so a renamed or moved route follows here. */
 const destinations = [
   {
     ...nav.programs,

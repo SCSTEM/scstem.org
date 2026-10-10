@@ -10,17 +10,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { programTrail } from "@/lib/jsonld";
 
 /**
- * Renders our own agenda from JSON that `/api/calendar/[name]` parses out of the public feed
- * server-side. The link out to Google is in the static HTML on every render: it is the no-JS
- * path, and "add this to my own calendar" is a thing people come here to do.
- */
-/**
- * Astro hoists `getStaticPaths` out of the component's scope, so the table it reads lives inside
- * it and reaches the page as props rather than as a frontmatter constant.
+ * `getStaticPaths` is hoisted out of the component scope, so its table is built inside it and
+ * reaches the page as props.
  */
 export const getStaticPaths = (() => {
   interface Calendar {
-    /** The public calendars' ids, in the base64 form Google's share links use. */
     googleIds: readonly string[];
     heading: string;
     intro: string;
@@ -30,8 +24,7 @@ export const getStaticPaths = (() => {
   }
 
   /**
-   * Total over `site.calendars` by `satisfies`, so adding a calendar there without a page here
-   * is a build error rather than a route that quietly does not exist.
+   * `satisfies` makes this total over `site.calendars`: a calendar without a page is a build error.
    */
   const calendars = {
     sc2: {
@@ -65,12 +58,6 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { calendar, name } = Astro.props;
 
-/**
- * Google's own view of the same calendar — where "add to my calendar" lives, and the one place a
- * reader can go if the agenda below fails for any reason. The embed's `src` is the calendar's
- * address, which the base64 id encodes.
- */
-/** A program's calendar sits under that program; the organization's is the top-level Calendar. */
 const trail =
   "theme" in calendar
     ? programTrail(calendar.theme, { name: calendar.title, path: `/calendar/${name}/` })
@@ -91,8 +78,6 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
   title={calendar.title}
   trail={trail}
 >
-  <!-- A photographic hero would push the agenda — the only reason anyone opens this page —
-       below the fold, so the header is the compact one. -->
   <Hero>
     <Fragment slot="eyebrow">{nav.calendar.label}</Fragment>
     <Fragment slot="title">{calendar.heading}</Fragment>
@@ -147,9 +132,8 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
   import type { CalendarEvent, CalendarResponse } from "../../../functions/types";
 
   /**
-   * Feed text is authored outside this repo, so every string reaches the page through
-   * `textContent` and never through markup — the reason this builds nodes rather than a
-   * template string.
+   * Feed text is authored elsewhere, so it reaches the page only through `textContent`, never
+   * markup.
    */
   const element = (tag: string, className: string, text?: string): HTMLElement => {
     const node = document.createElement(tag);
@@ -160,7 +144,6 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
     return node;
   };
 
-  /** A machine-readable date or instant beside the human one. */
   const stamp = (className: string, text: string, datetime: string): HTMLElement => {
     const node = element("time", className, text);
     node.setAttribute("datetime", datetime);
@@ -168,9 +151,8 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
   };
 
   /**
-   * Google Calendar stores a description written in its editor as HTML. Line breaks and block
-   * boundaries become newlines and the markup is dropped; `DOMParser` runs no scripts and loads
-   * nothing.
+   * Google Calendar stores descriptions as HTML; block boundaries become newlines and the markup is
+   * dropped.
    */
   const plainText = (html: string): string =>
     new DOMParser()
@@ -252,7 +234,6 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
           stamp(
             "text-small text-muted font-mono block sm:pt-0.5",
             when(event),
-            // An all-day entry has no clock, so its `datetime` is the day alone.
             event.allDay ? isoDay : event.start,
           ),
         );

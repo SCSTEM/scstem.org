@@ -1,9 +1,6 @@
 import type { APIResponse, CalendarResponse, TurnstileResponse } from "@/types";
 
-/**
- * A JSON response from any endpoint. `headers` are added to the content type. A failed
- * `APIResponse` that carries an error also logs it, so it reaches the Functions log.
- */
+/** A failed `APIResponse` that carries an error also logs it, so it reaches the Functions log. */
 export const res = (
   body: APIResponse | CalendarResponse,
   status: number,

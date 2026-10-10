@@ -17,16 +17,6 @@ import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { awardCount, championshipSeasons, getSeasons } from "@/lib/seasons";
 
-/**
- * The layout is DESIGN.md §5's single flowing column with photo groupings as interleaved
- * timeline sections, and §8's stat band.
- */
-
-/**
- * The two groupings the narrative turns on: the seasons before the shutdown are the FRC origins
- * story, and 2023 onward — the first seasons back, and the first FLL teams — is the next
- * generation.
- */
 const NEXT_GENERATION_FROM = 2023;
 const SHUTDOWN_YEAR = 2020;
 
@@ -65,7 +55,6 @@ const awardsStat =
         description: `Including the ${String(firstRegionalWin.year)} ${firstRegionalWin.event} win.`,
       };
 
-/** What every season looks like today, then the running total. */
 const teamStats = [
   {
     value: programs.frc.students,
@@ -85,7 +74,6 @@ const teamStats = [
   awardsStat,
 ];
 
-/** Where the public has seen the robots, newest year first, each year in calendar order. */
 const outreach = await getCollection("outreach");
 const outreachYears = [...new Set(outreach.map((entry) => entry.data.year))].toSorted(
   (a, b) => b - a,

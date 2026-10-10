@@ -4,12 +4,7 @@ import type { CollectionEntry } from "astro:content";
 import SponsorCard from "@/components/ui/SponsorCard.astro";
 import { cn } from "@/lib/cn";
 
-/**
- * One sponsor level: its heading and its pockets. The column count follows the number of
- * sponsors, so no tier leaves a mostly-empty row (DESIGN.md §5: "No orphan rows"). A lone sponsor
- * takes the full-width feature pocket; two and four sit in pairs; three share one row; five and
- * up fall back to the three-column grid.
- */
+/** The column count follows the sponsor count so no tier leaves a mostly-empty row. */
 interface Props {
   level: CollectionEntry<"sponsors">["data"]["level"];
   sponsors: readonly CollectionEntry<"sponsors">[];

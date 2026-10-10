@@ -16,7 +16,6 @@ import { noUnsafeDictionaryTypeRule } from "./rules/no-unsafe-dictionary-type.ts
 import { noWidenThenAssertRule } from "./rules/no-widen-then-assert.ts";
 import { requireSafetyCommentForTypeAssertionRule } from "./rules/require-safety-comment-for-type-assertion.ts";
 
-/** ESLint plugin of generic rules that reject low-evidence and low-signal implementation patterns. */
 const antiSlopPlugin: ESLint.Plugin = {
   meta: { name: "anti-slop" },
   rules: {

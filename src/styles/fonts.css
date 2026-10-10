@@ -1,15 +1,13 @@
 /**
- * Self-hosted faces (DESIGN.md §3), with their OFL licenses in `./fonts/`; Vite fingerprints each
- * file. Each file and its declaration are what the Google Fonts CSS API serves for the weights
- * the design sanctions, latin subset only, plus Inter's latin-ext, which the browser fetches only
- * for a character outside the latin set. The files carry the full weight axis; the declared range
- * is what clamps it.
+ * Self-hosted faces; the OFL license texts sit beside the font files. Each declaration matches the
+ * Google Fonts CSS API for the sanctioned weights, latin subset only, plus Inter's latin-ext,
+ * which the browser fetches only for a character outside the latin set. The files carry the full
+ * weight axis; the declared range clamps it.
  *
- * No face is preloaded. Every page's LCP element is a photograph, and on a throttled link a font
- * preload queues ahead of it: measured, preloading Inter and Orbitron cost ~660 ms of LCP.
+ * No face is preloaded: every page's LCP element is a photograph, and a font preload queues ahead
+ * of it (measured: preloading Inter and Orbitron cost ~660 ms of LCP).
  */
 
-/* Inter — UI and body. 700 is for markdown bold. */
 @font-face {
   font-family: "Inter";
   font-style: normal;
@@ -32,7 +30,6 @@
     U+A720-A7FF;
 }
 
-/* Orbitron — display headings. Latin only upstream. */
 @font-face {
   font-family: "Orbitron";
   font-style: normal;
@@ -44,7 +41,6 @@
     U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Source Code Pro — the data voice: numerals, stats, spec labels. */
 @font-face {
   font-family: "Source Code Pro";
   font-style: normal;
@@ -56,7 +52,6 @@
     U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Architects Daughter — the annotation hand, markup only (≤5 words per page). */
 @font-face {
   font-family: "Architects Daughter";
   font-style: normal;
