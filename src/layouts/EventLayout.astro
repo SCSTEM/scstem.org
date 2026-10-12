@@ -5,6 +5,7 @@ import JsonLd from "@/components/JsonLd.astro";
 import Countdown from "@/components/ui/Countdown.astro";
 import CtaBanner from "@/components/ui/CtaBanner.astro";
 import FaqList from "@/components/ui/FaqList.astro";
+import FirstMarked from "@/components/ui/FirstMarked.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
@@ -103,7 +104,9 @@ const details = [
   <Hero>
     <HeroImage alt={hero.alt} slot="media" src={hero.src} />
 
-    <Fragment slot="eyebrow">{programs[data.program].name}</Fragment>
+    <Fragment slot="eyebrow">
+      <FirstMarked text={programs[data.program].name} />
+    </Fragment>
     <Fragment slot="title">{data.title}</Fragment>
 
     {data.subtitle}

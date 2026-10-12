@@ -1,13 +1,13 @@
 ---
-title: 2026 Season Kickoff
+title: 2026 season kickoff
 program: frc
 start: 2026-01-10T12:00:00-05:00
 end: 2026-01-10T16:00:00-05:00
-subtitle: Join Biohazard as we unveil this year's challenge
-description: Watch the 2026 FIRST Robotics Competition game reveal with Biohazard on January 10 at our downtown Chambersburg workspace, and see how build season starts.
+subtitle: Discover the new game with Biohazard and see how a season begins.
+description: Watch the FIRST Robotics Competition game reveal with Biohazard in downtown Chambersburg. Meet the team, explore ideas, and learn about joining the season.
 heroImage: ../../assets/events/cheering.webp
 heroImageAlt: Biohazard team members cheering from the stands at competition
-ctaLabel: Watch on FIRST website
+ctaLabel: Watch the game reveal
 ctaHref: https://www.firstinspires.org/robotics/frc/kickoff
 teaserUrls:
   - https://www.youtube.com/watch?v=2AEdAID2U2o
@@ -20,25 +20,26 @@ hintLabels:
   - "Hint #2"
 ---
 
-## The build season journey
+## From the game reveal to competition
 
-**Kickoff.** The game is revealed. Teams watch the live broadcast and receive the game manual to
-start strategizing.
+**Kickoff.** Watch the game reveal together, read the rules, and start exploring ideas for our
+robot.
 
-**Build season.** From kickoff to the first competition in March, design, prototype, build, and
-program the robot to meet the game challenges.
+**Build season.** Design, build, and program a robot to take on the challenge. Mentors help
+students test their ideas and improve the robot as competition approaches.
 
-**Competition – March & April.** Compete in regional events, form alliances, and work toward
-qualifying for the FIRST Championship.
+**Competition.** Take the robot to regional events in spring, compete in alliances with other
+teams, and put your skills into practice on the field.
 
-**Ages 14–18.** High school students work alongside adult mentors from industry to tackle real
-engineering challenges.
+**Ages 14–18.** High-school students work alongside experienced mentors to explore engineering,
+strategy, and creative roles. No robotics experience needed.
 
 ## What is _FIRST®_ Robotics Competition?
 
-_FIRST®_ Robotics Competition combines the excitement of sport with real engineering: high-school teams build industrial-size robots and
-compete against teams from around the world. [Meet Biohazard](/programs/frc) to see what a season
-on the team looks like.
+_FIRST®_ Robotics Competition brings high-school students and mentors together to build
+full-size robots for a new game each season. Students practice engineering, teamwork, and
+leadership as they prepare to compete. [Meet Biohazard](/programs/frc) to explore our team and
+the roles you can try.
 
 ## Meeting schedule
 
@@ -47,7 +48,8 @@ on the team looks like.
 - Game reveal live stream begins
 - ~4 PM – Meeting ends
 
-## Can't make it?
+## Explore joining Biohazard
 
-Interested in joining Biohazard but can't attend kickoff? We'd still love to have you on the team!
-Fill out the [get involved](/get-involved) form and we'll be in touch.
+You can get in touch even if you can't attend kickoff. Tell us your interests through the
+[Get involved](/get-involved) form, and a volunteer will answer your questions and discuss a
+visit. Students are welcome from Franklin County and beyond.

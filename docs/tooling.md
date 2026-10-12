@@ -66,6 +66,12 @@ curl -A "Mozilla/5.0 (Macintosh) AppleWebKit/537.36 Chrome/140.0.0.0 Safari/537.
 Download the `latin` file of each face (and Inter's `latin-ext`) over the existing one, and copy
 its `font-weight` and `unicode-range` into `src/styles/fonts.css`.
 
+Social cards use static TTF fonts in `tools/assets/fonts/`: Orbitron Bold for headings and an
+Inter Bold subset for the registered-trademark symbol. Orbitron has no glyph for that symbol.
+Request `https://fonts.googleapis.com/css?family=Inter:700&text=%C2%AE` without a browser user
+agent to obtain the subset's TTF URL. Keep the font's license alongside it, then run
+`pnpm assets:og` to regenerate the cards.
+
 **The FRC hero video** in `public/video/biohazard/` is the full 44 s master (git history has the
 1080p original), looped whole. 720p because the footage is soft and 1080p looks identical at more
 than twice the size:

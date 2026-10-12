@@ -36,19 +36,19 @@ export const GET: APIRoute = async () => {
   const body = [
     `# ${site.name}`,
     "",
-    `> ${site.description} Based at ${site.location.workspace}, ${site.location.region}, and ` +
-      `serving ${site.location.areaServed}. ${site.legal}`,
+    `> ${site.description} We meet at ${site.location.workspace}, ${site.location.region}. ` +
+      `Our community: ${site.location.areaServed}. ${site.legal}`,
     "",
     section("Programs", [
       {
-        title: programs.sc2.shortName,
+        title: "Robotics programs",
         href: programs.sc2.href,
-        description: "Both robotics programs and how they fit together, in one place.",
+        description: "Explore both robotics programs and choose a fit for your age and interests.",
       },
       {
         title: programs.fll.name,
         href: programs.fll.href,
-        description: `Ages ${programs.fll.ages}. Team-built LEGO robots, a research project, and a season that ends at a tournament.`,
+        description: `Ages ${programs.fll.ages}. Build a LEGO robot, investigate a real-world problem, and share your ideas with a small team.`,
       },
       {
         title: programs.frc.name,
@@ -66,13 +66,13 @@ export const GET: APIRoute = async () => {
         title: nav.cta.label,
         href: nav.cta.href,
         description:
-          "How a student, parent, mentor, or volunteer joins, and the form that starts it.",
+          "Join a team, share your skills, or explore sponsorship. A volunteer helps you take the next step.",
       },
       {
         title: nav.about.label,
         href: nav.about.href,
         description:
-          "Who the organization is, how it started, and how its programs are structured.",
+          "Our mission, history, mentorship, and community involvement in south-central Pennsylvania.",
       },
       {
         title: nav.calendar.label,
@@ -91,12 +91,14 @@ export const GET: APIRoute = async () => {
       {
         title: nav.donate.label,
         href: nav.donate.href,
-        description: "Ways to give: direct donation, the wishlist, and what the money pays for.",
+        description:
+          "Support students with tools, workspace, and opportunities to compete. Ways to give and our equipment wishlist.",
       },
       {
         title: nav.sponsors.label,
         href: nav.sponsors.href,
-        description: "Current and past sponsors by level, and the sponsorship packet.",
+        description:
+          "Meet the sponsors supporting hands-on learning and explore the sponsorship packet.",
       },
     ]),
     section(

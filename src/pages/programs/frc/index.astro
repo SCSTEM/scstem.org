@@ -58,12 +58,12 @@ const mentorStats = [
   {
     value: String(programs.frc.mentors),
     label: "Professional mentors",
-    description: "Each one works in a STEM career and brings it to the workshop.",
+    description: "STEM professionals sharing their skills with students in the workshop.",
   },
   {
     value: `${String(programs.frc.alumniMentors)} of ${String(programs.frc.mentors)}`,
     label: "Biohazard alumni",
-    description: "Former students, back to teach the team they learned on.",
+    description: "Former students returning to help the next team learn.",
   },
 ];
 
@@ -71,22 +71,22 @@ const season = [
   {
     when: "Kickoff · January",
     title: "The game is revealed",
-    body: "We watch the reveal together, read the rules, and decide what the robot has to do before anyone picks up a tool.",
+    body: "We watch the reveal together, read the rules, and explore ideas for a robot that can play the game. Students practice planning, asking questions, and deciding which challenges to tackle.",
   },
   {
     when: "Build season · January to March",
     title: "Design, build, program",
-    body: "Students model every part in CAD, and local manufacturers cut, bend, and weld the metal to their drawings, the way a real engineering team works with a shop. Back in the workspace, students 3D-print parts, assemble the robot, wire it, and write its code.",
+    body: "Students design robot parts using computer-aided design (CAD), and local manufacturers cut, bend, and weld metal from their drawings. In the workspace, students 3D-print parts, assemble and wire the robot, and write its code.",
   },
   {
     when: "Competition · Spring",
-    title: "Play it for real",
-    body: "At each event we play qualification matches with randomly assigned partners, form alliances, and play off for the title, with the pit crew repairing the robot between matches.",
+    title: "Take the robot to the field",
+    body: "We compete alongside other teams in alliances, combining our robots' strengths to play the game. Students scout matches, plan strategy, and repair the robot between rounds, learning to work together under pressure.",
   },
   {
     when: "Off-season",
-    title: "Train for next year",
-    body: "We keep meeting to train new members, test ideas for the next game, and take the robot to community events and off-season competitions.",
+    title: "Keep learning together",
+    body: "We welcome new members, practice skills, and test ideas for the next season. Robot demonstrations and off-season competitions give students more opportunities to share their work and learn from other teams.",
   },
 ];
 
@@ -114,14 +114,14 @@ const roles = [
   "Programming and controls",
   "Game strategy and scouting",
   "Fundraising and sponsor relations",
-  "Outreach and community demos",
+  "Outreach and robot demonstrations",
   "Photography, video, and social media",
-  "Graphic design and the team brand",
+  "Graphic design and team identity",
 ];
 ---
 
 <ProgramLayout
-  description={`Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName} builds a full-size FIRST robot from scratch every season in downtown Chambersburg: when we meet, who mentors, and ${String(awards)} awards since ${String(programs.frc.since)}.`}
+  description={`Join ${programs.frc.teamName}, FIRST Robotics Competition team ${String(programs.frc.teamNumber)}, for ages ${programs.frc.ages} in ${site.location.locality}, PA. Design, build, and compete with mentor support.`}
   og={ogCards.frc}
   program="frc"
   title="Biohazard - FIRST Robotics Competition"
@@ -145,11 +145,12 @@ const roles = [
       src={biohazardLockup}
     />
     <Fragment slot="title">
-      Real skills, <span class="highlight-swipe">real robots</span>, since {programs.frc.since}
+      Design, build, and <span class="highlight-swipe">compete</span>
     </Fragment>
-    {programs.frc.teamName} is a <FirstMark /> Robotics Competition team: high-school students, ages{" "}
-    {programs.frc.ages}, with mentors from STEM careers beside them. Every season they design,
-    build, wire, program, and drive a new robot.
+    Join {programs.frc.teamName}, our <FirstMark /> Robotics Competition team for high-school
+    students ages {programs.frc.ages}. Work alongside teammates and experienced mentors to build a
+    new robot each season. Explore engineering, programming, strategy, and creative roles—no
+    robotics experience needed.
     <Button href={nav.cta.href} size="lg" slot="actions">
       {nav.cta.label}
     </Button>
@@ -159,8 +160,9 @@ const roles = [
     <Fragment slot="title">One game, one robot, one season</Fragment>
     <Fragment slot="intro">
       Every January, <FirstMark /> reveals a new game to teams around the world at the same moment.
-      From that kickoff until competitions start in March, each team designs and builds a robot from
-      scratch to play it, then takes it to compete against teams it has never met.
+      We turn that challenge into a robot, testing and improving our ideas before competitions begin
+      in spring. Each stage gives students opportunities to learn, contribute, and take
+      responsibility for the team&rsquo;s work.
     </Fragment>
 
     <ol class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -175,10 +177,11 @@ const roles = [
   </Section>
 
   <Section atmosphere="band">
-    <Fragment slot="title">More than robots</Fragment>
+    <Fragment slot="title">Find your role on the team</Fragment>
     <Fragment slot="intro">
-      A robot needs a team behind it, and a lot of that team&rsquo;s work happens off the field. You
-      don&rsquo;t need to know which part is yours before you join.
+      Engineering, strategy, fundraising, and creative work all contribute to a season. You can
+      explore different roles with help from mentors and teammates as you discover what interests
+      you.
     </Fragment>
 
     <ul class="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -235,8 +238,10 @@ const roles = [
       </dl>
     </Card>
     <p class="mt-6 measure">
-      Students make at least one meeting a week, and the more they come, the more they get out of
-      it.
+      Plan on at least one meeting a week. Attending additional sessions gives you more time to
+      practice and contribute. Tell us about your schedule, and we can discuss how participation
+      fits around school and other activities. Students are welcome from {site.location.county}
+      and beyond.
     </p>
 
     <SectionAction href={nav.frcCalendar.href} prompt="Need this month's dates?" slot="action">
@@ -277,10 +282,11 @@ const roles = [
   </Section>
 
   <Section atmosphere="bubble" index={4}>
-    <Fragment slot="title">Mentors who do this for a living</Fragment>
+    <Fragment slot="title">Learn alongside experienced mentors</Fragment>
     <Fragment slot="intro">
-      Our professional mentors teach alongside other volunteers, and some of the people teaching
-      today learned on this team themselves.
+      STEM professionals and other volunteers share their skills and help students work through
+      challenges. Some of our mentors began as students on this team and returned to help the next
+      generation learn.
     </Fragment>
 
     <StatBand stats={mentorStats} />
@@ -308,8 +314,9 @@ const roles = [
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Find your place on the team</Fragment>
-      Tell us a little about yourself and a volunteer will invite you to a meeting. Students,
-      mentors, and sponsors all have a place on this team.
+      Tell us what interests you. A volunteer will answer your questions and discuss a visit so you
+      can meet the team and see what we do. You don&rsquo;t need to choose a role before getting in
+      touch.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>

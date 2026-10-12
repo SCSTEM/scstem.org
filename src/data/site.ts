@@ -6,12 +6,12 @@ export const site = {
   url: "https://scstem.org",
 
   legal:
-    "SC2 is a 501(c)(3) nonprofit providing STEM opportunities for students in and around Franklin County, PA.",
+    "SC2 is a 501(c)(3) nonprofit based in Chambersburg, PA, helping students explore STEM through hands-on learning.",
   ein: "86-2328794",
   founded: 2021,
 
   description:
-    "South Central STEM Collective runs FIRST robotics teams and hands-on STEM programs for ages 9–18 in Franklin County, Pennsylvania.",
+    "South Central STEM Collective runs FIRST robotics teams for ages 9–18 in Chambersburg, PA, welcoming students from Franklin County and beyond.",
   titleTemplate: "%s | South Central STEM Collective",
 
   email: "info@scstem.org",
@@ -42,10 +42,11 @@ export const site = {
     workspace: `${workspaceStreet}, Downtown Chambersburg`,
     street: workspaceStreet,
     locality: "Chambersburg",
+    county: "Franklin County",
     region: "PA",
     postalCode: "17201",
     country: "US",
-    areaServed: "Franklin County, Pennsylvania",
+    areaServed: "South-central Pennsylvania and beyond",
     timeZone: "America/New_York",
   },
 
@@ -124,15 +125,15 @@ export const programs = {
     teamName: "Biohazard",
     teamNumber: 4050,
     since: 2012,
-    ages: "14-18",
-    tagline: "A full-size competition robot, built from scratch every season.",
+    ages: "14–18",
+    tagline: "Design, build, and compete with a full-size robot.",
     meets:
       "Weekly from April to December; Mondays, Tuesdays, Thursdays and Saturdays from January through competition season",
-    hours: "Weeknights 6:30-8:30 PM, Saturdays 10 AM-4 PM",
+    hours: "Weeknights 6:30–8:30 PM, Saturdays 10 AM–4 PM",
     competitions:
       "The Greater Pittsburgh Regional every season, plus one more event within driving range. Events run Thursday to Saturday.",
     competitionsPerSeason: 2,
-    students: "10-20",
+    students: "10–20",
     mentors: 5,
     alumniMentors: 3,
     accent: "green",
@@ -141,8 +142,8 @@ export const programs = {
   fll: {
     name: "FIRST LEGO League",
     shortName: "FLL",
-    ages: "9-16",
-    tagline: "LEGO® robots, table missions, and a research project.",
+    ages: "9–16",
+    tagline: "Build a LEGO® robot, solve problems, and share your ideas.",
     accent: "orange",
     href: "/programs/fll",
   },

@@ -16,7 +16,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 const fields = [
   { label: "Organization", value: site.name },
   { label: "Workspace", value: site.location.workspace },
-  { label: "Serving", value: site.location.areaServed },
+  { label: "Community", value: site.location.areaServed },
   { href: `mailto:${site.email}`, label: "Email", mono: true, value: site.email },
 ];
 ---
@@ -34,8 +34,8 @@ const fields = [
       src={laptop}
     />
     <Fragment slot="title">Contact us</Fragment>
-    Questions about a program or a sponsorship? Want a robot demonstration at your school, community
-    group, or event? Send us a note and a real person will answer. Joining a team? Start with the{" "}
+    Questions about a program, sponsorship, or robot demonstration? Send us a message and a
+    volunteer will help you take the next step. To explore joining a team, use our{" "}
     <a href={nav.cta.href}>{nav.cta.label} form</a>.
   </Hero>
 
@@ -54,8 +54,9 @@ const fields = [
           </CardHeader>
           <CardContent>
             <p>
-              Schools, community groups, and event organizers: tell us the date, the place, and who
-              will be there, and we&rsquo;ll see which team can bring a robot.
+              Meet the students behind our robots and see their work up close. Tell us your
+              event&rsquo;s date, location, and audience, and we&rsquo;ll discuss what our teams can
+              bring.
             </p>
           </CardContent>
         </Card>
@@ -65,7 +66,10 @@ const fields = [
             <CardTitle rule>Visit the workspace</CardTitle>
           </CardHeader>
           <CardContent class="flex flex-col items-start gap-4">
-            <p>We&rsquo;re in downtown Chambersburg. Directions, parking, and which door to use:</p>
+            <p>
+              We meet in downtown {site.location.locality}, {site.location.region}, and welcome
+              students from {site.location.county} and beyond. Get in touch to arrange a visit.
+            </p>
             <p>
               <a class="external-link" href={site.urls.directions} rel="noopener">
                 Directions to the workspace

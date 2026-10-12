@@ -18,11 +18,11 @@ export const ogCards = {
   },
   fll: {
     image: ogFll,
-    alt: "The South Central STEM Collective logo over a student-built LEGO robot, captioned “FIRST LEGO League”",
+    alt: "The South Central STEM Collective logo over a student-built LEGO robot, captioned “FIRST® LEGO® League”",
   },
   frc: {
     image: ogFrc,
-    alt: "The South Central STEM Collective logo over the Biohazard drive team at competition, captioned “FIRST Robotics Competition”",
+    alt: "The South Central STEM Collective logo over the Biohazard drive team at competition, captioned “FIRST® Robotics Competition”",
   },
   programs: {
     image: ogPrograms,

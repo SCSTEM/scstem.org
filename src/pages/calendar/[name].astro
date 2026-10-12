@@ -30,7 +30,7 @@ export const getStaticPaths = (() => {
     sc2: {
       googleIds: [site.calendars.sc2, site.calendars.frc],
       title: nav.calendar.label,
-      heading: "What is coming up",
+      heading: "Meetings, competitions, and community events",
       intro:
         "Build sessions, competitions, and community events across both programs. Times are Eastern.",
       description:
@@ -207,7 +207,7 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
 
     const render = (events: ReadonlyArray<CalendarEvent>): void => {
       if (events.length === 0) {
-        say("Nothing on the calendar for the next 90 days. Check back soon.");
+        say("No events are listed for the next 90 days. Check back soon.");
         return;
       }
 

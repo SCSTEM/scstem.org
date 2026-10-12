@@ -20,7 +20,7 @@ import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
 import StrikeCorrect from "@/components/ui/primitives/StrikeCorrect.astro";
 import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
 import Section from "@/components/ui/Section.astro";
-import { site } from "@/data/site";
+import { programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { cn } from "@/lib/cn";
 import { handwritingClass } from "@/lib/hand";
@@ -331,7 +331,9 @@ const checklist = [
       data-mode="dark"
       data-preview
     >
-      <p class="spec-label text-primary-bright">Ages 14–18 · Franklin County</p>
+      <p class="spec-label text-primary-bright">
+        Ages {programs.frc.ages} · {site.location.locality}, {site.location.region}
+      </p>
       <p class="mt-2 font-display text-h2 font-semibold text-foreground">
         Real robots, built <span class="highlight-swipe">right here</span>.
       </p>
@@ -772,7 +774,7 @@ const checklist = [
 
       <div class="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-center">
         <p class="pt-8 font-display text-h2 font-semibold text-foreground">
-          Robots are <StrikeCorrect correction="in Franklin County" struck="cool" variant={2} />.
+          Robots are <StrikeCorrect correction="built together" struck="cool" variant={2} />.
         </p>
         <p>
           <b class="text-foreground">Strike and correct</b> rewrites a word in a display heading,
@@ -864,8 +866,8 @@ const checklist = [
         <div>
           <h3 class="text-h4">A partner's logo</h3>
           <p class="mt-2">
-            Every sponsor and <i>FIRST</i> logo the site holds was drawn for a dark ground. It keeps
-            that ground on the light finish, on a print. Never recolor someone else's logo.
+            Every sponsor and <i>FIRST</i>® logo the site holds was drawn for a dark ground. It
+            keeps that ground on the light finish, on a print. Never recolor someone else's logo.
           </p>
           <pre class="mt-4 overflow-x-auto pocket p-5 font-mono text-small text-body"><code>{logoRecipe}</code></pre>
         </div>

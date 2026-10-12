@@ -92,7 +92,7 @@ const outreachByYear = outreachYears.map((year) => ({
 ---
 
 <BaseLayout
-  description={`How a 4-H robotics club founded in ${String(programs.frc.since)} became, in ${String(site.founded)}, a 501(c)(3) making STEM accessible across Franklin County, PA.`}
+  description={`Meet South Central STEM Collective: a ${site.location.locality}, PA nonprofit helping students learn through robotics, mentorship, and community involvement.`}
   title="About"
   trail={[{ name: nav.about.label, path: nav.about.href }]}
 >
@@ -107,10 +107,14 @@ const outreachByYear = outreachYears.map((year) => ({
     <Fragment slot="title">About us</Fragment>
 
     <p>
-      The South Central STEM Collective (SC2) started with one high-school robotics team,{" "}
-      {programs.frc.teamName}, in {programs.frc.since}. Since becoming its own nonprofit in{" "}
-      {site.founded}, it has added <FirstMark /> LEGO League for younger students, and today it runs
-      both for ages 9–18 out of a workspace in downtown Chambersburg.
+      At {site.name}, we help students explore STEM through hands-on learning, mentorship, and
+      teamwork. Our <FirstMark /> robotics programs give young people opportunities to build, solve
+      problems, and share what they learn.
+    </p>
+    <p class="mt-4">
+      We meet in downtown {site.location.locality}, {site.location.region}, and welcome students
+      from {site.location.county} and beyond. Students, families, volunteers, and sponsors all
+      contribute to this community.
     </p>
 
     <Button href={nav.cta.href} size="lg" slot="actions">
@@ -119,7 +123,7 @@ const outreachByYear = outreachYears.map((year) => ({
   </Hero>
 
   <Section atmosphere="bubble" index={1}>
-    <Fragment slot="title">History</Fragment>
+    <Fragment slot="title">Our beginnings</Fragment>
 
     <div class="flex flex-col-reverse items-start gap-8 md:flex-row md:gap-12">
       <div class="prose-copy">
@@ -164,35 +168,23 @@ const outreachByYear = outreachYears.map((year) => ({
   </Section>
 
   <Section atmosphere="bubble" index={2}>
-    <Fragment slot="title">{SHUTDOWN_YEAR} and beyond</Fragment>
+    <Fragment slot="title">Growing beyond one team</Fragment>
 
     <div class="prose-copy">
       <p>
-        For {programs.frc.teamName}, {SHUTDOWN_YEAR} started like any season: kickoff in early
-        January, weeks of building, and a first competition in Myrtle Beach, SC, at the end of
-        February. The robot needed work before Pittsburgh, and in the weeks between, the world shut
-        down. The team didn&rsquo;t return to a regional event until 2022.
+        The {SHUTDOWN_YEAR} season began with weeks of building and a competition in Myrtle Beach,
+        SC. When the pandemic interrupted the season, students and mentors stayed committed to the
+        team. {programs.frc.teamName} returned to regional competition in 2022.
       </p>
       <p>
-        Stuck at home, still itching to compete, and seeing how much the students cared, we started
-        asking: &ldquo;Why couldn&rsquo;t we break away from 4-H and start our own program?&rdquo;
-        We were proud of our 4-H partnership, as our original website said:
+        During that time, parents and mentors began planning an independent nonprofit that could
+        support the team and create more STEM opportunities. Our years with Franklin County 4-H had
+        established a foundation of teamwork, service, and community involvement.
       </p>
-      <blockquote>
-        The students of Biohazard 4050 are not only members of <FirstMark />, but are also members
-        of the Franklin County (PA) 4-H Program. Their dual membership gives them a unique
-        perspective and opportunities for local service and outreach within their community. The
-        students&rsquo; dedication to each other and their commitment to their community is a
-        testimony to their character, service, and leadership skills. The volunteers and mentors of
-        Biohazard 4050 are very proud of the students, and honored to be a part of their
-        experiences!
-        <cite>Biohazard, 2015</cite>
-      </blockquote>
       <p>
-        But the partnership was holding back growth: complicated finances, fundraising limits,
-        membership rules, and a structure that couldn&rsquo;t keep pace with STEM. After months of
-        planning, with support from {programs.frc.teamName}&rsquo;s parents and mentors, the South
-        Central STEM Collective became its own 501(c)(3) in {site.founded}.
+        In {site.founded}, the South Central STEM Collective became its own 501(c)(3). Alongside{" "}
+        {programs.frc.teamName}, we added <FirstMark /> LEGO® League for younger students. Both
+        programs now share our downtown {site.location.locality} workspace.
       </p>
     </div>
 
@@ -200,11 +192,12 @@ const outreachByYear = outreachYears.map((year) => ({
       <div class="prose-copy">
         <h3>South Central STEM Collective</h3>
         <p>
-          Our mission: make STEM opportunities accessible to students of all ages and backgrounds.
+          Our mission is to make STEM opportunities accessible to students of all ages and
+          backgrounds.
         </p>
         <p>
-          That can take many forms, but the focus is always the students. So we set up a simple
-          three-tier structure:
+          We provide the workspace, tools, insurance, and volunteer oversight that help our teams
+          operate. Youth protection and training are part of that shared support.
         </p>
       </div>
 
@@ -217,39 +210,10 @@ const outreachByYear = outreachYears.map((year) => ({
     </div>
 
     <div class="prose-copy mt-6">
-      <ol>
-        <li>
-          SC2 is the umbrella
-          <ul>
-            <li>The 501(c)(3) nonprofit</li>
-            <li>Insurance, the workspace, and the books</li>
-            <li>Youth protection and volunteer oversight</li>
-            <li>Tools, and training on them</li>
-            <li>Our presence in the community</li>
-          </ul>
-        </li>
-        <li>
-          Clubs run under SC2
-          <ul>
-            <li>Each club manages itself</li>
-            <li>Its own leaders, goals, bank account, and schedule</li>
-            <li>Use of SC2&rsquo;s workspace, tools, internet, and industry experts</li>
-          </ul>
-        </li>
-        <li>
-          Students, parents, volunteers, and mentors work with their club
-          <ul>
-            <li>
-              Activities, competitions, and outside programs like <FirstMark />
-            </li>
-            <li>Fundraising for the club</li>
-          </ul>
-        </li>
-      </ol>
       <p>
-        This lets member clubs run independently while drawing on SC2&rsquo;s resources. The
-        structure may change, but we believe it can have real impact, free of another parent
-        organization&rsquo;s priorities.
+        Each team manages its activities, fundraising, and schedule, with students, families, and
+        mentors working together. Shared resources give teams space to focus on learning and
+        building.
       </p>
     </div>
   </Section>
@@ -263,7 +227,7 @@ const outreachByYear = outreachYears.map((year) => ({
   </Section>
 
   <Section atmosphere="bubble" index={3}>
-    <Fragment slot="title">The team today</Fragment>
+    <Fragment slot="title">Biohazard today</Fragment>
 
     <StatBand stats={teamStats} />
 
@@ -282,13 +246,13 @@ const outreachByYear = outreachYears.map((year) => ({
   </Section>
 
   <Section atmosphere="bubble" index={4}>
-    <Fragment slot="title">Out in the community</Fragment>
+    <Fragment slot="title">Sharing STEM across our region</Fragment>
 
     <div class="prose-copy">
       <p>
-        The robots don&rsquo;t stay in the workspace. Our students bring them to school expos,
-        sponsor events, and street festivals across the region, and show anyone who stops how they
-        work.
+        Our students bring robots to school expos, sponsor events, and community festivals across
+        south-central Pennsylvania. They explain how the robots work and share what they learned
+        building them.
       </p>
       {outreachByYear.map(({ year, appearances }) => (
         <p>
@@ -298,19 +262,19 @@ const outreachByYear = outreachYears.map((year) => ({
     </div>
 
     <SectionAction href={nav.contact.href} prompt="Want to see one up close?" slot="action">
-      Request a demonstration
+      Request a robot demonstration
     </SectionAction>
   </Section>
 
   <Section atmosphere="bubble" index={5}>
     <Fragment slot="title">Where we&rsquo;re headed</Fragment>
     <Fragment slot="intro">
-      Our member clubs set their own course, but the mission stays the same: be south-central
-      Pennsylvania&rsquo;s &ldquo;STEM Central.&rdquo;
+      We want to create more ways for students to explore STEM across south-central Pennsylvania.
+      Sponsors and volunteers can help us work toward these goals.
     </Fragment>
 
     <div class="prose-copy">
-      <p>Goals on the horizon:</p>
+      <p>Our goals include:</p>
       <ul>
         <li>
           Run hands-on STEM workshops open to any student, once we have the sponsors and volunteers
@@ -318,18 +282,16 @@ const outreachByYear = outreachYears.map((year) => ({
         </li>
         <li>Operate and maintain a makerspace</li>
         <li>Secure a permanent location for our workspace, classrooms, and office space</li>
-        <li>
-          Become a staple in our community, bringing STEM education where it hasn&rsquo;t reached
-          yet
-        </li>
+        <li>Reach more students through community events and partnerships</li>
       </ul>
     </div>
   </Section>
 
   <Section atmosphere="ruler">
     <CtaBanner>
-      <Fragment slot="title">What&rsquo;s your story?</Fragment>
-      We started as a handful of students and volunteers. The next chapter needs a few more of both.
+      <Fragment slot="title">Be part of what comes next</Fragment>
+      Join a team, share your skills, or support students as they learn. Tell us what interests you,
+      and we&rsquo;ll help you take the next step.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>

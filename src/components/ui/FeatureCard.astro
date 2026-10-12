@@ -3,6 +3,7 @@ import type { ImageMetadata } from "astro";
 
 import { Image } from "astro:assets";
 
+import FirstMarked from "@/components/ui/FirstMarked.astro";
 import Badge from "@/components/ui/primitives/Badge.astro";
 import Card from "@/components/ui/primitives/Card.astro";
 import CardContent from "@/components/ui/primitives/CardContent.astro";
@@ -115,7 +116,7 @@ const plateIcon = image === undefined ? icon : undefined;
         href={href}
         rel={isExternalLink ? "noopener" : undefined}
       >
-        {cta}
+        <FirstMarked text={cta} />
       </a>
       <Icon
         class="text-primary-bright transition-transform duration-(--sc2-duration-micro) ease-(--sc2-ease-toggle) motion-safe:group-focus-within:translate-x-0.5 motion-safe:group-hover:translate-x-0.5"

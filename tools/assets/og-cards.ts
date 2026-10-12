@@ -22,6 +22,8 @@ const color = {
 /** A static instance: Satori reads TTF/OTF/WOFF but no variable axis. */
 const FONT_FILE = "tools/assets/fonts/Orbitron-Bold.ttf";
 const FONT = "Orbitron";
+const SYMBOL_FONT_FILE = "tools/assets/fonts/Inter-Registered.ttf";
+const SYMBOL_FONT = "Inter";
 const LOCKUP = "src/assets/brand/logo-white-full.svg";
 const LOCKUP_WIDTH = 300;
 
@@ -41,7 +43,7 @@ const cards: Card[] = [
     out: `public${site.ogImage.path}`,
     photo: "src/assets/sc2/students.webp",
     eyebrow: site.location.areaServed,
-    title: site.name,
+    title: site.name.replace("Central ", "Central\n"),
     accent: color.primary,
   },
   {
@@ -55,27 +57,27 @@ const cards: Card[] = [
     out: "src/assets/og/frc.jpg",
     photo: "src/assets/frc/frc-driveteam.webp",
     eyebrow: `Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName}`,
-    title: programs.frc.name,
+    title: programs.frc.name.replace("FIRST", "FIRST®"),
     accent: color.frc,
   },
   {
     out: "src/assets/og/fll.jpg",
     photo: "src/assets/fll/lego-robots.webp",
     eyebrow: `Ages ${programs.fll.ages.replace("–", " to ")}`,
-    title: programs.fll.name,
+    title: programs.fll.name.replace("FIRST", "FIRST®").replace("LEGO", "LEGO®"),
     accent: color.fll,
   },
   {
     out: "src/assets/og/sponsors.jpg",
     photo: "src/assets/sc2/parts-notes.webp",
-    eyebrow: "Partners in building the future",
+    eyebrow: "Partners in hands-on learning",
     title: nav.sponsors.label,
     accent: color.primary,
   },
   {
     out: "src/assets/og/events.jpg",
     photo: "src/assets/events/morethanrobots.webp",
-    eyebrow: "Come and see for yourself",
+    eyebrow: "Meet the teams. Explore robotics.",
     title: "Events",
     accent: color.primary,
   },
@@ -141,7 +143,7 @@ const rgba = (hex: string, alpha: number): string => {
 
 const scrim = `linear-gradient(to right, ${rgba(color.background, 1)} 0%, ${rgba(color.background, 0.94)} 50%, ${rgba(color.background, 0.25)} 100%)`;
 
-const font = await readFile(FONT_FILE);
+const [font, symbols] = await Promise.all([readFile(FONT_FILE), readFile(SYMBOL_FONT_FILE)]);
 
 const lockupPng = await sharp(await readFile(LOCKUP))
   .resize({ width: LOCKUP_WIDTH })
@@ -163,7 +165,7 @@ const card = (spec: Card, photo: Buffer): Element => {
       width: WIDTH,
       height: HEIGHT,
       backgroundColor: color.background,
-      fontFamily: FONT,
+      fontFamily: `${FONT}, ${SYMBOL_FONT}`,
       fontWeight: 700,
     },
     [
@@ -210,8 +212,14 @@ const card = (spec: Card, photo: Buffer): Element => {
             spec.eyebrow.toUpperCase(),
           ),
           div(
-            { display: "flex", fontSize: size, lineHeight: 1.18, color: color.foreground },
-            spec.title,
+            {
+              display: "flex",
+              flexDirection: "column",
+              fontSize: size,
+              lineHeight: 1.18,
+              color: color.foreground,
+            },
+            spec.title.split("\n").map((line) => div({ display: "flex" }, line)),
           ),
         ],
       ),
@@ -239,7 +247,10 @@ for (const spec of cards) {
   const svg = await satori(card(spec, photo), {
     width: WIDTH,
     height: HEIGHT,
-    fonts: [{ name: FONT, data: font, weight: 700, style: "normal" }],
+    fonts: [
+      { name: FONT, data: font, weight: 700, style: "normal" },
+      { name: SYMBOL_FONT, data: symbols, weight: 700, style: "normal" },
+    ],
   });
   const png = new Resvg(svg, { fitTo: { mode: "width", value: WIDTH } }).render().asPng();
   const image = await sharp(png).jpeg({ quality: QUALITY, mozjpeg: true }).toBuffer();

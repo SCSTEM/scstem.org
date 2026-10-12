@@ -1,4 +1,5 @@
 ---
+import FirstMarked from "@/components/ui/FirstMarked.astro";
 import Card from "@/components/ui/primitives/Card.astro";
 import { cn } from "@/lib/cn";
 
@@ -35,10 +36,14 @@ const row =
   <dl class={cn("grid divide-y divide-border", row)}>
     {stats.map((stat) => (
       <div class="p-6 md:engineering-grid md:bg-origin-border md:bg-repeat-round">
-        <dt class="sr-only">{stat.label}</dt>
+        <dt class="sr-only">
+          <FirstMarked text={stat.label} />
+        </dt>
         <dd>
           <span class="block stat">{stat.value}</span>
-          <span class="mt-2 block spec-label text-foreground">{stat.label}</span>
+          <span class="mt-2 block spec-label text-foreground">
+            <FirstMarked text={stat.label} />
+          </span>
           {stat.description !== undefined && (
             <span class="mt-2 block text-copy text-body">{stat.description}</span>
           )}

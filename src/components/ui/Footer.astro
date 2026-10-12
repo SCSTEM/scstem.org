@@ -1,4 +1,5 @@
 ---
+import FirstMarked from "@/components/ui/FirstMarked.astro";
 import CardTitle from "@/components/ui/primitives/CardTitle.astro";
 import Lockup from "@/components/ui/primitives/Lockup.astro";
 import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
@@ -53,7 +54,7 @@ const sections = [
                     href={link.href}
                     rel={isExternal(link.href) ? "noopener" : undefined}
                   >
-                    {link.label}
+                    <FirstMarked text={link.label} />
                   </a>
                 </li>
               ))}

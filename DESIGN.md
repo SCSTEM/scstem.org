@@ -6,14 +6,20 @@ The system is a **brand-faithful refresh** of the 2024–2026 site, grounded in 
 
 ## 1. Brand essence, voice, and naming
 
-South Central STEM Collective (SC2) is a 501(c)(3) making hands-on STEM — FIRST robotics first among it — accessible to students aged 9–18 in and around Franklin County, PA. The site speaks to three audiences at once: **students** (this looks fun and serious), **parents** (this is safe, organized, worth our time), **sponsors** (this is a credible investment in the community).
+South Central STEM Collective (SC2) is a 501(c)(3) based in downtown Chambersburg, Franklin County, Pennsylvania. Its regional identity is south-central Pennsylvania, and students are welcome from Franklin County and beyond. Its current robotics programs serve ages 9–18; its mission is to make STEM opportunities accessible to students of all ages and backgrounds. The site speaks to three audiences at once: **students** (I can learn and find a place here), **parents** (this is welcoming, organized, and worth our time), **sponsors** (my support creates opportunities for students).
 
-Voice: **energetic, concrete, community-proud.**
+Voice: **warm, energetic, concrete, community-proud.**
 
 - This, not that: _workshop_, not _startup_. _Confident_, not _hype_. _Specific_ ("12+ years, 9 competition robots"), not _vague_ ("empowering the future"). _Warm_, not _corporate_.
 - Sentence case everywhere — headings, buttons, nav. Title Case only for proper nouns. No ALL CAPS except SCP labels (§3).
 - First person plural ("we build", "join us"); address the reader as "you".
 - Numbers beat adjectives. Real names, real seasons, real awards (with permission).
+- Lead with an invitation, describe what students do and learn, then give a clear next step. Connect activities to opportunities to practice skills, solve problems, and contribute to a team.
+- Program pages carry the energy of building and competition. Joining copy welcomes beginners and explains participation. Sponsor and donation copy connects specific expenses to student opportunities and thanks supporters.
+- Chambersburg is where we meet; south-central Pennsylvania is our regional identity. County and regional names never imply a residency requirement. Use "students from Franklin County and beyond" where eligibility needs clarification.
+- Use ordinary verbs: build, learn, share, join, support. Explain technical terms when introducing them to families. Invitations are encouraging and direct, with practical details close by.
+- Describe current offerings as robotics teams and robot demonstrations. Identify workshops and makerspace plans as goals until they are available.
+- Keep evidence qualified: tracked alumni are a sample, awards belong to a named team, and FIRST-wide outcomes are not local results. Safety policies, schedules, costs, and recognition benefits are factual information, not promotional promises.
 
 **Name usage (from Brand Guidelines):** full name "South Central STEM Collective" with capitalized _STEM_; may break to two lines after "Central". Short name "SC2" (capitalized SC) — **never in headings**, and never on a page where the full name isn't present elsewhere. "SCSTEM" only for domains/handles, never in prose.
 
@@ -254,6 +260,7 @@ CSS handles decorative transitions; small scripts manage the hand-markup entranc
 ## 7. Imagery & art direction
 
 - **Real photos of real students and robots** are the brand. Stock and unDraw illustrations retire wherever a photo can serve.
+- Overlaid figure labels and their local scrims stay inside photo bounds.
 - Text over photos requires a scrim built from `background`. On the dark finish: 100% at the text edge → ~20% opposite. On the light finish the scrim holds **solid ground across the copy column** (100% to 30% of the width), eases to 86% by the middle and ~28% at the far edge, and the photo is pulled back slightly (saturate 85%, contrast 92%, brightness 104%) so it sits in the aluminum rather than punching through it; the hero's drafting grid draws in ink. **On mobile, heroes put text on solid ground below the photo** (photo fades into `background` via bottom gradient) — never gamble on scrims at small sizes.
 - On a blueprint page, photos go duotone: grayscale, multiplied with the print's blue.
 - **Logos drawn for a dark ground** — every sponsor and _FIRST_ logo the site holds — keep that ground on the light finish: they sit on a **print** (`print`, brand Background Black, `radius-md`), which is transparent on the dark finish. Never recolor a partner's logo to fit the finish.

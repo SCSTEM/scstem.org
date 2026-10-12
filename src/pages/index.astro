@@ -79,6 +79,11 @@ const alumniFields = ALUMNI_FIELDS.map((field) => ({
   .filter((entry) => entry.count > 0)
   .toSorted((a, b) => b.count - a.count);
 
+const alumniWork = new Intl.ListFormat("en-US", {
+  style: "long",
+  type: "conjunction",
+}).format(alumniFields.map(({ field }) => field.toLowerCase().replace(/\bit\b/u, "IT")));
+
 const parentQuestions = (
   await getCollection("faq", ({ data }) => data.tags?.includes("parents") === true)
 ).toSorted((a, b) => a.data.question.localeCompare(b.data.question));
@@ -106,36 +111,45 @@ const outreachKinds = {
       src={fllField}
     />
     <Fragment slot="title">
-      <span class="highlight-swipe">Building robots</span> in Franklin County since{" "}
-      {programs.frc.since}
+      <span class="highlight-swipe">Build a robot.</span> Find your team.
     </Fragment>
-    Students ages 9 to 18 design, build, and compete out of our workspace in downtown Chambersburg.
-    Volunteer mentors teach the skills, and local sponsors fund the tools and the workspace.
-    <Button href={nav.cta.href} size="lg" slot="actions">
-      {nav.cta.label}
-    </Button>
+    <p>
+      At {site.name}, students ages 9–18 explore their interests through <FirstMark /> robotics.
+      Work alongside teammates and volunteer mentors to design, build, and compete—and discover what
+      you enjoy doing.
+    </p>
+    <p class="mt-4">
+      We meet in downtown {site.location.locality}, {site.location.region}, and welcome students
+      from {site.location.county} and beyond. No robotics experience needed.
+    </p>
     <Button href={programs.sc2.href} size="lg" slot="actions" variant="secondary">
       Explore our programs
+    </Button>
+    <Button href={nav.cta.href} size="lg" slot="actions">
+      {nav.cta.label}
     </Button>
   </Hero>
 
   <Section atmosphere="bubble" index={1}>
-    <Fragment slot="title">Two programs, ages 9 to 18</Fragment>
+    <Fragment slot="title">Two programs. Find your fit.</Fragment>
     <Fragment slot="intro">
-      Pick by age and interest. Either way, you don&rsquo;t have to be an engineer: students also
-      raise the money, run the social media, shoot the video, and design the brand.
+      Start with your age and interests. You can build and program robots, share ideas, create
+      videos, design graphics, or help raise funds. Mentors and teammates help you learn along the
+      way.
     </Fragment>
 
     <FeatureGrid columns={2}>
       <ProgramCard program="fll">
-        Small teams build and program a LEGO® robot for a table of missions, research a real-world
-        problem, and present both to judges. No LEGO® collection required.
+        Build and program a LEGO® robot, investigate a real-world problem, and share your
+        team&rsquo;s solution with judges. Small teams give students opportunities to try ideas,
+        solve problems together, and practice presenting their work. We provide the equipment—you
+        bring your curiosity.
       </ProgramCard>
 
       <ProgramCard program="frc">
-        {programs.frc.teamName}, our high-school team, builds a full-size competition robot from
-        scratch every season: a game no one has seen in January, a working machine on the field by
-        March. Students also run the team&rsquo;s fundraising, outreach, and media.
+        A new game each January. A full-size robot to design and build. On {programs.frc.teamName},
+        students work alongside experienced mentors to turn ideas into a competition robot.
+        Engineering, programming, strategy, fundraising, and media all help the team succeed.
       </ProgramCard>
     </FeatureGrid>
   </Section>
@@ -145,9 +159,10 @@ const outreachKinds = {
       What is <FirstMark />?
     </Fragment>
     <Fragment slot="intro">
-      Both of our programs compete in <FirstMark />, the global robotics program that puts students
-      and volunteer engineers on the same team. Its mission is to build young people&rsquo;s skills,
-      confidence, and resilience through hands-on robotics.
+      <FirstMark /> is a global youth robotics community where students learn through teamwork,
+      hands-on challenges, and competition. Both of our programs are part of <FirstMark />, giving
+      students opportunities to practice technical skills, build confidence, and take responsibility
+      for a shared project.
     </Fragment>
 
     <figure slot="aside">
@@ -188,8 +203,8 @@ const outreachKinds = {
             <div class="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:items-baseline sm:gap-6">
               <dt class="spec-label text-primary-bright">The game</dt>
               <dd>
-                A new challenge every season, revealed to every team in the world at once and played
-                by the same rules.
+                Each season brings a new challenge. Teams develop their own solutions, compete under
+                shared rules, and learn from one another.
               </dd>
             </div>
             <div class="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:items-baseline sm:gap-6">
@@ -205,7 +220,7 @@ const outreachKinds = {
               <dt class="spec-label text-primary-bright">Ages {programs.fll.ages}</dt>
               <dd>
                 <a href={programs.fll.href}>
-                  <FirstMark /> LEGO League
+                  <FirstMark /> LEGO® League
                 </a>
                 : our teams for younger students.
               </dd>
@@ -235,14 +250,19 @@ const outreachKinds = {
   </Section>
 
   <Section atmosphere="bubble" index={2}>
-    <Fragment slot="title">The record so far</Fragment>
+    <Fragment slot="title">Years of building and learning</Fragment>
+    <Fragment slot="intro">
+      {programs.frc.teamName} has competed since {programs.frc.since}. Explore the robots,
+      competitions, and achievements that have shaped our team.
+    </Fragment>
 
     <StatBand stats={record} />
 
-    <h3 class="mt-16">Where our alumni went</h3>
+    <h3 class="mt-16">Where our alumni are now</h3>
     <p class="mt-3 measure">
-      Of the {alumni.length} alumni we keep up with, here is the work they do now.{" "}
-      {programs.frc.alumniMentors} came back to mentor the team that taught them.
+      Our alumni work in {alumniWork}. The figures below represent the {alumni.length} alumni we
+      keep in touch with. {programs.frc.alumniMentors} have returned as mentors, helping
+      today&rsquo;s students learn on the team where they started.
     </p>
     <dl class="mt-6 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
       {alumniFields.map(({ field, count }) => (
@@ -259,18 +279,24 @@ const outreachKinds = {
   </Section>
 
   <Section atmosphere="bubble" index={3}>
-    <Fragment slot="title">What parents ask</Fragment>
+    <Fragment slot="title">Questions about joining?</Fragment>
+    <Fragment slot="intro">
+      Learn about experience, meeting commitments, student safety, and what happens when you get in
+      touch. We&rsquo;re happy to help you decide whether a team fits your student&rsquo;s interests
+      and schedule.
+    </Fragment>
     <FaqList entries={parentQuestions} name="parent-faq" />
     <SectionAction href={nav.contact.href} prompt="Something else?" slot="action" variant={2}>
-      Ask us directly
+      Ask a question
     </SectionAction>
   </Section>
 
   <Section atmosphere="bubble" index={4}>
-    <Fragment slot="title">Where you&rsquo;ve seen us</Fragment>
+    <Fragment slot="title">Sharing robotics across our region</Fragment>
     <Fragment slot="intro">
-      Our teams bring robots to school expos, sponsor events, and street festivals across the
-      region. In {outreachYear}:
+      Our students bring their robots to school expos, community festivals, and sponsor events
+      across south-central Pennsylvania. Meet the teams, see what they&rsquo;ve built, and learn how
+      the robots work. In {outreachYear}:
     </Fragment>
 
     <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -300,20 +326,22 @@ const outreachKinds = {
       slot="action"
       variant={3}
     >
-      Request a demonstration
+      Request a robot demonstration
     </SectionAction>
   </Section>
 
   <Section atmosphere="ruler">
-    <Fragment slot="title">Our sponsors</Fragment>
+    <Fragment slot="title">Our sponsors make hands-on learning possible</Fragment>
     <Fragment slot="intro">
-      Local businesses fund our tools, workspace, and registration fees.
+      Sponsor support puts tools and materials in students&rsquo; hands, keeps our
+      {site.location.locality} workspace open, and helps our teams take part in competitions.
+      We&rsquo;re grateful to the businesses that support this work.
     </Fragment>
 
     <SponsorStrip />
 
     <SectionAction href={nav.sponsors.href} slot="action" variant={2}>
-      See every sponsor
+      Meet our sponsors
     </SectionAction>
   </Section>
 
@@ -330,8 +358,9 @@ const outreachKinds = {
           Real <ChalkOval variant={3}>Fun</ChalkOval>.
         </span>
       </Fragment>
-      Students, parents, mentors, and sponsors all start in the same place: a short form, and a
-      volunteer who writes back.
+      Curious about joining a team, sharing your skills, or supporting our programs? Tell us what
+      interests you. A volunteer will get in touch to answer your questions and help you take the
+      next step.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>

@@ -24,7 +24,7 @@ if (latest === undefined) {
 ---
 
 <ProgramLayout
-  description={`${programs.fll.name} for ages ${programs.fll.ages} in downtown Chambersburg: small teams build a LEGO® robot, research a real problem, and present both to judges.`}
+  description={`Join FIRST LEGO League for ages ${programs.fll.ages} in ${site.location.locality}, PA. Build a LEGO robot, explore ideas, and learn with a small team. No experience needed.`}
   og={ogCards.fll}
   program="fll"
   title="FIRST LEGO League"
@@ -34,10 +34,11 @@ if (latest === undefined) {
     <HeroImage alt={latest.alt} caption={latest.caption} slot="media" src={latest.photo} />
     <Fragment slot="eyebrow">Ages {programs.fll.ages}</Fragment>
     <Fragment slot="title">
-      Where <span class="highlight-swipe">building</span> turns into engineering
+      Build, explore, and <span class="highlight-swipe">learn together</span>
     </Fragment>
-    <FirstMark /> LEGO® League is where our youngest students start: a small team, a LEGO® robot, a
-    table full of missions, and a real problem to go solve.
+    <FirstMark /> LEGO® League brings students together in small teams to build robots and explore
+    real-world problems. Try your ideas, learn with mentors and teammates, and practice sharing what
+    you&rsquo;ve discovered. No robotics experience needed.
     <Button href={nav.cta.href} size="lg" slot="actions">
       {nav.cta.label}
     </Button>
@@ -50,27 +51,29 @@ if (latest === undefined) {
       <a class="external-link" href={site.urls.firstInspires} rel="noopener">
         teams around the world
       </a>{" "}
-      take on the same challenge at the same time. The top awards weigh all three parts, so there is
-      a job here for someone who would rather research, present, or organize than drive.
+      take on the challenge together. Building, research, presenting, and teamwork all contribute to
+      a season, giving students different ways to explore their interests.
     </Fragment>
 
     <FeatureGrid columns={3}>
       <FeatureCard icon="bot">
         <Fragment slot="title">The robot game</Fragment>
-        Design, build, and program a LEGO® robot that runs missions on a themed table by itself in a
-        2½-minute match, then walk the judges through how you designed it.
+        Design, build, and program a LEGO® robot to complete missions on a themed table in a
+        2½-minute match. Test your ideas, improve your robot, and explain your design to judges.
       </FeatureCard>
 
       <FeatureCard icon="idea">
         <Fragment slot="title">The innovation project</Fragment>
-        Research a real problem connected to the season&rsquo;s theme, work out a solution, and
-        pitch it to judges the way an engineer pitches a client.
+        Research a real problem connected to the season&rsquo;s theme, develop a solution, and share
+        your ideas with judges. Practice asking questions, working together, and explaining what you
+        learned.
       </FeatureCard>
 
       <FeatureCard icon="group">
         <Fragment slot="title">Core values</Fragment>
-        How the team works together: discovery, innovation, impact, inclusion, teamwork, and fun.
-        Judges look for it across the whole event, not in one session.
+        Discovery, innovation, impact, inclusion, teamwork, and fun guide how teams work together.
+        Students practice these values throughout the season, and judges look for them across the
+        event.
       </FeatureCard>
     </FeatureGrid>
   </Section>
@@ -78,27 +81,28 @@ if (latest === undefined) {
   <Section atmosphere="band">
     <Fragment slot="title">How our teams work</Fragment>
     <Fragment slot="intro">
-      We run several <FirstMark /> LEGO® League teams, each small on purpose so nobody spends the
-      season watching someone else build.
+      Our <FirstMark /> LEGO® League teams are small so students have opportunities to take part,
+      try different tasks, and learn from one another.
     </Fragment>
 
     <FeatureGrid columns={3}>
       <FeatureCard cta="Get directions" href={site.urls.directions} icon="location">
         <Fragment slot="title">Downtown Chambersburg</Fragment>
-        Every team shares a workspace with {programs.frc.teamName}: same mentors, same tools,
-        smaller robots. Find us at {site.location.street}, downtown.
+        Our teams share a workspace with {programs.frc.teamName}, with tools and mentors to help
+        students learn. Find us at {site.location.street} in downtown {site.location.locality}.
       </FeatureCard>
 
       <FeatureCard icon="security">
-        <Fragment slot="title">Two adults, always</Fragment>
-        Two-deep supervision at every meeting and event, under Pennsylvania and <FirstMark />
-        youth-protection guidelines.
+        <Fragment slot="title">Student safety</Fragment>
+        At least two adults are with students at every meeting and event. Our mentors and volunteers
+        follow Pennsylvania and <FirstMark /> youth-protection guidelines.
       </FeatureCard>
 
       <FeatureCard icon="direction--fork">
-        <Fragment slot="title">Old enough for both?</Fragment>
-        Where the age ranges overlap, students choose whichever program they&rsquo;re most
-        comfortable in: this one or <a href={programs.frc.href}>{programs.frc.teamName}</a>.
+        <Fragment slot="title">Choosing between programs?</Fragment>
+        Where the age ranges overlap, you can choose this program or
+        <a href={programs.frc.href}>{programs.frc.teamName}</a>. We&rsquo;re happy to talk about
+        your interests and help you decide.
       </FeatureCard>
     </FeatureGrid>
   </Section>
@@ -107,9 +111,10 @@ if (latest === undefined) {
 
   <Section atmosphere="ruler">
     <CtaBanner>
-      <Fragment slot="title">Start here</Fragment>
-      No LEGO® collection required: we supply the robots, the tools, and the mentors. Tell us your
-      student&rsquo;s age and we&rsquo;ll tell you what the next season looks like.
+      <Fragment slot="title">Bring your curiosity</Fragment>
+      We provide the robots, tools, and mentor support. Tell us your student&rsquo;s age and
+      interests, and we&rsquo;ll share the next steps. Students are welcome from
+      {site.location.county} and beyond.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>

@@ -170,7 +170,11 @@ const fields = [
           },
           "error-callback": () => {
             token = "";
-            setStatus(status, "error", "Spam protection failed. Please try again.");
+            setStatus(
+              status,
+              "error",
+              "The spam check did not finish. Please reload and try again.",
+            );
           },
           "expired-callback": () => {
             token = "";
@@ -226,7 +230,11 @@ const fields = [
       }
 
       if (token === "") {
-        setStatus(status, "error", "Waiting on the spam check. Try again in a moment.");
+        setStatus(
+          status,
+          "error",
+          "Please wait for the spam check, then try sending your message again.",
+        );
         return;
       }
 
@@ -248,9 +256,13 @@ const fields = [
         .then(async (response) => {
           const body = (await response.json()) as { message?: string; success?: boolean };
           if (body.success !== true) {
-            throw new Error(body.message ?? "Error submitting form");
+            throw new Error(body.message ?? "We could not send your message. Please try again.");
           }
-          setStatus(status, "ok", "Thanks, we have your message and will be in touch.");
+          setStatus(
+            status,
+            "ok",
+            "Thanks for getting in touch. We have your message and will reply by email.",
+          );
           document.dispatchEvent(
             new CustomEvent<string>(TRACK_EVENT, { detail: "contact_submit" }),
           );
@@ -260,7 +272,13 @@ const fields = [
           }
         })
         .catch((error: unknown) => {
-          setStatus(status, "error", error instanceof Error ? error.message : "Something failed.");
+          setStatus(
+            status,
+            "error",
+            error instanceof Error
+              ? error.message
+              : "We could not send your message. Please try again.",
+          );
         })
         .finally(() => {
           submit.disabled = false;

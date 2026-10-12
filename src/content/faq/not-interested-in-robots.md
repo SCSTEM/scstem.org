@@ -1,7 +1,8 @@
 ---
-question: What if I'm not interested in robots, engineering, or computers?
+question: Can I contribute if my interests are outside robotics?
 tags: [joining]
 ---
 
-Come anyway. Our students also run the fundraising, video, social media, and brand, and the team
-needs all of it.
+There's a place for your interests here, too. Students help with fundraising, photography,
+video, social media, graphic design, and community outreach. Tell us what you enjoy, and we can
+help you explore a role on the team.

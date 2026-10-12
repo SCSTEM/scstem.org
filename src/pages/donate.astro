@@ -23,7 +23,7 @@ const mailingAddress = [
 ---
 
 <BaseLayout
-  description="Give by mail, online through PayPal Giving Fund, in kind, or as a corporate sponsor. Every route supports STEM programs in Franklin County."
+  description="Give students tools, a place to build, and opportunities to compete. Support South Central STEM Collective online, by mail, with equipment, or as a sponsor."
   og={ogCards.donate}
   title="Donate"
   trail={[{ name: nav.donate.label, path: nav.donate.href }]}
@@ -36,11 +36,11 @@ const mailingAddress = [
       src={drillBits}
     />
     <Fragment slot="title">
-      <span class="highlight-swipe">Support</span>
-      <span class="block">local STEM</span>
+      Help students <span class="highlight-swipe">learn by doing</span>
     </Fragment>
-    Your gift buys tools and materials, keeps the workspace open, and pays competition registration
-    fees. Here&rsquo;s every way to give.
+    Your gift puts tools and materials in students&rsquo; hands, keeps our
+    {site.location.locality} workspace open, and helps our teams take part in competitions. Support
+    the learning, teamwork, and problem-solving that happen throughout a season.
     <Button href={site.urls.donate} size="lg" slot="actions">
       Donate through PayPal
     </Button>
@@ -52,7 +52,7 @@ const mailingAddress = [
     <FeatureGrid columns="2+3">
       <FeatureCard icon="email">
         <Fragment slot="title">By mail</Fragment>
-        <p>Mail a check to the workspace, or hand it to us at any community event.</p>
+        <p>Mail a check to our workspace, or give it to us at a community event.</p>
         <p class="mt-4 font-semibold text-foreground">Make checks payable to:</p>
         <p class="font-mono text-body">{site.name}</p>
         <p class="mt-4 font-semibold text-foreground">Mailing address:</p>
@@ -65,7 +65,10 @@ const mailingAddress = [
 
       <FeatureCard icon="partnership">
         <Fragment slot="title">Charitable giving fund</Fragment>
-        <p>Your giving fund may already list us. Search by name or EIN.</p>
+        <p>
+          Search for us in your giving fund by organization name or employer identification number
+          (EIN).
+        </p>
         <dl class="mt-4">
           <dt class="spec-label text-muted">Name</dt>
           <dd class="text-body">{site.name}</dd>
@@ -88,17 +91,17 @@ const mailingAddress = [
       </FeatureCard>
 
       <FeatureCard cta="See our wishlist" href={site.urls.wishlist} icon="tools">
-        <Fragment slot="title">In kind</Fragment>
+        <Fragment slot="title">Tools and materials</Fragment>
         <p>
-          Tools, materials, and equipment keep the workspace stocked. Check the wishlist for current
-          needs, then contact us to arrange a drop-off.
+          Give students equipment to learn on and materials to build with. Check our wishlist for
+          current needs, then contact us to arrange a drop-off.
         </p>
       </FeatureCard>
 
-      <FeatureCard cta="See sponsorship levels" href={nav.sponsors.href} icon="document">
+      <FeatureCard cta="Explore sponsorship" href={nav.sponsors.href} icon="document">
         <Fragment slot="title">Corporate sponsorship</Fragment>
-        Businesses sponsor a season at one of {SPONSOR_LEVELS.length} levels, each recognized on our
-        sponsors page.
+        Help support a season through one of {SPONSOR_LEVELS.length} sponsorship levels. Visit our
+        sponsors page to meet our partners and find the sponsorship packet.
       </FeatureCard>
     </FeatureGrid>
   </Section>
@@ -106,8 +109,8 @@ const mailingAddress = [
   <Section align="center" atmosphere="pool-neutral" id="questions">
     <Fragment slot="title">Questions about giving</Fragment>
     <Fragment slot="intro">
-      Sponsorships, in-kind gifts, giving funds, or anything else: ask here and a volunteer will
-      answer.
+      Ask about sponsorship, equipment donations, or giving funds. A volunteer will answer your
+      questions and help you find a way to support our students.
     </Fragment>
 
     <ContactForm class="mx-auto max-w-3xl" name="Sponsor Question" />

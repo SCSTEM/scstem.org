@@ -23,7 +23,8 @@ export const onRequestPost: PagesFunction<{
     return res(
       {
         error: "Form secrets are not configured",
-        message: "The form is not accepting submissions right now",
+        message:
+          "We cannot receive messages through this form right now. Please use the email link on this page.",
         success: false,
       },
       500,
@@ -45,7 +46,10 @@ export const onRequestPost: PagesFunction<{
     !isFilled(name) ||
     !isFilled(turnstileToken)
   ) {
-    return res({ message: "Every field is required", success: false }, 400);
+    return res(
+      { message: "Please complete every field before sending your message.", success: false },
+      400,
+    );
   }
   const data: GenericFormRequest = { email, form, message, name, turnstileToken };
 
@@ -59,7 +63,7 @@ export const onRequestPost: PagesFunction<{
     if (!challenge.success) {
       return res(
         {
-          message: "Challenge verification failed",
+          message: "The spam check did not finish. Please reload and try again.",
           result: challenge,
           success: false,
         },
@@ -76,7 +80,8 @@ export const onRequestPost: PagesFunction<{
       return res(
         {
           error: `Slack webhook returned ${String(posted.status)}`,
-          message: "Error handling submission",
+          message:
+            "We could not send your message. Please try again or use the email link on this page.",
           success: false,
         },
         502,
@@ -88,7 +93,8 @@ export const onRequestPost: PagesFunction<{
     return res(
       {
         error,
-        message: "Error handling submission",
+        message:
+          "We could not send your message. Please try again or use the email link on this page.",
         success: false,
       },
       500,

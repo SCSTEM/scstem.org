@@ -14,7 +14,7 @@ const routes = [
     id: "frc-kickoff",
     path: "/programs/frc/kickoff",
     faq: false,
-    cta: "Watch on FIRST website",
+    cta: "Watch the game reveal",
     register: false,
   },
 ];

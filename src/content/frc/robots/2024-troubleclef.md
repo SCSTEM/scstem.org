@@ -14,7 +14,6 @@ awards:
   - "Imagery Award, Buckeye Regional"
 ---
 
-Amid more conventional and exposed designs, Troubleclef stands out with its
-sleek gunmetal sides and concealed electronics. A 3D-printed chain carries game pieces from the
-ground up to the peak of the ramp, and a pair of motors shoot it forward. Coming back from a loss
-in Pittsburgh, this machine got us 15th place at the Buckeye Regional and an Imagery Award.
+Troubleclef's gunmetal side panels enclose its electronics. A 3D-printed chain carries game
+pieces from the ground to the top of a ramp, where two motors launch them. The team placed
+15th at the Buckeye Regional and earned an Imagery Award.

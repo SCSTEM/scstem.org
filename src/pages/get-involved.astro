@@ -20,7 +20,7 @@ const formTitle = `${nav.cta.label} with the ${site.name}`;
 ---
 
 <BaseLayout
-  description="Students, parents, mentors, and sponsors all start here: a short form, then a South Central STEM Collective volunteer writes back."
+  description="Join a robotics team, volunteer, or support South Central STEM Collective. Tell us your interests, and a volunteer will help you take the next step."
   title="Get involved"
   trail={[{ name: nav.cta.label, path: nav.cta.href }]}
 >
@@ -32,39 +32,46 @@ const formTitle = `${nav.cta.label} with the ${site.name}`;
       src={getInvolved}
     />
     <Fragment slot="title">Get involved</Fragment>
-    Students, parents, mentors, volunteers, and businesses all start with the same short form. A
-    volunteer emails you back to learn a bit more, then invites you to a meeting or sends the
-    details you asked for.
+    Curious about joining a team, sharing your skills, or supporting our programs? Tell us what
+    interests you. A volunteer will email you to answer your questions, discuss a visit, or share
+    sponsorship information.
     <Button href="#form" size="lg" slot="actions">
-      Fill out the form
+      Tell us what interests you
     </Button>
   </Hero>
 
   <Section atmosphere="bubble" index={1}>
-    <Fragment slot="title">Where you fit</Fragment>
+    <Fragment slot="title">Find your way to contribute</Fragment>
+    <Fragment slot="intro">
+      Our teams meet in downtown {site.location.locality}, {site.location.region}. Students are
+      welcome from {site.location.county} and beyond, with or without robotics experience.
+    </Fragment>
 
     <FeatureGrid columns={2}>
       <FeatureCard cta="Compare the programs" href={programs.sc2.href} icon="education">
         <Fragment slot="title">Students and parents</Fragment>
-        <FirstMark /> LEGO League is for ages {programs.fll.ages}, and {programs.frc.teamName} for
-        ages {programs.frc.ages}.
+        Explore <FirstMark /> LEGO® League for ages {programs.fll.ages}, or
+        {programs.frc.teamName} for ages {programs.frc.ages}. Tell us your interests, or ask about a
+        program for your student, and we&rsquo;ll help you find a fit.
       </FeatureCard>
 
       <FeatureCard icon="group">
         <Fragment slot="title">Mentors and volunteers</Fragment>
-        Professionals who can teach a skill, and parents who can lend a hand. Every mentor and
-        volunteer follows Pennsylvania and <FirstMark /> youth-protection guidelines.
+        Share a skill, help with team activities, or support students as they learn. Tell us what
+        you can offer. Every mentor and volunteer follows Pennsylvania and <FirstMark />
+        youth-protection guidelines.
       </FeatureCard>
 
-      <FeatureCard cta="See who sponsors us" href={nav.sponsors.href} icon="enterprise">
+      <FeatureCard cta="Explore sponsorship" href={nav.sponsors.href} icon="enterprise">
         <Fragment slot="title">Sponsors</Fragment>
-        Businesses fund our tools, workspace, and registration fees. Tell us about your company on
-        the form, and we&rsquo;ll send the sponsorship details.
+        Your support gives students tools to learn on, a workspace to build in, and opportunities to
+        compete. Tell us about your company, and we&rsquo;ll share the sponsorship details.
       </FeatureCard>
 
-      <FeatureCard cta="Request a demonstration" href={nav.contact.href} icon="events">
+      <FeatureCard cta="Request a robot demonstration" href={nav.contact.href} icon="events">
         <Fragment slot="title">Schools and community groups</Fragment>
-        Skip the form: send us the date and place, and we&rsquo;ll see which team can bring a robot.
+        Meet the students behind our robots and see their work up close. Use our contact page to
+        share your event&rsquo;s date, location, and audience, and we&rsquo;ll discuss a visit.
       </FeatureCard>
     </FeatureGrid>
   </Section>
@@ -72,10 +79,10 @@ const formTitle = `${nav.cta.label} with the ${site.name}`;
   <JoiningFaq />
 
   <Section atmosphere="pool" id="form">
-    <Fragment slot="title">Tell us about you</Fragment>
+    <Fragment slot="title">Tell us what interests you</Fragment>
     <Fragment slot="intro">
-      The form takes a couple of minutes, and nothing on it is binding. Tell us who you are and what
-      you&rsquo;re curious about.
+      The form takes a couple of minutes. You don&rsquo;t need to decide about joining yet—tell us a
+      little about yourself and what you&rsquo;d like to explore.
     </Fragment>
 
     <Button href={site.urls.getInvolvedForm} variant="secondary">
