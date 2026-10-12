@@ -2,12 +2,14 @@
 import type { HandVariant } from "@/lib/hand";
 
 import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
+import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
 import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
 import { cn } from "@/lib/cn";
 
 /**
  * A section's next step, written onto the sheet by hand. With a `prompt`, a sketched arrow bridges
- * the typeset question to the handwritten link that answers it; without one, the link is circled.
+ * the typeset question to the handwritten link that answers it, and the link is underlined by hand;
+ * without one, the link is circled.
  */
 interface Props {
   href: string;
@@ -18,12 +20,14 @@ interface Props {
 }
 
 const { href, prompt, variant = 1, class: className } = Astro.props;
+
+const link = "bg-none pb-0 font-hand text-h3 leading-snug";
 ---
 
 <p class={cn("flex flex-wrap items-center gap-x-4 gap-y-1", className)}>
   {prompt === undefined ? (
     <ChalkOval around="control" variant={variant}>
-      <a class="font-hand text-h3 leading-snug" href={href}>
+      <a class={link} href={href}>
         <slot />
       </a>
     </ChalkOval>
@@ -32,8 +36,10 @@ const { href, prompt, variant = 1, class: className } = Astro.props;
       <span class="text-lead">{prompt}</span>
       <span class="flex items-center gap-3">
         <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={variant} />
-        <a class="font-hand text-h3 leading-snug" href={href}>
-          <slot />
+        <a class={link} href={href}>
+          <ChalkUnderline variant={variant}>
+            <slot />
+          </ChalkUnderline>
         </a>
       </span>
     </>

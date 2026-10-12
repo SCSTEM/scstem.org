@@ -76,7 +76,7 @@ const season = [
   {
     when: "Build season · January to March",
     title: "Design, build, program",
-    body: "Students model the robot in CAD, machine and assemble the parts, wire it, and write the code that drives it. Mentors teach the tools; students build the robot.",
+    body: "Students model every part in CAD, and local manufacturers cut, bend, and weld the metal to their drawings, the way a real engineering team works with a shop. Back in the workspace, students 3D-print parts, assemble the robot, wire it, and write its code.",
   },
   {
     when: "Competition · Spring",
@@ -110,7 +110,7 @@ const gallery = [
 
 const roles = [
   "Mechanical design and CAD",
-  "Machining, assembly, and wiring",
+  "Assembly, wiring, and 3D printing",
   "Programming and controls",
   "Game strategy and scouting",
   "Fundraising and sponsor relations",
@@ -121,7 +121,7 @@ const roles = [
 ---
 
 <ProgramLayout
-  description={`Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName} builds a 120-pound FIRST robot every season in downtown Chambersburg: when we meet, who mentors, and ${String(awards)} awards since ${String(programs.frc.since)}.`}
+  description={`Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName} builds a full-size FIRST robot from scratch every season in downtown Chambersburg: when we meet, who mentors, and ${String(awards)} awards since ${String(programs.frc.since)}.`}
   og={ogCards.frc}
   program="frc"
   title="Biohazard - FIRST Robotics Competition"
@@ -147,9 +147,9 @@ const roles = [
     <Fragment slot="title">
       Real skills, <span class="highlight-swipe">real robots</span>, since {programs.frc.since}
     </Fragment>
-    {programs.frc.teamName} is team {programs.frc.teamNumber} in the <FirstMark /> Robotics
-    Competition: high-school students, ages {programs.frc.ages}, who design, build, program, and
-    drive a new 120-pound robot every season, with mentors from STEM careers beside them.
+    {programs.frc.teamName} is a <FirstMark /> Robotics Competition team: high-school students, ages{" "}
+    {programs.frc.ages}, with mentors from STEM careers beside them. Every season they design,
+    build, wire, program, and drive a new robot.
     <Button href={nav.cta.href} size="lg" slot="actions">
       {nav.cta.label}
     </Button>
@@ -159,8 +159,8 @@ const roles = [
     <Fragment slot="title">One game, one robot, one season</Fragment>
     <Fragment slot="intro">
       Every January, <FirstMark /> reveals a new game to teams around the world at the same moment.
-      From that kickoff until competitions start in March, each team designs and builds a robot of
-      up to 120 pounds that can play it, then takes it to compete against teams it has never met.
+      From that kickoff until competitions start in March, each team designs and builds a robot from
+      scratch to play it, then takes it to compete against teams it has never met.
     </Fragment>
 
     <ol class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -235,7 +235,8 @@ const roles = [
       </dl>
     </Card>
     <p class="mt-6 measure">
-      Students are encouraged, not required, to make every meeting - we know families are busy.
+      Students make at least one meeting a week, and the more they come, the more they get out of
+      it.
     </p>
 
     <SectionAction href={nav.frcCalendar.href} prompt="Need this month's dates?" slot="action">

@@ -857,3 +857,26 @@
     animation: draw-on var(--sc2-duration-draw) var(--sc2-ease-entrance) both;
   }
 }
+
+@keyframes draw-wipe {
+  from {
+    clip-path: inset(-100% 100% -100% -10%);
+  }
+  to {
+    clip-path: inset(-100% -10%);
+  }
+}
+
+/* For a left-to-right stroke stretched over content of any width. `non-scaling-stroke` lays dashes
+   out in screen pixels, so a dash sized in path units stops short once the path is widened; a wipe
+   draws the same stroke at any stretch. Revealed by the same layout script as `draw-on`; the clip
+   sits on the path because a clipped `<svg>` never reports itself in view. */
+@utility draw-wipe {
+  &.is-pending path {
+    clip-path: inset(-100% 100% -100% -10%);
+  }
+
+  &.is-drawing path {
+    animation: draw-wipe var(--sc2-duration-draw) var(--sc2-ease-entrance) both;
+  }
+}

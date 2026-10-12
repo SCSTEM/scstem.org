@@ -11,3 +11,5 @@ export const handToneClass = (tone: HandTone): string =>
 export const handwritingClass = "font-hand text-primary-bright";
 
 export const handMarkClass = "draw-on hand-stroke pointer-events-none";
+
+export const handWipeClass = "draw-wipe hand-stroke pointer-events-none";

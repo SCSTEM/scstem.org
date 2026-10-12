@@ -120,9 +120,6 @@ const outreachByYear = outreachYears.map((year) => ({
 
   <Section atmosphere="bubble" index={1}>
     <Fragment slot="title">History</Fragment>
-    <Fragment slot="intro">
-      To know where SC2 is going, start where it came from: {programs.frc.teamName}.
-    </Fragment>
 
     <div class="flex flex-col-reverse items-start gap-8 md:flex-row md:gap-12">
       <div class="prose-copy">
@@ -179,8 +176,7 @@ const outreachByYear = outreachYears.map((year) => ({
       <p>
         Stuck at home, still itching to compete, and seeing how much the students cared, we started
         asking: &ldquo;Why couldn&rsquo;t we break away from 4-H and start our own program?&rdquo;
-        That might sound strange. We were proud of our 4-H partnership, as our original website
-        said:
+        We were proud of our 4-H partnership, as our original website said:
       </p>
       <blockquote>
         The students of Biohazard 4050 are not only members of <FirstMark />, but are also members
@@ -223,32 +219,30 @@ const outreachByYear = outreachYears.map((year) => ({
     <div class="prose-copy mt-6">
       <ol>
         <li>
-          &ldquo;SC2&rdquo; acts as the umbrella organization
+          SC2 is the umbrella
           <ul>
-            <li>501(c)(3) non-profit entity</li>
-            <li>Insurance, workspace, and financial management</li>
-            <li>Youth protection and volunteer responsibility</li>
-            <li>Tool acquisition and training</li>
-            <li>Presence in local community</li>
+            <li>The 501(c)(3) nonprofit</li>
+            <li>Insurance, the workspace, and the books</li>
+            <li>Youth protection and volunteer oversight</li>
+            <li>Tools, and training on them</li>
+            <li>Our presence in the community</li>
           </ul>
         </li>
         <li>
-          Clubs are formed under the SC2 entity
+          Clubs run under SC2
           <ul>
-            <li>Entirely self-managed and contained</li>
-            <li>Own leadership structures, goals, bank accounts, schedules, etc.</li>
-            <li>
-              Access to SC2 resources (Internet, tools/equipment, workspace, industry experts, etc.)
-            </li>
+            <li>Each club manages itself</li>
+            <li>Its own leaders, goals, bank account, and schedule</li>
+            <li>Use of SC2&rsquo;s workspace, tools, internet, and industry experts</li>
           </ul>
         </li>
         <li>
-          Students, parents, volunteers, and mentors work directly with their respective clubs
+          Students, parents, volunteers, and mentors work with their club
           <ul>
             <li>
-              Activities, competitions, external organizations (e.g. <FirstMark />)
+              Activities, competitions, and outside programs like <FirstMark />
             </li>
-            <li>Club-driven fundraising</li>
+            <li>Fundraising for the club</li>
           </ul>
         </li>
       </ol>
@@ -303,11 +297,7 @@ const outreachByYear = outreachYears.map((year) => ({
       ))}
     </div>
 
-    <SectionAction
-      href={nav.contact.href}
-      prompt="Want a robot demonstration at your school, club, or event?"
-      slot="action"
-    >
+    <SectionAction href={nav.contact.href} prompt="Want to see one up close?" slot="action">
       Request a demonstration
     </SectionAction>
   </Section>
@@ -339,7 +329,7 @@ const outreachByYear = outreachYears.map((year) => ({
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">What&rsquo;s your story?</Fragment>
-      Student, parent, mentor, or sponsor: it starts with a short form, and a volunteer writes back.
+      We started as a handful of students and volunteers. The next chapter needs a few more of both.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>

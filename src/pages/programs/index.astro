@@ -28,11 +28,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       src={handsOn}
     />
     <Fragment slot="title">
-      From LEGO® bricks to <span class="highlight-swipe">120-pound</span> robots
+      From tabletop LEGO® robots to <span class="highlight-swipe">full-size machines</span>
     </Fragment>
-    Two <FirstMark /> programs under one roof in downtown Chambersburg, run by the {site.name}.
-    {programs.frc.teamName} has competed since {programs.frc.since}; {site.shortName} became its own
-    nonprofit in {site.founded}.
+    Two <FirstMark /> programs under one roof in downtown Chambersburg, run by the {site.name}: one
+    for younger students, and
+    {programs.frc.teamName} for high schoolers.
     <Button href={nav.cta.href} size="lg" slot="actions">
       {nav.cta.label}
     </Button>
@@ -60,14 +60,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
       <ProgramCard program="frc">
         <p>
-          Team {programs.frc.teamNumber} - {programs.frc.teamName} - builds a 120-pound robot each
-          winter, from the January game reveal to regional competitions in March. Students run the
-          design, the fabrication, the code, the money, and the brand, with mentors who do this for
-          a living.
+          {programs.frc.teamName} starts every January with a game no one has seen and a robot to
+          build from scratch before regional competitions in March. Students run the design, the
+          build, the code, the money, and the brand, with mentors who do this for a living.
         </p>
-        <p class="mt-3">
-          Competing since {programs.frc.since}, with a new robot every build season.
-        </p>
+        <p class="mt-3">Competing since {programs.frc.since}.</p>
       </ProgramCard>
     </FeatureGrid>
   </Section>

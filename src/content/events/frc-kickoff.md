@@ -22,21 +22,21 @@ hintLabels:
 
 ## The build season journey
 
-**Kickoff.** The game is revealed! Teams watch the live broadcast and receive the game manual to
+**Kickoff.** The game is revealed. Teams watch the live broadcast and receive the game manual to
 start strategizing.
 
 **Build season.** From kickoff to the first competition in March, design, prototype, build, and
 program the robot to meet the game challenges.
 
 **Competition – March & April.** Compete in regional events, form alliances, and work toward
-qualifying for the World Championship.
+qualifying for the FIRST Championship.
 
 **Ages 14–18.** High school students work alongside adult mentors from industry to tackle real
 engineering challenges.
 
 ## What is _FIRST®_ Robotics Competition?
 
-_FIRST®_ Robotics Competition is a varsity sport for the mind: high-school teams build robots and
+_FIRST®_ Robotics Competition combines the excitement of sport with real engineering: high-school teams build industrial-size robots and
 compete against teams from around the world. [Meet Biohazard](/programs/frc) to see what a season
 on the team looks like.
 

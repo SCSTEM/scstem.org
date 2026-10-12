@@ -66,7 +66,7 @@ export const GET: APIRoute = async () => {
         title: nav.cta.label,
         href: nav.cta.href,
         description:
-          "How a student, parent, mentor, or volunteer joins - and the form that starts it.",
+          "How a student, parent, mentor, or volunteer joins, and the form that starts it.",
       },
       {
         title: nav.about.label,

@@ -125,7 +125,7 @@ export const programs = {
     teamNumber: 4050,
     since: 2012,
     ages: "14-18",
-    tagline: "A 120-pound competition robot, built by students every season.",
+    tagline: "A full-size competition robot, built from scratch every season.",
     meets:
       "Weekly from April to December; Mondays, Tuesdays, Thursdays and Saturdays from January through competition season",
     hours: "Weeknights 6:30-8:30 PM, Saturdays 10 AM-4 PM",

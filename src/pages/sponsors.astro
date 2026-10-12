@@ -56,7 +56,8 @@ const alumniFields = listFormat.format(
     <Fragment slot="title">
       <span class="highlight-swipe">Sponsors</span> help us build
     </Fragment>
-    Local businesses fund our teams. Here&rsquo;s who backs this work, and how to join them.
+    Local businesses fund our teams and help build our robots. Here&rsquo;s who backs this work, and
+    how to join them.
     <Button href={nav.cta.href} size="lg" slot="actions">
       {nav.cta.label}
     </Button>
@@ -65,12 +66,10 @@ const alumniFields = listFormat.format(
   <Section atmosphere="bubble" index={1}>
     <Fragment slot="title">A local investment</Fragment>
     <Fragment slot="intro">
-      The students you back go on to careers. The {alumni.length} alumni we keep up with work in{" "}
-      {alumniFields}.
+      The {alumni.length} alumni we keep up with now work in {alumniFields}.
     </Fragment>
 
     <h3>Where the money goes</h3>
-    <p class="mt-4 measure">Sponsor money goes to three places.</p>
 
     <FeatureGrid class="mt-8" columns={3}>
       <FeatureCard icon="tools">

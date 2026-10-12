@@ -287,9 +287,7 @@ const calendarLabels = { sc2: site.shortName, frc: programs.frc.teamName };
         }
       })
       .catch(() => {
-        say(
-          "We could not load the calendar just now - the Google Calendar link above still works.",
-        );
+        say("We could not load the calendar just now. The Google Calendar link above still works.");
       })
       .finally(() => {
         loading.remove();

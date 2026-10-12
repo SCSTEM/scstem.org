@@ -106,11 +106,11 @@ const outreachKinds = {
       src={fllField}
     />
     <Fragment slot="title">
-      <span class="highlight-swipe">Robots</span> are in Franklin County. So are we.
+      <span class="highlight-swipe">Building robots</span> in Franklin County since{" "}
+      {programs.frc.since}
     </Fragment>
-    Students have built competition robots here since {programs.frc.since}. Today, ages 9 to 18
-    design, build, and compete out of our workspace in downtown Chambersburg. Volunteer mentors
-    teach the skills, and local sponsors fund the tools and the workspace.
+    Students ages 9 to 18 design, build, and compete out of our workspace in downtown Chambersburg.
+    Volunteer mentors teach the skills, and local sponsors fund the tools and the workspace.
     <Button href={nav.cta.href} size="lg" slot="actions">
       {nav.cta.label}
     </Button>
@@ -133,9 +133,9 @@ const outreachKinds = {
       </ProgramCard>
 
       <ProgramCard program="frc">
-        {programs.frc.teamName}, team {programs.frc.teamNumber}, builds a 120-pound robot each
-        winter, from the January game reveal to competition in March. Students also run the
-        team&rsquo;s fundraising, outreach, and media.
+        {programs.frc.teamName}, our high-school team, builds a full-size competition robot from
+        scratch every season: a game no one has seen in January, a working machine on the field by
+        March. Students also run the team&rsquo;s fundraising, outreach, and media.
       </ProgramCard>
     </FeatureGrid>
   </Section>
@@ -236,9 +236,6 @@ const outreachKinds = {
 
   <Section atmosphere="bubble" index={2}>
     <Fragment slot="title">The record so far</Fragment>
-    <Fragment slot="intro">
-      The numbers below come from official competition results, season by season.
-    </Fragment>
 
     <StatBand stats={record} />
 

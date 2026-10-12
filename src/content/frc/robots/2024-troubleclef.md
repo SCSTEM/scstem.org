@@ -14,7 +14,7 @@ awards:
   - "Imagery Award, Buckeye Regional"
 ---
 
-Amid more conventional and exposed designs, Troubleclef sticks out like a sore thumb with its
+Amid more conventional and exposed designs, Troubleclef stands out with its
 sleek gunmetal sides and concealed electronics. A 3D-printed chain carries game pieces from the
 ground up to the peak of the ramp, and a pair of motors shoot it forward. Coming back from a loss
 in Pittsburgh, this machine got us 15th place at the Buckeye Regional and an Imagery Award.

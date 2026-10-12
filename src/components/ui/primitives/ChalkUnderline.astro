@@ -1,6 +1,6 @@
 ---
 import { cn } from "@/lib/cn";
-import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
+import { type HandTone, handToneClass, type HandVariant, handWipeClass } from "@/lib/hand";
 
 interface Props {
   /** Adjacent instances must use different variants. */
@@ -24,7 +24,7 @@ const rotations = { 1: "-0.5deg", 2: "0.4deg", 3: "-0.8deg" } as const;
   <slot />
   <svg
     aria-hidden="true"
-    class:list={[handMarkClass, "absolute -bottom-1.5 left-0 h-2 w-full", handToneClass(tone)]}
+    class:list={[handWipeClass, "absolute -bottom-1.5 left-0 h-2 w-full", handToneClass(tone)]}
     preserveAspectRatio="none"
     style={`rotate: ${rotations[variant]}`}
     viewBox="0 0 180 10"
