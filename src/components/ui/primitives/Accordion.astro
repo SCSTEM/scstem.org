@@ -1,0 +1,14 @@
+---
+import { cn } from "@/lib/cn";
+
+/** Items are exclusive-open when they share a `name` (native `<details name>`). */
+interface Props {
+  class?: string | undefined;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={cn("divide-y divide-border", className)}>
+  <slot />
+</div>

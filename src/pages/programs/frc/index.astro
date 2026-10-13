@@ -1,0 +1,323 @@
+---
+import { Image } from "astro:assets";
+
+import biohazardLockup from "@/assets/frc/biohazard-lockup.svg";
+import driveTeam from "@/assets/frc/frc-driveteam2.webp";
+import heroVideoPoster from "@/assets/frc/hero-video-poster.webp";
+import stands from "@/assets/sc2/competition-1.webp";
+import workshop from "@/assets/sc2/hands-on-2.webp";
+import whiteboard from "@/assets/sc2/leadership-1.webp";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
+import FirstMarked from "@/components/ui/FirstMarked.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroVideo from "@/components/ui/HeroVideo.astro";
+import JoiningFaq from "@/components/ui/JoiningFaq.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Callout from "@/components/ui/primitives/Callout.astro";
+import Card from "@/components/ui/primitives/Card.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Link from "@/components/ui/primitives/Link.astro";
+import Section from "@/components/ui/Section.astro";
+import SectionAction from "@/components/ui/SectionAction.astro";
+import StatBand from "@/components/ui/StatBand.astro";
+import VideoLink from "@/components/ui/VideoLink.astro";
+import { ogCards } from "@/data/ogCards";
+import { nav, programs, site } from "@/data/site";
+import ProgramLayout from "@/layouts/ProgramLayout.astro";
+import { PHOTO_QUALITY } from "@/lib/images";
+import { programTrail } from "@/lib/jsonld";
+import { awardCount, championshipSeasons, getSeasons, seasonCount } from "@/lib/seasons";
+
+const seasons = await getSeasons();
+const awards = awardCount(seasons);
+const seasonTotal = seasonCount(seasons);
+const championships = championshipSeasons(seasons);
+
+const timeline = seasons
+  .filter((entry) => (entry.data.awards?.length ?? 0) > 0 || championships.includes(entry))
+  .toReversed()
+  .map(({ data }) => ({
+    label: data.yearLabel ?? String(data.year),
+    honors: [
+      ...(data.events ?? [])
+        .filter((event) => event.startsWith("FIRST Championship"))
+        .map((event) => ({ icon: "flag", text: `Qualified for the ${event}` })),
+      ...(data.awards ?? []).map((award) => ({ icon: "trophy", text: award })),
+    ],
+  }));
+
+const logistics = [
+  { term: "When", detail: programs.frc.meets },
+  { term: "Hours", detail: programs.frc.hours },
+  { term: "Where", detail: site.location.workspace, href: site.urls.directions },
+  { term: "Ages", detail: programs.frc.ages },
+  { term: "Team", detail: `${programs.frc.students} students` },
+];
+
+const mentorStats = [
+  {
+    value: String(programs.frc.mentors),
+    label: "Professional mentors",
+    description: "STEM professionals sharing their skills with students in the workshop.",
+  },
+  {
+    value: `${String(programs.frc.alumniMentors)} of ${String(programs.frc.mentors)}`,
+    label: "Biohazard alumni",
+    description: "Former students returning to help the next team learn.",
+  },
+];
+
+const season = [
+  {
+    when: "Kickoff · January",
+    title: "The game is revealed",
+    body: "We watch the reveal together, read the rules, and explore ideas for a robot that can play the game. Students practice planning, asking questions, and deciding which challenges to tackle.",
+  },
+  {
+    when: "Build season · January to March",
+    title: "Design, build, program",
+    body: "Students design robot parts using computer-aided design (CAD), and local manufacturers cut, bend, and weld metal from their drawings. In the workspace, students 3D-print parts, assemble and wire the robot, and write its code.",
+  },
+  {
+    when: "Competition · Spring",
+    title: "Take the robot to the field",
+    body: "We compete alongside other teams in alliances, combining our robots' strengths to play the game. Students scout matches, plan strategy, and repair the robot between rounds, learning to work together under pressure.",
+  },
+  {
+    when: "Off-season",
+    title: "Keep learning together",
+    body: "We welcome new members, practice skills, and test ideas for the next season. Robot demonstrations and off-season competitions give students more opportunities to share their work and learn from other teams.",
+  },
+];
+
+const gallery = [
+  {
+    src: whiteboard,
+    alt: "A student points at a whiteboard of robot design trade-offs while a teammate looks on",
+    caption: "Planning a drivetrain at the whiteboard",
+  },
+  {
+    src: workshop,
+    alt: "Students in the workshop testing a robot claw on an inflatable purple game cube",
+    caption: "Testing a claw in the workshop",
+  },
+  {
+    src: stands,
+    alt: "Biohazard students in green team shirts cheering in an arena's stands, waving 4050 and biohazard-logo signs",
+    caption: "Our stands at a regional",
+  },
+];
+
+const roles = [
+  "Mechanical design and CAD",
+  "Assembly, wiring, and 3D printing",
+  "Programming and controls",
+  "Game strategy and scouting",
+  "Fundraising and sponsor relations",
+  "Outreach and robot demonstrations",
+  "Photography, video, and social media",
+  "Graphic design and team identity",
+];
+---
+
+<ProgramLayout
+  description={`Join ${programs.frc.teamName}, FIRST Robotics Competition team ${String(programs.frc.teamNumber)}, for ages ${programs.frc.ages} in ${site.location.locality}, PA. Design, build, and compete with mentor support.`}
+  og={ogCards.frc}
+  program="frc"
+  title="Biohazard - FIRST Robotics Competition"
+  trail={programTrail("frc")}
+>
+  <Hero>
+    <HeroVideo
+      alt="The view from Biohazard's driver station, out over a packed competition field"
+      caption="From the driver station"
+      mp4={site.heroVideo.mp4}
+      id="frc-hero-video"
+      poster={heroVideoPoster}
+      slot="media"
+      webm={site.heroVideo.webm}
+    />
+    <Image
+      alt={`${programs.frc.teamName}, FIRST Robotics Competition team ${String(programs.frc.teamNumber)}`}
+      class="h-auto w-56 md:w-72"
+      loading="eager"
+      slot="logo"
+      src={biohazardLockup}
+    />
+    <Fragment slot="title">
+      Design, build, and <span class="highlight-swipe">compete</span>
+    </Fragment>
+    Join {programs.frc.teamName}, our <FirstMark /> Robotics Competition team for high-school
+    students ages {programs.frc.ages}. Work alongside teammates and experienced mentors to build a
+    new robot each season. Explore engineering, programming, strategy, and creative roles - no
+    robotics experience needed.
+    <Button href={nav.cta.href} size="lg" slot="actions">
+      {nav.cta.label}
+    </Button>
+  </Hero>
+
+  <Section atmosphere="bubble" index={1}>
+    <Fragment slot="title">One game, one robot, one season</Fragment>
+    <Fragment slot="intro">
+      Every January, <FirstMark /> reveals a new game to teams around the world at the same moment.
+      We turn that challenge into a robot, testing and improving our ideas before competitions begin
+      in spring. Each stage gives students opportunities to learn, contribute, and take
+      responsibility for the team&rsquo;s work.
+    </Fragment>
+
+    <ol class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      {season.map((step) => (
+        <li class="border-t-2 border-primary pt-5">
+          <p class="spec-label text-primary-bright">{step.when}</p>
+          <h3 class="mt-2 text-h4">{step.title}</h3>
+          <p class="mt-2">{step.body}</p>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">Find your role on the team</Fragment>
+    <Fragment slot="intro">
+      Engineering, strategy, fundraising, and creative work all contribute to a season. You can
+      explore different roles with help from mentors and teammates as you discover what interests
+      you.
+    </Fragment>
+
+    <ul class="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
+      {roles.map((role) => (
+        <li class="flex gap-3">
+          <span aria-hidden="true" class="mt-2.5 size-1.5 shrink-0 bg-primary" />
+          {role}
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-12 grid gap-8 md:grid-cols-3">
+      {gallery.map((photo) => (
+        <figure>
+          <div class="media-frame">
+            <Image
+              alt={photo.alt}
+              class="aspect-4/3 w-full object-cover"
+              loading="lazy"
+              quality={PHOTO_QUALITY}
+              sizes="(min-width: 72rem) 22rem, (min-width: 48rem) 30vw, 92vw"
+              src={photo.src}
+              width={720}
+              widths={[360, 540, 720]}
+            />
+          </div>
+          <Callout as="figcaption" class="mt-3" figure>
+            {photo.caption}
+          </Callout>
+        </figure>
+      ))}
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" index={2}>
+    <Fragment slot="title">When and where we meet</Fragment>
+
+    <Card class="p-6">
+      <dl class="grid gap-x-10 gap-y-4 md:grid-cols-2">
+        {logistics.map((entry) => (
+          <div class="grid grid-cols-[5rem_1fr] items-baseline gap-x-4">
+            <dt class="spec-label text-muted">{entry.term}</dt>
+            <dd class="text-foreground">
+              {"href" in entry ? <Link href={entry.href}>{entry.detail}</Link> : entry.detail}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </Card>
+    <p class="mt-6 measure">
+      Plan on at least one meeting a week. Attending additional sessions gives you more time to
+      practice and contribute. Tell us about your schedule, and we can discuss how participation
+      fits around school and other activities. Students are welcome from {site.location.county}
+      and beyond.
+    </p>
+
+    <SectionAction href={nav.frcCalendar.href} prompt="Need this month's dates?" slot="action">
+      See the meeting calendar
+    </SectionAction>
+  </Section>
+
+  <Section atmosphere="bubble" index={3}>
+    <Fragment slot="title">On the field</Fragment>
+    <Fragment slot="intro">{programs.frc.competitions}</Fragment>
+
+    <h3 class="text-h4">
+      {awards} awards in {seasonTotal} seasons
+    </h3>
+    <ol class="mt-6 grid gap-x-10 border-t border-border md:grid-cols-2 lg:grid-cols-3">
+      {timeline.map((entry) => (
+        <li class="grid grid-cols-[5rem_1fr] items-baseline gap-x-4 border-b border-border py-5">
+          <span class="font-mono text-h3 font-semibold text-primary-bright tabular-nums">
+            {entry.label}
+          </span>
+          <ul class="flex flex-col gap-2">
+            {entry.honors.map((honor) => (
+              <li class="flex items-start gap-2">
+                <Icon class="mt-1 shrink-0 text-primary-bright" name={honor.icon} size={20} />
+                <span>
+                  <FirstMarked text={honor.text} />
+                </span>
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ol>
+
+    <SectionAction href={nav.robots.href} slot="action" variant={2}>
+      See every season
+    </SectionAction>
+  </Section>
+
+  <Section atmosphere="bubble" index={4}>
+    <Fragment slot="title">Learn alongside experienced mentors</Fragment>
+    <Fragment slot="intro">
+      STEM professionals and other volunteers share their skills and help students work through
+      challenges. Some of our mentors began as students on this team and returned to help the next
+      generation learn.
+    </Fragment>
+
+    <StatBand stats={mentorStats} />
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">
+      Meet the team, learn about <FirstMark />
+    </Fragment>
+
+    <figure>
+      <VideoLink
+        href={site.urls.teamVideo}
+        label="Watch our team video on YouTube"
+        poster={driveTeam}
+      />
+      <Callout as="figcaption" class="mt-3" figure>
+        The {programs.frc.teamName} team video, on YouTube
+      </Callout>
+    </figure>
+  </Section>
+
+  <JoiningFaq program="frc" />
+
+  <Section atmosphere="ruler">
+    <CtaBanner>
+      <Fragment slot="title">Find your place on the team</Fragment>
+      Tell us what interests you. A volunteer will answer your questions and discuss a visit so you
+      can meet the team and see what we do. You don&rsquo;t need to choose a role before getting in
+      touch.
+      <Button href={nav.cta.href} size="lg" slot="actions">
+        {nav.cta.label}
+      </Button>
+      <Button href={nav.frcCalendar.href} size="lg" slot="actions" variant="secondary">
+        See when we meet
+      </Button>
+    </CtaBanner>
+  </Section>
+</ProgramLayout>

@@ -1,0 +1,29 @@
+---
+import { cn } from "@/lib/cn";
+
+import Icon from "./Icon.astro";
+
+/** `aria-live` so a message added after submit is announced. */
+interface Props {
+  /** Must match the input's `aria-describedby`. */
+  id: string;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+<!-- `empty:hidden` needs an element with no child nodes, so the icon renders only with slot
+  content. -->
+<p
+  aria-live="polite"
+  class={cn("flex items-center gap-1.5 text-small text-destructive-bright empty:hidden", className)}
+  id={id}
+>
+  {Astro.slots.has("default") && (
+    <>
+      <Icon name="warning--alt" size={20} />
+      <slot />
+    </>
+  )}
+</p>

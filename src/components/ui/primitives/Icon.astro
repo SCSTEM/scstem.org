@@ -1,0 +1,29 @@
+---
+import { cn } from "@/lib/cn";
+import { iconMarkup } from "@/lib/icon";
+
+interface Props {
+  /** An unknown name fails the build. */
+  name: string;
+  size?: 16 | 20 | 24 | 32;
+  label?: string;
+  class?: string;
+}
+
+const { name, size = 24, label, class: className } = Astro.props;
+
+const markup = iconMarkup(name);
+const decorative = label === undefined;
+---
+
+<svg
+  aria-hidden={decorative ? "true" : undefined}
+  aria-label={label}
+  class={cn("shrink-0", className)}
+  fill="currentColor"
+  height={size}
+  role={decorative ? undefined : "img"}
+  viewBox="0 0 32 32"
+  width={size}
+  set:html={markup}
+/>

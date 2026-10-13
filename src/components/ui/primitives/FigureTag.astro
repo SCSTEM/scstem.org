@@ -1,0 +1,25 @@
+---
+import { cn } from "@/lib/cn";
+
+/**
+ * Hidden from assistive tech: the image's alt already describes it, and a bare figure number read
+ * aloud is noise.
+ */
+interface Props {
+  caption?: string | undefined;
+  class?: string;
+}
+
+const { caption, class: className } = Astro.props;
+---
+
+<span
+  aria-hidden="true"
+  class={cn(
+    "pointer-events-none absolute right-3 bottom-3 z-10 max-w-[60%] fig-tag text-right spec-label md:right-6 md:bottom-6",
+    className,
+  )}
+>
+  <span class="fig-number"></span>
+  {caption !== undefined && ` - ${caption}`}
+</span>

@@ -1,0 +1,125 @@
+---
+import { getCollection } from "astro:content";
+
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import JoiningFaq from "@/components/ui/JoiningFaq.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Link from "@/components/ui/primitives/Link.astro";
+import Section from "@/components/ui/Section.astro";
+import { ogCards } from "@/data/ogCards";
+import { nav, programs, site } from "@/data/site";
+import ProgramLayout from "@/layouts/ProgramLayout.astro";
+import { programTrail } from "@/lib/jsonld";
+
+const latest = (await getCollection("fllTeamPhotos")).toSorted(
+  (a, b) => b.data.year - a.data.year,
+)[0]?.data;
+if (latest === undefined) {
+  throw new Error("fllTeamPhotos: no entry to lead the FLL page with.");
+}
+---
+
+<ProgramLayout
+  description={`Join FIRST LEGO League for ages ${programs.fll.ages} in ${site.location.locality}, PA. Build a LEGO robot, explore ideas, and learn with a small team. No experience needed.`}
+  og={ogCards.fll}
+  program="fll"
+  title="FIRST LEGO League"
+  trail={programTrail("fll")}
+>
+  <Hero>
+    <HeroImage alt={latest.alt} caption={latest.caption} slot="media" src={latest.photo} />
+    <Fragment slot="eyebrow">Ages {programs.fll.ages}</Fragment>
+    <Fragment slot="title">
+      Build, explore, and <span class="highlight-swipe">learn together</span>
+    </Fragment>
+    <FirstMark /> LEGO® League brings students together in small teams to build robots and explore
+    real-world problems. Try your ideas, learn with mentors and teammates, and practice sharing what
+    you&rsquo;ve discovered. No robotics experience needed.
+    <Button href={nav.cta.href} size="lg" slot="actions">
+      {nav.cta.label}
+    </Button>
+  </Hero>
+
+  <Section atmosphere="bubble" index={1}>
+    <Fragment slot="title">Three parts to a season</Fragment>
+    <Fragment slot="intro">
+      Every season <FirstMark /> sets a new theme, and{" "}
+      <Link href={site.urls.firstInspires}>teams around the world</Link> take on the challenge
+      together. Building, research, presenting, and teamwork all contribute to a season, giving
+      students different ways to explore their interests.
+    </Fragment>
+
+    <FeatureGrid columns={3}>
+      <FeatureCard icon="bot">
+        <Fragment slot="title">The robot game</Fragment>
+        Design, build, and program a LEGO® robot to complete missions on a themed table in a
+        2½-minute match. Test your ideas, improve your robot, and explain your design to judges.
+      </FeatureCard>
+
+      <FeatureCard icon="idea">
+        <Fragment slot="title">The innovation project</Fragment>
+        Research a real problem connected to the season&rsquo;s theme, develop a solution, and share
+        your ideas with judges. Practice asking questions, working together, and explaining what you
+        learned.
+      </FeatureCard>
+
+      <FeatureCard icon="group">
+        <Fragment slot="title">Core values</Fragment>
+        Discovery, innovation, impact, inclusion, teamwork, and fun guide how teams work together.
+        Students practice these values throughout the season, and judges look for them across the
+        event.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">How our teams work</Fragment>
+    <Fragment slot="intro">
+      Our <FirstMark /> LEGO® League teams are small so students have opportunities to take part,
+      try different tasks, and learn from one another.
+    </Fragment>
+
+    <FeatureGrid columns={3}>
+      <FeatureCard cta="Get directions" href={site.urls.directions} icon="location">
+        <Fragment slot="title">Downtown Chambersburg</Fragment>
+        Our teams share a workspace with {programs.frc.teamName}, with tools and mentors to help
+        students learn. Find us at {site.location.street} in downtown {site.location.locality}.
+      </FeatureCard>
+
+      <FeatureCard icon="security">
+        <Fragment slot="title">Student safety</Fragment>
+        At least two adults are with students at every meeting and event. Our mentors and volunteers
+        follow Pennsylvania and <FirstMark /> youth-protection guidelines.
+      </FeatureCard>
+
+      <FeatureCard icon="direction--fork">
+        <Fragment slot="title">Choosing between programs?</Fragment>
+        Where the age ranges overlap, you can choose this program or
+        <Link href={programs.frc.href}>{programs.frc.teamName}</Link>. We&rsquo;re happy to talk
+        about your interests and help you decide.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <JoiningFaq program="fll" />
+
+  <Section atmosphere="ruler">
+    <CtaBanner>
+      <Fragment slot="title">Bring your curiosity</Fragment>
+      We provide the robots, tools, and mentor support. Tell us your student&rsquo;s age and
+      interests, and we&rsquo;ll share the next steps. Students are welcome from
+      {site.location.county} and beyond.
+      <Button href={nav.cta.href} size="lg" slot="actions">
+        {nav.cta.label}
+      </Button>
+      <Button href={nav.calendar.href} size="lg" slot="actions" variant="secondary">
+        See when teams meet
+      </Button>
+    </CtaBanner>
+  </Section>
+</ProgramLayout>

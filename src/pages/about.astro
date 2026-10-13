@@ -1,0 +1,303 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import sc2Logo from "@/assets/brand/logo-color.svg";
+import biohazardLogo from "@/assets/frc/biohazard-logo.svg";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import PhotoTimeline from "@/components/ui/PhotoTimeline.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Section from "@/components/ui/Section.astro";
+import SectionAction from "@/components/ui/SectionAction.astro";
+import StatBand from "@/components/ui/StatBand.astro";
+import { programPhotos } from "@/data/programPhotos";
+import { nav, programs, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { awardCount, championshipSeasons, getSeasons } from "@/lib/seasons";
+
+const NEXT_GENERATION_FROM = 2023;
+const SHUTDOWN_YEAR = 2020;
+
+const teamPhotos = (
+  await Promise.all([getCollection("frcTeamPhotos"), getCollection("fllTeamPhotos")])
+)
+  .flat()
+  .toSorted((a, b) => a.data.year - b.data.year);
+
+const origins = teamPhotos.filter((entry) => entry.data.year < NEXT_GENERATION_FROM);
+const nextGeneration = teamPhotos.filter((entry) => entry.data.year >= NEXT_GENERATION_FROM);
+
+const seasons = await getSeasons();
+const [firstChampionship] = championshipSeasons(seasons);
+const championshipYear = firstChampionship?.data.year;
+const preShutdown = seasons.filter((season) => season.data.year < SHUTDOWN_YEAR);
+
+const REGIONAL_WIN = /^Regional Winner, (?<event>.+)$/u;
+const regionalWins = seasons.toReversed().flatMap((season) =>
+  (season.data.awards ?? []).flatMap((award) => {
+    const event = REGIONAL_WIN.exec(award)?.groups?.event;
+    return event === undefined ? [] : [{ event, year: season.data.year }];
+  }),
+);
+const [firstRegionalWin] = regionalWins;
+
+const awards = {
+  value: String(awardCount(seasons)),
+  label: `Awards since ${String(programs.frc.since)}`,
+};
+const awardsStat =
+  firstRegionalWin === undefined
+    ? awards
+    : {
+        ...awards,
+        description: `Including the ${String(firstRegionalWin.year)} ${firstRegionalWin.event} win.`,
+      };
+
+const teamStats = [
+  {
+    value: programs.frc.students,
+    label: "Students",
+    description: `High schoolers, ages ${programs.frc.ages}, on the team each season.`,
+  },
+  {
+    value: "1",
+    label: "Robot a season",
+    description: "Designed and built by the students, from the January kickoff.",
+  },
+  {
+    value: String(programs.frc.competitionsPerSeason),
+    label: "Competitions a season",
+    description: "Each one runs Thursday to Saturday, within driving range.",
+  },
+  awardsStat,
+];
+
+const outreach = await getCollection("outreach");
+const outreachYears = [...new Set(outreach.map((entry) => entry.data.year))].toSorted(
+  (a, b) => b - a,
+);
+const listFormat = new Intl.ListFormat("en-US", { style: "long", type: "conjunction" });
+const outreachByYear = outreachYears.map((year) => ({
+  year,
+  appearances: listFormat.format(
+    outreach
+      .filter((entry) => entry.data.year === year)
+      .toSorted((a, b) => a.data.month - b.data.month)
+      .map(({ data }) => (data.place === undefined ? data.name : `${data.name} in ${data.place}`)),
+  ),
+}));
+---
+
+<BaseLayout
+  description={`Meet South Central STEM Collective: a ${site.location.locality}, PA nonprofit helping students learn through robotics, mentorship, and community involvement.`}
+  title="About"
+  trail={[{ name: nav.about.label, path: nav.about.href }]}
+>
+  <Hero>
+    <HeroImage
+      alt={programPhotos.sc2.alt}
+      caption={programPhotos.sc2.caption}
+      slot="media"
+      src={programPhotos.sc2.image}
+    />
+
+    <Fragment slot="title">About us</Fragment>
+
+    <p>
+      At {site.name}, we help students explore STEM through hands-on learning, mentorship, and
+      teamwork. Our <FirstMark /> robotics programs give young people opportunities to build, solve
+      problems, and share what they learn.
+    </p>
+    <p class="mt-4">
+      We meet in downtown {site.location.locality}, {site.location.region}, and welcome students
+      from {site.location.county} and beyond. Students, families, volunteers, and sponsors all
+      contribute to this community.
+    </p>
+
+    <Button href={nav.cta.href} size="lg" slot="actions">
+      {nav.cta.label}
+    </Button>
+  </Hero>
+
+  <Section atmosphere="bubble" index={1}>
+    <Fragment slot="title">Our beginnings</Fragment>
+
+    <div class="flex flex-col-reverse items-start gap-8 md:flex-row md:gap-12">
+      <div class="prose-copy">
+        <h3>{programs.frc.teamName}</h3>
+        <p>
+          {programs.frc.teamName} is a <FirstMark /> Robotics Competition team, formed in{" "}
+          {programs.frc.since} by a small group of students and volunteers as a club under the local
+          4-H program office.
+        </p>
+        <p>
+          In its first {preShutdown.length} seasons, the team won {awardCount(preShutdown)} awards.{" "}
+          {firstRegionalWin !== undefined && (
+            <>
+              In {firstRegionalWin.year} it won the {firstRegionalWin.event}.{" "}
+            </>
+          )}
+          {championshipYear !== undefined &&
+            (championshipYear === firstRegionalWin?.year ? (
+              <>
+                The same season, it played at the <FirstMark /> Championship.
+              </>
+            ) : (
+              <>
+                In {championshipYear} it played at the <FirstMark /> Championship.
+              </>
+            ))}
+        </p>
+      </div>
+
+      <Image
+        alt={`${programs.frc.teamName} robotics team logo`}
+        class="w-32 shrink-0 md:w-48"
+        loading="lazy"
+        src={biohazardLogo}
+      />
+    </div>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">Where Biohazard began</Fragment>
+    <PhotoTimeline label="Biohazard team photos, 2013 to 2022" photos={origins} />
+  </Section>
+
+  <Section atmosphere="bubble" index={2}>
+    <Fragment slot="title">Growing beyond one team</Fragment>
+
+    <div class="prose-copy">
+      <p>
+        The {SHUTDOWN_YEAR} season began with weeks of building and a competition in Myrtle Beach,
+        SC. When the pandemic interrupted the season, students and mentors stayed committed to the
+        team. {programs.frc.teamName} returned to regional competition in 2022.
+      </p>
+      <p>
+        During that time, parents and mentors began planning an independent nonprofit that could
+        support the team and create more STEM opportunities. Our years with Franklin County 4-H had
+        established a foundation of teamwork, service, and community involvement.
+      </p>
+      <p>
+        In {site.founded}, the South Central STEM Collective became its own 501(c)(3). Alongside{" "}
+        {programs.frc.teamName}, we added <FirstMark /> LEGO® League for younger students. Both
+        programs now share our downtown {site.location.locality} workspace.
+      </p>
+    </div>
+
+    <div class="mt-10 flex flex-col-reverse items-start gap-8 md:flex-row md:gap-12">
+      <div class="prose-copy">
+        <h3>South Central STEM Collective</h3>
+        <p>
+          Our mission is to make STEM opportunities accessible to students of all ages and
+          backgrounds.
+        </p>
+        <p>
+          We provide the workspace, tools, insurance, and volunteer oversight that help our teams
+          operate. Youth protection and training are part of that shared support.
+        </p>
+      </div>
+
+      <Image
+        alt="South Central STEM Collective logo: a light bulb surrounded by a gear."
+        class="w-32 shrink-0 md:w-48"
+        loading="lazy"
+        src={sc2Logo}
+      />
+    </div>
+
+    <div class="prose-copy mt-6">
+      <p>
+        Each team manages its activities, fundraising, and schedule, with students, families, and
+        mentors working together. Shared resources give teams space to focus on learning and
+        building.
+      </p>
+    </div>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">The next generation</Fragment>
+    <PhotoTimeline
+      label="Biohazard and FIRST LEGO League team photos, 2023 onward"
+      photos={nextGeneration}
+    />
+  </Section>
+
+  <Section atmosphere="bubble" index={3}>
+    <Fragment slot="title">Biohazard today</Fragment>
+
+    <StatBand stats={teamStats} />
+
+    <div class="prose-copy mt-10">
+      <p>
+        {programs.frc.teamName} works with {programs.frc.mentors} professional mentors.{" "}
+        {programs.frc.alumniMentors} of them are alumni who came back to mentor the team that taught
+        them.
+      </p>
+      <p>
+        Every mentor and volunteer follows Pennsylvania and <FirstMark /> youth-protection
+        guidelines, and we keep a two-deep policy: at least two adults are with students at all
+        times.
+      </p>
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" index={4}>
+    <Fragment slot="title">Sharing STEM across our region</Fragment>
+
+    <div class="prose-copy">
+      <p>
+        Our students bring robots to school expos, sponsor events, and community festivals across
+        south-central Pennsylvania. They explain how the robots work and share what they learned
+        building them.
+      </p>
+      {outreachByYear.map(({ year, appearances }) => (
+        <p>
+          In {year}: {appearances}.
+        </p>
+      ))}
+    </div>
+
+    <SectionAction href={nav.contact.href} prompt="Want to see one up close?" slot="action">
+      Request a robot demonstration
+    </SectionAction>
+  </Section>
+
+  <Section atmosphere="bubble" index={5}>
+    <Fragment slot="title">Where we&rsquo;re headed</Fragment>
+    <Fragment slot="intro">
+      We want to create more ways for students to explore STEM across south-central Pennsylvania.
+      Sponsors and volunteers can help us work toward these goals.
+    </Fragment>
+
+    <div class="prose-copy">
+      <p>Our goals include:</p>
+      <ul>
+        <li>
+          Run hands-on STEM workshops open to any student, once we have the sponsors and volunteers
+          to staff them
+        </li>
+        <li>Operate and maintain a makerspace</li>
+        <li>Secure a permanent location for our workspace, classrooms, and office space</li>
+        <li>Reach more students through community events and partnerships</li>
+      </ul>
+    </div>
+  </Section>
+
+  <Section atmosphere="ruler">
+    <CtaBanner>
+      <Fragment slot="title">Be part of what comes next</Fragment>
+      Join a team, share your skills, or support students as they learn. Tell us what interests you,
+      and we&rsquo;ll help you take the next step.
+      <Button href={nav.cta.href} size="lg" slot="actions">
+        {nav.cta.label}
+      </Button>
+      <Button href={nav.contact.href} size="lg" slot="actions" variant="secondary">
+        Contact us
+      </Button>
+    </CtaBanner>
+  </Section>
+</BaseLayout>

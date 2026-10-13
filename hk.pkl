@@ -1,0 +1,52 @@
+amends "package://github.com/jdx/hk/releases/download/v2.1.0/hk@2.1.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.1.0/hk@2.1.0#/Builtins.pkl"
+
+fail_fast = false
+
+steps {
+  ["trailing-whitespace"] = Builtins.trailing_whitespace
+  ["newlines"] = Builtins.newlines
+  ["merge-conflict"] = Builtins.check_merge_conflict
+  ["calendar"] {
+    glob = List("functions/**/*.ts", "tools/checks/verify-calendar.ts")
+    check = "node tools/checks/verify-calendar.ts"
+  }
+  ["prettier"] = (Builtins.prettier) { batch = false }
+  // `--no-warn-ignored` keeps an explicitly passed ignored file from counting against
+  // `--max-warnings 0`.
+  ["eslint"] = (Builtins.eslint) {
+    batch = false
+    glob = List("**/*.ts", "**/*.mts", "**/*.js", "**/*.mjs", "**/*.astro")
+    // Typed rules read the `astro:content` types that `astro check` generates.
+    depends = "astro"
+    check {
+      command {
+        argv =
+          List("eslint", "--max-warnings", "0", "--no-warn-ignored", "--format", "gha", "{{files}}")
+      }
+    }
+    fix {
+      command {
+        argv = List("eslint", "--max-warnings", "0", "--no-warn-ignored", "--fix", "{{files}}")
+      }
+    }
+  }
+
+  // Whole-program checks, behind the `slow` profile so the pre-commit and per-edit hooks skip them.
+  ["astro"] {
+    profiles = List("slow")
+    glob = List("src/**", "*.ts", "tsconfig.json")
+    check = "astro check"
+  }
+  // One `tsc -p` per tsconfig.json; `astro check` covers `src/` and the root config files.
+  ["tsc"] = (Builtins.tsc) {
+    profiles = List("slow")
+    glob = List("functions/**/*.ts", "tools/**/*.ts")
+  }
+  // Check only: `knip --fix` deletes code.
+  ["knip"] {
+    profiles = List("slow")
+    glob = List("**/*.ts", "**/*.mts", "**/*.js", "**/*.mjs", "**/*.astro", "package.json")
+    check = "knip ${GITHUB_ACTIONS:+--reporter github-actions}"
+  }
+}

@@ -1,0 +1,170 @@
+---
+import { render } from "astro:content";
+
+import pits from "@/assets/frc/robots/2021-robot-pits.webp";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FirstMarked from "@/components/ui/FirstMarked.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import RobotFigure from "@/components/ui/RobotFigure.astro";
+import Section from "@/components/ui/Section.astro";
+import { ogCards } from "@/data/ogCards";
+import { nav, programs } from "@/data/site";
+import ProgramLayout from "@/layouts/ProgramLayout.astro";
+import { programTrail } from "@/lib/jsonld";
+import { awardCount, getSeasons } from "@/lib/seasons";
+
+const seasons = await getSeasons();
+const latestYear = seasons[0]?.data.year ?? programs.frc.since;
+
+const rendered = await Promise.all(
+  seasons.map(async (entry) => {
+    const { image, imageAlt } = entry.data;
+    if (image !== undefined && imageAlt === undefined) {
+      throw new Error(`frcRobots: ${entry.id} has an \`image\` but no \`imageAlt\`.`);
+    }
+    const { Content } = await render(entry);
+    const label = entry.data.yearLabel ?? String(entry.data.year);
+    return {
+      Content,
+      data: entry.data,
+      hasBody: (entry.body ?? "").trim() !== "",
+      label,
+      heading: entry.data.name ?? label,
+      photo: image === undefined || imageAlt === undefined ? undefined : { image, imageAlt },
+    };
+  }),
+);
+
+/**
+ * Features alternate sides counting only photographed seasons; a run of compact rows ends in one
+ * rule.
+ */
+const entries = rendered.map((entry, index) => ({
+  ...entry,
+  flip: rendered.slice(0, index).filter((earlier) => earlier.photo !== undefined).length % 2 === 1,
+  endsRun:
+    entry.photo === undefined &&
+    (index === rendered.length - 1 || rendered[index + 1]?.photo !== undefined),
+}));
+---
+
+<ProgramLayout
+  description={`Every Biohazard season since ${String(programs.frc.since)}: the robot, the game, the events, the best finish, and all ${String(awardCount(seasons))} awards the team has won.`}
+  og={ogCards.frc}
+  program="frc"
+  title={`Biohazard, every season since ${String(programs.frc.since)}`}
+  trail={programTrail("frc", { name: nav.robots.label, path: nav.robots.href })}
+>
+  <Hero>
+    <HeroImage
+      alt="Biohazard's pit crew working on the robot between matches"
+      caption="Pit crew between matches"
+      slot="media"
+      src={pits}
+    />
+    <Fragment slot="eyebrow">
+      {programs.frc.since}-{latestYear}
+    </Fragment>
+    <Fragment slot="title">Every season since {programs.frc.since}</Fragment>
+    Each season gives {programs.frc.teamName} a new challenge and another opportunity to learn.
+    Explore the robots our students built, the events where they competed, and the results and
+    awards they earned together.
+  </Hero>
+
+  <Section atmosphere="pool" srTitle="Seasons, newest first">
+    <ol>
+      {entries.map(({ Content, data, endsRun, flip, hasBody, heading, label, photo }, index) => (
+        <li
+          class:list={[
+            "grid",
+            photo === undefined
+              ? "gap-x-8 gap-y-3 border-t border-border py-6 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
+              : "items-center gap-8 py-10 md:py-14 lg:grid-cols-2 lg:gap-14",
+            endsRun && "border-b",
+          ]}
+        >
+          {photo !== undefined && (
+            <div class:list={[flip && "lg:order-last"]}>
+              <RobotFigure
+                caption={heading === label ? label : `${heading}, ${label}`}
+                image={photo.image}
+                imageAlt={photo.imageAlt}
+                loading={index === 0 ? "eager" : "lazy"}
+                logo={data.logo}
+                span="half"
+              />
+            </div>
+          )}
+
+          <div class:list={[photo === undefined && "contents"]}>
+            <div>
+              {heading !== label && <p class="spec-label text-primary-bright">{label}</p>}
+              <h3
+                class:list={[
+                  photo === undefined ? "text-h3" : "text-h2",
+                  heading !== label && "mt-2",
+                ]}
+              >
+                {heading}
+              </h3>
+              {data.game !== undefined && (
+                <p class="mt-2 text-muted">
+                  <FirstMarked text={data.game} />
+                </p>
+              )}
+            </div>
+
+            <div class:list={[photo !== undefined && "mt-5"]}>
+              {hasBody && (
+                <div class="prose-copy mb-5">
+                  <Content />
+                </div>
+              )}
+
+              {data.result !== undefined && (
+                <p class="font-medium text-foreground">{data.result}</p>
+              )}
+
+              {data.awards !== undefined && (
+                <ul class="mt-3 flex flex-col gap-2">
+                  {data.awards.map((award) => (
+                    <li class="flex items-start gap-2 text-small">
+                      <Icon class="mt-0.5 text-primary-bright" name="trophy" size={20} />
+                      <span>
+                        <FirstMarked text={award} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {data.events !== undefined && (
+                <p class="mt-3 text-small">
+                  <span class="spec-label text-muted">Events</span>{" "}
+                  <FirstMarked text={data.events.join(" · ")} />
+                </p>
+              )}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section atmosphere="ruler">
+    <CtaBanner>
+      <Fragment slot="title">Help build the next robot</Fragment>
+      Bring your interests to {programs.frc.teamName}. Learn alongside students and mentors as you
+      explore how to contribute to the next season.
+      <Button href={nav.cta.href} size="lg" slot="actions">
+        {nav.cta.label}
+      </Button>
+      <Button href={programs.frc.href} size="lg" slot="actions" variant="secondary">
+        About the team
+      </Button>
+    </CtaBanner>
+  </Section>
+</ProgramLayout>

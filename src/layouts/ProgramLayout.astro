@@ -1,0 +1,19 @@
+---
+import type { ProgramTheme } from "@/data/site";
+import type { Breadcrumb } from "@/lib/jsonld";
+import type { SeoProps } from "@/lib/seo";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+type Props = Omit<SeoProps, "noindex" | "theme"> & {
+  program: ProgramTheme;
+  trail: readonly Breadcrumb[];
+};
+
+const { program, ...rest } = Astro.props;
+---
+
+<BaseLayout {...rest} theme={program}>
+  <slot name="head" slot="head" />
+  <slot />
+</BaseLayout>

@@ -1,0 +1,129 @@
+---
+import getInvolved from "@/assets/sc2/get-involved.webp";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import JoiningFaq from "@/components/ui/JoiningFaq.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Section from "@/components/ui/Section.astro";
+import { nav, programs, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+/**
+ * Native `loading="lazy"` fetches a frame well before it scrolls into view, so a script assigns
+ * `src` once it does.
+ */
+const embedded = `${site.urls.getInvolvedForm}?embedded=true`;
+const formTitle = `${nav.cta.label} with the ${site.name}`;
+---
+
+<BaseLayout
+  description="Join a robotics team, volunteer, or support South Central STEM Collective. Tell us your interests, and a volunteer will help you take the next step."
+  title="Get involved"
+  trail={[{ name: nav.cta.label, path: nav.cta.href }]}
+>
+  <Hero>
+    <HeroImage
+      alt="Students and mentors working together at a build session"
+      caption="A build session"
+      slot="media"
+      src={getInvolved}
+    />
+    <Fragment slot="title">Get involved</Fragment>
+    Curious about joining a team, sharing your skills, or supporting our programs? Tell us what
+    interests you. A volunteer will email you to answer your questions, discuss a visit, or share
+    sponsorship information.
+    <Button href="#form" size="lg" slot="actions">
+      Tell us what interests you
+    </Button>
+  </Hero>
+
+  <Section atmosphere="bubble" index={1}>
+    <Fragment slot="title">Find your way to contribute</Fragment>
+    <Fragment slot="intro">
+      Our teams meet in downtown {site.location.locality}, {site.location.region}. Students are
+      welcome from {site.location.county} and beyond, with or without robotics experience.
+    </Fragment>
+
+    <FeatureGrid columns={2}>
+      <FeatureCard cta="Compare the programs" href={programs.sc2.href} icon="education">
+        <Fragment slot="title">Students and parents</Fragment>
+        Explore <FirstMark /> LEGO® League for ages {programs.fll.ages}, or
+        {programs.frc.teamName} for ages {programs.frc.ages}. Tell us your interests, or ask about a
+        program for your student, and we&rsquo;ll help you find a fit.
+      </FeatureCard>
+
+      <FeatureCard icon="group">
+        <Fragment slot="title">Mentors and volunteers</Fragment>
+        Share a skill, help with team activities, or support students as they learn. Tell us what
+        you can offer. Every mentor and volunteer follows Pennsylvania and <FirstMark />
+        youth-protection guidelines.
+      </FeatureCard>
+
+      <FeatureCard cta="Explore sponsorship" href={nav.sponsors.href} icon="enterprise">
+        <Fragment slot="title">Sponsors</Fragment>
+        Your support gives students tools to learn on, a workspace to build in, and opportunities to
+        compete. Tell us about your company, and we&rsquo;ll share the sponsorship details.
+      </FeatureCard>
+
+      <FeatureCard cta="Request a robot demonstration" href={nav.contact.href} icon="events">
+        <Fragment slot="title">Schools and community groups</Fragment>
+        Meet the students behind our robots and see their work up close. Use our contact page to
+        share your event&rsquo;s date, location, and audience, and we&rsquo;ll discuss a visit.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <JoiningFaq />
+
+  <Section atmosphere="pool" id="form">
+    <Fragment slot="title">Tell us what interests you</Fragment>
+    <Fragment slot="intro">
+      The form takes a couple of minutes. You don&rsquo;t need to decide about joining yet - tell us
+      a little about yourself and what you&rsquo;d like to explore.
+    </Fragment>
+
+    <Button href={site.urls.getInvolvedForm} variant="secondary">
+      Open the form in Google Forms
+    </Button>
+
+    <!-- Google's form page is transparent around its white card. The wrapper declares light to
+      match the form's `color-scheme`; a mismatch paints an opaque backdrop behind the frame and
+      dark-on-white fields. -->
+    <div class="mt-8 scheme-light">
+      <iframe
+        class="h-450 w-full border-0"
+        data-form-embed
+        data-src={embedded}
+        hidden
+        loading="lazy"
+        title={formTitle}
+      ></iframe>
+      <noscript>
+        <iframe
+          class="h-450 w-full border-0"
+          loading="lazy"
+          src={embedded}
+          title={formTitle}
+        ></iframe>
+      </noscript>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script>
+  for (const frame of document.querySelectorAll<HTMLIFrameElement>("[data-form-embed]")) {
+    const src = frame.dataset.src;
+    if (src === undefined) continue;
+    frame.hidden = false;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        frame.src = src;
+        observer.disconnect();
+      }
+    });
+    observer.observe(frame);
+  }
+</script>

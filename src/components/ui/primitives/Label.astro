@@ -1,0 +1,23 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/cn";
+
+interface Props extends Omit<HTMLAttributes<"label">, "class"> {
+  for: string;
+  /** Visual marker only; also set `required` on the input. */
+  required?: boolean;
+  class?: string;
+}
+
+const { for: forId, required = false, class: className, ...rest } = Astro.props;
+---
+
+<label class={cn("text-small font-medium text-foreground", className)} for={forId} {...rest}>
+  <slot />
+  {required && (
+    <span class="text-destructive-bright" title="Required">
+      *
+    </span>
+  )}
+</label>

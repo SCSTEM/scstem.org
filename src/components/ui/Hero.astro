@@ -1,0 +1,81 @@
+---
+import { cn } from "@/lib/cn";
+
+/**
+ * Below `md` the copy sits on solid ground under the photo, which fades into the page; from `md`
+ * up the photo fills the hero and the copy sits on a scrim. Without `media` it is a compact
+ * header: `h1` rather than `display` size, and no accent rule.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const hasMedia = Astro.slots.has("media");
+const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow") : undefined;
+---
+
+<section class={cn("relative", className)} data-surface="sheet">
+  {hasMedia && (
+    <div class="hero-media relative aspect-3/2 overflow-hidden md:absolute md:inset-0 md:aspect-auto">
+      <slot name="media" />
+      {/* Opaque at the text edge, ~20% at the far one. The desktop stops put the opaque band across
+          the whole copy column. The light finish holds solid ground longer so the photo does not
+          wash the copy out. */}
+      <div
+        aria-hidden="true"
+        class="absolute inset-0 bg-linear-to-b from-transparent from-45% to-background md:bg-linear-to-r md:from-background md:from-35% md:via-background/75 md:via-65% md:to-background/20 md:opacity-92 light:md:from-30% light:md:via-background/85 light:md:via-52% light:md:to-background/30 light:md:opacity-100"
+      />
+      <div aria-hidden="true" class="absolute inset-0 hidden hero-grid md:block" />
+    </div>
+  )}
+
+  <div
+    class={cn(
+      "relative container-page",
+      hasMedia ? "section-y md:flex md:min-h-120 md:items-center" : "pt-12 md:pt-16",
+    )}
+  >
+    <div class={hasMedia ? "max-w-2xl" : undefined}>
+      {Astro.slots.has("logo") ? (
+        <slot name="logo" />
+      ) : (
+        eyebrow !== undefined && <p class="spec-label text-primary-bright" set:html={eyebrow} />
+      )}
+      <h1 class={cn("mt-3", hasMedia && "text-display")}>
+        <slot name="title" />
+      </h1>
+      <div class={cn("measure text-lead", hasMedia ? "mt-5 text-foreground" : "mt-4")}>
+        <slot />
+      </div>
+      {Astro.slots.has("actions") && (
+        <div class="mt-8 grid gap-3 sm:flex sm:flex-wrap">
+          <slot name="actions" />
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+{hasMedia && <hr class="accent-rule" />}
+
+<style>
+  /* `:global()` because the slotted element is authored by the caller, so it has no
+     `data-astro-cid-*` of this component. */
+  .hero-media :global(:is(img, video)) {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  :global([data-register="blueprint"]) .hero-media :global(:is(img, video)) {
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  /* Global as a whole because Astro does not unwrap `:global()` nested inside `:not()`;
+     `.hero-media` is unique to this component. */
+  :global([data-mode="light"] .hero-media:not([data-mode="dark"] *) :is(img, video)) {
+    filter: saturate(0.85) contrast(0.92) brightness(1.04);
+  }
+</style>

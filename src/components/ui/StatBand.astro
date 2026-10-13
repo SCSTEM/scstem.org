@@ -1,0 +1,54 @@
+---
+import FirstMarked from "@/components/ui/FirstMarked.astro";
+import Card from "@/components/ui/primitives/Card.astro";
+import { cn } from "@/lib/cn";
+
+/**
+ * Each cell draws its own engineering grid rather than the pocket drawing one across all of them,
+ * so every divider falls on a grid line and each cell shows whole squares.
+ */
+interface Stat {
+  /** Short: it sets at display size. */
+  value: string;
+  label: string;
+  description?: string;
+}
+
+interface Props {
+  stats: readonly Stat[];
+  class?: string;
+}
+
+const { stats, class: className } = Astro.props;
+
+/**
+ * A column or a single row, never a wrapping grid: a two-column intermediate would put a stray
+ * inline-start border on the first cell of every later row. A short band can turn at `sm`; a long
+ * one needs `lg`.
+ */
+const row =
+  stats.length <= 3
+    ? "sm:grid-flow-col sm:auto-cols-fr sm:divide-x sm:divide-y-0"
+    : "lg:grid-flow-col lg:auto-cols-fr lg:divide-x lg:divide-y-0";
+---
+
+<Card class={cn("overflow-hidden", className)}>
+  <dl class={cn("grid divide-y divide-border", row)}>
+    {stats.map((stat) => (
+      <div class="p-6 md:engineering-grid md:bg-origin-border md:bg-repeat-round">
+        <dt class="sr-only">
+          <FirstMarked text={stat.label} />
+        </dt>
+        <dd>
+          <span class="block stat">{stat.value}</span>
+          <span class="mt-2 block spec-label text-foreground">
+            <FirstMarked text={stat.label} />
+          </span>
+          {stat.description !== undefined && (
+            <span class="mt-2 block text-copy text-body">{stat.description}</span>
+          )}
+        </dd>
+      </div>
+    ))}
+  </dl>
+</Card>

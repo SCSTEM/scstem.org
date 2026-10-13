@@ -1,0 +1,140 @@
+---
+import handsOn from "@/assets/sc2/hands-on-1.webp";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import ProgramCard from "@/components/ui/ProgramCard.astro";
+import Section from "@/components/ui/Section.astro";
+import { ogCards } from "@/data/ogCards";
+import { nav, programs, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  description={`Explore FIRST robotics for ages 9–18 in downtown ${site.location.locality}, PA. Build, learn, and compete with teammates and mentors. No experience needed.`}
+  og={ogCards.programs}
+  title="Programs"
+  trail={[{ name: nav.programs.label, path: nav.programs.href }]}
+>
+  <Hero>
+    <HeroImage
+      alt="A student and a mentor working on a robot together at the bench"
+      caption="Student and mentor at the bench"
+      slot="media"
+      src={handsOn}
+    />
+    <Fragment slot="title">
+      Find your place in <span class="highlight-swipe">robotics</span>
+    </Fragment>
+    <p>
+      From LEGO® robots to full-size competition machines, our two <FirstMark /> programs give
+      students opportunities to build, solve problems, and share ideas. Volunteer mentors help you
+      learn as you contribute to a team.
+    </p>
+    <p class="mt-4">
+      {site.name} welcomes students from {site.location.county} and beyond. Both programs meet in
+      downtown {site.location.locality}, {site.location.region}.
+    </p>
+    <Button href={nav.cta.href} size="lg" slot="actions">
+      {nav.cta.label}
+    </Button>
+  </Hero>
+
+  <Section atmosphere="bubble" index={1}>
+    <Fragment slot="title">Choose your program</Fragment>
+    <Fragment slot="intro">
+      Start with your age and interests. Where the age ranges overlap, we can help you choose the
+      program that feels right for you.
+    </Fragment>
+
+    <FeatureGrid columns={2}>
+      <ProgramCard program="fll">
+        <p>
+          Build and program a LEGO® robot, investigate a real-world problem, and share your
+          team&rsquo;s solution with judges. Small teams give students opportunities to try ideas,
+          solve problems together, and practice presenting their work.
+        </p>
+        <p class="mt-3">
+          No experience or LEGO® collection needed. We provide the equipment, and mentors and
+          teammates help you get started.
+        </p>
+      </ProgramCard>
+
+      <ProgramCard program="frc">
+        <p>
+          Join {programs.frc.teamName} to design, build, and program a new competition robot each
+          season. Work alongside experienced mentors, explore different roles, and take your ideas
+          from the workshop to the field. Strategy, fundraising, design, and media all help the team
+          succeed.
+        </p>
+        <p class="mt-3">Competing since {programs.frc.since}.</p>
+      </ProgramCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">Look around first</Fragment>
+    <Fragment slot="intro">
+      No commitment required. See what we have built and when we meet.
+    </Fragment>
+
+    <FeatureGrid columns={3}>
+      <FeatureCard cta="See every season" href={nav.robots.href} icon="bot">
+        <Fragment slot="title">Every season since {programs.frc.since}</Fragment>
+        Explore {programs.frc.teamName}&rsquo;s robots, competition results, and awards.
+      </FeatureCard>
+
+      <FeatureCard cta="Open the calendar" href={nav.calendar.href} icon="calendar">
+        <Fragment slot="title">What is coming up</Fragment>
+        Build sessions, competitions, and community events across both programs.
+      </FeatureCard>
+
+      <FeatureCard cta="Read about FIRST®" href={site.urls.firstInspires} icon="idea">
+        <Fragment slot="title">The wider program</Fragment>
+        Both programs are part of <FirstMark />, a global youth robotics community built around
+        hands-on learning, mentorship, and teamwork.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="pool">
+    <Fragment slot="title">Beyond the teams</Fragment>
+    <Fragment slot="intro">
+      Our students share what they&rsquo;ve learned at schools, community events, and sponsor
+      gatherings across south-central Pennsylvania. A robot demonstration is a chance to meet the
+      students who built it and see their work up close.
+    </Fragment>
+
+    <FeatureGrid columns={2}>
+      <FeatureCard cta="Request a robot demonstration" href={nav.contact.href} icon="events">
+        <Fragment slot="title">Robot demonstrations</Fragment>
+        Interested in a visit to your school, club, or company event? Tell us the date, location,
+        and audience, and we&rsquo;ll discuss what our teams can bring.
+      </FeatureCard>
+
+      <FeatureCard cta="Talk to us about workshops" href={nav.contact.href} icon="education">
+        <Fragment slot="title">Help develop future workshops</Fragment>
+        Hands-on STEM workshops are one of our goals. We&rsquo;re looking for sponsors and
+        volunteers to help make them possible. Share your skills or ideas with us.
+      </FeatureCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="ruler">
+    <CtaBanner>
+      <Fragment slot="title">Let&rsquo;s find your fit</Fragment>
+      Tell us your age and interests, or ask about a program for your student. A volunteer will
+      answer your questions and help you choose a next step.
+      <Button href={nav.cta.href} size="lg" slot="actions">
+        {nav.cta.label}
+      </Button>
+      <Button href={nav.contact.href} size="lg" slot="actions" variant="secondary">
+        Ask a question
+      </Button>
+    </CtaBanner>
+  </Section>
+</BaseLayout>

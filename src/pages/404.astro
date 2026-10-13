@@ -1,0 +1,68 @@
+---
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Section from "@/components/ui/Section.astro";
+import { nav, programs } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const destinations = [
+  {
+    ...nav.programs,
+    icon: "bot",
+    cta: "Explore our programs",
+    description: "Find a robotics program for your age and interests.",
+  },
+  {
+    ...nav.about,
+    icon: "information",
+    cta: "Read about us",
+    description: `Who we are and what we’ve built since ${String(programs.frc.since)}.`,
+  },
+  {
+    ...nav.sponsors,
+    icon: "enterprise",
+    cta: "Meet our sponsors",
+    description: "Meet the businesses supporting hands-on learning.",
+  },
+  {
+    ...nav.contact,
+    icon: "email",
+    cta: "Ask a question",
+    description: "We can help you find a next step.",
+  },
+];
+---
+
+<BaseLayout
+  description="We can't find that page. Explore our robotics programs, learn about South Central STEM Collective, or contact us for help."
+  noindex
+  register="blueprint"
+  title="Page not found"
+>
+  <Hero>
+    <Fragment slot="eyebrow">Error 404</Fragment>
+    <Fragment slot="title">We can&rsquo;t find that page</Fragment>
+
+    <p>It may have moved, or the link may be out of date. Try one of these instead.</p>
+  </Hero>
+
+  <Section atmosphere="pool" srTitle="Where to go instead">
+    <FeatureGrid columns={2}>
+      {destinations.map((destination) => (
+        <FeatureCard cta={destination.cta} href={destination.href} icon={destination.icon}>
+          <Fragment slot="title">{destination.label}</Fragment>
+          {destination.description}
+        </FeatureCard>
+      ))}
+    </FeatureGrid>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      <Button href="/">Back to the homepage</Button>
+      <Button href={nav.cta.href} variant="secondary">
+        {nav.cta.label}
+      </Button>
+    </div>
+  </Section>
+</BaseLayout>

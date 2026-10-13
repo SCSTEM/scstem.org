@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/knip/schema.json",
+  // Pages Functions are file-routed, which knip has no plugin for; Lighthouse CI starts the server
+  // from its own config, which knip does not read.
+  "entry": ["functions/**/*.ts", "tools/ci/serve.ts"],
+  // Mirrors the projects the hk `tsc` step checks.
+  "typescript": { "config": ["tsconfig.json", "functions/tsconfig.json", "tools/tsconfig.json"] },
+  // The CI server shells out to the system openssl, and package scripts run hk, which mise
+  // installs; neither is an npm binary.
+  "ignoreBinaries": ["hk", "openssl"],
+  // Loaded by name from hk steps, which knip does not read.
+  "ignoreDependencies": ["@astrojs/check", "eslint-formatter-gha"],
+  "ignore": ["tools/lint/anti-slop/shared/**"],
+}

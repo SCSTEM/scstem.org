@@ -1,0 +1,54 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/cn";
+import { isExternal } from "@/lib/links";
+
+import { buttonVariants } from "./Button.variants";
+
+/** `default` takes the theme's primary colors, so one markup renders each program's accent. */
+interface Props
+  extends
+    Omit<HTMLAttributes<"button">, "class">,
+    Pick<HTMLAttributes<"a">, "download" | "hreflang" | "rel" | "target">,
+    VariantProps<typeof buttonVariants> {
+  href?: string | URL;
+  type?: "button" | "submit" | "reset";
+  class?: string;
+}
+
+/** `disabled` is invalid on an anchor: links take `aria-disabled` and drop `href` instead. */
+const {
+  variant,
+  size,
+  href,
+  type = "button",
+  class: className,
+  disabled,
+  rel,
+  ...attrs
+} = Astro.props;
+
+const isLink = href !== undefined;
+const Tag = isLink ? "a" : "button";
+
+/** An icon button's glyph already says where it goes, so it skips the external marker. */
+const isExternalLink = isLink && isExternal(String(href));
+---
+
+<Tag
+  aria-disabled={isLink && disabled === true ? "true" : undefined}
+  class={cn(
+    buttonVariants({ variant, size }),
+    isExternalLink && size !== "icon" && "external-link",
+    className,
+  )}
+  disabled={isLink ? undefined : disabled}
+  href={isLink && disabled !== true ? href : undefined}
+  rel={rel ?? (isExternalLink ? "noopener" : undefined)}
+  type={isLink ? undefined : type}
+  {...attrs}
+>
+  <slot />
+</Tag>

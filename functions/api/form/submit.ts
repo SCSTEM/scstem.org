@@ -1,53 +1,101 @@
 import type { GenericFormRequest } from "@/types";
+
 import { res, validateTurnstile } from "@/util";
 
-export const onRequestPost: PagesFunction<{
-  TS_SECRET_KEY: string;
-  SLACK_FORM_POST_GENERIC: string;
-}> = async ({ request, env }) => {
-  const data = await request.json<GenericFormRequest>();
+type PostedValue = boolean | number | string | null | undefined;
 
-  let key = env.TS_SECRET_KEY;
-  if (!key) key = "1x0000000000000000000000000000000AA";
+interface PostedForm {
+  readonly email?: PostedValue;
+  readonly form?: PostedValue;
+  readonly message?: PostedValue;
+  readonly name?: PostedValue;
+  readonly turnstileToken?: PostedValue;
+}
+
+const isFilled = (value: PostedValue): value is string =>
+  typeof value === "string" && value.trim() !== "";
+
+export const onRequestPost: PagesFunction<{
+  SLACK_FORM_POST_GENERIC?: string;
+  TS_SECRET_KEY?: string;
+}> = async ({ env, request }) => {
+  if (!env.TS_SECRET_KEY || !env.SLACK_FORM_POST_GENERIC) {
+    return res(
+      {
+        error: "Form secrets are not configured",
+        message:
+          "We cannot receive messages through this form right now. Please use the email link on this page.",
+        success: false,
+      },
+      500,
+    );
+  }
+
+  let body: PostedForm | null;
+  try {
+    body = await request.json<PostedForm | null>();
+  } catch {
+    return res({ message: "Request body is not valid JSON", success: false }, 400);
+  }
+
+  const { email, form, message, name, turnstileToken } = body ?? {};
+  if (
+    !isFilled(email) ||
+    !isFilled(form) ||
+    !isFilled(message) ||
+    !isFilled(name) ||
+    !isFilled(turnstileToken)
+  ) {
+    return res(
+      { message: "Please complete every field before sending your message.", success: false },
+      400,
+    );
+  }
+  const data: GenericFormRequest = { email, form, message, name, turnstileToken };
 
   try {
-    const ts = await validateTurnstile(
-      key,
-      data.turnstileToken,
+    const challenge = await validateTurnstile(
+      env.TS_SECRET_KEY,
+      turnstileToken,
       request.headers.get("CF-Connecting-IP"),
     );
 
-    if (!ts.valid)
+    if (!challenge.success) {
       return res(
         {
+          message: "The spam check did not finish. Please reload and try again.",
+          result: challenge,
           success: false,
-          message: "Challenge verification failed",
-          result: ts.response,
         },
         418,
       );
+    }
 
-    if (env.SLACK_FORM_POST_GENERIC)
-      await fetch(env.SLACK_FORM_POST_GENERIC, {
-        method: "POST",
-        body: JSON.stringify({
-          form: data.form,
-          name: data.name ?? "",
-          email: data.email ?? "",
-          message: data.message ?? "",
-        }),
-      });
+    const posted = await fetch(env.SLACK_FORM_POST_GENERIC, {
+      body: JSON.stringify({ email, form, message, name }),
+      method: "POST",
+    });
 
-    return res(
-      { success: true, message: "Submission received", result: data },
-      200,
-    );
+    if (!posted.ok) {
+      return res(
+        {
+          error: `Slack webhook returned ${String(posted.status)}`,
+          message:
+            "We could not send your message. Please try again or use the email link on this page.",
+          success: false,
+        },
+        502,
+      );
+    }
+
+    return res({ message: "Submission received", result: data, success: true }, 200);
   } catch (error) {
     return res(
       {
+        error,
+        message:
+          "We could not send your message. Please try again or use the email link on this page.",
         success: false,
-        message: "Error handling submission",
-        error: error,
       },
       500,
     );

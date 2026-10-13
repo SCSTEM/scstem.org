@@ -1,0 +1,57 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import type { ChalkOvalProps, ChalkUnderlineProps } from "@/lib/hand";
+
+import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
+import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
+import { cn } from "@/lib/cn";
+import { isExternal } from "@/lib/links";
+
+type OvalProps = Omit<ChalkOvalProps, "class">;
+type UnderlineProps = Omit<ChalkUnderlineProps, "class">;
+type Absent<T> = { [K in keyof T]?: never };
+
+/**
+ * Without a `mark`, a link in copy: the surrounding font and the straight underline. With one, a
+ * handwritten link, circled or underlined by hand, taking the props of the primitive that draws it.
+ */
+type Mark =
+  | ({ mark?: undefined } & Absent<OvalProps & UnderlineProps>)
+  | ({ mark: "oval" } & OvalProps)
+  | ({ mark: "underline" } & UnderlineProps & Absent<Omit<OvalProps, keyof UnderlineProps>>);
+
+type Props = Omit<HTMLAttributes<"a">, "class" | "href"> & {
+  href: string;
+  class?: string | undefined;
+} & Mark;
+
+const { href, rel, class: className, mark, variant, tone, around, ...attrs } = Astro.props;
+
+const isExternalLink = isExternal(href);
+
+const classes = cn(
+  mark !== undefined && "group/link bg-none pb-0 font-hand",
+  isExternalLink && "external-link",
+  className,
+);
+---
+
+<a
+  class={classes === "" ? undefined : classes}
+  href={href}
+  rel={rel ?? (isExternalLink ? "noopener" : undefined)}
+  {...attrs}
+>
+  {mark === "oval" ? (
+    <ChalkOval around={around} tone={tone} variant={variant}>
+      <slot />
+    </ChalkOval>
+  ) : mark === "underline" ? (
+    <ChalkUnderline tone={tone} variant={variant}>
+      <slot />
+    </ChalkUnderline>
+  ) : (
+    <slot />
+  )}
+</a>
