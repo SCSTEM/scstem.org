@@ -6,6 +6,7 @@ import FeatureGrid from "@/components/ui/FeatureGrid.astro";
 import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
+import Link from "@/components/ui/primitives/Link.astro";
 import Section from "@/components/ui/Section.astro";
 import { SPONSOR_LEVELS } from "@/content.config";
 import { ogCards } from "@/data/ogCards";
@@ -76,7 +77,7 @@ const mailingAddress = [
           <dd class="font-mono text-body">{site.ein}</dd>
         </dl>
         <p class="mt-4">
-          Not listed? <a href="#questions">Let us know</a>.
+          Not listed? <Link href="#questions">Let us know</Link>.
         </p>
       </FeatureCard>
 

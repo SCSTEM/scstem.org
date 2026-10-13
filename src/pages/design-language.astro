@@ -14,6 +14,7 @@ import FieldError from "@/components/ui/primitives/FieldError.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import Input from "@/components/ui/primitives/Input.astro";
 import Label from "@/components/ui/primitives/Label.astro";
+import Link from "@/components/ui/primitives/Link.astro";
 import RegistrationMarks from "@/components/ui/primitives/RegistrationMarks.astro";
 import RevisionCloud from "@/components/ui/primitives/RevisionCloud.astro";
 import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
@@ -165,10 +166,10 @@ const checklist = [
     <div class="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
       <div class="measure">
         <p>
-          <a href="https://github.com/SCSTEM/scstem.org/blob/astro/DESIGN.md">DESIGN.md</a> is the
-          source of truth, and <a href="/styleguide">the styleguide</a> proves every token and
-          contrast ratio. This page is the guide in between. It shows every device at once, so it
-          breaks the four-per-view budget on purpose; a real page never does.
+          <Link href="https://github.com/SCSTEM/scstem.org/blob/astro/DESIGN.md">DESIGN.md</Link> is
+          the source of truth, and <Link href="/styleguide">the styleguide</Link> proves every token
+          and contrast ratio. This page is the guide in between. It shows every device at once, so
+          it breaks the four-per-view budget on purpose; a real page never does.
         </p>
       </div>
       <nav aria-label="On this page" class="pocket p-6">
@@ -338,8 +339,8 @@ const checklist = [
         Real robots, built <span class="highlight-swipe">right here</span>.
       </p>
       <p class="mt-4 measure">
-        Teams meet Saturdays at the workshop. Check <a href="/calendar">the calendar</a> for dates,
-        or <a href="/programs">read about our programs</a>.
+        Teams meet Saturdays at the workshop. Check <Link href="/calendar">the calendar</Link> for
+        dates, or <Link href="/programs">read about our programs</Link>.
       </p>
       <div class="mt-8 grid gap-6 md:grid-cols-2">
         <Card>
@@ -615,7 +616,7 @@ const checklist = [
         <ul class="mt-4 grid gap-3 measure">
           <li>
             <b class="text-foreground">In copy</b> - the straight underline:{" "}
-            <a href="/about">who we are</a>.
+            <Link href="/about">who we are</Link>.
           </li>
           <li>
             <b class="text-foreground">In chrome</b> - nav, footer, card footers:{" "}
@@ -723,9 +724,9 @@ const checklist = [
         <p>
           <b class="text-foreground">Swipes</b> emphasize one phrase - instead of accent-colored
           text, never with it. Swipe plus underline is a featured link:{" "}
-          <a class="highlight-swipe" href="/get-involved">
+          <Link class="highlight-swipe" href="/get-involved">
             get involved
-          </a>
+          </Link>
           .
         </p>
       </div>
@@ -835,8 +836,8 @@ const checklist = [
     </div>
     <p class="mt-6 measure">
       Use it for pages about the drawing - 404 and under-construction pages, special pages, and the
-      wiki - never for a page whose job is to persuade. <a href="/404">The 404 page</a> is the live
-      example.
+      wiki - never for a page whose job is to persuade. <Link href="/404">The 404 page</Link> is the
+      live example.
     </p>
   </Section>
 

@@ -3,7 +3,7 @@
 Everything on this site that changes over time is a markdown file in `src/content/`.
 
 Frontmatter is validated on build: a typo in a field name or a value that is not allowed fails
-`pnpm build` with a message naming the file and the field. That is the safety net — if it builds,
+`pnpm build` with a message naming the file and the field. That is the safety net - if it builds,
 the content is well-formed.
 
 ```sh
@@ -29,7 +29,7 @@ since: 2026
 ---
 ```
 
-That is the whole file — no body text. Levels are `Platinum`, `Gold`, `Silver`, `Bronze`, and
+That is the whole file - no body text. Levels are `Platinum`, `Gold`, `Silver`, `Bronze`, and
 `Friend`, and the sponsors page groups by them automatically.
 
 Optional fields: `sub` for a qualifier shown under the name ("Chambersburg VFW Post 1599"),
@@ -43,13 +43,13 @@ Optional fields: `sub` for a qualifier shown under the name ("Chambersburg VFW P
 active: false
 ```
 
-They drop off the sponsors page and the homepage strip, and the record stays in git — which is how
+They drop off the sponsors page and the homepage strip, and the record stays in git - which is how
 we can still say who supported us in 2022.
 
 ## Add or update an FAQ answer
 
 Create `src/content/faq/<slug>.md`. The question is frontmatter; the answer is the body, so it can
-use markdown — links, bold, lists:
+use markdown - links, bold, lists:
 
 ```md
 ---
@@ -65,7 +65,7 @@ Optional `program: frc | fll | sc2` if the answer only applies to one program.
 Answers tagged `joining` appear on `/get-involved` and the matching program pages. Leave
 `program` unset for answers shared across programs.
 
-The `slug` — the filename without `.md` — is how events refer to an answer, so keep it
+The `slug` - the filename without `.md` - is how events refer to an answer, so keep it
 descriptive and stable. Renaming a file means updating any event that lists it.
 
 ## Update the open house for a new season
@@ -91,7 +91,7 @@ faq:
 ---
 ```
 
-`start` and `end` are full timestamps **with the timezone offset** — `-04:00` in summer,
+`start` and `end` are full timestamps **with the timezone offset** - `-04:00` in summer,
 `-05:00` in winter. That offset is what makes the date correct for someone reading in another
 timezone, and it feeds the event's structured data.
 
@@ -113,7 +113,7 @@ a duration would invent one. `hidden: true` is for retiring an event _early_, or
 `heroImageAlt` is required and the build fails without it.
 
 **Never write the date in prose as well.** The displayed date is formatted from `start`/`end`, so
-changing the season is one edit. A date typed into the body — or into an FAQ answer — is a second
+changing the season is one edit. A date typed into the body - or into an FAQ answer - is a second
 copy that will go stale.
 
 Location is **omitted** for anything at the workspace: it defaults to the address in
@@ -129,13 +129,13 @@ fails the build: Astro names the entry and field, and the page that lists it sto
 hidden: true
 ```
 
-The page stops rendering and sends anyone who lands on it to its parent — `/` for the open house,
+The page stops rendering and sends anyone who lands on it to its parent - `/` for the open house,
 `/programs/frc` for kickoff. Flip it back and the page returns unchanged.
 
 ### Create a new event
 
 Two steps. First copy an existing file in `src/content/events/` and edit it. Then add the route
-that renders it — a thin page under `src/pages/` at the URL you want:
+that renders it - a thin page under `src/pages/` at the URL you want:
 
 ```astro
 ---
@@ -152,8 +152,8 @@ if (event === undefined) {
 ```
 
 The id passed to `getVisibleEvent` is the filename without `.md`, and the path you redirect to is
-where a reader should land once the event is hidden. Everything else — the hero, the countdown,
-the location, the questions, the page copy — comes from the markdown file.
+where a reader should land once the event is hidden. Everything else - the hero, the countdown,
+the location, the questions, the page copy - comes from the markdown file.
 
 Two events do not yet justify a dynamic `[event].astro` route; when there are several, that is
 worth revisiting.
@@ -184,7 +184,7 @@ A paragraph or two about the robot: what it does, what makes it unusual, how the
 Only `year` is required. A season without a photo shows as a compact row on the season-history
 page; supplying `image` without `imageAlt` fails the build.
 
-`awards` is one line per award per event, as _FIRST_ names it — the same award at two events is two
+`awards` is one line per award per event, as _FIRST_ names it - the same award at two events is two
 lines. Regional winner and finalist titles count; the participation award and individual student
 honors such as Dean's List never go in, since the count is the team's. The
 award and season counts on the home and FRC pages are read from these files, so adding a season
@@ -209,7 +209,7 @@ list in `src/content.config.ts`; the home and sponsors pages count alumni per fi
 
 ## Add an outreach appearance
 
-`src/content/outreach/<year>-<name>.md`, no body — one file per community event the teams appear
+`src/content/outreach/<year>-<name>.md`, no body - one file per community event the teams appear
 at:
 
 ```md
@@ -287,9 +287,9 @@ updating one does not update the other.
 ## Sharp edges
 
 - **Image paths are relative to the markdown file**, which is why they start with `../../`. If the
-  path is wrong the build fails and names the file — it will not ship a broken image.
-- **A mistyped FAQ slug in an event fails `pnpm check`, not `pnpm build`** — Astro logs it and
+  path is wrong the build fails and names the file - it will not ship a broken image.
+- **A mistyped FAQ slug in an event fails `pnpm check`, not `pnpm build`** - Astro logs it and
   builds anyway, dropping that answer from the page, so run `pnpm check` after editing a `faq` list.
-- **Do not add fields the schema does not define** — the build rejects them. If you need a new
+- **Do not add fields the schema does not define** - the build rejects them. If you need a new
   field, that is a schema change in `src/content.config.ts`; keep it flat (strings, enums,
   booleans, dates, numbers, images) so a git-backed CMS can be added later.

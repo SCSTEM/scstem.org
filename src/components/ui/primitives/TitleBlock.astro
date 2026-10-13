@@ -1,4 +1,5 @@
 ---
+import Link from "@/components/ui/primitives/Link.astro";
 import { cn } from "@/lib/cn";
 
 interface Field {
@@ -29,7 +30,7 @@ const { fields, orientation = "strip", class: className } = Astro.props;
     <div class="px-4 py-3">
       <dt class="spec-label text-muted">{field.label}</dt>
       <dd class:list={["mt-1 text-small text-body", field.mono === true && "font-mono"]}>
-        {field.href === undefined ? field.value : <a href={field.href}>{field.value}</a>}
+        {field.href === undefined ? field.value : <Link href={field.href}>{field.value}</Link>}
       </dd>
     </div>
   ))}

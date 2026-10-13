@@ -9,6 +9,7 @@ import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import JoiningFaq from "@/components/ui/JoiningFaq.astro";
 import Button from "@/components/ui/primitives/Button.astro";
+import Link from "@/components/ui/primitives/Link.astro";
 import Section from "@/components/ui/Section.astro";
 import { ogCards } from "@/data/ogCards";
 import { nav, programs, site } from "@/data/site";
@@ -48,11 +49,9 @@ if (latest === undefined) {
     <Fragment slot="title">Three parts to a season</Fragment>
     <Fragment slot="intro">
       Every season <FirstMark /> sets a new theme, and{" "}
-      <a class="external-link" href={site.urls.firstInspires} rel="noopener">
-        teams around the world
-      </a>{" "}
-      take on the challenge together. Building, research, presenting, and teamwork all contribute to
-      a season, giving students different ways to explore their interests.
+      <Link href={site.urls.firstInspires}>teams around the world</Link> take on the challenge
+      together. Building, research, presenting, and teamwork all contribute to a season, giving
+      students different ways to explore their interests.
     </Fragment>
 
     <FeatureGrid columns={3}>
@@ -101,8 +100,8 @@ if (latest === undefined) {
       <FeatureCard icon="direction--fork">
         <Fragment slot="title">Choosing between programs?</Fragment>
         Where the age ranges overlap, you can choose this program or
-        <a href={programs.frc.href}>{programs.frc.teamName}</a>. We&rsquo;re happy to talk about
-        your interests and help you decide.
+        <Link href={programs.frc.href}>{programs.frc.teamName}</Link>. We&rsquo;re happy to talk
+        about your interests and help you decide.
       </FeatureCard>
     </FeatureGrid>
   </Section>

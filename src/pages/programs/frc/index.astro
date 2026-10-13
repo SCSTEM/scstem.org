@@ -17,6 +17,7 @@ import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Card from "@/components/ui/primitives/Card.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
+import Link from "@/components/ui/primitives/Link.astro";
 import Section from "@/components/ui/Section.astro";
 import SectionAction from "@/components/ui/SectionAction.astro";
 import StatBand from "@/components/ui/StatBand.astro";
@@ -149,7 +150,7 @@ const roles = [
     </Fragment>
     Join {programs.frc.teamName}, our <FirstMark /> Robotics Competition team for high-school
     students ages {programs.frc.ages}. Work alongside teammates and experienced mentors to build a
-    new robot each season. Explore engineering, programming, strategy, and creative roles—no
+    new robot each season. Explore engineering, programming, strategy, and creative roles - no
     robotics experience needed.
     <Button href={nav.cta.href} size="lg" slot="actions">
       {nav.cta.label}
@@ -225,13 +226,7 @@ const roles = [
           <div class="grid grid-cols-[5rem_1fr] items-baseline gap-x-4">
             <dt class="spec-label text-muted">{entry.term}</dt>
             <dd class="text-foreground">
-              {"href" in entry ? (
-                <a class="external-link" href={entry.href} rel="noopener">
-                  {entry.detail}
-                </a>
-              ) : (
-                entry.detail
-              )}
+              {"href" in entry ? <Link href={entry.href}>{entry.detail}</Link> : entry.detail}
             </dd>
           </div>
         ))}

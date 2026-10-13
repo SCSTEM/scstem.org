@@ -1,14 +1,8 @@
 ---
 import { cn } from "@/lib/cn";
-import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
+import { type ChalkOvalProps, handLinkShadeClass, handMarkClass, handToneClass } from "@/lib/hand";
 
-interface Props {
-  /** Adjacent instances must use different variants. */
-  variant?: HandVariant;
-  tone?: HandTone;
-  around?: "word" | "control";
-  class?: string;
-}
+type Props = ChalkOvalProps;
 
 const { variant = 1, tone = "marker", around = "word", class: className } = Astro.props;
 
@@ -41,7 +35,13 @@ const rotations = { 1: "-1.2deg", 2: "0.9deg", 3: "-0.6deg" } as const;
   <slot />
   <svg
     aria-hidden="true"
-    class:list={[handMarkClass, "absolute", overhang[around].ring, handToneClass(tone)]}
+    class:list={[
+      handMarkClass,
+      handLinkShadeClass,
+      "absolute",
+      overhang[around].ring,
+      handToneClass(tone),
+    ]}
     preserveAspectRatio="none"
     style={`rotate: ${rotations[variant]}`}
     viewBox="0 0 180 56"

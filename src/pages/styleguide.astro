@@ -21,6 +21,7 @@ import GridBubble from "@/components/ui/primitives/GridBubble.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import Input from "@/components/ui/primitives/Input.astro";
 import Label from "@/components/ui/primitives/Label.astro";
+import Link from "@/components/ui/primitives/Link.astro";
 import Pattern from "@/components/ui/primitives/Pattern.astro";
 import RegistrationMarks from "@/components/ui/primitives/RegistrationMarks.astro";
 import RevisionCloud from "@/components/ui/primitives/RevisionCloud.astro";
@@ -612,14 +613,26 @@ const themes = accents().map((accent) => ({
       </p>
 
       <p class="mt-10 text-lead">
-        An underline in copy always means a link: <a href="/sponsors">see every sponsor</a>,{" "}
-        <a href="/programs">our programs</a>, or <a href="/calendar">the calendar</a> - a straight
-        line under every one. A link the page wants noticed is a{" "}
-        <a class="highlight-swipe" href="/get-involved">
+        An underline in copy always means a link: <Link href="/sponsors">see every sponsor</Link>,{" "}
+        <Link href="/programs">our programs</Link>, or <Link href="/calendar">the calendar</Link> -
+        a straight line under every one. A link the page wants noticed is a{" "}
+        <Link class="highlight-swipe" href="/get-involved">
           featured link
-        </a>
+        </Link>
         , swipe and underline together. Swipes and ovals on their own are emphasis, never links.
       </p>
+
+      <h4 class="mt-12">Links</h4>
+      <div class="mt-6 flex flex-wrap items-center gap-x-16 gap-y-8">
+        <Link href="/sponsors">A link in copy</Link>
+        <Link href="https://www.firstinspires.org/">An external link</Link>
+        <Link around="control" class="text-h3" href="/programs" mark="oval" variant={1}>
+          A circled link
+        </Link>
+        <Link class="text-h3" href="/calendar" mark="underline" variant={2}>
+          An underlined link
+        </Link>
+      </div>
 
       <p class="mt-10 font-display text-h3 font-semibold">
         A heading with a <span class="highlight-swipe">highlighter swipe</span>
@@ -901,9 +914,9 @@ const themes = accents().map((accent) => ({
             <div class="mt-4 flex flex-wrap items-center gap-4">
               <Badge>Default badge</Badge>
               <Badge tone="info">Info</Badge>
-              <a class="text-small" href="/styleguide">
+              <Link class="text-small" href="/styleguide">
                 An in-prose link
-              </a>
+              </Link>
               <span class="stat">12</span>
               <span class="highlight-swipe text-h4">swiped words</span>
             </div>

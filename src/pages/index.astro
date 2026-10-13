@@ -20,6 +20,7 @@ import Callout from "@/components/ui/primitives/Callout.astro";
 import Card from "@/components/ui/primitives/Card.astro";
 import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
+import Link from "@/components/ui/primitives/Link.astro";
 import ProgramCard from "@/components/ui/ProgramCard.astro";
 import Section from "@/components/ui/Section.astro";
 import SectionAction from "@/components/ui/SectionAction.astro";
@@ -115,8 +116,8 @@ const outreachKinds = {
     </Fragment>
     <p>
       At {site.name}, students ages 9–18 explore their interests through <FirstMark /> robotics.
-      Work alongside teammates and volunteer mentors to design, build, and compete—and discover what
-      you enjoy doing.
+      Work alongside teammates and volunteer mentors to design, build, and compete - and discover
+      what you enjoy doing.
     </p>
     <p class="mt-4">
       We meet in downtown {site.location.locality}, {site.location.region}, and welcome students
@@ -142,7 +143,7 @@ const outreachKinds = {
       <ProgramCard program="fll">
         Build and program a LEGO® robot, investigate a real-world problem, and share your
         team&rsquo;s solution with judges. Small teams give students opportunities to try ideas,
-        solve problems together, and practice presenting their work. We provide the equipment—you
+        solve problems together, and practice presenting their work. We provide the equipment - you
         bring your curiosity.
       </ProgramCard>
 
@@ -210,18 +211,18 @@ const outreachKinds = {
             <div class="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:items-baseline sm:gap-6">
               <dt class="spec-label text-primary-bright">Ages {programs.frc.ages}</dt>
               <dd>
-                <a href={programs.frc.href}>
+                <Link href={programs.frc.href}>
                   <FirstMark /> Robotics Competition
-                </a>
+                </Link>
                 : {programs.frc.teamName}, our high-school team.
               </dd>
             </div>
             <div class="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:items-baseline sm:gap-6">
               <dt class="spec-label text-primary-bright">Ages {programs.fll.ages}</dt>
               <dd>
-                <a href={programs.fll.href}>
+                <Link href={programs.fll.href}>
                   <FirstMark /> LEGO® League
-                </a>
+                </Link>
                 : our teams for younger students.
               </dd>
             </div>

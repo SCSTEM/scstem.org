@@ -1,8 +1,7 @@
 ---
 import type { HandVariant } from "@/lib/hand";
 
-import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
-import ChalkUnderline from "@/components/ui/primitives/ChalkUnderline.astro";
+import Link from "@/components/ui/primitives/Link.astro";
 import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
 import { cn } from "@/lib/cn";
 
@@ -21,26 +20,22 @@ interface Props {
 
 const { href, prompt, variant = 1, class: className } = Astro.props;
 
-const link = "bg-none pb-0 font-hand text-h3 leading-snug";
+const size = "text-h3 leading-snug";
 ---
 
 <p class={cn("flex flex-wrap items-center gap-x-4 gap-y-1", className)}>
   {prompt === undefined ? (
-    <ChalkOval around="control" variant={variant}>
-      <a class={link} href={href}>
-        <slot />
-      </a>
-    </ChalkOval>
+    <Link around="control" class={size} href={href} mark="oval" variant={variant}>
+      <slot />
+    </Link>
   ) : (
     <>
       <span class="text-lead">{prompt}</span>
       <span class="flex items-center gap-3">
         <SketchArrow class="h-10 w-12 shrink-0" direction="right" variant={variant} />
-        <a class={link} href={href}>
-          <ChalkUnderline variant={variant}>
-            <slot />
-          </ChalkUnderline>
-        </a>
+        <Link class={size} href={href} mark="underline" variant={variant}>
+          <slot />
+        </Link>
       </span>
     </>
   )}

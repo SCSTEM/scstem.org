@@ -7,8 +7,8 @@ analytics cookies because `analytics_storage` is granted.
 
 Two gates, and both are load-bearing:
 
-1. **`import.meta.env.PROD`** — the snippet is absent from `pnpm dev` output entirely.
-2. **`location.hostname === "scstem.org"`** — evaluated in the browser, first line of the snippet.
+1. **`import.meta.env.PROD`** - the snippet is absent from `pnpm dev` output entirely.
+2. **`location.hostname === "scstem.org"`** - evaluated in the browser, first line of the snippet.
    A `*.pages.dev` preview and `staging.scstem.org` serve _production_ builds from real hostnames,
    so gate 1 alone would send every preview deploy's traffic to the live property. This is also
    why the Lighthouse budgets never see `gtag.js`.
@@ -30,7 +30,7 @@ gtag("consent", "default", {
 `analytics_storage: "granted"` is the default because this is a US nonprofit with no ad products
 and no EEA audience to speak of. Every advertising signal is denied outright rather than left
 unset. Adding a banner later means changing these four values and calling `gtag("consent",
-"update", …)` — the structure does not have to change.
+"update", …)` - the structure does not have to change.
 
 ## Event taxonomy
 
@@ -41,12 +41,12 @@ unset. Adding a banner later means changing these four values and calling `gtag(
 | `wishlist_click`          | a link to the wiki wishlist is clicked                      |
 | `sponsor_packet_download` | a link to the sponsorship packet is clicked                 |
 | `outbound_sponsor_click`  | a sponsor's own site is opened from a card or the strip     |
-| `contact_submit`          | the contact form gets a successful response — not on submit |
+| `contact_submit`          | the contact form gets a successful response - not on submit |
 
 One delegated `click` listener on `document` covers the links. It recognizes the first five by
 **destination**, from a table `Analytics.astro` builds out of `src/data/site.ts`: a route is named
 once in this codebase, and tagging twenty call sites with `data-track` would be a second list to
-keep in step with it. `data-track` is still read first, for the clicks a URL cannot identify — a
+keep in step with it. `data-track` is still read first, for the clicks a URL cannot identify - a
 sponsor's href is a per-entry value, so `SponsorCard` and `SponsorStrip` carry
 `data-track="outbound_sponsor_click"`.
 
@@ -61,7 +61,7 @@ dispatches `TRACK_EVENT` with its name. Then add the row above, and mark it a ke
 
 The snippet is gated on the production hostname, so a local check has to pretend to be that host:
 build, rewrite the hostname in the emitted snippet to `localhost`, serve with `pnpm preview`, and
-watch `dataLayer` after `load` — `["consent","default",{…}]`, `["js",Date]`, `["config",…]` in
+watch `dataLayer` after `load` - `["consent","default",{…}]`, `["js",Date]`, `["config",…]` in
 that order, then `["event",…]` entries as links are clicked. In production, GA4's **DebugView** is
 the equivalent check; `?gtm_debug=x` on a real page turns it on for that session.
 
