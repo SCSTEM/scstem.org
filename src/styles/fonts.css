@@ -5,7 +5,9 @@
  * weight axis; the declared range clamps it.
  *
  * No face is preloaded: every page's LCP element is a photograph, and a font preload queues ahead
- * of it (measured: preloading Inter and Orbitron cost ~660 ms of LCP).
+ * of it (measured: preloading Inter and Orbitron cost ~660 ms of LCP). The text faces instead
+ * fall back to Arial (or its metric twin Liberation Sans) scaled to their metrics, so the swap
+ * does not reflow text.
  */
 
 @font-face {
@@ -31,6 +33,15 @@
 }
 
 @font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
+  ascent-override: 90.4365%;
+  descent-override: 22.518%;
+  line-gap-override: 0%;
+  size-adjust: 107.1194%;
+}
+
+@font-face {
   font-family: "Orbitron";
   font-style: normal;
   font-display: swap;
@@ -39,6 +50,15 @@
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
     U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Orbitron Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
+  ascent-override: 81.5017%;
+  descent-override: 19.5894%;
+  line-gap-override: 0%;
+  size-adjust: 124.0464%;
 }
 
 @font-face {
