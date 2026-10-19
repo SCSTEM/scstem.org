@@ -1,6 +1,6 @@
 ---
 title: Open house
-subtitle: Meet the teams, explore your interests, and see what you can build together.
+subtitle: Meet students and mentors, see their robots, and ask about joining a team.
 program: sc2
 start: 2026-08-01T13:00:00-04:00
 end: 2026-08-01T16:00:00-04:00
@@ -18,11 +18,11 @@ faq:
   - cant-make-the-open-house
 ---
 
-## Find your place on a team
+## What to expect
 
-Bring your curiosity and meet the students and mentors behind our robots. Explore building,
-programming, strategy, fundraising, and creative roles, and ask about the program that fits
-your age and interests.
+Meet the students and mentors behind our robots to find out how a team works. You can ask about
+building, programming, strategy, fundraising, and creative roles while discussing which
+program suits your age and interests.
 
-Families are welcome from Franklin County and beyond. No robotics experience needed, and you
-don't need to decide about joining before you visit.
+We welcome families from Franklin County and beyond, with or without robotics experience.
+A visit is a chance to ask questions before deciding whether to join.

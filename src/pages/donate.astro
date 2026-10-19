@@ -31,8 +31,8 @@ const mailingAddress = [
 >
   <Hero>
     <HeroImage
-      alt="A rack of drill bits on the workshop wall"
-      caption="Drill bits on the shop wall"
+      alt="Drill bits arranged in a holder beside an open tool case"
+      caption="Drill bits in the workshop"
       slot="media"
       src={drillBits}
     />
@@ -40,8 +40,8 @@ const mailingAddress = [
       Help students <span class="highlight-swipe">learn by doing</span>
     </Fragment>
     Your gift puts tools and materials in students&rsquo; hands, keeps our
-    {site.location.locality} workspace open, and helps our teams take part in competitions. Support
-    the learning, teamwork, and problem-solving that happen throughout a season.
+    {site.location.locality} workspace open, and helps cover registration fees so our teams can take
+    their robots to competition.
     <Button href={site.urls.donate} size="lg" slot="actions">
       Donate through PayPal
     </Button>
@@ -94,15 +94,15 @@ const mailingAddress = [
       <FeatureCard cta="See our wishlist" href={site.urls.wishlist} icon="tools">
         <Fragment slot="title">Tools and materials</Fragment>
         <p>
-          Give students equipment to learn on and materials to build with. Check our wishlist for
-          current needs, then contact us to arrange a drop-off.
+          Check our wishlist for the equipment and materials students need in the workshop, then
+          contact us to arrange a drop-off.
         </p>
       </FeatureCard>
 
       <FeatureCard cta="Explore sponsorship" href={nav.sponsors.href} icon="document">
         <Fragment slot="title">Corporate sponsorship</Fragment>
-        Help support a season through one of {SPONSOR_LEVELS.length} sponsorship levels. Visit our
-        sponsors page to meet our partners and find the sponsorship packet.
+        Choose from {SPONSOR_LEVELS.length} sponsorship levels to help support a season. Our
+        sponsors page introduces our partners and links to the packet with recognition details.
       </FeatureCard>
     </FeatureGrid>
   </Section>
@@ -110,8 +110,8 @@ const mailingAddress = [
   <Section align="center" atmosphere="pool-neutral" id="questions">
     <Fragment slot="title">Questions about giving</Fragment>
     <Fragment slot="intro">
-      Ask about sponsorship, equipment donations, or giving funds. A volunteer will answer your
-      questions and help you find a way to support our students.
+      If you have questions about sponsorship, equipment donations, or giving funds, send us a
+      message and a volunteer will reply by email.
     </Fragment>
 
     <ContactForm class="mx-auto max-w-3xl" name="Sponsor Question" />

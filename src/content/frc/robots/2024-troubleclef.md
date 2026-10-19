@@ -14,6 +14,6 @@ awards:
   - "Imagery Award, Buckeye Regional"
 ---
 
-Troubleclef's gunmetal side panels enclose its electronics. A 3D-printed chain carries game
-pieces from the ground to the top of a ramp, where two motors launch them. The team placed
-15th at the Buckeye Regional and earned an Imagery Award.
+Troubleclef used a 3D-printed chain to carry game pieces from the ground to the top of a ramp,
+where two motors launched them. Gunmetal side panels enclosed its electronics. The team
+placed 15th at the Buckeye Regional and earned an Imagery Award.

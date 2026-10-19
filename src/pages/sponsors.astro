@@ -56,39 +56,38 @@ const alumniFields = listFormat.format(
     <Fragment slot="title">
       Support the <span class="highlight-swipe">students</span> behind the robots
     </Fragment>
-    Your business can help students put their ideas to work. Sponsor support provides tools,
-    materials, a workspace, and opportunities to compete. Join the businesses supporting hands-on
-    learning in our {site.location.locality} workshop.
+    Help students turn their ideas into competition robots by supporting the tools, materials, and
+    workspace they use. Your business can join the sponsors who keep our
+    {site.location.locality} workshop and robotics teams running.
     <Button href="#sponsorship" size="lg" slot="actions">
       Explore sponsorship
     </Button>
   </Hero>
 
   <Section atmosphere="bubble" index={1}>
-    <Fragment slot="title">An investment in student opportunities</Fragment>
-    <Fragment slot="intro">
-      Students practice technical skills, teamwork, and responsibility as they build and compete.
-      The {alumni.length} alumni we keep in touch with now work in {alumniFields}.
-    </Fragment>
+    <Fragment slot="title">What your support makes possible</Fragment>
 
-    <h3>What your support makes possible</h3>
-
-    <FeatureGrid class="mt-8" columns={3}>
+    <FeatureGrid columns={3}>
       <FeatureCard icon="tools">
         <Fragment slot="title">Tools</Fragment>
-        Machines, hand tools, and materials students use to design, build, test, and improve their
-        ideas.
+        Equip the workshop with machines, hand tools, and materials students use to build and test
+        their robot designs.
       </FeatureCard>
       <FeatureCard icon="building">
-        <Fragment slot="title">Workspace</Fragment>A shared workshop in downtown{" "}
-        {site.location.locality}, where students and mentors meet, learn, and build together.
+        <Fragment slot="title">Workspace</Fragment>
+        Keep a shared workshop open in downtown {site.location.locality}, where students and mentors
+        meet to design and build throughout the season.
       </FeatureCard>
       <FeatureCard icon="ticket">
         <Fragment slot="title">Registration</Fragment>
-        <FirstMark /> registration fees that let our teams take their work to competition and learn
-        alongside other teams.
+        Cover <FirstMark /> registration fees so our teams can take their robots to competition and
+        put their designs to the test alongside other teams.
       </FeatureCard>
     </FeatureGrid>
+
+    <p class="mt-8 measure">
+      The {alumni.length} Biohazard alumni we keep in touch with now work in {alumniFields}.
+    </p>
   </Section>
 
   <Section atmosphere="bubble" index={2}>
@@ -121,8 +120,8 @@ const alumniFields = listFormat.format(
   <Section id="sponsorship">
     <CtaBanner>
       <Fragment slot="title">Build the next season with us</Fragment>
-      Explore the sponsorship levels and recognition details in our packet. We&rsquo;re happy to
-      answer questions and discuss how your business can support our students.
+      Our sponsorship packet explains the levels and recognition details so you can consider how
+      your business would like to contribute. Get in touch with any questions.
       <Button href={site.urls.sponsorPacket} size="lg" slot="actions">
         View sponsorship packet
       </Button>

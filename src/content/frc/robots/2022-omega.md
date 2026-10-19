@@ -13,6 +13,6 @@ awards:
   - "Industrial Design Award, Smoky Mountains Regional"
 ---
 
-O'Mega combines a large shooter, an intake, and two climbing arms. Its adjustable firing
-mechanism let it shoot into both hoops in the 2022 game. The robot earned Industrial Design
-Awards at both regionals.
+O'Mega combined an intake and two climbing arms with a large, adjustable shooter that could
+reach both hoops in the 2022 game. The robot earned Industrial Design Awards at both
+regionals.

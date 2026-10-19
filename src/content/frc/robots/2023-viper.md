@@ -13,6 +13,7 @@ awards:
   - "Industrial Design Award, Greater Pittsburgh Regional"
 ---
 
-Viper earned the Industrial Design Award at the 2023 Greater Pittsburgh Regional. Its
-three-foot metal arm and 3D-printed pneumatic claw grabbed inflatable cubes. Mecanum wheels
-helped drivers fine-tune the robot's position, and two cameras improved their view of the field.
+Viper grabbed inflatable cubes with a 3D-printed pneumatic claw mounted on a three-foot metal
+arm. Mecanum wheels helped drivers fine-tune its position while two cameras improved their
+view of the field. The robot earned the Industrial Design Award at the 2023 Greater
+Pittsburgh Regional.

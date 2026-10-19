@@ -69,9 +69,9 @@ const entries = rendered.map((entry, index) => ({
       {programs.frc.since}-{latestYear}
     </Fragment>
     <Fragment slot="title">Every season since {programs.frc.since}</Fragment>
-    Each season gives {programs.frc.teamName} a new challenge and another opportunity to learn.
-    Explore the robots our students built, the events where they competed, and the results and
-    awards they earned together.
+    Follow {programs.frc.teamName} through each season, from the robots students built to the events
+    where they competed. The record below includes competition results and awards, with photos and
+    design details where we have them.
   </Hero>
 
   <Section atmosphere="pool" srTitle="Seasons, newest first">
@@ -157,8 +157,8 @@ const entries = rendered.map((entry, index) => ({
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Help build the next robot</Fragment>
-      Bring your interests to {programs.frc.teamName}. Learn alongside students and mentors as you
-      explore how to contribute to the next season.
+      Join {programs.frc.teamName} to help design, build, and compete with our next robot. Tell us
+      your interests so we can discuss a visit and the roles you might like to try.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>

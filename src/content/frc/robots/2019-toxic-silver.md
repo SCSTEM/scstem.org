@@ -12,5 +12,5 @@ awards:
   - "Excellence in Engineering Award, Greater Pittsburgh Regional"
 ---
 
-With its shining aluminum lift and maneuverable mecanum drivetrain, Toxic Silver lifted
-and placed game pieces in the 2019 game.
+Toxic Silver used an aluminum lift to place game pieces in the 2019 game. Its mecanum wheels
+let the robot move sideways as well as forward and backward to line up with targets.

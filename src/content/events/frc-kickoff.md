@@ -3,7 +3,7 @@ title: 2026 season kickoff
 program: frc
 start: 2026-01-10T12:00:00-05:00
 end: 2026-01-10T16:00:00-05:00
-subtitle: Discover the new game with Biohazard and see how a season begins.
+subtitle: Watch the new game reveal with Biohazard as we begin planning our next robot.
 description: Watch the FIRST Robotics Competition game reveal with Biohazard in downtown Chambersburg. Meet the team, explore ideas, and learn about joining the season.
 heroImage: ../../assets/events/cheering.webp
 heroImageAlt: Biohazard team members cheering from the stands at competition
@@ -20,26 +20,20 @@ hintLabels:
   - "Hint #2"
 ---
 
-## From the game reveal to competition
+## How the season begins
 
-**Kickoff.** Watch the game reveal together, read the rules, and start exploring ideas for our
-robot.
+At kickoff, we watch the game reveal together and read the rules to start planning our robot.
+That challenge guides the months ahead as students design, build, and program with help from
+mentors, testing and improving the robot before regional competitions in spring.
 
-**Build season.** Design, build, and program a robot to take on the challenge. Mentors help
-students test their ideas and improve the robot as competition approaches.
-
-**Competition.** Take the robot to regional events in spring, compete in alliances with other
-teams, and put your skills into practice on the field.
-
-**Ages 14–18.** High-school students work alongside experienced mentors to explore engineering,
-strategy, and creative roles. No robotics experience needed.
+Biohazard welcomes high-school students ages 14–18, with or without robotics experience.
+Kickoff is a chance to meet the team and ask about engineering, strategy, and creative roles.
 
 ## What is _FIRST®_ Robotics Competition?
 
-_FIRST®_ Robotics Competition brings high-school students and mentors together to build
-full-size robots for a new game each season. Students practice engineering, teamwork, and
-leadership as they prepare to compete. [Meet Biohazard](/programs/frc) to explore our team and
-the roles you can try.
+_FIRST®_ Robotics Competition challenges teams to build full-size robots for a new game each
+season. At competitions, teams form alliances and combine their robots' strengths to play
+the game. [Meet Biohazard](/programs/frc) to learn about our team and the roles you can try.
 
 ## Meeting schedule
 

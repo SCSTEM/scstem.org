@@ -29,15 +29,15 @@ const fields = [
 >
   <Hero>
     <HeroImage
-      alt="A student working at a laptop in the South Central STEM Collective workspace"
-      caption="Coding in the workspace"
+      alt="A laptop displaying a spreadsheet of the team meeting calendar"
+      caption="Planning team meetings"
       slot="media"
       src={laptop}
     />
     <Fragment slot="title">Contact us</Fragment>
-    Questions about a program, sponsorship, or robot demonstration? Send us a message and a
-    volunteer will help you take the next step. To explore joining a team, use our{" "}
-    <Link href={nav.cta.href}>{nav.cta.label} form</Link>.
+    Send us your questions about a program, sponsorship, or robot demonstration, and a volunteer
+    will reply by email. If you&rsquo;re interested in joining a team, our{" "}
+    <Link href={nav.cta.href}>{nav.cta.label} form</Link> helps us learn about your interests.
   </Hero>
 
   <Section atmosphere="pool-neutral" srTitle="Send us a message">
@@ -55,9 +55,8 @@ const fields = [
           </CardHeader>
           <CardContent>
             <p>
-              Meet the students behind our robots and see their work up close. Tell us your
-              event&rsquo;s date, location, and audience, and we&rsquo;ll discuss what our teams can
-              bring.
+              To invite our students and robots to your school, group, or event, share the date,
+              location, and audience so we can discuss what our teams can bring.
             </p>
           </CardContent>
         </Card>
@@ -68,8 +67,9 @@ const fields = [
           </CardHeader>
           <CardContent class="flex flex-col items-start gap-4">
             <p>
-              We meet in downtown {site.location.locality}, {site.location.region}, and welcome
-              students from {site.location.county} and beyond. Get in touch to arrange a visit.
+              Get in touch to arrange a visit to our downtown {site.location.locality},{" "}
+              {site.location.region} workspace. We welcome students and families from{" "}
+              {site.location.county} and beyond.
             </p>
             <p>
               <Link href={site.urls.directions}>Directions to the workspace</Link>

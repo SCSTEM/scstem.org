@@ -34,8 +34,6 @@ Each season file lists the game, events, best result, and awards, checked agains
 - [ ] Meeting days, times, and season months.
 - [ ] Tournaments the teams attend, and roughly when.
 - [ ] The new FLL age range (it's changing); then update `programs.fll.ages`.
-- [ ] **New alt text** for `src/content/fll/team-photos/2024.md`. It's now the FLL hero, and
-      "The FIRST LEGO League teams in 2024" doesn't describe the photo.
 - [ ] When the FLL ages change, also update the answer in `src/content/faq/what-age-to-join.md`,
       which states them in prose.
 

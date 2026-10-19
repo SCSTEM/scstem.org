@@ -14,6 +14,6 @@ awards:
   - "Imagery Award, FIRST At Home challenges (virtual)"
 ---
 
-Robo Fett uses a scissor-lift climber and an inline shooting mechanism. It is one of two
-Biohazard robots to use pneumatic wheels. A plexiglass side panel protects the electronics and
-displays the 2020 team logo.
+Robo Fett combined a scissor-lift climber with an inline shooting mechanism and was one of two
+Biohazard robots to use pneumatic wheels. A plexiglass side panel protected the electronics
+and displayed the 2020 team logo.

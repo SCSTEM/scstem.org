@@ -31,9 +31,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       Find your place in <span class="highlight-swipe">robotics</span>
     </Fragment>
     <p>
-      From LEGO® robots to full-size competition machines, our two <FirstMark /> programs give
-      students opportunities to build, solve problems, and share ideas. Volunteer mentors help you
-      learn as you contribute to a team.
+      Our two <FirstMark /> programs take students from LEGO® robots to full-size competition
+      machines. You&rsquo;ll work with teammates and volunteer mentors to design a robot, test your
+      ideas, and prepare for competition.
     </p>
     <p class="mt-4">
       {site.name} welcomes students from {site.location.county} and beyond. Both programs meet in
@@ -47,40 +47,39 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   <Section atmosphere="bubble" index={1}>
     <Fragment slot="title">Choose your program</Fragment>
     <Fragment slot="intro">
-      Start with your age and interests. Where the age ranges overlap, we can help you choose the
-      program that feels right for you.
+      Choose based on your age and interests, with help from us where the age ranges overlap. Both
+      programs welcome beginners.
     </Fragment>
 
     <FeatureGrid columns={2}>
       <ProgramCard program="fll">
         <p>
-          Build and program a LEGO® robot, investigate a real-world problem, and share your
-          team&rsquo;s solution with judges. Small teams give students opportunities to try ideas,
-          solve problems together, and practice presenting their work.
+          In a small team, you&rsquo;ll build and program a LEGO® robot to complete missions on a
+          themed table. Alongside the robot game, you&rsquo;ll research a real-world problem and
+          present your team&rsquo;s solution to judges.
         </p>
         <p class="mt-3">
-          No experience or LEGO® collection needed. We provide the equipment, and mentors and
+          We provide the equipment, so you don&rsquo;t need your own LEGO® collection. Mentors and
           teammates help you get started.
         </p>
       </ProgramCard>
 
       <ProgramCard program="frc">
         <p>
-          Join {programs.frc.teamName} to design, build, and program a new competition robot each
-          season. Work alongside experienced mentors, explore different roles, and take your ideas
-          from the workshop to the field. Strategy, fundraising, design, and media all help the team
-          succeed.
+          Join {programs.frc.teamName} to design, build, and program a full-size robot for a new
+          game each season. Experienced mentors work with students on engineering and strategy,
+          while fundraising, graphic design, and media support the team&rsquo;s work.
         </p>
-        <p class="mt-3">Competing since {programs.frc.since}.</p>
+        <p class="mt-3">
+          The team has competed since {programs.frc.since}, taking a new robot from the January game
+          reveal to regional events in spring.
+        </p>
       </ProgramCard>
     </FeatureGrid>
   </Section>
 
   <Section atmosphere="band">
-    <Fragment slot="title">Look around first</Fragment>
-    <Fragment slot="intro">
-      No commitment required. See what we have built and when we meet.
-    </Fragment>
+    <Fragment slot="title">Seasons, schedules, and the wider program</Fragment>
 
     <FeatureGrid columns={3}>
       <FeatureCard cta="See every season" href={nav.robots.href} icon="bot">
@@ -112,23 +111,23 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     <FeatureGrid columns={2}>
       <FeatureCard cta="Request a robot demonstration" href={nav.contact.href} icon="events">
         <Fragment slot="title">Robot demonstrations</Fragment>
-        Interested in a visit to your school, club, or company event? Tell us the date, location,
-        and audience, and we&rsquo;ll discuss what our teams can bring.
+        To arrange a visit to your school, club, or company event, tell us the date, location, and
+        audience so we can discuss what our teams can bring.
       </FeatureCard>
 
       <FeatureCard cta="Talk to us about workshops" href={nav.contact.href} icon="education">
         <Fragment slot="title">Help develop future workshops</Fragment>
-        Hands-on STEM workshops are one of our goals. We&rsquo;re looking for sponsors and
-        volunteers to help make them possible. Share your skills or ideas with us.
+        We&rsquo;re looking for sponsors and volunteers to help develop hands-on STEM workshops. If
+        you can contribute skills, equipment, or ideas, we&rsquo;d like to hear from you.
       </FeatureCard>
     </FeatureGrid>
   </Section>
 
   <Section atmosphere="ruler">
     <CtaBanner>
-      <Fragment slot="title">Let&rsquo;s find your fit</Fragment>
-      Tell us your age and interests, or ask about a program for your student. A volunteer will
-      answer your questions and help you choose a next step.
+      <Fragment slot="title">Ask about joining a team</Fragment>
+      Tell us your age and interests, or ask about a program for your student, and a volunteer will
+      answer your questions and help you choose between the programs.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>

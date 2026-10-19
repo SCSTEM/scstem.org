@@ -4,5 +4,5 @@ program: sc2
 tags: [openhouse]
 ---
 
-Yes. Tell us your interests through the [Get involved](/get-involved) form. A volunteer will
-help you arrange a visit to a regular team meeting.
+Yes. Tell us your interests through the [Get involved](/get-involved) form so a volunteer can
+help arrange a visit to a regular team meeting.

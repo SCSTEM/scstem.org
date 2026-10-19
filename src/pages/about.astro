@@ -10,6 +10,7 @@ import Hero from "@/components/ui/Hero.astro";
 import HeroImage from "@/components/ui/HeroImage.astro";
 import PhotoTimeline from "@/components/ui/PhotoTimeline.astro";
 import Button from "@/components/ui/primitives/Button.astro";
+import SketchArrow from "@/components/ui/primitives/SketchArrow.astro";
 import Section from "@/components/ui/Section.astro";
 import SectionAction from "@/components/ui/SectionAction.astro";
 import StatBand from "@/components/ui/StatBand.astro";
@@ -107,14 +108,14 @@ const outreachByYear = outreachYears.map((year) => ({
     <Fragment slot="title">About us</Fragment>
 
     <p>
-      At {site.name}, we help students explore STEM through hands-on learning, mentorship, and
-      teamwork. Our <FirstMark /> robotics programs give young people opportunities to build, solve
-      problems, and share what they learn.
+      At {site.name}, students explore STEM by building robots together. Our two <FirstMark />{" "}
+      programs bring students and volunteer mentors into the workshop to turn ideas into working
+      machines and take them to competition.
     </p>
     <p class="mt-4">
       We meet in downtown {site.location.locality}, {site.location.region}, and welcome students
-      from {site.location.county} and beyond. Students, families, volunteers, and sponsors all
-      contribute to this community.
+      from {site.location.county} and beyond. Families and sponsors help keep the teams running
+      alongside the students and mentors.
     </p>
 
     <Button href={nav.cta.href} size="lg" slot="actions">
@@ -125,40 +126,32 @@ const outreachByYear = outreachYears.map((year) => ({
   <Section atmosphere="bubble" index={1}>
     <Fragment slot="title">Our beginnings</Fragment>
 
-    <div class="flex flex-col-reverse items-start gap-8 md:flex-row md:gap-12">
-      <div class="prose-copy">
-        <h3>{programs.frc.teamName}</h3>
-        <p>
-          {programs.frc.teamName} is a <FirstMark /> Robotics Competition team, formed in{" "}
-          {programs.frc.since} by a small group of students and volunteers as a club under the local
-          4-H program office.
-        </p>
-        <p>
-          In its first {preShutdown.length} seasons, the team won {awardCount(preShutdown)} awards.{" "}
-          {firstRegionalWin !== undefined && (
+    <div class="prose-copy">
+      <p>
+        A small group of students and volunteers formed {programs.frc.teamName} in{" "}
+        {programs.frc.since} as a <FirstMark /> Robotics Competition club under the local 4-H
+        program office.
+      </p>
+      <p>
+        The team won {awardCount(preShutdown)} awards in its first {preShutdown.length} seasons
+        {firstRegionalWin !== undefined ? (
+          <>
+            , including a win at the {firstRegionalWin.event} in {firstRegionalWin.year}.
+          </>
+        ) : (
+          <>.</>
+        )}{" "}
+        {championshipYear !== undefined &&
+          (championshipYear === firstRegionalWin?.year ? (
             <>
-              In {firstRegionalWin.year} it won the {firstRegionalWin.event}.{" "}
+              The same season, it played at the <FirstMark /> Championship.
             </>
-          )}
-          {championshipYear !== undefined &&
-            (championshipYear === firstRegionalWin?.year ? (
-              <>
-                The same season, it played at the <FirstMark /> Championship.
-              </>
-            ) : (
-              <>
-                In {championshipYear} it played at the <FirstMark /> Championship.
-              </>
-            ))}
-        </p>
-      </div>
-
-      <Image
-        alt={`${programs.frc.teamName} robotics team logo`}
-        class="w-32 shrink-0 md:w-48"
-        loading="lazy"
-        src={biohazardLogo}
-      />
+          ) : (
+            <>
+              In {championshipYear} it played at the <FirstMark /> Championship.
+            </>
+          ))}
+      </p>
     </div>
   </Section>
 
@@ -170,46 +163,72 @@ const outreachByYear = outreachYears.map((year) => ({
   <Section atmosphere="bubble" index={2}>
     <Fragment slot="title">Growing beyond one team</Fragment>
 
-    <div class="prose-copy">
-      <p>
-        The {SHUTDOWN_YEAR} season began with weeks of building and a competition in Myrtle Beach,
-        SC. When the pandemic interrupted the season, students and mentors stayed committed to the
-        team. {programs.frc.teamName} returned to regional competition in 2022.
-      </p>
-      <p>
-        During that time, parents and mentors began planning an independent nonprofit that could
-        support the team and create more STEM opportunities. Our years with Franklin County 4-H had
-        established a foundation of teamwork, service, and community involvement.
-      </p>
-      <p>
-        In {site.founded}, the South Central STEM Collective became its own 501(c)(3). Alongside{" "}
-        {programs.frc.teamName}, we added <FirstMark /> LEGO® League for younger students. Both
-        programs now share our downtown {site.location.locality} workspace.
-      </p>
-    </div>
+    <figure>
+      <div class="grid items-center gap-4 md:grid-cols-[minmax(0,1fr)_2rem_minmax(0,2fr)]">
+        <div class="flex items-center justify-self-center gap-4 md:flex-col md:text-center lg:flex-row lg:text-left">
+          <Image alt="" class="w-24 shrink-0 lg:w-32" loading="lazy" src={biohazardLogo} />
+          <div>
+            <p class="text-h3 font-display font-semibold text-foreground">
+              {programs.frc.teamName}
+            </p>
+            <p class="mt-1 text-copy">Founded in {programs.frc.since}</p>
+          </div>
+        </div>
 
-    <div class="mt-10 flex flex-col-reverse items-start gap-8 md:flex-row md:gap-12">
-      <div class="prose-copy">
-        <h3>South Central STEM Collective</h3>
-        <p>
-          Our mission is to make STEM opportunities accessible to students of all ages and
-          backgrounds.
-        </p>
-        <p>
-          We provide the workspace, tools, insurance, and volunteer oversight that help our teams
-          operate. Youth protection and training are part of that shared support.
-        </p>
+        <div class="justify-self-center rotate-90 md:rotate-0">
+          <SketchArrow class="size-10" direction="right" />
+        </div>
+
+        <div class="pocket p-4 sm:p-5">
+          <div class="flex items-center gap-3">
+            <Image alt="" class="w-12 shrink-0 md:w-14" loading="lazy" src={sc2Logo} />
+            <div>
+              <p class="text-h4 font-semibold text-foreground">{site.name}</p>
+              <p class="mt-1 text-small">Nonprofit formed in {site.founded}</p>
+            </div>
+          </div>
+
+          <ul class="mt-4 grid gap-4 border-t border-border pt-4 sm:grid-cols-2">
+            <li class="flex items-start gap-3">
+              <Image alt="" class="w-8 shrink-0" loading="lazy" src={biohazardLogo} />
+              <div>
+                <p class="font-semibold text-foreground">{programs.frc.teamName}</p>
+                <p class="mt-1 text-small">High-school robotics</p>
+              </div>
+            </li>
+            <li>
+              <p class="font-semibold text-foreground">
+                <FirstMark /> LEGO® League
+              </p>
+              <p class="mt-1 text-small">Teams for younger students</p>
+            </li>
+          </ul>
+        </div>
       </div>
+      <figcaption class="mt-4 measure">
+        {programs.frc.teamName} continues as our high-school team, now alongside <FirstMark /> LEGO®
+        League within the South Central STEM Collective.
+      </figcaption>
+    </figure>
 
-      <Image
-        alt="South Central STEM Collective logo: a light bulb surrounded by a gear."
-        class="w-32 shrink-0 md:w-48"
-        loading="lazy"
-        src={sc2Logo}
-      />
-    </div>
-
-    <div class="prose-copy mt-6">
+    <div class="prose-copy mt-8">
+      <p>
+        When the pandemic interrupted the {SHUTDOWN_YEAR} season, parents and mentors began planning
+        an independent nonprofit to support {programs.frc.teamName} and create more STEM
+        opportunities. Our years with Franklin County 4-H had established a foundation of teamwork,
+        service, and community involvement.
+      </p>
+      <p>
+        In {site.founded}, the South Central STEM Collective became its own 501(c)(3), and{" "}
+        {programs.frc.teamName} returned to regional competition in 2022. We also added{" "}
+        <FirstMark /> LEGO® League for younger students; both programs now share our downtown{" "}
+        {site.location.locality} workspace.
+      </p>
+      <p>
+        Our mission is to make STEM opportunities accessible to students of all ages and
+        backgrounds. We provide the workspace, tools, insurance, and volunteer oversight that keep
+        our teams running, including youth protection and training.
+      </p>
       <p>
         Each team manages its activities, fundraising, and schedule, with students, families, and
         mentors working together. Shared resources give teams space to focus on learning and
@@ -233,9 +252,9 @@ const outreachByYear = outreachYears.map((year) => ({
 
     <div class="prose-copy mt-10">
       <p>
-        {programs.frc.teamName} works with {programs.frc.mentors} professional mentors.{" "}
-        {programs.frc.alumniMentors} of them are alumni who came back to mentor the team that taught
-        them.
+        Of {programs.frc.teamName}&rsquo;s {programs.frc.mentors} professional mentors,{" "}
+        {programs.frc.alumniMentors} are alumni who returned to help students on the team where they
+        started.
       </p>
       <p>
         Every mentor and volunteer follows Pennsylvania and <FirstMark /> youth-protection
@@ -269,12 +288,11 @@ const outreachByYear = outreachYears.map((year) => ({
   <Section atmosphere="bubble" index={5}>
     <Fragment slot="title">Where we&rsquo;re headed</Fragment>
     <Fragment slot="intro">
-      We want to create more ways for students to explore STEM across south-central Pennsylvania.
-      Sponsors and volunteers can help us work toward these goals.
+      With more sponsors and volunteers, we want to expand beyond robotics teams and demonstrations
+      to offer workshops and a permanent makerspace.
     </Fragment>
 
     <div class="prose-copy">
-      <p>Our goals include:</p>
       <ul>
         <li>
           Run hands-on STEM workshops open to any student, once we have the sponsors and volunteers
@@ -290,8 +308,8 @@ const outreachByYear = outreachYears.map((year) => ({
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Be part of what comes next</Fragment>
-      Join a team, share your skills, or support students as they learn. Tell us what interests you,
-      and we&rsquo;ll help you take the next step.
+      Help shape our next season as a student, volunteer, or supporter. Tell us how you&rsquo;d like
+      to take part, and we&rsquo;ll put you in touch with a volunteer.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>

@@ -48,17 +48,17 @@ export const GET: APIRoute = async () => {
       {
         title: programs.fll.name,
         href: programs.fll.href,
-        description: `Ages ${programs.fll.ages}. Build a LEGO robot, investigate a real-world problem, and share your ideas with a small team.`,
+        description: `Students ages ${programs.fll.ages} build LEGO robots and investigate real-world problems in small teams.`,
       },
       {
         title: programs.frc.name,
         href: programs.frc.href,
-        description: `Ages ${programs.frc.ages}. Team ${String(programs.frc.teamNumber)} ${programs.frc.teamName}, competing since ${String(programs.frc.since)}.`,
+        description: `${programs.frc.teamName}, team ${String(programs.frc.teamNumber)}, welcomes students ages ${programs.frc.ages} to build full-size competition robots. The team has competed since ${String(programs.frc.since)}.`,
       },
       {
         title: "Season history",
         href: nav.robots.href,
-        description: `Every Biohazard season since ${String(programs.frc.since)}: the game, the events, the robot where there was one, and the awards.`,
+        description: `Competition results and awards for every Biohazard season since ${String(programs.frc.since)}, with robot photos and design details where available.`,
       },
     ]),
     section("Get involved", [
@@ -92,7 +92,7 @@ export const GET: APIRoute = async () => {
         title: nav.donate.label,
         href: nav.donate.href,
         description:
-          "Support students with tools, workspace, and opportunities to compete. Ways to give and our equipment wishlist.",
+          "Ways to support our teams, from financial gifts to workshop equipment, with a wishlist of current needs.",
       },
       {
         title: nav.sponsors.label,

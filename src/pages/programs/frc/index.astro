@@ -72,7 +72,7 @@ const season = [
   {
     when: "Kickoff · January",
     title: "The game is revealed",
-    body: "We watch the reveal together, read the rules, and explore ideas for a robot that can play the game. Students practice planning, asking questions, and deciding which challenges to tackle.",
+    body: "We watch the reveal together and read the rules to decide which challenges our robot will tackle. Students compare ideas and plan a design before building begins.",
   },
   {
     when: "Build season · January to March",
@@ -82,12 +82,12 @@ const season = [
   {
     when: "Competition · Spring",
     title: "Take the robot to the field",
-    body: "We compete alongside other teams in alliances, combining our robots' strengths to play the game. Students scout matches, plan strategy, and repair the robot between rounds, learning to work together under pressure.",
+    body: "We join other teams in alliances, combining our robots' strengths to play the game. Between rounds, students scout matches, plan strategy, and repair the robot to prepare for the next match.",
   },
   {
     when: "Off-season",
     title: "Keep learning together",
-    body: "We welcome new members, practice skills, and test ideas for the next season. Robot demonstrations and off-season competitions give students more opportunities to share their work and learn from other teams.",
+    body: "New members join us to practice skills and test ideas for the next season. We also take the robot to demonstrations and off-season competitions, where students share their work and meet other teams.",
   },
 ];
 
@@ -149,24 +149,23 @@ const roles = [
       Design, build, and <span class="highlight-swipe">compete</span>
     </Fragment>
     Join {programs.frc.teamName}, our <FirstMark /> Robotics Competition team for high-school
-    students ages {programs.frc.ages}. Work alongside teammates and experienced mentors to build a
-    new robot each season. Explore engineering, programming, strategy, and creative roles - no
-    robotics experience needed.
+    students ages {programs.frc.ages}. You&rsquo;ll work alongside teammates and experienced mentors
+    to build a new robot each season, with roles in engineering, programming, strategy, and media.
+    Beginners are welcome, and you can try different roles as you learn.
     <Button href={nav.cta.href} size="lg" slot="actions">
       {nav.cta.label}
     </Button>
   </Hero>
 
   <Section atmosphere="bubble" index={1}>
-    <Fragment slot="title">One game, one robot, one season</Fragment>
+    <Fragment slot="title">From the game reveal to competition</Fragment>
     <Fragment slot="intro">
-      Every January, <FirstMark /> reveals a new game to teams around the world at the same moment.
-      We turn that challenge into a robot, testing and improving our ideas before competitions begin
-      in spring. Each stage gives students opportunities to learn, contribute, and take
-      responsibility for the team&rsquo;s work.
+      Every January, <FirstMark /> reveals a new game to teams around the world. We spend the next
+      few months designing, building, and testing a robot to play it before regional competitions
+      begin in spring.
     </Fragment>
 
-    <ol class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+    <ol class="grid gap-x-12 gap-y-10 md:grid-cols-2">
       {season.map((step) => (
         <li class="border-t-2 border-primary pt-5">
           <p class="spec-label text-primary-bright">{step.when}</p>
@@ -180,9 +179,8 @@ const roles = [
   <Section atmosphere="band">
     <Fragment slot="title">Find your role on the team</Fragment>
     <Fragment slot="intro">
-      Engineering, strategy, fundraising, and creative work all contribute to a season. You can
-      explore different roles with help from mentors and teammates as you discover what interests
-      you.
+      A season brings together robot design, match strategy, fundraising, and media. You can try
+      different roles with help from mentors and teammates.
     </Fragment>
 
     <ul class="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -233,9 +231,9 @@ const roles = [
       </dl>
     </Card>
     <p class="mt-6 measure">
-      Plan on at least one meeting a week. Attending additional sessions gives you more time to
-      practice and contribute. Tell us about your schedule, and we can discuss how participation
-      fits around school and other activities. Students are welcome from {site.location.county}
+      Plan on at least one meeting a week, with additional sessions available for more practice and
+      work on the robot. Tell us about your schedule so we can discuss how the team fits around
+      school and other activities. Students are welcome from {site.location.county}
       and beyond.
     </p>
 
@@ -245,7 +243,7 @@ const roles = [
   </Section>
 
   <Section atmosphere="bubble" index={3}>
-    <Fragment slot="title">On the field</Fragment>
+    <Fragment slot="title">Competitions and awards</Fragment>
     <Fragment slot="intro">{programs.frc.competitions}</Fragment>
 
     <h3 class="text-h4">
@@ -277,11 +275,11 @@ const roles = [
   </Section>
 
   <Section atmosphere="bubble" index={4}>
-    <Fragment slot="title">Learn alongside experienced mentors</Fragment>
+    <Fragment slot="title">Our mentors</Fragment>
     <Fragment slot="intro">
-      STEM professionals and other volunteers share their skills and help students work through
-      challenges. Some of our mentors began as students on this team and returned to help the next
-      generation learn.
+      STEM professionals and other volunteers help students work through design decisions, learn to
+      use tools, and troubleshoot the robot. Among them are former Biohazard students who returned
+      to mentor the team.
     </Fragment>
 
     <StatBand stats={mentorStats} />
@@ -309,9 +307,8 @@ const roles = [
   <Section atmosphere="ruler">
     <CtaBanner>
       <Fragment slot="title">Find your place on the team</Fragment>
-      Tell us what interests you. A volunteer will answer your questions and discuss a visit so you
-      can meet the team and see what we do. You don&rsquo;t need to choose a role before getting in
-      touch.
+      Tell us what interests you, and a volunteer will help arrange a visit so you can meet the team
+      and see what we do. You can ask questions and try things before choosing a role.
       <Button href={nav.cta.href} size="lg" slot="actions">
         {nav.cta.label}
       </Button>
