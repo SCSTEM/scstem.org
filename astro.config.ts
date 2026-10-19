@@ -1,5 +1,6 @@
 import type { AstroIntegration } from "astro";
 
+import { satteri } from "@astrojs/markdown-satteri";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
@@ -7,6 +8,7 @@ import { appendFileSync, existsSync, readFileSync, writeFileSync } from "node:fs
 
 // The config is loaded through jiti, so this module must import nothing from `astro:*`.
 import { site } from "./src/data/site";
+import { proseMarkdown } from "./src/lib/markdown";
 
 const outDir = "./dist";
 
@@ -110,6 +112,7 @@ export default defineConfig({
     },
   },
   integrations: [sitemap({ filter: isIndexable }), redirectStubs(), bandsNeverTouch()],
+  markdown: { processor: satteri({ hastPlugins: [proseMarkdown] }) },
   outDir,
   output: "static",
   site: site.url,

@@ -143,6 +143,23 @@ const fllTeamPhotos = defineCollection({
   schema: teamPhotoSchema,
 });
 
+/** Declaration order is the order of the wiki index. */
+export const WIKI_SECTIONS = ["Workspace", "Software", "Donations"] as const;
+
+/** An article's body starts at `h2`: the page supplies the `h1` from `title`. */
+const wiki = defineCollection({
+  loader: glob({ base: "src/content/wiki", pattern: "**/*.md" }),
+  schema: z.strictObject({
+    title: z.string(),
+    description: z.string(),
+    section: z.enum(WIKI_SECTIONS),
+    updated: z.date(),
+    revision: z.string(),
+    /** A PDF shown inline below the body, with a download button that always shows. */
+    document: z.url().optional(),
+  }),
+});
+
 /**
  * Collection names avoid slashes: Astro writes each editor JSON schema to
  * `.astro/collections/<name>.schema.json` without creating directories, so a name like
@@ -157,4 +174,5 @@ export const collections = {
   fllTeamPhotos,
   alumni,
   outreach,
+  wiki,
 };

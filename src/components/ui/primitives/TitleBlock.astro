@@ -9,20 +9,33 @@ interface Field {
   href?: string;
 }
 
+/**
+ * `strip` runs the fields in a row from `md` and stacks them below; `stack` is always boxed one
+ * over another; `rail` is a strip at every width that becomes the stack from `lg`, for a sheet's
+ * side rail.
+ */
 interface Props {
   fields: readonly Field[];
-  orientation?: "strip" | "stack";
+  orientation?: "strip" | "stack" | "rail";
   class?: string;
 }
 
 const { fields, orientation = "strip", class: className } = Astro.props;
+
+const layouts = {
+  strip: "md:auto-cols-fr md:grid-flow-col md:grid-cols-none md:divide-x md:divide-y-0",
+  stack: undefined,
+  rail: cn(
+    "auto-cols-auto grid-flow-col grid-cols-none divide-x divide-y-0",
+    "lg:grid-flow-row lg:grid-cols-1 lg:divide-x-0 lg:divide-y",
+  ),
+};
 ---
 
 <dl
   class={cn(
     "grid grid-cols-1 divide-y divide-border border border-border",
-    orientation === "strip" &&
-      "md:auto-cols-fr md:grid-flow-col md:grid-cols-none md:divide-x md:divide-y-0",
+    layouts[orientation],
     className,
   )}
 >

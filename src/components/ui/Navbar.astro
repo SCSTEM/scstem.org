@@ -6,15 +6,24 @@ import Icon from "@/components/ui/primitives/Icon.astro";
 import Lockup from "@/components/ui/primitives/Lockup.astro";
 import ProgramName from "@/components/ui/ProgramName.astro";
 import { programPhotos } from "@/data/programPhotos";
-import { nav, type NavLink, type ProgramTheme, programs, site } from "@/data/site";
+import {
+  nav,
+  type NavItem,
+  type NavLink,
+  type NavMenu,
+  type ProgramTheme,
+  programs,
+  site,
+} from "@/data/site";
 import { cn } from "@/lib/cn";
 import { servedPath } from "@/lib/links";
 import { breakpoint } from "@/lib/tokens";
 
 /**
  * The Programs entry is a real link with a disclosure in addition, so touch and no-JS both get a
- * destination. The panel is a native `popover`, which supplies Esc, light-dismiss and top-layer
- * placement without script (WCAG 1.4.13 needs the dismissal); script adds only mouse hover intent.
+ * destination; More has no page of its own, so its label is the trigger. Each panel is a native
+ * `popover`, which supplies Esc, light-dismiss and top-layer placement without script (WCAG
+ * 1.4.13 needs the dismissal); script adds only mouse hover intent.
  */
 interface Props {
   class?: string;
@@ -34,11 +43,19 @@ const onSurface =
   (link: { readonly surfaces: readonly string[] }): boolean =>
     link.surfaces.includes(surface);
 
-const headerLinks: readonly NavLink[] = nav.primary.filter(onSurface("header"));
-const sheetLinks: readonly NavLink[] = nav.primary.filter(onSurface("sheet"));
-const sheetCtas = nav.primary.filter(onSurface("sheet-cta"));
+const isLink = (item: NavItem): item is NavLink => "href" in item;
 
-const panelId = (link: NavLink): string => `${link.label.toLowerCase()}-panel`;
+const primary: readonly NavItem[] = nav.primary;
+const headerItems = primary.filter(onSurface("header"));
+const sheetLinks = primary.filter(isLink).filter(onSurface("sheet"));
+const sheetCtas = primary.filter(isLink).filter(onSurface("sheet-cta"));
+
+const panelId = (item: NavItem): string => `${item.label.toLowerCase()}-panel`;
+
+/** A popover sits in the top layer, so each panel names the item it hangs from. */
+const anchorName = (item: NavItem): string => `--nav-${item.label.toLowerCase()}`;
+
+const inPanel = (menu: NavMenu): boolean => menu.panel.links.some((entry) => inSection(entry.href));
 
 /**
  * CSS backgrounds, not `<img>`s: browsers still fetch a lazy `<img>` inside a closed popover, but
@@ -59,8 +76,8 @@ const panelPhoto = async (key: ProgramTheme): Promise<string> => {
 };
 const panelPhotos = new Map(
   await Promise.all(
-    headerLinks
-      .flatMap((link) => link.panel?.programs ?? [])
+    headerItems
+      .flatMap((item) => item.panel?.programs ?? [])
       .map(async (key) => [key, await panelPhoto(key)] as const),
   ),
 );
@@ -79,6 +96,15 @@ const navItem = cn(
 
 /** Drops the underline that belongs to links in copy. */
 const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
+
+/** A panel's plain links stay typographic: no fill or box, so none reads as a control. */
+const panelLink = cn(
+  chromeLink,
+  "inline-flex h-11 items-center gap-2 px-3 text-small font-medium",
+  "hover:text-primary-bright aria-[current]:text-primary-bright",
+);
+
+const panelSurface = "m-0 rounded-lg border border-border bg-card p-2 shadow-plate";
 ---
 
 <header
@@ -103,33 +129,77 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
 
     <div class="ml-auto hidden h-full items-center md:flex" data-sheet-inert>
       <ul class="flex h-full items-center">
-        {headerLinks.map((link) =>
-          link.panel ? (
-            <li class="flex h-full items-center" data-nav-anchor>
-              <a
-                aria-current={inSection(link.href) ? "page" : undefined}
-                class={cn(navItem, "pr-0 lg:pr-0 after:right-0 lg:after:right-0")}
-                href={link.href}
+        {headerItems.map((item) =>
+          !isLink(item) ? (
+            <li
+              class="flex h-full items-center"
+              data-nav-anchor
+              style={`anchor-name: ${anchorName(item)}`}
+            >
+              <button
+                aria-current={inPanel(item) ? "true" : undefined}
+                class={cn(navItem, "gap-1.5 pr-2 lg:pr-3 after:right-2 lg:after:right-3")}
+                data-nav-trigger
+                popovertarget={panelId(item)}
+                type="button"
               >
-                {link.label}
+                {item.label}
+                <Icon class="text-body" name="chevron--down" size={16} />
+              </button>
+              <div
+                class={cn(panelSurface, "min-w-48")}
+                data-nav-panel
+                id={panelId(item)}
+                popover
+                style={`position-anchor: ${anchorName(item)}`}
+              >
+                <ul class="flex flex-col">
+                  {item.panel.links.map((entry) => (
+                    <li>
+                      <a
+                        aria-current={inSection(entry.href) ? "page" : undefined}
+                        class={cn(panelLink, "flex")}
+                        href={entry.href}
+                      >
+                        <Icon class="text-muted" name={entry.icon} size={16} />
+                        {entry.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ) : item.panel ? (
+            <li
+              class="flex h-full items-center"
+              data-nav-anchor
+              style={`anchor-name: ${anchorName(item)}`}
+            >
+              <a
+                aria-current={inSection(item.href) ? "page" : undefined}
+                class={cn(navItem, "pr-0 lg:pr-0 after:right-0 lg:after:right-0")}
+                href={item.href}
+              >
+                {item.label}
               </a>
               <button
-                aria-label={`Show ${link.label.toLowerCase()}`}
+                aria-label={`Show ${item.label.toLowerCase()}`}
                 class="-mr-2 flex size-11 items-center rounded-md pl-2 text-body hover:text-foreground lg:-mr-1"
                 data-nav-trigger
-                popovertarget={panelId(link)}
+                popovertarget={panelId(item)}
                 type="button"
               >
                 <Icon name="chevron--down" size={16} />
               </button>
               <div
-                class="m-0 w-lg rounded-lg border border-border bg-card p-2 shadow-plate"
+                class={cn(panelSurface, "w-lg")}
                 data-nav-panel
-                id={panelId(link)}
+                id={panelId(item)}
                 popover
+                style={`position-anchor: ${anchorName(item)}`}
               >
                 <ul class="grid grid-cols-2 gap-2">
-                  {link.panel.programs.map((key) => (
+                  {item.panel.programs?.map((key) => (
                     <li data-accent={programs[key].accent}>
                       <a
                         aria-current={inSection(programs[key].href) ? "page" : undefined}
@@ -162,28 +232,17 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
                   ))}
                 </ul>
                 <div class="mt-2 flex items-center border-t border-border pt-2">
-                  {link.panel.links.map((entry) => (
+                  {item.panel.links.map((entry) => (
                     <a
                       aria-current={current === entry.href ? "page" : undefined}
-                      class={cn(
-                        chromeLink,
-                        "inline-flex h-11 items-center gap-2 rounded-sm px-3 text-small font-medium",
-                        "hover:bg-card-hover aria-[current]:text-primary-bright",
-                      )}
+                      class={panelLink}
                       href={entry.href}
                     >
                       <Icon class="text-muted" name={entry.icon} size={16} />
                       {entry.label}
                     </a>
                   ))}
-                  <a
-                    class={cn(
-                      chromeLink,
-                      "group ml-auto inline-flex h-11 items-center gap-2 rounded-sm px-3",
-                      "text-small font-medium hover:bg-card-hover",
-                    )}
-                    href={link.href}
-                  >
+                  <a class={cn(panelLink, "group ml-auto")} href={item.href}>
                     All programs
                     <Icon
                       class="text-primary-bright transition-transform duration-(--sc2-duration-micro) motion-safe:group-hover:translate-x-0.5"
@@ -197,11 +256,11 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
           ) : (
             <li class="h-full">
               <a
-                aria-current={inSection(link.href) ? "page" : undefined}
+                aria-current={inSection(item.href) ? "page" : undefined}
                 class={navItem}
-                href={link.href}
+                href={item.href}
               >
-                {link.label}
+                {item.label}
               </a>
             </li>
           ),
@@ -256,7 +315,7 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
           </a>
           {link.panel && (
             <ul class="mb-4 ml-1 flex flex-col border-l border-border">
-              {link.panel.programs.map((key) => (
+              {link.panel.programs?.map((key) => (
                 <li data-accent={programs[key].accent}>
                   <a
                     aria-current={inSection(programs[key].href) ? "page" : undefined}
@@ -326,18 +385,13 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
 
   /*
    * A popover renders in the top layer, where offsets resolve against the viewport rather than the
-   * header, so it is anchored to its nav item. The script places it where anchor positioning is
-   * unsupported.
+   * header, so each panel is anchored to its nav item (named inline, one name per item). The
+   * script places it where anchor positioning is unsupported.
    */
-  [data-nav-anchor] {
-    anchor-name: --nav-panel;
-  }
-
   [data-nav-panel] {
     position: fixed;
     inset: auto;
     margin-top: 0.5rem;
-    position-anchor: --nav-panel;
     position-area: bottom;
     position-try-fallbacks:
       bottom span-left,
@@ -411,12 +465,16 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
 </style>
 
 <script>
-  const anchor = document.querySelector("[data-nav-anchor]");
-  const panel = document.querySelector("[data-nav-panel]");
-  const trigger = document.querySelector("[data-nav-trigger]");
+  const OPEN_DELAY = 80;
+  const CLOSE_DELAY = 200;
+  const anchorsSupported = CSS.supports("anchor-name", "--nav");
 
-  if (anchor instanceof HTMLElement && panel instanceof HTMLElement) {
-    if (!CSS.supports("anchor-name", "--nav-panel")) {
+  for (const anchor of document.querySelectorAll("[data-nav-anchor]")) {
+    const panel = anchor.querySelector("[data-nav-panel]");
+    const trigger = anchor.querySelector("[data-nav-trigger]");
+    if (!(anchor instanceof HTMLElement && panel instanceof HTMLElement)) continue;
+
+    if (!anchorsSupported) {
       panel.addEventListener("toggle", (event) => {
         if (event instanceof ToggleEvent && event.newState === "open") {
           const { bottom, left, width } = anchor.getBoundingClientRect();
@@ -437,8 +495,6 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
      * a moment, so crossing the gap between them does not shut it. A panel opened by click or
      * keyboard stays until dismissed.
      */
-    const OPEN_DELAY = 80;
-    const CLOSE_DELAY = 200;
     let timer: number | undefined;
     let openedByHover = false;
 
@@ -470,7 +526,7 @@ const chromeLink = "bg-none pb-0 text-foreground hover:text-foreground";
       if (event instanceof ToggleEvent && event.newState === "closed") openedByHover = false;
     });
 
-    /** A click on the chevron of a hover-opened panel pins it open rather than closing it. */
+    /** A click on the trigger of a hover-opened panel pins it open rather than closing it. */
     trigger?.addEventListener("click", (event) => {
       if (openedByHover) {
         event.preventDefault();

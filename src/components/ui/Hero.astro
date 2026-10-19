@@ -4,7 +4,8 @@ import { cn } from "@/lib/cn";
 /**
  * Below `md` the copy sits on solid ground under the photo, which fades into the page; from `md`
  * up the photo fills the hero and the copy sits on a scrim. Without `media` it is a compact
- * header: `h1` rather than `display` size, and no accent rule.
+ * header: `h1` rather than `display` size, no accent rule, and the section after it shares its
+ * bottom padding as the boundary.
  */
 interface Props {
   class?: string;
@@ -34,7 +35,7 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
   <div
     class={cn(
       "relative container-page",
-      hasMedia ? "section-y md:flex md:min-h-120 md:items-center" : "pt-12 md:pt-16",
+      hasMedia ? "section-y md:flex md:min-h-120 md:items-center" : "pt-12 pb-12 md:pt-16",
     )}
   >
     <div class={hasMedia ? "max-w-2xl" : undefined}>
@@ -46,9 +47,11 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
       <h1 class={cn("mt-3", hasMedia && "text-display")}>
         <slot name="title" />
       </h1>
-      <div class={cn("measure text-lead", hasMedia ? "mt-5 text-foreground" : "mt-4")}>
-        <slot />
-      </div>
+      {Astro.slots.has("default") && (
+        <div class={cn("measure text-lead", hasMedia ? "mt-5 text-foreground" : "mt-4")}>
+          <slot />
+        </div>
+      )}
       {Astro.slots.has("actions") && (
         <div class="mt-8 grid gap-3 sm:flex sm:flex-wrap">
           <slot name="actions" />
@@ -67,10 +70,6 @@ const eyebrow = Astro.slots.has("eyebrow") ? await Astro.slots.render("eyebrow")
     height: 100%;
     width: 100%;
     object-fit: cover;
-  }
-
-  :global([data-register="blueprint"]) .hero-media :global(:is(img, video)) {
-    filter: grayscale(1) contrast(1.05);
   }
 
   /* Global as a whole because Astro does not unwrap `:global()` nested inside `:not()`;

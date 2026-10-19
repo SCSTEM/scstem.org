@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+
+import Hero from "@/components/ui/Hero.astro";
+import Section from "@/components/ui/Section.astro";
+import { WIKI_SECTIONS } from "@/content.config";
+import { site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { cn } from "@/lib/cn";
+import { wikiPath, wikiSectionId } from "@/lib/wiki";
+
+/**
+ * A drawing set's sheet index: one bordered schedule of every page, grouped by section, with its
+ * revision and date in the data voice. Below `md` each row stacks and its columns carry their own
+ * labels; the header row is a visual duplicate of those labels, so it is hidden from assistive
+ * tech.
+ */
+const articles = (await getCollection("wiki")).toSorted((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+
+const groups = WIKI_SECTIONS.map((section) => ({
+  section,
+  articles: articles.filter((article) => article.data.section === section),
+})).filter((group) => group.articles.length > 0);
+
+const columns = "md:grid-cols-[minmax(0,1fr)_5rem_9rem]";
+const meta = "md:border-l md:border-border md:px-4 md:py-4";
+const metaLabel = "mr-2 spec-label text-muted md:sr-only";
+---
+
+<BaseLayout
+  description="Directions to our Chambersburg workspace, Onshape CAD setup for students, our donation wishlist, and the sponsor packet."
+  register="blueprint"
+  title="Wiki"
+  trail={[{ name: "Wiki", path: site.urls.wiki }]}
+>
+  <Hero>
+    <Fragment slot="eyebrow">Reference</Fragment>
+    <Fragment slot="title">Wiki</Fragment>
+
+    <p>
+      Practical details for students, families, and supporters: how to find us, how to set up your
+      tools, and what our teams need.
+    </p>
+  </Hero>
+
+  <Section>
+    <div class="border border-border">
+      <div aria-hidden="true" class={cn("hidden md:grid", columns)}>
+        <p class="px-4 py-3 spec-label text-muted">Page</p>
+        <p class="border-l border-border px-4 py-3 spec-label text-muted">Rev</p>
+        <p class="border-l border-border px-4 py-3 spec-label text-muted">Updated</p>
+      </div>
+
+      {groups.map(({ section, articles: entries }) => (
+        <section class="border-t border-border first:border-t-0" id={wikiSectionId(section)}>
+          <h2 class="px-4 py-3 spec-label text-primary-bright">{section}</h2>
+          <ol>
+            {entries.map((article) => (
+              <li class={cn("grid border-t border-border", columns)}>
+                <div class="px-4 pt-4 pb-3 md:py-4">
+                  <a class="ui-link font-medium" href={wikiPath(article.id)}>
+                    {article.data.title}
+                  </a>
+                  <p class="mt-1 measure text-small text-body">{article.data.description}</p>
+                </div>
+                <div class="flex gap-6 px-4 pb-4 md:contents">
+                  <p class={cn("font-mono text-small text-body", meta)}>
+                    <span class={metaLabel}>Rev</span>
+                    {article.data.revision}
+                  </p>
+                  <p class={cn("font-mono text-small text-body", meta)}>
+                    <span class={metaLabel}>Updated</span>
+                    {article.data.updated.toISOString().slice(0, 10)}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+    </div>
+  </Section>
+</BaseLayout>

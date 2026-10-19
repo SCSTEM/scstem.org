@@ -1,0 +1,19 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+
+import { getCollection } from "astro:content";
+
+import WikiLayout from "@/layouts/WikiLayout.astro";
+
+export const getStaticPaths = (async () =>
+  (await getCollection("wiki")).map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }))) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry } = Astro.props;
+---
+
+<WikiLayout {entry} />

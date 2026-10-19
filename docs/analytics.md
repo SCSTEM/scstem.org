@@ -38,8 +38,8 @@ unset. Adding a banner later means changing these four values and calling `gtag(
 | ------------------------- | ----------------------------------------------------------- |
 | `get_involved_click`      | a link to `/get-involved` is clicked, anywhere on the site  |
 | `donate_click`            | a link to `/donate` or to the PayPal fundraiser is clicked  |
-| `wishlist_click`          | a link to the wiki wishlist is clicked                      |
-| `sponsor_packet_download` | a link to the sponsorship packet is clicked                 |
+| `wishlist_click`          | a link to the wishlist (`/wiki/wishlist`) is clicked        |
+| `sponsor_packet_download` | a link to the sponsorship packet PDF is clicked             |
 | `outbound_sponsor_click`  | a sponsor's own site is opened from a card or the strip     |
 | `contact_submit`          | the contact form gets a successful response - not on submit |
 

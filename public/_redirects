@@ -9,6 +9,3 @@
 
 /calendar /calendar/sc2 301
 /calendar/ /calendar/sc2 301
-
-/wiki https://wiki.scstem.org 301
-/wiki/* https://wiki.scstem.org/:splat 301

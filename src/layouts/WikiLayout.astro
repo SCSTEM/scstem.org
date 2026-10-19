@@ -1,0 +1,113 @@
+---
+import { type CollectionEntry, render } from "astro:content";
+
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Link from "@/components/ui/primitives/Link.astro";
+import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import Section from "@/components/ui/Section.astro";
+import WikiOutline from "@/components/ui/WikiOutline.astro";
+import { site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { wikiPath, wikiSectionPath } from "@/lib/wiki";
+
+/**
+ * The article is a drawing sheet: prose at measure in the main column, and a rail on the right
+ * carrying the title block and the sheet's own outline, the way a drawing keeps its metadata in
+ * the right-hand column. Below `lg` the rail becomes a compact head above the prose: the title
+ * block as one strip and the outline folded into a disclosure, so the article starts within the
+ * first screen on a phone.
+ */
+interface Props {
+  entry: CollectionEntry<"wiki">;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content, headings } = await render(entry);
+
+const outline = headings.filter((heading) => heading.depth === 2);
+
+const titleBlock = [
+  { label: "Section", value: data.section, href: wikiSectionPath(data.section) },
+  { label: "Updated", value: data.updated.toISOString().slice(0, 10), mono: true },
+  { label: "Rev", value: data.revision, mono: true },
+] as const;
+---
+
+<BaseLayout
+  description={data.description}
+  register="blueprint"
+  title={data.title}
+  trail={[
+    { name: "Wiki", path: site.urls.wiki },
+    { name: data.title, path: wikiPath(entry.id) },
+  ]}
+>
+  <Hero>
+    <Fragment slot="eyebrow">Wiki</Fragment>
+    <Fragment slot="title">{data.title}</Fragment>
+  </Hero>
+
+  <Section>
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-16">
+      <aside class="flex flex-col gap-6 lg:sticky lg:top-24 lg:order-2 lg:gap-8 lg:self-start">
+        <TitleBlock class="lg:order-2" fields={titleBlock} orientation="rail" />
+
+        {outline.length > 1 && (
+          <nav aria-labelledby="sheet-outline" class="lg:order-1">
+            <details class="group lg:hidden">
+              <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 py-2 spec-label text-muted hover:text-foreground">
+                <span id="sheet-outline">On this page</span>
+                <Icon
+                  class="transition-transform duration-(--sc2-duration-ui) group-open:rotate-180"
+                  name="chevron--down"
+                  size={16}
+                />
+              </summary>
+              <WikiOutline class="mt-2 mb-2" headings={outline} />
+            </details>
+            <div class="hidden lg:block">
+              <p aria-hidden="true" class="spec-label text-muted">
+                On this page
+              </p>
+              <WikiOutline class="mt-3" headings={outline} />
+            </div>
+          </nav>
+        )}
+      </aside>
+
+      <div class="lg:order-1">
+        <div class="prose-copy">
+          <Content />
+        </div>
+
+        {data.document !== undefined && (
+          <>
+            <Button class="mt-8" href={data.document} size="lg">
+              Download the PDF
+            </Button>
+            <object
+              aria-label={`${data.title} (PDF)`}
+              class="mt-8 hidden h-[80svh] w-full rounded-lg border border-border bg-card md:block"
+              data={data.document}
+              type="application/pdf"
+            >
+              <p class="p-6">
+                Your browser cannot show the PDF here. <Link href={data.document}>Download it</Link>{" "}
+                instead.
+              </p>
+            </object>
+          </>
+        )}
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

@@ -64,12 +64,12 @@ export const site = {
 
   urls: {
     donate: "https://www.paypal.com/US/fundraiser/charity/4486755",
-    wishlist: "https://wiki.scstem.org/donations/wishlist",
-    sponsorPacket: "https://wiki.scstem.org/donations/packet",
+    wishlist: "/wiki/wishlist",
+    sponsorPacket: "https://assets.scstem.org/documents/Sponsor-Packet-v1.pdf",
     getInvolvedForm:
       "https://docs.google.com/forms/d/e/1FAIpQLScTjT3LHFAq1mOfKFztgMOpUT8hFWz81dYlaaDa4B8lG6yr2Q/viewform",
-    wiki: "https://wiki.scstem.org",
-    directions: "https://wiki.scstem.org/workspace/#directions",
+    wiki: "/wiki",
+    directions: "/wiki/directions",
     firstInspires: "https://www.firstinspires.org/",
     moreThanRobots: "https://info.firstinspires.org/morethanrobots",
     teamVideo: "https://youtu.be/147CgudTur8",
@@ -161,14 +161,25 @@ interface PanelLink extends Route {
 }
 
 interface Panel {
-  readonly programs: readonly ProgramTheme[];
+  readonly programs?: readonly ProgramTheme[];
   readonly links: readonly PanelLink[];
 }
 
+type NavSurface = "header" | "sheet" | "sheet-cta";
+
 export interface NavLink extends Route {
   readonly panel?: Panel;
-  readonly surfaces: readonly ("header" | "sheet" | "sheet-cta")[];
+  readonly surfaces: readonly NavSurface[];
 }
+
+/** A header item with a panel and no destination of its own. */
+export interface NavMenu {
+  readonly label: string;
+  readonly panel: Panel;
+  readonly surfaces: readonly "header"[];
+}
+
+export type NavItem = NavLink | NavMenu;
 
 const calendar = { label: "Calendar", href: "/calendar/sc2" } as const;
 const frcCalendar = { label: "Biohazard calendar", href: "/calendar/frc" } as const;
@@ -178,6 +189,7 @@ const about = { label: "About", href: "/about" } as const;
 const programsHub = { label: "Programs", href: programs.sc2.href } as const;
 const robots = { label: "Season history", href: `${programs.frc.href}/robots` } as const;
 const contact = { label: "Contact", href: "/contact" } as const;
+const wiki = { label: "Wiki", href: site.urls.wiki } as const;
 
 const programsPanel = {
   programs: ["fll", "frc"],
@@ -187,13 +199,23 @@ const programsPanel = {
   ],
 } as const;
 
+const morePanel = {
+  links: [
+    { ...wiki, icon: "notebook" },
+    { ...contact, icon: "email" },
+  ],
+} as const;
+
 export const nav = {
   primary: [
     { ...about, surfaces: ["header", "sheet"] },
     { ...programsHub, surfaces: ["header", "sheet"], panel: programsPanel },
     { ...sponsors, surfaces: ["header", "sheet"] },
     { ...calendar, surfaces: ["sheet"] },
+    { ...wiki, surfaces: ["sheet"] },
+    { ...contact, surfaces: ["sheet"] },
     { ...donate, surfaces: ["header", "sheet-cta"] },
+    { label: "More", surfaces: ["header"], panel: morePanel },
   ],
 
   about,
@@ -204,6 +226,7 @@ export const nav = {
   programs: programsHub,
   robots,
   sponsors,
+  wiki,
 
   cta: { label: "Get involved", href: "/get-involved" },
 } as const satisfies {
@@ -213,10 +236,11 @@ export const nav = {
   contact: Route;
   cta: Route;
   donate: Route;
-  primary: readonly NavLink[];
+  primary: readonly NavItem[];
   programs: Route;
   robots: Route;
   sponsors: Route;
+  wiki: Route;
 };
 
 export const socials = [

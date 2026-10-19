@@ -257,6 +257,35 @@ pnpm dlx sharp-cli@6.0.0 -i camera.jpg -o src/assets/<domain>/<name>.webp \
 Nothing enforces this; an unconverted master shows up as a slow build and a large diff.
 Logos stay SVG or PNG (see "Add a sponsor").
 
+## Add a wiki page
+
+`src/content/wiki/<slug>.md` becomes `/wiki/<slug>`, listed on `/wiki` under its section:
+
+```md
+---
+title: Directions to the workspace
+description: Shown in search results and on the wiki index. 50-160 characters.
+section: Workspace
+updated: 2026-10-19
+revision: A
+---
+
+The article, in markdown. Start headings at `##`: the page supplies the title.
+
+![What the photo shows](../../assets/wiki/main-entrance.webp "Main entrance")
+```
+
+`section` is `Workspace`, `Software`, or `Donations`. Bump `updated` and the `revision` letter
+when the substance changes.
+
+An image alone in its paragraph, with a title in quotes, becomes a numbered figure captioned
+with that title; an image without a title stays a plain inline image. Indent an image under a
+list item to keep it inside that step. Images follow "Add a photograph".
+
+`document` takes the URL of a PDF to show below the article, with a download button. The
+sponsor packet's URL also lives in `src/data/site.ts`, where analytics counts its downloads;
+change both together.
+
 ## Calendar events
 
 `/calendar/sc2` combines the SC2 and Biohazard public Google Calendar feeds through the Pages
@@ -280,6 +309,7 @@ updating one does not update the other.
 | What                                                          | Where                           |
 | ------------------------------------------------------------- | ------------------------------- |
 | Sponsors, events, FAQ, seasons, alumni, outreach, team photos | `src/content/`                  |
+| Wiki articles                                                 | `src/content/wiki/`             |
 | Images those files point at                                   | `src/assets/`                   |
 | Org facts, external URLs, calendar and analytics IDs          | `src/data/site.ts`              |
 | Page structure and copy that is not content                   | `src/pages/`, `src/components/` |

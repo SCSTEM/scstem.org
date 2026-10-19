@@ -346,11 +346,17 @@
   }
 }
 
+/* With the frame drawn, the content column steps in from its edge so copy never sits against the
+   zone letters. */
 @utility drawing-sheet {
   position: relative;
   isolation: isolate;
 
   @media (width >= theme(--breakpoint-xl)) {
+    & .container-page {
+      padding-inline: 4rem;
+    }
+
     &::before {
       @apply drafting-grid;
 
@@ -656,8 +662,8 @@
   --pool-tint: color-mix(in srgb, var(--sc2-foreground) 5%, transparent);
 }
 
-/* Two sections on the same ground share one padding at their boundary: the second drops its top.
-   A band is a surface of its own, so it keeps both. */
+/* Two sheet surfaces share one padding at their boundary: the second drops its top. A band is a
+   surface of its own, so it keeps both. */
 @utility section-y {
   padding-block: 4rem;
 
@@ -665,7 +671,7 @@
     padding-block: 6rem;
   }
 
-  &:not(.band):is(.section-y:not(.band) + *) {
+  &:not(.band):is([data-surface="sheet"] + *) {
     padding-top: 0;
   }
 }
@@ -710,9 +716,10 @@
     margin-block-start: 2rem;
   }
 
+  /* Markers are linework, not accent: a drafted dash, and numerals in the data voice. */
   & ul {
     padding-inline-start: 1.25rem;
-    list-style-type: disc;
+    list-style-type: "\2013\a0\a0";
   }
 
   & ol {
@@ -725,7 +732,9 @@
   }
 
   & li::marker {
-    color: var(--sc2-primary);
+    color: var(--sc2-muted);
+    font-family: var(--sc2-font-mono);
+    font-weight: 600;
   }
 
   & :is(ul, ol) :is(ul, ol) {
@@ -738,6 +747,14 @@
     color: var(--sc2-foreground);
     font-size: var(--sc2-text-lead);
     line-height: var(--sc2-leading-relaxed);
+  }
+
+  & figure {
+    margin-block: 2rem;
+  }
+
+  & figure img {
+    border-radius: var(--sc2-radius-lg);
   }
 
   & blockquote cite {

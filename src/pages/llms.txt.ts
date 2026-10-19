@@ -1,9 +1,12 @@
 import type { APIRoute } from "astro";
 
+import { getCollection } from "astro:content";
+
 import { eventRoutes } from "@/data/events";
 import { nav, type PagePath, programs, site } from "@/data/site";
 import { getVisibleEvents } from "@/lib/events";
 import { absoluteUrl } from "@/lib/links";
+import { wikiPath } from "@/lib/wiki";
 
 interface Entry {
   readonly description: string;
@@ -31,6 +34,10 @@ const isoDay = (date: Date): string =>
 export const GET: APIRoute = async () => {
   const events = (await getVisibleEvents()).toSorted(
     (a, b) => a.data.start.getTime() - b.data.start.getTime(),
+  );
+
+  const wiki = (await getCollection("wiki")).toSorted((a, b) =>
+    a.data.title.localeCompare(b.data.title),
   );
 
   const body = [
@@ -122,10 +129,21 @@ export const GET: APIRoute = async () => {
         description: `Message form, workspace address, and directions. Email: ${site.email}`,
       },
     ]),
+    section("Wiki", [
+      {
+        title: "Wiki",
+        href: site.urls.wiki,
+        description: "Practical reference for students, families, and supporters.",
+      },
+      ...wiki.map((entry) => ({
+        title: entry.data.title,
+        href: wikiPath(entry.id),
+        description: entry.data.description,
+      })),
+    ]),
     "## Also",
     "",
     `- [Sitemap](${absoluteUrl("/sitemap-index.xml")}): every indexable page on this site.`,
-    `- [Wiki](${site.urls.wiki}): the organization's own documentation, on a separate domain.`,
     "",
   ]
     // An omitted section would otherwise join as a stray blank line.
