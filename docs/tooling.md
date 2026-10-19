@@ -173,20 +173,24 @@ they are marked ready:
   `GITHUB_ACTIONS`), and `tsc` and `astro check` (`.github/typescript-matchers.json`) report
   findings as inline annotations on the PR; Prettier and the hygiene steps list the files in the
   log.
-- **Build**: `pnpm build`, then `check:meta`, an offline link check over `dist/` (lychee, which
-  writes its own job summary), and Lighthouse. Lighthouse runs `@lhci/cli` via `pnpm dlx`
-  against `tools/ci/serve.ts`, which serves the build over HTTP/2 and TLS the way Cloudflare
-  does, three runs per URL including FLL, donation, joining, and both event layouts.
-  `check:events` builds a temporary copy with future dates, validates its metadata and discovery,
-  and stores it in `.lighthouseci/events/`. The audit server exposes those pages under
-  `/__event-fixture/`; production `dist/` and source dates stay unchanged. The
-  job summary and the log carry the median scores per URL, every failed assertion, and for each
-  URL the LCP element, its phases, and the request waterfall; full reports upload as an artifact.
-  A `dist/` byte-identical to one that already passed skips Lighthouse.
+- **Build**: `pnpm build`, then `check:meta`, `check:events`, and an offline link check over
+  `dist/` (lychee, which writes its own job summary). A pull request that touches only `docs/`,
+  `plan/`, `.claude/`, or root markdown skips it; pushes always build.
+
+`.github/workflows/lighthouse.yml` runs Lighthouse on pushes to `main` and `staging`, on demand,
+and on pull requests labelled `lighthouse`, where it is not a required check. It runs `@lhci/cli`
+via `pnpm dlx` against `tools/ci/serve.ts`, which serves the build over HTTP/2 and TLS the way
+Cloudflare does, one run each on the home page, a program page, joining, and an event page.
+`check:events` builds a temporary copy with future dates, validates its metadata and discovery,
+and stores it in `.lighthouseci/events/`. The audit server exposes those pages under
+`/__event-fixture/`; production `dist/` and source dates stay unchanged. The job summary and the
+log carry the scores per URL, every failed assertion, and for each URL the LCP element, its
+phases, and the request waterfall; full reports upload as an artifact. A `dist/` byte-identical
+to one that already passed skips Lighthouse.
 
 ### Performance budgets
 
-`lighthouserc.json`, every assertion an error on the median of three runs:
+`lighthouserc.json`, every assertion an error:
 
 | Assertion                | Budget    |
 | ------------------------ | --------- |
