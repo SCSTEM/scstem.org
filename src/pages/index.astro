@@ -1,0 +1,362 @@
+---
+import type { ImageMetadata } from "astro";
+
+import { getImage, Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import cheering from "@/assets/events/cheering.webp";
+import firstAcronym from "@/assets/first/first-horizontal-acro-dark.png";
+import firstLockup from "@/assets/first/first-horizontal-dark.png";
+import fllField from "@/assets/fll/legos.webp";
+import JsonLd from "@/components/JsonLd.astro";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FaqList from "@/components/ui/FaqList.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Callout from "@/components/ui/primitives/Callout.astro";
+import Card from "@/components/ui/primitives/Card.astro";
+import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+import Link from "@/components/ui/primitives/Link.astro";
+import ProgramCard from "@/components/ui/ProgramCard.astro";
+import Section from "@/components/ui/Section.astro";
+import SectionAction from "@/components/ui/SectionAction.astro";
+import SponsorStrip from "@/components/ui/SponsorStrip.astro";
+import StatBand from "@/components/ui/StatBand.astro";
+import { ALUMNI_FIELDS, OUTREACH_KINDS } from "@/content.config";
+import { nav, programs, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { PHOTO_QUALITY } from "@/lib/images";
+import { webSite } from "@/lib/jsonld";
+import { awardCount, championshipSeasons, getSeasons, seasonCount } from "@/lib/seasons";
+import { breakpoint } from "@/lib/tokens";
+
+const renderAt = async (source: ImageMetadata, width: number) => ({
+  height: Math.round((width * source.height) / source.width),
+  src: (await getImage({ format: "webp", src: source, width })).src,
+  width,
+});
+
+const acronymArt = await renderAt(firstAcronym, 896);
+const lockupArt = await renderAt(firstLockup, 640);
+
+/**
+ * Each "Real X." pair never wraps internally; below `sm` pairs stack, padded so one line's oval
+ * clears the next.
+ */
+const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
+
+const seasons = await getSeasons();
+const [latest] = seasons;
+const [firstChampionship] = championshipSeasons(seasons);
+const stat = (value: number, label: string, description?: string) =>
+  description === undefined
+    ? { value: String(value), label }
+    : { value: String(value), label, description };
+const record = [
+  stat(seasonCount(seasons), `seasons since ${String(programs.frc.since)}`),
+  stat(awardCount(seasons), "competition awards"),
+  ...(firstChampionship === undefined
+    ? []
+    : [
+        stat(
+          firstChampionship.data.year,
+          "Reached the FIRST Championship",
+          firstChampionship.data.result,
+        ),
+      ]),
+  ...(latest === undefined ? [] : [stat(latest.data.year, "Latest season", latest.data.result)]),
+];
+
+const alumni = await getCollection("alumni");
+
+const alumniFields = ALUMNI_FIELDS.map((field) => ({
+  field,
+  count: alumni.filter((entry) => entry.data.field === field).length,
+}))
+  .filter((entry) => entry.count > 0)
+  .toSorted((a, b) => b.count - a.count);
+
+const alumniWork = new Intl.ListFormat("en-US", {
+  style: "long",
+  type: "conjunction",
+}).format(alumniFields.map(({ field }) => field.toLowerCase().replace(/\bit\b/u, "IT")));
+
+const parentQuestions = (
+  await getCollection("faq", ({ data }) => data.tags?.includes("parents") === true)
+).toSorted((a, b) => a.data.question.localeCompare(b.data.question));
+
+const outreach = await getCollection("outreach");
+const outreachYear = Math.max(...outreach.map((entry) => entry.data.year));
+const recentOutreach = outreach
+  .filter((entry) => entry.data.year === outreachYear)
+  .toSorted((a, b) => a.data.month - b.data.month);
+const outreachKinds = {
+  school: { icon: "education", label: "School" },
+  sponsor: { icon: "industry", label: "Sponsor" },
+  festival: { icon: "events", label: "Festival" },
+} satisfies Record<(typeof OUTREACH_KINDS)[number], { icon: string; label: string }>;
+---
+
+<BaseLayout description={site.description} title="Robotics in Chambersburg, PA" trail={[]}>
+  <JsonLd data={webSite} slot="head" />
+
+  <Hero>
+    <HeroImage
+      alt="Two FIRST LEGO League tables of student-built robots, set up in the SC2 workshop"
+      caption="FLL tables in our workshop"
+      slot="media"
+      src={fllField}
+    />
+    <Fragment slot="title">
+      <span class="highlight-swipe">Build a robot.</span> Find your team.
+    </Fragment>
+    <p>
+      At {site.name}, students ages 9–18 explore their interests through <FirstMark /> robotics.
+      You&rsquo;ll work alongside teammates and volunteer mentors to design, build, and compete
+      while discovering what you enjoy doing.
+    </p>
+    <p class="mt-4">
+      We meet in downtown {site.location.locality}, {site.location.region}, and welcome students
+      from {site.location.county} and beyond, with or without robotics experience.
+    </p>
+    <Button href={programs.sc2.href} size="lg" slot="actions" variant="secondary">
+      Explore our programs
+    </Button>
+    <Button href={nav.cta.href} size="lg" slot="actions">
+      {nav.cta.label}
+    </Button>
+  </Hero>
+
+  <Section atmosphere="bubble" index={1}>
+    <Fragment slot="title">Choose your robotics program</Fragment>
+    <Fragment slot="intro">
+      Both programs welcome beginners, with equipment provided and mentors to help you get started.
+      Choose based on your age and interests.
+    </Fragment>
+
+    <FeatureGrid columns={2}>
+      <ProgramCard program="fll">
+        Work with a small team to build and program a LEGO® robot for a themed challenge.
+        You&rsquo;ll also investigate a real-world problem and present your team&rsquo;s solution to
+        judges, practicing research and public speaking alongside robot design.
+      </ProgramCard>
+
+      <ProgramCard program="frc">
+        Each January, {programs.frc.teamName} takes on a new game by designing and building a
+        full-size competition robot. Students work alongside experienced mentors on engineering,
+        programming, and strategy, while fundraising and media help bring the season together.
+      </ProgramCard>
+    </FeatureGrid>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">
+      What is <FirstMark />?
+    </Fragment>
+    <Fragment slot="intro">
+      Both of our programs are part of <FirstMark />, a global youth robotics community. Teams
+      tackle a new challenge each season, developing their own solutions and competing under shared
+      rules.
+    </Fragment>
+
+    <figure slot="aside">
+      <!-- A hidden `<img>` still downloads, so the acronym line is a `<source>` swap rather than a
+        toggled image. -->
+      <a
+        aria-describedby="first-ref"
+        class="inline-block rounded-md bg-print bg-none p-3"
+        href={site.urls.firstInspires}
+        rel="noopener"
+      >
+        <picture>
+          <source
+            height={acronymArt.height}
+            media={`(min-width: ${breakpoint("md")})`}
+            srcset={acronymArt.src}
+            width={acronymArt.width}
+          />
+          <img
+            alt="FIRST® - For Inspiration and Recognition of Science and Technology"
+            class="h-auto w-full max-w-72 md:max-w-md"
+            height={lockupArt.height}
+            loading="lazy"
+            src={lockupArt.src}
+            width={lockupArt.width}
+          />
+        </picture>
+      </a>
+      <Callout as="figcaption" class="mt-3" id="first-ref" reference="REF">
+        firstinspires.org
+      </Callout>
+    </figure>
+
+    <div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
+      <div>
+        <Card class="px-6">
+          <dl class="divide-y divide-border">
+            <div class="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:items-baseline sm:gap-6">
+              <dt class="spec-label text-primary-bright">The game</dt>
+              <dd>
+                Teams build a robot to play the season&rsquo;s game, then test their designs in
+                matches with other teams.
+              </dd>
+            </div>
+            <div class="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:items-baseline sm:gap-6">
+              <dt class="spec-label text-primary-bright">Ages {programs.frc.ages}</dt>
+              <dd>
+                <Link href={programs.frc.href}>
+                  <FirstMark /> Robotics Competition
+                </Link>
+                : {programs.frc.teamName}, our high-school team.
+              </dd>
+            </div>
+            <div class="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:items-baseline sm:gap-6">
+              <dt class="spec-label text-primary-bright">Ages {programs.fll.ages}</dt>
+              <dd>
+                <Link href={programs.fll.href}>
+                  <FirstMark /> LEGO® League
+                </Link>
+                : our teams for younger students.
+              </dd>
+            </div>
+          </dl>
+        </Card>
+      </div>
+
+      <figure>
+        <div class="media-frame">
+          <Image
+            alt="Biohazard students and parents cheering in the stands, holding up light-up 4050 signs"
+            class="w-full"
+            loading="lazy"
+            quality={PHOTO_QUALITY}
+            sizes="(min-width: 64rem) 34rem, 92vw"
+            src={cheering}
+            width={1120}
+            widths={[560, 840, 1120]}
+          />
+        </div>
+        <Callout as="figcaption" class="mt-3" figure>
+          {programs.frc.teamName} in the stands at a <FirstMark /> competition
+        </Callout>
+      </figure>
+    </div>
+  </Section>
+
+  <Section atmosphere="bubble" index={2}>
+    <Fragment slot="title">
+      {programs.frc.teamName} since {programs.frc.since}
+    </Fragment>
+
+    <StatBand stats={record} />
+
+    <SectionAction href={nav.robots.href} slot="action" variant={1}>
+      See every season
+    </SectionAction>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">Where our alumni are now</Fragment>
+    <Fragment slot="intro">
+      The {alumni.length} Biohazard alumni we keep in touch with work in {alumniWork}. Of those,{" "}
+      {programs.frc.alumniMentors} have returned as mentors to help today&rsquo;s students.
+    </Fragment>
+    <dl class="mt-6 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
+      {alumniFields.map(({ field, count }) => (
+        <div class="flex flex-col-reverse gap-2">
+          <dt class="spec-label text-foreground">{field}</dt>
+          <dd class="stat">{count}</dd>
+        </div>
+      ))}
+    </dl>
+  </Section>
+
+  <Section atmosphere="bubble" index={3}>
+    <Fragment slot="title">Questions about joining</Fragment>
+    <FaqList entries={parentQuestions} name="parent-faq" />
+    <SectionAction href={nav.contact.href} prompt="Something else?" slot="action" variant={2}>
+      Ask a question
+    </SectionAction>
+  </Section>
+
+  <Section atmosphere="bubble" index={4}>
+    <Fragment slot="title">Sharing robotics across our region</Fragment>
+    <Fragment slot="intro">
+      Our students bring their robots to school expos, community festivals, and sponsor events
+      across south-central Pennsylvania, explaining how they work and what went into building them.
+      In {outreachYear}, we visited the events below.
+    </Fragment>
+
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {recentOutreach.map(({ data }) => (
+        <li class="flex flex-col gap-4 pocket p-6">
+          <span class="flex items-center gap-3">
+            <span class="grid size-9 place-items-center rounded-sm border border-current/40 text-primary-bright">
+              <Icon name={outreachKinds[data.kind].icon} size={20} />
+            </span>
+            <span class="spec-label text-muted">{outreachKinds[data.kind].label}</span>
+          </span>
+          <span class="text-h4 font-semibold text-foreground">{data.name}</span>
+          <span class="text-small text-body">{data.description}</span>
+          {data.place !== undefined && (
+            <span class="mt-auto flex items-center gap-1.5 text-small text-body">
+              <Icon class="text-muted" name="location" size={16} />
+              {data.place}
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <SectionAction
+      href={nav.contact.href}
+      prompt="Want a robot demonstration at your school, club, or event?"
+      slot="action"
+      variant={3}
+    >
+      Request a robot demonstration
+    </SectionAction>
+  </Section>
+
+  <Section atmosphere="ruler">
+    <Fragment slot="title">Thank you to our sponsors</Fragment>
+    <Fragment slot="intro">
+      Sponsor support puts tools and materials in students&rsquo; hands, keeps our
+      {site.location.locality} workspace open, and helps our teams take part in competitions.
+    </Fragment>
+
+    <SponsorStrip />
+
+    <SectionAction href={nav.sponsors.href} slot="action" variant={2}>
+      Meet our sponsors
+    </SectionAction>
+  </Section>
+
+  <Section>
+    <CtaBanner>
+      <Fragment slot="title">
+        <span class={taglinePair}>
+          Real <ChalkOval variant={1}>Skills</ChalkOval>.
+        </span>{" "}
+        <span class={taglinePair}>
+          Real <ChalkOval variant={2}>Robots</ChalkOval>.
+        </span>{" "}
+        <span class={taglinePair}>
+          Real <ChalkOval variant={3}>Fun</ChalkOval>.
+        </span>
+      </Fragment>
+      Tell us whether you&rsquo;d like to join a team, volunteer, or support our programs, and a
+      volunteer will get in touch to answer your questions.
+      <Button href={nav.cta.href} size="lg" slot="actions">
+        {nav.cta.label}
+      </Button>
+      <Button href={nav.donate.href} size="lg" slot="actions" variant="secondary">
+        {nav.donate.label}
+      </Button>
+    </CtaBanner>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,63 @@
+---
+import type { ImageMetadata } from "astro";
+
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import { SPONSOR_LEVELS } from "@/content.config";
+import { cn } from "@/lib/cn";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const sponsors = (await getCollection("sponsors", (entry) => entry.data.active)).toSorted(
+  (a, b) => SPONSOR_LEVELS.indexOf(a.data.level) - SPONSOR_LEVELS.indexOf(b.data.level),
+);
+
+/**
+ * Logos render up to 80px tall, so 160 covers a 2x screen; never past a logo's own height, since
+ * upscaling only makes a heavier, blurrier file.
+ */
+const renderHeight = (logo: ImageMetadata): number => Math.min(160, logo.height);
+
+/** The column count follows the sponsor count so no row is left orphaned. */
+const columns =
+  sponsors.length === 3
+    ? "sm:grid-cols-3"
+    : sponsors.length % 2 === 0
+      ? "sm:grid-cols-2"
+      : sponsors.length > 1
+        ? "sm:grid-cols-2 lg:grid-cols-3"
+        : undefined;
+---
+
+<ul class={cn("grid gap-4", columns, className)}>
+  {sponsors.map(({ data }) => {
+    const Tag = data.url === undefined ? "div" : "a";
+    return (
+      <li class={cn("pocket", data.url !== undefined && "pocket-interactive")}>
+        <Tag
+          class="flex h-24 items-center justify-center bg-none p-5 sm:h-32 sm:p-6"
+          data-track={data.url === undefined ? undefined : "outbound_sponsor_click"}
+          href={data.url}
+          rel={data.url === undefined ? undefined : "sponsored noopener"}
+        >
+          {data.logo === undefined ? (
+            <span class="text-h4 font-semibold text-foreground">{data.name}</span>
+          ) : (
+            <Image
+              alt={`${data.name} logo`}
+              class="h-full w-auto max-w-full object-contain"
+              height={renderHeight(data.logo)}
+              loading="lazy"
+              src={data.logo}
+            />
+          )}
+        </Tag>
+      </li>
+    );
+  })}
+</ul>

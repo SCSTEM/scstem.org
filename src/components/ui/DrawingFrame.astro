@@ -1,0 +1,22 @@
+---
+/** Shown from `xl` up, where the margins are wide enough to hold the drafting grid. */
+const columns = ["1", "2", "3", "4", "5", "6"];
+const rows = ["A", "B", "C", "D"];
+---
+
+<div aria-hidden="true" class="drawing-frame">
+  <div class="absolute inset-x-0 top-0 flex h-4 border-b border-(--frame-line)">
+    {columns.map((zone) => (
+      <span class="grid flex-1 place-items-center border-l border-(--frame-line) spec-label text-muted first:border-l-0">
+        {zone}
+      </span>
+    ))}
+  </div>
+  <div class="absolute top-4 bottom-0 left-0 flex w-4 flex-col border-r border-(--frame-line)">
+    {rows.map((zone) => (
+      <span class="grid flex-1 place-items-center border-t border-(--frame-line) spec-label text-muted first:border-t-0">
+        {zone}
+      </span>
+    ))}
+  </div>
+</div>

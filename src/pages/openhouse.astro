@@ -1,0 +1,15 @@
+---
+import EventLayout from "@/layouts/EventLayout.astro";
+import { getVisibleEvent } from "@/lib/events";
+
+/**
+ * In a static build `Astro.redirect` emits a meta-refresh page; a build integration rewrites it
+ * to a 302 line in the deployed `_redirects`, so readers still get a real status code.
+ */
+const event = await getVisibleEvent("openhouse");
+if (event === undefined) {
+  return Astro.redirect("/", 302);
+}
+---
+
+<EventLayout {event} />

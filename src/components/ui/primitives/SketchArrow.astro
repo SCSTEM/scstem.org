@@ -1,0 +1,45 @@
+---
+import { cn } from "@/lib/cn";
+import { handMarkClass, type HandTone, handToneClass, type HandVariant } from "@/lib/hand";
+
+interface Props {
+  /** Adjacent instances must use different variants. */
+  variant?: HandVariant;
+  direction?: "down-right" | "down-left" | "up-left" | "up-right" | "right";
+  tone?: HandTone;
+  class?: string;
+}
+
+const { variant = 1, direction = "down-right", tone = "marker", class: className } = Astro.props;
+
+const paths = {
+  1: { shaft: "M6 6C10 26 26 42 54 48", head: "M40 56 54 48 44 34" },
+  2: { shaft: "M8 4C6 24 18 44 52 50", head: "M37 58 52 50 43 35" },
+  3: { shaft: "M4 8C14 24 28 38 56 46", head: "M41 54 56 46 47 32" },
+} as const;
+
+/**
+ * Rotation is one inline `rotate` value because Tailwind v4's `rotate-*` sets the same property
+ * and an inline style would silently override it. Mirroring stays a class: `-scale-x-100` sets
+ * `scale`, which does not collide.
+ */
+const rotations = { 1: "0deg", 2: "-3deg", 3: "2deg" } as const;
+
+const directions = {
+  "down-right": { rotate: "0deg", mirror: "" },
+  "down-left": { rotate: "0deg", mirror: "-scale-x-100" },
+  "up-left": { rotate: "180deg", mirror: "" },
+  "up-right": { rotate: "180deg", mirror: "-scale-x-100" },
+  right: { rotate: "-45deg", mirror: "" },
+} as const;
+---
+
+<svg
+  aria-hidden="true"
+  class={cn(handMarkClass, handToneClass(tone), directions[direction].mirror, className)}
+  style={`rotate: calc(${rotations[variant]} + ${directions[direction].rotate})`}
+  viewBox="-2 -2 68 68"
+>
+  <path d={paths[variant].shaft} pathLength="100"></path>
+  <path d={paths[variant].head} pathLength="100"></path>
+</svg>

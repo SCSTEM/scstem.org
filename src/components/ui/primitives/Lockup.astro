@@ -1,0 +1,22 @@
+---
+import lockup from "@/assets/brand/logo-white-full.svg";
+import { cn } from "@/lib/cn";
+
+/** One white asset serves both finishes: it is the CSS mask shape, and `--sc2-logo` fills it. */
+interface Props {
+  label?: string;
+  class?: string;
+}
+
+const { label, class: className } = Astro.props;
+
+const mask = `url(${lockup.src}) center / contain no-repeat`;
+---
+
+<span
+  aria-hidden={label === undefined ? "true" : undefined}
+  aria-label={label}
+  class={cn("block bg-logo", className)}
+  role={label === undefined ? undefined : "img"}
+  style={`aspect-ratio: ${String(lockup.width)} / ${String(lockup.height)}; mask: ${mask}; -webkit-mask: ${mask};`}
+></span>

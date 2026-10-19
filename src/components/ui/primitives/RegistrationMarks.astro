@@ -1,0 +1,42 @@
+---
+import { cn } from "@/lib/cn";
+
+/**
+ * Expects a `relative` parent with about 20px of clear space, since the marks sit outside it.
+ * A `pocket` holding the marks is cut square so the lines cross on its real corner.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+/**
+ * One corner, mirrored into the other three. The lines cross at (16, 16) of a 44-unit box offset
+ * by 16px, so the crossing lands on the pocket's corner.
+ */
+const CROSS = "M0 16H44M16 0V44";
+
+const corners = [
+  "-top-4 -left-4",
+  "-top-4 -right-4 -scale-x-100",
+  "-bottom-4 -left-4 -scale-y-100",
+  "-right-4 -bottom-4 -scale-100",
+];
+---
+
+<div
+  aria-hidden="true"
+  class={cn("pointer-events-none absolute inset-0", className)}
+  data-registration-marks
+>
+  {corners.map((corner) => (
+    <svg
+      class:list={["absolute size-11 overflow-visible text-foreground/40", corner]}
+      fill="none"
+      viewBox="0 0 44 44"
+    >
+      <path d={CROSS} stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" />
+    </svg>
+  ))}
+</div>

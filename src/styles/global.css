@@ -1,0 +1,882 @@
+/* Class candidates come from the source tree only: docs and plans name classes in prose. */
+@import "tailwindcss" source("../");
+@import "./fonts.css";
+@import "./tokens.css";
+
+/**
+ * `inline` makes each utility read its `--sc2-*` token where it is used, so a `data-mode`,
+ * `data-accent` or `data-register` switch on any element reaches the utilities inside it. For the
+ * same reason, rules in this file read `--sc2-*` tokens directly: `inline` emits no `--color-*`
+ * variables.
+ */
+@theme inline {
+  --color-background: var(--sc2-background);
+  --color-card: var(--sc2-card);
+  --color-card-hover: var(--sc2-card-hover);
+  --color-pocket-border: var(--sc2-pocket-border);
+  --color-band: var(--sc2-band);
+  --color-plate: var(--sc2-plate);
+  --color-plate-border: var(--sc2-plate-border);
+  --color-plate-hover: var(--sc2-plate-hover);
+  --color-sheet: var(--sc2-sheet);
+  --color-border: var(--sc2-border);
+  --color-control-edge: var(--sc2-control-edge);
+  --color-ink: var(--sc2-ink);
+  --color-logo: var(--sc2-logo);
+  --color-print: var(--sc2-print);
+  --color-foreground: var(--sc2-foreground);
+  --color-body: var(--sc2-body);
+  --color-muted: var(--sc2-muted);
+  --color-primary: var(--sc2-primary);
+  --color-primary-bright: var(--sc2-primary-bright);
+  --color-primary-foreground: var(--sc2-primary-foreground);
+  --color-ring: var(--sc2-ring);
+  --color-mark: var(--sc2-mark);
+  --color-info: var(--sc2-info);
+  --color-info-bright: var(--sc2-info-bright);
+  --color-info-foreground: var(--sc2-info-foreground);
+  --color-destructive: var(--sc2-destructive);
+  --color-destructive-bright: var(--sc2-destructive-bright);
+  --color-destructive-foreground: var(--sc2-destructive-foreground);
+  --color-tier-platinum: var(--sc2-tier-platinum);
+  --color-tier-gold: var(--sc2-tier-gold);
+  --color-tier-silver: var(--sc2-tier-silver);
+  --color-tier-bronze: var(--sc2-tier-bronze);
+
+  --font-display: var(--sc2-font-display);
+  --font-sans: var(--sc2-font-sans);
+  --font-mono: var(--sc2-font-mono);
+  --font-hand: var(--sc2-font-hand);
+  --text-display: var(--sc2-text-display);
+  --text-display--line-height: var(--sc2-leading-tight);
+  --text-h1: var(--sc2-text-h1);
+  --text-h1--line-height: var(--sc2-leading-tight);
+  --text-h2: var(--sc2-text-h2);
+  --text-h2--line-height: var(--sc2-leading-tight);
+  --text-h3: var(--sc2-text-h3);
+  --text-h3--line-height: var(--sc2-leading-snug);
+  --text-h4: var(--sc2-text-h4);
+  --text-h4--line-height: var(--sc2-leading-snug);
+  --text-lead: var(--sc2-text-lead);
+  --text-lead--line-height: var(--sc2-leading-relaxed);
+  --text-copy: var(--sc2-text-copy);
+  --text-copy--line-height: var(--sc2-leading-relaxed);
+  --text-small: var(--sc2-text-small);
+  --text-small--line-height: var(--sc2-leading-relaxed);
+  --text-label: var(--sc2-text-label);
+  --text-label--line-height: var(--sc2-leading-snug);
+  --text-label--letter-spacing: var(--sc2-tracking-label);
+
+  --radius-sm: var(--sc2-radius-sm);
+  --radius-md: var(--sc2-radius-md);
+  --radius-lg: var(--sc2-radius-lg);
+  --shadow-pocket: var(--sc2-shadow-pocket);
+  --shadow-contact: var(--sc2-shadow-contact);
+  --shadow-plate: var(--sc2-shadow-plate);
+  --shadow-drafted-2: var(--sc2-shadow-drafted-2);
+  --shadow-table-edge: var(--sc2-shadow-table-edge);
+  --duration-micro: var(--sc2-duration-micro);
+  --duration-ui: var(--sc2-duration-ui);
+  --duration-entrance: var(--sc2-duration-entrance);
+  --duration-draw: var(--sc2-duration-draw);
+  --ease-entrance: var(--sc2-ease-entrance);
+  --ease-toggle: var(--sc2-ease-toggle);
+}
+
+/* A dark island (`data-mode="dark"`) inside a light page is not `light`. */
+@custom-variant light (&:where([data-mode="light"], [data-mode="light"] *):not([data-mode="dark"], [data-mode="dark"] *));
+
+/* `md` restates Tailwind's default so the build can read the mobile/desktop boundary from here. */
+@theme {
+  --breakpoint-md: 48rem;
+  --breakpoint-3xl: 120rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--sc2-background);
+    background-image: var(--sc2-texture-grain);
+    background-size: var(--sc2-texture-grain-size);
+    color: var(--sc2-body);
+    font-family: var(--sc2-font-sans);
+    font-size: var(--sc2-text-copy);
+    line-height: var(--sc2-leading-relaxed);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    counter-reset: fig;
+  }
+
+  /* Orbitron has no italic, so an italic span in a heading (the FIRST® mark) stands upright
+     instead of taking a synthesized oblique; the ®, which Orbitron lacks, falls back to Inter. */
+  h1,
+  h2,
+  h3 {
+    color: var(--sc2-foreground);
+    font-family: var(--sc2-font-display);
+    font-synthesis-style: none;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--sc2-text-h1);
+    font-weight: 700;
+    line-height: var(--sc2-leading-tight);
+  }
+
+  h2 {
+    font-size: var(--sc2-text-h2);
+    line-height: var(--sc2-leading-tight);
+  }
+
+  h3 {
+    font-size: var(--sc2-text-h3);
+    line-height: var(--sc2-leading-snug);
+  }
+
+  h4,
+  h5,
+  h6 {
+    color: var(--sc2-foreground);
+    font-family: var(--sc2-font-sans);
+    font-size: var(--sc2-text-h4);
+    font-weight: 600;
+    line-height: var(--sc2-leading-snug);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* The underline is a background rather than `text-decoration` so anchors that are not text
+     (buttons, pockets, framed images) drop it by setting their own background, and
+     `box-decoration-break: clone` underlines each line of a wrapped link. `text-decoration` is
+     switched off because Preflight inherits it on `a`, and two underlines would stack. On the
+     light finish the text is ink and the marker-colored line says "link". */
+  a {
+    --link-line: light-dark(var(--sc2-mark), currentColor);
+
+    color: light-dark(var(--sc2-foreground), var(--sc2-primary-bright));
+    text-decoration-line: none;
+    background-image: linear-gradient(var(--link-line), var(--link-line));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% max(1px, 0.07em);
+    padding-bottom: 0.1em;
+    box-decoration-break: clone;
+    transition: color var(--sc2-duration-micro) var(--sc2-ease-toggle);
+  }
+
+  a:hover {
+    color: light-dark(var(--sc2-primary-bright), var(--sc2-foreground));
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--sc2-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--sc2-primary);
+    color: var(--sc2-primary-foreground);
+  }
+
+  /* `svg` is excluded: `max-width` cannot be overridden by a utilities-layer `width`, and the
+     hand-markup primitives size their strokes past the text box on purpose. */
+  img,
+  picture,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@utility pocket {
+  /* An overlay on the fill, so hover changes only the fill. A feature pocket layers its grid
+     above it through `--pocket-grid`, so neither utility overrides the other. */
+  --pocket-floor: linear-gradient(
+    to bottom,
+    var(--sc2-pocket-shade),
+    transparent 42%,
+    var(--sc2-pocket-lit)
+  );
+
+  background-color: var(--sc2-card);
+  background-image: var(--pocket-grid, none), var(--pocket-floor);
+  background-size: var(--pocket-grid-size, auto), auto;
+  border: 1px solid var(--sc2-pocket-border);
+  border-radius: var(--sc2-radius-lg);
+  box-shadow: var(--sc2-shadow-pocket);
+
+  /* Crop-marked pockets are cut square: a radius inside the crossing reads as a bulging
+     squircle edge. */
+  &:has(> [data-registration-marks]) {
+    border-radius: 0;
+  }
+}
+
+@utility pocket-interactive {
+  transition:
+    background-color var(--sc2-duration-micro) var(--sc2-ease-toggle),
+    border-color var(--sc2-duration-micro) var(--sc2-ease-toggle);
+
+  &:hover,
+  &:focus-within {
+    background-color: var(--sc2-card-hover);
+    border-color: color-mix(in srgb, var(--sc2-primary) 60%, transparent);
+  }
+}
+
+/* The stroke reads `--sc2-foreground`, not `currentcolor`: this utility lands on elements that
+   also hold text, and the linework must not follow the copy's color. */
+@utility engineering-grid {
+  --grid-cell: 26px;
+  --grid-alpha: 5%;
+  --grid-line: color-mix(in srgb, var(--sc2-foreground) var(--grid-alpha), transparent);
+
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+
+  /* A `var()` alpha cannot be pre-resolved, so the build's computed fallback for `--grid-line`
+     lands on opaque foreground. The grid is atmosphere, so drop it where `color-mix` is
+     unavailable. */
+  @supports not (color: color-mix(in srgb, red, red)) {
+    background-image: none;
+  }
+}
+
+/* Callers feather it with a mask so it never ends on a hard edge. */
+@utility drafting-grid {
+  --grid-minor: var(--sc2-grid-minor);
+  --grid-major: var(--sc2-grid-major);
+
+  background-image:
+    linear-gradient(to right, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-minor) 1px, transparent 1px);
+  background-size:
+    130px 130px,
+    130px 130px,
+    26px 26px,
+    26px 26px;
+
+  @supports not (color: color-mix(in srgb, red, red)) {
+    background-image: none;
+  }
+}
+
+/* Inside a band a `pocket` is a raised plate (lighter floor, contact shadow), and framed media
+   takes the contact shadow in place of the drafted edge, which ink on ink would not show. */
+@utility band {
+  --band-vignette: color-mix(in srgb, var(--sc2-primary) 9%, transparent);
+
+  position: relative;
+  isolation: isolate;
+  background-color: var(--sc2-band);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--sc2-primary) 30%, transparent),
+    inset 0 -1px 0 light-dark(rgb(20 28 38 / 0.08), rgb(255 255 255 / 0.05));
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  &::before {
+    background: linear-gradient(
+      to right,
+      var(--band-vignette),
+      transparent 12%,
+      transparent 88%,
+      var(--band-vignette)
+    );
+  }
+
+  &::after {
+    @apply drafting-grid;
+
+    background-position: center top;
+    mask-image: radial-gradient(ellipse 85% 90% at 50% 45%, black 35%, transparent 100%);
+  }
+
+  & .pocket {
+    --pocket-floor: none;
+
+    background-color: var(--sc2-plate);
+    border-color: var(--sc2-plate-border);
+    box-shadow: var(--sc2-shadow-plate);
+  }
+
+  & .pocket-interactive:is(:hover, :focus-within) {
+    background-color: var(--sc2-plate-hover);
+    border-color: color-mix(in srgb, var(--sc2-primary) 60%, transparent);
+  }
+
+  & .media-frame {
+    box-shadow: var(--sc2-shadow-contact);
+  }
+}
+
+@utility drawing-sheet {
+  position: relative;
+  isolation: isolate;
+
+  @media (width >= theme(--breakpoint-xl)) {
+    &::before {
+      @apply drafting-grid;
+
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background-position: center top;
+    }
+  }
+}
+
+@utility drawing-frame {
+  --frame-line: color-mix(in srgb, var(--sc2-foreground) 34%, transparent);
+
+  display: none;
+
+  @media (width >= theme(--breakpoint-xl)) {
+    display: block;
+    position: absolute;
+    inset-block: 1.5rem;
+    inset-inline: calc((100% - var(--container-6xl)) / 2 - 0.5rem);
+    z-index: -1;
+    pointer-events: none;
+    border: 1px solid var(--frame-line);
+    background-color: var(--sc2-background);
+    background-image: var(--sc2-texture-grain);
+    background-size: var(--sc2-texture-grain-size);
+  }
+}
+
+@utility hero-grid {
+  @apply drafting-grid;
+
+  mask-image: linear-gradient(to right, black, black 35%, transparent 70%);
+}
+
+@utility pocket-feature {
+  @media (width >= theme(--breakpoint-md)) {
+    --grid-line: color-mix(in srgb, var(--sc2-foreground) 5%, transparent);
+    --pocket-grid:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    --pocket-grid-size: 26px 26px, 26px 26px;
+
+    /* `round` stretches each cell by under a pixel so a whole number fits the pocket, and the
+       border-box origin tucks the first line under the opaque border: every pocket shows whole
+       cells, edge to edge, instead of a partial row and column at its right and bottom. */
+    background-origin: border-box;
+    background-repeat: round;
+
+    @supports not (color: color-mix(in srgb, red, red)) {
+      --pocket-grid: none;
+      --pocket-grid-size: auto;
+    }
+  }
+}
+
+/* Shallow arcs tiled along each edge of a pseudo-element 15px out from the content, so the
+   cusps float 6px clear of its border. Each tile holds the top of a ring centred below the tile,
+   so neighbouring arcs meet in an inward cusp; `round` fits a whole number of scallops to any
+   length. */
+@utility revision-cloud {
+  /* A 28px-wide, 9px-deep arc is a slice of a 15.4px circle centred 6.4px past the tile. */
+  --cloud-arc: transparent 12.1px, var(--sc2-mark) 12.5px, var(--sc2-mark) 15px, transparent 15.4px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -15px;
+    pointer-events: none;
+    opacity: 0.9;
+    background-image:
+      radial-gradient(circle 15.4px at 50% calc(100% + 6.4px), var(--cloud-arc)),
+      radial-gradient(circle 15.4px at 50% -6.4px, var(--cloud-arc)),
+      radial-gradient(circle 15.4px at calc(100% + 6.4px) 50%, var(--cloud-arc)),
+      radial-gradient(circle 15.4px at -6.4px 50%, var(--cloud-arc));
+    background-position:
+      0 0,
+      0 100%,
+      0 0,
+      100% 0;
+    background-repeat:
+      round no-repeat,
+      round no-repeat,
+      no-repeat round,
+      no-repeat round;
+    background-size:
+      28px 9px,
+      28px 9px,
+      9px 28px,
+      9px 28px;
+  }
+}
+
+@utility centerline {
+  --centerline: color-mix(in srgb, var(--sc2-foreground) 24%, transparent);
+
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--centerline) 0 12px,
+    transparent 12px 16px,
+    var(--centerline) 16px 18px,
+    transparent 18px 22px
+  );
+}
+
+@utility accent-rule {
+  height: 2px;
+  background-color: var(--sc2-primary);
+  border: 0;
+}
+
+@utility title-rule {
+  @apply accent-rule;
+
+  width: 32px;
+}
+
+@utility media-frame {
+  border: 2px solid var(--sc2-primary);
+  border-radius: var(--sc2-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--sc2-shadow-drafted-2);
+}
+
+/* Typed, so the lip's color can tween with the border on hover while its depth snaps on a press. */
+@property --keycap-lip {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: transparent;
+}
+
+/* Hover never moves the key; a press seats it flush at once, with no tween, so the label never
+   renders between pixels. The hit area reaches past the travel so a pointer at the edge stays on
+   the key through a press. */
+@utility keycap {
+  --keycap-depth: 3px;
+
+  position: relative;
+  background-image: none;
+  box-shadow: 0 var(--keycap-depth) 0 0 var(--keycap-lip);
+  transition-property: color, background-color, border-color, --keycap-lip;
+
+  /* `::before`, because an external link's trailing glyph is the `::after`. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -4px 0;
+  }
+
+  &:active {
+    --keycap-depth: 0px;
+    translate: 0 3px;
+  }
+}
+
+/* Rests a step deeper than the brand fill and rises to it on hover, face and lip together: the
+   brand yellow has no room left to brighten. */
+@utility keycap-primary {
+  --keycap-lip: var(--sc2-primary-lip-rest);
+
+  border: 1px solid transparent;
+  background-color: var(--sc2-primary-rest);
+
+  &:hover {
+    --keycap-lip: var(--sc2-primary-lip);
+
+    background-color: var(--sc2-primary);
+  }
+}
+
+@utility keycap-secondary {
+  --keycap-lip: var(--sc2-control-edge);
+
+  border: 1px solid var(--sc2-control-edge);
+  background-color: var(--sc2-sheet);
+
+  &:hover {
+    --keycap-lip: var(--sc2-primary-lip);
+
+    border-color: var(--sc2-primary);
+  }
+}
+
+@utility highlight-swipe {
+  position: relative;
+  color: var(--sc2-foreground);
+  isolation: isolate;
+
+  /* The swipe is an absolutely positioned pseudo-element, which collapses on an inline that
+     breaks across lines, so a swiped phrase never wraps. A link needs to be a box for its
+     underline. */
+  white-space: nowrap;
+
+  &:is(a) {
+    display: inline-block;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0.08em -0.12em 0.06em -0.12em;
+    z-index: -1;
+    background-color: var(--sc2-swipe);
+    border-radius: 2px;
+    transform: rotate(-0.8deg);
+  }
+
+  /* Inside an h1 or h2 the dark finish takes a stronger swipe that reads as the accent rather
+     than mud. */
+  :where(h1, h2, .text-display, .text-h1, .text-h2) &::before {
+    background-color: var(--sc2-swipe-display);
+  }
+}
+
+@utility spec-label {
+  font-family: var(--sc2-font-mono);
+  font-size: var(--sc2-text-label);
+  font-weight: 600;
+  letter-spacing: var(--sc2-tracking-label);
+  line-height: var(--sc2-leading-snug);
+  text-transform: uppercase;
+}
+
+/* Figures number themselves in document order, so each page counts from 1 whichever components
+   render them. */
+@utility fig-number {
+  &::before {
+    counter-increment: fig;
+    content: "Fig. " counter(fig);
+  }
+}
+
+/* The overlaid figure label: partial-opacity ink on a local scrim from the ground, so it holds
+   contrast over any part of a photo. */
+@utility fig-tag {
+  isolation: isolate;
+  color: color-mix(in srgb, var(--sc2-foreground) 75%, transparent);
+
+  &::before {
+    position: absolute;
+    z-index: -1;
+    inset: -1rem -1.5rem;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--sc2-background) 70%, transparent),
+      transparent
+    );
+    content: "";
+  }
+}
+
+@utility spec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.1875rem 0.5rem;
+  border: 1px solid color-mix(in srgb, currentcolor 40%, transparent);
+  border-radius: var(--sc2-radius-sm);
+  background-color: transparent;
+}
+
+@utility stat {
+  font-family: var(--sc2-font-mono);
+  font-size: var(--sc2-text-h1);
+  font-weight: 600;
+  line-height: var(--sc2-leading-tight);
+  color: var(--sc2-primary-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Centred on the section's heading and fading out well inside the section on every side: an
+   ellipse centred on the top edge is cut in half by it and leaves a hard line. */
+@utility ambient-pool {
+  --pool-tint: color-mix(in srgb, var(--sc2-primary) 9%, transparent);
+
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 55% at 50% 30%, var(--pool-tint), transparent 70%);
+    /* The ellipse scales with the section, so in a tall one it is still strong where the box ends.
+       Feathering both edges keeps the glow from ever stopping on a line. */
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      black 10rem,
+      black calc(100% - 10rem),
+      transparent
+    );
+  }
+}
+
+/* Only swaps the tint: compose as `ambient-pool ambient-pool-neutral`; alone it draws nothing. */
+@utility ambient-pool-neutral {
+  --pool-tint: color-mix(in srgb, var(--sc2-foreground) 5%, transparent);
+}
+
+/* Two sections on the same ground share one padding at their boundary: the second drops its top.
+   A band is a surface of its own, so it keeps both. */
+@utility section-y {
+  padding-block: 4rem;
+
+  @media (width >= theme(--breakpoint-md)) {
+    padding-block: 6rem;
+  }
+
+  &:not(.band):is(.section-y:not(.band) + *) {
+    padding-top: 0;
+  }
+}
+
+/* Applied to the `<svg>`; paths carry only their `d` and `pathLength`. `non-scaling-stroke` keeps
+   the weight even when the SVG is stretched non-uniformly over a word. */
+@utility hand-stroke {
+  fill: none;
+
+  & path {
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-opacity: 0.9;
+    stroke-width: 4.5;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+@utility measure {
+  max-width: 70ch;
+}
+
+/* Element selectors rather than per-element utilities: the copy is authored as markup or arrives
+   from `<Content />`, where no class can be attached. Includes `measure`; never compose both. */
+@utility prose-copy {
+  @apply measure;
+
+  & :is(p, ul, ol, blockquote) {
+    margin-block: 1rem;
+  }
+
+  & > :first-child {
+    margin-block-start: 0;
+  }
+
+  & > :last-child {
+    margin-block-end: 0;
+  }
+
+  & :is(h2, h3, h4) {
+    margin-block-start: 2rem;
+  }
+
+  & ul {
+    padding-inline-start: 1.25rem;
+    list-style-type: disc;
+  }
+
+  & ol {
+    padding-inline-start: 1.5rem;
+    list-style-type: decimal;
+  }
+
+  & li {
+    margin-block: 0.5rem;
+  }
+
+  & li::marker {
+    color: var(--sc2-primary);
+  }
+
+  & :is(ul, ol) :is(ul, ol) {
+    margin-block: 0.5rem;
+  }
+
+  & blockquote {
+    padding-inline-start: 1.5rem;
+    border-inline-start: 2px solid var(--sc2-primary);
+    color: var(--sc2-foreground);
+    font-size: var(--sc2-text-lead);
+    line-height: var(--sc2-leading-relaxed);
+  }
+
+  & blockquote cite {
+    display: block;
+    margin-block-start: 0.75rem;
+    color: var(--sc2-muted);
+    font-size: var(--sc2-text-small);
+    font-style: normal;
+  }
+}
+
+/* Slides arrive through a slot, so their sizing cannot live in the component's scoped style;
+   here it can also read the breakpoint token. `--carousel-item-basis` is set inline. */
+@utility carousel-track {
+  & > * {
+    scroll-snap-align: start;
+    flex: 0 0 100%;
+  }
+
+  @media (width >= theme(--breakpoint-md)) {
+    & > * {
+      flex-basis: var(--carousel-item-basis, 45%);
+    }
+  }
+}
+
+/* Five cards as a deliberate 2 + 3: two columns so the odd card widens to fill its row, six
+   columns from `lg`, where 3+3 then 2+2+2 divides evenly. Lives here because the spans land on
+   slotted children, which a scoped style cannot reach. */
+@utility feature-grid-2-3 {
+  display: grid;
+  gap: 1.5rem;
+
+  @media (width >= theme(--breakpoint-md)) {
+    grid-template-columns: repeat(2, 1fr);
+
+    & > *:last-child {
+      grid-column: span 2;
+    }
+  }
+
+  @media (width >= theme(--breakpoint-lg)) {
+    grid-template-columns: repeat(6, 1fr);
+
+    & > *:nth-child(-n + 2) {
+      grid-column: span 3;
+    }
+
+    & > *:nth-child(n + 3) {
+      grid-column: span 2;
+    }
+  }
+}
+
+@utility container-page {
+  margin-inline: auto;
+  max-width: var(--container-6xl);
+  padding-inline: 1rem;
+
+  @media (width >= theme(--breakpoint-md)) {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* Chrome links never take the copy underline: none at rest, a straight hairline on hover or
+   focus. Both halves live here so a call site cannot ship one without the other. */
+@utility ui-link {
+  color: var(--sc2-foreground);
+  background-image: none;
+  padding-bottom: 0;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--sc2-primary-bright);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  &[aria-current] {
+    color: var(--sc2-primary-bright);
+  }
+}
+
+@utility external-link {
+  &::after {
+    content: "↗";
+    display: inline-block;
+    margin-inline-start: 0.25em;
+    font-size: 0.8em;
+    line-height: 1;
+    vertical-align: baseline;
+  }
+}
+
+@keyframes draw-on {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Paired with `pathLength="100"` on the animated path, so the dash math is in percent and the
+   stroke always ends fully drawn; a hard-coded length silently truncates a longer path. The
+   layout script marks each `.draw-on` `is-pending` and swaps it to `is-drawing` on scroll into
+   view; without JavaScript neither class lands and the stroke is simply drawn. */
+@utility draw-on {
+  stroke-dasharray: 100;
+
+  &.is-pending {
+    stroke-dashoffset: 100;
+  }
+
+  &.is-drawing {
+    animation: draw-on var(--sc2-duration-draw) var(--sc2-ease-entrance) both;
+  }
+}
+
+@keyframes draw-wipe {
+  from {
+    clip-path: inset(-100% 100% -100% -10%);
+  }
+  to {
+    clip-path: inset(-100% -10%);
+  }
+}
+
+/* For a left-to-right stroke stretched over content of any width. `non-scaling-stroke` lays dashes
+   out in screen pixels, so a dash sized in path units stops short once the path is widened; a wipe
+   draws the same stroke at any stretch. Revealed by the same layout script as `draw-on`; the clip
+   sits on the path because a clipped `<svg>` never reports itself in view. */
+@utility draw-wipe {
+  &.is-pending path {
+    clip-path: inset(-100% 100% -100% -10%);
+  }
+
+  &.is-drawing path {
+    animation: draw-wipe var(--sc2-duration-draw) var(--sc2-ease-entrance) both;
+  }
+}

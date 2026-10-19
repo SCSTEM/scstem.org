@@ -1,0 +1,36 @@
+---
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import ProgramName from "@/components/ui/ProgramName.astro";
+import { programPhotos } from "@/data/programPhotos";
+import { type ProgramTheme, programs } from "@/data/site";
+
+interface Props {
+  program: ProgramTheme;
+}
+
+const { program } = Astro.props;
+const facts = programs[program];
+const photo = programPhotos[program];
+const hours = "hours" in facts ? facts.hours : undefined;
+---
+
+<FeatureCard
+  badge={`Ages ${facts.ages}`}
+  cta={`Explore ${facts.name}`}
+  feature
+  href={facts.href}
+  image={photo.image}
+  imageAlt={photo.alt}
+  imageCaption={photo.caption}
+>
+  <Fragment slot="title">
+    <ProgramName program={program} />
+  </Fragment>
+  <slot />
+  {hours !== undefined && (
+    <dl class="mt-4 grid grid-cols-[auto_1fr] items-baseline gap-x-4 text-small">
+      <dt class="spec-label text-muted">When</dt>
+      <dd class="text-foreground">{hours}</dd>
+    </dl>
+  )}
+</FeatureCard>

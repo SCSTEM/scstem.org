@@ -1,0 +1,133 @@
+---
+import { getCollection } from "astro:content";
+
+import partsNotes from "@/assets/sc2/parts-notes.webp";
+import CtaBanner from "@/components/ui/CtaBanner.astro";
+import FeatureCard from "@/components/ui/FeatureCard.astro";
+import FeatureGrid from "@/components/ui/FeatureGrid.astro";
+import FirstMark from "@/components/ui/FirstMark.astro";
+import Hero from "@/components/ui/Hero.astro";
+import HeroImage from "@/components/ui/HeroImage.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Section from "@/components/ui/Section.astro";
+import SponsorTier from "@/components/ui/SponsorTier.astro";
+import { ALUMNI_FIELDS, SPONSOR_LEVELS } from "@/content.config";
+import { ogCards } from "@/data/ogCards";
+import { nav, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const sponsors = await getCollection("sponsors");
+
+const groups = SPONSOR_LEVELS.map((level) => ({
+  level,
+  members: sponsors.filter((entry) => entry.data.active && entry.data.level === level),
+})).filter((group) => group.members.length > 0);
+
+const past = sponsors
+  .filter((entry) => !entry.data.active)
+  .toSorted((a, b) => a.data.name.localeCompare(b.data.name));
+
+const alumni = await getCollection("alumni");
+const listFormat = new Intl.ListFormat("en-US", { style: "long", type: "conjunction" });
+const alumniFields = listFormat.format(
+  ALUMNI_FIELDS.map((field) => ({
+    field,
+    count: alumni.filter((entry) => entry.data.field === field).length,
+  }))
+    .filter((entry) => entry.count > 0)
+    .toSorted((a, b) => b.count - a.count)
+    .map((entry) => entry.field.toLowerCase().replace(/\bit\b/u, "IT")),
+);
+---
+
+<BaseLayout
+  description="Help students learn through robotics at South Central STEM Collective. Meet our sponsors and explore support for tools, workspace, and competition."
+  og={ogCards.sponsors}
+  title="Sponsors"
+  trail={[{ name: nav.sponsors.label, path: nav.sponsors.href }]}
+>
+  <Hero>
+    <HeroImage
+      alt="Machined parts and hand-written build notes on the workshop bench"
+      caption="Parts and build notes"
+      slot="media"
+      src={partsNotes}
+    />
+    <Fragment slot="title">
+      Support the <span class="highlight-swipe">students</span> behind the robots
+    </Fragment>
+    Help students turn their ideas into competition robots by supporting the tools, materials, and
+    workspace they use. Your business can join the sponsors who keep our
+    {site.location.locality} workshop and robotics teams running.
+    <Button href="#sponsorship" size="lg" slot="actions">
+      Explore sponsorship
+    </Button>
+  </Hero>
+
+  <Section atmosphere="bubble" index={1}>
+    <Fragment slot="title">What your support makes possible</Fragment>
+
+    <FeatureGrid columns={3}>
+      <FeatureCard icon="tools">
+        <Fragment slot="title">Tools</Fragment>
+        Equip the workshop with machines, hand tools, and materials students use to build and test
+        their robot designs.
+      </FeatureCard>
+      <FeatureCard icon="building">
+        <Fragment slot="title">Workspace</Fragment>
+        Keep a shared workshop open in downtown {site.location.locality}, where students and mentors
+        meet to design and build throughout the season.
+      </FeatureCard>
+      <FeatureCard icon="ticket">
+        <Fragment slot="title">Registration</Fragment>
+        Cover <FirstMark /> registration fees so our teams can take their robots to competition and
+        put their designs to the test alongside other teams.
+      </FeatureCard>
+    </FeatureGrid>
+
+    <p class="mt-8 measure">
+      The {alumni.length} Biohazard alumni we keep in touch with now work in {alumniFields}.
+    </p>
+  </Section>
+
+  <Section atmosphere="bubble" index={2}>
+    <Fragment slot="title">Meet our sponsors</Fragment>
+    <Fragment slot="intro">
+      Thank you to the businesses and individuals who help our students learn by doing.
+    </Fragment>
+
+    <div class="flex flex-col gap-14">
+      {groups.map((group) => (
+        <SponsorTier level={group.level} sponsors={group.members} />
+      ))}
+    </div>
+  </Section>
+
+  {past.length > 0 && (
+    <Section atmosphere="ruler">
+      <Fragment slot="title">Thank you to our past sponsors</Fragment>
+      <Fragment slot="intro">
+        These organizations helped students build, learn, and compete in earlier seasons.
+      </Fragment>
+      <ul class="flex flex-wrap gap-x-10 gap-y-3 text-lead text-foreground">
+        {past.map((sponsor) => (
+          <li>{sponsor.data.name}</li>
+        ))}
+      </ul>
+    </Section>
+  )}
+
+  <Section id="sponsorship">
+    <CtaBanner>
+      <Fragment slot="title">Build the next season with us</Fragment>
+      Our sponsorship packet explains the levels and recognition details so you can consider how
+      your business would like to contribute. Get in touch with any questions.
+      <Button href={site.urls.sponsorPacket} size="lg" slot="actions">
+        View sponsorship packet
+      </Button>
+      <Button href={nav.contact.href} size="lg" slot="actions" variant="secondary">
+        Ask about sponsorship
+      </Button>
+    </CtaBanner>
+  </Section>
+</BaseLayout>

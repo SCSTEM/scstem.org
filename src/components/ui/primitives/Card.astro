@@ -1,0 +1,29 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { cn } from "@/lib/cn";
+
+/** Inside a `band` the pocket renders as a raised plate through CSS; no prop controls it. */
+interface Props extends Omit<HTMLAttributes<"div">, "class"> {
+  interactive?: boolean;
+  /** Draws the engineering grid in the pocket floor from `md` up. */
+  feature?: boolean;
+  as?: "div" | "article" | "li" | "section";
+  class?: string;
+}
+
+const {
+  interactive = false,
+  feature = false,
+  as: Tag = "div",
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<Tag
+  class={cn("pocket", interactive && "pocket-interactive", feature && "pocket-feature", className)}
+  {...rest}
+>
+  <slot />
+</Tag>

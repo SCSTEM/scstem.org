@@ -1,0 +1,18 @@
+---
+import type { ProgramTheme } from "@/data/site";
+
+import FirstMark from "@/components/ui/FirstMark.astro";
+
+interface Props {
+  program: ProgramTheme;
+}
+
+const { program } = Astro.props;
+
+const afterMark = {
+  fll: "LEGO® League",
+  frc: "Robotics Competition",
+} as const satisfies Record<ProgramTheme, string>;
+---
+
+<FirstMark /> {afterMark[program]}

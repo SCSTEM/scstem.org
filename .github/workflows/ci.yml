@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main, staging]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+
+      - name: Check
+        run: |
+          echo "::add-matcher::.github/typescript-matchers.json"
+          pnpm check
+
+  changes:
+    name: Changes
+    if: ${{ github.event_name == 'pull_request' && !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      site: ${{ steps.filter.outputs.site }}
+    steps:
+      # A job-level skip reports success to required checks, which a workflow-level `paths-ignore`
+      # would leave pending.
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          predicate-quantifier: some-with-excludes
+          filters: |
+            site:
+              - '**'
+              - '!docs/**'
+              - '!plan/**'
+              - '!.claude/**'
+              - '!*.md'
+
+  build:
+    name: Build
+    needs: changes
+    if: >-
+      ${{ !cancelled() && (github.event_name == 'push' || needs.changes.outputs.site == 'true') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+
+      - name: Build
+        id: build
+        run: pnpm build
+
+      - name: Page metadata
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: pnpm check:meta
+
+      # Future dates live only in an isolated fixture build, even when every production event has
+      # retired.
+      - name: Event fixtures
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: pnpm check:events
+
+      # `--root-dir` resolves the root-relative hrefs Astro emits, and `--fallback-extensions` maps a
+      # page path to its `.html` file; `llms.txt` has hand-written paths that nothing else checks
+      # against routes.
+      - name: Links
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --offline --include-fragments --no-progress
+            --root-dir ${{ github.workspace }}/dist --fallback-extensions html
+            'dist/**/*.html' 'dist/llms.txt'
+          fail: true

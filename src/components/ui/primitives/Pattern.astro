@@ -1,0 +1,47 @@
+---
+import { cn } from "@/lib/cn";
+
+interface Props {
+  placement?: "hero" | "section" | "pocket";
+  ticks?: boolean;
+  class?: string;
+}
+
+const { placement = "section", ticks = false, class: className } = Astro.props;
+
+const tickStrip = [
+  "M0 1H240",
+  ...Array.from({ length: 25 }, (_, index) => index * 10).map(
+    (x) => `M${String(x)} 1V${String(x % 50 === 0 ? 9 : 5)}`,
+  ),
+].join("");
+
+/** Placement only sets the custom properties the shared `engineering-grid` utility reads. */
+const alpha = { hero: "7%", section: "5%", pocket: "4%" }[placement];
+const cell = placement === "pocket" ? "26px" : "28px";
+---
+
+<div
+  aria-hidden="true"
+  class={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
+>
+  <div
+    class="absolute inset-0 engineering-grid"
+    style={`--grid-cell: ${cell}; --grid-alpha: ${alpha};`}
+  ></div>
+  {ticks && (
+    <svg
+      class="absolute inset-x-0 top-0 h-3 w-full text-primary/50"
+      preserveAspectRatio="none"
+      viewBox="0 0 240 12"
+    >
+      <path
+        d={tickStrip}
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        vector-effect="non-scaling-stroke"
+      />
+    </svg>
+  )}
+</div>

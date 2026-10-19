@@ -1,0 +1,282 @@
+import { z } from "astro/zod";
+/**
+ * Duplicate titles, unprintable description lengths, and unresolved `og:image` files only show up
+ * in built output, so this runs after the build rather than in `pnpm check`. Redirect pages are
+ * skipped for the head checks but not the link check, since their target is one of our routes.
+ */
+import { readdir, readFile, stat } from "node:fs/promises";
+import { extname, join } from "node:path";
+
+const DIST = process.argv[2] ?? "dist";
+
+const walk = async (dir: string, keep: (name: string) => boolean): Promise<string[]> => {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const nested = await Promise.all(
+    entries.map(async (entry) => {
+      const path = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        return walk(path, keep);
+      }
+      return keep(entry.name) ? [path] : [];
+    }),
+  );
+  return nested.flat();
+};
+/** Search engines truncate near 160 characters and ignore descriptions too short to be useful. */
+const DESCRIPTION_MIN = 50;
+const DESCRIPTION_MAX = 160;
+
+const tags = (html: string): string[] =>
+  [...html.matchAll(/<(?:meta|link)\b[^>]*>/gu)].map((match) => match[0]);
+
+const attribute = (tag: string, name: string): string | undefined =>
+  new RegExp(`\\b${name}="([^"]*)"`, "u").exec(tag)?.[1];
+
+const contentsOf = (html: string, key: string, value: string): string[] =>
+  tags(html)
+    .filter((tag) => attribute(tag, key) === value)
+    .flatMap((tag) => attribute(tag, "content") ?? attribute(tag, "href") ?? []);
+
+const count = (html: string, pattern: RegExp): number => [...html.matchAll(pattern)].length;
+
+/**
+ * Pages build to `<path>.html`, served at the bare path; Cloudflare Pages 308-redirects the slashed
+ * path to it, costing a round trip.
+ */
+const slashed = (html: string): string[] => [
+  ...new Set(
+    [...html.matchAll(/\bhref="(\/(?!\/)[^"?#]*)/gu)].flatMap(([, path = ""]) =>
+      path.length > 1 && path.endsWith("/") ? [path] : [],
+    ),
+  ),
+];
+
+const routeOf = (path: string): string =>
+  `/${path
+    .slice(DIST.length + 1)
+    .replace(/\.html$/u, "")
+    .replace(/(?:^|\/)index$/u, "")}`;
+
+const exists = async (path: string): Promise<boolean> => {
+  try {
+    await stat(path);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const context = {
+  "@context": z.literal("https://schema.org"),
+};
+const text = z.string().min(1);
+const url = z.url();
+const address = z.union([
+  text,
+  z.looseObject({
+    "@type": z.literal("PostalAddress"),
+    streetAddress: text,
+    addressLocality: text,
+    addressRegion: text,
+    postalCode: text,
+    addressCountry: text,
+  }),
+]);
+const JsonLd = z.discriminatedUnion("@type", [
+  z.looseObject({
+    ...context,
+    "@type": z.literal("NGO"),
+    name: text,
+    url,
+    logo: url,
+    email: z.email(),
+    address,
+    sameAs: z.array(url).min(1),
+  }),
+  z.looseObject({ ...context, "@type": z.literal("WebSite"), name: text, url }),
+  z.looseObject({
+    ...context,
+    "@type": z.literal("BreadcrumbList"),
+    itemListElement: z
+      .array(
+        z.looseObject({
+          "@type": z.literal("ListItem"),
+          position: z.number().int().positive(),
+          name: text,
+          item: url,
+        }),
+      )
+      .min(1)
+      .refine((items) => items.every((item, index) => item.position === index + 1), {
+        message: "Breadcrumb positions must be sequential, starting at 1",
+      }),
+  }),
+  z
+    .looseObject({
+      ...context,
+      "@type": z.literal("Event"),
+      name: text,
+      description: text,
+      url,
+      image: url.optional(),
+      startDate: z.iso.datetime({ offset: true }),
+      endDate: z.iso.datetime({ offset: true }).optional(),
+      eventStatus: z.literal("https://schema.org/EventScheduled"),
+      location: z.looseObject({ "@type": z.literal("Place"), name: text, address }),
+      organizer: z.looseObject({ "@type": z.literal("NGO"), name: text, url }),
+      offers: z.looseObject({ "@type": z.literal("Offer"), url, availability: url }).optional(),
+    })
+    .refine(
+      (event) =>
+        event.endDate === undefined || Date.parse(event.endDate) > Date.parse(event.startDate),
+      {
+        message: "Event endDate must follow startDate",
+      },
+    ),
+  z.looseObject({
+    ...context,
+    "@type": z.literal("FAQPage"),
+    mainEntity: z
+      .array(
+        z.looseObject({
+          "@type": z.literal("Question"),
+          name: text,
+          acceptedAnswer: z.looseObject({ "@type": z.literal("Answer"), text }),
+        }),
+      )
+      .min(1),
+  }),
+]);
+
+const paths = (await walk(DIST, (name) => extname(name) === ".html")).toSorted();
+const pages = await Promise.all(
+  paths.map(async (path) => ({ html: await readFile(path, "utf8"), route: routeOf(path) })),
+);
+
+const failures: string[] = [];
+const seen = { description: new Map<string, string>(), title: new Map<string, string>() };
+const images: { image: string; label: string; route: string }[] = [];
+
+const unique = (
+  route: string,
+  field: keyof typeof seen,
+  values: readonly string[],
+  noun: { one: string; many: string },
+): string | undefined => {
+  const [value] = values;
+  if (value === undefined || values.length !== 1) {
+    failures.push(`${route}: ${String(values.length)} ${noun.many}, expected exactly 1`);
+    return undefined;
+  }
+  const other = seen[field].get(value);
+  if (other !== undefined) {
+    failures.push(`${route}: ${noun.one} is identical to ${other}'s`);
+  }
+  seen[field].set(value, route);
+  return value;
+};
+
+for (const { html, route } of pages) {
+  const fail = (message: string) => failures.push(`${route}: ${message}`);
+
+  const trailing = slashed(html);
+  if (trailing.length > 0) {
+    fail(`links to a page with a trailing slash: ${trailing.join(", ")}`);
+  }
+
+  if (/<meta[^>]*\bhttp-equiv="refresh"/u.test(html)) {
+    continue;
+  }
+
+  const titles = [...html.matchAll(/<title[^>]*>([\s\S]*?)<\/title>/gu)].flatMap(
+    (match) => match[1] ?? [],
+  );
+  unique(route, "title", titles, { many: "<title> elements", one: "<title>" });
+
+  const description = unique(route, "description", contentsOf(html, "name", "description"), {
+    many: "meta descriptions",
+    one: "meta description",
+  });
+  if (
+    description !== undefined &&
+    (description.length < DESCRIPTION_MIN || description.length > DESCRIPTION_MAX)
+  ) {
+    fail(
+      `meta description is ${String(description.length)} characters, ` +
+        `outside ${String(DESCRIPTION_MIN)}-${String(DESCRIPTION_MAX)}`,
+    );
+  }
+
+  // A noindex page names no canonical: it would point crawlers at a URL they were told to drop.
+  const noindex = /<meta(?=[^>]*\bname="robots")(?=[^>]*noindex)[^>]*>/u.test(html);
+  const canonicals = count(html, /<link\b[^>]*\brel="canonical"/gu);
+  const expected = noindex ? 0 : 1;
+  if (canonicals !== expected) {
+    fail(`${String(canonicals)} canonical links, expected exactly ${String(expected)}`);
+  }
+
+  const headings = count(html, /<h1\b/gu);
+  if (headings !== 1) {
+    fail(`${String(headings)} <h1> elements, expected exactly 1`);
+  }
+
+  const [image] = contentsOf(html, "property", "og:image");
+  if (image === undefined) {
+    fail("no og:image");
+  } else if (URL.canParse(image)) {
+    images.push({ image, label: "og:image", route });
+  } else {
+    fail(`og:image is not absolute: ${image}`);
+  }
+
+  const [alt] = contentsOf(html, "property", "og:image:alt");
+  if (alt === undefined || alt.length === 0) {
+    fail("no og:image:alt");
+  }
+
+  // Structured data is serialized by hand; a block that stops parsing, or loses its type, is
+  // invisible until a rich-results run months later.
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gu)];
+  if (blocks.length === 0) {
+    fail("no JSON-LD");
+  }
+  for (const [, block] of blocks) {
+    let data: unknown;
+    try {
+      data = JSON.parse(block ?? "");
+    } catch {
+      fail("JSON-LD does not parse");
+      continue;
+    }
+    const parsed = JsonLd.safeParse(data);
+    if (!parsed.success) {
+      for (const issue of parsed.error.issues) {
+        fail(`JSON-LD ${issue.path.join(".") || "block"}: ${issue.message}`);
+      }
+    } else if (parsed.data["@type"] === "Event" && parsed.data.image !== undefined) {
+      images.push({ image: parsed.data.image, label: "Event image", route });
+    }
+  }
+}
+
+const resolved = await Promise.all(
+  images.map(async (entry) => ({
+    ...entry,
+    found: await exists(join(DIST, new URL(entry.image).pathname)),
+  })),
+);
+for (const { found, image, label, route } of resolved) {
+  if (!found) {
+    failures.push(`${route}: ${label} does not resolve to a built file: ${image}`);
+  }
+}
+
+if (failures.length > 0) {
+  console.error(`tools/checks/verify-meta: ${String(failures.length)} problem(s)`);
+  for (const failure of failures) {
+    console.error(`  ${failure}`);
+  }
+  process.exit(1);
+}
+
+console.log(`every page's head verified (${String(pages.length)} files)`);

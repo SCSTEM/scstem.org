@@ -1,0 +1,79 @@
+---
+import FirstMarked from "@/components/ui/FirstMarked.astro";
+import CardTitle from "@/components/ui/primitives/CardTitle.astro";
+import Lockup from "@/components/ui/primitives/Lockup.astro";
+import RulerDivider from "@/components/ui/primitives/RulerDivider.astro";
+import TitleBlock from "@/components/ui/primitives/TitleBlock.astro";
+import SocialLinks from "@/components/ui/SocialLinks.astro";
+import { nav, programs, site, socials } from "@/data/site";
+import { isExternal } from "@/lib/links";
+
+/** Declares a band surface, so the build fails a page whose last section is also a band. */
+const year = new Date().getFullYear();
+
+const sections = [
+  {
+    title: "Support us",
+    links: [nav.donate, nav.sponsors, { label: "Wishlist", href: site.urls.wishlist }],
+  },
+  {
+    title: "Programs",
+    links: [
+      { label: programs.fll.name, href: programs.fll.href },
+      { label: programs.frc.name, href: programs.frc.href },
+      nav.calendar,
+    ],
+  },
+  { title: "Find us online", links: socials },
+] as const;
+---
+
+<footer class="bg-band shadow-table-edge" data-surface="band">
+  <div class="container-page py-12">
+    <div class="flex flex-col gap-10 md:flex-row md:justify-between">
+      <div class="max-w-xs">
+        <Lockup class="w-full max-w-64" label={site.name} />
+        <p class="mt-4 text-small">{site.legal}</p>
+        <SocialLinks class="mt-6" email />
+      </div>
+
+      <nav aria-label="Footer" class="grid grid-cols-2 gap-8 md:grid-cols-3">
+        {sections.map((section) => (
+          <div>
+            <CardTitle as="h2" rule>
+              {section.title}
+            </CardTitle>
+            <ul class="mt-3 flex flex-col gap-2">
+              {section.links.map((link) => (
+                <li>
+                  <a
+                    class:list={[
+                      "ui-link text-small text-body",
+                      isExternal(link.href) && "external-link",
+                    ]}
+                    href={link.href}
+                    rel={isExternal(link.href) ? "noopener" : undefined}
+                  >
+                    <FirstMarked text={link.label} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+
+    <RulerDivider class="mt-12" />
+
+    <TitleBlock
+      class="mt-6"
+      fields={[
+        { label: "Organization", value: site.name },
+        { label: "Workspace", value: site.location.workspace },
+        { label: "Contact", value: site.email, href: `mailto:${site.email}`, mono: true },
+        { label: "Copyright", value: `© ${String(year)}`, mono: true },
+      ]}
+    />
+  </div>
+</footer>

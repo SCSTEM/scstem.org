@@ -1,0 +1,16 @@
+---
+import FirstMark from "@/components/ui/FirstMark.astro";
+
+interface Props {
+  text: string;
+}
+
+const parts = Astro.props.text.replaceAll(/\bLEGO(?!®)/gu, "LEGO®").split(/FIRST®?/u);
+---
+
+{parts.map((part, index) => (
+  <>
+    {index > 0 && <FirstMark />}
+    {part}
+  </>
+))}

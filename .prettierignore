@@ -1,0 +1,5 @@
+dist/
+.astro/
+.lighthouseci/
+pnpm-lock.yaml
+.claude/settings.local.json

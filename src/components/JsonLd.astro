@@ -1,0 +1,12 @@
+---
+import type { JsonLdObject } from "@/lib/jsonld";
+
+/** `set:html` is safe only because `data` is built from our own content, never from user input. */
+interface Props {
+  data: JsonLdObject;
+}
+
+const { data } = Astro.props;
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(data)}></script>

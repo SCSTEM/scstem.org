@@ -1,0 +1,30 @@
+---
+import { cn } from "@/lib/cn";
+
+interface Props {
+  reference?: string;
+  /** Numbers the caption as the page's next figure; takes the place of `reference`. */
+  figure?: boolean;
+  /** `figcaption` is valid only as a direct child of a `<figure>`, which the caller then owns. */
+  as?: "p" | "figcaption";
+  id?: string;
+  class?: string;
+}
+
+const { reference, figure = false, as: Tag = "p", id, class: className } = Astro.props;
+---
+
+<!-- The leader's one-line-tall box keeps it on the first line of a wrapped caption. -->
+<Tag class={cn("flex items-start gap-2 spec-label text-muted", className)} id={id}>
+  <span aria-hidden="true" class="flex h-lh shrink-0 items-center">
+    <svg class="h-2 w-8" fill="none" viewBox="0 0 32 8">
+      <circle cx="1.5" cy="4" fill="currentColor" r="1.5"></circle>
+      <line stroke="currentColor" stroke-width="1" x1="3" x2="32" y1="4" y2="4"></line>
+    </svg>
+  </span>
+  <span>
+    {figure ? <span class="fig-number" /> : reference}
+    {(figure || reference !== undefined) && " - "}
+    <slot />
+  </span>
+</Tag>
