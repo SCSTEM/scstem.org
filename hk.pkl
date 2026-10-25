@@ -11,10 +11,6 @@ steps {
     glob = List("functions/**/*.ts", "tools/checks/verify-calendar.ts")
     check = "node tools/checks/verify-calendar.ts"
   }
-  ["lighthouse"] {
-    glob = List("tools/ci/**", "tools/checks/verify-lighthouse.ts")
-    check = "node tools/checks/verify-lighthouse.ts"
-  }
   ["prettier"] = (Builtins.prettier) { batch = false }
   // `--no-warn-ignored` keeps an explicitly passed ignored file from counting against
   // `--max-warnings 0`.

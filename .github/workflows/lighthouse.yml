@@ -52,7 +52,7 @@ jobs:
         id: lighthouse
         if: ${{ steps.lighthouse-pass.outputs.cache-hit != 'true' }}
         run: |
-          pnpm --package=@lhci/cli@${{ env.LHCI_VERSION }} dlx -c 'pnpm lighthouse'
+          pnpm dlx @lhci/cli@${{ env.LHCI_VERSION }} autorun --config=tools/ci/lighthouserc.json
           touch .lighthouseci/passed
 
       # Also written to the log so the waterfall behind a failed LCP assertion is readable without

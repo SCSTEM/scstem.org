@@ -13,9 +13,7 @@
     "check:calendar": "node tools/checks/verify-calendar.ts",
     "check:events": "node tools/checks/verify-events.ts",
     "assets:og": "node tools/assets/og-cards.ts",
-    "assets:underlines": "node tools/assets/underlines.ts",
-    "check:lighthouse": "node tools/checks/verify-lighthouse.ts",
-    "lighthouse": "node tools/ci/lighthouse.ts"
+    "assets:underlines": "node tools/assets/underlines.ts"
   },
   "dependencies": {
     "@astrojs/markdown-satteri": "0.4.3",

@@ -7,7 +7,7 @@
   "typescript": { "config": ["tsconfig.json", "functions/tsconfig.json", "tools/tsconfig.json"] },
   // The CI server shells out to the system openssl, and package scripts run hk, which mise
   // installs; neither is an npm binary.
-  "ignoreBinaries": ["hk", "openssl", "lhci"],
+  "ignoreBinaries": ["hk", "openssl"],
   // Loaded by name from hk steps, which knip does not read.
   "ignoreDependencies": ["@astrojs/check", "eslint-formatter-gha"],
   "ignore": ["tools/lint/anti-slop/shared/**"],
