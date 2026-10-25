@@ -191,7 +191,7 @@ phases, and the request waterfall; full reports upload as an artifact. A `dist/`
 to one that already passed skips Lighthouse. SVG definition IDs use a counter scoped to each
 page render so repeated builds preserve the same output bytes; random IDs invalidate this cache.
 The cache also includes Chrome’s version, the runner OS/architecture, and the workflow. The
-audit uses the installed Chrome on Ubuntu 24.04, with that exact binary passed to Lighthouse.
+audit uses the installed Chrome on `ubuntu-latest`, with that exact binary passed to Lighthouse.
 
 `tools/ci/lighthouse.ts` collects one sample per URL. If the only failures are performance score,
 Largest Contentful Paint, or Total Blocking Time, it adds exactly two samples for the affected
