@@ -31,6 +31,13 @@ jobs:
       - run: pnpm build
       - run: pnpm check:events
 
+      - name: Identify audit browser
+        id: browser
+        run: |
+          chrome_path="$(command -v google-chrome)"
+          echo "CHROME_PATH=$chrome_path" >>"$GITHUB_ENV"
+          echo "version=$("$chrome_path" --version | sha256sum | cut -d ' ' -f1)" >>"$GITHUB_OUTPUT"
+
       # The build is deterministic, so an identical `dist/` measured with the same server, config,
       # and lhci version has already passed; only the marker file is cached.
       - name: Look up a previous Lighthouse pass
@@ -38,7 +45,7 @@ jobs:
         uses: actions/cache/restore@v6
         with:
           path: .lighthouseci/passed
-          key: lighthouse-${{ env.LHCI_VERSION }}-${{ hashFiles('dist/**', '.lighthouseci/events/**', 'tools/ci/**') }}
+          key: lighthouse-${{ runner.os }}-${{ runner.arch }}-${{ steps.browser.outputs.version }}-${{ env.LHCI_VERSION }}-${{ hashFiles('dist/**', '.lighthouseci/events/**', 'tools/ci/**', '.github/workflows/lighthouse.yml') }}
           lookup-only: true
 
       - name: Lighthouse CI

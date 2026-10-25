@@ -186,7 +186,10 @@ and stores it in `.lighthouseci/events/`. The audit server exposes those pages u
 `/__event-fixture/`; production `dist/` and source dates stay unchanged. The job summary and the
 log carry the scores per URL, every failed assertion, and for each URL the LCP element, its
 phases, and the request waterfall; full reports upload as an artifact. A `dist/` byte-identical
-to one that already passed skips Lighthouse.
+to one that already passed skips Lighthouse. SVG definition IDs use a counter scoped to each
+page render so repeated builds preserve the same output bytes; random IDs invalidate this cache.
+The cache also includes Chrome’s version, the runner OS/architecture, and the workflow. The
+audit uses the installed Chrome on `ubuntu-latest`, with that exact binary passed to Lighthouse.
 
 ### Performance budgets
 

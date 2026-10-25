@@ -1,11 +1,12 @@
 ---
 import { cn } from "@/lib/cn";
 import { type ChalkOvalProps, handLinkShadeClass, handMarkClass, handToneClass } from "@/lib/hand";
+import { nextSvgId } from "@/lib/svg-id";
 
 type Props = ChalkOvalProps;
 
 const { variant = 1, tone = "marker", around = "word", class: className } = Astro.props;
-const maskId = `oval-${crypto.randomUUID()}`;
+const maskId = nextSvgId(Astro.locals);
 
 /** The inline margin matches the ring's overhang so neighbours clear it. */
 const overhang = {
