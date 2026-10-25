@@ -244,6 +244,10 @@ caption: '"Biohazard" - 2026'
 `alt` describes the photo for someone who cannot see it; `caption` is the visible label. They are
 different jobs, so they are different fields.
 
+The history archive at `/about/history` combines both programs' photographs, newest first.
+Include the team name and year in each caption. The About page uses a selected early Biohazard
+photo and a LEGO League photo; its remaining pictures show students in the workspace.
+
 ## Add a photograph
 
 Every photo in `src/assets/` is a WebP master, at most 2560px on its long edge, at quality 80.

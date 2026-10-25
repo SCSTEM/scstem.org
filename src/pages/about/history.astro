@@ -1,0 +1,88 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import FirstMark from "@/components/ui/FirstMark.astro";
+import Hero from "@/components/ui/Hero.astro";
+import Button from "@/components/ui/primitives/Button.astro";
+import Callout from "@/components/ui/primitives/Callout.astro";
+import Section from "@/components/ui/Section.astro";
+import SectionAction from "@/components/ui/SectionAction.astro";
+import { nav, programs, site } from "@/data/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { PHOTO_QUALITY } from "@/lib/images";
+
+const photos = (await Promise.all([getCollection("frcTeamPhotos"), getCollection("fllTeamPhotos")]))
+  .flat()
+  .toSorted((a, b) => b.data.year - a.data.year);
+---
+
+<BaseLayout
+  description="Explore the history of South Central STEM Collective, from Biohazard’s beginnings through our FIRST LEGO League teams, with team photographs by year."
+  title="Our history and team photos"
+  trail={[
+    { name: nav.about.label, path: nav.about.href },
+    { name: nav.history.label, path: nav.history.href },
+  ]}
+>
+  <Hero>
+    <Fragment slot="title">Our history and team photos</Fragment>
+    <p>
+      A photo archive of {programs.frc.teamName} and our <FirstMark /> LEGO® League teams, with the
+      newest photographs first. Meet our current programs, students, and mentors on the About page.
+    </p>
+    <Button href={nav.about.href} slot="actions" variant="secondary">
+      About us today
+    </Button>
+  </Hero>
+
+  <Section atmosphere="ruler">
+    <Fragment slot="title">From a 4-H team to a shared home for STEM</Fragment>
+    <div class="prose-copy">
+      <p>
+        Students and volunteers formed {programs.frc.teamName} in {programs.frc.since} through
+        Franklin County 4-H. Through building robots, competing, and sharing their work, the team
+        established a foundation of teamwork, service, and community involvement.
+      </p>
+      <p>
+        When the pandemic interrupted the 2020 season, parents and mentors began planning an
+        independent nonprofit to support the team and create more STEM opportunities. In{" "}
+        {site.founded}, {site.name} became its own 501(c)(3), and {programs.frc.teamName} returned
+        to regional competition in 2022. We also added <FirstMark /> LEGO® League for younger
+        students; both programs now share our downtown {site.location.locality} workspace.
+      </p>
+    </div>
+    <SectionAction href={nav.robots.href} slot="action">
+      Biohazard&rsquo;s robots, results, and awards
+    </SectionAction>
+  </Section>
+
+  <Section atmosphere="band">
+    <Fragment slot="title">Team photos through the years</Fragment>
+    <ol class="gap-10 md:columns-2">
+      {photos.map(({ data }) => (
+        <li class="mb-10 break-inside-avoid">
+          <figure>
+            <Image
+              alt={data.alt}
+              class="w-full rounded-lg"
+              loading="lazy"
+              quality={PHOTO_QUALITY}
+              sizes="(min-width: 72rem) 34rem, (min-width: 48rem) 45vw, 92vw"
+              src={data.photo}
+              width={960}
+              widths={[480, 672, 960]}
+            />
+            <Callout as="figcaption" class="mt-3" figure>
+              {data.caption ?? `${data.alt}, ${String(data.year)}`}
+            </Callout>
+          </figure>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section atmosphere="ruler" srTitle="Meet the teams today">
+    <SectionAction href={nav.about.href}>Meet the teams today</SectionAction>
+  </Section>
+</BaseLayout>

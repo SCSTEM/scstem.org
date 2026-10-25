@@ -1,0 +1,48 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import type { HandVariant } from "@/lib/hand";
+
+import { cn } from "@/lib/cn";
+
+interface Props extends Omit<HTMLAttributes<"span">, "class"> {
+  variant?: HandVariant;
+  class?: string;
+}
+
+const { variant = 1, class: className, ...attrs } = Astro.props;
+
+const paths = {
+  1: "M3 9Q83 3 176 5L179 46Q94 52 1 48Z",
+  2: "M1 5Q89 8 178 3L176 48Q86 45 4 51Z",
+  3: "M4 7Q87 2 177 8L179 49Q91 46 1 51Z",
+} as const;
+---
+
+<span
+  class={cn("relative isolate inline-block whitespace-nowrap text-foreground", className)}
+  {...attrs}
+>
+  <slot />
+  <svg
+    aria-hidden="true"
+    class="draw-wipe pointer-events-none absolute inset-y-0 -inset-x-1 -z-1 h-full w-[calc(100%+0.5rem)]"
+    preserveAspectRatio="none"
+    viewBox="0 0 180 56"
+  >
+    <path d={paths[variant]}></path>
+  </svg>
+</span>
+
+<style>
+  path {
+    fill: var(--sc2-swipe-display);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    path {
+      animation: none !important;
+      clip-path: none;
+    }
+  }
+</style>

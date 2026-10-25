@@ -127,7 +127,7 @@ const panelSurface = "m-0 rounded-lg border border-border bg-card p-2 shadow-pla
       </span>
     </a>
 
-    <div class="ml-auto hidden h-full items-center md:flex" data-sheet-inert>
+    <div class="ml-auto hidden h-full items-center lg:flex" data-sheet-inert>
       <ul class="flex h-full items-center">
         {headerItems.map((item) =>
           !isLink(item) ? (
@@ -277,8 +277,8 @@ const panelSurface = "m-0 rounded-lg border border-border bg-card p-2 shadow-pla
       aria-controls="mobile-menu"
       aria-expanded="false"
       aria-label="Open menu"
-      class="-mr-3 ml-auto hover:bg-transparent hover:text-primary-bright md:hidden"
-      data-md={breakpoint("md")}
+      class="-mr-3 ml-auto hover:bg-transparent hover:text-primary-bright lg:hidden"
+      data-desktop={breakpoint("lg")}
       data-menu-toggle
       size="sm"
       variant="ghost"
@@ -295,7 +295,7 @@ const panelSurface = "m-0 rounded-lg border border-border bg-card p-2 shadow-pla
   </nav>
 </header>
 
-<div class="fixed inset-0 z-40 bg-background md:hidden" data-menu-sheet hidden id="mobile-menu">
+<div class="fixed inset-0 z-40 bg-background lg:hidden" data-menu-sheet hidden id="mobile-menu">
   <nav
     aria-label="Mobile"
     class="flex h-full flex-col overflow-y-auto px-4 pt-16 pb-[env(safe-area-inset-bottom)]"
@@ -565,10 +565,10 @@ const panelSurface = "m-0 rounded-lg border border-border bg-card p-2 shadow-pla
     });
 
     /**
-     * Both the sheet and its toggle are `md:hidden`, so crossing the breakpoint while open would
+     * Both the sheet and its toggle disappear at desktop widths, so crossing while open would
      * leave the page scroll-locked and inert with no visible control to undo it.
      */
-    const desktop = window.matchMedia(`(min-width: ${toggle.dataset.md ?? "48rem"})`);
+    const desktop = window.matchMedia(`(min-width: ${toggle.dataset.desktop ?? "64rem"})`);
     desktop.addEventListener("change", (event) => {
       if (event.matches) setOpen(false);
     });

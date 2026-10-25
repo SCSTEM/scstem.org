@@ -89,6 +89,7 @@
 /* `md` restates Tailwind's default so the build can read the mobile/desktop boundary from here. */
 @theme {
   --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
   --breakpoint-3xl: 120rem;
 }
 

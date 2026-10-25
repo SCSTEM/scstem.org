@@ -22,6 +22,7 @@ import Icon from "@/components/ui/primitives/Icon.astro";
 import Input from "@/components/ui/primitives/Input.astro";
 import Label from "@/components/ui/primitives/Label.astro";
 import Link from "@/components/ui/primitives/Link.astro";
+import MarkerHighlight from "@/components/ui/primitives/MarkerHighlight.astro";
 import Pattern from "@/components/ui/primitives/Pattern.astro";
 import RegistrationMarks from "@/components/ui/primitives/RegistrationMarks.astro";
 import RevisionCloud from "@/components/ui/primitives/RevisionCloud.astro";
@@ -653,6 +654,12 @@ const themes = accents().map((accent) => ({
         Display swipe (h1, h2, display sizes) at {SWIPE_ALPHA.display * 100}% alpha &middot; white
         on {displaySwipeOnGround} ={" "}
         {formatRatio(contrastRatio(color("foreground"), displaySwipeOnGround))}
+      </p>
+
+      <p class="mt-10 font-display text-h2 font-bold">
+        Real <MarkerHighlight variant={1}>Skills</MarkerHighlight>. Real{" "}
+        <MarkerHighlight variant={2}>Robots</MarkerHighlight>. Real{" "}
+        <MarkerHighlight variant={3}>Fun</MarkerHighlight>.
       </p>
 
       <h4 class="mt-12">Leader note and circled control</h4>

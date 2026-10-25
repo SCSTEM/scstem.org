@@ -82,6 +82,12 @@ export const GET: APIRoute = async () => {
           "Our mission, history, mentorship, and community involvement in south-central Pennsylvania.",
       },
       {
+        title: nav.history.label,
+        href: nav.history.href,
+        description:
+          "Our founding story and team photo archive, with the newest photographs first.",
+      },
+      {
         title: nav.calendar.label,
         href: nav.calendar.href,
         description:

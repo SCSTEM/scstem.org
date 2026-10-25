@@ -18,9 +18,9 @@ import HeroImage from "@/components/ui/HeroImage.astro";
 import Button from "@/components/ui/primitives/Button.astro";
 import Callout from "@/components/ui/primitives/Callout.astro";
 import Card from "@/components/ui/primitives/Card.astro";
-import ChalkOval from "@/components/ui/primitives/ChalkOval.astro";
 import Icon from "@/components/ui/primitives/Icon.astro";
 import Link from "@/components/ui/primitives/Link.astro";
+import MarkerHighlight from "@/components/ui/primitives/MarkerHighlight.astro";
 import ProgramCard from "@/components/ui/ProgramCard.astro";
 import Section from "@/components/ui/Section.astro";
 import SectionAction from "@/components/ui/SectionAction.astro";
@@ -43,10 +43,6 @@ const renderAt = async (source: ImageMetadata, width: number) => ({
 const acronymArt = await renderAt(firstAcronym, 896);
 const lockupArt = await renderAt(firstLockup, 640);
 
-/**
- * Each "Real X." pair never wraps internally; below `sm` pairs stack, padded so one line's oval
- * clears the next.
- */
 const taglinePair = "block py-1.5 whitespace-nowrap sm:inline sm:py-0";
 
 const seasons = await getSeasons();
@@ -340,13 +336,13 @@ const outreachKinds = {
     <CtaBanner>
       <Fragment slot="title">
         <span class={taglinePair}>
-          Real <ChalkOval variant={1}>Skills</ChalkOval>.
+          Real <MarkerHighlight variant={1}>Skills</MarkerHighlight>.
         </span>{" "}
         <span class={taglinePair}>
-          Real <ChalkOval variant={2}>Robots</ChalkOval>.
+          Real <MarkerHighlight variant={2}>Robots</MarkerHighlight>.
         </span>{" "}
         <span class={taglinePair}>
-          Real <ChalkOval variant={3}>Fun</ChalkOval>.
+          Real <MarkerHighlight variant={3}>Fun</MarkerHighlight>.
         </span>
       </Fragment>
       Tell us whether you&rsquo;d like to join a team, volunteer, or support our programs, and a

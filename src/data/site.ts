@@ -186,6 +186,7 @@ const frcCalendar = { label: "Biohazard calendar", href: "/calendar/frc" } as co
 const donate = { label: "Donate", href: "/donate" } as const;
 const sponsors = { label: "Sponsors", href: "/sponsors" } as const;
 const about = { label: "About", href: "/about" } as const;
+const history = { label: "Our history", href: "/about/history" } as const;
 const programsHub = { label: "Programs", href: programs.sc2.href } as const;
 const robots = { label: "Season history", href: `${programs.frc.href}/robots` } as const;
 const contact = { label: "Contact", href: "/contact" } as const;
@@ -219,6 +220,7 @@ export const nav = {
   ],
 
   about,
+  history,
   calendar,
   frcCalendar,
   contact,
@@ -231,6 +233,7 @@ export const nav = {
   cta: { label: "Get involved", href: "/get-involved" },
 } as const satisfies {
   about: Route;
+  history: Route;
   calendar: Route;
   frcCalendar: Route;
   contact: Route;
