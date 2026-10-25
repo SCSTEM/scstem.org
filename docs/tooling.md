@@ -37,13 +37,15 @@ does not expose yet; when it does and `@astrojs/check` widens its peer range, bu
 TypeScript scripts run directly by Node (type stripping, no build step), each behind a
 `package.json` script:
 
-| Script              | Does                                                           | Runs in         |
-| ------------------- | -------------------------------------------------------------- | --------------- |
-| `check:meta`        | Every built page's head: unique title/description, og:image    | CI, after build |
-| `check:calendar`    | Recurrence, daylight saving, exceptions, and feed merging      | hk / CI         |
-| `check:events`      | Isolated future-event build, metadata, and Lighthouse fixtures | CI, after build |
-| `assets:og`         | Render the OG cards in `src/assets/og/`                        | by hand         |
-| `assets:underlines` | Write the hand underline strokes into `src/styles/tokens.css`  | by hand         |
+| Script              | Does                                                               | Runs in                |
+| ------------------- | ------------------------------------------------------------------ | ---------------------- |
+| `check:meta`        | Every built page's head: unique title/description, og:image        | CI, after build        |
+| `check:calendar`    | Recurrence, daylight saving, exceptions, and feed merging          | hk / CI                |
+| `lighthouse`        | Collect, confirm timing failures, assert budgets, and save reports | CI, via the pinned CLI |
+| `check:lighthouse`  | Lighthouse retry orchestration and failure handling                | `pnpm check`, CI       |
+| `check:events`      | Isolated future-event build, metadata, and Lighthouse fixtures     | CI, after build        |
+| `assets:og`         | Render the OG cards in `src/assets/og/`                            | by hand                |
+| `assets:underlines` | Write the hand underline strokes into `src/styles/tokens.css`      | by hand                |
 
 Two more under `tools/ci/` have no script because Lighthouse CI runs them: `serve.ts` serves
 `dist/` over HTTP/2 and TLS for the audit, and `lighthouse-summary.ts` writes the job summary.
@@ -186,7 +188,17 @@ and stores it in `.lighthouseci/events/`. The audit server exposes those pages u
 `/__event-fixture/`; production `dist/` and source dates stay unchanged. The job summary and the
 log carry the scores per URL, every failed assertion, and for each URL the LCP element, its
 phases, and the request waterfall; full reports upload as an artifact. A `dist/` byte-identical
-to one that already passed skips Lighthouse.
+to one that already passed skips Lighthouse. SVG definition IDs use a counter scoped to each
+page render so repeated builds preserve the same output bytes; random IDs invalidate this cache.
+The cache also includes Chrome’s version, the runner OS/architecture, and the workflow. The
+audit uses the installed Chrome on Ubuntu 24.04, with that exact binary passed to Lighthouse.
+
+`tools/ci/lighthouse.ts` collects one sample per URL. If the only failures are performance score,
+Largest Contentful Paint, or Total Blocking Time, it adds exactly two samples for the affected
+URLs and checks the median of all three. Other assertions use the worst sample, so accessibility,
+SEO, best practices, layout shift, and transfer-size failures stay failures. Collection errors
+and mixed timing/non-timing failures do not trigger extra samples. Reports include the initial
+assertions, final assertions, and URLs receiving confirmation runs.
 
 ### Performance budgets
 
@@ -216,6 +228,6 @@ direct-link fallback during the staging soak. The FRC hero video (about 3 MB) st
 ```sh
 pnpm build
 pnpm check:events
-pnpm dlx @lhci/cli@0.15.1 autorun --config=tools/ci/lighthouserc.json
+pnpm --package=@lhci/cli@0.15.1 dlx -c 'pnpm lighthouse'
 node tools/ci/lighthouse-summary.ts
 ```

@@ -62,6 +62,8 @@ const report = (path: string): Report =>
 
 const runs = read<RunSummary>(".lighthouseci/reports/manifest.json");
 const assertions = read<Assertion>(".lighthouseci/assertion-results.json");
+const initialAssertions = read<Assertion>(".lighthouseci/initial-assertion-results.json");
+const retryUrls = read<string>(".lighthouseci/reports/retry-urls.json");
 
 const path = (url: string): string => new URL(url).pathname;
 const score = (value: number): string => {
@@ -81,6 +83,25 @@ if (representative.length === 0) {
   for (const run of representative) {
     const cells = CATEGORIES.map((c) => score(run.summary[c] ?? 0));
     lines.push(`| \`${path(run.url)}\` | ${cells.join(" | ")} |`);
+  }
+}
+
+if (retryUrls.length > 0) {
+  lines.push(
+    "",
+    "### Timing confirmation",
+    "",
+    `Two additional samples collected for ${retryUrls.map((url) => `\`${path(url)}\``).join(", ")}.`,
+    "Timing budgets use all three samples' median; other budgets use the worst sample.",
+    "",
+    "| URL | Initial failure | Expected | Actual |",
+    "|---|---|---|---|",
+  );
+  for (const a of initialAssertions.filter((assertion) => !assertion.passed)) {
+    const audit = a.auditProperty === undefined ? a.auditId : `${a.auditId}.${a.auditProperty}`;
+    lines.push(
+      `| \`${path(a.url)}\` | \`${audit}\` | ${a.operator} ${String(a.expected)} | ${String(a.actual)} |`,
+    );
   }
 }
 
