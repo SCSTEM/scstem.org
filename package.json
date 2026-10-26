@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node tools/dev.ts",
     "build": "astro build",
-    "preview": "wrangler pages dev dist --port 4321",
+    "preview": "wrangler pages dev dist --port 4321 --compatibility-date=2026-10-12",
     "check": "hk check --all --slow",
     "fix": "hk fix --all",
     "check:meta": "node tools/checks/verify-meta.ts",

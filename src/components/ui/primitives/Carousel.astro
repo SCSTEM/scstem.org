@@ -20,19 +20,21 @@ const { label, itemBasis = "45%", arrows = true, class: className } = Astro.prop
 ---
 
 <div class={cn("relative", className)} data-carousel>
-  <div
-    aria-label={label}
-    class={cn(
-      "flex carousel-track snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth",
-      "scrollbar-none [&::-webkit-scrollbar]:hidden",
-      "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-    )}
-    data-carousel-track
-    role="region"
-    style={`--carousel-item-basis: ${itemBasis}`}
-    tabindex="0"
-  >
-    <slot />
+  {/* The ring sits on a wrapper because the track's edge mask would clip its own outline. */}
+  <div class="has-[[data-carousel-track]:focus-visible]:outline-2 has-[[data-carousel-track]:focus-visible]:outline-offset-2 has-[[data-carousel-track]:focus-visible]:outline-ring">
+    <div
+      aria-label={label}
+      class={cn(
+        "flex carousel-track snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth",
+        "scrollbar-none focus-visible:outline-none [&::-webkit-scrollbar]:hidden",
+      )}
+      data-carousel-track
+      role="region"
+      style={`--carousel-item-basis: ${itemBasis}`}
+      tabindex="0"
+    >
+      <slot />
+    </div>
   </div>
 
   {arrows && (
@@ -58,6 +60,16 @@ const { label, itemBasis = "45%", arrows = true, class: className } = Astro.prop
       const slide = track.firstElementChild?.getBoundingClientRect().width ?? track.clientWidth;
       return slide + (Number.parseFloat(getComputedStyle(track).columnGap) || 0);
     };
+
+    if (!CSS.supports("animation-timeline: scroll()")) {
+      const feather = (): void => {
+        const end = track.scrollWidth - track.clientWidth;
+        track.toggleAttribute("data-fade-start", track.scrollLeft > 1);
+        track.toggleAttribute("data-fade-end", track.scrollLeft < end - 1);
+      };
+      track.addEventListener("scroll", feather, { passive: true });
+      new ResizeObserver(feather).observe(track);
+    }
 
     carousel.querySelector("[data-carousel-prev]")?.addEventListener("click", () => {
       track.scrollBy({ left: -step() });

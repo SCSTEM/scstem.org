@@ -1,0 +1,39 @@
+---
+import type { ImageMetadata } from "astro";
+
+import { getImage, Image } from "astro:assets";
+
+import { PHOTO_QUALITY } from "@/lib/images";
+
+/**
+ * A photographic `<Image>` that opens in the lightbox. The enlarged view loads its own ladder up to
+ * the master's full width, since the inline variants are sized for the page column.
+ *
+ * `zoom` is off where the image already sits inside a link.
+ */
+interface Props {
+  alt: string;
+  src: ImageMetadata;
+  sizes: string;
+  width: number;
+  widths: number[];
+  class?: string;
+  loading?: "eager" | "lazy";
+  zoom?: boolean;
+}
+
+const { src, loading = "lazy", zoom = true, ...props } = Astro.props;
+
+const full = zoom
+  ? await getImage({ src, quality: PHOTO_QUALITY, width: 2560, widths: [1280, 1920, 2560] })
+  : undefined;
+---
+
+<Image
+  data-zoom-srcset={full?.srcSet.attribute}
+  data-zoomable={zoom ? "" : undefined}
+  loading={loading}
+  quality={PHOTO_QUALITY}
+  src={src}
+  {...props}
+/>

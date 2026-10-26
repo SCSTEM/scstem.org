@@ -1,7 +1,7 @@
 ---
 import type { ImageMetadata } from "astro";
 
-import { getImage, Image } from "astro:assets";
+import { getImage } from "astro:assets";
 import { getCollection } from "astro:content";
 
 import cheering from "@/assets/events/cheering.webp";
@@ -26,10 +26,10 @@ import Section from "@/components/ui/Section.astro";
 import SectionAction from "@/components/ui/SectionAction.astro";
 import SponsorStrip from "@/components/ui/SponsorStrip.astro";
 import StatBand from "@/components/ui/StatBand.astro";
+import ZoomImage from "@/components/ui/ZoomImage.astro";
 import { ALUMNI_FIELDS, OUTREACH_KINDS } from "@/content.config";
 import { nav, programs, site } from "@/data/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { PHOTO_QUALITY } from "@/lib/images";
 import { webSite } from "@/lib/jsonld";
 import { awardCount, championshipSeasons, getSeasons, seasonCount } from "@/lib/seasons";
 import { breakpoint } from "@/lib/tokens";
@@ -225,11 +225,9 @@ const outreachKinds = {
 
       <figure>
         <div class="media-frame">
-          <Image
+          <ZoomImage
             alt="Biohazard students and parents cheering in the stands, holding up light-up 4050 signs"
             class="w-full"
-            loading="lazy"
-            quality={PHOTO_QUALITY}
             sizes="(min-width: 64rem) 34rem, 92vw"
             src={cheering}
             width={1120}

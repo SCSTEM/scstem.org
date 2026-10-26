@@ -268,7 +268,7 @@ CSS handles decorative transitions; small scripts manage the hand-markup entranc
 - Decorative entrances animate `opacity` and `transform`.
 - Scroll entrances: single fade-up (8px), once; CSS scroll-driven animations with content-visible-by-default fallback.
 - Hero video: `preload="none"`, poster-first, plays in-view; a quiet 44px icon control in the footage's bottom-right corner (a ghost button over a translucent ground, its accessible name "Pause/Play background video") pauses or plays it; it never sits in the hero's action row, where it would read as a call to action. A visitor's pause persists through scrolling out of and back into view. `prefers-reduced-motion` and save-data disable autoplay; playback remains opt-in. No parallax anywhere.
-- Carousels: CSS scroll-snap, user-driven; sponsor strip may slow-marquee - pausable, reduced-motion-off.
+- Carousels: CSS scroll-snap, user-driven; an edge with more to scroll toward feathers out (a scroll-driven mask, 1.5rem, 3rem from `md`) rather than cutting a slide off hard, and slides snap clear of the feather; sponsor strip may slow-marquee - pausable, reduced-motion-off.
 
 ## 7. Imagery & art direction
 
@@ -278,6 +278,7 @@ CSS handles decorative transitions; small scripts manage the hand-markup entranc
 - On a blueprint page, photos and screenshots keep their natural color. Duotone - grayscale, multiplied with the print's blue - is opt-in, for a photo that should recede into the drawing (§2).
 - **Logos drawn for a dark ground** - every sponsor and _FIRST_ logo the site holds - keep that ground on the light finish: they sit on a **print** (`print`, brand Background Black, `radius-md`), which is transparent on the dark finish. Never recolor a partner's logo to fit the finish.
 - Photo treatment: `radius-lg` framed in sections; full-bleed only in heroes. Consistent warm/neutral grading.
+- **Every content photo and screenshot opens in the lightbox**: near-full-screen on a dark backdrop, dismissed by Esc, the close button, or a click anywhere, the image included. Excluded: hero images, logos and decorative art, and any image inside a link or a linked card, where the click already navigates.
 - Every image: honest `alt`; decorative pattern/grid SVGs `aria-hidden` with `alt=""`.
 - OG images (1200×630): photo + scrim + Orbitron title + lockup; one template, per-section variants. Always the dark finish.
 - **Logo usage** (Brand Guidelines p.4–5): the **Light full-width lockup** (`logo-white-full.svg`) on dark chrome and the **Dark lockup** (`logo-black-full.svg`) on light chrome - the header and the footer; the color lockup's Foundation Gray wordmark is too faint for the organization's own name on either. The color lockup is for large sizes. The **color square mark** is for the favicon and app icons in both finishes - its gear carries no text. Never recolor, never set the name in another font as a substitute for the lockup where the lockup fits.

@@ -4,7 +4,7 @@ import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
 import Callout from "@/components/ui/primitives/Callout.astro";
-import { PHOTO_QUALITY } from "@/lib/images";
+import ZoomImage from "@/components/ui/ZoomImage.astro";
 
 /** The wordmark is decorative (`alt=""`): the photo's alt already names the robot. */
 interface Props {
@@ -41,15 +41,15 @@ const Frame = href === undefined ? "div" : "a";
     class:list={["relative media-frame", href !== undefined && "group block bg-none pb-0"]}
     href={href}
   >
-    <Image
+    <ZoomImage
       alt={imageAlt}
       class="w-full"
       loading={loading}
-      quality={PHOTO_QUALITY}
       sizes={photo.sizes}
       src={image}
       width={photo.width}
       widths={photo.widths}
+      zoom={href === undefined}
     />
     {logo !== undefined && (
       <Image

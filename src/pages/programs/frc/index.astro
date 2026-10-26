@@ -22,10 +22,10 @@ import Section from "@/components/ui/Section.astro";
 import SectionAction from "@/components/ui/SectionAction.astro";
 import StatBand from "@/components/ui/StatBand.astro";
 import VideoLink from "@/components/ui/VideoLink.astro";
+import ZoomImage from "@/components/ui/ZoomImage.astro";
 import { ogCards } from "@/data/ogCards";
 import { nav, programs, site } from "@/data/site";
 import ProgramLayout from "@/layouts/ProgramLayout.astro";
-import { PHOTO_QUALITY } from "@/lib/images";
 import { programTrail } from "@/lib/jsonld";
 import { awardCount, championshipSeasons, getSeasons, seasonCount } from "@/lib/seasons";
 
@@ -196,11 +196,9 @@ const roles = [
       {gallery.map((photo) => (
         <figure>
           <div class="media-frame">
-            <Image
+            <ZoomImage
               alt={photo.alt}
               class="aspect-4/3 w-full object-cover"
-              loading="lazy"
-              quality={PHOTO_QUALITY}
               sizes="(min-width: 72rem) 22rem, (min-width: 48rem) 30vw, 92vw"
               src={photo.src}
               width={720}

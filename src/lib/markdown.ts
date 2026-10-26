@@ -15,8 +15,8 @@ const isBlank = (node: HastNode): boolean => node.type === "text" && node.value.
 
 /**
  * Markdown gets the same figure and link grammar as the components. A paragraph holding only an
- * image with a title becomes a numbered figure captioned with that title; an untitled image stays
- * inline. Links off the site take the external marker.
+ * image with a title becomes a numbered figure captioned with that title, and opens in the
+ * lightbox; an untitled image stays inline. Links off the site take the external marker.
  */
 export const proseMarkdown = {
   name: "prose-markdown",
@@ -43,6 +43,7 @@ export const proseMarkdown = {
               ...image,
               properties: {
                 ...properties,
+                "data-zoomable": "",
                 densities: ["1x", "2x"],
                 width: FIGURE_WIDTH,
               },

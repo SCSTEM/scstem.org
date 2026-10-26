@@ -770,15 +770,82 @@
 /* Slides arrive through a slot, so their sizing cannot live in the component's scoped style;
    here it can also read the breakpoint token. `--carousel-item-basis` is set inline. */
 @utility carousel-track {
+  --carousel-fade: 1.5rem;
+
+  scroll-padding-inline: var(--carousel-fade);
+
   & > * {
     scroll-snap-align: start;
-    flex: 0 0 100%;
+    flex: 0 0 calc(100% - 2 * var(--carousel-fade));
   }
 
   @media (width >= theme(--breakpoint-md)) {
+    --carousel-fade: 3rem;
+
     & > * {
       flex-basis: var(--carousel-item-basis, 45%);
     }
+  }
+
+  /* Each edge feathers only while there is more to scroll toward it. A track that cannot scroll
+     has an inactive timeline, so it keeps hard edges. Without scroll timelines, the carousel's
+     script sets `data-fade-start` and `data-fade-end` instead. */
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--carousel-fade-start),
+    #000 calc(100% - var(--carousel-fade-end)),
+    transparent
+  );
+  transition:
+    --carousel-fade-start var(--sc2-duration-micro) linear,
+    --carousel-fade-end var(--sc2-duration-micro) linear;
+
+  &[data-fade-start] {
+    --carousel-fade-start: var(--carousel-fade);
+  }
+
+  &[data-fade-end] {
+    --carousel-fade-end: var(--carousel-fade);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    animation-name: carousel-fade;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(self inline);
+  }
+}
+
+@property --carousel-fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --carousel-fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes carousel-fade {
+  from {
+    --carousel-fade-start: 0px;
+    --carousel-fade-end: var(--carousel-fade);
+  }
+
+  10% {
+    --carousel-fade-start: var(--carousel-fade);
+  }
+
+  90% {
+    --carousel-fade-end: var(--carousel-fade);
+  }
+
+  to {
+    --carousel-fade-start: var(--carousel-fade);
+    --carousel-fade-end: 0px;
   }
 }
 

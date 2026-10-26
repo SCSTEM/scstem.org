@@ -1,0 +1,95 @@
+---
+import Button from "@/components/ui/primitives/Button.astro";
+import Icon from "@/components/ui/primitives/Icon.astro";
+
+/**
+ * One per page. Any `img[data-zoomable]` not inside a link becomes a button that opens it here.
+ * The images stay plain images until the script runs, so nothing claims to be clickable without it.
+ */
+---
+
+<dialog
+  aria-label="Enlarged image"
+  class="m-0 size-full max-h-none max-w-none bg-transparent px-4 py-16 backdrop:bg-black/85 sm:p-12 lg:p-20"
+  data-lightbox
+>
+  <img alt="" class="m-auto size-full cursor-zoom-out object-contain" data-lightbox-image />
+  <Button
+    aria-label="Close image"
+    class="fixed top-3 right-3 bg-background/70 text-foreground md:top-5 md:right-5"
+    data-lightbox-close
+    size="icon"
+    variant="ghost"
+  >
+    <Icon name="close" size={24} />
+  </Button>
+</dialog>
+
+<style>
+  [data-lightbox][open],
+  [data-lightbox][open]::backdrop {
+    animation: lightbox-in var(--sc2-duration-ui) var(--sc2-ease-entrance);
+  }
+
+  @keyframes lightbox-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-lightbox][open],
+    [data-lightbox][open]::backdrop {
+      animation: none;
+    }
+  }
+
+  :global([data-zoomable][role="button"]) {
+    cursor: zoom-in;
+  }
+
+  /* Inset, since frames and scrolling tracks clip anything drawn outside the photo. */
+  :global([data-zoomable][role="button"]:focus-visible) {
+    outline-offset: -2px;
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>("[data-lightbox]");
+  const enlarged = dialog?.querySelector<HTMLImageElement>("[data-lightbox-image]");
+
+  if (dialog && enlarged) {
+    const open = (image: HTMLImageElement): void => {
+      enlarged.srcset = image.dataset.zoomSrcset ?? image.srcset;
+      enlarged.sizes = "100vw";
+      enlarged.src = image.currentSrc || image.src;
+      enlarged.alt = image.alt;
+      dialog.showModal();
+    };
+
+    for (const image of document.querySelectorAll<HTMLImageElement>("img[data-zoomable]")) {
+      if (image.closest("a, button") !== null) continue;
+      image.setAttribute("role", "button");
+      image.tabIndex = 0;
+      image.setAttribute("aria-haspopup", "dialog");
+      image.setAttribute("aria-label", `Enlarge image: ${image.alt}`);
+      image.addEventListener("click", () => {
+        open(image);
+      });
+      image.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        open(image);
+      });
+    }
+
+    dialog.addEventListener("click", () => {
+      dialog.close();
+    });
+
+    dialog.addEventListener("close", () => {
+      enlarged.removeAttribute("srcset");
+      enlarged.removeAttribute("src");
+    });
+  }
+</script>
