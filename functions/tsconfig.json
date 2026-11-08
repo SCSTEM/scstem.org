@@ -11,10 +11,15 @@
     "noEmit": true,
     // Restates astro/tsconfigs/strictest, whose DOM and Astro types the Workers runtime cannot use.
     "strict": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "verbatimModuleSyntax": true
   },
   "include": ["**/*.ts"]

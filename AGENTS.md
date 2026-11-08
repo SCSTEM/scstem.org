@@ -18,7 +18,7 @@ Pages. **Zero client-side framework runtime** - `.astro` components and plain `<
 
 ## Toolchain
 
-ESLint (typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro` with
+ESLint (`recommended`, typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro` with
 `jsx-a11y-strict`, the vendored anti-slop rules in `tools/lint/`) lints every `.ts`, `.js`, and
 `.astro` file; `@shadcn/lint`'s token rules check every class in `src/` against the `@theme`.
 Prettier formats everything.

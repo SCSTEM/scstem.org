@@ -18,15 +18,15 @@ resolver. `which pnpm` must resolve inside mise's shims directory; if not, `core
 
 ## Toolchain
 
-| Concern     | Tool                                                                                     |
-| ----------- | ---------------------------------------------------------------------------------------- |
-| Lint        | ESLint: `strictTypeChecked` + `stylisticTypeChecked`, `astro/jsx-a11y-strict`, anti-slop |
-| Format      | Prettier, with the Astro and Tailwind plugins                                            |
-| Types       | `astro check` for `src/` and config files; `tsc -p functions`, `tsc -p tools`            |
-| Dead code   | knip                                                                                     |
-| Hygiene     | hk's built-in trailing-whitespace, final-newline, and merge-conflict-marker steps        |
-| Repo checks | `tools/checks/*.ts`                                                                      |
-| Runner      | hk: every check above is a step in `hk.pkl`                                              |
+| Concern     | Tool                                                                                                    |
+| ----------- | ------------------------------------------------------------------------------------------------------- |
+| Lint        | ESLint: `recommended`, `strictTypeChecked` + `stylisticTypeChecked`, `astro/jsx-a11y-strict`, anti-slop |
+| Format      | Prettier, with the Astro and Tailwind plugins                                                           |
+| Types       | `astro check` for `src/` and config files; `tsc -p functions`, `tsc -p tools`                           |
+| Dead code   | knip                                                                                                    |
+| Hygiene     | hk's built-in trailing-whitespace, final-newline, and merge-conflict-marker steps                       |
+| Repo checks | `tools/checks/*.ts`                                                                                     |
+| Runner      | hk: every check above is a step in `hk.pkl`                                                             |
 
 TypeScript is the 6.x line everywhere, one compiler for `astro check`, `tsc`, and
 `typescript-eslint`. `astro check` (Volar) needs the JavaScript compiler's API, which TypeScript 7
