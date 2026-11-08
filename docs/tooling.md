@@ -65,7 +65,10 @@ curl -A "Mozilla/5.0 (Macintosh) AppleWebKit/537.36 Chrome/140.0.0.0 Safari/537.
 ```
 
 Download the `latin` file of each face (and Inter's `latin-ext`) over the existing one, and copy
-its `font-weight` and `unicode-range` into `src/styles/fonts.css`.
+its `font-weight` and `unicode-range` into the face's entry in `astro.config.ts`'s `fonts`. Astro
+declares the faces from that config, under generated family names, and computes each text face's
+metric-matched Arial fallback from the file; `src/styles/fonts.css` points the shared `--sc2-font-*`
+tokens at the variables it emits.
 
 Social cards use static TTF fonts in `tools/assets/fonts/`: Orbitron Bold for headings and an
 Inter Bold subset for the registered-trademark symbol. Orbitron has no glyph for that symbol.
