@@ -1,5 +1,5 @@
-amends "package://github.com/jdx/hk/releases/download/v2.1.0/hk@2.1.0#/Config.pkl"
-import "package://github.com/jdx/hk/releases/download/v2.1.0/hk@2.1.0#/Builtins.pkl"
+amends "package://github.com/jdx/hk/releases/download/v2.11.0/hk@2.11.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.11.0/hk@2.11.0#/Builtins.pkl"
 
 fail_fast = false
 
@@ -7,9 +7,11 @@ steps {
   ["trailing-whitespace"] = Builtins.trailing_whitespace
   ["newlines"] = Builtins.newlines
   ["merge-conflict"] = Builtins.check_merge_conflict
+  ["actionlint"] = Builtins.actionlint
+  ["mise"] = Builtins.mise
   ["calendar"] {
     glob = List("functions/**/*.ts", "tools/checks/verify-calendar.ts")
-    check = "node tools/checks/verify-calendar.ts"
+    check = new CommandSpec { command = "node tools/checks/verify-calendar.ts"; effect = "read" }
   }
   ["prettier"] = (Builtins.prettier) { batch = false }
   // `--no-warn-ignored` keeps an explicitly passed ignored file from counting against
@@ -36,7 +38,8 @@ steps {
   ["astro"] {
     profiles = List("slow")
     glob = List("src/**", "*.ts", "tsconfig.json")
-    check = "astro check"
+    // Writes only the generated types in `.astro/`.
+    check = new CommandSpec { command = "astro check"; effect = "write" }
   }
   // One `tsc -p` per tsconfig.json; `astro check` covers `src/` and the root config files.
   ["tsc"] = (Builtins.tsc) {
@@ -47,6 +50,9 @@ steps {
   ["knip"] {
     profiles = List("slow")
     glob = List("**/*.ts", "**/*.mts", "**/*.js", "**/*.mjs", "**/*.astro", "package.json")
-    check = "knip ${GITHUB_ACTIONS:+--reporter github-actions}"
+    check = new CommandSpec {
+      command = "knip ${GITHUB_ACTIONS:+--reporter github-actions}"
+      effect = "read"
+    }
   }
 }

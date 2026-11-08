@@ -3,14 +3,20 @@ description: Install the mise-pinned toolchain and the pnpm dependencies, with b
 runs:
   using: composite
   steps:
-    # Only the tools the jobs run; local-only tools such as agent-browser are skipped.
-    - uses: jdx/mise-action@v4
+    # The downloads, not the installed tools: mise checks every cached download against the
+    # checksum in `mise.lock`, and trusts a restored install as is.
+    - uses: actions/cache@v6
       with:
-        version: 2026.9.14
-        install_args: node pnpm hk
-        cache: true
+        path: ~/.cache/mise/downloads-cas
+        key: mise-downloads-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('mise.lock') }}
 
-    # mise-action caches tool binaries, not pnpm's store.
+    # Only the tools the jobs run; local-only tools such as agent-browser are skipped.
+    - uses: jdx/mise-action@v5
+      with:
+        version: 2026.10.25
+        install_args: node pnpm hk actionlint
+        cache: false
+
     - name: Locate pnpm store
       shell: bash
       run: echo "PNPM_STORE=$(pnpm store path --silent)" >>"$GITHUB_ENV"

@@ -1,6 +1,6 @@
 import type { CollectionEntry } from "astro:content";
 
-import { type PagePath, type ProgramTheme, nav, programs, site, socials } from "@/data/site";
+import { nav, type PagePath, programs, type ProgramTheme, site, socials } from "@/data/site";
 import { absoluteUrl } from "@/lib/links";
 
 // All data here is first-party, which is what makes serializing it with `set:html` safe.

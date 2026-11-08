@@ -9,24 +9,25 @@ pnpm check        # every hk.pkl step: typecheck, lint, format, knip
 pnpm dev
 ```
 
-`mise.toml` pins node, pnpm, and hk exactly and commits checksums to `mise.lock`, so every clone, CI
-run, and Cloudflare Pages build gets the same tools. `package.json` scripts are the single
-source of truth for commands.
+`mise.toml` pins node, pnpm, hk, and actionlint exactly and commits checksums to `mise.lock`, so
+every clone, CI run, and Cloudflare Pages build gets the same tools. `package.json` scripts are the
+single source of truth for commands.
 
 Corepack's `pnpm` shim can shadow the mise-pinned pnpm and rewrite the lockfile with a different
 resolver. `which pnpm` must resolve inside mise's shims directory; if not, `corepack disable pnpm`.
 
 ## Toolchain
 
-| Concern     | Tool                                                                                     |
-| ----------- | ---------------------------------------------------------------------------------------- |
-| Lint        | ESLint: `strictTypeChecked` + `stylisticTypeChecked`, `astro/jsx-a11y-strict`, anti-slop |
-| Format      | Prettier, with the Astro and Tailwind plugins                                            |
-| Types       | `astro check` for `src/` and config files; `tsc -p functions`, `tsc -p tools`            |
-| Dead code   | knip                                                                                     |
-| Hygiene     | hk's built-in trailing-whitespace, final-newline, and merge-conflict-marker steps        |
-| Repo checks | `tools/checks/*.ts`                                                                      |
-| Runner      | hk: every check above is a step in `hk.pkl`                                              |
+| Concern     | Tool                                                                                                    |
+| ----------- | ------------------------------------------------------------------------------------------------------- |
+| Lint        | ESLint: `recommended`, `strictTypeChecked` + `stylisticTypeChecked`, `astro/jsx-a11y-strict`, anti-slop |
+| Format      | Prettier, with the Astro and Tailwind plugins                                                           |
+| Types       | `astro check` for `src/` and config files; `tsc -p functions`, `tsc -p tools`                           |
+| Dead code   | knip                                                                                                    |
+| Hygiene     | hk's built-in trailing-whitespace, final-newline, and merge-conflict-marker steps                       |
+| Config      | actionlint on the workflows, `mise fmt --check` on `mise.toml`, `hk validate` in CI                     |
+| Repo checks | `tools/checks/*.ts`                                                                                     |
+| Runner      | hk: every check above is a step in `hk.pkl`                                                             |
 
 TypeScript is the 6.x line everywhere, one compiler for `astro check`, `tsc`, and
 `typescript-eslint`. `astro check` (Volar) needs the JavaScript compiler's API, which TypeScript 7
@@ -64,7 +65,10 @@ curl -A "Mozilla/5.0 (Macintosh) AppleWebKit/537.36 Chrome/140.0.0.0 Safari/537.
 ```
 
 Download the `latin` file of each face (and Inter's `latin-ext`) over the existing one, and copy
-its `font-weight` and `unicode-range` into `src/styles/fonts.css`.
+its `font-weight` and `unicode-range` into the face's entry in `astro.config.ts`'s `fonts`. Astro
+declares the faces from that config, under generated family names, and computes each text face's
+metric-matched Arial fallback from the file; `src/styles/fonts.css` points the shared `--sc2-font-*`
+tokens at the variables it emits.
 
 Social cards use static TTF fonts in `tools/assets/fonts/`: Orbitron Bold for headings and an
 Inter Bold subset for the registered-trademark symbol. Orbitron has no glyph for that symbol.
@@ -99,7 +103,7 @@ The poster, `src/assets/frc/hero-video-poster.webp`, is the master's first frame
 | `pnpm check`, CI's Check job    | `hk check --all --slow`: every step over every file                |
 | `pnpm fix`                      | `hk fix --all`: every step but the slow ones, fixing what they can |
 | Claude Code, after `Edit/Write` | `hk fix` on the edited file                                        |
-| Claude Code, at the end of turn | `hk fix --slow` over the modified and untracked files              |
+| Claude Code, at the end of turn | `hk agent stop-hook`: the check hook, slow steps included          |
 
 `astro check`, `tsc`, and knip read the whole program, so they carry the `slow` profile and run
 only where `--slow` is passed; each runs once when a selected file matches its glob. ESLint
@@ -109,10 +113,19 @@ mise's `postinstall` hook runs `hk install --mise`, so every `mise install` outs
 the pre-commit hook; it runs hk through `mise x`, so Git needs mise on its `PATH`.
 `HK=0 git commit` skips it.
 
-Both Claude Code hooks are inline in `.claude/settings.json` and exit 2 with hk's output when a
-step fails, which hands the findings back to the agent. The edit hook ignores files outside the
-repo. The end-of-turn hook does not run again on the stop it forced (`stop_hook_active`), so a
-problem the agent cannot fix reaches the user instead of looping.
+The Claude Code hooks are inline in `.claude/settings.json` and call hk through `mise x`, because
+hooks run in a plain `sh` where mise may not be activated. The edit hook exits 2 with hk's output
+when a step fails, which hands the findings back to the agent, and ignores files outside the repo.
+The end-of-turn hook is hk's own: it runs `hk check --safe` with the `slow` profile and blocks the
+stop with the failures. `--safe` refuses any step whose command has no declared effect, so a
+custom step's command in `hk.pkl` is a `CommandSpec` with its `effect`. It does not run again on
+the stop it forced (`stop_hook_active`), so a problem the agent cannot fix reaches the user instead
+of looping.
+
+In Claude Code cloud sessions (`CLAUDE_CODE_REMOTE`), a `SessionStart` hook runs
+`mise install --locked` and `pnpm install`, then adds mise's environment to `CLAUDE_ENV_FILE` so
+later shell commands get the pinned tools. `--locked` installs from `mise.lock` alone and never
+writes to it, so it needs no network access beyond the locked download URLs.
 
 ## Browser automation
 

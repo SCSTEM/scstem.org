@@ -18,7 +18,7 @@ Pages. **Zero client-side framework runtime** - `.astro` components and plain `<
 
 ## Toolchain
 
-ESLint (typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro` with
+ESLint (`recommended`, typed `strictTypeChecked` + `stylisticTypeChecked`, `eslint-plugin-astro` with
 `jsx-a11y-strict`, the vendored anti-slop rules in `tools/lint/`) lints every `.ts`, `.js`, and
 `.astro` file; `@shadcn/lint`'s token rules check every class in `src/` against the `@theme`.
 Prettier formats everything.
@@ -29,7 +29,8 @@ Every check is a step in `hk.pkl`, and the same steps back the git
 pre-commit hook, `pnpm check` / `pnpm fix`, CI, and the Claude Code hooks in
 `.claude/settings.json`: each file you edit is formatted and linted, and the end of each turn
 runs the full set, typecheck and knip included, over the modified files. Unfixable failures
-come back to you.
+come back to you. In cloud sessions a `SessionStart` hook installs the mise toolchain and the
+dependencies.
 
 Browser verification goes through `agent-browser` (the `agent-browser` skill; setup in
 `docs/tooling.md`), against `pnpm preview`, not the dev server.

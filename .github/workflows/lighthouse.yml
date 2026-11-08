@@ -65,7 +65,7 @@ jobs:
         if: ${{ steps.lighthouse-pass.outputs.cache-hit == 'true' }}
         run: echo "Lighthouse skipped, this exact build already passed." >>"$GITHUB_STEP_SUMMARY"
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() && steps.lighthouse.outcome != 'skipped' }}
         with:
           name: lighthouse-reports

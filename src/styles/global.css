@@ -1,7 +1,7 @@
 /* Class candidates come from the source tree only: docs and plans name classes in prose. */
 @import "tailwindcss" source("../");
-@import "./fonts.css";
 @import "./tokens.css";
+@import "./fonts.css";
 
 /**
  * `inline` makes each utility read its `--sc2-*` token where it is used, so a `data-mode`,

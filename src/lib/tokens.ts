@@ -1,6 +1,6 @@
 // `?raw` inlines the stylesheets at build time. `readFileSync` fails because the page is bundled
 // before it is prerendered, so a module-relative path no longer reaches `src/`.
-import { ACCENTS, type Accent } from "@/data/site";
+import { type Accent, ACCENTS } from "@/data/site";
 import tailwindSource from "@/styles/global.css?raw";
 import tokenSource from "@/styles/tokens.css?raw";
 

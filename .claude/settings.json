@@ -3,13 +3,25 @@
     "allow": ["Bash(agent-browser:*)"]
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; cd \"$CLAUDE_PROJECT_DIR\" && mise trust -q && mise install --locked node pnpm hk >&2 && mise x -- pnpm install --frozen-lockfile --prefer-offline >&2 && { [ -z \"$CLAUDE_ENV_FILE\" ] || echo 'eval \"$(mise env -s bash -C \"$CLAUDE_PROJECT_DIR\")\"' >>\"$CLAUDE_ENV_FILE\"; }",
+            "timeout": 600
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && f=\"$(jq -r .tool_input.file_path)\" && case \"$f\" in \"$CLAUDE_PROJECT_DIR\"/*) hk fix -q -n --no-stage \"$f\" >&2 || exit 2 ;; esac",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && f=\"$(jq -r .tool_input.file_path)\" && case \"$f\" in \"$CLAUDE_PROJECT_DIR\"/*) mise x -- hk fix -q -n --no-stage \"$f\" >&2 || exit 2 ;; esac",
             "timeout": 60
           }
         ]
@@ -20,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && jq -e .stop_hook_active >/dev/null || hk fix --slow -q -n --no-stage >&2 || exit 2",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && HK_PROFILE=slow mise x -- hk agent stop-hook --target claude-code --timeout 170",
             "timeout": 180
           }
         ]

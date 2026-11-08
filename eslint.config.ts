@@ -1,3 +1,4 @@
+import js from "@eslint/js";
 import { plugin as shadcn } from "@shadcn/lint";
 import astro from "eslint-plugin-astro";
 import perfectionist from "eslint-plugin-perfectionist";
@@ -17,7 +18,11 @@ export default defineConfig(
   ]),
   {
     files: ["**/*.{ts,mts,js,mjs,astro}"],
-    extends: [tseslint.configs.strictTypeChecked, tseslint.configs.stylisticTypeChecked],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+    ],
     languageOptions: {
       parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
     },
@@ -49,7 +54,10 @@ export default defineConfig(
           ],
         },
       ],
+      "perfectionist/sort-exports": "error",
       "perfectionist/sort-imports": "error",
+      "perfectionist/sort-named-exports": "error",
+      "perfectionist/sort-named-imports": "error",
     },
   },
   {

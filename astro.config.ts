@@ -3,7 +3,7 @@ import type { AstroIntegration } from "astro";
 import { satteri } from "@astrojs/markdown-satteri";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig, envField } from "astro/config";
+import { defineConfig, envField, fontProviders } from "astro/config";
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 
 // The config is loaded through jiti, so this module must import nothing from `astro:*`.
@@ -11,6 +11,50 @@ import { site } from "./src/data/site";
 import { proseMarkdown } from "./src/lib/markdown";
 
 const outDir = "./dist";
+
+const fontDir = "./src/styles/fonts";
+
+/** The Google Fonts CSS API's `latin` and `latin-ext` ranges, which the files are cut to. */
+const LATIN = [
+  "U+0000-00FF",
+  "U+0131",
+  "U+0152-0153",
+  "U+02BB-02BC",
+  "U+02C6",
+  "U+02DA",
+  "U+02DC",
+  "U+0304",
+  "U+0308",
+  "U+0329",
+  "U+2000-206F",
+  "U+20AC",
+  "U+2122",
+  "U+2191",
+  "U+2193",
+  "U+2212",
+  "U+2215",
+  "U+FEFF",
+  "U+FFFD",
+] as const;
+const LATIN_EXT = [
+  "U+0100-02BA",
+  "U+02BD-02C5",
+  "U+02C7-02CC",
+  "U+02CE-02D7",
+  "U+02DD-02FF",
+  "U+0304",
+  "U+0308",
+  "U+0329",
+  "U+1D00-1DBF",
+  "U+1E00-1E9F",
+  "U+1EF2-1EFF",
+  "U+2020",
+  "U+20A0-20AB",
+  "U+20AD-20C4",
+  "U+2113",
+  "U+2C60-2C7F",
+  "U+A720-A7FF",
+] as const;
 
 const htmlFile = (pathname: string): string =>
   `${pathname.replace(/^\/|\/$|\.html$/gu, "") || "index"}.html`;
@@ -97,6 +141,85 @@ const bandsNeverTouch = (): AstroIntegration => ({
 
 export default defineConfig({
   build: { format: "file" },
+  /**
+   * The faces DESIGN.md §3 sanctions, at its weights, from the files in the fonts directory. The
+   * variable files carry the full weight axis; the declared range clamps it. Astro generates each
+   * text face's fallback: Arial scaled to its metrics, so the swap does not reflow text.
+   */
+  fonts: [
+    {
+      cssVariable: "--font-inter",
+      fallbacks: ["ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+      name: "Inter",
+      options: {
+        variants: [
+          {
+            src: [`${fontDir}/inter-latin.woff2`],
+            style: "normal",
+            unicodeRange: [...LATIN],
+            weight: "400 700",
+          },
+          {
+            src: [`${fontDir}/inter-latin-ext.woff2`],
+            style: "normal",
+            unicodeRange: [...LATIN_EXT],
+            weight: "400 700",
+          },
+        ],
+      },
+      provider: fontProviders.local(),
+    },
+    {
+      cssVariable: "--font-orbitron",
+      fallbacks: ["ui-sans-serif", "system-ui", "sans-serif"],
+      name: "Orbitron",
+      options: {
+        variants: [
+          {
+            src: [`${fontDir}/orbitron-latin.woff2`],
+            style: "normal",
+            unicodeRange: [...LATIN],
+            weight: "600 700",
+          },
+        ],
+      },
+      provider: fontProviders.local(),
+    },
+    {
+      cssVariable: "--font-source-code-pro",
+      fallbacks: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+      name: "Source Code Pro",
+      optimizedFallbacks: false,
+      options: {
+        variants: [
+          {
+            src: [`${fontDir}/source-code-pro-latin.woff2`],
+            style: "normal",
+            unicodeRange: [...LATIN],
+            weight: "400 600",
+          },
+        ],
+      },
+      provider: fontProviders.local(),
+    },
+    {
+      cssVariable: "--font-architects-daughter",
+      fallbacks: ["Comic Sans MS", "cursive"],
+      name: "Architects Daughter",
+      optimizedFallbacks: false,
+      options: {
+        variants: [
+          {
+            src: [`${fontDir}/architects-daughter-latin.woff2`],
+            style: "normal",
+            unicodeRange: [...LATIN],
+            weight: "400",
+          },
+        ],
+      },
+      provider: fontProviders.local(),
+    },
+  ],
   env: {
     schema: {
       /**
