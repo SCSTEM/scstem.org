@@ -4,11 +4,11 @@ minimum_release_age = "7d"
 npm.package_manager = "pnpm"
 
 [tools]
-node = "26.10.0"
-pnpm = "12.6.0"
-hk = "2.1.0"
+node = "26.13.0"
+pnpm = "12.17.0"
+hk = "2.11.0"
 
-"npm:agent-browser" = "0.38.1"
+"npm:agent-browser" = "0.41.1"
 
 # Installs the pre-commit hook; CI does not commit.
 [hooks]

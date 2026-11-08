@@ -4,9 +4,9 @@ runs:
   using: composite
   steps:
     # Only the tools the jobs run; local-only tools such as agent-browser are skipped.
-    - uses: jdx/mise-action@v4
+    - uses: jdx/mise-action@v5
       with:
-        version: 2026.9.14
+        version: 2026.10.25
         install_args: node pnpm hk
         cache: true
 
