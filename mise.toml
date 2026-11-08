@@ -7,12 +7,13 @@ npm.package_manager = "pnpm"
 node = "26.13.0"
 pnpm = "12.17.0"
 hk = "2.11.0"
+actionlint = "1.7.12"
 
 "npm:agent-browser" = "0.41.1"
 
 # Installs the pre-commit hook; CI does not commit.
 [hooks]
-postinstall = '[ -n "$CI" ] || hk install --mise'
+postinstall = '[ -n "$CI" ] || mise x -- hk install --mise'
 
 [env]
 _.path = ["{{config_root}}/node_modules/.bin"]

@@ -9,9 +9,9 @@ pnpm check        # every hk.pkl step: typecheck, lint, format, knip
 pnpm dev
 ```
 
-`mise.toml` pins node, pnpm, and hk exactly and commits checksums to `mise.lock`, so every clone, CI
-run, and Cloudflare Pages build gets the same tools. `package.json` scripts are the single
-source of truth for commands.
+`mise.toml` pins node, pnpm, hk, and actionlint exactly and commits checksums to `mise.lock`, so
+every clone, CI run, and Cloudflare Pages build gets the same tools. `package.json` scripts are the
+single source of truth for commands.
 
 Corepack's `pnpm` shim can shadow the mise-pinned pnpm and rewrite the lockfile with a different
 resolver. `which pnpm` must resolve inside mise's shims directory; if not, `corepack disable pnpm`.
@@ -25,6 +25,7 @@ resolver. `which pnpm` must resolve inside mise's shims directory; if not, `core
 | Types       | `astro check` for `src/` and config files; `tsc -p functions`, `tsc -p tools`                           |
 | Dead code   | knip                                                                                                    |
 | Hygiene     | hk's built-in trailing-whitespace, final-newline, and merge-conflict-marker steps                       |
+| Config      | actionlint on the workflows, `mise fmt --check` on `mise.toml`, `hk validate` in CI                     |
 | Repo checks | `tools/checks/*.ts`                                                                                     |
 | Runner      | hk: every check above is a step in `hk.pkl`                                                             |
 

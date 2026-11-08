@@ -7,6 +7,8 @@ steps {
   ["trailing-whitespace"] = Builtins.trailing_whitespace
   ["newlines"] = Builtins.newlines
   ["merge-conflict"] = Builtins.check_merge_conflict
+  ["actionlint"] = Builtins.actionlint
+  ["mise"] = Builtins.mise
   ["calendar"] {
     glob = List("functions/**/*.ts", "tools/checks/verify-calendar.ts")
     check = new CommandSpec { command = "node tools/checks/verify-calendar.ts"; effect = "read" }
