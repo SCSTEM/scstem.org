@@ -29,7 +29,8 @@ Every check is a step in `hk.pkl`, and the same steps back the git
 pre-commit hook, `pnpm check` / `pnpm fix`, CI, and the Claude Code hooks in
 `.claude/settings.json`: each file you edit is formatted and linted, and the end of each turn
 runs the full set, typecheck and knip included, over the modified files. Unfixable failures
-come back to you.
+come back to you. In cloud sessions a `SessionStart` hook installs the mise toolchain and the
+dependencies.
 
 Browser verification goes through `agent-browser` (the `agent-browser` skill; setup in
 `docs/tooling.md`), against `pnpm preview`, not the dev server.

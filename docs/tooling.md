@@ -99,7 +99,7 @@ The poster, `src/assets/frc/hero-video-poster.webp`, is the master's first frame
 | `pnpm check`, CI's Check job    | `hk check --all --slow`: every step over every file                |
 | `pnpm fix`                      | `hk fix --all`: every step but the slow ones, fixing what they can |
 | Claude Code, after `Edit/Write` | `hk fix` on the edited file                                        |
-| Claude Code, at the end of turn | `hk fix --slow` over the modified and untracked files              |
+| Claude Code, at the end of turn | `hk agent stop-hook`: the check hook, slow steps included          |
 
 `astro check`, `tsc`, and knip read the whole program, so they carry the `slow` profile and run
 only where `--slow` is passed; each runs once when a selected file matches its glob. ESLint
@@ -109,10 +109,19 @@ mise's `postinstall` hook runs `hk install --mise`, so every `mise install` outs
 the pre-commit hook; it runs hk through `mise x`, so Git needs mise on its `PATH`.
 `HK=0 git commit` skips it.
 
-Both Claude Code hooks are inline in `.claude/settings.json` and exit 2 with hk's output when a
-step fails, which hands the findings back to the agent. The edit hook ignores files outside the
-repo. The end-of-turn hook does not run again on the stop it forced (`stop_hook_active`), so a
-problem the agent cannot fix reaches the user instead of looping.
+The Claude Code hooks are inline in `.claude/settings.json` and call hk through `mise x`, because
+hooks run in a plain `sh` where mise may not be activated. The edit hook exits 2 with hk's output
+when a step fails, which hands the findings back to the agent, and ignores files outside the repo.
+The end-of-turn hook is hk's own: it runs `hk check --safe` with the `slow` profile and blocks the
+stop with the failures. `--safe` refuses any step whose command has no declared effect, so a
+custom step's command in `hk.pkl` is a `CommandSpec` with its `effect`. It does not run again on
+the stop it forced (`stop_hook_active`), so a problem the agent cannot fix reaches the user instead
+of looping.
+
+In Claude Code cloud sessions (`CLAUDE_CODE_REMOTE`), a `SessionStart` hook runs
+`mise install --locked` and `pnpm install`, then adds mise's environment to `CLAUDE_ENV_FILE` so
+later shell commands get the pinned tools. `--locked` installs from `mise.lock` alone and never
+writes to it, so it needs no network access beyond the locked download URLs.
 
 ## Browser automation
 

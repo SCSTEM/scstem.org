@@ -27,7 +27,13 @@ const children: ChildProcess[] = [
     { stdio: "inherit" },
   ),
   spawn("astro", ["dev", ...process.argv.slice(2)], {
-    env: { ...process.env, FUNCTIONS_ORIGIN: `http://localhost:${String(FUNCTIONS_PORT)}` },
+    env: {
+      ...process.env,
+      // Astro otherwise detaches into the background when an AI agent runs it, and its exit here
+      // would stop wrangler.
+      ASTRO_DEV_BACKGROUND: "0",
+      FUNCTIONS_ORIGIN: `http://localhost:${String(FUNCTIONS_PORT)}`,
+    },
     stdio: "inherit",
   }),
 ];
